@@ -1,0 +1,32 @@
+<table class="table table-striped table-bordered">
+  <tr>
+    <th>Resource</th>
+    <th>Reason</th>
+    <th>Explanation</th>
+    <th>Flagger</th>
+    <th>Flagged</th>
+    <th>Status</th>
+  </tr>
+<% _.each(flags, function(f, i) { %>
+  <tr>
+    <td>
+      <% if (f.resource.title) { %>
+      <a href="<%= arcs.url('resource', f.resource.id) %>">
+        <%= f.resource.title %>
+      </a>
+      <% } else { %>
+      (deleted)
+      <% } %>
+    </td>
+    <td><%= f.reason %></td>
+    <td><%= f.explanation %></td>
+    <td>
+      <a href="<%= arcs.url('user', f.user.username) %>">
+        <%= f.user.name %>
+      </a>
+    </td>
+    <td><%= relativeDate(new Date(f.created)) %></td>
+    <td><span class="label label-important">Unresolved</span></td>
+  </tr>
+<% }) %>
+</table>

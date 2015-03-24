@@ -1,0 +1,39 @@
+// toolbar.less
+// ------------
+
+div#toolbar {
+  background: #ccc;
+  border: 1px solid #888;
+  margin-bottom: 10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  height: 40px;
+  padding: 3px;
+  padding-bottom: 1px;
+
+  a#logo-wrapper {
+    &:hover { text-decoration: none; }
+  }
+
+  h1#logo {
+    display: inline;
+    font-size: @baseFontSize * 1.4;
+    font-weight: 200;
+    padding-left: 45px;
+    padding-bottom: 5px;
+    color: #444;
+    background: no-repeat top left url('img/arcs-icon.png');
+    background-position: 10px 0px;
+    margin-top: 2px;
+    margin-right: 10px;
+    float: left;
+  }
+
+  .toolbar-btn {
+    float: right;
+    position: relative;
+    top: 5px;
+    margin-right: 10px;
+  }
+
+}

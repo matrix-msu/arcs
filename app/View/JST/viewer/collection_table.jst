@@ -1,0 +1,19 @@
+<tr>
+  <td>Title</td>
+  <td>
+    <a class="subtle" 
+      href='<%= arcs.url("search", "collection:" + arcs.inflector.enquote(title, false)) %>'>
+      <%- title || '' %>
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td><%= description %></td>
+</tr>
+<% if (pdf) { %>
+<tr>
+  <td>Original PDF</td>
+  <td><a href="<%= arcs.baseURL + 'resource/' + pdf %>">Link</a></td>
+</tr>
+<% } %>

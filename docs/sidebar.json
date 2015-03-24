@@ -1,0 +1,91 @@
+{
+  "Help": {
+    "Getting Started": {
+      "link": ""
+    },
+    "FAQ": {
+      "link": "faq"
+    },
+    "Your Account": {
+      "link": "account",
+      "nav": {
+        "Account Types": "#account-types",
+        "Getting an Account": "#getting-an-account",
+        "Your Profile": "#your-profile"
+      }
+    },
+    "Resources": {
+      "link": "about-resources",
+      "nav": {
+        "Understanding": "#understanding-resources",
+		"Working": "#working-with-resources",
+		"Uploading": "#uploading-resources",
+        "Editing": "#editing-resources",
+		"Annotating": "#annotating-resources"
+      }
+    },
+    "Collections": {
+      "link": "about-collections",
+      "nav": {
+        "Understanding": "#understanding-collections",
+        "Creating": "#creating-collections"
+      }
+    },
+    "Uploading": {
+      "link": "uploading",
+      "nav": {
+        "Using the Uploader": "#using-the-uploader",
+        "Troubleshooting": "#troubleshooting"
+      }
+    },
+    "Searching": {
+      "link": "searching"
+    },
+    "Bulk Actions": {
+      "link": "bulk-actions",
+      "nav": {
+        "Selection": "#selection",
+        "Flagging": "#flagging-resources",
+        "Keywording": "#keywording-resources",
+        "Editing": "#editing-resources",
+        "Exporting": "#exporting-resources",
+        "Other Actions": "#other-actions"
+      }
+    },
+    "Annotating": {
+      "link": "annotating",
+      "nav": {
+		"Understanding": "#understanding-annotations",
+        "Creating": "#creating-annotations",
+		"Editing/Deleting": "#editing-deleting-annotations"
+      }
+    },
+	"Reorting Issues": {
+      "link": "reporting-issues"
+    }
+  },
+  "Developer": {
+    "Installing ARCS": {
+      "link": "developer-installing",
+      "nav": {
+        "Dependencies": "#dependencies",
+        "Getting the Dependencies": "#getting-the-dependencies",
+        "Setting things up": "#setting-things-up",
+        "SOLR": "#setting-up-solr"
+      }
+    },
+    "API Reference": {
+      "link": "developer-api",
+      "nav": {
+        "Schema": "#schema",
+        "Resources": "#resources",
+        "Metadata": "#metadata",
+        "Comments": "#comments",
+        "Keywords": "#keywords"
+      }
+    },
+    "Reporting Bugs": {
+      "link": "developer-bugs"
+    }
+  }
+}

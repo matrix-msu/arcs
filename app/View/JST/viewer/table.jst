@@ -1,0 +1,61 @@
+<tr>
+  <td>Title</td>
+  <td>
+    <a class="subtle" 
+      href='<%= arcs.url("search", "title:" + arcs.inflector.enquote(title, false)) %>'>
+      <%- title || '' %>
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>Access</td>
+  <td>
+    <a class="subtle" href="<%= arcs.url('search', 'access:' + (public ? 'public' : 'private')) %>">
+      <%= public ? "public" : "private" %>
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td>
+    <a class="subtle" 
+      href='<%= arcs.url("search", "type:" + arcs.inflector.enquote(type, false)) %>'>
+      <%- type || '' %>
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>Created</td>
+  <td><%= created %></td>
+</tr>
+<% if (modified) { %>
+<tr>
+  <td>Modified</td>
+  <td><%= modified %></td>
+</tr>
+<% } %>
+<tr>
+  <td>File-name</td>
+  <td><a href="<%= url %>"><%= file_name %></a></td>
+</tr>
+<tr>
+  <td>File-type</td>
+  <td><%= mime_type %></td>
+</tr>
+<% _.each(metadata.attributes, function(v, k) { %>
+  <% if (v) { %>
+  <tr>
+    <td><%- k.charAt(0).toUpperCase() + k.substr(1) %></td>
+    <td>
+    <% if (k.match(/date/i)) { %>
+      <%- v %>
+    <% } else { %>
+      <a class="subtle"
+        href='<%= arcs.url("search", k + ":" + arcs.inflector.enquote(v, false)) %>'>
+        <%- v %>
+      </a>
+    <% } %>
+    </td>
+  </tr>
+  <% } %>
+<% }) %>
