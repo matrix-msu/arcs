@@ -346,7 +346,7 @@ class arcs.views.search.Actions extends arcs.views.BaseActions
 
   # Return context menu options based on the current user's state.
   _getContextOptions: ->
-    public =
+    public1 =
       'Open'     : 'openSelected'
       'Preview'  : 'previewSelected'
       'Download' : 'downloadSelected'
@@ -358,6 +358,6 @@ class arcs.views.search.Actions extends arcs.views.BaseActions
     admin =
       'Delete...' : 'deleteSelected'
 
-    return _.extend(public, restricted, admin) if arcs.user.isAdmin()
-    return _.extend(public, restricted) if arcs.user.isLoggedIn()
-    public
+    return _.extend(public1, restricted, admin) if arcs.user.isAdmin()
+    return _.extend(public1, restricted) if arcs.user.isLoggedIn()
+    public1

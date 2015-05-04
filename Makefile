@@ -34,7 +34,7 @@ HEADER="/**\n\
   * Generated on $(BUILT_ON) with $(BUILT_WITH)\n\
   *\n\
   * Copyright 2012-2013, Michigan State University Board of Trustees\n\
-  */\n"
+  */"
 
 .PHONY: docs
 
@@ -47,7 +47,7 @@ coffee:
 # Concatenate and minify javascript.
 js: coffee
 	echo $(HEADER) > $(ASSETS)/arcs.js
-	$(foreach script, $(SCRIPTS), uglifyjs -nc $(JS)/$(script) >> $(ASSETS)/arcs.js;)
+	$(foreach script, $(SCRIPTS), uglifyjs $(JS)/$(script) >> $(ASSETS)/arcs.js;)
 	cat $(ASSETS)/templates.js >> $(ASSETS)/arcs.js
 
 # Compile less in (and included in) css/app.less to css/app.css

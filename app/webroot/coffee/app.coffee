@@ -24,7 +24,7 @@ arcs.debug = arcs.mode > 0
 arcs.version = "0.9.6"
 
 # Base url that holds any prefix needed to link to pages relatively.
-arcs.baseURL = '/'
+arcs.baseURL = '/~bogdan.pozderca/arcs/'
 
 # Build a url relative to the base url.
 arcs.url = (components...) ->
