@@ -7,8 +7,7 @@ Nginx and PHP5-FPM.</p>
 <a href="http://imagemagick.org">ImageMagick</a>
 and the <a href="http://php.net/manual/en/book.imagick.php">Imagick</a> PECL extension<br />
 <a href="http://www.ghostscript.com">Ghostscript</a> <br />
-<a href="http://mysql.com">MySQL</a><br />
-</p>
+<a href="http://mysql.com">MySQL</a>  </p>
 <h3 id="getting-the-dependencies">Getting the dependencies</h3>
 <p>We can get nearly everything we need using Debian's aptitude package
 manager.</p>
@@ -53,8 +52,7 @@ files that will be uploaded. <code>post_max_size</code> should be slightly large
 <p>Change ownership of <code>app/tmp/</code>.</p>
 <pre><code>$ sudo chown -R www-data app/tmp
 </code></pre>
-<p>Create an uploads directory. <br />
-</p>
+<p>Create an uploads directory.   </p>
 <pre><code>$ mkdir app/webroot/uploads
 $ chown www-data uploads
 </code></pre>

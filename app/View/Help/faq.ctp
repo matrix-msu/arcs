@@ -4,8 +4,7 @@
 a research collection. A resource can be any media format that a researcher is
 working with. Resources can have several types like Photographs, Notebook
 Pages, Inventory cards, Maps, Reports, etc. You can learn more about
-<a href="about-resources">Resources</a>. <br />
-</p>
+<a href="about-resources">Resources</a>.   </p>
 <h4 id="what-is-the-difference-between-a-resource-and-a-collection">What is the difference between a resource and a collection?</h4>
 <p>A resource is a single digital data file whereas a collection is a group of
 resources like photographs and documents that are somehow related and call for

@@ -61,7 +61,7 @@ css: less
 
 # Convert user documentation from Markdown and put it in the View directory.
 docs: 
-	$(foreach doc, $(DOCS), markdown_py -x tables -x headerid $(doc) > \
+	$(foreach doc, $(DOCS), python -m markdown -x tables -x headerid $(doc) > \
 		app/View/Help/$(notdir $(basename $(doc))).ctp;)
 
 # Make everything.
