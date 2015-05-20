@@ -47,26 +47,26 @@ class arcs.views.admin.Jobs extends Backbone.View
           error: null
         arcs.loader.show()
         job.save {}
-          success: ->
+        success: ->
             arcs.loader.hide()
 
   deleteJob: (e) ->
     job = @collection.get $(e.currentTarget).data('id')
     arcs.confirm "Are you sure you want to delete this job?", 
       "Job <b>#{job.id}</b> will be deleted.", =>
-        arcs.loader.show()
-        job.destroy
-          success: ->
-            arcs.loader.hide()
+    arcs.loader.show()
+    job.destroy
+    success: ->
+    arcs.loader.hide()
 
   releaseJob: (e) ->
     job = @collection.get $(e.currentTarget).data('id')
     arcs.confirm "Are you sure you want to release this job?", 
       "Job <b>#{job.id}</b> will be released.", =>
-        arcs.loader.show()
-        job.save {locked_by: null, locked_at: null}
-          success: ->
-            arcs.loader.hide()
+    arcs.loader.show()
+    job.save {locked_by: null, locked_at: null}
+    success: ->
+    arcs.loader.hide()
 
   filterJobs: ->
     val = @$('#filter-input').val()

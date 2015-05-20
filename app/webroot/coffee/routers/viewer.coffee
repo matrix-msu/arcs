@@ -9,8 +9,8 @@ class arcs.routers.Viewer extends Backbone.Router
 
   noIndex: (id) ->
     arcs.bus.trigger 'indexChange', 0
-      noNavigate: true
-      replace: true
+    noNavigate: true
+    replace: true
 
   indexChange: (id, index) ->
     index -= 1 if _.isNumeric(index)

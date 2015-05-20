@@ -6640,13 +6640,15 @@ h4 {
   color: #888;
   font-weight: 200;
   font-size: 15px;
-  padding: 30px;
-  padding-bottom: 13px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 75px;
+  padding-bottom: 75px;
   margin-top: -110px;
   border-top: 15px solid #444;
 }
 .footer img {
-  height: 35px;
+  height: 50px;
   margin-left: 15px;
   margin-right: 15px;
 }
@@ -7035,35 +7037,58 @@ h4 {
 }
 div#toolbar {
   background: #ccc;
-  border: 1px solid #888;
   margin-bottom: 10px;
   margin-left: -10px;
+  padding-left: 10px;
   margin-right: -10px;
-  height: 40px;
-  padding: 3px;
-  padding-bottom: 1px;
+  height: 60px;
+  box-shadow: 1px 2px 1px #aaa;
 }
 div#toolbar a#logo-wrapper:hover {
   text-decoration: none;
 }
 div#toolbar h1#logo {
   display: inline;
-  font-size: 16.8;
-  font-weight: 200;
-  padding-left: 45px;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 125%;
+  padding-left: 60px;
   padding-bottom: 5px;
   color: #444;
   background: no-repeat top left url('img/arcs-icon.png');
   background-position: 10px 0px;
-  margin-top: 2px;
+  margin-top: 15px;
   margin-right: 10px;
   float: left;
 }
+div#toolbar .btn {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+div#toolbar .btn-dark {
+  background: #ccc;
+  border: none;
+  border-radius: 0;
+  height: 60px;
+  color: #808080;
+  padding-right: 30px;
+  padding-left: 30px;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 48px;
+}
 div#toolbar .toolbar-btn {
+  right: -5px;
+  height: 60px;
   float: right;
   position: relative;
-  top: 5px;
-  margin-right: 10px;
+  border: none;
+  border-radius: 0;
+  background: #808080;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 48px;
 }
 .hotkeys-modal {
   font-family: 'Pontano Sans', sans-serif;
@@ -7110,7 +7135,7 @@ div#toolbar .toolbar-btn {
 }
 .search-wrapper {
   margin-top: 30px;
-  width: 750px;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -8016,6 +8041,7 @@ ul.annotations li.annotation:hover {
   color: #000;
 }
 .accordion-wrapper {
+  width: 90%;
   margin: 50px auto;
 }
 .accordion-wrapper details {
@@ -8026,45 +8052,34 @@ ul.annotations li.annotation:hover {
   visibility: hidden;
   display: none;
 }
-.accordion-wrapper details:hover {
-  color: #333;
-  text-decoration: none;
-  background-position: 0 -15px;
-}
 .accordion-wrapper details:focus {
-  outline: 1px dotted #666;
+  outline: none;
 }
 .accordion-wrapper details summary {
   visibility: visible;
   display: inline;
-  padding: 5px 14px 6px;
+  padding: 10px 0 15px 20px;
   font-size: 12;
   line-height: normal;
   color: #333;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-  background-image: -webkit-linear-gradient(#eeeeee, #eeeeee 25%, #d5d5d5);
-  background-image: -o-linear-gradient(#eeeeee, #eeeeee 25%, #d5d5d5);
-  background-image: linear-gradient(#eeeeee, #eeeeee 25%, #d5d5d5);
-  background-repeat: no-repeat;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffeeeeee', endColorstr='#ffd5d5d5', GradientType=0);
-  border: 1px solid #bbb;
-  border-bottom-color: #999;
-  border-radius: 3px;
+  background: #ddd;
+  box-shadow: 2px 2px 1px #aaa;
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
   transition: 0.1s linear all;
 }
-.accordion-wrapper details summary:hover {
-  text-decoration: none;
-  background-position: 0 -15px;
+.accordion-wrapper details summary .summaryTitle {
+  padding-left: 15px;
 }
 .accordion-wrapper details summary:focus {
-  outline: 1px dotted #666;
+  outline: none;
 }
 .accordion-wrapper details summary.large {
-  padding: 9px 14px 9px;
-  font-size: 14px;
+  padding: 15px 25px;
+  font-size: 16px;
+  text-transform: uppercase;
   line-height: normal;
   display: block;
 }
@@ -8097,10 +8112,10 @@ ul.annotations li.annotation:hover {
   box-shadow: none;
 }
 .accordion-wrapper details.large {
-  padding: 9px 14px 9px;
-  font-size: 14px;
+  padding: 10px 14px 6px;
+  font-size: 16px;
+  text-transform: uppercase;
   line-height: normal;
-  border-radius: 6px;
 }
 .accordion-wrapper details.small {
   padding: 7px 9px 7px;
@@ -8111,11 +8126,9 @@ ul.annotations li.annotation:hover {
   width: 100%;
   padding: 0;
   margin-bottom: 20px;
-  background-color: #ddd;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  background: #ddd;
+  -webkit-box-shadow: 2px 2px 1px #aaaaaa;
+  box-shadow: 2px 2px 1px #aaaaaa;
 }
 .accordion-wrapper details[open] blockquote {
   border-color: #ddd;
@@ -8127,6 +8140,8 @@ ul.annotations li.annotation:hover {
 }
 .accordion-wrapper details[open] ul.resource-thumbs {
   display: block;
+  padding-left: 20px;
+  padding-bottom: 10px;
 }
 .accordion-wrapper details[open] ul.resource-thumbs li.resource-thumb {
   display: inline-block;
@@ -8135,7 +8150,7 @@ ul.annotations li.annotation:hover {
   height: 100px;
 }
 .accordion-wrapper details[open] summary {
-  padding: 5px 14px 10px;
+  padding: 15px 0 15px 25px;
   margin: 5px 0 10px;
   font-size: 12;
   line-height: normal;
@@ -8146,17 +8161,16 @@ ul.annotations li.annotation:hover {
   border-radius: 0;
   border-bottom: 1px solid #bbb;
   cursor: pointer;
+  box-shadow: none;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
   transition: 0.1s linear all;
 }
-.accordion-wrapper details[open] summary:hover {
-  color: #333;
-  text-decoration: none;
-  background-position: 0 -15px;
+.accordion-wrapper details[open] summary .summaryTitle {
+  padding-left: 15px;
 }
 .accordion-wrapper details[open] summary:focus {
-  outline: 1px dotted #666;
+  outline: none;
 }
 .large .search {
   background: no-repeat top left url('img/search-big.png');

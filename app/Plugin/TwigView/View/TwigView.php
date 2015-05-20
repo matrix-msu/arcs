@@ -82,9 +82,11 @@ class TwigView extends View {
 		$this->templatePaths = App::path('View');
 		$loader = new Twig_Loader_Filesystem($this->templatePaths[0]);
 		$this->Twig = new Twig_Environment($loader, array(
-			'cache' => TWIG_VIEW_CACHE,
+			//'cache' => TWIG_VIEW_CACHE,
+			'cache' => false,
 			'charset' => strtolower(Configure::read('App.encoding')),
-			'auto_reload' => Configure::read('debug') > 0,
+			//'auto_reload' => Configure::read('debug') > 0,
+			'auto_reload' => true,
 			'autoescape' => false,
 			'debug' => Configure::read('debug') > 0
 		));;

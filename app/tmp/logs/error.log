@@ -823,3 +823,146 @@ Trace:
 #6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
 #7 [internal function]: ErrorHandler::handleException(Object(MissingActionException))
 #8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 14:21:30 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 14:21:30 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:22:07 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:22:07 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:31:54 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:31:54 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:31:57 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:31:57 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:31:59 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:31:59 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:34:02 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:34:02 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:34:48 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:34:48 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:35:29 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:35:29 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:37:14 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:37:14 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-19 15:49:58 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-19 15:49:58 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]
+2015-05-20 09:14:03 Error: [MissingControllerException] Controller class CssController could not be found.
+#0 /matrix/home/tommy.truong/public_html/arcs/app/webroot/index.php(96): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2015-05-20 09:14:03 Error: Fatal Error (256): [MissingViewException] View file "/matrix/home/tommy.truong/public_html/arcs/app/View/Errors/css/error400.tpl" is missing.
+#0 /matrix/dev/public_html/arcs/lib/Cake/View/View.php(441): View->_getViewFileName('error400')
+#1 /matrix/dev/public_html/arcs/lib/Cake/Controller/Controller.php(933): View->render('error400', NULL)
+#2 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(272): Controller->render('error400')
+#3 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(215): ExceptionRenderer->_outputMessage('error400')
+#4 [internal function]: ExceptionRenderer->error400(Object(MissingControllerException))
+#5 /matrix/dev/public_html/arcs/lib/Cake/Error/ExceptionRenderer.php(165): call_user_func_array(Array, Array)
+#6 /matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php(127): ExceptionRenderer->render()
+#7 [internal function]: ErrorHandler::handleException(Object(MissingControllerException))
+#8 {main} in [/matrix/dev/public_html/arcs/lib/Cake/Error/ErrorHandler.php, line 136]

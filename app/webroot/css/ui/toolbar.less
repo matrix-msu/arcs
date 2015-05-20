@@ -1,15 +1,17 @@
 // toolbar.less
 // ------------
 
+@toolbarFontSize: 12px;
+@toolbarLineHeight: @toolbarFontSize * 4;
+
 div#toolbar {
   background: #ccc;
-  border: 1px solid #888;
   margin-bottom: 10px;
   margin-left: -10px;
+  padding-left: 10px;
   margin-right: -10px;
-  height: 40px;
-  padding: 3px;
-  padding-bottom: 1px;
+  height: 60px;
+  box-shadow: 1px 2px 1px #aaa;
 
   a#logo-wrapper {
     &:hover { text-decoration: none; }
@@ -17,23 +19,48 @@ div#toolbar {
 
   h1#logo {
     display: inline;
-    font-size: 12 * 1.4;
-    font-weight: 200;
-    padding-left: 45px;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 125%;
+    padding-left: 60px;
     padding-bottom: 5px;
     color: #444;
     background: no-repeat top left url('img/arcs-icon.png');
     background-position: 10px 0px;
-    margin-top: 2px;
+    margin-top: 15px;
     margin-right: 10px;
     float: left;
   }
-
-  .toolbar-btn {
-    float: right;
-    position: relative;
-    top: 5px;
-    margin-right: 10px;
+    
+  .btn {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+    
+  .btn-dark {
+    background: #ccc;
+    border: none;
+    border-radius: 0;
+    height: 60px;
+    color: #808080;
+    padding-right: 30px;
+    padding-left: 30px;
+    text-transform: uppercase;
+    font-size: @toolbarFontSize;
+    line-height: @toolbarLineHeight;
   }
 
+  .toolbar-btn {
+    right: -5px;
+    height: 60px;
+    float: right;
+    position: relative;
+    border: none;
+    border-radius: 0;
+    background: #808080;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: @toolbarFontSize;
+    line-height: @toolbarLineHeight;
+  }
 }
