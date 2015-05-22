@@ -1,53 +1,56 @@
 <div id="toolbar" class="row">
-	<?php if (!isset($logo) || $logo): ?>
+    <?php if (!isset($logo) || $logo): ?>
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
             <h1 id="logo">
                 <?php echo isset($logo) && is_string($logo) ? $logo : "ARCS" ?>
             </h1>
         </a>
-	<?php endif ?>
+    <?php endif ?>
     <?php if ($user['loggedIn']): ?>
-    <div class="btn-group toolbar-btn">
-        <a class="btn" href="<?php echo $this->Html->url('/user/' . $user['username']) ?>">
-            <img src="http://gravatar.com/avatar/<?php echo $user['gravatar'] ?>?s=15"/>
+    <div id="menu" class="btn-group toolbar-btn">
+        <button id="menuButton" class="btn btn-dark">
             <?php echo $user['name'] ?> 
-        </a>
-        <button class="btn dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
+            <span class="pointerDown"></span>
         </button>
-        <ul class="dropdown-menu">
-            <li><?php echo $this->Html->link('Account', 
-                '/user/' . $user['username']) ?></li>
-            <li><?php echo $this->Html->link('Logout', 
-                '/logout') ?></li>
-        </ul>
+        <div id="droppedMenu" class="dropped-menu">
+            <?php echo $this->Html->link('Profile', 
+                '/user/' . $user['username']) ?>
+            <?php if ($user['role'] === 0): ?>
+            <?php echo $this->Html->link('Admin', 
+                '/admin') ?>
+            <?php endif ?>
+            <?php echo $this->Html->link('Sign Out', 
+                '/logout') ?>
+        </div>
     </div>
     <?php else: ?>
-    <a class="btn toolbar-btn" 
+    <a class="btn btn-dark toolbar-btn" 
         href="<?php echo $this->Html->url('/login') ?>">Login / Register</a>
     <?php endif ?>
     <div class="btn-group toolbar-btn">
-        <?php if ($user['role'] === 0): ?>
-        <a class="btn btn-dark"
-            href="<?php echo $this->Html->url('/admin')?>">
-            <i class="icon-white icon-lock"></i> Admin
-        </a>
-        <?php endif ?>
         <?php if ($user['loggedIn']): ?>
-        <a class="btn btn-dark"
+        <a id="upload" class="btn btn-grey"
             href="<?php echo $this->Html->url('/upload')?>">
             <i class="icon-white icon-upload"></i> Upload
         </a>
         <?php endif ?>
-        <a class="btn btn-dark"
+        <a id="about" class="btn btn-grey"
+            href="<?php echo $this->Html->url('/about')?>">
+            <i class="icon-white icon-folder-open"></i> About
+        </a>
+         <a id="resources" class="btn btn-grey"
+            href="<?php echo $this->Html->url('/resources')?>">
+            <i class="icon-white icon-folder-open"></i> Resources
+        </a>
+        <a id="collections" class="btn btn-grey"
             href="<?php echo $this->Html->url('/collections')?>">
             <i class="icon-white icon-folder-open"></i> Collections
         </a>
-        <a class="btn btn-dark"
+        <a id="search" class="btn btn-grey"
             href="<?php echo $this->Html->url('/search')?>">
             <i class="icon-white icon-search"></i> Search
         </a>
-        <a class="btn btn-dark"
+        <a id="help" class="btn btn-grey"
             href="<?php echo $this->Html->url('/help/')?>">
             <i class="icon-white icon-book"></i> Help
         </a>

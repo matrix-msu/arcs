@@ -17,10 +17,7 @@
 {% endif %}
 
 <div class="collection-list-wrapper">
-    <h2>
-      {{ html.image('arcs-icon-big.png', {'class': 'profile-image thumbnail'}) }}
-      All Collections
-    </h2>
+    <h1>Collections</h1>
   <div class="collection-list" id="all-collections"></div>
   <script>
     arcs.user_viewer = new arcs.views.CollectionList({
