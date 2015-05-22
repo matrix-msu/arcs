@@ -23,6 +23,11 @@
 
     # Home page
     Router::connect('/', 
+        array('controller' => 'projects', 'action' => 'display', 'index')
+    );
+	
+	# Resource page
+    Router::connect('/resources', 
         array('controller' => 'pages', 'action' => 'display', 'home')
     );
 
