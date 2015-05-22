@@ -8513,7 +8513,7 @@ input[type="text"]:focus {
 /* /////////////////////////////////////INTRO
 //////////////////////////////////////////////*/
 .intro {
-  margin: 53px 0 0 0;
+  margin: -40px 0 0 0;
   padding: 5%;
 }
 .intro h1 {
@@ -8535,7 +8535,7 @@ input[type="text"]:focus {
 /* /////////////////////////////////////MAP
 //////////////////////////////////////////////*/
 #map {
-  position: relative;
+  display: block;
   bottom: 0;
   height: 500px;
   width: 100%;

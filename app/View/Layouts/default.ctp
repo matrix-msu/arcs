@@ -11,6 +11,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link href='http://fonts.googleapis.com/css?family=Pontano+Sans' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
         <?php 
         echo $this->Assets->stylesheets();
@@ -21,9 +23,8 @@
     <body class="<?php echo $body_class ?>">
         <div class="wrap">
             <div class="page fluid-container">
-            <?php 
-                if (@$toolbar) 
-                    echo $this->element('toolbar', $toolbar);
+            <?php
+                echo $this->element('toolbar', $toolbar);
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
                 echo $this->fetch('content'); 
@@ -33,7 +34,7 @@
                 <div class="push"></div>
             <?php endif ?>
         </div>
-        <?php if ($footer) echo $this->element('footer') ?>
+        <?php echo $this->element('footer') ?>
         <?php if ($user['role'] == 0 && Configure::read('debug') == 2) echo $this->element('sql') ?> 
         <!-- user voice -->
         <script type="text/javascript">
