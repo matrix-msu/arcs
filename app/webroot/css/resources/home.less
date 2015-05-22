@@ -1,0 +1,171 @@
+// home.less
+// ---------
+
+@baseFontSize: 12; 
+
+.accordion-wrapper {
+  width: 90%;
+  margin: 50px auto;
+
+  details {
+    min-height: 20px;
+    margin: 15px 0 0; 
+    
+    div {
+      visibility: hidden;
+      display: none;
+    }
+
+//  not needed right now
+//    &:hover {
+//      color: #333;
+//      text-decoration: none;
+//      background-position: 0 -15px;
+//    }
+
+    // Focus state for keyboard and accessibility
+    &:focus {
+      outline: none;
+    }
+    
+    summary {
+      visibility: visible;
+      display: inline;
+      padding: 10px 0 15px 20px;
+      font-size: @baseFontSize;
+      line-height: normal;
+      color: #333;
+      text-shadow: 0 1px 1px rgba(255,255,255,.75);
+      background: #ddd;
+      box-shadow: 2px 2px 1px #aaa;
+      cursor: pointer;
+
+      .summaryTitle {
+        padding-left: 15px;
+      }
+    
+//  not needed right now
+//      &:hover {
+//        text-decoration: none;
+//        background-position: 0 -15px;
+//      }
+    
+      // Focus state for keyboard and accessibility
+      &:focus {
+        outline: none;
+      }
+      
+      // Transitions
+      .transition(.1s linear all);
+      
+      // Button Sizes 
+      &.large {
+        padding: 15px 25px;
+        font-size: @baseFontSize + 4px;
+        text-transform: uppercase;
+        line-height: normal;
+        display: block;
+      }
+
+      &.small {
+        padding: 7px 9px 7px;
+        font-size: @baseFontSize - 2px;
+      }
+    }
+
+    &.disabled {
+      cursor: default;
+      background-image: none;
+      .opacity(65);
+      .box-shadow(none);
+    }
+
+    &[disabled] {
+      // disabled pseudo cant be included with .disabled
+      // def because IE8 and below will drop it
+      cursor: default;
+      background-image: none;
+      .opacity(65);
+      .box-shadow(none);
+    }
+
+    // Sizes 
+    &.large {
+      padding: 10px 14px 6px;
+      font-size: @baseFontSize + 4px;
+      text-transform: uppercase;
+      line-height: normal;
+    }
+    &.small {
+      padding: 7px 9px 7px;
+      font-size: @baseFontSize - 2px;
+    }
+
+    &[open] {
+      min-height: 20px;
+      width: 100%;
+      padding: 0;
+      margin-bottom: 20px;
+      background: #ddd;
+      .box-shadow(2px 2px 1px #aaa);
+      
+      blockquote {
+        border-color: #ddd;
+        border-color: rgba(0,0,0,.15);
+      }
+
+      div {
+        visibility: visible;
+        display: block;
+      }
+        
+      ul.resource-thumbs {
+        display: block;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        li.resource-thumb { 
+          display: inline-block; 
+          a img {
+            height: 100px;
+          }
+        }
+      }
+            
+      summary {
+        padding: 15px 0 15px 25px;
+        margin: 5px 0 10px;
+        font-size: @baseFontSize;
+        line-height: normal;
+        color: #333;
+        text-shadow: 0 1px 1px rgba(255,255,255,.75);
+        background: none;
+        border: none;
+        border-radius:0;
+        border-bottom: 1px solid #bbb;
+        cursor: pointer;
+        box-shadow: none;
+
+        .summaryTitle {
+          padding-left: 15px;
+        }
+                
+//  not needed right now
+//        &:hover {
+//          color: #333;
+//          text-decoration: none;
+//          background-position: 0 -15px;
+//        }
+                
+        // Focus state for keyboard and accessibility
+        &:focus {
+          outline: none;
+        }
+        .transition(.1s linear all);
+      }
+    }
+  }
+}
+
+.large .search {
+  background: no-repeat top left url('img/search-big.png');
+}
