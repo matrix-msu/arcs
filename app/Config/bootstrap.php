@@ -32,6 +32,9 @@ Configure::config('default', new IniReader(APP . 'Config' . DS));
 Configure::load('arcs');
 Configure::load('assets');
 
+# Basic Kora Information
+define ("KORA_RESTFUL_URL", "http://dev2.matrix.msu.edu/kora/api/restful.php");
+
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
