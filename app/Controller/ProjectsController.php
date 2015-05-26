@@ -15,9 +15,26 @@ class ProjectsController extends AppController {
         $this->Auth->allow('display', 'search');
 		$this->set(array(
 		'toolbar' => false,
-        'footer' => false  
+        'footer' => false 
 		));
     }
+	
+	public function getProjects() {
+		$user = "";
+		$pass = "";
+
+		$display = "json";
+		$query = "";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=22&sid=38&token=a60c6df37bd50ebc998c76ac&display=".urlencode($display);//."query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
+		///capture results and display
+		$server_output = curl_exec($ch);
+		$this->set('projects', $server_output);
+	}
 	
 	/**
      * Displays a view
@@ -27,6 +44,8 @@ class ProjectsController extends AppController {
      */
 	public function display() {
 		$path = func_get_args();
+		
+		$this->getProjects();
 
 		$count = count($path);
 		if (!$count) {
@@ -49,5 +68,7 @@ class ProjectsController extends AppController {
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
 	}
+	
+	
 
 }
