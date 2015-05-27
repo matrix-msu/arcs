@@ -30,12 +30,6 @@
     <?php endif ?>
 
     <div class="btn-group toolbar-btn">
-        <?php if ($user['loggedIn']): ?>
-        <a id="upload" class="btn btn-grey"
-            href="<?php echo $this->Html->url('/upload')?>">
-            <i class="icon-white icon-upload"></i> Upload
-        </a>
-        <?php endif ?>
         <a id="about" class="btn btn-grey"
             href="<?php echo $this->Html->url('/about')?>">
             <i class="icon-white icon-folder-open"></i> About
