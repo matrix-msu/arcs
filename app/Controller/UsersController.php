@@ -12,7 +12,7 @@ class UsersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('signup', 'login', 'register', 'reset_password');
+        $this->Auth->allow('signup', 'login', 'register', 'register_no_invite', 'reset_password', 'display');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
@@ -212,6 +212,32 @@ class UsersController extends AppController {
     }
 
     /**
+     * Register a user FROM NO INVITE
+     */
+    public function register_no_invite() {
+        if ($this->request->is('post')) {
+			//$this->User->permit('activation', 'role');
+			$this->User->add(array(
+				'email' => $this->request->data['User']['email'],
+				'role' => 2,
+				'activation' => null,
+				'password' => $this->request->data['User']['password'],
+                'username' => $this->request->data['User']['username'],
+                'name' => $this->request->data['User']['name']
+			));
+            $this->User->save();
+            $user = array_merge($user, $this->request->data['User']);
+            $this->Auth->login($user);
+            $this->redirect('/');
+        } else {
+            $this->set(array(
+                'email' => $user['email'],
+                'gravatar' => $user['gravatar']
+            ));
+        }
+    }
+	
+	/**
      * Register a user with an invite.
      *
      * @param string $token    a valid activation token
@@ -307,5 +333,36 @@ class UsersController extends AppController {
 		
 		
 		
+	}
+	
+	/**
+     * Displays a view
+     *
+     * @param mixed What page to display
+     * @return void
+     */
+	public function display() {
+		$path = func_get_args();
+		
+		$count = count($path);
+		if (!$count) {
+			$this->redirect('/');
+		}
+		$page = $subpage = $title_for_layout = null;
+
+		if (!empty($path[0])) {
+			$page = $path[0];
+		}
+		if (!empty($path[1])) {
+			$subpage = $path[1];
+		}
+		if (!empty($path[$count - 1])) {
+			$title_for_layout = Inflector::humanize($path[$count - 1]);
+		}
+        if ($title_for_layout == 'About') {
+            $this->set('toolbar', false);
+        }
+		$this->set(compact('page', 'subpage', 'title_for_layout'));
+		$this->render(implode('/', $path));
 	}
 }
