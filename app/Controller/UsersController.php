@@ -216,7 +216,7 @@ class UsersController extends AppController {
      */
     public function register_no_invite() {
         if ($this->request->is('post')) {
-			//$this->User->permit('activation', 'role');
+			$this->User->permit('role');
 			$this->User->add(array(
 				'email' => $this->request->data['User']['email'],
 				'role' => 2,
