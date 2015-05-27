@@ -69,9 +69,9 @@
 
                 <h1>Login</h1>
 
-                <?php echo $this->Form->create('User'); ?>
+                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'login')); ?>
 
-                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Username')); ?>
+                <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username')); ?>
 
                 <?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'Password')); ?>
                 
@@ -107,19 +107,19 @@
 
                 <h1>Register</h1>
 
-                <?php echo $this->Form->create('User'); ?>
+                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register_no_invite')); ?>
 
                 <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
 
-                <?php echo $this->Form->input('user_name', array('label' => false, 'placeholder' => 'Username *')); ?>
+                <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username *')); ?>
 
                 <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Email *')); ?>
 
-                <?php echo $this->Form->input('pass', array('label' => false, 'placeholder' => 'Password *')); ?>
+                <?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'Password *')); ?>
 
                 <span class="requiredfield">* Required Field</span>
 
-                <?php echo $this->Form->end() ?>
+                
             </div>
         </div>
 
@@ -128,7 +128,8 @@
                 <h1>&nbsp;</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
 
-                <span class='btn'>Register</span>
+				<?php echo $this->Form->submit('Register', array('class' => 'btn btn-success')); ?>
+				<?php echo $this->Form->end() ?>
             </div>
         </div>
     </div>
