@@ -7886,7 +7886,6 @@ ul.annotations li.annotation:hover {
 }
 #loginModal {
   background: rgba(0, 0, 0, 0.25);
-  z-index: 1;
 }
 #loginModal .login-content {
   width: 60em;
@@ -7929,18 +7928,18 @@ ul.annotations li.annotation:hover {
   border-color: #0093be;
   font-size: 100%;
 }
-#loginModal .login-content .loginSect ::-webkit-input-placeholder {
+#loginModal .login-content .loginSect input::-webkit-input-placeholder {
   color: #0093be;
 }
-#loginModal .login-content .loginSect :-moz-placeholder {
+#loginModal .login-content .loginSect input:-moz-placeholder {
   /* Firefox 18- */
   color: #0093be;
 }
-#loginModal .login-content .loginSect ::-moz-placeholder {
+#loginModal .login-content .loginSect input::-moz-placeholder {
   /* Firefox 19+ */
   color: #0093be;
 }
-#loginModal .login-content .loginSect :-ms-input-placeholder {
+#loginModal .login-content .loginSect input:-ms-input-placeholder {
   color: #0093be;
 }
 #loginModal .login-content .loginSect p {
@@ -7972,8 +7971,7 @@ ul.annotations li.annotation:hover {
   color: #fff;
 }
 #loginModal .login-content .registerSect p {
-  margin: 2.5%;
-  padding: 0;
+  margin-top: 2.5%;
   line-height: 200%;
 }
 #loginModal .login-content .registerSect .btn {
@@ -7992,7 +7990,6 @@ ul.annotations li.annotation:hover {
 }
 #registerModal {
   background: rgba(0, 0, 0, 0.25);
-  z-index: 2;
 }
 #registerModal .register-content {
   width: 60em;
@@ -8000,7 +7997,7 @@ ul.annotations li.annotation:hover {
   padding: 0;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
 }
-#registerModal .register-content .loginContainer {
+#registerModal .register-content .registerContainer {
   padding: 30px;
 }
 #registerModal .register-content .left {
@@ -8023,22 +8020,29 @@ ul.annotations li.annotation:hover {
   border-color: #fff;
   font-size: 100%;
 }
-#registerModal .register-content .left ::-webkit-input-placeholder {
-  color: #0093be;
+#registerModal .register-content .left input::-webkit-input-placeholder {
+  color: #fff;
 }
-#registerModal .register-content .left :-moz-placeholder {
+#registerModal .register-content .left input:-moz-placeholder {
   /* Firefox 18- */
-  color: #0093be;
+  color: #fff;
 }
-#registerModal .register-content .left ::-moz-placeholder {
+#registerModal .register-content .left input::-moz-placeholder {
   /* Firefox 19+ */
-  color: #0093be;
+  color: #fff;
 }
-#registerModal .register-content .left :-ms-input-placeholder {
-  color: #0093be;
+#registerModal .register-content .left input:-ms-input-placeholder {
+  color: #fff;
 }
 #registerModal .register-content .left p {
-  margin-top: 5%;
+  margin-top: 2.5%;
+  line-height: 200%;
+}
+#registerModal .register-content .left .requiredfield {
+  float: right;
+  padding-top: 5px;
+  font-size: 80%;
+  color: rgba(255, 255, 255, 0.5);
 }
 #registerModal .register-content .left .login-link {
   cursor: pointer;
@@ -8067,7 +8071,6 @@ ul.annotations li.annotation:hover {
 }
 #registerModal .register-content .right p {
   margin: 2.5%;
-  padding: 0;
   line-height: 200%;
 }
 #registerModal .register-content .right .btn {

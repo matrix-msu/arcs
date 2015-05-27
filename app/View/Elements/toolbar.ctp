@@ -62,8 +62,6 @@
 <div id="loginModal" class="login">
     <div class="login-content">
 
-        <a href="#close" title="Close" class="close">X</a>
-
         <div class="loginSect">
             <div class="loginContainer">
 
@@ -87,6 +85,8 @@
 
         <div class="registerSect">
             <div class="loginContainer">
+                <img class="close" src="http://cdn.flaticon.com/png/256/59254.png" alt="Exit">
+
                 <h1>Register</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
 
@@ -99,29 +99,29 @@
 <div id="registerModal" class="register">
     <div class="register-content">
 
-        <a href="#close" title="Close" class="close">X</a>
-
         <div class="left">
-            <div class="loginContainer">
+            <div class="registerContainer">
 
                 <h1>Register</h1>
 
                 <?php echo $this->Form->create('User'); ?>
 
-                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Password')); ?>
+                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
 
-                <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Password')); ?>
+                <?php echo $this->Form->input('user_name', array('label' => false, 'placeholder' => 'Username *')); ?>
 
-                <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Password')); ?>
+                <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Email *')); ?>
 
-                <?php echo $this->Form->input('pass', array('label' => false, 'placeholder' => 'Password')); ?>
+                <?php echo $this->Form->input('pass', array('label' => false, 'placeholder' => 'Password *')); ?>
+
+                <span class="requiredfield">* Required Field</span>
 
                 <?php echo $this->Form->end() ?>
             </div>
         </div>
 
         <div class="right">
-            <div class="loginContainer">
+            <div class="registerContainer">
                 <h1>&nbsp;</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
 

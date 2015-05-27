@@ -47,7 +47,6 @@
 
 #loginModal {
     background: rgba(0, 0, 0, .25);
-    z-index: 1;
     
     .login-content {
         width: 60em;
@@ -93,19 +92,19 @@
                 font-size: 100%;
             }
             
-            ::-webkit-input-placeholder {
+            input::-webkit-input-placeholder {
                color: @ArcsBlue;
             }
 
-            :-moz-placeholder { /* Firefox 18- */
+            input:-moz-placeholder { /* Firefox 18- */
                color: @ArcsBlue;  
             }
 
-            ::-moz-placeholder {  /* Firefox 19+ */
+            input::-moz-placeholder {  /* Firefox 19+ */
                color: @ArcsBlue;  
             }
 
-            :-ms-input-placeholder {  
+            input:-ms-input-placeholder {  
                color: @ArcsBlue;  
             }
 
@@ -142,8 +141,7 @@
             color: #fff;
             
             p {
-                margin: 2.5%;
-                padding: 0;
+                margin-top: 2.5%;
                 line-height: 200%;
             }
             
@@ -169,7 +167,6 @@
 
 #registerModal {
     background: rgba(0, 0, 0, .25);
-    z-index: 2;
     
     .register-content {
         width: 60em;
@@ -177,7 +174,7 @@
         padding: 0;
         box-shadow: 0px 0px 100px rgba(0, 0, 0, .25);
         
-        .loginContainer {
+        .registerContainer {
             padding: 30px;
         }
         
@@ -202,24 +199,32 @@
                 font-size: 100%;
             }
             
-            ::-webkit-input-placeholder {
-               color: @ArcsBlue;
+            input::-webkit-input-placeholder {
+               color: #fff;
             }
 
-            :-moz-placeholder { /* Firefox 18- */
-               color: @ArcsBlue;  
+            input:-moz-placeholder { /* Firefox 18- */
+               color: #fff;  
             }
 
-            ::-moz-placeholder {  /* Firefox 19+ */
-               color: @ArcsBlue;  
+            input::-moz-placeholder {  /* Firefox 19+ */
+               color: #fff;  
             }
 
-            :-ms-input-placeholder {  
-               color: @ArcsBlue;  
+            input:-ms-input-placeholder {  
+               color: #fff;  
             }
 
             p {
-                margin-top: 5%;
+                margin-top: 2.5%;
+                line-height: 200%;
+            }
+
+            .requiredfield {
+                float: right;
+                padding-top: 5px;
+                font-size: 80%;
+                color: rgba(255, 255, 255, .5);
             }
 
             .login-link {
@@ -252,7 +257,6 @@
             
             p {
                 margin: 2.5%;
-                padding: 0;
                 line-height: 200%;
             }
             
