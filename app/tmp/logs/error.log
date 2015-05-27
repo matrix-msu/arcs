@@ -16035,3 +16035,1612 @@ Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
 Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
 [main] - APP/webroot/index.php, line 96
 
+2015-05-27 13:48:26 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:48:26 Warning: Warning (2): array_merge() [<a href='http://php.net/function.array-merge'>function.array-merge</a>]: Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 111
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:48:34 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:52:34 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:52:37 Warning: Warning (2): array_merge() [<a href='http://php.net/function.array-merge'>function.array-merge</a>]: Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 111
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:52:40 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:53:37 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:54:53 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:55:43 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:56:21 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:56:32 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:56:47 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:57:17 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:58:05 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:58:20 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:58:27 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:58:39 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:59:13 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:59:33 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 13:59:57 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:00:03 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:00:17 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:01:22 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:01:42 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:02:07 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:02:26 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:02:50 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:03:23 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:03:41 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:04:12 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:04:46 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:05:01 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:05:25 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:05:39 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:05:49 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:05:59 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:06:16 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:07:01 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:07:26 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:07:54 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:08:09 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:08:22 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:08:31 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:09:03 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:09:24 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:09:43 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:10:05 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:10:18 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:11:56 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:12:21 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:12:41 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:12:44 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:12:44 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:13:36 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:13:55 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:13:57 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:14:27 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:14:57 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:15:01 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:15:12 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:16:04 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:16:28 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:16:49 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:18:48 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:18:52 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:19:32 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:20:25 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:20:39 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:20:57 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:21:23 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:21:39 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:21:54 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:22:08 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:22:23 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:22:33 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:22:46 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:22:52 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:23:07 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:23:27 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:23:38 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:23:52 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:24:07 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:24:43 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:24:56 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+
+2015-05-27 14:25:56 Warning: Warning (2): array_merge(): Argument #2 is not an array in [/matrix/home/tommy.truong/public_html/arcs/lib/Cake/View/View.php, line 393]
+Trace:
+array_merge - [internal], line ??
+View::element() - CORE/Cake/View/View.php, line 393
+TwigView::element() - APP/Plugin/TwigView/View/TwigView.php, line 160
+include - APP/View/Layouts/default.ctp, line 27
+View::_evaluate() - CORE/Cake/View/View.php, line 869
+View::_render() - CORE/Cake/View/View.php, line 833
+TwigView::_render() - APP/Plugin/TwigView/View/TwigView.php, line 123
+View::renderLayout() - CORE/Cake/View/View.php, line 508
+View::render() - CORE/Cake/View/View.php, line 452
+Controller::render() - CORE/Cake/Controller/Controller.php, line 933
+ProjectsController::display() - APP/Controller/ProjectsController.php, line 69
+ReflectionMethod::invokeArgs() - [internal], line ??
+Controller::invokeAction() - CORE/Cake/Controller/Controller.php, line 484
+Dispatcher::_invoke() - CORE/Cake/Routing/Dispatcher.php, line 104
+Dispatcher::dispatch() - CORE/Cake/Routing/Dispatcher.php, line 86
+[main] - APP/webroot/index.php, line 96
+

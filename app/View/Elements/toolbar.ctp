@@ -62,6 +62,8 @@
 <div id="loginModal" class="login">
     <div class="login-content">
 
+        <a id="#close" href="#"><img class="exit" src="http://cdn.flaticon.com/png/256/59254.png" alt="Exit"></a>
+
         <div class="loginSect">
             <div class="loginContainer">
 
@@ -85,7 +87,6 @@
 
         <div class="registerSect">
             <div class="loginContainer">
-                <img class="close" src="http://cdn.flaticon.com/png/256/59254.png" alt="Exit">
 
                 <h1>Register</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
@@ -98,6 +99,8 @@
 
 <div id="registerModal" class="register">
     <div class="register-content">
+
+        <a id="#close" href="#"><img class="exit" src="http://cdn.flaticon.com/png/256/59254.png" alt="Exit"></a>
 
         <div class="left">
             <div class="registerContainer">
@@ -121,7 +124,7 @@
         </div>
 
         <div class="right">
-            <div class="registerContainer">
+            <div class="registerContainer2">
                 <h1>&nbsp;</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
 

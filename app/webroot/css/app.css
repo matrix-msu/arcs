@@ -8000,6 +8000,9 @@ ul.annotations li.annotation:hover {
 #registerModal .register-content .registerContainer {
   padding: 30px;
 }
+#registerModal .register-content .registerContainer2 {
+  padding: 30px;
+}
 #registerModal .register-content .left {
   position: relative;
   float: left;
@@ -8070,7 +8073,7 @@ ul.annotations li.annotation:hover {
   color: #fff;
 }
 #registerModal .register-content .right p {
-  margin: 2.5%;
+  margin-top: 2.5%;
   line-height: 200%;
 }
 #registerModal .register-content .right .btn {
@@ -8086,6 +8089,15 @@ ul.annotations li.annotation:hover {
   text-transform: uppercase;
   font-size: 120%;
   line-height: 50px;
+}
+.exit {
+  position: absolute;
+  z-index: 2;
+  top: 30px;
+  right: 30px;
+  height: 16px;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
 }
 #user-info {
   padding: 10px;
