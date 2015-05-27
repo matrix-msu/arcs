@@ -42,3 +42,234 @@
     margin-left: 50px;
   }
 }
+
+// login modal styling
+
+#loginModal {
+    background: rgba(0, 0, 0, .25);
+    z-index: 1;
+    
+    .login-content {
+        width: 60em;
+        height: 30em;
+        padding: 0;
+        box-shadow: 0px 0px 100px rgba(0, 0, 0, .25);
+        
+        .loginContainer {
+            padding: 30px;
+        }
+        
+        .loginSect {
+            position: relative;
+            float: left;
+            width: 50%;
+            height: 100%;
+            background: #fff;
+            color: @ArcsBlue;
+            
+            input[type="text"] {
+                margin-top: 5.8%;
+                padding: 1em 2em 1em 2em;
+                width: 360px;
+                height: 60px;
+                background: #fff;
+                color: @ArcsBlue;
+                border: 2px;
+                border-style: solid;
+                border-color: @ArcsBlue;
+                font-size: 100%;
+            }
+            
+            input[type="password"] {
+                margin-top: 5.8%;
+                padding: 1em 2em 1em 2em;
+                width: 360px;
+                height: 60px;
+                background: #fff;
+                color: @ArcsBlue;
+                border: 2px;
+                border-style: solid;
+                border-color: @ArcsBlue;
+                font-size: 100%;
+            }
+            
+            ::-webkit-input-placeholder {
+               color: @ArcsBlue;
+            }
+
+            :-moz-placeholder { /* Firefox 18- */
+               color: @ArcsBlue;  
+            }
+
+            ::-moz-placeholder {  /* Firefox 19+ */
+               color: @ArcsBlue;  
+            }
+
+            :-ms-input-placeholder {  
+               color: @ArcsBlue;  
+            }
+
+            p {
+                margin-top: 5%;
+            }
+
+            .login-link {
+                cursor: pointer;
+            }
+            
+            .btn {
+                position: absolute;
+                bottom: 30px;
+                left: 30px;
+                width: 360px;
+                height: 60px;
+                background: @ArcsBlue;
+                color: #fff;
+                border: none;
+                border-radius: 0;
+                text-transform: uppercase;
+                font-size: 120%;
+                line-height: 50px;
+            }
+        }
+
+        .registerSect {
+            position: relative;
+            float: left;
+            width: 50%;
+            height: 100%;
+            background: @ArcsBlue;
+            color: #fff;
+            
+            p {
+                margin: 2.5%;
+                padding: 0;
+                line-height: 200%;
+            }
+            
+            .btn {
+                position: absolute;
+                bottom: 30px;
+                left: 30px;
+                width: 360px;
+                height: 60px;
+                background: #fff;
+                color: @ArcsBlue;
+                border: none;
+                border-radius: 0;
+                text-transform: uppercase;
+                font-size: 120%;
+                line-height: 50px;
+            }
+        }
+    }
+}
+
+// register modal styling
+
+#registerModal {
+    background: rgba(0, 0, 0, .25);
+    z-index: 2;
+    
+    .register-content {
+        width: 60em;
+        height: 30em;
+        padding: 0;
+        box-shadow: 0px 0px 100px rgba(0, 0, 0, .25);
+        
+        .loginContainer {
+            padding: 30px;
+        }
+        
+        .left {
+            position: relative;
+            float: left;
+            width: 50%;
+            height: 100%;
+            background: @ArcsBlue;
+            color: #fff;
+            
+            input[type="text"] {
+                margin-top: 5.8%;
+                padding: 1em 2em 1em 2em;
+                width: 360px;
+                height: 60px;
+                background: @ArcsBlue;
+                color: #fff;
+                border: 2px;
+                border-style: solid;
+                border-color: #fff;
+                font-size: 100%;
+            }
+            
+            ::-webkit-input-placeholder {
+               color: @ArcsBlue;
+            }
+
+            :-moz-placeholder { /* Firefox 18- */
+               color: @ArcsBlue;  
+            }
+
+            ::-moz-placeholder {  /* Firefox 19+ */
+               color: @ArcsBlue;  
+            }
+
+            :-ms-input-placeholder {  
+               color: @ArcsBlue;  
+            }
+
+            p {
+                margin-top: 5%;
+            }
+
+            .login-link {
+                cursor: pointer;
+            }
+            
+            .btn {
+                position: absolute;
+                bottom: 30px;
+                left: 30px;
+                width: 360px;
+                height: 60px;
+                background: @ArcsBlue;
+                color: #fff;
+                border: none;
+                border-radius: 0;
+                text-transform: uppercase;
+                font-size: 120%;
+                line-height: 50px;
+            }
+        }
+
+        .right {
+            position: relative;
+            float: left;
+            width: 50%;
+            height: 100%;
+            background: @ArcsBlue;
+            color: #fff;
+            
+            p {
+                margin: 2.5%;
+                padding: 0;
+                line-height: 200%;
+            }
+            
+            .btn {
+                position: absolute;
+                bottom: 30px;
+                left: 30px;
+                width: 360px;
+                height: 60px;
+                background: #fff;
+                color: @ArcsBlue;
+                border: none;
+                border-radius: 0;
+                text-transform: uppercase;
+                font-size: 120%;
+                line-height: 50px;
+            }
+        }
+    }
+}

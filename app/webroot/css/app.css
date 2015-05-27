@@ -7884,6 +7884,206 @@ ul.annotations li.annotation:hover {
 #login-footer span {
   margin-left: 50px;
 }
+#loginModal {
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+#loginModal .login-content {
+  width: 60em;
+  height: 30em;
+  padding: 0;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
+}
+#loginModal .login-content .loginContainer {
+  padding: 30px;
+}
+#loginModal .login-content .loginSect {
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 100%;
+  background: #fff;
+  color: #0093be;
+}
+#loginModal .login-content .loginSect input[type="text"] {
+  margin-top: 5.8%;
+  padding: 1em 2em 1em 2em;
+  width: 360px;
+  height: 60px;
+  background: #fff;
+  color: #0093be;
+  border: 2px;
+  border-style: solid;
+  border-color: #0093be;
+  font-size: 100%;
+}
+#loginModal .login-content .loginSect input[type="password"] {
+  margin-top: 5.8%;
+  padding: 1em 2em 1em 2em;
+  width: 360px;
+  height: 60px;
+  background: #fff;
+  color: #0093be;
+  border: 2px;
+  border-style: solid;
+  border-color: #0093be;
+  font-size: 100%;
+}
+#loginModal .login-content .loginSect ::-webkit-input-placeholder {
+  color: #0093be;
+}
+#loginModal .login-content .loginSect :-moz-placeholder {
+  /* Firefox 18- */
+  color: #0093be;
+}
+#loginModal .login-content .loginSect ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #0093be;
+}
+#loginModal .login-content .loginSect :-ms-input-placeholder {
+  color: #0093be;
+}
+#loginModal .login-content .loginSect p {
+  margin-top: 5%;
+}
+#loginModal .login-content .loginSect .login-link {
+  cursor: pointer;
+}
+#loginModal .login-content .loginSect .btn {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 360px;
+  height: 60px;
+  background: #0093be;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 120%;
+  line-height: 50px;
+}
+#loginModal .login-content .registerSect {
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 100%;
+  background: #0093be;
+  color: #fff;
+}
+#loginModal .login-content .registerSect p {
+  margin: 2.5%;
+  padding: 0;
+  line-height: 200%;
+}
+#loginModal .login-content .registerSect .btn {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 360px;
+  height: 60px;
+  background: #fff;
+  color: #0093be;
+  border: none;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 120%;
+  line-height: 50px;
+}
+#registerModal {
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+#registerModal .register-content {
+  width: 60em;
+  height: 30em;
+  padding: 0;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
+}
+#registerModal .register-content .loginContainer {
+  padding: 30px;
+}
+#registerModal .register-content .left {
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 100%;
+  background: #0093be;
+  color: #fff;
+}
+#registerModal .register-content .left input[type="text"] {
+  margin-top: 5.8%;
+  padding: 1em 2em 1em 2em;
+  width: 360px;
+  height: 60px;
+  background: #0093be;
+  color: #fff;
+  border: 2px;
+  border-style: solid;
+  border-color: #fff;
+  font-size: 100%;
+}
+#registerModal .register-content .left ::-webkit-input-placeholder {
+  color: #0093be;
+}
+#registerModal .register-content .left :-moz-placeholder {
+  /* Firefox 18- */
+  color: #0093be;
+}
+#registerModal .register-content .left ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #0093be;
+}
+#registerModal .register-content .left :-ms-input-placeholder {
+  color: #0093be;
+}
+#registerModal .register-content .left p {
+  margin-top: 5%;
+}
+#registerModal .register-content .left .login-link {
+  cursor: pointer;
+}
+#registerModal .register-content .left .btn {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 360px;
+  height: 60px;
+  background: #0093be;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 120%;
+  line-height: 50px;
+}
+#registerModal .register-content .right {
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 100%;
+  background: #0093be;
+  color: #fff;
+}
+#registerModal .register-content .right p {
+  margin: 2.5%;
+  padding: 0;
+  line-height: 200%;
+}
+#registerModal .register-content .right .btn {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 360px;
+  height: 60px;
+  background: #fff;
+  color: #0093be;
+  border: none;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 120%;
+  line-height: 50px;
+}
 #user-info {
   padding: 10px;
   margin-left: 0px;
