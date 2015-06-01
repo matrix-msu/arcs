@@ -95,11 +95,23 @@ $(document).ready(function() {
 
     // Replace the password field with reset password instructions.
     $('#forgot-password').click(function(e) {
-        $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {  
-            $('label[for="data[User][username]"]').html('Email');
-            $('input[type=submit]').val('Send reset link');
-            $('input[name="data[User][forgot_password]"]').val('true');
-            $('#forgot-explain').show();
-        });
+        if ($('#forgot-password').text() == "Forgot your password?") {
+            $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {  
+                $('label[for="data[User][username]"]').html('Email');
+                $('input[type=submit]').val('Send reset link');
+                $('input[name="data[User][forgot_password]"]').val('true');
+                $('#loginHeader').text("Reset Password");
+                $('#forgot-password').text("Login");
+                $('#loginInfo').text("Enter your email address, and we'll send you a link to reset your password.");
+            });
+       } else if ($('#forgot-password').text() == "Login") {
+            $('#UserPassword, label[for="data[User][password]"]').slideDown(300, function() {
+                $('input[type=submit]').val('Login');
+                $('input[name="data[User][forgot_password]"]').val('');
+                $('#loginHeader').text("Login");
+                $('#forgot-password').text("Forgot your password?");
+                $('#loginInfo').text("");
+            });
+       }
     });
 });
