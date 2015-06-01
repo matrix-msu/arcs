@@ -61,10 +61,12 @@
         <div class="loginSect">
             <div class="loginContainer">
 
-                <h1>Login</h1>
+                <h1 id="loginHeader">Login</h1>
 
                 <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'login')); ?>
-
+				
+				<p id="loginInfo"></p>
+				
                 <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username')); ?>
 
                 <?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'Password')); ?>
