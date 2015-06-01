@@ -1,0 +1,25 @@
+<ul class="resource-thumbs">
+<% _.each(resources, function(r, i) { %>
+  <li class="resource-thumb">
+    <a href="<%= arcs.baseURL + 'resource/' + r.id %>">
+      <img src="<%= r.thumb %>" alt="resource" />
+    </a>
+    <a class="subtle" href="<%= arcs.baseURL + 'resource/' + r.id %>"><%= r.title %></a>
+  </li>
+<% }) %>
+<% if (!resources.length) { %>
+  <li>
+    <i class="icon-exclamation-sign"></i> No Results Found
+  </li>
+<% } else { %>
+  <li class="resource-thumb">
+    <% if (typeof searchURL != "undefined") { %>
+      <a href='<%= searchURL %>'><i class="icon-share-alt"></i> Show all</a>
+    <% } else { %>
+      <a href='<%= arcs.baseURL + 'search/type:"' + resources[0].type + '"' %>'>
+        <i class="icon-share-alt"></i> Show all
+      </a>
+    <% } %>
+  </li>
+<% } %>
+</ul>

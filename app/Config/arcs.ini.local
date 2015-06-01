@@ -1,0 +1,18 @@
+; arcs.ini
+; 
+; Configuration settings for ARCS
+
+[uploads]
+; File uploads are stored here. The web server user must have read, write, 
+; and execute permissions on this directory. 
+path = /matrix/www/arcslegacy/public_html/app/webroot/uploads
+; Base URL from which uploads are served.
+url = http://v1.arcs.matrix.msu.edu/uploads
+
+[solr]
+; When uses is true, we'll try to use SOLR for searching and indexing.
+uses = false
+host = localhost
+port = 8080
+; Tail of the url to the SOLR application, after http://host:port
+webapp = /solr

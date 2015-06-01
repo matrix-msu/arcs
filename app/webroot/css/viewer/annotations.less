@@ -1,0 +1,87 @@
+// annotations.less
+// ----------------
+
+.annotate-controls {
+  background: rgba(0, 0, 0, 0.7);
+  height: 40px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  right: 18px;
+  color: white;
+  text-align: left;
+  z-index: 1;
+  display: none;
+
+  span {
+    position: relative;
+    top: 10px;
+    left: 50px;
+    font-weight: 200;
+  }
+
+  button {
+    color: white;
+    border: 1px solid white;
+    .rounded-corners(7px);
+    padding: 5px;
+    background-color: transparent;
+    float: right;
+    position: relative;
+    margin-right: 15px;
+    top: 5px;
+  }
+}
+
+ul.annotations {
+  margin-left: 0px;
+  li.annotation {
+    list-style: none;
+    font-size: 13px;
+    line-height: 14px;
+    margin: 5px 20px 0;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.hotspot {
+  position: absolute;
+  background: rgba(25, 25, 25, 0.2); 
+  border: 1px solid #888;
+  display: block;
+  &:hover {
+    background: rgba(25, 25, 25, 0.3); 
+  }
+  &.active {
+    background: rgba(25, 25, 25, 0.3); 
+    border: 1px solid #333;
+  }
+  .remove-btn {
+    z-index: 1051;
+    display: none;
+    float: left;
+  }
+}
+
+.keyword-list {
+  list-style: none;
+  margin: 5px 10px 0;
+  li { 
+    line-height: 22px; 
+    i:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.keyword-link {
+  font-family: Monospace;
+  padding: 1px;
+  border: 1px solid #888;
+  background-color: #ddd;
+  .text-shadow(#fff);
+  .rounded-corners(2px);
+  color: #444;
+}

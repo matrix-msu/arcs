@@ -1,0 +1,657 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #F9F9F9;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+h1 {
+    margin: 0;
+}
+
+
+/* /////////////////////////////////////HEADER
+//////////////////////////////////////////////*/
+.header {
+    top:0;
+    width: 100%;
+    height: 33px;
+    position: fixed;
+    background: #CCC;
+    margin: 0;
+    padding: 10px;
+    vertical-align: middle;
+    -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.3);
+    text-align: right;
+}
+
+.logo {
+    display: inline;
+}
+
+.logo h1 {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'helvetica', sans-serif;
+    position: absolute;
+    left: 45px;
+    top: -2px;
+    padding: 20px 0 0 10px;
+    color: #525553;
+}
+
+.navigation {
+    margin: -12px 0 0 0;
+}
+
+.project-navigation {
+    margin: -12px 0 0 0;
+    padding: 0 10px 0 0;
+}
+
+.nav {
+    display: inline-block;
+    position: relative;
+    height: 35px;
+    text-align: center;
+    padding: 22px 5px 0 5px;
+}
+
+.nav-link {
+    height: 35px;
+    display: inline-block;
+    padding-top: -10px;
+    padding: 0 10px;
+    font-family: 'helvetica', sans-serif;
+    font-size: 12px;
+    color: #6D6D6D;
+    transition: all .5s ease;
+}
+
+.nav-link:hover {
+    color: #0094BC;
+}
+
+.header .logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 10px;
+}
+
+.header .logo, .navigation {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.arrow {
+    padding-left: 5px;
+}
+
+.nav-link, form {
+    display: inline;
+}
+
+form input[type="text"], button {
+    display: inline;
+    vertical-align: middle;
+    height: 53px;
+    background: #C1C1C1;
+}
+
+button {
+    padding: 0 20px;
+    outline: 0;
+    border: 0;
+    font-family: 'helvetica', sans-serif;
+    color: #6D6D6D;
+    font-size: 12px;
+    cursor: pointer;
+    margin: -2px 0 0 0;
+}
+
+input[type="text"] {
+    display: block;
+    padding: 0 0 0 20px;
+    font-family: 'helvetica', sans-serif;
+    color: #6D6D6D;
+    text-decoration: none;
+    font-size: 12px;
+    appearance: none;
+    box-shadow: none;
+    border-radius: none;
+    background: #C1C1C1;
+    border:none;
+    margin:-2px 0 0 0;
+}
+
+input[type="text"]:focus {
+  outline: none;
+}
+
+::-webkit-input-placeholder {
+   color: #6D6D6D;;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #6D6D6D;;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #6D6D6D;;  
+}
+
+:-ms-input-placeholder {  
+   color: #6D6D6D; 
+}
+
+/* /////////SUBNAV////////*/
+
+.projects {
+    height: 35px;
+     font-family: 'helvetica', sans-serif;
+    font-size: 12px;
+    color: #6D6D6D;
+    transition: all .5s ease;
+    cursor: pointer;
+     width: 113px;
+    padding: 22px 0 0 0;
+}
+
+.projects:hover {
+    color: #0094BC;
+}
+
+.projects.active {
+    background: #0094BC;
+    color: #FFF;
+}
+
+.subnav {
+    text-align: center;
+  padding: 0 10px 10px 10px;
+  position: absolute;
+  top: 55px;
+  left: 0px;
+     background: #CCC;
+    -webkit-box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.3);
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.3);
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transiton: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -ms-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -transition: opacity 0.2s;
+}
+.subnav a {  
+  display: block; 
+  color: #6D6D6D;
+    padding: 20px 0 0 0;
+}
+
+.subnav a:hover { 
+    color: #0094BC; 
+}
+
+.projects:hover .subnav {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* /////////SUBNAV END////////*/
+
+/* /////////////////////////////////////HEADER END
+//////////////////////////////////////////////*/
+
+/* /////////////////////////////////////INTRO
+//////////////////////////////////////////////*/
+
+.intro {
+    margin: -40px 0 0 0;
+    padding: 5%;
+}
+
+.intro h1 {
+    font-size: 30px;
+    font-weight: 400;
+    font-family: 'helvetica', sans-serif;
+    color: #525553;
+}
+
+.intro p {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'helvetica', sans-serif;
+    color: #525553;
+    line-height: 2;
+    max-width: 900px;
+}
+
+/* /////////////////////////////////////INTRO END
+//////////////////////////////////////////////*/
+
+/* /////////////////////////////////////MAP
+//////////////////////////////////////////////*/
+
+
+#map { 
+    display: block;
+    bottom: 0;
+    height: 500px;
+    width: 100%;
+}
+
+/* /////////////////////////////////////MAP END
+//////////////////////////////////////////////*/
+
+/* /////////////////////////////////////LOGIN MODAL
+//////////////////////////////////////////////*/
+.login{
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	pointer-events: none;
+}
+
+.login:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.login > div {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	background: #fff;
+}
+
+.register {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	pointer-events: none;
+}
+
+.register:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.register > div {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	background: #fff;
+}
+
+.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #00d9ff; }
+/* /////////////////////////////////////LOGIN MODAL END
+//////////////////////////////////////////////*/
+
+/* /////////////////////////////////////FOOTER
+//////////////////////////////////////////////*/
+
+.footer-wrap {
+    background: #3F3F3F;
+    height:auto;
+    width:100%;
+    padding: 5%;
+    display: inline-block;
+}
+
+footer#standard-MSU-footer {
+  width: 266px;
+  padding-left: 0px;
+  margin: 0 auto;
+  height: 100%;}
+  @media (min-width: 460px) {
+    footer#standard-MSU-footer {
+      width: auto;
+      padding-left: 12px; } }
+  @media (min-width: 964px) {
+    footer#standard-MSU-footer {
+      padding-left: 0px; } }
+  @media (min-width: 871px) {
+    footer#standard-MSU-footer .twelve.columns {
+      float: right !important;
+      margin-top: 6px;
+      margin-right: 20%;} }
+  footer#standard-MSU-footer .four.columns {
+    margin: 80px 0px 140px 0px; }
+    @media (min-width: 460px) {
+      footer#standard-MSU-footer .four.columns {
+        margin: 20px 0px; } }
+    @media (min-width: 871px) {
+      footer#standard-MSU-footer .four.columns {
+        float: left !important;
+        margin: 13px 18px 13px 0px; } }
+  footer#standard-MSU-footer.light-background #standard-footer-site-links ul li {
+    border-right: 1px solid #666;
+    color: #18453b !important; }
+    footer#standard-MSU-footer.light-background #standard-footer-site-links ul li a {
+      color: #18453b; }
+  footer#standard-MSU-footer.light-background #standard-footer-MSU-info ul li {
+    color: #18453b; }
+    footer#standard-MSU-footer.light-background #standard-footer-MSU-info ul li a {
+      color: #4c7e00 !important; }
+    footer#standard-MSU-footer.light-background #standard-footer-MSU-info ul li span.msu-phone {
+      color: #4c7e00 !important; }
+  footer#standard-MSU-footer.dark-background #standard-footer-site-links ul li {
+    border-right: 1px solid #333; }
+    footer#standard-MSU-footer.dark-background #standard-footer-site-links ul li a {
+      color: #fff; }
+  footer#standard-MSU-footer.dark-background #standard-footer-MSU-info ul {
+    color: #fff; }
+    footer#standard-MSU-footer.dark-background #standard-footer-MSU-info ul li a {
+      color: #84d123 !important; }
+    footer#standard-MSU-footer.dark-background #standard-footer-MSU-info ul li span.msu-phone {
+      color: #84d123 !important; }
+  footer#standard-MSU-footer #standard-footer-site-links {
+    float: left;
+    border-bottom: 1px dotted #808080;
+    text-align: left;
+    padding-bottom: 12px;
+    width: 100%; }
+    @media (min-width: 460px) {
+      footer#standard-MSU-footer #standard-footer-site-links {
+        width: auto; } }
+    @media (min-width: 871px) {
+      footer#standard-MSU-footer #standard-footer-site-links {
+        padding-bottom: 0px; } }
+    footer#standard-MSU-footer #standard-footer-site-links ul {
+      margin: 0px;
+      float: left;
+      padding-left: 0px;
+      text-align: center;
+      width: 266px; }
+      @media (min-width: 460px) {
+        footer#standard-MSU-footer #standard-footer-site-links ul {
+          text-align: left;
+          width: auto; } }
+      @media (min-width: 871px) {
+        footer#standard-MSU-footer #standard-footer-site-links ul {
+          height: 26px; } }
+      footer#standard-MSU-footer #standard-footer-site-links ul li {
+        display: inline;
+        padding: 0 0 0 4px;
+        margin-bottom: 0px; }
+        footer#standard-MSU-footer #standard-footer-site-links ul li:first-child {
+          padding-left: 0px; }
+        footer#standard-MSU-footer #standard-footer-site-links ul li:last-child {
+          border-right: 0px !important; }
+        footer#standard-MSU-footer #standard-footer-site-links ul li a {
+          font-size: 14px;
+          padding: 0 8px 0 0;
+          white-space: nowrap;
+          text-decoration: none; }
+          @media (min-width: 460px) {
+            footer#standard-MSU-footer #standard-footer-site-links ul li a {
+              font-size: 12px; } }
+        footer#standard-MSU-footer #standard-footer-site-links ul li a:hover, footer#standard-MSU-footer #standard-footer-site-links ul li a:focus {
+          text-decoration: underline; }
+        footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(1) {
+          color: #fff;
+          float: left;
+          width: 100%;
+          font-size: 13px;
+          border-right: 0px; }
+          @media (min-width: 460px) {
+            footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(1) {
+              text-align: left; } }
+          @media (min-width: 871px) {
+            footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(1) {
+              clear: none;
+              padding: 0 8px 0 0;
+              float: none;
+              width: auto;
+              border-right: 1px solid #444; } }
+        footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(2) {
+          padding-left: 0px; }
+          @media (min-width: 871px) {
+            footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(2) {
+              padding-left: 4px; } }
+        footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(3) {
+          border-right: 0px; }
+          @media (min-width: 460px) {
+            footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(3) {
+              border-right: 1px solid #444; } }
+        footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(4) {
+          padding-left: 0px; }
+          @media (min-width: 460px) {
+            footer#standard-MSU-footer #standard-footer-site-links ul li:nth-child(4) {
+              padding: 0 0 0 4px; } }
+  footer#standard-MSU-footer #standard-footer-MSU-info {
+    padding-top: 12px; }
+    @media (min-width: 460px) {
+      footer#standard-MSU-footer #standard-footer-MSU-info {
+        text-align: left; } }
+    @media (min-width: 871px) {
+      footer#standard-MSU-footer #standard-footer-MSU-info {
+        float: left;
+        margin-top: -6px;
+        padding-top: 0px; } }
+    footer#standard-MSU-footer #standard-footer-MSU-info ul {
+      margin: 0 auto;
+      padding-left: 0px; }
+      @media (min-width: 460px) {
+        footer#standard-MSU-footer #standard-footer-MSU-info ul {
+          margin: 0px; } }
+      @media (min-width: 871px) {
+        footer#standard-MSU-footer #standard-footer-MSU-info ul {
+          width: 100%;
+          height: 16px; } }
+      footer#standard-MSU-footer #standard-footer-MSU-info ul li {
+        margin-bottom: 0px;
+        font-size: 10px;
+        line-height: 10px;
+        display: inline;
+        border-right: 1px solid #444;
+        padding: 0px 8px 0px 4px; }
+        @media (min-width: 460px) {
+          footer#standard-MSU-footer #standard-footer-MSU-info ul li {
+            font-size: 9px; } }
+        @media (min-width: 871px) {
+          footer#standard-MSU-footer #standard-footer-MSU-info ul li {
+            width: 100%; } }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li:first-child {
+          padding-left: 0px; }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li:last-child {
+          border-right: 0px !important; }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li a {
+          font-weight: bold;
+          text-decoration: none; }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li a:hover, footer#standard-MSU-footer #standard-footer-MSU-info ul li a:focus {
+          text-decoration: underline; }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(2) {
+          border-right: 0px; }
+          @media (min-width: 871px) {
+            footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(2) {
+              border-right: 1px solid #444; } }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(3) {
+          float: left;
+          width: 100%;
+          clear: both;
+          padding-left: 0px; }
+          @media (min-width: 871px) {
+            footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(3) {
+              float: none;
+              width: auto; } }
+          footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(3) span {
+            float: left;
+            width: 100%;
+            padding: 5px 0px 0px 0px; }
+            @media (min-width: 460px) {
+              footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(3) span {
+                float: none;
+                width: auto;
+                padding: 0px; } }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li:nth-child(4) {
+          padding-left: 0px !important;
+          font-weight: 600;
+          text-transform: uppercase;
+          font-family: "Gotham B", arial black, sans-serif; }
+        footer#standard-MSU-footer #standard-footer-MSU-info ul li.spartans-will {
+          text-transform: uppercase;
+          font-weight: 600; }
+    footer#standard-MSU-footer #standard-footer-MSU-info ul.copyright li:first-child {
+      float: left;
+      width: 100%;
+      padding: 6px 0px;
+      border-right: 0px; }
+      @media (min-width: 460px) {
+        footer#standard-MSU-footer #standard-footer-MSU-info ul.copyright li:first-child {
+          float: none;
+          width: auto;
+          border-right: 1px solid #444444;
+          padding: 0px 4px 0px 0px; } }
+    footer#standard-MSU-footer #standard-footer-MSU-info ul.copyright li:last-child {
+      float: left;
+      width: 100%;
+      padding: 0px; }
+      @media (min-width: 460px) {
+        footer#standard-MSU-footer #standard-footer-MSU-info ul.copyright li:last-child {
+          float: none;
+          width: auto;
+          padding: 0px 0px 0px 4px; } }
+  footer#standard-MSU-footer #standard-footer-MSU-wordmark .print-msuwordmark {
+    display: none; }
+    @media print {
+      footer#standard-MSU-footer #standard-footer-MSU-wordmark .print-msuwordmark {
+        display: block; } }
+  footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
+    width: 100%;
+    max-width: 266px; }
+    @media print {
+      footer#standard-MSU-footer #standard-footer-MSU-wordmark img .screen-msuwordmark {
+        display: none; } }
+
+/* #Grid Based Column Widths 
+================================================== */
+.container {
+  padding: 0px;
+  min-width: 0;
+  margin-left: 0;
+  margin-right: 0; }
+  .container .row {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0; }
+    .container .row .row {
+      min-width: 0px; }
+      .container .row .row .column, .container .row .row .columns {
+        padding: 0; }
+    @media (min-width: 871px) {
+      .container .row .column:first-child, .container .row .columns:first-child, .container .row .alpha {
+        margin-left: 0px; } }
+    .container .row .column:last-child, .container .row .columns:last-child {
+      margin-right: 0;
+      /*float: none;*/ }
+    @media (min-width: 871px) {
+      .container .row .column.omega, .container .row .columns.omega {
+        float: right; } }
+    .container .row .column, .container .row .columns {
+      width: auto;
+      float: none;
+      margin-left: 0px;
+      margin-right: 0px; }
+      @media (min-width: 871px) {
+        .container .row .column, .container .row .columns {
+          margin-left: 2.127663%;
+          float: left;
+          min-height: 1px;
+          position: relative;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box; } }
+    @media (min-width: 871px) {
+      .container .row {
+        margin: 0 auto;
+        max-width: 960px;
+        min-width: 870px; }
+        .container .row .one.columns {
+          width: 4.255326%; }
+        .container .row .two.columns {
+          width: 10.638315%; }
+        .container .row .three.columns {
+          width: 17.021304%; }
+        .container .row .four.columns {
+          width: 23.404293%; }
+        .container .row .five.columns {
+          width: 29.787282%; }
+        .container .row .six.columns {
+          width: 36.170271%; }
+        .container .row .seven.columns {
+          width: 42.55326%; }
+        .container .row .eight.columns {
+          width: 48.936249%; }
+        .container .row .nine.columns {
+          width: 55.319238%; }
+        .container .row .ten.columns {
+          width: 61.702227%; }
+        .container .row .eleven.columns {
+          width: 68.085216%; }
+        .container .row .twelve.columns {
+          width: 74.468205%; }
+        .container .row .thirteen.columns {
+          width: 80.851194%; }
+        .container .row .fourteen.columns {
+          width: 87.234183%; }
+        .container .row .fifteen.columns {
+          width: 93.617172%; }
+        .container .row .sixteen.columns {
+          width: 100%; } }
+
+.clearfix {
+  clear: both; }
+
+
+
+

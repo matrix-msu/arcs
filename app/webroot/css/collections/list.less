@@ -1,0 +1,264 @@
+// collections.less
+// ---------
+
+.collection-list-wrapper {
+
+    .unselectable;
+
+    width: 90%;
+    margin: 50px auto;
+    
+    .collection-list {
+        details {
+            min-height: 20px;
+            margin: 25px 0 0;
+
+            div {
+                visibility: hidden;
+                display: none;
+            }
+
+            // Focus state for keyboard and accessibility
+            &:focus {
+                outline: none;
+            }
+
+            // Summary and detail formatting when detail is closed
+            summary {
+                width: 100%;
+                visibility: visible;
+                display: inline;
+                padding: 10px 0 15px 20px;
+                font-size: @baseFontSize;
+                line-height: normal;
+                color: #333;
+                text-shadow: 0 1px 1px rgba(255,255,255,.75);
+                background: #ddd;
+                box-shadow: 2px 2px 1px #aaa;
+                cursor: pointer;
+
+                // Focus state for keyboard and accessibility
+                &:focus {
+                    outline: none;
+                }
+
+                // Transitions
+                .transition(.1s linear all);
+
+                // Button Sizes 
+                &.large {
+                    padding: 15px 25px;
+                    font-size: @baseFontSize + 4px;
+                    text-transform: uppercase;
+                    line-height: normal;
+                    display: block;
+                }
+
+                &.small {
+                    padding: 7px 9px 7px;
+                    font-size: @baseFontSize - 2px;
+                }
+            }
+
+            &.disabled {
+                cursor: default;
+                background-image: none;
+                .opacity(65);
+                .box-shadow(none);
+            }
+
+            &[disabled] {
+                // disabled pseudo cant be included with .disabled
+                // def because IE8 and below will drop it
+                cursor: default;
+                background-image: none;
+                .opacity(65);
+                .box-shadow(none);
+            }
+
+            // Sizes 
+            &.large {
+              padding: 10px 14px 6px;
+              font-size: @baseFontSize + 4px;
+              text-transform: uppercase;
+              line-height: normal;
+            }
+            &.small {
+              padding: 7px 9px 7px;
+              font-size: @baseFontSize - 2px;
+            }
+
+            &[open] {
+                min-height: 20px;
+                width: 100%;
+                padding: 0;
+                margin-bottom: 20px;
+                background: #ddd;
+                .box-shadow(2px 2px 1px #aaa);
+
+                blockquote {
+                    border-color: #ddd;
+                    border-color: rgba(0,0,0,.15);
+                }
+
+                div {
+                    visibility: visible;
+                    display: block;
+                }
+
+                ul.resource-thumbs {
+                    display: block;
+                    padding-left: 20px;
+                    padding-bottom: 10px;
+                    li.resource-thumb { 
+                        display: inline-block; 
+                        a img {
+                            height: 100px;
+                        }
+                    }
+                }
+
+                // Summary and detail formatting when detail is open
+                summary {
+                    padding: 10px 0 15px 20px;
+                    font-size: @baseFontSize;
+                    line-height: normal;
+                    color: #333;
+                    text-shadow: 0 1px 1px rgba(255,255,255,.75);
+                    background: none;
+                    border: none;
+                    border-radius:0;
+                    border-bottom: 1px solid #bbb;
+                    cursor: pointer;
+                    box-shadow: none;
+
+                    // Focus state for keyboard and accessibility
+                    &:focus {
+                        outline: none;
+                    }
+                    .transition(.1s linear all);
+                }
+            }
+            
+            .results {
+                min-height: 55px;
+            }
+            
+            ul.resource-thumbs {
+                padding: 10px;
+            }
+        }
+
+        .actions {
+            float: right;
+            position: relative;
+            top: 10px;
+            padding-right: 10px;
+            a {
+                margin-left: 5px;
+            }
+        }
+        
+        h3,
+        h4,
+        h5 {
+            display: inline;
+            padding-left: 30px;
+        }
+    }
+
+    // Styling for details marker
+    summary::-webkit-details-marker {
+        display: none;
+    }
+    summary:after {
+        float: left;
+        width: 8px;
+        height: 8px;
+        border: solid rgb(0, 147, 190);
+        border-width: 2.5px 2.5px 0 0;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+        margin: 12px 0 0 5px;
+        content: "";
+    }
+    details[open] summary:after {
+        float: left;
+        width: 8px;
+        height: 8px;
+        border: solid rgb(0, 147, 190);
+        border-width: 2.5px 2.5px 0 0;
+        -webkit-transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        -o-transform: rotate(135deg);
+        transform: rotate(135deg);
+        margin: 10px 0 0 5px;
+        content: "";
+    }
+}
+
+//    Old CSS
+//
+//    width: 90%;
+//    margin: 50px auto;
+//
+//    .collection-list {
+//        details {
+//            min-height: 20px;
+//            margin: 25px 0 0;
+//            
+//            padding: 10px;
+//            background: #ddd;
+//            border: 1px solid #ccc;
+//            border-top-color: #eee;
+//
+//            &.open {
+//                background: #ccc;
+//                border-color: #999;
+//                border-top-color: #eee;
+//            }
+//
+//            &.closed:hover {
+//                background: #d5d5d5;
+//                cursor: pointer;
+//            }
+//
+//            &:first-child {
+//                border-top-color: #ccc;
+//            }
+//
+//            &.open:first-child {
+//                border-top-color: #999;
+//            }
+//
+//            summary {
+//                &:hover {
+//                    cursor: pointer;
+//                }
+//                h3,
+//                h4,
+//                h5 {
+//                    display: inline;
+//                    margin-right: 7px;
+//                }
+//                h5 {
+//                    color: 555;
+//                    font-weight: 200;
+//                }
+//                outline: none;
+//            }
+//
+//            .actions {
+//                float: right;
+//                position: relative;
+//                bottom: 30px;
+//                a {
+//                    margin-left: 5px;
+//                }
+//            }
+//        }
+//    }
