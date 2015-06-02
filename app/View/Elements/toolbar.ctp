@@ -106,29 +106,15 @@
 
                 <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register')); ?>
 
-                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); echo "<p id='name-error' class='error'>&nbsp;</p>"; ?>
+                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
 
-				<?php 
-					if($this->Session->read('username-error') == true) {
-						$usernameError = "Username already registered";
-					} else {
-						$usernameError = "";
-					}
-					$this->Session->delete('username-error');
-				?>
-                <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username *')); echo "<p id='username-error' class='error'>&nbsp;".$usernameError."</p>"; ?>
+                <?php echo $this->Form->input('usernameReg', array('label' => false, 'placeholder' => 'Username *')); ?>
+				<?php echo "<p id='getUsername' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getUsername'))."</p>";?>
 
-				<?php 
-					if($this->Session->read('email-error') == true) {
-						$emailError = "Email already registered";
-					} else {
-						$emailError = "";
-					}
-					$this->Session->delete('email-error');
-				?>
-                <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Email *')); echo "<p id='email-error' class='error'>&nbsp;".$emailError."</p>"; ?>
+                <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Email *')); ?>
+				<?php echo "<p id='getEmail' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getEmail'))."</p>";?>
 
-                <?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'Password *')); echo "<p id='password-error' class='error'>&nbsp;</p>"; ?>
+                <?php echo $this->Form->input('passwd', array('label' => false, 'placeholder' => 'Password *'));?>
 
                 <span class="requiredfield">* Required Field</span>
 
