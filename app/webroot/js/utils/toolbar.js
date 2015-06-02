@@ -35,11 +35,14 @@ function IsEmail(email) {
 //Validation for register
 $(document).ready(function() {
 
-	$("#register").click(function(e) {
+	//$("#register").click(function(e) {
+	$("#UserRegisterForm").on('submit', function(e) {
+		var form = this;
 		var empty_fields = false;
 		var short_password = false;
 		var invalid_email = false;
 		var taken_username = false;
+		var noSubmit = false;
 		$("#registerModal .required > input").each(function() {
 			if($(this).val().length === 0) {
 				e.preventDefault();
@@ -70,7 +73,9 @@ $(document).ready(function() {
 			//$("#email-error").html("Invalid Email");
 			alert("Invalid Email");
 		}
+		
 		else { //ajax check of available username and email
+			e.preventDefault();
 			var username = $("#UserUsernameReg").val();
 			console.log(username);
 			data = {'username' : username};
@@ -81,9 +86,9 @@ $(document).ready(function() {
 				data: data,
 				success: function(response) {
 					if(response == '1') {
-						e.preventDefault();
 						taken_username = true;
 						alert("Username already Exists!");
+						noSubmit = true;
 					}
 				},
 				error: function(error) {
@@ -100,16 +105,20 @@ $(document).ready(function() {
 				url: $("#getEmail").html(),
 				data: data,
 				success: function(response) {
-					if(response == '1') {
-						e.preventDefault();
+					if(response == '1' && !taken_username) {
 						alert("Email already Exists!");
+						noSubmit = true;
+					}
+					else if(!noSubmit && !taken_username) {
+						form.submit();
 					}
 				},
 				error: function(error) {
 				
 				}
 			});
-		}	
+		}
+		
 	});
 	$(".exit").click(function(e) {
 		empty_fields = false;
