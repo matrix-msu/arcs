@@ -34,10 +34,12 @@ function IsEmail(email) {
 }
 //Validation for register
 $(document).ready(function() {
+
 	$("#register").click(function(e) {
 		var empty_fields = false;
 		var short_password = false;
 		var invalid_email = false;
+		var taken_username = false;
 		$("#registerModal .required > input").each(function() {
 			if($(this).val().length === 0) {
 				e.preventDefault();
@@ -50,32 +52,71 @@ $(document).ready(function() {
 			
 		});
 		if(empty_fields) {
-			$("#password-error").html("All fields required");
+			e.preventDefault();
+			//$("#password-error").html("All fields required");
 			alert("All fields are required!");
 		}
-		if($("#registerModal #UserPassword").val().length < 6) {
+		else if($("#registerModal #UserPasswd").val().length < 6) {
 			e.preventDefault();
 			short_password = true;
 			if(!empty_fields) {
-				$("#password-error").html("Password must be at least 6 characters");
+				//$("#password-error").html("Password must be at least 6 characters");
 				alert("Password must be at least 6 characters!");
 			}
 		}
-		if(!IsEmail($("#registerModal #UserEmail").val())) {
+		else if(!IsEmail($("#registerModal #UserEmail").val())) {
 			e.preventDefault();
 			invalid_email = true;
-			$("#email-error").html("Invalid Email");
+			//$("#email-error").html("Invalid Email");
 			alert("Invalid Email");
 		}
-		if(empty_fields || short_password || invalid_email) {
-			e.preventDefault();
-			//handle validation
-		}		
+		else { //ajax check of available username and email
+			var username = $("#UserUsernameReg").val();
+			console.log(username);
+			data = {'username' : username};
+			$.ajax({
+				type: 'POST',
+				async: 'false',
+				url: $("#getUsername").html(),
+				data: data,
+				success: function(response) {
+					if(response == '1') {
+						e.preventDefault();
+						taken_username = true;
+						alert("Username already Exists!");
+					}
+				},
+				error: function(error) {
+				
+				}
+			});
+		
+			var email = $("#UserEmail").val();
+			console.log(email);
+			data = {'email' : email};
+			$.ajax({
+				type: 'POST',
+				async: 'false',
+				url: $("#getEmail").html(),
+				data: data,
+				success: function(response) {
+					if(response == '1') {
+						e.preventDefault();
+						alert("Email already Exists!");
+					}
+				},
+				error: function(error) {
+				
+				}
+			});
+		}	
 	});
 	$(".exit").click(function(e) {
 		empty_fields = false;
 		short_password = false;
 		invalid_email = false;
+		$("#email-error").html("&nbsp;");
+		$("#username-error").html("&nbsp;");
 	});
 });
 
