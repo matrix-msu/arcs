@@ -12,7 +12,7 @@ class UsersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('signup', 'login', 'register', 'register_no_invite', 'reset_password', 'display');
+        $this->Auth->allow('signup', 'login', 'register', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
@@ -218,50 +218,46 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
 			$this->User->permit('role');
 			$this->User->set($this->request->data);
-			if($this->User->validates()) {
-				$email = $this->User->find(
-					'first', 
-					array(
-						'conditions' => array(
-							'User.email' => $this->request->data['User']['email']
-						)
+
+			//check if the requested email already exists
+			$email = $this->User->find(
+				'first', 
+				array(
+					'conditions' => array(
+						'User.email' => $this->request->data['User']['email']
 					)
-				);
-				$username = $this->User->find(
-					'first', 
-					array(
-						'conditions' => array(
-							'User.username' => $this->request->data['User']['username']
-						)
+				)
+			);
+			$username = $this->User->find(
+				'first', 
+				array(
+					'conditions' => array(
+						'User.username' => $this->request->data['User']['usernameReg']
 					)
-				);
-				$errorCheck = false;
-				if(count($email) != 0) {
-					$this->Session->write("email-error", true);
-					$errorCheck == true;
-				} else {$this->Session->write("email-error", false);}
-				if(count($username) != 0) {
-					$this->Session->write("username-error", true);
-					$errorCheck == true;
-				} else {$this->Session->write("username-error", false);}
-				if($errorCheck == true) {
-					$this->redirect($this->referer().'#registerModal');
-				}
-				$this->User->add(array(
-					'email' => $this->request->data['User']['email'],
-					'role' => 2,
-					'activation' => null,
-					'password' => $this->request->data['User']['password'],
-					'username' => $this->request->data['User']['username'],
-					'name' => $this->request->data['User']['name']
-				));
-				$this->User->save();
-				$user = array_merge($user, $this->request->data['User']);
-				$this->Auth->login($user);
-				$this->redirect($this->referer());
-			} else {
+				)
+			);
+			$errorCheck = false;
+			if(!empty($email)) {
+				$errorCheck = true;
+			}
+			if(!empty($username)) {
+				$errorCheck = true;
+			} 
+			if($errorCheck) {
 				$this->redirect($this->referer().'#registerModal');
 			}
+			$this->User->add(array(
+				'email' => $this->request->data['User']['email'],
+				'role' => 2,
+				'activation' => null,
+				'password' => $this->request->data['User']['passwd'],
+				'username' => $this->request->data['User']['usernameReg'],
+				'name' => $this->request->data['User']['name']
+			));
+			$this->User->save();
+			$user = array_merge($user, $this->request->data['User']);
+			$this->Auth->login($user);
+			$this->redirect($this->referer());
             
         } else {
             $this->set(array(
@@ -270,6 +266,40 @@ class UsersController extends AppController {
             ));
         }
     }
+	public function getEmail() {
+		$this->autoRender = false;
+		$email = $_POST['email'];
+		$emailReturn = $this->User->find(
+			'first', 
+			array(
+				'conditions' => array(
+					'User.email' => $email
+				)
+			)
+		);
+		if(empty($emailReturn)) {
+			echo 0;
+		} else {
+			echo true;
+		}
+	}
+	public function getUsername() {
+		$this->autoRender = false;
+		$username = $_POST['username'];
+		$usernameReturn = $this->User->find(
+			'first', 
+			array(
+				'conditions' => array(
+					'User.username' => $username
+				)
+			)
+		);
+		if(empty($usernameReturn)) {
+			echo 0;
+		} else {
+			echo true;
+		}
+	}
 
     /**
      * Display the user's profile.
