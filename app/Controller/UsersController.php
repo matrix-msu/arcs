@@ -266,9 +266,9 @@ class UsersController extends AppController {
             ));
         }
     }
+	//checks if email exists
 	public function getEmail() {
 		$this->autoRender = false;
-		$this->request->onlyAllow('ajax');
 		$email = $_POST['email'];
 		$emailReturn = $this->User->find(
 			'first', 
@@ -284,9 +284,9 @@ class UsersController extends AppController {
 			echo true;
 		}
 	}
+	//checks if username exists
 	public function getUsername() {
 		$this->autoRender = false;
-		$this->request->onlyAllow('ajax');
 		$username = $_POST['username'];
 		$usernameReturn = $this->User->find(
 			'first', 
