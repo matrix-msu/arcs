@@ -147,7 +147,7 @@ $(document).ready(function() {
     $('#forgot-password').click(function(e) {
         if ($('#forgot-password').text() == "Forgot your password?") {
             $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {  
-                $('label[for="data[User][username]"]').attr('placeholder', 'Email');
+                $('#UserUsername').attr('placeholder', 'Email').val("").focus().blur();
                 $('input[type=submit]').val('Send reset link');
                 $('input[name="data[User][forgot_password]"]').val('true');
                 $('#loginHeader').text("Reset Password");
@@ -156,7 +156,7 @@ $(document).ready(function() {
             });
        } else if ($('#forgot-password').text() == "Login") {
             $('#UserPassword, label[for="data[User][password]"]').slideDown(300, function() {
-				$('label[for="data[User][username]"]').attr('placeholder', 'Username');
+				$('#UserUsername').attr('placeholder', 'Username').val("").focus().blur();
                 $('input[type=submit]').val('Login');
                 $('input[name="data[User][forgot_password]"]').val('');
                 $('#loginHeader').text("Login");
