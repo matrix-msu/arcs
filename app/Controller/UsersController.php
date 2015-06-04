@@ -12,7 +12,7 @@ class UsersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('signup', 'login', 'register', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername');
+        $this->Auth->allow('signup', 'login', 'special_login', 'register', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
@@ -85,7 +85,7 @@ class UsersController extends AppController {
         $this->json(204);
     }
 
-    /**
+	/**
      * Display the login form or authenticate a POSTed form.
      *
      * @param string $id   user id
@@ -110,6 +110,54 @@ class UsersController extends AppController {
                 return $this->redirect($this->Auth->redirect());
             } else {
                 $this->redirect($this->referer().'#loginModal');
+            }
+        }
+    }
+
+    /**
+     * Authenticate login in modal, handles both logging in and forgot password.
+     *
+     * @param string $id   user id
+     */
+    public function special_login() {
+        $this->User->flatten = false;
+        if ($this->request->is('post')) {
+            if ($this->request->data['User']['forgot_password']) {
+                $email = $this->request->data['User']['username'];
+                $user = $this->User->findByEmail($email);
+                if (!$user) { 
+                    $this->Session->setFlash("Sorry, we couldn't find an account with that email address.", 'flash_error');
+                    $this->redirect('/');
+                } else {
+                    $token = $this->User->getToken();
+                    $this->User->permit('reset');
+                    $this->User->saveById($user['User']['id'], array(
+                        'reset' => $token
+                    ));
+            
+                    $this->sendEmailResetPassword($email,$token);
+                    $this->Job->enqueue('email', array(
+                        'to' => $email,
+                        'subject' => 'Reset Password',
+                        'template' => 'reset_password',
+                        'vars' => array(
+                            'name' => array_shift(explode(' ', $user['User']['name'])),
+                            'reset' => $this->baseURL() . '/users/reset_password/' . $token
+                        )
+                    ));
+                    $this->Session->setFlash("We've sent an email to $email. It contains a special " .
+                        "link to reset your password.", 'flash_success');
+                    $this->redirect('/');
+                }
+            } else {
+                $userByEmail = $this->User->findByEmail($this->request->data['User']['username']);
+                if ($userByEmail)
+                    $this->request->data['User']['username'] = $userByEmail['User']['username'];
+                if ($this->Auth->login()) {
+                    return $this->redirect($this->Auth->redirect());
+                } else {
+                    $this->redirect($this->referer().'#loginModal');
+                }
             }
         }
     }
@@ -266,6 +314,7 @@ class UsersController extends AppController {
             ));
         }
     }
+
 	//checks if email exists
 	public function getEmail() {
 		$this->autoRender = false;
@@ -284,6 +333,7 @@ class UsersController extends AppController {
 			echo true;
 		}
 	}
+
 	//checks if username exists
 	public function getUsername() {
 		$this->autoRender = false;
@@ -313,8 +363,9 @@ class UsersController extends AppController {
         $this->User->recursive = 1;
         $user = $this->User->find('first', array(
             'conditions' => array(
-                'OR' => array('User.username' => $ref, 'User.id' => $ref)
+                'OR' => array('User.username' => $ref, 'User.id' => $ref),
             ),
+            'order' => array('id' => 'DESC'),
             'contain' => array(
                 'Resource'   => array('limit' => 30),
                 'Annotation' => array('limit' => 30),
@@ -322,7 +373,12 @@ class UsersController extends AppController {
                 'Comment'    => array('limit' => 30)
             )
         ));
-        if (!$user) throw new NotFoundException();
+
+        if (!$user) {
+            throw new NotFoundException();
+        }
+        $allUsers = $this->User->find('all');
+        $this->set('u', $allUsers);
         $this->set('user_info', $user);
     }
 
@@ -347,10 +403,8 @@ class UsersController extends AppController {
 		->to($data['email'])
 		->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
 		$Email->send();
-		
-		
-		
 	}
+
 	public function sendEmailResetPassword($email,$token){
 		
 		App::uses('CakeEmail', 'Network/Email');
@@ -365,11 +419,6 @@ class UsersController extends AppController {
 		$Email->to($email);
 		$Email->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
 		$Email->send();
-		
-		
-		
-		
-		
 	}
 	
 	/**

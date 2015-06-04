@@ -14,7 +14,7 @@
         </button>
         <div id="droppedMenu" class="dropped-menu">
             <?php echo $this->Html->link('Profile', 
-                '/user/' . $user['username']) ?>
+                '/user/' . $user['username'] . '/') ?>
             <?php if ($user['role'] === 0): ?>
             <?php echo $this->Html->link('Admin', 
                 '/admin') ?>
@@ -63,7 +63,7 @@
 
                 <h1 id="loginHeader">Login</h1>
 
-                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'login')); ?>
+                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'special_login')); ?>
 				
 				<p id="loginInfo"></p>
 				

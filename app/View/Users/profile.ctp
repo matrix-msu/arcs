@@ -1,18 +1,16 @@
 <div id="user-profile">
     <div class="row" id="user-info">
-        <h2><?php echo $user_info['User']['name'] ?></h2>
-        <?php if ($user['id'] == $user_info['User']['id']): ?>
-        <button class="btn" id="edit-btn">
-            <i class="icon-edit"></i>
-            Edit
-        </button>
-        <?php endif ?>
         <div>
             <img class="profile-image thumbnail"
                 src="http://gravatar.com/avatar/<?php echo $user_info['User']['gravatar'] ?>">
             <dl>
-                <dt>Role</dt>
+                <dd><h2><?php echo $user_info['User']['name']?></h2></dd>
                 <dd>
+                    <a href="mailto:<?php echo $user_info['User']['email'] ?>">
+                        <?php echo $user_info['User']['email']; ?></a>
+                </dd>
+                <dd><?php echo $user_info['User']['username']?></dd>
+                <dd>Role: 
                 <?php 
                     $role = $user_info['User']['role'];
                     if ($role == 0) echo "Admin";
@@ -20,13 +18,13 @@
                     if ($role == 2) echo "Researcher";
                 ?>
                 </dd>
-                <dt>Email</dt>
-                <dd>
-                <a href="mailto:<?php echo $user_info['User']['email'] ?>">
-                    <?php echo $user_info['User']['email']; ?></a>
-                </dd>
+                <?php if ($user['id'] == $user_info['User']['id']): ?>
+                    <dd><a herf="">Edit Profile</a></dd>
+                <?php endif ?>
+
+                <dd><button class="btn" id="edit-btn"><i class="icon-edit"></i>Edit</button></dd>
             </dl>
-        </div>
+        </div>.
     </div>
 
     <div class="row tabbable" id="user-actions">
@@ -48,8 +46,8 @@
 </div>
 
 <script type="text/javascript">
-  arcs.profileView = new arcs.views.Profile({
-    el: $('#user-profile'),
-    model: new arcs.models.User(<?php echo json_encode($user) ?>)
-  });
+    arcs.profileView = new arcs.views.Profile({
+        el: $('#user-profile'),
+        model: new arcs.models.User(<?php echo json_encode($user); ?>)
+    });
 </script>
