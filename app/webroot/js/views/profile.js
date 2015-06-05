@@ -11,7 +11,7 @@
     }
 
     Profile.prototype.events = {
-      'click #edit-btn': 'editAccount'
+      'click #edit-profile': 'editAccount'
     };
 
     Profile.prototype.editAccount = function() {

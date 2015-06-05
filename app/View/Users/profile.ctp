@@ -19,14 +19,12 @@
                 ?>
                 </dd>
                 <?php if ($user['id'] == $user_info['User']['id']): ?>
-                    <dd><a herf="">Edit Profile</a></dd>
+                    <dd><a href="#" id="edit-profile" onclick="return false;">Edit Profile</a></dd>
                 <?php endif ?>
-
-                <dd><button class="btn" id="edit-btn"><i class="icon-edit"></i>Edit</button></dd>
             </dl>
-        </div>.
+        </div>
     </div>
-
+	
     <div class="row tabbable" id="user-actions">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#uploads-tab">Uploads</a></li>
@@ -45,7 +43,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript">	
     arcs.profileView = new arcs.views.Profile({
         el: $('#user-profile'),
         model: new arcs.models.User(<?php echo json_encode($user); ?>)

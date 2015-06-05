@@ -81,6 +81,7 @@ class arcs.views.Modal extends Backbone.View
     $('.modal-backdrop').remove()
     $('body').append arcs.tmpl 'ui/modal_wrapper'
     @el = @$el = $('#modal')
+    console.log @el
 
     # Add any classes to the modal el.
     @$el.addClass(@options.class) if @options.class
@@ -100,14 +101,14 @@ class arcs.views.Modal extends Backbone.View
 
     # Draggable?
     if @options.draggable
-      @$el.draggable(handle: @$('.modal-header'))
+      @$el.draggable(handle: @$('.modal-header'))          
       @$('.modal-header').css 'cursor', 'move'
 
     # Setup Bootstrap modal
-    @$el.modal
-      backdrop: @options.backdrop
-      keyboard: @options.keyboard
-      show: @options.show
+    #@$el.modal
+    #  backdrop: @options.backdrop
+    #  keyboard: @options.keyboard
+    #  show: @options.show
 
     @bindButtons()
   

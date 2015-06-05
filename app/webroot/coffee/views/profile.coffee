@@ -1,7 +1,7 @@
 class arcs.views.Profile extends Backbone.View
 
   events:
-    'click #edit-btn': 'editAccount'
+    'click #edit-profile': 'editAccount'
 
   editAccount: ->
     new arcs.views.Modal

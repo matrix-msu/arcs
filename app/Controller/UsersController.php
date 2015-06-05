@@ -52,18 +52,22 @@ class UsersController extends AppController {
      * @param string $id   user id
      */
     public function edit($id=null) {
-        if (!($this->request->is('put') || $this->request->is('post'))) 
+		$this->Session->setFlash($this->data['User']['id']);
+		if (!($this->request->is('put') || $this->request->is('post')))
             throw new MethodNotAllowedException();
-        if (!$this->request->data || !$id) throw new BadRequestException();
+        if (!$this->request->data || !$id) 
+			throw new BadRequestException();
         $user = $this->User->read(null, $id);
-        if (!$user) throw new NotFoundException();
+        if (!$user) 
+			throw new NotFoundException();
         # Must be editing own account, or an admin.
         if (!($this->User->id == $this->Auth->user('id') || $this->Access->isAdmin()))
             throw new ForbiddenException();
         # Only admins can change user roles.
         if ($this->Access->isAdmin()) 
             $this->User->permit('role');
-        if (!$this->User->add($this->request->data)) throw new InternalErrorException();
+        if (!$this->User->add($this->request->data))
+			throw new InternalErrorException();
         # Update the Auth Session var, if necessary.
         if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));
@@ -377,8 +381,8 @@ class UsersController extends AppController {
         if (!$user) {
             throw new NotFoundException();
         }
-        $allUsers = $this->User->find('all');
-        $this->set('u', $allUsers);
+        // $allUsers = $this->User->find('all');
+        $this->set('isAdmin', $this->Access->isAdmin());
         $this->set('user_info', $user);
     }
 
