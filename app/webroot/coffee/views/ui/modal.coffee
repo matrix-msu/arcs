@@ -105,10 +105,10 @@ class arcs.views.Modal extends Backbone.View
       @$('.modal-header').css 'cursor', 'move'
 
     # Setup Bootstrap modal
-    #@$el.modal
-    #  backdrop: @options.backdrop
-    #  keyboard: @options.keyboard
-    #  show: @options.show
+    @$el.modal
+      backdrop: @options.backdrop
+      keyboard: @options.keyboard
+      show: @options.show
 
     @bindButtons()
   
