@@ -18,6 +18,8 @@
         echo $this->Assets->stylesheets();
         echo $this->Assets->scripts();
         ?>
+        <!-- Move bootstrap.min.js into app/webroot/js -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script>arcs.user = new arcs.models.User(<?php echo json_encode($user) ?>);</script>
     </head>
     <body class="<?php echo $body_class ?>">

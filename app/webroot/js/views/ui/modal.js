@@ -29,7 +29,6 @@
       $('.modal-backdrop').remove();
       $('body').append(arcs.tmpl('ui/modal_wrapper'));
       this.el = this.$el = $('#modal');
-      console.log(this.el);
       if (this.options["class"]) {
         this.$el.addClass(this.options["class"]);
       }
@@ -52,6 +51,11 @@
         });
         this.$('.modal-header').css('cursor', 'move');
       }
+      this.$el.modal({
+        backdrop: this.options.backdrop,
+        keyboard: this.options.keyboard,
+        show: this.options.show
+      });
       return this.bindButtons();
     };
 

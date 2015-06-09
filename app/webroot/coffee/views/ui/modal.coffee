@@ -81,7 +81,6 @@ class arcs.views.Modal extends Backbone.View
     $('.modal-backdrop').remove()
     $('body').append arcs.tmpl 'ui/modal_wrapper'
     @el = @$el = $('#modal')
-    console.log @el
 
     # Add any classes to the modal el.
     @$el.addClass(@options.class) if @options.class
