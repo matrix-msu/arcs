@@ -1,10 +1,12 @@
 <div class="intro">
     <h1>The Archaeological Resource Cataloging System</h1>
+    <br>
+    
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex. Nulla fermentum, est ut suscipit interdum, lorem eros gravida lorem, eu lobortis purus ligula in orci. Duis massa neque, rhoncus sit amet sem ut, cursus interdum ligula. Duis ultricies euismod ligula, sed lacinia turpis laoreet ac. Donec tristique scelerisque tristique. Aliquam non enim non purus faucibus viverra. Phasellus euismod vestibulum enim.</p>
+    
+    <div id="map"></div>
 </div>
-        
-<div id="map"></div>
-
+ 
 <script>
     var map = L.map('map', { zoomControl:false }).setView([38.6, 26.049], 6);
 

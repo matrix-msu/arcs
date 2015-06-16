@@ -1,4 +1,28 @@
-<div class="search-wrapper"></div>
+<div class='searchIntro'>
+    <h1>Search</h1>
+    
+    <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
+</div>
+
+
+<div id='search-wrapper'>
+    <ul>
+        <li><a href='#'>caption</a></li>
+        <li><a href='#'>collection</a></li>
+        <li><a href='#'>comment</a></li>
+        <li><a href='#'>created</a></li>
+        <li><a href='#'>filetype</a></li>
+        <li><a href='#'>id</a></li>
+        <li><a href='#'>modified</a></li>
+        <li><a href='#'>keyword</a></li>
+        <li><a href='#'>title</a></li>
+        <li><a href='#'>type</a></li>
+        <li><a href='#'>user</a></li>
+    </ul>
+    
+    <input type='text' placeholder='SEARCH FOR ARCHAEOLOGICAL DATA'>
+</div>
+
 <div class="search-help" style="display:none">
   <div class="search-help-arrow"></div>
   <a class="search-help-close">close</a>
@@ -38,8 +62,10 @@
     For more search tips, see the <a href="../help/searching">Search</a> help page.
   </div>
 </div>
+
 <div id="search-results-wrapper">
   <div id="search-actions" class="search-toolbar">
+
     <div id="action-buttons" class="btn-group">
     {% if user.loggedIn %}
       <div id="collection-buttons" class="btn-group pull-left">
@@ -92,14 +118,16 @@
       <div style="height:28px"></div>
     {% endif %}
     </div>
+
     <div id="view-buttons" class="btn-group actions-right">
-      <button id="grid-btn" class="btn active">
-        <i class="icon-th-large"></i> Grid
+      <button id="grid-btn" class="btn notactive active">
+        <i class='icon-th-large'></i> Grid
       </button>
-      <button id="list-btn" class="btn">
-        <i class="icon-th-list"></i> List
+      <button id="list-btn" class="btn notactive">
+        <i class='icon-th-list'></i> List
       </button>
     </div>
+
     <div id="sort-buttons" class="btn-group actions-right">
       <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
         Sort by <span id="sort-by">title</span>
