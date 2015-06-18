@@ -126,15 +126,6 @@
       ref = [this.$('#search-actions'), this.$('#search-results')], $actions = ref[0], $results = ref[1];
       $window = $(window);
       pos = $actions.offset().top - 10;
-      $window.scroll((function(_this) {
-        return function() {
-          if ($window.scrollTop() > pos) {
-            return $actions.addClass('toolbar-fixed').width($results.width() + 22);
-          } else {
-            return $actions.removeClass('toolbar-fixed').width('auto');
-          }
-        };
-      })(this));
       return $window.resize(function() {
         if ($window.scrollTop() > pos) {
           return $actions.width($results.width() + 23);
