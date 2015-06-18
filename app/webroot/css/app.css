@@ -7063,7 +7063,7 @@ div#toolbar {
   background: #ccc;
   padding-left: 10px;
   height: 60px;
-  box-shadow: 1px 2px 1px #aaa;
+  box-shadow: 0 2px 5px rgba(128, 128, 128, 0.5);
 }
 div#toolbar a#logo-wrapper:hover {
   text-decoration: none;
@@ -7250,7 +7250,7 @@ div#toolbar .toolbar-btn {
   width: 100%;
   height: 50px;
   background: #fff;
-  box-shadow: 2px 2px 5px #ddd;
+  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .search-help-btn {
   float: right;
@@ -7335,10 +7335,9 @@ div#toolbar .toolbar-btn {
   color: #ddd;
 }
 div#search-results-wrapper {
+  float: left;
+  width: 100vw;
   background: #ddd;
-  margin-top: 30px;
-  margin-left: -10px;
-  margin-right: -10px;
   min-height: 70%;
 }
 div#search-results-wrapper div#search-results {
@@ -7350,6 +7349,7 @@ div#search-results-wrapper div#search-results table {
   border-collapse: separate;
 }
 div#search-results-wrapper div#search-actions {
+  background: #cecece;
   padding-left: 0px;
   padding-right: 3em;
   margin-bottom: 19px;
@@ -7365,6 +7365,7 @@ div#search-results-wrapper div#search-actions .notactive {
   color: rgba(68, 68, 68, 0.25);
 }
 div#search-results-wrapper div#search-actions .active {
+  z-index: 0;
   color: #0093be;
   box-shadow: none;
 }
@@ -7409,7 +7410,7 @@ div#search-results-wrapper .search-toolbar {
   padding: 5px;
   height: 60px;
   background-color: #CECECE;
-  box-shadow: 5px 5px 5px #aaa;
+  box-shadow: 0 2px 10px rgba(128, 128, 128, 0.5);
   z-index: 1001;
 }
 div#search-results-wrapper .toolbar-fixed {
@@ -7481,20 +7482,38 @@ div#search-results-wrapper .toolbar-fixed {
 .result img:hover {
   cursor: pointer;
 }
-1#search-pagination {
-  padding-top: 15px;
+#search-bottom-bar {
+  float: left;
+  width: 100%;
+  background: #cecece;
+  box-shadow: 0 -2px 5px rgba(128, 128, 128, 0.5);
 }
-1#search-pagination .search-pages {
-  padding-top: 15px;
+#search-pagination {
+  width: 90%;
+  padding: 0;
+  margin: auto;
+}
+#search-pagination .search-pages {
   display: inline;
 }
-1#search-pagination .search-description {
+#search-pagination .search-pages .btn-group .btn {
+  border: 0;
+  font-size: 120%;
+  color: #808080;
+  font-weight: bold;
+}
+#search-pagination .search-pages .btn-group .active {
+  box-shadow: none;
+  background: #0093be;
+  color: #fff;
+}
+#search-pagination .search-description {
+  display: none;
   color: #555;
   margin-left: 20px;
   position: relative;
   top: 6px;
   vertical-align: top;
-  display: inline;
 }
 body.viewer {
   background: #fff;
@@ -8426,7 +8445,7 @@ ul.annotations li.annotation:hover {
   color: #333;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: #ddd;
-  box-shadow: 2px 2px 1px #aaa;
+  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
@@ -8486,8 +8505,8 @@ ul.annotations li.annotation:hover {
   padding: 0;
   margin-bottom: 25px;
   background: #ddd;
-  -webkit-box-shadow: 2px 2px 1px #aaaaaa;
-  box-shadow: 2px 2px 1px #aaaaaa;
+  -webkit-box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
+  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .accordion-wrapper details[open] blockquote {
   border-color: #ddd;
@@ -9821,7 +9840,7 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   color: #333;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: #ddd;
-  box-shadow: 2px 2px 1px #aaa;
+  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
@@ -9881,8 +9900,8 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   padding: 0;
   margin-bottom: 20px;
   background: #ddd;
-  -webkit-box-shadow: 2px 2px 1px #aaaaaa;
-  box-shadow: 2px 2px 1px #aaaaaa;
+  -webkit-box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
+  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .collection-list-wrapper .collection-list details[open] blockquote {
   border-color: #ddd;
