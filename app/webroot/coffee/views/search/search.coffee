@@ -105,12 +105,12 @@ class arcs.views.search.Search extends Backbone.View
     $window = $(window)
     pos = $actions.offset().top - 10
 
-    $window.scroll =>
-      # Toggle the toolbar's fixed position
-      if $window.scrollTop() > pos
-        $actions.addClass('toolbar-fixed').width $results.width() + 22
-      else
-        $actions.removeClass('toolbar-fixed').width 'auto'
+##    $window.scroll =>
+##      # Toggle the toolbar's fixed position
+##      if $window.scrollTop() > pos
+##        $actions.addClass('toolbar-fixed').width $results.width() + 22
+##      else
+##        $actions.removeClass('toolbar-fixed').width 'auto'
 
     # Fix the toolbar width on resizes. 
     $window.resize ->

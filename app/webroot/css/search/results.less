@@ -4,10 +4,9 @@
 @ArcsBlue: rgb(0, 147, 190);
 
 div#search-results-wrapper {
+    float: left;
+    width: 100vw;
     background: #ddd;
-    margin-top: 30px;
-    margin-left: -10px;
-    margin-right: -10px;
     min-height: 70%;
 
     div#search-results {
@@ -20,6 +19,7 @@ div#search-results-wrapper {
     }
 
     div#search-actions {
+        background: #cecece;
         padding-left: 0px;
         padding-right: 3em;
         margin-bottom: 19px;
@@ -37,6 +37,7 @@ div#search-results-wrapper {
         }
         
         .active {
+            z-index: 0;
             color: @ArcsBlue;
             box-shadow: none;
         }
@@ -76,7 +77,7 @@ div#search-results-wrapper {
         padding: 5px;
         height: 60px;
         background-color: #CECECE;
-        box-shadow: 5px 5px 5px #aaa;
+        box-shadow: 0 2px 10px rgba(128, 128, 128, .5);
         z-index: 1001;
     }
 

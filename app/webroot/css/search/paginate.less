@@ -1,17 +1,43 @@
-1#search-pagination {
-  padding-top: 15px;
+@ArcsBlue: rgb(0, 147, 190);
 
-  .search-pages {
-    padding-top: 15px;
-    display: inline;
-  }
+#search-bottom-bar {
+    float: left;
+    width: 100%;
+    background: #cecece;
+    box-shadow: 0 -2px 5px rgba(128, 128, 128, .5);
+}
 
-  .search-description {
-    color: #555;
-    margin-left: 20px;
-    position: relative;
-    top: 6px;
-    vertical-align: top;
-    display: inline;
-  }
+#search-pagination {
+    width: 90%;
+    padding: 0;
+    margin: auto;
+
+    .search-pages {
+        display: inline;
+        
+        .btn-group {
+            .btn {
+                border: 0;
+                font-size: 120%;
+                color: #808080;
+                font-weight: bold;
+            }
+            
+            .active {
+                box-shadow: none;
+                background: @ArcsBlue;
+                color: #fff;
+            }
+        }
+    }
+
+    .search-description {
+        display: none;
+        color: #555;
+        margin-left: 20px;
+        position: relative;
+        top: 6px;
+        vertical-align: top;
+//        display: inline;
+    }
 }

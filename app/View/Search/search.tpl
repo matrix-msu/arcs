@@ -169,7 +169,9 @@
     </div>
   </div>
   <div id="search-results"></div>
-  <div id="search-pagination"></div>
+  <div id='search-bottom-bar'>
+    <div id="search-pagination"></div>
+  </div>
 </div>
 
 <script>
