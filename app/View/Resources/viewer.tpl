@@ -105,7 +105,7 @@
         <textarea id="content" name="content"></textarea>
         <button id="comment-btn" class="btn">Comment</button>
         {% else %}
-        {{ html.link('Login', '/login') }} to comment.
+        {{ html.link('Login', '#loginModal') }} to comment.
         {% endif %}
       </div>
     </div>
@@ -123,4 +123,11 @@
     collection: arcs.collection,
     el: $('#viewer')
   });
+  
+  console.log ("in here");
+  if ($("img[alt='resource']").length == 0) {
+    console.log("vrai");
+    $("#resource").height("700");
+  }
+    
 </script>

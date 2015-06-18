@@ -6917,8 +6917,11 @@ h4 {
   font-size: 80%;
   margin: 10px;
 }
+.modal {
+  background-color: #000000;
+}
 .modal .modal-header {
-  background-color: #ddd;
+  background-color: #000000;
   border-bottom: 1px solid #999;
   box-shadow: inset 0 1px 0 #ffffff;
 }
@@ -6931,7 +6934,7 @@ h4 {
   max-height: 450px;
 }
 .modal .modal-footer {
-  background-color: #ddd;
+  background-color: #000000;
   border-top-color: #999;
 }
 .modal input.error,
@@ -7211,15 +7214,43 @@ div#toolbar .toolbar-btn {
 .hotkeys-modal .modal-body table th {
   font-weight: bold;
 }
+.searchIntro {
+  width: 90%;
+  margin: auto;
+}
+.searchIntro h1 {
+  margin-bottom: 25px;
+}
+.searchIntro p {
+  line-height: 200%;
+}
 #hotspot-search input[type=text],
 .search-wrapper input[type=text] {
   box-shadow: none;
 }
-.search-wrapper {
-  margin-top: 30px;
+#search-wrapper {
   width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2em auto 5em auto;
+  color: #0093be;
+}
+#search-wrapper ul {
+  padding: 0;
+  list-style-type: none;
+  width: 100%;
+  margin-bottom: 3em;
+}
+#search-wrapper ul li {
+  display: inline-block;
+  width: 8.7%;
+  text-transform: uppercase;
+  font-size: 90%;
+  text-align: center;
+}
+#search-wrapper input[type=text] {
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  box-shadow: 2px 2px 5px #ddd;
 }
 .search-help-btn {
   float: right;
@@ -7305,33 +7336,61 @@ div#toolbar .toolbar-btn {
 }
 div#search-results-wrapper {
   background: #ddd;
-  border: 1px solid #bbb;
-  padding: 20px;
-  padding-top: 10px;
   margin-top: 30px;
+  margin-left: -10px;
+  margin-right: -10px;
   min-height: 70%;
 }
 div#search-results-wrapper div#search-results {
-  min-height: 400px;
-  border: 1px solid #888;
-  background: #cbcbcb;
+  width: 90%;
+  margin: auto;
   color: #444;
-  text-align: left;
-  padding: 10px;
-  overflow: auto;
 }
 div#search-results-wrapper div#search-results table {
   border-collapse: separate;
 }
 div#search-results-wrapper div#search-actions {
   padding-left: 0px;
-  padding-right: 0px;
+  padding-right: 3em;
   margin-bottom: 19px;
+}
+div#search-results-wrapper div#search-actions .btn {
+  background: transparent;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  text-transform: uppercase;
+}
+div#search-results-wrapper div#search-actions .notactive {
+  color: rgba(68, 68, 68, 0.25);
+}
+div#search-results-wrapper div#search-actions .active {
+  color: #0093be;
+  box-shadow: none;
+}
+div#search-results-wrapper div#search-actions .icon-grid {
+  width: 17px;
+  height: 16px;
+}
+div#search-results-wrapper div#search-actions .icon-grid:before {
+  content: '';
+  height: 19px;
+  width: 19px;
+  background: #333;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  box-shadow: 21px 0 0 #333, 0 21px 0 #333, 21px 21px 0 #333;
+  -webkit-box-shadow: 21px 0 0 #333, 0 21px 0 #333, 21px 21px 0 #333;
+  -moz-box-shadow: 21px 0 0 #333, 0 21px 0 #333, 21px 21px 0 #333;
 }
 div#search-results-wrapper div#search-actions .actions-right {
   float: right;
   position: relative;
-  bottom: 28px;
 }
 div#search-results-wrapper div#search-actions #open-buttons {
   right: 20px;
@@ -7347,11 +7406,10 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   cursor: pointer;
 }
 div#search-results-wrapper .search-toolbar {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 10px;
-  height: 28px;
-  background-color: #ddd;
+  padding: 5px;
+  height: 60px;
+  background-color: #CECECE;
+  box-shadow: 5px 5px 5px #aaa;
   z-index: 1001;
 }
 div#search-results-wrapper .toolbar-fixed {
@@ -7423,14 +7481,14 @@ div#search-results-wrapper .toolbar-fixed {
 .result img:hover {
   cursor: pointer;
 }
-#search-pagination {
+1#search-pagination {
   padding-top: 15px;
 }
-#search-pagination .search-pages {
+1#search-pagination .search-pages {
   padding-top: 15px;
   display: inline;
 }
-#search-pagination .search-description {
+1#search-pagination .search-description {
   color: #555;
   margin-left: 20px;
   position: relative;
@@ -7792,6 +7850,7 @@ ul.annotations li.annotation:hover {
 }
 .hotspot {
   position: absolute;
+  opacity: 0;
   background: rgba(25, 25, 25, 0.2);
   border: 1px solid #888;
   display: block;
@@ -8730,14 +8789,15 @@ input[type="text"]:focus {
 /* /////////////////////////////////////INTRO
 //////////////////////////////////////////////*/
 .intro {
-  margin: -40px 0 0 0;
-  padding: 5%;
+  width: 90%;
+  margin: auto auto 10em auto;
 }
 .intro h1 {
   font-size: 30px;
   font-weight: 400;
   font-family: 'helvetica', sans-serif;
   color: #525553;
+  margin-bottom: 1em;
 }
 .intro p {
   font-size: 14px;
@@ -8746,14 +8806,13 @@ input[type="text"]:focus {
   color: #525553;
   line-height: 2;
   max-width: 900px;
+  margin-bottom: 5em;
 }
 /* /////////////////////////////////////INTRO END
 //////////////////////////////////////////////*/
 /* /////////////////////////////////////MAP
 //////////////////////////////////////////////*/
 #map {
-  display: block;
-  bottom: 0;
   height: 500px;
   width: 100%;
 }

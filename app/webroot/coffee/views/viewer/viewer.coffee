@@ -53,9 +53,10 @@ class arcs.views.Viewer extends Backbone.View
 
     @index ?= 0
     @resize()
-
+  
+  # dblclick event isn't going to work.
   events:
-    'dblclick #resource img' : 'openFull'
+    #'dblclick #resource_img' : 'openFull'
     'click #next-btn'        : 'next'
     'click #prev-btn'        : 'prev'
 
@@ -161,7 +162,7 @@ class arcs.views.Viewer extends Backbone.View
     COLLECTION = 204
     TAB_MARGIN = 75
 
-    $resource = @$('#resource img')
+    $resource = @$("img[alt='resource']")
     $wrapping = @$('#wrapping')
     $well = @$('.viewer-well')
 
@@ -189,8 +190,7 @@ class arcs.views.Viewer extends Backbone.View
     @$('#resource').html arcs.tmpl template, @model.toJSON()
 
     # Trigger the resourceloaded event.
-    @$('#resource img').load ->
-      arcs.bus.trigger 'resourceLoaded'
+    @$("img[alt='resource']").load arcs.bus.trigger 'resourceLoaded'
 
     # Render the resource (and collection) info tables.
     @$('#resource-details').html arcs.tmpl 'viewer/table', @model.toJSON()

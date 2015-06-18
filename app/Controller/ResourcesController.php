@@ -153,7 +153,9 @@ class ResourcesController extends AppController {
             $this->Session->setFlash("Oops. You'll need to login to view that.", 
                 'flash_error');
             $this->Session->write('redirect', '/resource/' . $id);
-            return $this->redirect($this->Auth->redirect('/users/login'));
+            // return $this->redirect($this->Auth->redirect('/users/login'));
+            // this doesn't redirect back to resources when the user logins
+            return $this->redirect($this->Auth->redirect('#loginModal'));
         }
         
         # Redirect if the resource's context is non-null.
@@ -177,6 +179,9 @@ class ResourcesController extends AppController {
             'title_for_layout' => $resource['Resource']['title']
         ));
 
+        debug($resource);
+
+        // Debugger::var_dump($resource);
         # On the first request of a particular resource (usually directly 
         # after upload), we might prompt the user for additional 
         # actions/information. Here we're turning that off for future 

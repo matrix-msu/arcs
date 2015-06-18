@@ -6,7 +6,7 @@ class arcs.views.Annotation extends Backbone.View
     @collection = new arcs.collections.AnnotationList
     @collection.on 'add sync reset remove', @render, @
 
-    arcs.bus.on 'resourceLoaded', @onLoad, @
+    arcs.bus.on 'resourceLoaded', @onload, @
     arcs.bus.on 'resourceReloaded', @render, @
     arcs.bus.on 'resourceResize', @render, @
     arcs.bus.on 'indexChange', @clear, @
@@ -14,9 +14,11 @@ class arcs.views.Annotation extends Backbone.View
 
     @visible = true
     @active = false
+    
+    arcs.keys.map @, a: @collection.fetch()
 
-    $('#annotation-vis-btn').on 'click', => @toggleVisibility()
-    arcs.keys.map @, a: @toggleVisibility
+    #$('#annotation-vis-btn').on 'click', => @toggleVisibility()
+    #arcs.keys.map @, a: @toggleVisibility
 
   events:
     'click #annotate-new-btn'  : 'newAnnotation'
@@ -24,11 +26,12 @@ class arcs.views.Annotation extends Backbone.View
     'mouseenter .annotation'   : 'onSummaryMouseenter'
     'mouseleave .annotation'   : 'onSummaryMouseleave'
     'mouseenter .hotspot'      : 'onBoxMouseenter'
+    'mouseleave .hotspot'      : 'onBoxMouseleave'
     'hover .annotation a'      : 'onSummaryMouseenter'
     'click .remove-btn'        : 'removeAnnotation'
 
-  onLoad: ->
-    @img = $('#resource img')
+  onload: ->
+    @img = $("img[alt='resource']")
     @setupSelection() if @active
     @collection.fetch()
 
@@ -64,12 +67,18 @@ class arcs.views.Annotation extends Backbone.View
 
   onBoxMouseenter: (e) ->
     $el = $(e.target)
+    $el.fadeTo("fast", 1)
     anno = @collection.get $el.data 'id'
     $el.popover
       title: arcs.tmpl('viewer/popover_title', {type: anno.getType()})
       content: arcs.tmpl 'viewer/popover', anno.toJSON()
       placement: @_placePopover($el)
     $el.popover 'show'
+
+  onBoxMouseleave: (e) ->
+    $el = $(e.target)
+    $el.fadeTo("fast", 0)
+    $el.popover 'hide'
 
   # When initializing a popover, choose the side with the most room.
   _placePopover: ($el) ->
@@ -196,18 +205,21 @@ class arcs.views.Annotation extends Backbone.View
   # Render annotations and hotspots.
   render: ->
     @clear()
-    annos = 
-      annotations: @collection.map (m) =>
-        if rid = m.get 'relation'
-          # Find our relation's Resource model (If the anno is new, it's in the 
-          # search results col. If the old, the server gave it to us.)
-          m.set 'relation', 
-            (@search?.results.get(rid) || @collection.relations?.get(rid)).toJSON()
-        _.extend m.toJSON(), m.scaleTo(@img.height(), @img.width())
-      offset: $('#resource img').offset().left - $('#resource').offset().left
-    $('#annotations-wrapper').html arcs.tmpl 'viewer/annotations', annos
-    if @visible
-      $('#hotspots-wrapper').html arcs.tmpl 'viewer/hotspots', annos
-    if @active
-      $('.hotspot i').show()
+
+    # causes error when there are multiple imgs (multiple pages in pdf).
+    if $("img[alt='resource']").length != 0
+      annos = 
+        annotations: @collection.map (m) =>
+          if rid = m.get 'relation'
+            # Find our relation's Resource model (If the anno is new, it's in the 
+            # search results col. If the old, the server gave it to us.)
+            m.set 'relation', 
+              (@search?.results.get(rid) || @collection.relations?.get(rid)).toJSON()
+          _.extend m.toJSON(), m.scaleTo(@img.height(), @img.width())
+        offset: $("img[alt='resource']").offset().left - $('#resource').offset().left
+      $('#annotations-wrapper').html arcs.tmpl 'viewer/annotations', annos
+      if @visible
+        $('#hotspots-wrapper').html arcs.tmpl 'viewer/hotspots', annos
+      if @active
+        $('.hotspot i').show()
     @

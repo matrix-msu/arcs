@@ -10,7 +10,7 @@
   <div style="font-weight:200">
     <i class="icon-info-sign"></i>
     You're viewing publicly available resources.
-    You'll need to {{ html.link('login', '/login') }} to see the rest.
+    You'll need to {{ html.link('login', '#loginModal') }} to see the rest.
   </div>
   {% endif %}
 

@@ -66,7 +66,6 @@
     };
 
     Viewer.prototype.events = {
-      'dblclick #resource img': 'openFull',
       'click #next-btn': 'next',
       'click #prev-btn': 'prev'
     };
@@ -198,7 +197,7 @@
       STANDALONE = 128;
       COLLECTION = 204;
       TAB_MARGIN = 75;
-      $resource = this.$('#resource img');
+      $resource = this.$("img[alt='resource']");
       $wrapping = this.$('#wrapping');
       $well = this.$('.viewer-well');
       margin = $('body').hasClass('standalone') ? STANDALONE : COLLECTION;
@@ -233,9 +232,7 @@
           template = 'viewer/unknown';
       }
       this.$('#resource').html(arcs.tmpl(template, this.model.toJSON()));
-      this.$('#resource img').load(function() {
-        return arcs.bus.trigger('resourceLoaded');
-      });
+      this.$("img[alt='resource']").load(arcs.bus.trigger('resourceLoaded'));
       this.$('#resource-details').html(arcs.tmpl('viewer/table', this.model.toJSON()));
       if (this.collectionModel != null) {
         this.$('#collection-details').html(arcs.tmpl('viewer/collection_table', this.collectionModel.toJSON()));

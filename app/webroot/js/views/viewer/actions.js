@@ -249,7 +249,7 @@
     };
 
     ViewerActions.prototype.zoomTo = function(level) {
-      $('#resource img').data('zoom', level);
+      $("img[alt='resource']").data('zoom', level);
       this.viewer.resize();
       this._checkZoom();
       return arcs.bus.trigger('resourceReloaded');
@@ -257,9 +257,9 @@
 
     ViewerActions.prototype.zoomIn = function() {
       var current;
-      current = $('#resource img').data('zoom');
+      current = $("img[alt='resource']").data('zoom');
       if (current < 2) {
-        $('#resource img').data('zoom', current + 0.25);
+        $("img[alt='resource']").data('zoom', current + 0.25);
       }
       this.viewer.resize();
       this._checkZoom();
@@ -268,9 +268,9 @@
 
     ViewerActions.prototype.zoomOut = function() {
       var current;
-      current = $('#resource img').data('zoom');
+      current = $("img[alt='resource']").data('zoom');
       if (current > 1) {
-        $('#resource img').data('zoom', current - 0.25);
+        $("img[alt='resource']").data('zoom', current - 0.25);
       }
       this.viewer.resize();
       this._checkZoom();
@@ -279,7 +279,7 @@
 
     ViewerActions.prototype._checkZoom = function() {
       var zoom;
-      zoom = $('#resource img').data('zoom');
+      zoom = $("img[alt='resource']").data('zoom');
       if (zoom === 1) {
         this.$('#zoom-out-btn').addClass('disabled');
       }

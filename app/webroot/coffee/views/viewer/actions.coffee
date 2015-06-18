@@ -177,29 +177,29 @@ class arcs.views.ViewerActions extends arcs.views.BaseActions
     , 1000)
 
   zoomTo: (level) ->
-    $('#resource img').data 'zoom', level
+    $("img[alt='resource']").data 'zoom', level
     @viewer.resize()
     @_checkZoom()
     arcs.bus.trigger 'resourceReloaded'
 
   zoomIn: ->
-    current = $('#resource img').data 'zoom'
+    current = $("img[alt='resource']").data 'zoom'
     if current < 2
-      $('#resource img').data 'zoom', current + 0.25
+      $("img[alt='resource']").data 'zoom', current + 0.25
     @viewer.resize()
     @_checkZoom()
     arcs.bus.trigger 'resourceReloaded'
 
   zoomOut: ->
-    current = $('#resource img').data 'zoom'
+    current = $("img[alt='resource']").data 'zoom'
     if current > 1
-      $('#resource img').data 'zoom', current - 0.25
+      $("img[alt='resource']").data 'zoom', current - 0.25
     @viewer.resize()
     @_checkZoom()
     arcs.bus.trigger 'resourceReloaded'
 
   _checkZoom: ->
-    zoom = $('#resource img').data 'zoom'
+    zoom = $("img[alt='resource']").data 'zoom'
     if zoom == 1
       @$('#zoom-out-btn').addClass 'disabled'
     if zoom == 2

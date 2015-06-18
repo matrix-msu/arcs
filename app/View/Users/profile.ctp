@@ -24,7 +24,6 @@
             </dl>
         </div>
     </div>
-	
     <div class="row tabbable" id="user-actions">
         <ul class="nav nav-tabs">
             <li id='uploads'><a href="#" onclick="changeTab('uploads'); return false;">Uploads</a></li>

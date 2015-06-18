@@ -13,20 +13,15 @@
     Annotation.prototype.initialize = function() {
       this.collection = new arcs.collections.AnnotationList;
       this.collection.on('add sync reset remove', this.render, this);
-      arcs.bus.on('resourceLoaded', this.onLoad, this);
+      arcs.bus.on('resourceLoaded', this.onload, this);
       arcs.bus.on('resourceReloaded', this.render, this);
       arcs.bus.on('resourceResize', this.render, this);
       arcs.bus.on('indexChange', this.clear, this);
       arcs.bus.on('annotate', this.toggleState, this);
       this.visible = true;
       this.active = false;
-      $('#annotation-vis-btn').on('click', (function(_this) {
-        return function() {
-          return _this.toggleVisibility();
-        };
-      })(this));
       return arcs.keys.map(this, {
-        a: this.toggleVisibility
+        a: this.collection.fetch()
       });
     };
 
@@ -36,12 +31,13 @@
       'mouseenter .annotation': 'onSummaryMouseenter',
       'mouseleave .annotation': 'onSummaryMouseleave',
       'mouseenter .hotspot': 'onBoxMouseenter',
+      'mouseleave .hotspot': 'onBoxMouseleave',
       'hover .annotation a': 'onSummaryMouseenter',
       'click .remove-btn': 'removeAnnotation'
     };
 
-    Annotation.prototype.onLoad = function() {
-      this.img = $('#resource img');
+    Annotation.prototype.onload = function() {
+      this.img = $("img[alt='resource']");
       if (this.active) {
         this.setupSelection();
       }
@@ -92,6 +88,7 @@
     Annotation.prototype.onBoxMouseenter = function(e) {
       var $el, anno;
       $el = $(e.target);
+      $el.fadeTo("fast", 1);
       anno = this.collection.get($el.data('id'));
       $el.popover({
         title: arcs.tmpl('viewer/popover_title', {
@@ -101,6 +98,13 @@
         placement: this._placePopover($el)
       });
       return $el.popover('show');
+    };
+
+    Annotation.prototype.onBoxMouseleave = function(e) {
+      var $el;
+      $el = $(e.target);
+      $el.fadeTo("fast", 0);
+      return $el.popover('hide');
     };
 
     Annotation.prototype._placePopover = function($el) {
@@ -292,24 +296,26 @@
     Annotation.prototype.render = function() {
       var annos;
       this.clear();
-      annos = {
-        annotations: this.collection.map((function(_this) {
-          return function(m) {
-            var ref, ref1, rid;
-            if (rid = m.get('relation')) {
-              m.set('relation', (((ref = _this.search) != null ? ref.results.get(rid) : void 0) || ((ref1 = _this.collection.relations) != null ? ref1.get(rid) : void 0)).toJSON());
-            }
-            return _.extend(m.toJSON(), m.scaleTo(_this.img.height(), _this.img.width()));
-          };
-        })(this)),
-        offset: $('#resource img').offset().left - $('#resource').offset().left
-      };
-      $('#annotations-wrapper').html(arcs.tmpl('viewer/annotations', annos));
-      if (this.visible) {
-        $('#hotspots-wrapper').html(arcs.tmpl('viewer/hotspots', annos));
-      }
-      if (this.active) {
-        $('.hotspot i').show();
+      if ($("img[alt='resource']").length !== 0) {
+        annos = {
+          annotations: this.collection.map((function(_this) {
+            return function(m) {
+              var ref, ref1, rid;
+              if (rid = m.get('relation')) {
+                m.set('relation', (((ref = _this.search) != null ? ref.results.get(rid) : void 0) || ((ref1 = _this.collection.relations) != null ? ref1.get(rid) : void 0)).toJSON());
+              }
+              return _.extend(m.toJSON(), m.scaleTo(_this.img.height(), _this.img.width()));
+            };
+          })(this)),
+          offset: $("img[alt='resource']").offset().left - $('#resource').offset().left
+        };
+        $('#annotations-wrapper').html(arcs.tmpl('viewer/annotations', annos));
+        if (this.visible) {
+          $('#hotspots-wrapper').html(arcs.tmpl('viewer/hotspots', annos));
+        }
+        if (this.active) {
+          $('.hotspot i').show();
+        }
       }
       return this;
     };
