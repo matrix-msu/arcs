@@ -20,9 +20,9 @@
 <div class="collection-list-wrapper">
     <h1>Collections</h1><br>
 
-  <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter
-  <span class="caret"></span></button>
+  <div id='collections-filter' class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter By
+  <span class="pointerDown filter-arrow"></span></button>
   <ul class="dropdown-menu">
     <li><a id="new-old" href="#">Newest to Oldest</a></li>
     <li><a id="old-new" href="#">Oldest to Newest</a></li>
@@ -117,4 +117,9 @@
 	  });
 	  filter.css('font-weight', 'bold');
 	});	
+
+	$( '.dropdown-toggle' ).click(function() {
+	  $( '.filter-arrow' ).toggleClass( 'pointerUp' );
+	  $( '.dropdown-toggle' ).toggleClass( 'dropdown-open' );
+	});
 </script>
