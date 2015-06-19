@@ -122,4 +122,11 @@
 	  $( '.filter-arrow' ).toggleClass( 'pointerUp' );
 	  $( '.dropdown-toggle' ).toggleClass( 'dropdown-open' );
 	});
+
+	$( window ).click(function() {
+		if ( $( '#collections-filter' ).hasClass( 'open' ) == false && $( '.filter-arrow' ).hasClass( 'pointerUp' ) ) {
+			$( '.filter-arrow' ).removeClass( 'pointerUp' );
+			$( '.dropdown-toggle' ).removeClass( 'dropdown-open' );
+		}
+	});
 </script>
