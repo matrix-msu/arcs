@@ -1,4 +1,4 @@
-<div class="tab-pane" id="disucssion-tab">
+<div class="tab-pane" id="discussion-tab">
 <?php if(empty($user_info['Comment'])): ?>
     <h4>No discussion items</h4>
 <?php else: ?>
