@@ -15,7 +15,8 @@ class arcs.views.Annotation extends Backbone.View
     @visible = true
     @active = false
     
-    arcs.keys.map @, a: @collection.fetch()
+    console.log "testting"
+    #arcs.keys.map @, a: @collection.fetch()
 
     #$('#annotation-vis-btn').on 'click', => @toggleVisibility()
     #arcs.keys.map @, a: @toggleVisibility
@@ -27,7 +28,7 @@ class arcs.views.Annotation extends Backbone.View
     'mouseleave .annotation'   : 'onSummaryMouseleave'
     'mouseenter .hotspot'      : 'onBoxMouseenter'
     'mouseleave .hotspot'      : 'onBoxMouseleave'
-    'hover .annotation a'      : 'onSummaryMouseenter'
+    # 'hover .annotation a'      : 'onSummaryMouseenter'
     'click .remove-btn'        : 'removeAnnotation'
 
   onload: ->

@@ -10,16 +10,20 @@
         <!-- ios devices go full screen! -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link href='http://fonts.googleapis.com/css?family=Pontano+Sans' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+        <!--<link href='http://fonts.googleapis.com/css?family=Pontano+Sans' rel='stylesheet' type='text/css'>-->
+
+        <!-- app/webroot/js/vendor/leaflet-src.js and app/webroot/js/vendor/leaflet.js don't show the project. -->
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
+
         <?php 
+        // Add the filename to app/Config/assets.ini to automatically call the css/js files here.
         echo $this->Assets->stylesheets();
         echo $this->Assets->scripts();
         ?>
-        <!-- Move bootstrap.min.js into app/webroot/js -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
         <script>arcs.user = new arcs.models.User(<?php echo json_encode($user) ?>);</script>
     </head>
     <body class="<?php echo $body_class ?>">

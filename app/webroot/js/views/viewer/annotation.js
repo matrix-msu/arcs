@@ -20,9 +20,7 @@
       arcs.bus.on('annotate', this.toggleState, this);
       this.visible = true;
       this.active = false;
-      return arcs.keys.map(this, {
-        a: this.collection.fetch()
-      });
+      return console.log("testting");
     };
 
     Annotation.prototype.events = {
@@ -32,7 +30,6 @@
       'mouseleave .annotation': 'onSummaryMouseleave',
       'mouseenter .hotspot': 'onBoxMouseenter',
       'mouseleave .hotspot': 'onBoxMouseleave',
-      'hover .annotation a': 'onSummaryMouseenter',
       'click .remove-btn': 'removeAnnotation'
     };
 

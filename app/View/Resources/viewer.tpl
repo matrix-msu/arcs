@@ -123,10 +123,8 @@
     collection: arcs.collection,
     el: $('#viewer')
   });
-  
-  console.log ("in here");
+
   if ($("img[alt='resource']").length == 0) {
-    console.log("vrai");
     $("#resource").height("700");
   }
     

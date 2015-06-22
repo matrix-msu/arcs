@@ -26,11 +26,11 @@
     </div>
     <div class="row tabbable" id="user-actions">
         <ul class="nav nav-tabs">
-            <li id='uploads'><a href="#" onclick="changeTab('uploads'); return false;">Uploads</a></li>
-            <li id='annotations'><a href="#" onclick="changeTab('annotations');  return false;">Annotations</a></li>
-            <li id='flagged'><a href="#" onclick="changeTab('flagged'); return false;">Flagged Items</a></li>
-            <li id='discussion'><a href="#" onclick="changeTab('discussion'); return false;">Discussions</a></li>
-            <li id='collections'><a href="#" onclick="changeTab('collections'); return false;">Collections</a></li>
+            <li id='uploads' class=''><a href="#" onclick="changeTab('uploads'); return false;">Uploads</a></li>
+            <li id='annotations' class=''><a href="#" onclick="changeTab('annotations'); return false;">Annotations</a></li>
+            <li id='flagged' class=''><a href="#" onclick="changeTab('flagged'); return false;">Flagged Items</a></li>
+            <li id='discussion' class=''><a href="#" onclick="changeTab('discussion'); return false;">Discussions</a></li>
+            <li id='collections' class=''><a href="#" onclick="changeTab('collections'); return false;">Collections</a></li>
         </ul>
         <div class="tab-content">
             <?php echo $this->element('tabs/uploads-tab') ?>
@@ -47,18 +47,18 @@
         el: $('#user-profile'),
         model: new arcs.models.User(<?php echo json_encode($user); ?>)
     });
-	
+
+    console.log($("#collections"));
 	// used to open tabs
-	var currentTab = '#uploads';
+	var currentTab = 'uploads';
 	$('#uploads').addClass('active');
 	function changeTab(tab) {
-		tab = '#' + tab;
 		if (currentTab != tab) {
-			$(currentTab).removeClass('active');
-			$(currentTab + '-tab').removeClass('active');
-			$(tab).addClass('active');
-			$(tab + '-tab').addClass('active');
-			currentTab = tab;
+		 	$("li[id="+currentTab+"]").removeClass('active');
+		 	$("#" + currentTab + '-tab').removeClass('active');
+		 	$("li[id="+tab+"]").addClass('active');
+		 	$("#" + tab + '-tab').addClass('active');
+		 	currentTab = tab;
 		}
 	}
 </script>

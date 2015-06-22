@@ -64,5 +64,12 @@ docs:
 	$(foreach doc, $(DOCS), python -m markdown -x tables -x headerid $(doc) > \
 		app/View/Help/$(notdir $(basename $(doc))).ctp;)
 
+# Install the packages we use.
+install:
+	npm install -g coffee-script
+	npm install -g uglify-js
+	npm install -g clean-css
+	npm install -g less
+
 # Make everything.
 all: js css docs
