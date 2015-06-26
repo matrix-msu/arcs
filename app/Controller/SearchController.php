@@ -37,8 +37,15 @@ class SearchController extends AppController {
 
         if (!isset($this->request->query['q']))
             return $this->emptySearch($options);
+				
+		if (isset($this->request->query['n'])) {
+			$limit = $this->request->query['n'];
+			$response['limit'] = $limit;
+		}
+            
 
-        $searcher = $this->getSearcher();
+		//old code using old seracher. outdated now that kora is being used?
+        /* $searcher = $this->getSearcher();
         if ($this->Auth->loggedIn())
             $searcher->publicFilter = false;
         $query = $searcher->parseQuery($this->request->query['q']);
@@ -59,7 +66,31 @@ class SearchController extends AppController {
         if (!$this->Access->isAdmin()) {
             unset($response['raw_query']);
             unset($response['mode']);
-        }
+        } */
+		
+		$user = "";
+		$pass = "";
+		$type = $this->request->query['q'];
+		$display = "json";
+		$query = "Type,=,".$type;
+		$url = "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
+		///capture results and display
+		//$response['results'] = json_decode(curl_exec($ch), false);
+		$response['results'] = json_decode(curl_exec($ch), true);
+		$returnResults = array();
+		foreach($response['results'] as $item) {
+			
+			$item['thumb'] = "http://kora.matrix.msu.edu/files/123/736/".$item['Resource Identifier'].".jpg";
+			array_push($returnResults, $item);
+		}
+		$response['results'] = $returnResults;
+		$response['total'] = count($response['results']);
+		//var_dump($returnResults);
         $this->json(200, $response);
     }
 
@@ -84,13 +115,19 @@ class SearchController extends AppController {
      */
     public function emptySearch($options) {
         # No facets provided. Give them back some recent resources.
-        $resources = $this->Resource->find('all', array(
-            'conditions' => $this->Auth->loggedIn() ? 
-                null: array('Resource.public' => 1),
-            'limit' => $options['limit'],
-            'offset' => $options['offset'],
-            'order' => "Resource.{$options['order']} {$options['direction']}"
-        ));
+        $user = "";
+		$pass = "";
+
+		$display = "json";
+		$query = "";
+		$url = "http://kora.matrix.msu.edu/api/restful.php"."?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=".urlencode($display);//."query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
+		///capture results and display
+		$resources = curl_exec($ch);
         $this->json(200, array(
             'results' => $resources,
             'num_results' => count($resources),
