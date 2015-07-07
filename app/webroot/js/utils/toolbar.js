@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 	if (pathname.includes( 'upload' )) {
 		$( '#upload' ).addClass( 'btn-blue' );
-	} else if (pathname.includes( 'resources' )) {
+	} else if (pathname.includes( 'resource' )) {
 		$( '#resources' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'about' )) {
 		$( '#about' ).addClass( 'btn-blue' ); 

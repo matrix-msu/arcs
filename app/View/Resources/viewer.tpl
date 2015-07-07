@@ -1,4 +1,4 @@
-<div id="viewer-controls">
+<div id="viewer-controls" class='viewer-controls-override'>
   {{ html.link(resource.Resource.title, '/resource/' ~ resource.Resource.id, 
     {'class': 'title subtle'}) }} 
   <button id="full-screen-btn" class="btn toolbar-btn" rel="tooltip"
