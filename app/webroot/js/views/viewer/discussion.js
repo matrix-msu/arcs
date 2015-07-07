@@ -14,7 +14,8 @@
       'click #comment-btn': 'saveComment'
     };
 
-    DiscussionTab.prototype.initialize = function() {
+    DiscussionTab.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el'));
       this.collection = new arcs.collections.Discussion;
       this.collection.on('add remove reset', this.render, this);
       this.$tab = $('#discussion-btn');

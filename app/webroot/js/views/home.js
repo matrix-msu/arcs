@@ -10,7 +10,8 @@
       return Home.__super__.constructor.apply(this, arguments);
     }
 
-    Home.prototype.initialize = function() {
+    Home.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, "el"));
       this.search = new arcs.utils.Search({
         container: $('.search-wrapper'),
         run: false,
@@ -20,6 +21,7 @@
           };
         })(this)
       });
+      console.log(this.search.query);
       return this.renderDetails($('details:first'));
     };
 
@@ -39,13 +41,14 @@
     Home.prototype.renderDetails = function($el) {
       var query, type;
       type = $el.data('type');
-      query = encodeURIComponent('type: "' + type + '"');
+      query = encodeURIComponent(type);
       return $.getJSON(arcs.baseURL + ("resources/search?n=12&q=" + query), function(response) {
         var html;
         html = arcs.tmpl('home/details', {
           resources: response.results
         });
-        return $el.children('div').html(html);
+        $el.children('div').html(html);
+        return console.log(response.results);
       });
     };
 

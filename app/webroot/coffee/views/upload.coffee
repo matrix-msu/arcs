@@ -16,7 +16,8 @@ class arcs.views.Upload extends Backbone.View
   allDone : false
 
   # Make a collection, set things up.
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el')
     @uploads = new arcs.collections.UploadSet
     @setupFileupload()
     @$uploads = @$el.find('#uploads-container')

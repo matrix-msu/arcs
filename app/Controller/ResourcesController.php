@@ -153,8 +153,6 @@ class ResourcesController extends AppController {
             $this->Session->setFlash("Oops. You'll need to login to view that.", 
                 'flash_error');
             $this->Session->write('redirect', '/resource/' . $id);
-            // return $this->redirect($this->Auth->redirect('/users/login'));
-            // this doesn't redirect back to resources when the user logins
             return $this->redirect($this->Auth->redirect('#loginModal'));
         }
         

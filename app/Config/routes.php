@@ -28,7 +28,7 @@
 	
 	# Resource page
     Router::connect('/resources', 
-        array('controller' => 'pages', 'action' => 'display', 'home')
+        array('controller' => 'pages', 'action' => 'display', 'resources')
     );
 
     # Error pages
@@ -49,10 +49,7 @@
         array('controller' => 'users', 'action' => 'register')
     );
 
-    # Login/logout
-    Router::connect('/login', 
-        array('controller' => 'users', 'action' => 'login')
-    );
+    # logout
     Router::connect('/logout', 
         array('controller' => 'users', 'action' => 'logout')
     );

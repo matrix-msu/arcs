@@ -10,7 +10,8 @@
       return Annotation.__super__.constructor.apply(this, arguments);
     }
 
-    Annotation.prototype.initialize = function() {
+    Annotation.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el'));
       this.collection = new arcs.collections.AnnotationList;
       this.collection.on('add sync reset remove', this.render, this);
       arcs.bus.on('resourceLoaded', this.onload, this);
@@ -19,8 +20,7 @@
       arcs.bus.on('indexChange', this.clear, this);
       arcs.bus.on('annotate', this.toggleState, this);
       this.visible = true;
-      this.active = false;
-      return console.log("testting");
+      return this.active = false;
     };
 
     Annotation.prototype.events = {

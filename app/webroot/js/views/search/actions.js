@@ -16,7 +16,8 @@
       return Actions.__super__.constructor.apply(this, arguments);
     }
 
-    Actions.prototype.initialize = function() {
+    Actions.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el', 'collection'));
       this.results = this.collection;
       this.ctxMenu = new arcs.views.ContextMenu({
         el: $(document),

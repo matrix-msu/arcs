@@ -23,8 +23,10 @@
       buttons: {}
     };
 
-    Modal.prototype.initialize = function() {
-      var $sel, name, options, ref, ref1;
+    Modal.prototype.initialize = function(options) {
+      var $sel, name, ref, ref1;
+      _.extend(this.options, _.pick(options, 'draggable', 'backdrop', 'keyboard', 'show', 'class', 'title', 'subtitle', 'template', 'inputs', 'buttons'));
+      console.log(this.options);
       $('#modal').remove();
       $('.modal-backdrop').remove();
       $('body').append(arcs.tmpl('ui/modal_wrapper'));

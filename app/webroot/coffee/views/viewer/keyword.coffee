@@ -9,7 +9,8 @@ class arcs.views.Keyword extends Backbone.View
     'keydown #keyword-btn': 'saveKeyword'
     'click .keyword-remove-btn': 'deleteKeyword'
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el')
     @collection = new arcs.collections.KeywordList
 
     arcs.bus.on 'indexChange', => @collection.fetch()

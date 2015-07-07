@@ -27,7 +27,8 @@
 
     Upload.prototype.allDone = false;
 
-    Upload.prototype.initialize = function() {
+    Upload.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el'));
       this.uploads = new arcs.collections.UploadSet;
       this.setupFileupload();
       this.$uploads = this.$el.find('#uploads-container');

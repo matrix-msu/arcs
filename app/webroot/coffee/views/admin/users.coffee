@@ -9,7 +9,8 @@ class arcs.views.admin.Users extends Backbone.View
     'Sr. Researcher': 1
     'Admin': 0
 
-  initialize: ->
+  initialize = (options) ->
+    _.extend @options, _.pick(options, 'el', 'collection')
     @collection.on 'add remove change sync', @render, @
     @render()
 

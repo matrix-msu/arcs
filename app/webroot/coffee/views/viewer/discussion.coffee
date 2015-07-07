@@ -6,7 +6,8 @@ class arcs.views.DiscussionTab extends Backbone.View
   events:
     'click #comment-btn': 'saveComment'
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el')
     @collection = new arcs.collections.Discussion
     @collection.on 'add remove reset', @render, @
     @$tab = $('#discussion-btn')

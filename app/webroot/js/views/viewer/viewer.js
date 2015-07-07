@@ -10,8 +10,9 @@
       return Viewer.__super__.constructor.apply(this, arguments);
     }
 
-    Viewer.prototype.initialize = function() {
+    Viewer.prototype.initialize = function(options) {
       var ref;
+      _.extend(this.options, _.pick(options, 'model', 'collection', 'collectionModel', "el"));
       this.collectionModel = this.options.collectionModel;
       this.orderCollection();
       arcs.bus.on('indexChange', this.set, this);

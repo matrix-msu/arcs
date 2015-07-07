@@ -18,13 +18,15 @@ class arcs.views.ContextMenu extends Backbone.View
     context: window
     onShow: ->
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, "el", 'filter', 'options', 'onShow', 'context')
     $('.context-menu').remove()
     $('body').append arcs.tmpl 'ui/context_menu', options: @options.options
     @menu = $('.context-menu')
     @addEvents()
 
   show: (e) ->
+    console.log "in show"
     # Hide if already open.
     @hide()
 
@@ -40,6 +42,7 @@ class arcs.views.ContextMenu extends Backbone.View
     return false
 
   addEvents: ->
+    console.log "in addEvents"
     @events["contextmenu #{@options.filter}"] = 'show'
     for opt, cb of @options.options
       continue unless @options.context[cb]?
@@ -49,4 +52,5 @@ class arcs.views.ContextMenu extends Backbone.View
     @delegateEvents()
 
   hide: (e) ->
+    console.log "in hide"
     @menu.hide()

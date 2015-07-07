@@ -1,15 +1,16 @@
 # mime.coffee
 # -----------
 # Return information about mime types
-arcs.utils.mime = arcs.mime = 
-  imageTypes:
+arcs.utils.mime = arcs.mime =
+
+  imageTypes: ->
     'image/png': 'png'
     'image/jpeg': 'jpeg'
     'image/jpg': 'jpg'
     'image/gif': 'gif'
     'image/tiff': 'tiff'
 
-  documentTypes:
+  documentTypes: ->
     'application/pdf': 'pdf'
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx'
     'application/msword': 'doc'
@@ -17,7 +18,7 @@ arcs.utils.mime = arcs.mime =
     'text/richtext': 'richtext'
     'text/rtf': 'rtf'
 
-  videoTypes:
+  videoTypes: ->
     'video/mpeg': 'mpeg'
     'video/msvideo': 'avi'
     'video/quicktime': 'mov'
@@ -53,4 +54,6 @@ arcs.utils.mime = arcs.mime =
 
     result or undef 
 
-_.bindAll arcs.utils.mime
+_.bindAll arcs.utils.mime, 'getInfo'
+
+  # used to have '_.bindAll arcs.utils.mime' however this no longer works.

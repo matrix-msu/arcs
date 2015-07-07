@@ -10,8 +10,9 @@
       return Hotkeys.__super__.constructor.apply(this, arguments);
     }
 
-    Hotkeys.prototype.initialize = function() {
+    Hotkeys.prototype.initialize = function(options) {
       var ctrl;
+      _.extend(this.options, _.pick(options, 'el'));
       ctrl = navigator.appVersion.indexOf('Mac') !== -1 ? '⌘' : 'ctrl';
       if (!$('.hotkeys-modal').length) {
         $('body').append(arcs.tmpl(this.options.template, {

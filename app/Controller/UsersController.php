@@ -12,7 +12,7 @@ class UsersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('signup', 'login', 'special_login', 'register', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername');
+        $this->Auth->allow('signup', 'special_login', 'register', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
@@ -89,37 +89,8 @@ class UsersController extends AppController {
         $this->json(204);
     }
 
-	/**
-     * Display the login form or authenticate a POSTed form.
-     *
-     * @param string $id   user id
-     */
-    public function login() {
-        $this->set(array('toolbar' => false, 'footer' => false));
-        $this->User->flatten = false;
-        $redirect = $this->Session->read('redirect');
-        if ($redirect) {
-            $this->Session->write('Auth.redirect', $redirect);
-            $this->Session->delete('redirect');
-        }
-        if ($this->request->is('post')) {
-            if ($this->request->data['User']['forgot_password'])
-                return $this->send_reset($this->request->data['User']['username']);
-            # This is unfortunately a bit of a hack as this is tricky to do 
-            # through the Auth component.
-            $userByEmail = $this->User->findByEmail($this->request->data['User']['username']);
-            if ($userByEmail)
-                $this->request->data['User']['username'] = $userByEmail['User']['username'];
-            if ($this->Auth->login()) {
-                return $this->redirect($this->Auth->redirect());
-            } else {
-                $this->redirect($this->referer().'#loginModal');
-            }
-        }
-    }
-
     /**
-     * Authenticate login in modal, handles both logging in and forgot password.
+     * Authenticates login and forgot password POST form sent from the login modal.
      *
      * @param string $id   user id
      */
@@ -154,6 +125,7 @@ class UsersController extends AppController {
                     $this->redirect('/');
                 }
             } else {
+                // TODO: why is this findbyemail and then takes a username?
                 $userByEmail = $this->User->findByEmail($this->request->data['User']['username']);
                 if ($userByEmail)
                     $this->request->data['User']['username'] = $userByEmail['User']['username'];
@@ -197,7 +169,7 @@ class UsersController extends AppController {
             $this->Session->setFlash("We've sent an email to $email. It contains a special " .
                "link to reset your password.", 'flash_success');
         }
-        $this->redirect('/login');
+        $this->redirect('/#loginModal');
     }
 
     /**
@@ -221,7 +193,7 @@ class UsersController extends AppController {
             ));
             $this->Session->setFlash("Your password has been changed. You may now login.", 
                 'flash_success');
-            $this->redirect('/login');
+            $this->redirect('/#loginModal');
         }
     }
 

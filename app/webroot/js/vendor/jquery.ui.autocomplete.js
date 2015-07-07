@@ -1,612 +1,1152 @@
-/*
- * jQuery UI Autocomplete 1.8.13
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Autocomplete
- *
- * Depends:
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
- *	jquery.ui.position.js
- */
-(function( $, undefined ) {
-
-// used to prevent race conditions with remote data sources
-var requestIndex = 0;
-
-$.widget( "ui.autocomplete", {
-	options: {
-		appendTo: "body",
-		autoFocus: false,
-		delay: 300,
-		minLength: 1,
-		position: {
-			my: "left top",
-			at: "left bottom",
-			collision: "none"
-		},
-		source: null
-	},
-
-	pending: 0,
-
-	_create: function() {
-		var self = this,
-			doc = this.element[ 0 ].ownerDocument,
-			suppressKeyPress;
-
-		this.element
-			.addClass( "ui-autocomplete-input" )
-			.attr( "autocomplete", "off" )
-			// TODO verify these actually work as intended
-			.attr({
-				role: "textbox",
-				"aria-autocomplete": "list",
-				"aria-haspopup": "true"
-			})
-			.bind( "keydown.autocomplete", function( event ) {
-				if ( self.options.disabled || self.element.attr( "readonly" ) ) {
-					return;
-				}
-
-				suppressKeyPress = false;
-				var keyCode = $.ui.keyCode;
-				switch( event.keyCode ) {
-				case keyCode.PAGE_UP:
-					self._move( "previousPage", event );
-					break;
-				case keyCode.PAGE_DOWN:
-					self._move( "nextPage", event );
-					break;
-				case keyCode.UP:
-					self._move( "previous", event );
-					// prevent moving cursor to beginning of text field in some browsers
-					event.preventDefault();
-					break;
-				case keyCode.DOWN:
-					self._move( "next", event );
-					// prevent moving cursor to end of text field in some browsers
-					event.preventDefault();
-					break;
-				case keyCode.ENTER:
-				case keyCode.NUMPAD_ENTER:
-					// when menu is open and has focus
-					if ( self.menu.active ) {
-						// #6055 - Opera still allows the keypress to occur
-						// which causes forms to submit
-						suppressKeyPress = true;
-						event.preventDefault();
-					}
-					//passthrough - ENTER and TAB both select the current element
-				case keyCode.TAB:
-					if ( !self.menu.active ) {
-						return;
-					}
-					self.menu.select( event );
-					break;
-				case keyCode.ESCAPE:
-					self.element.val( self.term );
-					self.close( event );
-					break;
-				default:
-					// keypress is triggered before the input value is changed
-					clearTimeout( self.searching );
-					self.searching = setTimeout(function() {
-						// only search if the value has changed
-						if ( self.term != self.element.val() ) {
-							self.selectedItem = null;
-							self.search( null, event );
-						}
-					}, self.options.delay );
-					break;
-				}
-			})
-			.bind( "keypress.autocomplete", function( event ) {
-				if ( suppressKeyPress ) {
-					suppressKeyPress = false;
-					event.preventDefault();
-				}
-			})
-			.bind( "focus.autocomplete", function() {
-				if ( self.options.disabled ) {
-					return;
-				}
-
-				self.selectedItem = null;
-				self.previous = self.element.val();
-			})
-			.bind( "blur.autocomplete", function( event ) {
-				if ( self.options.disabled ) {
-					return;
-				}
-
-				clearTimeout( self.searching );
-				// clicks on the menu (or a button to trigger a search) will cause a blur event
-				self.closing = setTimeout(function() {
-					self.close( event );
-					self._change( event );
-				}, 150 );
-			});
-		this._initSource();
-		this.response = function() {
-			return self._response.apply( self, arguments );
-		};
-		this.menu = $( "<ul></ul>" )
-			.addClass( "ui-autocomplete" )
-			.appendTo( $( this.options.appendTo || "body", doc )[0] )
-			// prevent the close-on-blur in case of a "slow" click on the menu (long mousedown)
-			.mousedown(function( event ) {
-				// clicking on the scrollbar causes focus to shift to the body
-				// but we can't detect a mouseup or a click immediately afterward
-				// so we have to track the next mousedown and close the menu if
-				// the user clicks somewhere outside of the autocomplete
-				var menuElement = self.menu.element[ 0 ];
-				if ( !$( event.target ).closest( ".ui-menu-item" ).length ) {
-					setTimeout(function() {
-						$( document ).one( 'mousedown', function( event ) {
-							if ( event.target !== self.element[ 0 ] &&
-								event.target !== menuElement &&
-								!$.ui.contains( menuElement, event.target ) ) {
-								self.close();
-							}
-						});
-					}, 1 );
-				}
-
-				// use another timeout to make sure the blur-event-handler on the input was already triggered
-				setTimeout(function() {
-					clearTimeout( self.closing );
-				}, 13);
-			})
-			.menu({
-				focus: function( event, ui ) {
-					var item = ui.item.data( "item.autocomplete" );
-					if ( false !== self._trigger( "focus", event, { item: item } ) ) {
-						// use value to match what will end up in the input, if it was a key event
-						if ( /^key/.test(event.originalEvent.type) ) {
-							self.element.val( item.value );
-						}
-					}
-				},
-				selected: function( event, ui ) {
-					var item = ui.item.data( "item.autocomplete" ),
-						previous = self.previous;
-
-					// only trigger when focus was lost (click on menu)
-					if ( self.element[0] !== doc.activeElement ) {
-						self.element.focus();
-						self.previous = previous;
-						// #6109 - IE triggers two focus events and the second
-						// is asynchronous, so we need to reset the previous
-						// term synchronously and asynchronously :-(
-						setTimeout(function() {
-							self.previous = previous;
-							self.selectedItem = item;
-						}, 1);
-					}
-
-					if ( false !== self._trigger( "select", event, { item: item } ) ) {
-						self.element.val( item.value );
-					}
-					// reset the term after the select event
-					// this allows custom select handling to work properly
-					self.term = self.element.val();
-
-					self.close( event );
-					self.selectedItem = item;
-				},
-				blur: function( event, ui ) {
-					// don't set the value of the text field if it's already correct
-					// this prevents moving the cursor unnecessarily
-					if ( self.menu.element.is(":visible") &&
-						( self.element.val() !== self.term ) ) {
-						self.element.val( self.term );
-					}
-				}
-			})
-			.zIndex( this.element.zIndex() + 1 )
-			// workaround for jQuery bug #5781 http://dev.jquery.com/ticket/5781
-			.css({ top: 0, left: 0 })
-			.hide()
-			.data( "menu" );
-		if ( $.fn.bgiframe ) {
-			 this.menu.element.bgiframe();
-		}
-	},
-
-	destroy: function() {
-		this.element
-			.removeClass( "ui-autocomplete-input" )
-			.removeAttr( "autocomplete" )
-			.removeAttr( "role" )
-			.removeAttr( "aria-autocomplete" )
-			.removeAttr( "aria-haspopup" );
-		this.menu.element.remove();
-		$.Widget.prototype.destroy.call( this );
-	},
-
-	_setOption: function( key, value ) {
-		$.Widget.prototype._setOption.apply( this, arguments );
-		if ( key === "source" ) {
-			this._initSource();
-		}
-		if ( key === "appendTo" ) {
-			this.menu.element.appendTo( $( value || "body", this.element[0].ownerDocument )[0] )
-		}
-		if ( key === "disabled" && value && this.xhr ) {
-			this.xhr.abort();
-		}
-	},
-
-	_initSource: function() {
-		var self = this,
-			array,
-			url;
-		if ( $.isArray(this.options.source) ) {
-			array = this.options.source;
-			this.source = function( request, response ) {
-				response( $.ui.autocomplete.filter(array, request.term) );
-			};
-		} else if ( typeof this.options.source === "string" ) {
-			url = this.options.source;
-			this.source = function( request, response ) {
-				if ( self.xhr ) {
-					self.xhr.abort();
-				}
-				self.xhr = $.ajax({
-					url: url,
-					data: request,
-					dataType: "json",
-					autocompleteRequest: ++requestIndex,
-					success: function( data, status ) {
-						if ( this.autocompleteRequest === requestIndex ) {
-							response( data );
-						}
-					},
-					error: function() {
-						if ( this.autocompleteRequest === requestIndex ) {
-							response( [] );
-						}
-					}
-				});
-			};
-		} else {
-			this.source = this.options.source;
-		}
-	},
-
-	search: function( value, event ) {
-		value = value != null ? value : this.element.val();
-
-		// always save the actual value, not the one passed as an argument
-		this.term = this.element.val();
-
-		if ( value.length < this.options.minLength ) {
-			return this.close( event );
-		}
-
-		clearTimeout( this.closing );
-		if ( this._trigger( "search", event ) === false ) {
-			return;
-		}
-		
-		return this._search( value );
-	},
-
-	_search: function( value ) {
-		this.pending++;
-		this.element.addClass( "ui-autocomplete-loading" );
-
-		this.source( { term: value }, this.response );
-	},
-
-	_response: function( content ) {
-		if ( !this.options.disabled && content && content.length ) {
-			content = this._normalize( content );
-			this._suggest( content );
-			this._trigger( "open" );
-		} else {
-			this.close();
-		}
-		this.pending--;
-		if ( !this.pending ) {
-			this.element.removeClass( "ui-autocomplete-loading" );
-		}
-	},
-
-	close: function( event ) {
-		clearTimeout( this.closing );
-		if ( this.menu.element.is(":visible") ) {
-			this.menu.element.hide();
-			this.menu.deactivate();
-			this._trigger( "close", event );
-		}
-	},
-	
-	_change: function( event ) {
-		if ( this.previous !== this.element.val() ) {
-			this._trigger( "change", event, { item: this.selectedItem } );
-		}
-	},
-
-	_normalize: function( items ) {
-		// assume all items have the right format when the first item is complete
-		if ( items.length && items[0].label && items[0].value ) {
-			return items;
-		}
-		return $.map( items, function(item) {
-			if ( typeof item === "string" ) {
-				return {
-					label: item,
-					value: item
-				};
-			}
-			return $.extend({
-				label: item.label || item.value,
-				value: item.value || item.label
-			}, item );
-		});
-	},
-
-	_suggest: function( items ) {
-		var ul = this.menu.element
-			.empty()
-			.zIndex( this.element.zIndex() + 1 );
-		this._renderMenu( ul, items );
-		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
-		this.menu.deactivate();
-		this.menu.refresh();
-
-		// size and position menu
-		ul.show();
-		this._resizeMenu();
-		ul.position( $.extend({
-			of: this.element
-		}, this.options.position ));
-
-		if ( this.options.autoFocus ) {
-      this.menu.next( new $.Event("mouseover") );
-		}
-	},
-
-	_resizeMenu: function() {
-		var ul = this.menu.element;
-		ul.outerWidth( Math.max(
-			ul.width( "" ).outerWidth(),
-			this.element.outerWidth()
-		) );
-	},
-
-	_renderMenu: function( ul, items ) {
-		var self = this;
-		$.each( items, function( index, item ) {
-			self._renderItem( ul, item );
-		});
-	},
-
-	_renderItem: function( ul, item) {
-		return $( "<li></li>" )
-			.data( "item.autocomplete", item )
-			.append( $( "<a></a>" ).text( item.label ) )
-			.appendTo( ul );
-	},
-
-	_move: function( direction, event ) {
-		if ( !this.menu.element.is(":visible") ) {
-			this.search( null, event );
-			return;
-		}
-		if ( this.menu.first() && /^previous/.test(direction) ||
-				this.menu.last() && /^next/.test(direction) ) {
-			this.element.val( this.term );
-			this.menu.deactivate();
-			return;
-		}
-		this.menu[ direction ]( event );
-	},
-
-	widget: function() {
-		return this.menu.element;
-	}
-});
-
-$.extend( $.ui.autocomplete, {
-	escapeRegex: function( value ) {
-		return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-	},
-	filter: function(array, term) {
-		var matcher = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
-		return $.grep( array, function(value) {
-			return matcher.test( value.label || value.value || value );
-		});
-	}
-});
-
-}( jQuery ));
-
-/*
- * jQuery UI Menu (not officially released)
- * 
- * This widget isn't yet finished and the API is subject to change. We plan to finish
- * it for the next release. You're welcome to give it a try anyway and give us feedback,
- * as long as you're okay with migrating your code later on. We can help with that, too.
- *
- * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Menu
- *
- * Depends:
- *	jquery.ui.core.js
- *  jquery.ui.widget.js
+/**
+ * @fileOverview jquery-autocomplete, the jQuery Autocompleter
+ * @author <a href="mailto:dylan@dyve.net">Dylan Verheul</a>
+ * @version 2.4.4
+ * @requires jQuery 1.6+
+ * @license MIT | GPL | Apache 2.0, see LICENSE.txt
+ * @see https://github.com/dyve/jquery-autocomplete
  */
 (function($) {
+    "use strict";
 
-$.widget("ui.menu", {
-	_create: function() {
-		var self = this;
-		this.element
-			.addClass("ui-menu ui-widget ui-widget-content ui-corner-all")
-			.attr({
-				role: "listbox",
-				"aria-activedescendant": "ui-active-menuitem"
-			})
-			.click(function( event ) {
-				if ( !$( event.target ).closest( ".ui-menu-item a" ).length ) {
-					return;
-				}
-				// temporary
-				event.preventDefault();
-				self.select( event );
-			});
-		this.refresh();
-	},
-	
-	refresh: function() {
-		var self = this;
+    /**
+     * jQuery autocomplete plugin
+     * @param {object|string} options
+     * @returns (object} jQuery object
+     */
+    $.fn.autocomplete = function(options) {
+        var url;
+        if (arguments.length > 1) {
+            url = options;
+            options = arguments[1];
+            options.url = url;
+        } else if (typeof options === 'string') {
+            url = options;
+            options = { url: url };
+        }
+        var opts = $.extend({}, $.fn.autocomplete.defaults, options);
+        return this.each(function() {
+            var $this = $(this);
+            $this.data('autocompleter', new $.Autocompleter(
+                $this,
+                $.meta ? $.extend({}, opts, $this.data()) : opts
+            ));
+        });
+    };
 
-		// don't refresh list items that are already adapted
-		var items = this.element.children("li:not(.ui-menu-item):has(a)")
-			.addClass("ui-menu-item")
-			.attr("role", "menuitem");
-		
-		items.children("a")
-			.addClass("ui-corner-all")
-			.attr("tabindex", -1)
-			// mouseenter doesn't work with event delegation
-			.mouseenter(function( event ) {
-				self.activate( event, $(this).parent() );
-			})
-			.mouseleave(function() {
-				self.deactivate();
-			});
-	},
+    /**
+     * Store default options
+     * @type {object}
+     */
+    $.fn.autocomplete.defaults = {
+        inputClass: 'acInput',
+        loadingClass: 'acLoading',
+        resultsClass: 'acResults',
+        selectClass: 'acSelect',
+        queryParamName: 'q',
+        extraParams: {},
+        remoteDataType: false,
+        lineSeparator: '\n',
+        cellSeparator: '|',
+        minChars: 2,
+        maxItemsToShow: 10,
+        delay: 400,
+        useCache: true,
+        maxCacheLength: 10,
+        matchSubset: true,
+        matchCase: false,
+        matchInside: true,
+        mustMatch: false,
+        selectFirst: false,
+        selectOnly: false,
+        showResult: null,
+        preventDefaultReturn: 1,
+        preventDefaultTab: 0,
+        autoFill: false,
+        filterResults: true,
+        filter: true,
+        sortResults: true,
+        sortFunction: null,
+        onItemSelect: null,
+        onNoMatch: null,
+        onFinish: null,
+        matchStringConverter: null,
+        beforeUseConverter: null,
+        autoWidth: 'min-width',
+        useDelimiter: false,
+        delimiterChar: ',',
+        delimiterKeyCode: 188,
+        processData: null,
+        onError: null,
+        enabled: true
+    };
 
-	activate: function( event, item ) {
-		this.deactivate();
-		if (this.hasScroll()) {
-			var offset = item.offset().top - this.element.offset().top,
-				scroll = this.element.scrollTop(),
-				elementHeight = this.element.height();
-			if (offset < 0) {
-				this.element.scrollTop( scroll + offset);
-			} else if (offset >= elementHeight) {
-				this.element.scrollTop( scroll + offset - elementHeight + item.height());
-			}
-		}
-		this.active = item.eq(0)
-			.children("a")
-				.addClass("ui-state-hover")
-				.attr("id", "ui-active-menuitem")
-			.end();
-		this._trigger("focus", event, { item: item });
-	},
+    /**
+     * Sanitize result
+     * @param {Object} result
+     * @returns {Object} object with members value (String) and data (Object)
+     * @private
+     */
+    var sanitizeResult = function(result) {
+        var value, data;
+        var type = typeof result;
+        if (type === 'string') {
+            value = result;
+            data = {};
+        } else if ($.isArray(result)) {
+            value = result[0];
+            data = result.slice(1);
+        } else if (type === 'object') {
+            value = result.value;
+            data = result.data;
+        }
+        value = String(value);
+        if (typeof data !== 'object') {
+            data = {};
+        }
+        return {
+            value: value,
+            data: data
+        };
+    };
 
-	deactivate: function() {
-		if (!this.active) { return; }
+    /**
+     * Sanitize integer
+     * @param {mixed} value
+     * @param {Object} options
+     * @returns {Number} integer
+     * @private
+     */
+    var sanitizeInteger = function(value, stdValue, options) {
+        var num = parseInt(value, 10);
+        options = options || {};
+        if (isNaN(num) || (options.min && num < options.min)) {
+            num = stdValue;
+        }
+        return num;
+    };
 
-		this.active.children("a")
-			.removeClass("ui-state-hover")
-			.removeAttr("id");
-		this._trigger("blur");
-		this.active = null;
-	},
+    /**
+     * Create partial url for a name/value pair
+     */
+    var makeUrlParam = function(name, value) {
+        return [name, encodeURIComponent(value)].join('=');
+    };
 
-	next: function(event) {
-		this.move("next", ".ui-menu-item:first", event);
-	},
+    /**
+     * Build an url
+     * @param {string} url Base url
+     * @param {object} [params] Dictionary of parameters
+     */
+    var makeUrl = function(url, params) {
+        var urlAppend = [];
+        $.each(params, function(index, value) {
+            urlAppend.push(makeUrlParam(index, value));
+        });
+        if (urlAppend.length) {
+            url += url.indexOf('?') === -1 ? '?' : '&';
+            url += urlAppend.join('&');
+        }
+        return url;
+    };
 
-	previous: function(event) {
-		this.move("prev", ".ui-menu-item:last", event);
-	},
+    /**
+     * Default sort filter
+     * @param {object} a
+     * @param {object} b
+     * @param {boolean} matchCase
+     * @returns {number}
+     */
+    var sortValueAlpha = function(a, b, matchCase) {
+        a = String(a.value);
+        b = String(b.value);
+        if (!matchCase) {
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+        }
+        if (a > b) {
+            return 1;
+        }
+        if (a < b) {
+            return -1;
+        }
+        return 0;
+    };
 
-	first: function() {
-		return this.active && !this.active.prevAll(".ui-menu-item").length;
-	},
+    /**
+     * Parse data received in text format
+     * @param {string} text Plain text input
+     * @param {string} lineSeparator String that separates lines
+     * @param {string} cellSeparator String that separates cells
+     * @returns {array} Array of autocomplete data objects
+     */
+    var plainTextParser = function(text, lineSeparator, cellSeparator) {
+        var results = [];
+        var i, j, data, line, value, lines;
+        // Be nice, fix linebreaks before splitting on lineSeparator
+        lines = String(text).replace('\r\n', '\n').split(lineSeparator);
+        for (i = 0; i < lines.length; i++) {
+            line = lines[i].split(cellSeparator);
+            data = [];
+            for (j = 0; j < line.length; j++) {
+                data.push(decodeURIComponent(line[j]));
+            }
+            value = data.shift();
+            results.push({ value: value, data: data });
+        }
+        return results;
+    };
 
-	last: function() {
-		return this.active && !this.active.nextAll(".ui-menu-item").length;
-	},
+    /**
+     * Autocompleter class
+     * @param {object} $elem jQuery object with one input tag
+     * @param {object} options Settings
+     * @constructor
+     */
+    $.Autocompleter = function($elem, options) {
 
-	move: function(direction, edge, event) {
-		if (!this.active) {
-			this.activate(event, this.element.children(edge));
-			return;
-		}
-		var next = this.active[direction + "All"](".ui-menu-item").eq(0);
-		if (next.length) {
-			this.activate(event, next);
-		} else {
-			this.activate(event, this.element.children(edge));
-		}
-	},
+        /**
+         * Assert parameters
+         */
+        if (!$elem || !($elem instanceof $) || $elem.length !== 1 || $elem.get(0).tagName.toUpperCase() !== 'INPUT') {
+            throw new Error('Invalid parameter for jquery.Autocompleter, jQuery object with one element with INPUT tag expected.');
+        }
 
-	// TODO merge with previousPage
-	nextPage: function(event) {
-		if (this.hasScroll()) {
-			// TODO merge with no-scroll-else
-			if (!this.active || this.last()) {
-				this.activate(event, this.element.children(".ui-menu-item:first"));
-				return;
-			}
-			var base = this.active.offset().top,
-				height = this.element.height(),
-				result = this.element.children(".ui-menu-item").filter(function() {
-					var close = $(this).offset().top - base - height + $(this).height();
-					// TODO improve approximation
-					return close < 10 && close > -10;
-				});
+        /**
+         * @constant Link to this instance
+         * @type object
+         * @private
+         */
+        var self = this;
 
-			// TODO try to catch this earlier when scrollTop indicates the last page anyway
-			if (!result.length) {
-				result = this.element.children(".ui-menu-item:last");
-			}
-			this.activate(event, result);
-		} else {
-			this.activate(event, this.element.children(".ui-menu-item")
-				.filter(!this.active || this.last() ? ":first" : ":last"));
-		}
-	},
+        /**
+         * @property {object} Options for this instance
+         * @public
+         */
+        this.options = options;
 
-	// TODO merge with nextPage
-	previousPage: function(event) {
-		if (this.hasScroll()) {
-			// TODO merge with no-scroll-else
-			if (!this.active || this.first()) {
-				this.activate(event, this.element.children(".ui-menu-item:last"));
-				return;
-			}
+        /**
+         * @property object Cached data for this instance
+         * @private
+         */
+        this.cacheData_ = {};
 
-			var base = this.active.offset().top,
-				height = this.element.height();
-				result = this.element.children(".ui-menu-item").filter(function() {
-					var close = $(this).offset().top - base + height - $(this).height();
-					// TODO improve approximation
-					return close < 10 && close > -10;
-				});
+        /**
+         * @property {number} Number of cached data items
+         * @private
+         */
+        this.cacheLength_ = 0;
 
-			// TODO try to catch this earlier when scrollTop indicates the last page anyway
-			if (!result.length) {
-				result = this.element.children(".ui-menu-item:first");
-			}
-			this.activate(event, result);
-		} else {
-			this.activate(event, this.element.children(".ui-menu-item")
-				.filter(!this.active || this.first() ? ":last" : ":first"));
-		}
-	},
+        /**
+         * @property {string} Class name to mark selected item
+         * @private
+         */
+        this.selectClass_ = 'jquery-autocomplete-selected-item';
 
-	hasScroll: function() {
-		return this.element.height() < this.element[ $.fn.prop ? "prop" : "attr" ]("scrollHeight");
-	},
+        /**
+         * @property {number} Handler to activation timeout
+         * @private
+         */
+        this.keyTimeout_ = null;
 
-	select: function( event ) {
-		this._trigger("selected", event, { item: this.active });
-	}
-});
+        /**
+         * @property {number} Handler to finish timeout
+         * @private
+         */
+        this.finishTimeout_ = null;
 
-}(jQuery));
+        /**
+         * @property {number} Last key pressed in the input field (store for behavior)
+         * @private
+         */
+        this.lastKeyPressed_ = null;
+
+        /**
+         * @property {string} Last value processed by the autocompleter
+         * @private
+         */
+        this.lastProcessedValue_ = null;
+
+        /**
+         * @property {string} Last value selected by the user
+         * @private
+         */
+        this.lastSelectedValue_ = null;
+
+        /**
+         * @property {boolean} Is this autocompleter active (showing results)?
+         * @see showResults
+         * @private
+         */
+        this.active_ = false;
+
+        /**
+         * @property {boolean} Is this autocompleter allowed to finish on blur?
+         * @private
+         */
+        this.finishOnBlur_ = true;
+
+        /**
+         * Sanitize options
+         */
+        this.options.minChars = sanitizeInteger(this.options.minChars, $.fn.autocomplete.defaults.minChars, { min: 0 });
+        this.options.maxItemsToShow = sanitizeInteger(this.options.maxItemsToShow, $.fn.autocomplete.defaults.maxItemsToShow, { min: 0 });
+        this.options.maxCacheLength = sanitizeInteger(this.options.maxCacheLength, $.fn.autocomplete.defaults.maxCacheLength, { min: 1 });
+        this.options.delay = sanitizeInteger(this.options.delay, $.fn.autocomplete.defaults.delay, { min: 0 });
+        if (this.options.preventDefaultReturn != 2) {
+            this.options.preventDefaultReturn = this.options.preventDefaultReturn ? 1 : 0;
+        }
+        if (this.options.preventDefaultTab != 2) {
+            this.options.preventDefaultTab = this.options.preventDefaultTab ? 1 : 0;
+        }
+
+        /**
+         * Init DOM elements repository
+         */
+        this.dom = {};
+
+        /**
+         * Store the input element we're attached to in the repository
+         */
+        this.dom.$elem = $elem;
+
+        /**
+         * Switch off the native autocomplete and add the input class
+         */
+        this.dom.$elem.attr('autocomplete', 'off').addClass(this.options.inputClass);
+
+        /**
+         * Create DOM element to hold results, and force absolute position
+         */
+        this.dom.$results = $('<div></div>').hide().addClass(this.options.resultsClass).css({
+            position: 'absolute'
+        });
+        $('body').append(this.dom.$results);
+
+        /**
+         * Attach keyboard monitoring to $elem
+         */
+        $elem.keydown(function(e) {
+            self.lastKeyPressed_ = e.keyCode;
+            switch(self.lastKeyPressed_) {
+
+                case self.options.delimiterKeyCode: // comma = 188
+                    if (self.options.useDelimiter && self.active_) {
+                        self.selectCurrent();
+                    }
+                    break;
+
+                // ignore navigational & special keys
+                case 35: // end
+                case 36: // home
+                case 16: // shift
+                case 17: // ctrl
+                case 18: // alt
+                case 37: // left
+                case 39: // right
+                    break;
+
+                case 38: // up
+                    e.preventDefault();
+                    if (self.active_) {
+                        self.focusPrev();
+                    } else {
+                        self.activate();
+                    }
+                    return false;
+
+                case 40: // down
+                    e.preventDefault();
+                    if (self.active_) {
+                        self.focusNext();
+                    } else {
+                        self.activate();
+                    }
+                    return false;
+
+                case 9: // tab
+                    if (self.active_) {
+                        self.selectCurrent();
+                        if (self.options.preventDefaultTab) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                    if (self.options.preventDefaultTab === 2) {
+                        e.preventDefault();
+                        return false;
+                    }
+                break;
+
+                case 13: // return
+                    if (self.active_) {
+                        self.selectCurrent();
+                        if (self.options.preventDefaultReturn) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                    if (self.options.preventDefaultReturn === 2) {
+                        e.preventDefault();
+                        return false;
+                    }
+                break;
+
+                case 27: // escape
+                    if (self.active_) {
+                        e.preventDefault();
+                        self.deactivate(true);
+                        return false;
+                    }
+                break;
+
+                default:
+                    self.activate();
+
+            }
+        });
+
+        /**
+         * Attach paste event listener because paste may occur much later then keydown or even without a keydown at all
+         */
+        $elem.on('paste', function() {
+            self.activate();
+        });
+
+        /**
+         * Finish on blur event
+         * Use a timeout because instant blur gives race conditions
+         */
+        var onBlurFunction = function() {
+            self.deactivate(true);
+        }
+        $elem.blur(function() {
+            if (self.finishOnBlur_) {
+                self.finishTimeout_ = setTimeout(onBlurFunction, 200);
+            }
+        });
+        /**
+         * Catch a race condition on form submit
+         */
+        $elem.parents('form').on('submit', onBlurFunction);
+
+    };
+
+    /**
+     * Position output DOM elements
+     * @private
+     */
+    $.Autocompleter.prototype.position = function() {
+        var offset = this.dom.$elem.offset();
+        var height = this.dom.$results.outerHeight();
+        var totalHeight = $(window).outerHeight();
+        var inputBottom = offset.top + this.dom.$elem.outerHeight();
+        var bottomIfDown = inputBottom + height;
+        // Set autocomplete results at the bottom of input
+        var position = {top: inputBottom, left: offset.left};
+        if (bottomIfDown > totalHeight) {
+            // Try to set autocomplete results at the top of input
+            var topIfUp = offset.top - height;
+            if (topIfUp >= 0) {
+                position.top = topIfUp;
+            }
+        }
+        this.dom.$results.css(position);
+    };
+
+    /**
+     * Read from cache
+     * @private
+     */
+    $.Autocompleter.prototype.cacheRead = function(filter) {
+        var filterLength, searchLength, search, maxPos, pos;
+        if (this.options.useCache) {
+            filter = String(filter);
+            filterLength = filter.length;
+            if (this.options.matchSubset) {
+                searchLength = 1;
+            } else {
+                searchLength = filterLength;
+            }
+            while (searchLength <= filterLength) {
+                if (this.options.matchInside) {
+                    maxPos = filterLength - searchLength;
+                } else {
+                    maxPos = 0;
+                }
+                pos = 0;
+                while (pos <= maxPos) {
+                    search = filter.substr(0, searchLength);
+                    if (this.cacheData_[search] !== undefined) {
+                        return this.cacheData_[search];
+                    }
+                    pos++;
+                }
+                searchLength++;
+            }
+        }
+        return false;
+    };
+
+    /**
+     * Write to cache
+     * @private
+     */
+    $.Autocompleter.prototype.cacheWrite = function(filter, data) {
+        if (this.options.useCache) {
+            if (this.cacheLength_ >= this.options.maxCacheLength) {
+                this.cacheFlush();
+            }
+            filter = String(filter);
+            if (this.cacheData_[filter] !== undefined) {
+                this.cacheLength_++;
+            }
+            this.cacheData_[filter] = data;
+            return this.cacheData_[filter];
+        }
+        return false;
+    };
+
+    /**
+     * Flush cache
+     * @public
+     */
+    $.Autocompleter.prototype.cacheFlush = function() {
+        this.cacheData_ = {};
+        this.cacheLength_ = 0;
+    };
+
+    /**
+     * Call hook
+     * Note that all called hooks are passed the autocompleter object
+     * @param {string} hook
+     * @param data
+     * @returns Result of called hook, false if hook is undefined
+     */
+    $.Autocompleter.prototype.callHook = function(hook, data) {
+        var f = this.options[hook];
+        if (f && $.isFunction(f)) {
+            return f(data, this);
+        }
+        return false;
+    };
+
+    /**
+     * Set timeout to activate autocompleter
+     */
+    $.Autocompleter.prototype.activate = function() {
+        if (!this.options.enabled) return;
+        var self = this;
+        if (this.keyTimeout_) {
+            clearTimeout(this.keyTimeout_);
+        }
+        this.keyTimeout_ = setTimeout(function() {
+            self.activateNow();
+        }, this.options.delay);
+    };
+
+    /**
+     * Activate autocompleter immediately
+     */
+    $.Autocompleter.prototype.activateNow = function() {
+        var value = this.beforeUseConverter(this.dom.$elem.val());
+        if (value !== this.lastProcessedValue_ && value !== this.lastSelectedValue_) {
+            this.fetchData(value);
+        }
+    };
+
+    /**
+     * Get autocomplete data for a given value
+     * @param {string} value Value to base autocompletion on
+     * @private
+     */
+    $.Autocompleter.prototype.fetchData = function(value) {
+        var self = this;
+        var processResults = function(results, filter) {
+            if (self.options.processData) {
+                results = self.options.processData(results);
+            }
+            self.showResults(self.filterResults(results, filter), filter);
+        };
+        this.lastProcessedValue_ = value;
+        if (value.length < this.options.minChars) {
+            processResults([], value);
+        } else if (this.options.data) {
+            processResults(this.options.data, value);
+        } else {
+            this.fetchRemoteData(value, function(remoteData) {
+                processResults(remoteData, value);
+            });
+        }
+    };
+
+    /**
+     * Get remote autocomplete data for a given value
+     * @param {string} filter The filter to base remote data on
+     * @param {function} callback The function to call after data retrieval
+     * @private
+     */
+    $.Autocompleter.prototype.fetchRemoteData = function(filter, callback) {
+        var data = this.cacheRead(filter);
+        if (data) {
+            callback(data);
+        } else {
+            var self = this;
+            var dataType = self.options.remoteDataType === 'json' ? 'json' : 'text';
+            var ajaxCallback = function(data) {
+                var parsed = false;
+                if (data !== false) {
+                    parsed = self.parseRemoteData(data);
+                    self.cacheWrite(filter, parsed);
+                }
+                self.dom.$elem.removeClass(self.options.loadingClass);
+                callback(parsed);
+            };
+            this.dom.$elem.addClass(this.options.loadingClass);
+            $.ajax({
+                url: this.makeUrl(filter),
+                success: ajaxCallback,
+                error: function(jqXHR, textStatus, errorThrown) {
+                    if($.isFunction(self.options.onError)) {
+                        self.options.onError(jqXHR, textStatus, errorThrown);
+                    } else {
+                      ajaxCallback(false);
+                    }
+                },
+                dataType: dataType
+            });
+        }
+    };
+
+    /**
+     * Create or update an extra parameter for the remote request
+     * @param {string} name Parameter name
+     * @param {string} value Parameter value
+     * @public
+     */
+    $.Autocompleter.prototype.setExtraParam = function(name, value) {
+        var index = $.trim(String(name));
+        if (index) {
+            if (!this.options.extraParams) {
+                this.options.extraParams = {};
+            }
+            if (this.options.extraParams[index] !== value) {
+                this.options.extraParams[index] = value;
+                this.cacheFlush();
+            }
+        }
+
+        return this;
+    };
+
+    /**
+     * Build the url for a remote request
+     * If options.queryParamName === false, append query to url instead of using a GET parameter
+     * @param {string} param The value parameter to pass to the backend
+     * @returns {string} The finished url with parameters
+     */
+    $.Autocompleter.prototype.makeUrl = function(param) {
+        var self = this;
+        var url = this.options.url;
+        var params = $.extend({}, this.options.extraParams);
+
+        if (this.options.queryParamName === false) {
+            url += encodeURIComponent(param);
+        } else {
+            params[this.options.queryParamName] = param;
+        }
+
+        return makeUrl(url, params);
+    };
+
+    /**
+     * Parse data received from server
+     * @param remoteData Data received from remote server
+     * @returns {array} Parsed data
+     */
+    $.Autocompleter.prototype.parseRemoteData = function(remoteData) {
+        var remoteDataType;
+        var data = remoteData;
+        if (this.options.remoteDataType === 'json') {
+            remoteDataType = typeof(remoteData);
+            switch (remoteDataType) {
+                case 'object':
+                    data = remoteData;
+                    break;
+                case 'string':
+                    data = $.parseJSON(remoteData);
+                    break;
+                default:
+                    throw new Error("Unexpected remote data type: " + remoteDataType);
+            }
+            return data;
+        }
+        return plainTextParser(data, this.options.lineSeparator, this.options.cellSeparator);
+    };
+
+    /**
+     * Default filter for results
+     * @param {Object} result
+     * @param {String} filter
+     * @returns {boolean} Include this result
+     * @private
+     */
+    $.Autocompleter.prototype.defaultFilter = function(result, filter) {
+        if (!result.value) {
+            return false;
+        }
+        if (this.options.filterResults) {
+            var pattern = this.matchStringConverter(filter);
+            var testValue = this.matchStringConverter(result.value);
+            if (!this.options.matchCase) {
+                pattern = pattern.toLowerCase();
+                testValue = testValue.toLowerCase();
+            }
+            var patternIndex = testValue.indexOf(pattern);
+            if (this.options.matchInside) {
+                return patternIndex > -1;
+            } else {
+                return patternIndex === 0;
+            }
+        }
+        return true;
+    };
+
+    /**
+     * Filter result
+     * @param {Object} result
+     * @param {String} filter
+     * @returns {boolean} Include this result
+     * @private
+     */
+    $.Autocompleter.prototype.filterResult = function(result, filter) {
+        // No filter
+        if (this.options.filter === false) {
+            return true;
+        }
+        // Custom filter
+        if ($.isFunction(this.options.filter)) {
+            return this.options.filter(result, filter);
+        }
+        // Default filter
+        return this.defaultFilter(result, filter);
+    };
+
+    /**
+     * Filter results
+     * @param results
+     * @param filter
+     */
+    $.Autocompleter.prototype.filterResults = function(results, filter) {
+        var filtered = [];
+        var i, result;
+
+        for (i = 0; i < results.length; i++) {
+            result = sanitizeResult(results[i]);
+            if (this.filterResult(result, filter)) {
+                filtered.push(result);
+            }
+        }
+        if (this.options.sortResults) {
+            filtered = this.sortResults(filtered, filter);
+        }
+        if (this.options.maxItemsToShow > 0 && this.options.maxItemsToShow < filtered.length) {
+            filtered.length = this.options.maxItemsToShow;
+        }
+        return filtered;
+    };
+
+    /**
+     * Sort results
+     * @param results
+     * @param filter
+     */
+    $.Autocompleter.prototype.sortResults = function(results, filter) {
+        var self = this;
+        var sortFunction = this.options.sortFunction;
+        if (!$.isFunction(sortFunction)) {
+            sortFunction = function(a, b, f) {
+                return sortValueAlpha(a, b, self.options.matchCase);
+            };
+        }
+        results.sort(function(a, b) {
+            return sortFunction(a, b, filter, self.options);
+        });
+        return results;
+    };
+
+    /**
+     * Convert string before matching
+     * @param s
+     * @param a
+     * @param b
+     */
+    $.Autocompleter.prototype.matchStringConverter = function(s, a, b) {
+        var converter = this.options.matchStringConverter;
+        if ($.isFunction(converter)) {
+            s = converter(s, a, b);
+        }
+        return s;
+    };
+
+    /**
+     * Convert string before use
+     * @param {String} s
+     */
+    $.Autocompleter.prototype.beforeUseConverter = function(s) {
+        s = this.getValue(s);
+        var converter = this.options.beforeUseConverter;
+        if ($.isFunction(converter)) {
+            s = converter(s);
+        }
+        return s;
+    };
+
+    /**
+     * Enable finish on blur event
+     */
+    $.Autocompleter.prototype.enableFinishOnBlur = function() {
+        this.finishOnBlur_ = true;
+    };
+
+    /**
+     * Disable finish on blur event
+     */
+    $.Autocompleter.prototype.disableFinishOnBlur = function() {
+        this.finishOnBlur_ = false;
+    };
+
+    /**
+     * Create a results item (LI element) from a result
+     * @param result
+     */
+    $.Autocompleter.prototype.createItemFromResult = function(result) {
+        var self = this;
+        var $li = $('<li/>');
+        $li.html(this.showResult(result.value, result.data));
+        $li.data({value: result.value, data: result.data})
+            .click(function() {
+                self.selectItem($li);
+            })
+            .mousedown(self.disableFinishOnBlur)
+            .mouseup(self.enableFinishOnBlur)
+        ;
+        return $li;
+    };
+
+    /**
+     * Get all items from the results list
+     * @param result
+     */
+    $.Autocompleter.prototype.getItems = function() {
+        return $('>ul>li', this.dom.$results);
+    };
+
+    /**
+     * Show all results
+     * @param results
+     * @param filter
+     */
+    $.Autocompleter.prototype.showResults = function(results, filter) {
+        var numResults = results.length;
+        var self = this;
+        var $ul = $('<ul></ul>');
+        var i, result, $li, autoWidth, first = false, $first = false;
+
+        if (numResults) {
+            for (i = 0; i < numResults; i++) {
+                result = results[i];
+                $li = this.createItemFromResult(result);
+                $ul.append($li);
+                if (first === false) {
+                    first = String(result.value);
+                    $first = $li;
+                    $li.addClass(this.options.firstItemClass);
+                }
+                if (i === numResults - 1) {
+                    $li.addClass(this.options.lastItemClass);
+                }
+            }
+
+            this.dom.$results.html($ul).show();
+
+            // Always recalculate position since window size or
+            // input element location may have changed.
+            this.position();
+            if (this.options.autoWidth) {
+                autoWidth = this.dom.$elem.outerWidth() - this.dom.$results.outerWidth() + this.dom.$results.width();
+                this.dom.$results.css(this.options.autoWidth, autoWidth);
+            }
+            this.getItems().hover(
+                function() { self.focusItem(this); },
+                function() { /* void */ }
+            );
+            if (this.autoFill(first, filter) || this.options.selectFirst || (this.options.selectOnly && numResults === 1)) {
+                this.focusItem($first);
+            }
+            this.active_ = true;
+        } else {
+            this.hideResults();
+            this.active_ = false;
+        }
+    };
+
+    $.Autocompleter.prototype.showResult = function(value, data) {
+        if ($.isFunction(this.options.showResult)) {
+            return this.options.showResult(value, data);
+        } else {
+            return $('<p></p>').text(value).html();
+        }
+    };
+
+    $.Autocompleter.prototype.autoFill = function(value, filter) {
+        var lcValue, lcFilter, valueLength, filterLength;
+        if (this.options.autoFill && this.lastKeyPressed_ !== 8) {
+            lcValue = String(value).toLowerCase();
+            lcFilter = String(filter).toLowerCase();
+            valueLength = value.length;
+            filterLength = filter.length;
+            if (lcValue.substr(0, filterLength) === lcFilter) {
+                var d = this.getDelimiterOffsets();
+                var pad = d.start ? ' ' : ''; // if there is a preceding delimiter
+                this.setValue( pad + value );
+                var start = filterLength + d.start + pad.length;
+                var end = valueLength + d.start + pad.length;
+                this.selectRange(start, end);
+                return true;
+            }
+        }
+        return false;
+    };
+
+    $.Autocompleter.prototype.focusNext = function() {
+        this.focusMove(+1);
+    };
+
+    $.Autocompleter.prototype.focusPrev = function() {
+        this.focusMove(-1);
+    };
+
+    $.Autocompleter.prototype.focusMove = function(modifier) {
+        var $items = this.getItems();
+        modifier = sanitizeInteger(modifier, 0);
+        if (modifier) {
+            for (var i = 0; i < $items.length; i++) {
+                if ($($items[i]).hasClass(this.selectClass_)) {
+                    this.focusItem(i + modifier);
+                    return;
+                }
+            }
+        }
+        this.focusItem(0);
+    };
+
+    $.Autocompleter.prototype.focusItem = function(item) {
+        var $item, $items = this.getItems();
+        if ($items.length) {
+            $items.removeClass(this.selectClass_).removeClass(this.options.selectClass);
+            if (typeof item === 'number') {
+                if (item < 0) {
+                    item = 0;
+                } else if (item >= $items.length) {
+                    item = $items.length - 1;
+                }
+                $item = $($items[item]);
+            } else {
+                $item = $(item);
+            }
+            if ($item) {
+                $item.addClass(this.selectClass_).addClass(this.options.selectClass);
+            }
+        }
+    };
+
+    $.Autocompleter.prototype.selectCurrent = function() {
+        var $item = $('li.' + this.selectClass_, this.dom.$results);
+        if ($item.length === 1) {
+            this.selectItem($item);
+        } else {
+            this.deactivate(false);
+        }
+    };
+
+    $.Autocompleter.prototype.selectItem = function($li) {
+        var value = $li.data('value');
+        var data = $li.data('data');
+        var displayValue = this.displayValue(value, data);
+        var processedDisplayValue = this.beforeUseConverter(displayValue);
+        this.lastProcessedValue_ = processedDisplayValue;
+        this.lastSelectedValue_ = processedDisplayValue;
+        var d = this.getDelimiterOffsets();
+        var delimiter = this.options.delimiterChar;
+        var elem = this.dom.$elem;
+        var extraCaretPos = 0;
+        if ( this.options.useDelimiter ) {
+            // if there is a preceding delimiter, add a space after the delimiter
+            if ( elem.val().substring(d.start-1, d.start) == delimiter && delimiter != ' ' ) {
+                displayValue = ' ' + displayValue;
+            }
+            // if there is not already a delimiter trailing this value, add it
+            if ( elem.val().substring(d.end, d.end+1) != delimiter && this.lastKeyPressed_ != this.options.delimiterKeyCode ) {
+                displayValue = displayValue + delimiter;
+            } else {
+                // move the cursor after the existing trailing delimiter
+                extraCaretPos = 1;
+            }
+        }
+        this.setValue(displayValue);
+        this.setCaret(d.start + displayValue.length + extraCaretPos);
+        this.callHook('onItemSelect', { value: value, data: data });
+        this.deactivate(true);
+        elem.focus();
+    };
+
+    $.Autocompleter.prototype.displayValue = function(value, data) {
+        if ($.isFunction(this.options.displayValue)) {
+            return this.options.displayValue(value, data);
+        }
+        return value;
+    };
+
+    $.Autocompleter.prototype.hideResults = function() {
+        this.dom.$results.hide();
+    };
+
+    $.Autocompleter.prototype.deactivate = function(finish) {
+        if (this.finishTimeout_) {
+            clearTimeout(this.finishTimeout_);
+        }
+        if (this.keyTimeout_) {
+            clearTimeout(this.keyTimeout_);
+        }
+        if (finish) {
+            if (this.lastProcessedValue_ !== this.lastSelectedValue_) {
+                if (this.options.mustMatch) {
+                    this.setValue('');
+                }
+                this.callHook('onNoMatch');
+            }
+            if (this.active_) {
+                this.callHook('onFinish');
+            }
+            this.lastKeyPressed_ = null;
+            this.lastProcessedValue_ = null;
+            this.lastSelectedValue_ = null;
+            this.active_ = false;
+        }
+        this.hideResults();
+    };
+
+    $.Autocompleter.prototype.selectRange = function(start, end) {
+        var input = this.dom.$elem.get(0);
+        if (input.setSelectionRange) {
+            input.focus();
+            input.setSelectionRange(start, end);
+        } else if (input.createTextRange) {
+            var range = input.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    };
+
+    /**
+     * Move caret to position
+     * @param {Number} pos
+     */
+    $.Autocompleter.prototype.setCaret = function(pos) {
+        this.selectRange(pos, pos);
+    };
+
+    /**
+     * Get caret position
+     */
+    $.Autocompleter.prototype.getCaret = function() {
+        var $elem = this.dom.$elem;
+        var elem = $elem[0];
+        var val, selection, range, start, end, stored_range;
+        if (elem.createTextRange) { // IE
+            selection = document.selection;
+            if (elem.tagName.toLowerCase() != 'textarea') {
+                val = $elem.val();
+                range = selection.createRange().duplicate();
+                range.moveEnd('character', val.length);
+                if (range.text === '') {
+                    start = val.length;
+                } else {
+                    start = val.lastIndexOf(range.text);
+                }
+                range = selection.createRange().duplicate();
+                range.moveStart('character', -val.length);
+                end = range.text.length;
+            } else {
+                range = selection.createRange();
+                stored_range = range.duplicate();
+                stored_range.moveToElementText(elem);
+                stored_range.setEndPoint('EndToEnd', range);
+                start = stored_range.text.length - range.text.length;
+                end = start + range.text.length;
+            }
+        } else {
+            start = $elem[0].selectionStart;
+            end = $elem[0].selectionEnd;
+        }
+        return {
+            start: start,
+            end: end
+        };
+    };
+
+    /**
+     * Set the value that is currently being autocompleted
+     * @param {String} value
+     */
+    $.Autocompleter.prototype.setValue = function(value) {
+        if ( this.options.useDelimiter ) {
+            // set the substring between the current delimiters
+            var val = this.dom.$elem.val();
+            var d = this.getDelimiterOffsets();
+            var preVal = val.substring(0, d.start);
+            var postVal = val.substring(d.end);
+            value = preVal + value + postVal;
+        }
+        this.dom.$elem.val(value);
+    };
+
+    /**
+     * Get the value currently being autocompleted
+     * @param {String} value
+     */
+    $.Autocompleter.prototype.getValue = function(value) {
+        if ( this.options.useDelimiter ) {
+            var d = this.getDelimiterOffsets();
+            return value.substring(d.start, d.end).trim();
+        } else {
+            return value;
+        }
+    };
+
+    /**
+     * Get the offsets of the value currently being autocompleted
+     */
+    $.Autocompleter.prototype.getDelimiterOffsets = function() {
+        var val = this.dom.$elem.val();
+        if ( this.options.useDelimiter ) {
+            var preCaretVal = val.substring(0, this.getCaret().start);
+            var start = preCaretVal.lastIndexOf(this.options.delimiterChar) + 1;
+            var postCaretVal = val.substring(this.getCaret().start);
+            var end = postCaretVal.indexOf(this.options.delimiterChar);
+            if ( end == -1 ) end = val.length;
+            end += this.getCaret().start;
+        } else {
+            start = 0;
+            end = val.length;
+        }
+        return {
+            start: start,
+            end: end
+        };
+    };
+
+})(jQuery);

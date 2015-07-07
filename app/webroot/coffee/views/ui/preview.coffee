@@ -11,7 +11,8 @@ class arcs.views.Preview extends Backbone.View
 
   # Fetch a modal to hold our preview, register our hotkeys, and delegate the
   # initial set and render.
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el', 'collection')
     unless $('#modal').length
       $('body').append arcs.tmpl 'ui/modal_wrapper'
     @el = @$el = $('#modal')

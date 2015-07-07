@@ -4,14 +4,16 @@
     hasProp = {}.hasOwnProperty;
 
   arcs.views.BatchEditModal = (function(superClass) {
+    var initialize;
+
     extend(BatchEditModal, superClass);
 
     function BatchEditModal() {
       return BatchEditModal.__super__.constructor.apply(this, arguments);
     }
 
-    BatchEditModal.prototype.initialize = function() {
-      BatchEditModal.__super__.initialize.call(this);
+    initialize = function(options) {
+      _.extend(this, _.pick(options, 'title', 'subtitle', 'template', 'inputs', 'buttons'));
       this.$('input[type=text][id^=modal]').change((function(_this) {
         return function(e) {
           return _this._checkBox($(e.currentTarget));

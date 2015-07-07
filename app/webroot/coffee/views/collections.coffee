@@ -2,7 +2,9 @@
 # ------------------
 class arcs.views.CollectionList extends Backbone.View
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'model', 'collection', 'el')
+    
     @search = new arcs.utils.Search
       container: $('.search-wrapper')
       run: false
@@ -54,6 +56,7 @@ class arcs.views.CollectionList extends Backbone.View
             arcs.loader.hide()
 
   render: ->
+    console.log @$el
     @$el.html arcs.tmpl 'collections/list',
       collections: @collection.toJSON()
     @

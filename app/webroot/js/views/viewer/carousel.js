@@ -15,7 +15,8 @@
       nthumbs: 30
     };
 
-    Carousel.prototype.initialize = function() {
+    Carousel.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el', 'collection', 'index'));
       arcs.bus.on('indexChange', this.slideTo, this);
       arcs.bus.on('indexChange', this.setSelected, this);
       this.render();

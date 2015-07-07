@@ -1,6 +1,6 @@
 class arcs.views.RelationModal extends arcs.views.Modal
 
-  initialize: ->
+  initialize: (options) ->
     super()
 
   miniSearch: ->

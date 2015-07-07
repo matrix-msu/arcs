@@ -13,7 +13,8 @@ class arcs.views.Carousel extends Backbone.View
     index: 0
     nthumbs: 30 
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el', 'collection', 'index')
     # Bind to the indexChange event.
     arcs.bus.on 'indexChange', @slideTo, @
     arcs.bus.on 'indexChange', @setSelected, @

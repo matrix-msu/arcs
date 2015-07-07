@@ -23,7 +23,8 @@
       onShow: function() {}
     };
 
-    ContextMenu.prototype.initialize = function() {
+    ContextMenu.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, "el", 'filter', 'options', 'onShow', 'context'));
       $('.context-menu').remove();
       $('body').append(arcs.tmpl('ui/context_menu', {
         options: this.options.options
@@ -33,6 +34,7 @@
     };
 
     ContextMenu.prototype.show = function(e) {
+      console.log("in show");
       this.hide();
       this.menu.css({
         position: 'absolute',
@@ -47,6 +49,7 @@
 
     ContextMenu.prototype.addEvents = function() {
       var boundCb, cb, id, opt, ref;
+      console.log("in addEvents");
       this.events["contextmenu " + this.options.filter] = 'show';
       ref = this.options.options;
       for (opt in ref) {
@@ -62,6 +65,7 @@
     };
 
     ContextMenu.prototype.hide = function(e) {
+      console.log("in hide");
       return this.menu.hide();
     };
 

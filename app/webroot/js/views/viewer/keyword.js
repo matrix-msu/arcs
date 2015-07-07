@@ -15,7 +15,8 @@
       'click .keyword-remove-btn': 'deleteKeyword'
     };
 
-    Keyword.prototype.initialize = function() {
+    Keyword.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el'));
       this.collection = new arcs.collections.KeywordList;
       arcs.bus.on('indexChange', (function(_this) {
         return function() {

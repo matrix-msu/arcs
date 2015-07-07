@@ -114,7 +114,7 @@
           <button id="comment-btn" class="btn">Comment</button>
         </div>
         {% else %}
-        {{ html.link('Login', '/login') }} to comment.
+        {{ html.link('Login', '#loginModal') }} to comment.
         {% endif %}
       </div>
     </div>

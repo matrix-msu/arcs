@@ -33,7 +33,7 @@
   </ul>
 </div>
 
-  <div class="collection-list" id="all-collections"></div>
+  <div class="collection-list" id="all-collections"><div class="search-wrapper" id ="search-wrapper"></div></div>
   <script>
     arcs.user_viewer = new arcs.views.CollectionList({
       model: arcs.models.Collection,

@@ -47,8 +47,9 @@
       }
     };
 
-    Search.prototype.initialize = function() {
+    Search.prototype.initialize = function(options) {
       var ref;
+      _.extend(this.options, _.pick(options, 'container', 'order', 'run', 'loader', 'onSearch', 'success'));
       ref = [this.options.query, this.options.page], this.query = ref[0], this.page = ref[1];
       this.collection = this.results = new arcs.collections.ResultSet;
       this.vs = VS.init({
@@ -96,6 +97,7 @@
 
     Search.prototype.run = function(query, options) {
       var params;
+      console.log("in run");
       options = _.extend(_.clone(this.options), options);
       if (query == null) {
         query = this.vs.searchBox.value();
@@ -128,6 +130,7 @@
           };
         })(this)
       });
+      console.log(this.results);
       this.query = this.vs.searchBox.value();
       this.page = options.page;
       return this.results;

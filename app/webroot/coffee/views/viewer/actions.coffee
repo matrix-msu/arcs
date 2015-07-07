@@ -2,7 +2,8 @@
 # -------------
 class arcs.views.ViewerActions extends arcs.views.BaseActions
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el', 'collection', 'viewer')
     @viewer = @options.viewer
     arcs.bus.on 'indexChange', =>
       @updateNav arguments[0]

@@ -10,7 +10,8 @@
       return CollectionList.__super__.constructor.apply(this, arguments);
     }
 
-    CollectionList.prototype.initialize = function() {
+    CollectionList.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'model', 'collection', 'el'));
       this.search = new arcs.utils.Search({
         container: $('.search-wrapper'),
         run: false,
@@ -76,6 +77,7 @@
     };
 
     CollectionList.prototype.render = function() {
+      console.log(this.$el);
       this.$el.html(arcs.tmpl('collections/list', {
         collections: this.collection.toJSON()
       }));

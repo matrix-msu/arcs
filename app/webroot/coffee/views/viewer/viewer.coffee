@@ -2,7 +2,8 @@
 # -------------
 class arcs.views.Viewer extends Backbone.View
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'model', 'collection', 'collectionModel', "el")
     @collectionModel = @options.collectionModel
 
     @orderCollection()

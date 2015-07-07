@@ -3,7 +3,7 @@
 class arcs.routers.Search extends Backbone.Router
 
   initialize: (options) ->
-    @search = options.search
+    _.extend @, _.pick(options, 'search')
 
   routes:
     ''              : 'root'

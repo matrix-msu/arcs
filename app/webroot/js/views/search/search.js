@@ -9,6 +9,8 @@
   }
 
   arcs.views.search.Search = (function(superClass) {
+    var initialize;
+
     extend(Search, superClass);
 
     function Search() {
@@ -25,7 +27,9 @@
 
     /* Initialize and define events */
 
-    Search.prototype.initialize = function() {
+    initialize = function(options) {
+      console.log("initialize");
+      _.extend(this, _.pick(options, 'el'));
       this.setupSelect();
       this.setupSearch();
       this.actions = new arcs.views.search.Actions({
@@ -71,6 +75,7 @@
     /* More involved setups run by the initialize method */
 
     Search.prototype.setupSelect = function() {
+      console.log("setupSelect");
       return this.$el.find('#search-results').selectable({
         distance: 20,
         filter: '.img-wrapper img',
@@ -102,6 +107,7 @@
     };
 
     Search.prototype.setupSearch = function() {
+      console.log("setupSearch");
       this.scrollReady = false;
       return this.search = new arcs.utils.Search({
         container: $('.search-wrapper'),
@@ -123,6 +129,7 @@
 
     Search.prototype.setupScroll = function() {
       var $actions, $results, $window, pos, ref;
+      console.log("setupScroll");
       ref = [this.$('#search-actions'), this.$('#search-results')], $actions = ref[0], $results = ref[1];
       $window = $(window);
       pos = $actions.offset().top - 10;
@@ -134,6 +141,7 @@
     };
 
     Search.prototype.setupHelp = function() {
+      console.log("setupHelp");
       if (!$('.search-help-btn').length) {
         $('.VS-search-inner').append(arcs.tmpl('search/help-toggle'));
         $('.search-help-btn').click(this.showHelp);
@@ -142,6 +150,7 @@
     };
 
     Search.prototype.toggleView = function() {
+      console.log("toggleView");
       this.options.grid = !this.options.grid;
       this.$('#grid-btn').toggleClass('active');
       this.$('#list-btn').toggleClass('active');
@@ -150,6 +159,7 @@
 
     Search.prototype.scrollTop = function() {
       var time;
+      console.log("scrollTop");
       time = ($(window).scrollTop() / $(document).height()) * 1000;
       return $('html, body').animate({
         scrollTop: 0
@@ -182,10 +192,9 @@
     };
 
     Search.prototype.setPage = function(e) {
-      var $el;
       e.preventDefault();
-      $el = $(e.currentTarget);
-      this.search.options.page = $el.data('page');
+      this.$el = $(e.currentTarget);
+      this.search.options.page = this.$el.data('page');
       return this.search.run();
     };
 

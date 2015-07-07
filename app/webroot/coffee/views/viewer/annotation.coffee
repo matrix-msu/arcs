@@ -2,7 +2,8 @@
 # -----------------
 class arcs.views.Annotation extends Backbone.View
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el')
     @collection = new arcs.collections.AnnotationList
     @collection.on 'add sync reset remove', @render, @
 
@@ -15,9 +16,7 @@ class arcs.views.Annotation extends Backbone.View
     @visible = true
     @active = false
     
-    console.log "testting"
-    #arcs.keys.map @, a: @collection.fetch()
-
+    # not sure if either of these are necessary.
     #$('#annotation-vis-btn').on 'click', => @toggleVisibility()
     #arcs.keys.map @, a: @toggleVisibility
 

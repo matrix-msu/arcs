@@ -11,7 +11,7 @@
     }
 
     Search.prototype.initialize = function(options) {
-      return this.search = options.search;
+      return _.extend(this, _.pick(options, 'search'));
     };
 
     Search.prototype.routes = {

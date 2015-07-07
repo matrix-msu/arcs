@@ -48,10 +48,9 @@
         model: new arcs.models.User(<?php echo json_encode($user); ?>)
     });
 
-    console.log($("#collections"));
 	// used to open tabs
 	var currentTab = 'uploads';
-	$('#uploads').addClass('active');
+	$('li[id=uploads]').addClass('active');
 	function changeTab(tab) {
 		if (currentTab != tab) {
 		 	$("li[id="+currentTab+"]").removeClass('active');

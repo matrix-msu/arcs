@@ -9,6 +9,8 @@
   }
 
   arcs.views.admin.Users = (function(superClass) {
+    var initialize;
+
     extend(Users, superClass);
 
     function Users() {
@@ -21,7 +23,8 @@
       'Admin': 0
     };
 
-    Users.prototype.initialize = function() {
+    initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el', 'collection'));
       this.collection.on('add remove change sync', this.render, this);
       return this.render();
     };

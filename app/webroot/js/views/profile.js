@@ -15,6 +15,7 @@
     };
 
     Profile.prototype.editAccount = function() {
+      console.log("making a modal");
       return new arcs.views.Modal({
         title: 'Edit Your Account',
         subtitle: "If you'd like your password to stay the same, leave the " + "password field blank.",

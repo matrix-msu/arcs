@@ -43,7 +43,8 @@ class arcs.utils.Search extends Backbone.View
     uploaded   : -> arcs.completeDate 'resources/complete/created'
     modified   : -> arcs.completeDate 'resources/complete/modified'
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'container', 'order', 'run', 'loader', 'onSearch', 'success')
     [@query, @page] = [@options.query, @options.page]
     @collection = @results = new arcs.collections.ResultSet
     @vs = VS.init
@@ -76,6 +77,7 @@ class arcs.utils.Search extends Backbone.View
   # Visual Search box. Pass an options hash to override the the object's
   # options.
   run: (query, options) ->
+    console.log "in run"
     # Use this.options for default opts, but don't alter it.
     options = _.extend _.clone(@options), options
     query ?= @vs.searchBox.value()
@@ -100,7 +102,7 @@ class arcs.utils.Search extends Backbone.View
       error: =>
         options.error()
         arcs.loader.hide() if options.loader
-
+    console.log @results
     @query = @vs.searchBox.value()
     @page = options.page
     @results

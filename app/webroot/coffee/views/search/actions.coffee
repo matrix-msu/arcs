@@ -2,10 +2,9 @@
 # --------------
 arcs.views.search ?= {}
 class arcs.views.search.Actions extends arcs.views.BaseActions
-
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el', 'collection')
     @results = @collection
-
     @ctxMenu = new arcs.views.ContextMenu
       el: $(document)
       filter: 'img'

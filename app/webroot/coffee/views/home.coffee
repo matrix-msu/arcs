@@ -2,12 +2,14 @@
 # -----------
 class arcs.views.Home extends Backbone.View
 
-  initialize: ->
+  initialize: (options) ->
+    _.extend @options, _.pick(options, "el")
     @search = new arcs.utils.Search
       container: $('.search-wrapper')
       run: false
       onSearch: =>
         location.href = arcs.url 'search', @search.query
+    console.log @search.query
     @renderDetails $('details:first')
 
   events:
@@ -24,10 +26,10 @@ class arcs.views.Home extends Backbone.View
     false
 
   renderDetails: ($el) ->
-    type = $el.data('type') 
+    type = $el.data('type')
     query = encodeURIComponent(type)
     $.getJSON arcs.baseURL + "resources/search?n=12&q=#{query}", (response) ->
-      console.log(response)
       html = arcs.tmpl 'home/details', 
         resources: response.results
       $el.children('div').html html
+      console.log response.results

@@ -10,7 +10,7 @@
       return RelationModal.__super__.constructor.apply(this, arguments);
     }
 
-    RelationModal.prototype.initialize = function() {
+    RelationModal.prototype.initialize = function(options) {
       return RelationModal.__super__.initialize.call(this);
     };
 

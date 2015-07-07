@@ -15,7 +15,8 @@
       template: 'search/preview'
     };
 
-    Preview.prototype.initialize = function() {
+    Preview.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el', 'collection'));
       if (!$('#modal').length) {
         $('body').append(arcs.tmpl('ui/modal_wrapper'));
       }

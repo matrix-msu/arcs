@@ -10,7 +10,8 @@
       return ViewerActions.__super__.constructor.apply(this, arguments);
     }
 
-    ViewerActions.prototype.initialize = function() {
+    ViewerActions.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'el', 'collection', 'viewer'));
       this.viewer = this.options.viewer;
       arcs.bus.on('indexChange', (function(_this) {
         return function() {

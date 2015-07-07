@@ -3,26 +3,32 @@
   var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   arcs.utils.mime = arcs.mime = {
-    imageTypes: {
-      'image/png': 'png',
-      'image/jpeg': 'jpeg',
-      'image/jpg': 'jpg',
-      'image/gif': 'gif',
-      'image/tiff': 'tiff'
+    imageTypes: function() {
+      return {
+        'image/png': 'png',
+        'image/jpeg': 'jpeg',
+        'image/jpg': 'jpg',
+        'image/gif': 'gif',
+        'image/tiff': 'tiff'
+      };
     },
-    documentTypes: {
-      'application/pdf': 'pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
-      'application/msword': 'doc',
-      'text/plain': 'plaintext',
-      'text/richtext': 'richtext',
-      'text/rtf': 'rtf'
+    documentTypes: function() {
+      return {
+        'application/pdf': 'pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+        'application/msword': 'doc',
+        'text/plain': 'plaintext',
+        'text/richtext': 'richtext',
+        'text/rtf': 'rtf'
+      };
     },
-    videoTypes: {
-      'video/mpeg': 'mpeg',
-      'video/msvideo': 'avi',
-      'video/quicktime': 'mov',
-      'video/mp4': 'mp4'
+    videoTypes: function() {
+      return {
+        'video/mpeg': 'mpeg',
+        'video/msvideo': 'avi',
+        'video/quicktime': 'mov',
+        'video/mp4': 'mp4'
+      };
     },
     isDocument: function(mime) {
       return indexOf.call(_.keys(this.documentTypes), mime) >= 0;
@@ -60,6 +66,6 @@
     }
   };
 
-  _.bindAll(arcs.utils.mime);
+  _.bindAll(arcs.utils.mime, 'getInfo');
 
 }).call(this);
