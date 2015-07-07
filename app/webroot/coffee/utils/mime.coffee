@@ -54,6 +54,6 @@ arcs.utils.mime = arcs.mime =
 
     result or undef 
 
-_.bindAll arcs.utils.mime, 'getInfo'
+_.bindAll arcs.utils.mime, 'imageTypes', 'documentTypes', 'videoTypes', 'isDocument', 'isImage', 'isVideo', 'types', 'getInfo'
 
   # used to have '_.bindAll arcs.utils.mime' however this no longer works.

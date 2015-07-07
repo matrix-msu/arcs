@@ -66,6 +66,6 @@
     }
   };
 
-  _.bindAll(arcs.utils.mime, 'getInfo');
+  _.bindAll(arcs.utils.mime, 'imageTypes', 'documentTypes', 'videoTypes', 'isDocument', 'isImage', 'isVideo', 'types', 'getInfo');
 
 }).call(this);
