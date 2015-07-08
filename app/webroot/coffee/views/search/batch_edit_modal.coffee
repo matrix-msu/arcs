@@ -4,9 +4,9 @@
 class arcs.views.BatchEditModal extends arcs.views.Modal
 
   # Add checkbox checking.
-  initialize = (options) ->
-    # super() # no idea if this is needed but causes error
-    _.extend this, _.pick(options, 'title', 'subtitle', 'template', 'inputs', 'buttons')
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'title', 'subtitle', 'template', 'inputs', 'buttons')
+    super()
     # On keydown of an input, find the corresponding 'Apply to all' checkbox 
     # and check it, unless the input is empty.
     @$('input[type=text][id^=modal]').change (e) => 

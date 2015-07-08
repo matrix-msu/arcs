@@ -9,15 +9,13 @@
   }
 
   arcs.views.admin.Flags = (function(superClass) {
-    var initialize;
-
     extend(Flags, superClass);
 
     function Flags() {
       return Flags.__super__.constructor.apply(this, arguments);
     }
 
-    initialize = function(options) {
+    Flags.prototype.initialize = function(options) {
       _.extend(this.options, _.pick(options, 'el', 'collection'));
       this.collection.on('add remove change sync', this.render, this);
       return this.render();

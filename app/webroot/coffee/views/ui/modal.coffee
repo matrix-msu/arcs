@@ -77,7 +77,6 @@ class arcs.views.Modal extends Backbone.View
 
   initialize: (options) ->
     _.extend @options, _.pick(options, 'draggable', 'backdrop', 'keyboard', 'show', 'class', 'title', 'subtitle', 'template', 'inputs', 'buttons')
-    console.log @options
     # Delete any existing modal and make a new one. (Don't resuse.)
     $('#modal').remove()
     $('.modal-backdrop').remove()

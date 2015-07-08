@@ -16,7 +16,7 @@ class arcs.views.admin.Jobs extends Backbone.View
     autoUpdate: false
     updateEvery: 15000
 
-  initialize = (options) ->
+  initialize: (options) ->
     _.extend @options, _.pick(options, 'el', 'collection')
     @collection.on 'add remove change reset sync', @render, @
     @collection.url = arcs.baseURL + 'jobs'

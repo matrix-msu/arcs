@@ -4,7 +4,6 @@ class arcs.views.Profile extends Backbone.View
     'click #edit-profile': 'editAccount'
 
   editAccount: ->
-    console.log "making a modal"
     new arcs.views.Modal
       title: 'Edit Your Account'
       subtitle: "If you'd like your password to stay the same, leave the " +

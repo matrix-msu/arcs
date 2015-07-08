@@ -9,7 +9,6 @@ class arcs.views.Home extends Backbone.View
       run: false
       onSearch: =>
         location.href = arcs.url 'search', @search.query
-    console.log @search.query
     @renderDetails $('details:first')
 
   events:
@@ -32,4 +31,3 @@ class arcs.views.Home extends Backbone.View
       html = arcs.tmpl 'home/details', 
         resources: response.results
       $el.children('div').html html
-      console.log response.results

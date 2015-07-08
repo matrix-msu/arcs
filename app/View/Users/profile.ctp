@@ -21,7 +21,7 @@
                 <?php if ($user['id'] == $user_info['User']['id']): ?>
                     <dd><a href="#" id="edit-profile" onclick="return false;">Edit Profile</a></dd>
                 <?php endif ?>
-            </dl>
+            </dl> 
         </div>
     </div>
     <div class="row tabbable" id="user-actions">

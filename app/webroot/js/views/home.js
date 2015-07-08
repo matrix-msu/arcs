@@ -21,7 +21,6 @@
           };
         })(this)
       });
-      console.log(this.search.query);
       return this.renderDetails($('details:first'));
     };
 
@@ -47,8 +46,7 @@
         html = arcs.tmpl('home/details', {
           resources: response.results
         });
-        $el.children('div').html(html);
-        return console.log(response.results);
+        return $el.children('div').html(html);
       });
     };
 

@@ -12,13 +12,8 @@ class arcs.views.search.Search extends Backbone.View
 
   ### Initialize and define events ###
 
-  initialize = (options) ->
-    console.log "initialize"
-    _.extend this, _.pick(options, 'el')
-    #@options.sort = 'title'
-    #@options.sortDir = 'asc'
-    #@options.grid = true
-    #@options.url = arcs.baseURL + 'search/'
+  initialize: (options) ->
+    _.extend @options, _.pick(options, 'el')
 
     @setupSelect()
     @setupSearch()
@@ -70,7 +65,6 @@ class arcs.views.search.Search extends Backbone.View
 
   # Set up drag-to-select, using jQuery.ui.selectable
   setupSelect: ->
-    console.log "setupSelect"
     @$el.find('#search-results').selectable
       # Little bit of drag tolerance
       distance: 20
@@ -92,7 +86,6 @@ class arcs.views.search.Search extends Backbone.View
 
   # Make an instance of our Search utility and setup endless scrolling.
   setupSearch: ->
-    console.log "setupSearch"
     @scrollReady = false
     @search = new arcs.utils.Search 
       container: $('.search-wrapper')
@@ -110,7 +103,6 @@ class arcs.views.search.Search extends Backbone.View
   # Setup the endless scroll. This is called after we've received our first set
   # of results. 
   setupScroll: ->
-    console.log "setupScroll"
     [$actions, $results] = [@$('#search-actions'), @$('#search-results')]
     $window = $(window)
     pos = $actions.offset().top - 10
@@ -127,7 +119,6 @@ class arcs.views.search.Search extends Backbone.View
       $actions.width($results.width() + 23) if $window.scrollTop() > pos
 
   setupHelp: ->
-    console.log "setupHelp"
     unless $('.search-help-btn').length
       $('.VS-search-inner').append(arcs.tmpl 'search/help-toggle')
       $('.search-help-btn').click(@showHelp)
@@ -135,7 +126,6 @@ class arcs.views.search.Search extends Backbone.View
 
   # Toggle between list and grid view.
   toggleView: ->
-    console.log "toggleView"
     @options.grid = !@options.grid
     @$('#grid-btn').toggleClass 'active'
     @$('#list-btn').toggleClass 'active'
@@ -143,7 +133,6 @@ class arcs.views.search.Search extends Backbone.View
 
   # Scroll to the top of the page.
   scrollTop: ->
-    console.log "scrollTop"
     # The animation time should be relative to our position on the page.
     time = ($(window).scrollTop() / $(document).height()) * 1000
     $('html, body').animate {scrollTop: 0}, time

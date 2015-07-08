@@ -97,7 +97,6 @@
 
     Search.prototype.run = function(query, options) {
       var params;
-      console.log("in run");
       options = _.extend(_.clone(this.options), options);
       if (query == null) {
         query = this.vs.searchBox.value();
@@ -130,7 +129,6 @@
           };
         })(this)
       });
-      console.log(this.results);
       this.query = this.vs.searchBox.value();
       this.page = options.page;
       return this.results;

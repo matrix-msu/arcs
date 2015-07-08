@@ -125,13 +125,19 @@ class UsersController extends AppController {
                     $this->redirect('/');
                 }
             } else {
-                // TODO: why is this findbyemail and then takes a username?
                 $userByEmail = $this->User->findByEmail($this->request->data['User']['username']);
                 if ($userByEmail)
                     $this->request->data['User']['username'] = $userByEmail['User']['username'];
                 if ($this->Auth->login()) {
-                    $this->set("user", $this->User);
-                    $this->User->saveField('last_login', date(DATE_ATOM));
+                    // order by DESC because some users have the same username.
+                    $user = $this->User->find('first', array(
+                        'conditions' => array(
+                            'User.username' => $this->request->data['User']['username']
+                        ),
+                        'order' => array('id' => 'DESC'),
+                    ));
+                    $this->User->id = $user['User']['id'];
+                    $this->User->saveField('last_login', date("Y-m-d H:i:s"));
                     return $this->redirect($this->Auth->redirect());
                 } else {
                     $this->redirect($this->referer().'#loginModal');
@@ -185,7 +191,7 @@ class UsersController extends AppController {
         $user = $this->User->findByReset($token);
         if (!$user || is_null($token)) {
             $this->Session->setFlash("Invalid token.", 'flash_error');
-            return $this->redirect('/login');
+            return $this->redirect('/#loginModal');
         }
         if (isset($this->data['User']['password'])) {
             $this->User->permit('password');
@@ -355,7 +361,6 @@ class UsersController extends AppController {
         if (!$user) {
             throw new NotFoundException();
         }
-        // $allUsers = $this->User->find('all');
         $this->set('isAdmin', $this->Access->isAdmin());
         $this->set('user_info', $user);
     }

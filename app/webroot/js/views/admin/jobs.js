@@ -9,8 +9,6 @@
   }
 
   arcs.views.admin.Jobs = (function(superClass) {
-    var initialize;
-
     extend(Jobs, superClass);
 
     function Jobs() {
@@ -30,7 +28,7 @@
       updateEvery: 15000
     };
 
-    initialize = function(options) {
+    Jobs.prototype.initialize = function(options) {
       _.extend(this.options, _.pick(options, 'el', 'collection'));
       this.collection.on('add remove change reset sync', this.render, this);
       this.collection.url = arcs.baseURL + 'jobs';
