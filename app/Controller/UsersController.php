@@ -130,6 +130,8 @@ class UsersController extends AppController {
                 if ($userByEmail)
                     $this->request->data['User']['username'] = $userByEmail['User']['username'];
                 if ($this->Auth->login()) {
+                    $this->set("user", $this->User);
+                    $this->User->saveField('last_login', date(DATE_ATOM));
                     return $this->redirect($this->Auth->redirect());
                 } else {
                     $this->redirect($this->referer().'#loginModal');
