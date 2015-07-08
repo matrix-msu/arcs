@@ -28,6 +28,11 @@
     <summary class="large"><span class="summaryTitle">Photographs</span></summary>
     <div></div>
   </details>
+  
+  <details class="unselectable" data-type="Photographic Negative">
+    <summary class="large"><span class="summaryTitle">Photographic Negative</span></summary>
+    <div></div>
+  </details>
 
   <details class="unselectable" data-type="Report">
     <summary class="large"><span class="summaryTitle">Reports</span></summary>
