@@ -2,30 +2,44 @@
 // ---------
 
 .viewer-tabs {
-  width: 23%;
-  text-align: left;
-  float: right;
-  right: 15px;
-  position: relative;
-  padding-right: 0;
-  margin-top: 5px;
+    width: 23%;
+    text-align: left;
+    float: right;
+    right: 15px;
+    position: relative;
+    padding-right: 0;
+    margin-top: 5px;
 
-  .tab-pane h3 {
-    color: #444;
-    .text-shadow(#fff);
-  }
+    .nav-pills {
+        margin-bottom: 0px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ddd;
+    }
 
-  .nav-pills {
-    margin-bottom: 0px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #ddd;
-  }
+    .tab-content {
+        display: inline-block;
+        padding: 10px;
+        background: #fff;
+        border-top: none;
+        overflow: auto;
+    }
+}
 
-  .tab-content {
-    display: inline-block;
-    padding: 10px;
-    background: #fff;
-    border-top: none;
-    overflow: auto;
-  }
+.tab-content {
+    h1, h2, h3, h4, p {
+        color: #fff;
+        text-shadow: none;
+    }
+}
+
+.table {
+    tbody {
+        tr:nth-child(odd) {
+            color: #808080;
+            
+            .label {
+                color: #808080;
+            }
+        }
+    }
 }
