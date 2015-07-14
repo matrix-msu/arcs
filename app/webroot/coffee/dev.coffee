@@ -4,8 +4,9 @@
 
 # Set the baseURL so that Backbone.sync works with our port 8080 dev installs.
 # This part is on, for now, in production mode to test the built assets.
-if document.location.href.match /:8080\/~[a-z0-9]+\//
-  arcs.baseURL += document.location.href.match /~[a-z0-9]+\//
+
+if document.location.href.match /\/~[a-z.]+\//
+  arcs.baseURL += document.location.href.match /\/~[a-z.]+\//
   arcs.baseURL += 'arcs/'
 
 if arcs.mode > 0

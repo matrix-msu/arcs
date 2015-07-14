@@ -304,9 +304,7 @@
       template = this.options.grid ? 'search/grid' : 'search/list';
       $results[append ? 'append' : 'html'](arcs.tmpl(template, results));
       if (!this.search.results.length) {
-        return $results.html(this.make('div', {
-          id: 'no-results'
-        }, 'No Results'));
+        return $results.html("<div id='no-results'>No Results</div>");
       }
     };
 

@@ -2,8 +2,8 @@
 (function() {
   var _sync;
 
-  if (document.location.href.match(/:8080\/~[a-z0-9]+\//)) {
-    arcs.baseURL += document.location.href.match(/~[a-z0-9]+\//);
+  if (document.location.href.match(/\/~[a-z.]+\//)) {
+    arcs.baseURL += document.location.href.match(/\/~[a-z.]+\//);
     arcs.baseURL += 'arcs/';
   }
 

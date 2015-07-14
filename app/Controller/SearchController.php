@@ -44,7 +44,7 @@ class SearchController extends AppController {
 		}
             
 
-		//old code using old seracher. outdated now that kora is being used?
+		//old code using old searcher. outdated now that kora is being used?
         /* $searcher = $this->getSearcher();
         if ($this->Auth->loggedIn())
             $searcher->publicFilter = false;

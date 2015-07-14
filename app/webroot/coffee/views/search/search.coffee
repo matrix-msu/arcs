@@ -26,7 +26,7 @@ class arcs.views.search.Search extends Backbone.View
     # Setup our Router
     @router = new arcs.routers.Search
       search: @search
-
+    
     # Start Backbone.history
     Backbone.history.start
       pushState: true
@@ -243,4 +243,4 @@ class arcs.views.search.Search extends Backbone.View
     template = if @options.grid then 'search/grid' else 'search/list'
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results)
     if not @search.results.length
-      $results.html @make 'div', id:'no-results', 'No Results'
+      $results.html "<div id='no-results'>No Results</div>"
