@@ -54,19 +54,54 @@ div#search-results-wrapper {
         .actions-right {
             float: right;
             position: relative;
-//            bottom: 28px;
         }
         #open-buttons {
-            right: 20px;
+            right: 18px;
         }
         #sort-buttons {
-            right: 10px;
+            right: 30px;
             #sort-btn {
                 span#sort-by {
                     font-size: 95%;
                     font-weight: bold;
                 }
             }
+            
+        .pointerDown {
+            position: absolute;
+            left: 7em;
+            width: 8px;
+            height: 8px;
+            border: solid #808080;
+            border-width: 2.5px 2.5px 0 0;
+            -webkit-transform: rotate(135deg);
+            -moz-transform: rotate(135deg);
+            -ms-transform: rotate(135deg);
+            -o-transform: rotate(135deg);
+            transform: rotate(135deg);
+            margin: 5px 0 0 30px;
+        }
+        .pointerUp {
+            display: inline;
+            width: 8px;
+            height: 8px;
+            border: solid #808080;
+            border-width: 2.5px 2.5px 0 0;
+            -webkit-transform: rotate(315deg);
+            -moz-transform: rotate(315deg);
+            -ms-transform: rotate(315deg);
+            -o-transform: rotate(315deg);
+            transform: rotate(315deg);
+            margin: 8px 0 0 30px;
+        }
+            
+        .dropdown-menu {
+            border: 0;
+            border-radius: 0;
+            background: #cecece;
+            top: 104%;
+        }
+            
         }
         ul.dropdown-menu li a {
             cursor: pointer;

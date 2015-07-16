@@ -131,7 +131,7 @@
     <div id="sort-buttons" class="btn-group actions-right">
       <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
         Sort by <span id="sort-by">title</span>
-        <span class="caret"></span>
+        <span class="pointerDown sort-arrow"></span>
       </button>
       <ul class="dropdown-menu">
         <li><a class="sort-btn" id="sort-title-btn">title&nbsp;
@@ -178,4 +178,14 @@
   arcs.searchView = new arcs.views.search.Search({
     el: $('#search-results-wrapper')
   });
+    
+    $( '.dropdown-toggle' ).click(function() {
+        $( '.sort-arrow' ).toggleClass(  'pointerUp'  );
+    });
+    
+    $( window ).click(function() {
+		if ( $( '#sort-buttons' ).hasClass( 'open' ) == false && $( '.sort-arrow' ).hasClass( 'pointerUp' ) ) {
+			$( '.sort-arrow' ).removeClass( 'pointerUp' );
+		}
+	});
 </script>
