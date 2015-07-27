@@ -69,6 +69,9 @@
     Router::connect('/user/*', 
         array('controller' => 'users', 'action' => 'profile')
     );
+    Router::connect('/user/edit/*', 
+        array('controller' => 'users', 'action' => 'edit')
+    );
 
     # Search 
     # (we're using the greedy pattern so that we can match urls with slashes, 
@@ -131,6 +134,8 @@
         'jobs',
         'metadata'
     );
+
+
     Router::mapResources($restful);
     Router::mapResources($restful, array('prefix' => '/api/'));
     Router::parseExtensions();

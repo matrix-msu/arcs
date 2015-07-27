@@ -46,12 +46,18 @@ class MetaResourcesController extends AppController {
     public function edit($id) {
         if (!($this->request->is('put') || $this->request->is('post'))) 
             throw new MethodNotAllowedException();
+            // return $this->json(405);
         $model = $this->modelClass;
         $this->$model->read(null, $id);
-        if (!$this->$model->exists()) throw new NotFoundException();
-        if (!$this->request->data) throw new BadRequestException();
+        if (!$this->$model->exists()) 
+            throw new NotFoundException();
+            // return $this->json(404);
+        if (!$this->request->data) 
+            throw new BadRequestException();
+            // return $this->json(400);
         if (!$this->$model->add($this->request->data)) 
             throw new InternalErrorException();
+            // return $this->json(500);
         $this->json(200, $this->$model->findById($this->$model->id));
     }
 

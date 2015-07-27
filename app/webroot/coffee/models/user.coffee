@@ -7,7 +7,7 @@ class arcs.models.User extends Backbone.Model
     'Researcher'     : 2
     'Guest'          : 3
 
-  urlRoot: arcs.baseURL + 'users'
+  urlRoot: arcs.baseURL + 'users/'
 
   is: (role) ->
     @get('role') <= @ROLES[role]

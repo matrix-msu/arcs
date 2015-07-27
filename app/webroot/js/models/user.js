@@ -17,7 +17,7 @@
       'Guest': 3
     };
 
-    User.prototype.urlRoot = arcs.baseURL + 'users';
+    User.prototype.urlRoot = arcs.baseURL + 'users/';
 
     User.prototype.is = function(role) {
       return this.get('role') <= this.ROLES[role];

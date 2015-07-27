@@ -55,19 +55,25 @@ class UsersController extends AppController {
 		$this->Session->setFlash($this->data['User']['id']);
 		if (!($this->request->is('put') || $this->request->is('post')))
             throw new MethodNotAllowedException();
+            // return $this->json(405);
         if (!$this->request->data || !$id) 
 			throw new BadRequestException();
+            // return $this->json(400);
         $user = $this->User->read(null, $id);
         if (!$user) 
 			throw new NotFoundException();
+            // return $this->json(404);
         # Must be editing own account, or an admin.
         if (!($this->User->id == $this->Auth->user('id') || $this->Access->isAdmin()))
             throw new ForbiddenException();
+            // return $this->json(403);
         # Only admins can change user roles.
         if ($this->Access->isAdmin()) 
             $this->User->permit('role');
+        // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
         if (!$this->User->add($this->request->data))
 			throw new InternalErrorException();
+            // return $this->json(500);
         # Update the Auth Session var, if necessary.
         if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));

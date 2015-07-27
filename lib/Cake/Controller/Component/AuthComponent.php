@@ -292,6 +292,8 @@ class AuthComponent extends Component {
 		}
 		$url = Router::normalize($url);
 		$loginAction = Router::normalize($this->loginAction);
+		# quick fix
+		$loginAction = "/#loginModal";
 
 		$allowedActions = $this->allowedActions;
 		$isAllowed = (

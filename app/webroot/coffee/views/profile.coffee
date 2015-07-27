@@ -26,5 +26,12 @@ class arcs.views.Profile extends Backbone.View
               delete vals.password
             arcs.loader.show()
             @model.save vals,
-              success: arcs.loader.hide
+              success: (model, response, options) ->
+                console.log "Model successfully saved."
+                arcs.loader.hide()
+                return
+              error: (model, response, options) ->
+                console.log "Error: Model failed to save."
+                arcs.loader.hide()
+                return
         cancel: ->
