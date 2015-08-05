@@ -17,8 +17,8 @@
         maxZoom: 18 }).addTo(map);
 
 	<?php 
-		$projects_array = json_decode($projects, true);
-		foreach($projects_array as $item) {
+		//$projects_array = json_decode($projects, true);
+		foreach($projects as $item) {
 			$link = $this->Html->link(
 				'VIEW PROJECT',
 				array(
@@ -28,7 +28,7 @@
 				)
 			);
 			$html = "";
-			$html = "var marker = L.marker([".$item['Lat'].",".$item['Long']."])";
+			$html = "var marker = L.marker([".$item['Latitude'].",".$item['Longitude']."])";
 			$html .= ".addTo(map);";
 			$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><br><p style="margin:0;">This is a Description</p><br>'.$link.'\').openPopup();';
 			print $html;
