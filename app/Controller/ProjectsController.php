@@ -25,15 +25,20 @@ class ProjectsController extends AppController {
 
 		$display = "json";
 		$query = "";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=22&sid=38&token=a60c6df37bd50ebc998c76ac&display=".urlencode($display);//."query=".urlencode($query);
+		$url = KORA_RESTFUL_URL."?request=GET&pid=123&sid=734&token=8b88eecedaa2d3708ebec77a&display=json";
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 
 		///capture results and display
-		$server_output = curl_exec($ch);
-		$this->set('projects', $server_output);
+		$server_output = json_decode(curl_exec($ch), true);
+		//var_dump($server_output);
+		$projects = array();
+		foreach($server_output as $item) {
+			array_push($projects, $item);
+		}
+		$this->set('projects', $projects);
 	}
 	
 	/**
