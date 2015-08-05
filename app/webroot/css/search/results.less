@@ -59,6 +59,7 @@ div#search-results-wrapper {
             right: 18px;
         }
         #sort-buttons {
+            z-index: 1;
             right: 30px;
             #sort-btn {
                 span#sort-by {
@@ -96,10 +97,13 @@ div#search-results-wrapper {
         }
             
         .dropdown-menu {
+            z-index: 0;
             border: 0;
             border-radius: 0;
             background: #cecece;
-            top: 104%;
+            top: -14%;
+            padding-top: 5em;
+            box-shadow: 5px 5px 5px rgba(128, 128, 128, .5);
         }
             
         }
