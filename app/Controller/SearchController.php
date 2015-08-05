@@ -45,7 +45,7 @@ class SearchController extends AppController {
             
 
 		//old code using old searcher. outdated now that kora is being used?
-        /* $searcher = $this->getSearcher();
+        $searcher = $this->getSearcher();
         if ($this->Auth->loggedIn())
             $searcher->publicFilter = false;
         $query = $searcher->parseQuery($this->request->query['q']);
@@ -66,26 +66,25 @@ class SearchController extends AppController {
         if (!$this->Access->isAdmin()) {
             unset($response['raw_query']);
             unset($response['mode']);
-        } */
+        } 
 		
 		$user = "";
 		$pass = "";
-		$type = $this->request->query['q'];
+		$query = $this->request->query['q'];
+		$sid = $this->request->query['sid'];
 		$display = "json";
-		$query = "Type,=,".$type;
-		$url = "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
+		$url = KORA_RESTFUL_URL."?request=GET&pid=123&sid=".$sid."&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 
 		///capture results and display
-		//$response['results'] = json_decode(curl_exec($ch), false);
 		$response['results'] = json_decode(curl_exec($ch), true);
 		$returnResults = array();
 		foreach($response['results'] as $item) {
 			
-			$item['thumb'] = "http://kora.matrix.msu.edu/files/123/736/".$item['Resource Identifier'].".jpg";
+			$item['thumb'] = KORA_BASE."files/123/".$sid."/".$item['Resource Identifier'].".jpg";
 			array_push($returnResults, $item);
 		}
 		$response['results'] = $returnResults;
