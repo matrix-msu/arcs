@@ -1,15 +1,15 @@
 <ul class="resource-thumbs">
 <% _.each(resources, function(r, i) { %>
   <li class="resource-thumb">
-    <a href="<%= arcs.baseURL + 'resource/' + r.id %>">
+    <a href="<%= arcs.baseURL + 'resource/' + r.kid %>">
       <img src="<%= r.thumb %>" alt="resource" />
     </a>
-    <a class="subtle" href="<%= arcs.baseURL + 'resource/' + r.id %>"><%= r.title %></a>
+    <a class="subtle" href="<%= arcs.baseURL + 'resource/' + r.kid %>"><%= r.title %></a>
   </li>
 <% }) %>
 <% if (!resources.length) { %>
   <li>
-    <i class="icon-exclamation-sign"></i> No Results Found
+    <i class="icon-exclamation-sign"></i> No Results FoundTEST
   </li>
 <% } else { %>
   <li class="resource-thumb">
