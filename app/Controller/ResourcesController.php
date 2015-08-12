@@ -144,7 +144,21 @@ class ResourcesController extends AppController {
         $this->Resource->recursive = 1;
         $this->Resource->flatten = false;
 
-        $resource = $this->Resource->findById($id);
+		$query = "kid,=,".$id;
+		$sid = "736";
+		$display = "json";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=123&sid=".$sid."&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
+		///capture results and display
+		$resource = json_decode(curl_exec($ch), true);
+		$resource[$id]['thumb'] = KORA_BASE."files/123/".$sid."/".$resource[$id]['Resource Identifier'].".jpg";
+		$resource = $resource[$id];
+		
+		//var_dump($resource);
         $public = $resource['Resource']['public'];
         $allowed = $public || $this->Auth->loggedIn();
 
@@ -179,7 +193,7 @@ class ResourcesController extends AppController {
 
         debug($resource);
 
-        // Debugger::var_dump($resource);
+        //Debugger::var_dump($resource);
         # On the first request of a particular resource (usually directly 
         # after upload), we might prompt the user for additional 
         # actions/information. Here we're turning that off for future 
