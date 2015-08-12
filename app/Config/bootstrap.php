@@ -33,7 +33,8 @@ Configure::load('arcs');
 Configure::load('assets');
 
 # Basic Kora Information
-define ("KORA_RESTFUL_URL", "http://dev2.matrix.msu.edu/kora/api/restful.php");
+define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
+define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
 
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
