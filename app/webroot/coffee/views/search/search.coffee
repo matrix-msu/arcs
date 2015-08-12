@@ -14,7 +14,6 @@ class arcs.views.search.Search extends Backbone.View
 
   initialize: (options) ->
     _.extend @options, _.pick(options, 'el')
-
     @setupSelect()
     @setupSearch()
 
@@ -60,6 +59,7 @@ class arcs.views.search.Search extends Backbone.View
     'click .sort-btn'          : 'setSort'
     'click .dir-btn'           : 'setSortDir'
     'click .search-page-btn'   : 'setPage'
+    'click .search-type'       : 'search'
 
   ### More involved setups run by the initialize method ###
 
@@ -88,7 +88,7 @@ class arcs.views.search.Search extends Backbone.View
   setupSearch: ->
     @scrollReady = false
     @search = new arcs.utils.Search 
-      container: $('.search-wrapper')
+      container: $('#search-box')
       order: @options.sort
       run: false
       loader: true
@@ -144,6 +144,7 @@ class arcs.views.search.Search extends Backbone.View
     @$('.sort-btn .icon-ok').remove()
     @$(e.target).append @make 'i', class: 'icon-ok'
     @$('#sort-btn span#sort-by').html @options.sort
+    console.log("SEARCHING")
     @search.run null,
       order: @options.sort
       direction: @options.sortDir
@@ -227,11 +228,21 @@ class arcs.views.search.Search extends Backbone.View
     return unless @search.results.length > @search.options.n
     results = new arcs.collections.ResultSet @search.getLast()
     @_render results: results.toJSON(), true
+	
+  search: (e) ->
+    e.preventDefault()
+	
+    #query = e.target.text+",like,"+$("#search-box").val()
+    query = [e.target.text, "like", $("#search-box").val()]
+    @search.run query,
+      order: 'type'
+      direction: @options.sortDir
 
   # Render the results.
   render: ->
     @_render results: @search.results.toJSON()
     data = @search.results.query
+    
     data.page = @search.page
     data.query = encodeURIComponent @search.query
     $('#search-pagination').html arcs.tmpl('search/paginate', results: data)
@@ -242,5 +253,5 @@ class arcs.views.search.Search extends Backbone.View
     $results = $('#search-results')
     template = if @options.grid then 'search/grid' else 'search/list'
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results)
-    if not @search.results.length
+    if not @search.results.query.total > 0
       $results.html "<div id='no-results'>No Results</div>"
