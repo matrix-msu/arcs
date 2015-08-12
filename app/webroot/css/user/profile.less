@@ -16,6 +16,8 @@
         position: relative;
         top: -20px;
         max-height: 183px;
+        margin-top: 16px;
+        margin-right: 42px;
         
         dd {
             margin-bottom: 1em;
@@ -26,13 +28,32 @@
                 text-transform: uppercase;
             }
         }
+        
+        a[href^="mailto"] { 
+	        text-transform: none;
+	    }
+        
+        a {
+	        text-transform: uppercase;
+        }
     }
+    
+    .overall-score {
+        text-align: center;
+        
+        img {
+            height: 160px;
+			border-radius: 50%;
+			margin-bottom: 1em;
+        }
+    }
+    
     .profile-image {
         float: left;
         margin-right: 3em;
         background: #fff;
         border-radius: 50%;
-        height: 183px;
+        height: 200px;
     }
     #edit-btn {
         display: inline;
@@ -42,6 +63,7 @@
     }
     h2 {
         display: inline-block;
+        margin-top: 0;
         margin-bottom: -2em;
     }
 }

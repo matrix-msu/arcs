@@ -22,6 +22,33 @@
                     <dd><a href="#" id="edit-profile" onclick="return false;">Edit Profile</a></dd>
                 <?php endif ?>
             </dl> 
+            
+            <dl class="overall-score">
+            	<dd>
+            		<img src="http://dev2.matrix.msu.edu/~tommy.truong/mbira_templates/web/app/img/placeholder.svg" >
+            	</dd>
+            	<dd>
+            		<a href="#">User Overall Score</a>
+            	</dd>
+            </dl>
+            
+            <dl>
+            	<dd>
+            		<a href="#">Annotations Made</a>
+            	</dd>
+            	<dd>
+            		<a href="#">Metadata Edits Made</a>
+            	</dd>
+            	<dd>
+            		<a href="#">Comments Made</a>
+            	</dd>
+            	<dd>
+            		<a href="#">Months On Site</a>
+            	</dd>
+            	<dd>
+            		<a href="#">Associated Projects</a>
+            	</dd>
+            </dl>
         </div>
     </div>
     <div class="row tabbable" id="user-actions">
