@@ -23,8 +23,8 @@
 				'VIEW PROJECT',
 				array(
 					'controller' => 'projects',
-					'action' => 'display',
-					'single_project'
+					'action' => 'single_project',
+					$item["Name"]
 				)
 			);
 			$html = "";
