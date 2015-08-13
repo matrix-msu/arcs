@@ -25,7 +25,7 @@ $(document).ready(function(){
 		$( '#search' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'help' )) {
 		$( '#help' ).addClass( 'btn-blue' );
-	} else if (pathname.includes( 'user' )) {
+	} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
 		$( '#menuButton' ).addClass( 'btn-blue' );
 	}
 });
