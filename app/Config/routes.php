@@ -25,6 +25,10 @@
     Router::connect('/', 
         array('controller' => 'projects', 'action' => 'display', 'index')
     );
+    
+    Router::connect('/projects', 
+        array('controller' => 'projects', 'action' => 'single_project', 'single_project')
+    );
 	
 	# Resource page
     Router::connect('/resources', 
