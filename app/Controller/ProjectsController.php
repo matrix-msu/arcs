@@ -12,7 +12,7 @@ class ProjectsController extends AppController {
 	
 	public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('display', 'search');
+        $this->Auth->allow('display', 'search', 'single_project');
 		$this->set(array(
 		'toolbar' => false,
         'footer' => false 
@@ -72,6 +72,28 @@ class ProjectsController extends AppController {
         }
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
+	}
+	
+	public function single_project() {
+		$user = "";
+		$pass = "";
+
+		$display = "json";
+		$query = "Name,=,".$this->request->params['pass'][0];
+		$url = KORA_RESTFUL_URL."?request=GET&pid=123&sid=734&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
+		///capture results and display
+		$server_output = json_decode(curl_exec($ch), true);
+		//var_dump($server_output);
+		$projects = array();
+		foreach($server_output as $item) {
+			array_push($projects, $item);
+		}
+		$this->set('project', $projects[0]);
 	}
 	
 	
