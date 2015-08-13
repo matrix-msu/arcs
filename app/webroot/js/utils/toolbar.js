@@ -27,6 +27,7 @@ $(document).ready(function(){
 		$( '#help' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
 		$( '#menuButton' ).addClass( 'btn-blue' );
+		$( '#menuButton' ).css('height', '62px');
 	}
 });
 
