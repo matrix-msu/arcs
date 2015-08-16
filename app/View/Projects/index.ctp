@@ -30,7 +30,8 @@
 			$html = "";
 			$html = "var marker = L.marker([".$item['Latitude'].",".$item['Longitude']."])";
 			$html .= ".addTo(map);";
-			$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><br><p style="margin:0;">This is a Description</p><br>'.$link.'\').openPopup();';
+			$brief = str_replace("'", "\'", $item['Brief Description']);
+			$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\').openPopup();';
 			print $html;
 			//print "console.log('".$html."');";
 		}
