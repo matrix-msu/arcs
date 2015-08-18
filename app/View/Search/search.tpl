@@ -7,20 +7,50 @@
 
 <div id='search-wrapper'>
     <ul>
-        <li><a href='#'>caption</a></li>
-        <li><a href='#'>collection</a></li>
-        <li><a href='#'>comment</a></li>
-        <li><a href='#'>created</a></li>
-        <li><a href='#'>filetype</a></li>
-        <li><a href='#'>id</a></li>
-        <li><a href='#'>modified</a></li>
-        <li><a href='#'>keyword</a></li>
-        <li><a href='#'>title</a></li>
-        <li><a href='#'>type</a></li>
-        <li><a href='#'>user</a></li>
+        <li><a class="search-type" href='#'>Caption</a></li>
+        <li><a class="search-type" href='#'>Collection</a></li>
+        <li><a class="search-type" href='#'>Comment</a></li>
+        <li><a class="search-type" href='#'>Created</a></li>
+        <li><a class="search-type" href='#'>Filetype</a></li>
+        <li><a class="search-type" href='#'>Id</a></li>
+        <li><a class="search-type" href='#'>Modified</a></li>
+        <li><a class="search-type" href='#'>Keyword</a></li>
+        <li><a class="search-type" href='#'>Title</a></li>
+        <li><a class="search-type" href='#'>Type</a></li>
+        <li><a class="search-type" href='#'>User</a></li>
     </ul>
-    
-    <input type='text' placeholder='SEARCH FOR ARCHAEOLOGICAL DATA'>
+	
+
+	<!--<input id="search-box" type='text' name='q' placeholder='SEARCH FOR ARCHAEOLOGICAL DATA'> -->
+
+	
+	<div class="VS-search">
+		<div class="VS-search-box-wrapper VS-search-box">
+			<div class="VS-icon VS-icon-search"></div>
+				<div class="VS-search-inner">
+					<div class="search_input not_selected not_editing">
+						<input type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="width: 3px;"><div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: nowrap;"></div>
+					</div>
+				</div>
+			<div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>
+		</div>
+	</div>
+	
+	<div id="search">
+		<div class="VS-search">
+			<div class="VS-search-box-wrapper VS-search-box">
+				<div class="VS-icon VS-icon-search"></div>
+				<div class="VS-search-inner">
+					<div class="search_input not_selected not_editing"><input type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="width: 3px;">
+						<div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: nowrap;"></div>
+					</div>
+					<i class="search-help-btn icon-info-sign" rel="tooltip" data-placement="top" data-original-title="Show Search Help"></i>
+				</div>
+				<div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>
+			</div>
+		</div>
+	</div>
+	
 </div>
 
 <div class="search-help" style="display:none">
@@ -65,7 +95,6 @@
 
 <div id="search-results-wrapper">
   <div id="search-actions" class="search-toolbar">
-
     <div id="action-buttons" class="btn-group">
     {% if user.loggedIn %}
       <div id="collection-buttons" class="btn-group pull-left">
@@ -176,7 +205,7 @@
 
 <script>
   arcs.searchView = new arcs.views.search.Search({
-    el: $('#search-results-wrapper')
+    el: $('.wrap')
   });
     
     $( '.dropdown-toggle' ).click(function() {
