@@ -182,7 +182,7 @@
 			
 			<div class="accordion metadata-accordion">
 	
-				<h3 class="level-tab">Project Level Metadata</h3>
+				<h3 class="level-tab">Project Level Metadata <span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -240,7 +240,7 @@
 					
 				</div>
 				
-				<h3 class="level-tab">Season Level Metadata</h3>
+				<h3 class="level-tab">Season Level Metadata <span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -298,7 +298,7 @@
 					
 				</div>
 				
-				<h3 class="level-tab">Excavation/Survey Level Metadata</h3>
+				<h3 class="level-tab">Excavation/Survey Level Metadata <span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -356,7 +356,7 @@
 					
 				</div>
 				
-				<h3 class="level-tab">Archival Object Level Metadata</h3>
+				<h3 class="level-tab">Archival Object Level Metadata <span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -454,9 +454,12 @@
 			heightStyle: "fill"
 		});
 	});
-	
 		
-	$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() + 1);
+	$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
+	
+	$( window ).resize(function() {
+		( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
+	});
 		
 </script>
 

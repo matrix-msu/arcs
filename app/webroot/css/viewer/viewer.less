@@ -155,6 +155,8 @@ body.viewer.standalone {
 	width: 105%;
 	padding: 0;
 	margin: 0;
+	text-transform: uppercase;
+	font-size: 90%;
 	
 	#search {
 		float: left;
@@ -224,8 +226,14 @@ body.viewer.standalone {
 		padding: 0;
 		width: 100%;
 		
+		.edit {
+			display: inline;
+			float: right;
+		}
+		
 		.metadata-accordion {
 			float: left;
+			position: relative;
 			
 			.level-tab {
 				height: 60px;
@@ -234,10 +242,16 @@ body.viewer.standalone {
 				border-radius: 0;
 				border: 0;
 				outline: none;
-				padding-left: 16px;
+				padding: 0 16px;
 				margin: 0;
 				background: #f9f9f9;
 				border-bottom: 1px solid #cdcdcd !important;
+				
+				span {
+					float: right;
+					font-size: 90%;
+					color: #808080;
+				}
 			}
 			
 			.level-tab:last-child {
@@ -247,6 +261,7 @@ body.viewer.standalone {
 			.level-tab.ui-accordion-header-active {
 				background: #f9f9f9;
 				border-bottom: 1px solid #cdcdcd !important;
+				color: @ArcsBlue !important;
 			}
 			
 			.level-content {
