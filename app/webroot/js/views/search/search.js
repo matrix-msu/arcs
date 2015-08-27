@@ -65,7 +65,8 @@
       'click #top-btn': 'scrollTop',
       'click .sort-btn': 'setSort',
       'click .dir-btn': 'setSortDir',
-      'click .search-page-btn': 'setPage'
+      'click .search-page-btn': 'setPage',
+      'click .search-type': 'search'
     };
 
 
@@ -105,7 +106,7 @@
     Search.prototype.setupSearch = function() {
       this.scrollReady = false;
       return this.search = new arcs.utils.Search({
-        container: $('.search-wrapper'),
+        container: $('#search-box'),
         order: this.options.sort,
         run: false,
         loader: true,
@@ -164,6 +165,7 @@
         "class": 'icon-ok'
       }));
       this.$('#sort-btn span#sort-by').html(this.options.sort);
+      console.log("SEARCHING");
       return this.search.run(null, {
         order: this.options.sort,
         direction: this.options.sortDir
@@ -282,6 +284,16 @@
       }, true);
     };
 
+    Search.prototype.search = function(e) {
+      var query;
+      e.preventDefault();
+      query = [e.target.text, "like", $("#search-box").val()];
+      return this.search.run(query, {
+        order: 'type',
+        direction: this.options.sortDir
+      });
+    };
+
     Search.prototype.render = function() {
       var data;
       this._render({
@@ -303,7 +315,7 @@
       $results = $('#search-results');
       template = this.options.grid ? 'search/grid' : 'search/list';
       $results[append ? 'append' : 'html'](arcs.tmpl(template, results));
-      if (!this.search.results.length) {
+      if (!this.search.results.query.total > 0) {
         return $results.html("<div id='no-results'>No Results</div>");
       }
     };

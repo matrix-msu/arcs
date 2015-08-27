@@ -38,10 +38,11 @@
     };
 
     Home.prototype.renderDetails = function($el) {
-      var query, type;
+      var query, sid, type;
       type = $el.data('type');
-      query = encodeURIComponent(type);
-      return $.getJSON(arcs.baseURL + ("resources/search?n=12&q=" + query), function(response) {
+      query = encodeURIComponent("Type,=," + type);
+      sid = 736;
+      return $.getJSON(arcs.baseURL + ("resources/search?n=12&q=" + query + "&sid=" + sid), function(response) {
         var html;
         html = arcs.tmpl('home/details', {
           resources: response.results

@@ -12,6 +12,14 @@
 
     CollectionList.prototype.model = arcs.models.Collection;
 
+    CollectionList.prototype.initialize = function() {
+      return this.sortVar = 'created';
+    };
+
+    CollectionList.prototype.comparator = function(resource) {
+      return resource.get(this.sortVar);
+    };
+
     return CollectionList;
 
   })(Backbone.Collection);

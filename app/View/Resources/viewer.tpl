@@ -1,3 +1,4 @@
+<!--
 <div id="viewer-controls" class='viewer-controls-override'>
   {{ html.link(resource.Resource.title, '/resource/' ~ resource.Resource.id, 
     {'class': 'title subtle'}) }} 
@@ -112,9 +113,353 @@
   </div>
 </div>
 
-<div class="viewer-footer"></div>
+<div class="viewer-footer"></div> 
+
+-->
+
+<div id="viewer-left">
+	<div id="viewer-tools">
+		<div class="container1">
+			<h3>Title of Resource</h3>
+			
+			<div class="tools">
+				<a href="#">
+					<span>
+						Annotate
+					</span>
+				</a>
+				<a href="#">
+					<span>
+						Flag
+					</span>
+				</a>
+				<a href="#">
+					<span>
+						Settings
+					</span>
+				</a>
+				<a href="#">
+					<span>
+						Export
+					</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	<div id="viewer-window">
+		
+		<img src="https://grimcouturesl.files.wordpress.com/2009/08/a-lesson-learnt-open-book-pages-23.png" >
+		
+	</div>
+	
+	<div id="resource-tools">
+		
+	</div>
+	
+</div>
+
+<div id="viewer-right">
+	
+	<div id="tabs" class="metadata">
+		
+		<ul class="metadata-tabs">
+			<li class="metadata-tab"><a href="#tabs-1">Info</a></li>
+			<li class="metadata-tab"><a href="#tabs-2">Notations</a></li>
+			<li class="metadata-tab"><a href="#tabs-3">Discussions</a></li>
+			<li class="metadata-tab"><a href="#tabs-4">Instances</a></li>
+		</ul>
+		
+		<div id="search">
+			<span class="title">
+				<p>Collection Title</p>
+			</span>
+			
+			<input type="text" placeholder="SEARCH COLLECTION">
+		</div>
+		
+		<div id="tabs-1" class="metadata-content">
+			
+			<div class="accordion metadata-accordion">
+	
+				<h3 class="level-tab">Project Level Metadata</h3>
+				
+				<div class="level-content">
+					
+					<table>
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+					</table>
+					
+				</div>
+				
+				<h3 class="level-tab">Season Level Metadata</h3>
+				
+				<div class="level-content">
+					
+					<table>
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+					</table>
+					
+				</div>
+				
+				<h3 class="level-tab">Excavation/Survey Level Metadata</h3>
+				
+				<div class="level-content">
+					
+					<table>
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+					</table>
+					
+				</div>
+				
+				<h3 class="level-tab">Archival Object Level Metadata</h3>
+				
+				<div class="level-content">
+					
+					<table>
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+						
+						<tr>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
+						</tr>
+					</table>
+					
+				</div>
+			</div>
+			
+		</div>
+		
+		<div id="tabs-2" class="metadata-content">
+			
+			<p>Notations</p>
+			
+		</div>
+		
+		<div id="tabs-3" class="metadata-content">
+			
+			<p>Discussions</p>
+			
+		</div>
+		
+		<div id="tabs-4" class="metadata-content">
+			
+			<p>Instances</p>
+			
+		</div>
+		
+	</div>	
+		
+</div>
+
+<div id="other-resources">
+	
+</div>
 
 <!-- Give the resource array to the client-side code -->
+<script>
+	$(function() {
+		$( "#tabs" ).tabs();
+	});
+	
+	$(function() {
+		$( ".accordion" ).accordion({
+			heightStyle: "fill"
+		});
+	});
+	
+		
+	$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() + 1);
+		
+</script>
+
 <script>
   arcs.resource = new arcs.models.Resource({{ resource|json_encode }});
   arcs.collection = new arcs.collections.Collection();
