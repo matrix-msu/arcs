@@ -88,7 +88,7 @@ class arcs.views.search.Search extends Backbone.View
   setupSearch: ->
     @scrollReady = false
     @search = new arcs.utils.Search 
-      container: $('#search-box')
+      container: $('.VS-search')
       order: @options.sort
       run: false
       loader: true
@@ -233,7 +233,8 @@ class arcs.views.search.Search extends Backbone.View
     e.preventDefault()
 	
     #query = e.target.text+",like,"+$("#search-box").val()
-    query = [e.target.text, "like", $("#search-box").val()]
+    query = [e.target.text, "like", $(".VS-search-inner").val()]
+    console.log(query)
     @search.run query,
       order: 'type'
       direction: @options.sortDir
