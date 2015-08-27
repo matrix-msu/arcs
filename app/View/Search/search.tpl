@@ -5,52 +5,33 @@
 </div>
 
 
-<div id='search-wrapper'>
-    <ul>
-        <li><a class="search-type" href='#'>Caption</a></li>
-        <li><a class="search-type" href='#'>Collection</a></li>
-        <li><a class="search-type" href='#'>Comment</a></li>
-        <li><a class="search-type" href='#'>Created</a></li>
-        <li><a class="search-type" href='#'>Filetype</a></li>
-        <li><a class="search-type" href='#'>Id</a></li>
-        <li><a class="search-type" href='#'>Modified</a></li>
-        <li><a class="search-type" href='#'>Keyword</a></li>
-        <li><a class="search-type" href='#'>Title</a></li>
-        <li><a class="search-type" href='#'>Type</a></li>
-        <li><a class="search-type" href='#'>User</a></li>
-    </ul>
-	
+<div id="searchCriteriaWrapper">
+	<div class="searchCriteriaItem"><a class="search-type" href="#">Season Title</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Type</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Title</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Creator</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Scan Creator</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">User</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">ID</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Modified</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Keyword</a></div>
+    <div class="searchCriteriaItem"><a class="search-type" href="#">Filetype</a></div>
+  <span class="stretcher"></span>
+</div>
 
-	<!--<input id="search-box" type='text' name='q' placeholder='SEARCH FOR ARCHAEOLOGICAL DATA'> -->
-
-	
-	<div class="VS-search">
-		<div class="VS-search-box-wrapper VS-search-box">
-			<div class="VS-icon VS-icon-search"></div>
-				<div class="VS-search-inner">
-					<div class="search_input not_selected not_editing">
-						<input type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="width: 3px;"><div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: nowrap;"></div>
-					</div>
-				</div>
-			<div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>
-		</div>
-	</div>
-	
-	<div id="search">
+<div id="searchBox">
 		<div class="VS-search">
 			<div class="VS-search-box-wrapper VS-search-box">
-				<div class="VS-icon VS-icon-search"></div>
+				<span class="VS-icon VS-icon-search"></span>
 				<div class="VS-search-inner">
-					<div class="search_input not_selected not_editing"><input type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" style="width: 3px;">
-						<div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: nowrap;"></div>
+					<div class="search_input not_selected not_editing"><input type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+						<div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: 								nowrap;">	
+						</div>
 					</div>
-					<i class="search-help-btn icon-info-sign" rel="tooltip" data-placement="top" data-original-title="Show Search Help"></i>
-				</div>
-				<div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>
+				<i class="search-help-btn icon-info-sign" rel="tooltip" data-placement="top" data-original-title="Show Search Help"></i></div>	
+				<span class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></span>
 			</div>
 		</div>
-	</div>
-	
 </div>
 
 <div class="search-help" style="display:none">

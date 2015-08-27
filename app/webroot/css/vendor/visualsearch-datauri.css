@@ -2,21 +2,31 @@
   background-repeat: no-repeat;
   background-position: center center;
   vertical-align: middle;
-  width: 16px; height: 16px;
+  width: 16px; 
+  height: 16px;
 }
   .VS-search .VS-icon-cancel {
-    width: 11px; height: 11px;
-    background-position: center 0;
-    background-image: url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAWCAYAAAAW5GZjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAb9JREFUeNqUUr1qAkEQ3j0khQp6kihaeGgEEa18gTQR0iRY+BaBSMDGwidIEUKqFL6BopgqBAJ5AMFGjUU0d4WHEvwJarvZ77gRIzGYgb1hZr+Z75vZ40IIzqTNZrPj8Xicn0wmmcViEXS73aaqqq+BQODG6/W+A8MBNk3zfDAY3C6Xy0O2ZS6X6zMSiVwHg8FHLjtq7Xb7RQKj7BeTzVCgJ5PJU2U0GhUk7REuMpkMi8fjFggeMeecrVYrFRId0CgTAgDDMFg4HLbA8IjJgHNgGEr0er0fQIphUmZAwdSUADUB4RFDsz3oSMF6CLzZkQqgGebz+Z75dDqNdTqdp13bgDmdTj2VSp0oWHg0Gr2UNH2Z/9o+yMv7K4/HY/C/XhDUfr//jl7QQVT9fp/V63VWqVRYt9tliUSCZbPZg1wux9Lp9PqFeK1Wu9A0DdXz7YM87i0FrVZLs4Fi1wmFQh/NZjOmVKvVgq7rR/QflMtlixGedjwcDlUpMQ9tbzalkAAB2/R297mNW+sT2wUbUnA//V/nYrH4QOBNABUQuFQq3TNMuc82sDVrz41G42yvPeODAwZQ0QzwiJEnzLcAAwBJ6WXlwoBgZAAAAABJRU5ErkJggg==");
+    /* width: 11px; */ 
+    /* height: 15px; */
+    /* background-position: center 0; */
+    background-image: url("../img/info-icon-not-selected.png");
     cursor: pointer;
   }
     .VS-search .VS-icon-cancel:hover {
-      background-position: center -11px;
+      background-image: url("../img/info-icon-selected.png");
     }
-  .VS-search .VS-icon-search {
-    width: 12px; height: 12px;
-    background-image: url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUZJREFUeNpUUM2qgmAQzS8NiUgLzTIXLZQW1QuI9AY9QPSW9gQ9QiriwpJQEBVrVWT2d7p2L9xZzDdzZs7M+YYqy/J8Ptu2vd/v4zgeDAaqqk4mE47jar9GnU6nzWbjOA5FUa/Xq0Jns9l8Pud5vkpp58cwAOzhcBhFkeu6GNztdg3D+Db5vo9nOp2iiWGYTqdDCMFe4LquI0aVpGmKR9M0lmUbjQY8YiBJklTb4YkoilBzOBzq9TogeMQIJEmqmlAlo9EIyXa7tSyrKAp4xEBkWUb5q2k8Hh+PR8/zwjCEgufz+aESstvtoKnVan2GgY31kBkEAfT1ej1FUZDiNIIgrFYr9H1ug3teLpfH43G/3/FBUJGu1+s8z8FZLpc0mmiabrfbf5fEumazuVgsTNO8Xq+3242qRNT+G0CMz7IMzH6//xZgAA60tj6rqzxpAAAAAElFTkSuQmCC");
-  }
+  .VS-search .VS-icon-search { 
+  
+    display: inline-block;
+    background: #fff;     
+    background: url(https://cdn3.iconfinder.com/data/icons/watchify-v1-0-80px/80/search-80px-32.png) no-repeat;     
+    padding-left: 2em;     
+    padding-top: 2em;
+    margin-right:  1em;
+    padding-right: 1em;
+    position: relative;
+    margin-bottom: 1em;
+}
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
 
@@ -42,7 +52,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   outline: 0;
 }
 .VS-search {
-  line-height: 1;
+  /* line-height: 1; */
   color: black;
 }
 .VS-search ol, .VS-search ul {
@@ -86,17 +96,20 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   background: transparent;
   border: 1px solid #ccc;
   background-color: #fafafa;
-  min-height: 28px;
+  max-height: 50px;
   height: auto;
+  /* min-width: 675px; */
 }
   .VS-search .VS-search-box.VS-focus {
     border-color: #08c;
   }
   .VS-search .VS-search-inner {
-    position: relative;
-    margin: 0 20px 0 22px;
-    overflow: hidden;
-  }
+  
+    margin-top: 1em;
+    display: inline-block;
+    width: 100%;
+    padding-right: 40px;
+}
   .VS-search input {
     width: 100px;
   }
@@ -111,13 +124,19 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     color: #606060;
   }
   .VS-search .VS-icon-search {
+    display: inline-block;
     position: absolute;
-    left: 9px; top: 8px;
-  }
+    left: 9px; 
+    top: 8px;
+  
+}
   .VS-search .VS-icon-cancel {
-    position: absolute;
-    right: 9px; top: 8px;
-  }
+    display: inline-block;
+    position: absolute; 
+  
+    right: 15px;
+    top: 16px;
+}
 
 /* ================ */
 /* = Search Facet = */
@@ -208,21 +227,22 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* ================ */
 
 .VS-search .search_input {
-  height: 28px;
-  float: left;
-  margin-left: -1px;
+  width: 100%;
+  display: inline-block;
 }
   .VS-search .search_input input {
     padding: 6px 3px 6px 2px;
-    line-height: 10px;
-    height: 22px;
-    margin-top: -4px;
-    width: 10px;
     z-index: 100;
     min-width: 4px;
     position: relative;
     border:none;
-  }
+  
+    background-color: transparent;
+    width:  100%;
+    display: inline-block;
+    padding-left: 45px;
+    font-size: 14px;
+}
   .VS-search .search_input.is_editing input {
     color: #202020;
   }

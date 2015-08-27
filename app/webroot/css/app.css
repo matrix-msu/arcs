@@ -1061,6 +1061,64 @@ th {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+div#searchBox {
+    margin: 2em 4em;
+}
+
+span.stretcher {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+}
+
+.searchCriteriaItem {
+    width: auto;
+    height: 20px;
+    vertical-align: top;
+    display: inline-block;
+    zoom: 1;
+}
+
+div#searchCriteriaWrapper {
+    height: auto;
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+    /* width:  90%; */
+    text-transform: uppercase;
+    /* font-size: 95%; */
+    margin: 2em 4em;
+}
+
+#searchCriteria li {
+    text-transform: uppercase;
+    font-size: 90%;
+    display:  table-cell;
+    text-align: justify;
+}
+
+div#searchCriteria {
+    width: 90%;
+    display: table;
+    margin: auto;
+}
+
+div#searchCriteria ul li a {
+}
+
+div#searchCriteria ul li {
+}
+
+div#searchCriteria ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: table;
+    width: 100%;
+    overflow: hidden;
+}
 *:before,
 *:after {
   -webkit-box-sizing: border-box;
@@ -6470,6 +6528,10 @@ div ::-webkit-scrollbar-thumb {
   float: right;
   clear: both;
 }
+.row {
+  width: 90%;
+  margin: auto;
+}
 .btn,
 .btn-group .btn:first-child {
   border-radius: 2px;
@@ -6644,12 +6706,12 @@ h4 {
   display: block;
 }
 .no-details details > summary:before {
-  content: "►";
+  content: "â–º";
   padding-right: 5px;
   font-size: 11px;
 }
 .no-details details[open] > summary:before {
-  content: "▼";
+  content: "â–¼";
 }
 .footer {
   background: #333;
@@ -7172,12 +7234,12 @@ h4 {
 div#toolbar {
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 1;
   width: 100%;
   background: #ccc;
   padding-left: 10px;
   height: 60px;
-  box-shadow: 0 2px 5px rgba(128, 128, 128, 0.5);
 }
 div#toolbar a#logo-wrapper:hover {
   text-decoration: none;
@@ -7228,7 +7290,7 @@ div#toolbar .btn-blue {
   background: #0093be;
   border: none;
   border-radius: 0;
-  height: 60px;
+  height: 62px;
   color: #fff;
   padding-right: 30px;
   padding-left: 30px;
@@ -7329,8 +7391,8 @@ div#toolbar .toolbar-btn {
   font-weight: bold;
 }
 .searchIntro {
-  width: 90%;
-  margin: auto;
+  padding-top: 40px;
+  margin: 2em 4em;
 }
 .searchIntro h1 {
   margin-bottom: 25px;
@@ -7343,29 +7405,62 @@ div#toolbar .toolbar-btn {
   box-shadow: none;
 }
 #search-wrapper {
+  display: table;
   width: 90%;
   margin: 2em auto 5em auto;
   color: #0093be;
 }
 #search-wrapper ul {
-  padding: 0;
   list-style-type: none;
-  width: 100%;
+  padding-left: 0;
   margin-bottom: 3em;
 }
 #search-wrapper ul li {
-  display: inline-block;
-  width: 8.7%;
+  display: table-cell;
+  /*width changes according to # of items spanning this list */
+  width: 11.11%;
   text-transform: uppercase;
   font-size: 90%;
-  text-align: center;
+  
 }
 #search-wrapper input[type=text] {
-  width: 100%;
-  height: 50px;
-  background: #fff;
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
+  width: inherit;
+  height: inherit;
+  background: transparent;
+  padding-left: 0;
+  font-size: 14px;  
 }
+
+#searchBoxInput::-webkit-input-placeholder {
+    color:   #ccc;
+}
+
+.VS-search .unfocused .ui-autocomplete-input::-webkit-input-placeholder {
+    color:   #ccc;
+}
+
+#search-wrapper::-webkit-input-placeholder {
+    color:   #ccc;
+}
+
+#searchBoxInput{
+  width: inherit;
+  height: inherit;
+  background: transparent;
+  padding-left: 0;
+  font-size: 14px; 
+}
+:-moz-placeholder {
+    color:    #ccc;
+}
+::-moz-placeholder {
+    color:    #ccc;
+}
+:-ms-input-placeholder {
+    color:    #ccc;
+}
+
+
 .search-help-btn {
   float: right;
   position: relative;
@@ -7450,8 +7545,9 @@ div#toolbar .toolbar-btn {
 }
 div#search-results-wrapper {
   float: left;
-  width: 100vw;
+  width: 100%;
   background: #ddd;
+  left: 0;
   min-height: 70%;
 }
 div#search-results-wrapper div#search-results {
@@ -7511,6 +7607,7 @@ div#search-results-wrapper div#search-actions #open-buttons {
   right: 18px;
 }
 div#search-results-wrapper div#search-actions #sort-buttons {
+  z-index: 1;
   right: 30px;
 }
 div#search-results-wrapper div#search-actions #sort-buttons #sort-btn span#sort-by {
@@ -7545,10 +7642,13 @@ div#search-results-wrapper div#search-actions #sort-buttons .pointerUp {
   margin: 8px 0 0 30px;
 }
 div#search-results-wrapper div#search-actions #sort-buttons .dropdown-menu {
+  z-index: 0;
   border: 0;
   border-radius: 0;
   background: #cecece;
-  top: 104%;
+  top: -14%;
+  padding-top: 5em;
+  box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.5);
 }
 div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   cursor: pointer;
@@ -7557,12 +7657,10 @@ div#search-results-wrapper .search-toolbar {
   padding: 5px;
   height: 60px;
   background-color: #CECECE;
-  box-shadow: 0 2px 10px rgba(128, 128, 128, 0.5);
   z-index: 1001;
 }
 div#search-results-wrapper .toolbar-fixed {
   border-bottom: 1px solid #999;
-  box-shadow: 0 4px 3px -3px #888888;
   position: fixed;
   top: 0px;
   width: 100%;
@@ -7633,7 +7731,6 @@ div#search-results-wrapper .toolbar-fixed {
   float: left;
   width: 100%;
   background: #cecece;
-  box-shadow: 0 -2px 5px rgba(128, 128, 128, 0.5);
 }
 #search-pagination {
   width: 90%;
@@ -8354,6 +8451,8 @@ ul.annotations li.annotation:hover {
   position: relative;
   top: -20px;
   max-height: 183px;
+  margin-top: 16px;
+  margin-right: 42px;
 }
 #user-info dl dd {
   margin-bottom: 1em;
@@ -8363,12 +8462,26 @@ ul.annotations li.annotation:hover {
   font-size: 120%;
   text-transform: uppercase;
 }
+#user-info dl a[href^="mailto"] {
+  text-transform: none;
+}
+#user-info dl a {
+  text-transform: uppercase;
+}
+#user-info .overall-score {
+  text-align: center;
+}
+#user-info .overall-score img {
+  height: 160px;
+  border-radius: 50%;
+  margin-bottom: 1em;
+}
 #user-info .profile-image {
   float: left;
   margin-right: 3em;
   background: #fff;
   border-radius: 50%;
-  height: 183px;
+  height: 200px;
 }
 #user-info #edit-btn {
   display: inline;
@@ -8378,9 +8491,11 @@ ul.annotations li.annotation:hover {
 }
 #user-info h2 {
   display: inline-block;
+  margin-top: 0;
   margin-bottom: -2em;
 }
 #user-actions {
+  width: 105%;
   margin: 0 -10px 0 -10px;
   padding: 0;
 }
@@ -8431,8 +8546,19 @@ ul.annotations li.annotation:hover {
   color: #fff;
 }
 #user-actions .tab-content .tab-pane {
-  height: 500px;
+  min-height: 869px;
   overflow: auto;
+  padding: 1em 0;
+}
+#user-actions .tab-content .tab-pane tr:nth-of-type(even) {
+  background: rgba(255, 255, 255, 0.85);
+  color: #808080;
+}
+#user-actions .tab-content .tab-pane .label {
+  color: #808080;
+}
+#user-actions .tab-content .tab-pane p {
+  color: #808080;
 }
 #user-actions .tab-content #activity-tab h3.activity-date {
   text-align: right;
@@ -8665,7 +8791,6 @@ ul.annotations li.annotation:hover {
   color: #333;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: #ddd;
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
@@ -8725,8 +8850,6 @@ ul.annotations li.annotation:hover {
   padding: 0;
   margin-bottom: 25px;
   background: #ddd;
-  -webkit-box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .accordion-wrapper details[open] blockquote {
   border-color: #ddd;
@@ -10056,14 +10179,12 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   z-index: 1;
   outline: none;
   background: #fff;
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .collection-list-wrapper .dropdown .dropdown-menu {
   width: 12em;
   border-radius: 0;
   background: #fff;
   border: 0;
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .collection-list-wrapper .dropdown .pointerDown {
   position: absolute;
@@ -10090,7 +10211,7 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   -ms-transform: rotate(315deg);
   -o-transform: rotate(315deg);
   transform: rotate(315deg);
-  margin: 8px 0 0 30px;
+  margin: 8px 0 0 0;
 }
 .collection-list-wrapper .collection-list details {
   min-height: 20px;
@@ -10113,7 +10234,6 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   color: #333;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: #ddd;
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
@@ -10173,8 +10293,6 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   padding: 0;
   margin-bottom: 20px;
   background: #ddd;
-  -webkit-box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
-  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.5);
 }
 .collection-list-wrapper .collection-list details[open] blockquote {
   border-color: #ddd;
