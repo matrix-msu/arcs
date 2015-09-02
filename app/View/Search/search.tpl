@@ -5,6 +5,7 @@
 </div>
 
 
+<!-- Horizontal Menu -->
 <div id="searchCriteriaWrapper">
 	<div class="searchCriteriaItem"><a class="search-type" href="#">Season Title</a></div>
     <div class="searchCriteriaItem"><a class="search-type" href="#">Type</a></div>
@@ -28,8 +29,9 @@
 						<div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: 								nowrap;">	
 						</div>
 					</div>
-				<i class="search-help-btn icon-info-sign" rel="tooltip" data-placement="top" data-original-title="Show Search Help"></i></div>	
-				<span class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></span>
+				</div>	
+				<div class="VS-icon VS-icon-info" title="Show Search Help"></div>
+				<div class="VS-icon VS-icon-clear-text VS-cancel-search-box" title="Clear Search"></div>
 			</div>
 		</div>
 </div>

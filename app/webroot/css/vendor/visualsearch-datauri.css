@@ -5,27 +5,38 @@
   width: 16px; 
   height: 16px;
 }
-  .VS-search .VS-icon-cancel {
-    /* width: 11px; */ 
-    /* height: 15px; */
+
+i.VS-search .VS-icon-clear-text {
+    color: #ccc;
+}
+  .VS-search .VS-icon-info {
+    width: 18px;
+    height: 18px;
     /* background-position: center 0; */
-    background-image: url("../img/info-icon-not-selected.png");
+    background-image: url("../img/Info.svg");
     cursor: pointer;
   }
-    .VS-search .VS-icon-cancel:hover {
+    /*.VS-search .VS-icon-info:hover {
       background-image: url("../img/info-icon-selected.png");
-    }
+    }*/
+
+.VS-search .VS-icon-clear-text {
+    width: 18px; 
+    height: 18px;
+    /* background-position: center 0; */
+    background-image: url("../img/ClearText.svg");
+    cursor: pointer;
+}
+    /*.VS-search .VS-icon-clear-text:hover {
+      background-image: url("../img/clear-text-icon-selected.png");
+    }*/
+
+
   .VS-search .VS-icon-search { 
   
-    display: inline-block;
-    background: #fff;     
-    background: url(https://cdn3.iconfinder.com/data/icons/watchify-v1-0-80px/80/search-80px-32.png) no-repeat;     
-    padding-left: 2em;     
-    padding-top: 2em;
-    margin-right:  1em;
-    padding-right: 1em;
+    display: inline-block;    
+    background: url("../img/SearchDark.svg") no-repeat;     
     position: relative;
-    margin-bottom: 1em;
 }
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
@@ -108,7 +119,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     margin-top: 1em;
     display: inline-block;
     width: 100%;
-    padding-right: 40px;
+    padding-right: 70px;
 }
   .VS-search input {
     width: 100px;
@@ -126,16 +137,22 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .VS-icon-search {
     display: inline-block;
     position: absolute;
-    left: 9px; 
-    top: 8px;
+    left: 15px; 
+    top: 16px;
   
 }
-  .VS-search .VS-icon-cancel {
+  .VS-search .VS-icon-info {
     display: inline-block;
     position: absolute; 
-  
+    right: 45px;
+    top: 13px;
+}
+
+.VS-search .VS-icon-clear-text {
+    display: inline-block;
+    position: absolute; 
     right: 15px;
-    top: 16px;
+    top: 13px;
 }
 
 /* ================ */
@@ -309,3 +326,5 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     list-style: none;
     width: auto;
   }
+  
+ 
