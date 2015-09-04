@@ -22,9 +22,11 @@
 	    map.panTo(map.unproject(px),{animate: true}); // pan to new center
 	});
 
-    var marker_array = []
+    var marker_array = [];
+	var coords_array = [];
 	<?php 
 		//$projects_array = json_decode($projects, true);
+		
 		foreach($projects as $item) {
 			$link = $this->Html->link(
 				'VIEW PROJECT',
@@ -34,14 +36,32 @@
 					$item["Name"]
 				)
 			);
+			
+			//Convert KORA Geolocation to array of coordinate pairs
+			$geo = $item['Geolocation'];
+			
+			foreach($geo as $marker) {
+				$coords = explode(",", $marker);
+				//markers
+				$html = "";
+				$html = "var marker = L.marker([".$coords[0].",".$coords[1]."])";
+				$html .= ".addTo(map);";
+				$html .= "marker_array.push(marker);";
+				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
+				$brief = str_replace("'", "\'", $item['Brief Description']);
+				$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+				print $html; //print markers and set coords_array
+				//print "console.log('".$coords[0]."', '".$coords[1]."');";
+			}
+			
+			//print polygon
 			$html = "";
-			$html = "var marker = L.marker([".$item['Latitude'].",".$item['Longitude']."])";
+			$html = "var polygon = L.polygon(coords_array)";
 			$html .= ".addTo(map);";
-			$html .= "marker_array.push(marker);";
 			$brief = str_replace("'", "\'", $item['Brief Description']);
-			$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+			$html .= 'polygon.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
 			print $html;
-			//print "console.log('".$html."');";
+			print "console.log(coords_array);";
 		}
 	?>
 	var group = new L.featureGroup(marker_array);
