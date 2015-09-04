@@ -23,7 +23,13 @@ i.VS-search .VS-icon-clear-text {
 .VS-search .VS-icon-clear-text {
     width: 18px; 
     height: 18px;
-    /* background-position: center 0; */
+    background-image: url("../img/ClearText.svg");
+    cursor: pointer;
+}
+
+.VS-search .VS-icon-cancel {
+    width: 11px; 
+    height: 11px;
     background-image: url("../img/ClearText.svg");
     cursor: pointer;
 }
@@ -107,22 +113,23 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   background: transparent;
   border: 1px solid #ccc;
   background-color: #fafafa;
+  min-height: 28px;
   max-height: 50px;
   height: auto;
-  /* min-width: 675px; */
 }
   .VS-search .VS-search-box.VS-focus {
-    border-color: #08c;
+    border-color: #0093be;
   }
   .VS-search .VS-search-inner {
-  
-    margin-top: 1em;
-    display: inline-block;
-    width: 100%;
-    padding-right: 70px;
+	  position: relative;
+	  margin: 0 73px 0 38px;
+	  overflow: hidden;
+	  min-height: 45px;
 }
   .VS-search input {
-    width: 100px;
+    display: block;
+    background: transparent;
+    
   }
   .VS-search input,
   .VS-search .VS-input-width-tester {
@@ -142,14 +149,12 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   
 }
   .VS-search .VS-icon-info {
-    display: inline-block;
     position: absolute; 
     right: 45px;
     top: 13px;
 }
 
 .VS-search .VS-icon-clear-text {
-    display: inline-block;
     position: absolute; 
     right: 15px;
     top: 13px;
@@ -162,7 +167,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 .VS-search .search_facet {
   float: left;
   margin: 0;
-  padding: 0 0 0 14px;
+  padding: 8px 0 0 14px;
   position: relative;
   border: 1px solid transparent;
   height: 20px;
@@ -183,7 +188,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     float: left;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 12px;
     color: #808080;
     padding: 8px 0 5px;
     line-height: 13px;
@@ -197,21 +202,16 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     float: left;
   }
   .VS-search .search_facet input {
-    margin: 0;
-    padding: 0;
     color: #000;
     font-size: 13px;
     line-height: 16px;
-    padding: 5px 0 5px 4px;
-    height: 16px;
+    padding: 3px 0 5px 4px; 
     width: auto;
     z-index: 100;
     position: relative;
-    padding-top: 1px;
-    padding-bottom: 2px;
-    padding-right: 3px;
     border:none;
-  }
+    background: transparent;
+ }
   .VS-search .search_facet.is_editing input,
   .VS-search .search_facet.is_selected input {
     color: #000;
@@ -219,7 +219,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_facet .search_facet_remove {
     position: absolute;
     left: 0;
-    top: 4px;
+    margin-top: 4px;
   }
     .VS-search .search_facet.is_selected .search_facet_remove {
       opacity: 0.4;
@@ -244,21 +244,19 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* ================ */
 
 .VS-search .search_input {
-  width: 100%;
-  display: inline-block;
+  height: 45px;
+  float: left;
+  margin-left: -1px;
 }
   .VS-search .search_input input {
-    padding: 6px 3px 6px 2px;
+	  padding-top: 5px;
+    height: 45px;
     z-index: 100;
-    min-width: 4px;
+    max-width: inherit;
     position: relative;
     border:none;
-  
-    background-color: transparent;
-    width:  100%;
-    display: inline-block;
-    padding-left: 45px;
     font-size: 14px;
+    background: transparent;
 }
   .VS-search .search_input.is_editing input {
     color: #202020;
