@@ -147,6 +147,7 @@ $(document).ready(function() {
     });
 
     // Replace the password field with reset password instructions.
+    // Note: make sure to change the text in the opposite if/else statement and $('#forgot-password').text("..");
     $('#forgot-password').click(function(e) {
         if ($('#forgot-password').text() == "Forgot your password?") {
             $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {  
@@ -154,10 +155,10 @@ $(document).ready(function() {
                 $('input[type=submit]').val('Send reset link');
                 $('input[name="data[User][forgot_password]"]').val('true');
                 $('#loginHeader').text("Reset Password");
-                $('#forgot-password').text("Login");
+                $('#forgot-password').text("Go back!");
                 $('#loginInfo').text("Enter your email address, and we'll send you a link to reset your password.");
             });
-       } else if ($('#forgot-password').text() == "Login") {
+       } else if ($('#forgot-password').text() == "Go back!") {
             $('#UserPassword, label[for="data[User][password]"]').slideDown(300, function() {
 				$('#UserUsername').attr('placeholder', 'Username').val("").focus().blur();
                 $('input[type=submit]').val('Login');

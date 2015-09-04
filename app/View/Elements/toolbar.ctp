@@ -75,7 +75,6 @@
 
                 <?php echo $this->Form->input('forgot_password', array('type' => 'hidden')) ?>
 				
-
                 <?php echo $this->Form->submit('Login', array('class' => 'btn')); ?>
 
                 <?php echo $this->Form->end() ?>

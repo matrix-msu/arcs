@@ -42,7 +42,8 @@ class UsersController extends AppController {
             return $this->json(400);
         if ($this->Access->isAdmin())
             $this->User->permit('role');
-        if (!$this->User->add($this->request->data)) return $this->json(400);
+        if (!$this->User->add($this->request->data)) 
+            return $this->json(400);
         $this->json(201, $this->User->findById($this->User->id));
     }
 
@@ -53,6 +54,7 @@ class UsersController extends AppController {
      */
     public function edit($id=null) {
 		$this->Session->setFlash($this->data['User']['id']);
+        // Change to return json error! Otherwise it is nearly impossible to diagnois why ajax isn't working. 
 		if (!($this->request->is('put') || $this->request->is('post')))
             throw new MethodNotAllowedException();
             // return $this->json(405);
@@ -97,12 +99,13 @@ class UsersController extends AppController {
 
     /**
      * Authenticates login and forgot password POST form sent from the login modal.
-     *
+     * Note: called "special_login" because there might be calls to "login" not removed.
      * @param string $id   user id
      */
     public function special_login() {
         $this->User->flatten = false;
         if ($this->request->is('post')) {
+            /* reset user's password */
             if ($this->request->data['User']['forgot_password']) {
                 $email = $this->request->data['User']['username'];
                 $user = $this->User->findByEmail($email);
@@ -130,28 +133,25 @@ class UsersController extends AppController {
                         "link to reset your password.", 'flash_success');
                     $this->redirect('/');
                 }
+            /* log user in */
             } else {
                 $userByEmail = $this->User->findByEmail($this->request->data['User']['username']);
                 if ($userByEmail)
                     $this->request->data['User']['username'] = $userByEmail['User']['username'];
                 if ($this->Auth->login()) {
-                    // order by DESC because some users have the same username.
-                    $user = $this->User->find('first', array(
-                        'conditions' => array(
-                            'User.username' => $this->request->data['User']['username']
-                        ),
-                        'order' => array('id' => 'DESC'),
-                    ));
-                    $this->User->id = $user['User']['id'];
+                    // given username get user's id
+                    $this->User->id = $this->User->findByRef($this->request->data['User']['username'])['User']['id'];
                     $this->User->saveField('last_login', date("Y-m-d H:i:s"));
                     return $this->redirect($this->Auth->redirect());
                 } else {
-                    $this->redirect($this->referer().'#loginModal');
+                    $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                    $this->redirect($this->referer());
                 }
             }
         }
     }
 
+    // duplicate
     /**
      * Create a reset password link and queue an email to the user.
      *
@@ -197,17 +197,21 @@ class UsersController extends AppController {
         $user = $this->User->findByReset($token);
         if (!$user || is_null($token)) {
             $this->Session->setFlash("Invalid token.", 'flash_error');
-            return $this->redirect('/#loginModal');
+            return $this->redirect('/');
         }
-        if (isset($this->data['User']['password'])) {
+        if (($this->request->is('put') || $this->request->is('post')) && isset($this->data['User']['password'])) {
+            $this->User->id = $user['id'];
             $this->User->permit('password');
-            $this->User->saveById($user['id'], array(
+            $this->User->permit('reset');
+            if ($this->User->save(array(
                 'password' => $this->data['User']['password'],
                 'reset' => null
-            ));
-            $this->Session->setFlash("Your password has been changed. You may now login.", 
-                'flash_success');
-            $this->redirect('/#loginModal');
+            ))) {
+                $this->Session->setFlash("Your password has been changed. You may now login.", 'flash_success');
+                $this->redirect('/');
+            } else {
+                $this->Session->setFlash("There was an error.  Please try again.", 'flash_error');
+            }   
         }
     }
 
@@ -255,57 +259,37 @@ class UsersController extends AppController {
     public function register() {
         if ($this->request->is('post')) {
 			$this->User->permit('role');
-			$this->User->set($this->request->data);
-
-			//check if the requested email already exists
-			$email = $this->User->find(
-				'first', 
-				array(
-					'conditions' => array(
-						'User.email' => $this->request->data['User']['email']
-					)
-				)
-			);
-			$username = $this->User->find(
-				'first', 
-				array(
-					'conditions' => array(
-						'User.username' => $this->request->data['User']['usernameReg']
-					)
-				)
-			);
-			$errorCheck = false;
-			if(!empty($email)) {
-				$errorCheck = true;
-			}
-			if(!empty($username)) {
-				$errorCheck = true;
-			} 
-			if($errorCheck) {
-				$this->redirect($this->referer().'#registerModal');
-			}
-			$this->User->add(array(
+            $this->User->permit('last_login');
+			if ($this->User->add(array(
+                'name' => $this->request->data['User']['name'],
+                'username' => $this->request->data['User']['usernameReg'],
 				'email' => $this->request->data['User']['email'],
-				'role' => 2,
+                'password' => $this->request->data['User']['passwd'],
+				'role' => "Researcher",
 				'activation' => null,
-				'password' => $this->request->data['User']['passwd'],
-				'username' => $this->request->data['User']['usernameReg'],
-				'name' => $this->request->data['User']['name']
-			));
-			$this->User->save();
-			$user = array_merge($user, $this->request->data['User']);
-			$this->Auth->login($user);
-			$this->redirect($this->referer());
-            
-        } else {
-            $this->set(array(
-                'email' => $user['email'],
-                'gravatar' => $user['gravatar']
-            ));
+                'last_login' => date("Y-m-d H:i:s")
+			))) {
+                $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
+                $user = array_merge($user, $this->request->data['User']);
+                $this->Auth->login($user);
+                $this->redirect($this->referer());
+            } else {
+                $error_message = "";
+                foreach(array_keys($this->User->validationErrors) as $key) {
+                    $error_message .= ucfirst($key) . ': ';
+                    for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
+                        $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
+                    $error_message .= "<br>";
+                }
+                $this->Session->setFlash($error_message, 'flash_error');
+                $this->redirect($this->referer());
+            }
         }
     }
 
-	//checks if email exists
+	/** 
+     * Checks if email exists
+     */
 	public function getEmail() {
 		$this->autoRender = false;
 		$email = $_POST['email'];
@@ -324,7 +308,9 @@ class UsersController extends AppController {
 		}
 	}
 
-	//checks if username exists
+	/**
+     * Checks if username exists
+     */
 	public function getUsername() {
 		$this->autoRender = false;
 		$username = $_POST['username'];
@@ -349,6 +335,7 @@ class UsersController extends AppController {
      * @param string $ref  username or id of an existing user
      */
     public function profile($ref) {
+        debug("in profile");
         $this->User->flatten = false;
         $this->User->recursive = 1;
         $user = $this->User->find('first', array(
@@ -379,7 +366,12 @@ class UsersController extends AppController {
         if (!$this->request->is('get')) throw new MethodNotAllowedException();
         return $this->json(200, $this->User->complete('User.name'));
     }
-	/**send an email */
+
+	/**
+     * Send invitiational email
+     * @param array data
+     * @param token   a valid activation token
+     */
 	public function sendInviteEmail($data,$token){
 		App::uses('CakeEmail', 'Network/Email');
 		$Email = new CakeEmail();
@@ -394,12 +386,16 @@ class UsersController extends AppController {
 		$Email->send();
 	}
 
+    /**
+     * Send email to reset password.
+     * @param string email
+     * @param string token   a valid password reset token
+     * @return void
+     */
 	public function sendEmailResetPassword($email,$token){
-		
 		App::uses('CakeEmail', 'Network/Email');
 		$Email = new CakeEmail();
 		$Email->viewVars(array(
-                    
                     'reset' => $this->baseURL() . '/users/reset_password/' . $token
                 ))
 		->template('reset_password', 'default')

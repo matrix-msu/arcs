@@ -139,7 +139,6 @@
         'metadata'
     );
 
-
     Router::mapResources($restful);
     Router::mapResources($restful, array('prefix' => '/api/'));
     Router::parseExtensions();

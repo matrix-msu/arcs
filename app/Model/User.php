@@ -13,24 +13,36 @@ class User extends AppModel {
 	
 	public $validate = array(
 		'name' => array(
-			'rule' => 'alphaNumeric',
-            'required' => true,
-            'message' => 'Letters only'
+			 'rule' => array('custom', '/^[a-z ]*$/i'),
+            'allowEmpty' => false,
+            'message' => 'Letter and spaces only'
 		),
 		'username' => array(
-			'rule' => 'alphaNumeric',
-            'required' => true,
-            'message' => 'Username required'
+            'custom' => array(
+			    'rule' => array('custom', '/^[a-z0-9 .-_~]*$/i'),
+                'allowEmpty' => false,
+                'message' => 'Letters, numbers, and some symbols (.-_~) only'
+            ),
+            'isUnique' => array(
+                'rule' => 'isUnique',
+                'message' => "Username must be unique"
+            )
 		),
 		'password' => array(
 			'rule' => array('minLength', '6'),
-            'required' => true,
+            'allowEmpty' => false,
             'message' => 'Password must be at least 6 characters long'
 		),
 		'email' => array(
-			'rule' => 'email',
-			'required' => true,
-			'message' => 'Invalid Email'
+            'email' => array(
+			    'rule' => 'email',
+                'allowEmpty' => false,
+			    'message' => 'Invalid email'
+            ),
+            'isUnique' => array(
+                'rule' => 'isUnique',
+                'message' => "Email must be unique"
+            )
 		)
 	);
 
@@ -93,7 +105,7 @@ class User extends AppModel {
      * On create, we need to hash the user's password.
      */
     function beforeSave($created) {
-    App::uses('AuthComponent', 'Controller/Component');
+        App::uses('AuthComponent', 'Controller/Component');
         if (isset($this->data['User']['password'])) {
             $this->data['User']['password'] = AuthComponent::password(
                 $this->data['User']['password']

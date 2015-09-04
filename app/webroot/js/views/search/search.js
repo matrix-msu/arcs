@@ -106,7 +106,7 @@
     Search.prototype.setupSearch = function() {
       this.scrollReady = false;
       return this.search = new arcs.utils.Search({
-        container: $('#search-box'),
+        container: $('.VS-search'),
         order: this.options.sort,
         run: false,
         loader: true,
@@ -287,7 +287,8 @@
     Search.prototype.search = function(e) {
       var query;
       e.preventDefault();
-      query = [e.target.text, "like", $("#search-box").val()];
+      query = [e.target.text, "like", $(".VS-search-inner").val()];
+      console.log(query);
       return this.search.run(query, {
         order: 'type',
         direction: this.options.sortDir

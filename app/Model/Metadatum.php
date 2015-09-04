@@ -13,7 +13,8 @@ class Metadatum extends AppModel {
 
     public $belongsTo = array('Resource');
 
-    public $whitelist = array('resource_id', 'attribute', 'value');
+    public $whitelist = array('resource_id', 'resource_name', 'user_id', 'user_name', 'user_email', 
+                              'user_username', 'attribute', 'value');
 
     /**
      * Store a piece of metadata for a resource.

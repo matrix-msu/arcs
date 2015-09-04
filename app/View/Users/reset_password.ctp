@@ -6,8 +6,6 @@
     <?php echo $this->Form->create('User'); ?>
     <?php echo $this->Form->input('password') ?>
     <br>
-    <?php echo $this->Form->input('confirm_password', array('type' => 'password')) ?>
-    <br>
     <?php echo $this->Form->submit('Change password', array('class' => 'btn')); ?>
     <?php echo $this->Form->end() ?>
 </div>
