@@ -65,6 +65,7 @@
     margin: 50px auto;
     
     .collection-list {
+	    
         details {
             min-height: 20px;
             margin: 25px 0 0;
@@ -73,7 +74,6 @@
                 visibility: hidden;
                 display: none;
             }
-
             // Focus state for keyboard and accessibility
             &:focus {
                 outline: none;
@@ -88,7 +88,6 @@
                 font-size: @baseFontSize;
                 line-height: normal;
                 color: #333;
-                text-shadow: 0 1px 1px rgba(255,255,255,.75);
                 background: #ddd;
                 cursor: pointer;
 
@@ -96,6 +95,16 @@
                 &:focus {
                     outline: none;
                 }
+                
+                h5, .h5 {
+				text-shadow: none;
+				}
+				 h3, .h3 {
+				text-shadow: none;
+				}
+				 h3 {
+				text-shadow: none;
+				}
 
                 // Transitions
                 .transition(.1s linear all);
@@ -178,7 +187,6 @@
                     font-size: @baseFontSize;
                     line-height: normal;
                     color: #333;
-                    text-shadow: 0 1px 1px rgba(255,255,255,.75);
                     background: none;
                     border: none;
                     border-radius:0;
@@ -223,6 +231,14 @@
         h5 {
             display: inline;
             padding-left: 30px;
+            text-shadow: none;
+        }
+        
+        h4,
+        h5 {
+            color: #868686;
+            font-size: 14px;
+            font-weight: 400;
         }
     }
 
