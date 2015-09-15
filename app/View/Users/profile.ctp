@@ -18,6 +18,8 @@
                     if ($role == 2) echo "Researcher";
                 ?>
                 </dd>
+                <dd>Projects: Polis, Isthmia, Chersonesos, Nemea</dd>
+                <dd>Active Since: <?php echo $user_info['User']['activeSince']; ?></dd>
                 <?php if ($user['id'] == $user_info['User']['id']): ?>
                     <dd><a href="#" id="edit-profile" onclick="return false;">Edit Profile</a></dd>
                 <?php endif ?>
@@ -25,16 +27,16 @@
             
             <dl>
             	<dd>
-            		<a href="#">Annotations Made</a>
+            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['annotationsCount']; ?> Annotations Made
             	</dd>
             	<dd>
-            		<a href="#">Metadata Edits Made</a>
+            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['metadataCount']; ?> Metadata Edits Made
             	</dd>
             	<dd>
-            		<a href="#">Comments Made</a>
+            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['commentsCount']; ?> Comments Made
             	</dd>
             	<dd>
-            		<a href="#">Months On Site</a>
+            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['monthsCount']; ?> Months On Site
             	</dd>
             </dl>
         </div>

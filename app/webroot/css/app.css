@@ -10401,7 +10401,6 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   font-size: 12;
   line-height: normal;
   color: #333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: #ddd;
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
@@ -10410,6 +10409,17 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
 }
 .collection-list-wrapper .collection-list details summary:focus {
   outline: none;
+}
+.collection-list-wrapper .collection-list details summary h5,
+.collection-list-wrapper .collection-list details summary .h5 {
+  text-shadow: none;
+}
+.collection-list-wrapper .collection-list details summary h3,
+.collection-list-wrapper .collection-list details summary .h3 {
+  text-shadow: none;
+}
+.collection-list-wrapper .collection-list details summary h3 {
+  text-shadow: none;
 }
 .collection-list-wrapper .collection-list details summary.large {
   padding: 15px 25px;
@@ -10487,7 +10497,6 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   font-size: 12;
   line-height: normal;
   color: #333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: none;
   border: none;
   border-radius: 0;
@@ -10524,6 +10533,13 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
 .collection-list-wrapper .collection-list h5 {
   display: inline;
   padding-left: 30px;
+  text-shadow: none;
+}
+.collection-list-wrapper .collection-list h4,
+.collection-list-wrapper .collection-list h5 {
+  color: #868686;
+  font-size: 14px;
+  font-weight: 400;
 }
 .collection-list-wrapper summary::-webkit-details-marker {
   display: none;

@@ -30,9 +30,16 @@ class MetaResourcesController extends AppController {
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
         if (!$this->request->data) throw new BadRequestException;
         $model = $this->modelClass;
-        # Temporarily whitelist the user_id field.
+        debug($model);
+        # if ($model == 'bookmarks' || $model == 'comments' || $model == 'jobs' || $model == 'keywords') {
         $this->$model->permit('user_id');
         $this->request->data['user_id'] = $this->Auth->user('id');
+        # } elseif ($model == 'annotations' || $model == 'flags') {
+        #   add resource_name, user_name, user_email, user_username, user_id
+        # }
+        # if ($model == 'flags') {
+        # add status
+        # }
         if (!$this->$model->add($this->request->data)) 
             throw new InternalErrorException();
         $this->json(201, $this->$model->findById($this->$model->id));

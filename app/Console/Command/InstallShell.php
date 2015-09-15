@@ -15,13 +15,14 @@ class InstallShell extends AppShell {
     /**
      * Bootstrap a user.
      */
+    // might fail because there is no email.
     public function main() {
         $this->User->permit('role');
         $this->User->add(array(
             'name' => 'Admin',
             'username' => 'admin',
             'password' => 'pass',
-            'role' => 0
+            'role' => 'Admin'
         ));
     }
 

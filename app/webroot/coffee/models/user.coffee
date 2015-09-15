@@ -10,10 +10,10 @@ class arcs.models.User extends Backbone.Model
   urlRoot: arcs.baseURL + 'users/'
 
   is: (role) ->
-    @get('role') <= @ROLES[role]
+    @get('role') == role
 
   isLoggedIn: ->
     @id?
 
   isAdmin: ->
-    @get('role') == @ROLES['Admin']
+    @get('role') == 'Admin'

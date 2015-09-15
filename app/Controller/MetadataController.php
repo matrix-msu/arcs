@@ -20,6 +20,7 @@ class MetadataController extends AppController {
     public function add() {
         if (!$this->request->is('post')) return $this->json(400);
 
+        // add resource_name, user_id, user_name, user_email, user_username
         if ($this->Metadatum->add($this->request->data)) 
             return $this->json(201);
         else 

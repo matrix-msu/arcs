@@ -53,29 +53,33 @@ class UsersController extends AppController {
      * @param string $id   user id
      */
     public function edit($id=null) {
+        debug("editttt");
 		$this->Session->setFlash($this->data['User']['id']);
         // Change to return json error! Otherwise it is nearly impossible to diagnois why ajax isn't working. 
 		if (!($this->request->is('put') || $this->request->is('post')))
-            throw new MethodNotAllowedException();
-            // return $this->json(405);
+            // throw new MethodNotAllowedException();
+            return $this->json(405);
         if (!$this->request->data || !$id) 
-			throw new BadRequestException();
-            // return $this->json(400);
+			// throw new BadRequestException();
+            return $this->json(400);
         $user = $this->User->read(null, $id);
         if (!$user) 
-			throw new NotFoundException();
-            // return $this->json(404);
+			// throw new NotFoundException();
+            return $this->json(404);
         # Must be editing own account, or an admin.
         if (!($this->User->id == $this->Auth->user('id') || $this->Access->isAdmin()))
-            throw new ForbiddenException();
-            // return $this->json(403);
+            // throw new ForbiddenException();
+            return $this->json(403);
         # Only admins can change user roles.
         if ($this->Access->isAdmin()) 
             $this->User->permit('role');
         // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
-        if (!$this->User->add($this->request->data))
-			throw new InternalErrorException();
-            // return $this->json(500);
+        if (!$this->User->add($this->request->data)) {
+			// throw new InternalErrorException();
+            debug("in here");
+            debug($this->validationErrors);
+            return $this->json(500);
+        }
         # Update the Auth Session var, if necessary.
         if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));
@@ -335,7 +339,6 @@ class UsersController extends AppController {
      * @param string $ref  username or id of an existing user
      */
     public function profile($ref) {
-        debug("in profile");
         $this->User->flatten = false;
         $this->User->recursive = 1;
         $user = $this->User->find('first', array(
@@ -350,6 +353,23 @@ class UsersController extends AppController {
                 'Comment'    => array('limit' => 30)
             )
         ));
+        $this->loadModel('Annotation');
+        $user['User']['annotationsCount'] = $this->Annotation->find('count', array(
+            'conditions' => array('Annotation.user_username' => $user['User']['username'])
+        ));
+        $this->loadModel('Comment');
+        $user['User']['commentsCount'] = $this->Comment->find('count', array(
+            'conditions' => array('Comment.user_id' => $user['User']['id'])
+        ));
+        $this->loadModel('Metadatum');
+        $user['User']['metadataCount'] = $this->Metadatum->find('count', array(
+            'conditions' => array('Metadatum.user_username' => $user['User']['username'])
+        ));
+        $now = new Datetime();
+        $created = new Datetime($user['User']['created']);
+        $user['User']['monthsCount'] = $created->diff($now)->m + ($created->diff($now)->y*12);
+        $user['User']['totalCount'] = $user['User']['annotationsCount'] + $user['User']['commentsCount'] + $user['User']['metadataCount'] + $user['User']['months'];
+        $user['User']['activeSince'] = $created->format('F Y');
 
         if (!$user) {
             throw new NotFoundException();
