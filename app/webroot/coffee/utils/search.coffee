@@ -57,7 +57,7 @@ class arcs.utils.Search extends Backbone.View
           @options.onSearch query # Fire the onSearch cb
           @run()
         facetMatches: (callback) =>
-          callback _.keys @facets
+          #callback _.keys @facets
         valueMatches: (facet, searchTerm, callback) =>
           val = @facets[facet]
           if typeof val == 'function'
@@ -81,10 +81,13 @@ class arcs.utils.Search extends Backbone.View
     options = _.extend _.clone(@options), options
     query ?= @vs.searchBox.value()
 
+    sid = if query[0] == "Collection" then 0 else 736
+
     params = "?related&n=#{options.n}" +
       "&page=#{options.page}" +
       "&order=#{options.order}" +
-      "&direction=#{options.direction}"
+      "&direction=#{options.direction}" +
+      "&sid="+sid
 
     if query 
       params += "&q=#{encodeURIComponent(query)}"
@@ -101,6 +104,8 @@ class arcs.utils.Search extends Backbone.View
       error: =>
         options.error()
         arcs.loader.hide() if options.loader
-    @query = @vs.searchBox.value()
+    #@query = @vs
+    #@query = $("#search-box").val()
+    #console.log(query)
     @page = options.page
     @results
