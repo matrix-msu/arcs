@@ -44,6 +44,7 @@ class arcs.views.search.Search extends Backbone.View
     # <ctrl>-a to select all
     arcs.keys.map @,
       'ctrl+a': @selectAll
+      'enter': @search
       '?': @showHotkeys
       t: @scrollTop
 
@@ -59,7 +60,7 @@ class arcs.views.search.Search extends Backbone.View
     'click .sort-btn'          : 'setSort'
     'click .dir-btn'           : 'setSortDir'
     'click .search-page-btn'   : 'setPage'
-    'click .search-type'       : 'search'
+    'click .search-type'       : 'addFacet'
 
   ### More involved setups run by the initialize method ###
 
@@ -229,12 +230,15 @@ class arcs.views.search.Search extends Backbone.View
     results = new arcs.collections.ResultSet @search.getLast()
     @_render results: results.toJSON(), true
 	
+  addFacet: (e) ->
+    e.preventDefault() 
+    @search.vs.searchBox.addFacet(e.target.text,'',10)	
+
   search: (e) ->
     e.preventDefault()
-	
-    #query = e.target.text+",like,"+$("#search-box").val()
+    
     query = [e.target.text, "like", $(".VS-search-inner").val()]
-    console.log(query)
+    console.log(@search.vs.searchBox)
     @search.run query,
       order: 'type'
       direction: @options.sortDir
