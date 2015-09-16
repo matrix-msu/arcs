@@ -3,111 +3,112 @@
 
 @ArcsBlue: rgb(0, 147, 190);
 
-/*
-body.viewer {
-  background: #fff;
+
+
+/* The following is for the scroll-to-zoom feature*/	
+input[type=range] {
+  -webkit-appearance: none;
+  width: 10%;
+  margin: 3.5px 0;
+  margin-left: 3%;
+  display: inline;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  background: #e4e4e4;
+  border-radius: 11.3px;
+  border: 0.5px solid #e4e4e4;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 12px;
+  width: 12px;
+  border-radius: 8px;
+  background: #9a9a9a;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -4px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #e4e4e4;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  background: #e4e4e4;
+  border-radius: 11.3px;
+  border: 0.5px solid #e4e4e4;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 12px;
+  width: 12px;
+  border-radius: 8px;
+  background: #9a9a9a;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #e4e4e4;
+  border: 0.5px solid #e4e4e4;
+  border-radius: 22.6px;
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+}
+input[type=range]::-ms-fill-upper {
+  background: #e4e4e4;
+  border: 0.5px solid #e4e4e4;
+  border-radius: 22.6px;
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+}
+input[type=range]::-ms-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 12px;
+  width: 12px;
+  border-radius: 8px;
+  background: #9a9a9a;
+  cursor: pointer;
+  height: 1px;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #e4e4e4;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #e4e4e4;
 }
 
-body.viewer.standalone {
-  #viewer {
-    margin: 0 -3px 10px -10px;
-    .viewer-well {
-      display: inline-block;
-      border: none;
-      float: left;
-      #wrapping {
-        padding-left: 0px;
-        padding-right: 0px;
-        .annotate-controls {
-          right: 0px;
-        }
-      }
-    }
-  }
+.viewers-container {
+	position:relative;
+	height: 959px;
 }
-
-
-
-.viewer-controls-override {
-  height: 60px;
-  width: 75%;
-  border: 0;
-}
-
-#viewer {
-  margin: 0 -3px -1px -10px;
-
-  .viewer-well {
-	background-color: @gray;
-    background: url(img/linen-texture.jpg);
-	border: 1px solid #888;
-	.box-shadow(inset 4px rgba(0,0,0,.55));
-    text-align:center;
-  	width: 75%;
-  	height: 100%;
-  	float: left;
-  	position: relative;
-    overflow: hidden;
-  	
-  	#wrapping {
-      display: block;
-      margin: 0 auto;
-      padding-left: 18px;
-      padding-right: 18px;
-      left: 0;
-      z-index: 2;
-      overflow: hidden;
-
-      #resource {
-        display: block;
-        margin: 0 auto;
-        img {
-          .unselectable();
-        }
-      }
-      #hotspots-wrapper {
-        position: relative;
-      }
-	}
-  }
-
-  // Previous and next buttons
-  .viewer-nav {
-    width: 18px;
-    position: absolute;
-    height: 100%;
-    z-index: 100;
-    &:hover    { cursor: pointer; }
-    &.disabled { opacity: 0.5; }
-  }
-  #prev-btn {
-    left: 0px;
-    background: #ddd url(img/nav.png) no-repeat left center;
-  }
-  #next-btn {
-    right: 0px;
-    background: #ddd url(img/nav.png) no-repeat right center;
-  }
-}
-
-.viewer-footer {
-  height: 40px;
-  background: #ddd;
-  margin: -10px;
-  border:1px solid #888;
-}
-*/
 
 #viewer-left {
 	float: left;
 	width: 70%;
-	margin-left: -9px;
+	height: 100%;
 }
 
 #viewer-right {
-	float: left;
+	float: right;
 	width: 30%;
-	min-height: 420px;
+	height: 100%;
 	border-left: 1px solid #cdcdcd;
 }
 
@@ -125,10 +126,11 @@ body.viewer.standalone {
 	border-bottom: 1px solid #cdcdcd;
 	
 	a {
+		text-decoration: none;
 		color: #000;
 	}
 	
-	a:hover {
+	a:hover, a:visited {
 		text-decoration: none;
 	}
 	
@@ -140,9 +142,59 @@ body.viewer.standalone {
 	.tools {
 		display: inline;
 		float: right;
+		line-height: 70px;
 		
 		span {
+			
 			margin-left: 16px;
+			color: #5A5B5D;
+			text-transform: uppercase;
+			font-size: 80%;
+			display: inline-block;
+			
+			.content {
+				margin-left: 16px;
+				color: #5A5B5D;
+				text-transform: uppercase;
+				font-size: 80%;
+				display: inline-block;
+			}
+		}
+		
+		.icon-annotate {
+			width: 19px;
+			height: 19px;
+			background-image: url("../img/AnnotationsTooltip.svg");
+			background-position: center;
+			cursor: pointer;
+			vertical-align: middle;
+			display: inline-block;
+			padding-left: 5px;
+			background-repeat: no-repeat;
+		}
+		
+		.icon-flag {
+			width: 19px;
+			height: 19px;
+			background-image: url("../img/FlagTooltip.svg");
+			background-position: center;
+			cursor: pointer;
+			vertical-align: middle;
+			display: inline-block;
+			padding-left: 5px;
+			background-repeat: no-repeat;
+		}
+		
+		.icon-export {
+			width: 19px;
+			height: 19px;
+			background-image: url("../img/export.svg");
+			background-position: center;
+			cursor: pointer;
+			vertical-align: middle;
+			display: inline-block;
+			padding-left: 5px;
+			background-repeat: no-repeat;
 		}
 	}
 }
@@ -152,7 +204,7 @@ body.viewer.standalone {
 	border: 0;
 	background: #F9F9F9;
 	float: left;
-	width: 105%;
+	width: 100%;
 	padding: 0;
 	margin: 0;
 	text-transform: uppercase;
@@ -266,16 +318,18 @@ body.viewer.standalone {
 			
 			.level-content {
 				border-radius: 0;
+				margin-bottom: 0px;
 				width: 100%;
 				padding: 0;
 				border: 0;
+				border-bottom: 1px solid #ccc !important;
 				
 				table {
 					width: 100%;
 					font-size: 80%;
 					
 					tr:nth-child(even) {
-						background: rgb(241, 241, 241);
+						background: rgba(241, 241, 241, 0.6);
 					}
 					tr:nth-child(odd) {
 						background: rgb(239, 239, 239);
@@ -304,13 +358,16 @@ body.viewer.standalone {
 #viewer-window {
 	float: left;
 	width: 100%;
-	min-height: 420px;
+	height: 87.5%;
 	background: #fff;
 	border-bottom: 1px solid #cdcdcd;
 	
 	img {
-		width: 90%;
-		margin: 32px;
+		max-width: 90%;
+		max-height: 90%;
+		display: block;
+		margin-right: auto;
+		margin-left: auto;
 	}
 }
 
@@ -319,6 +376,71 @@ body.viewer.standalone {
 	width: 100%;
 	height: 60px;
 	background: #f9f9f9;
+	border-bottom: 1px solid #ccc !important;
+	
+	
+	img.arrow-left-icon {
+    	width: 20px;
+		height: 20px;
+		margin-top: 20px;
+		float: left;
+		display: inline;
+	}
+	
+	img.arrow-right-icon {
+        width: 20px;
+		height: 20px;
+		margin-top: 20px;
+		float: right;
+		position: relative;
+		display: inline;
+	}
+	
+	img.resources-annotate-icon {
+        margin-top: 20px;
+		margin-left: 10%;
+		height: 20px;
+		width: 20px;
+		display: inline;
+	}
+	
+	img.resources-fullscreen-icon {
+    	margin-top: 20px;
+		margin-left: 10%;
+		height: 20px;
+		width: 20px;
+		display: inline;
+	}
+	
+	img.resources-zoom-out-icon {
+        margin-top: 20px;
+		margin-left: 10%;
+	    height: 20px;
+		width: 20px;
+		display: inline;
+	}
+	
+	img.resources-zoom-in-icon {
+    	margin-top: 20px;
+		margin-left: 3%;
+		height: 20px;
+		width: 20px;
+		display: inline;
+	}
+	
+	img.resources-rotate-icon {
+    	margin-top: 20px;
+		margin-left: 17%;
+		height: 20px;
+		width: 20px;
+		display: inline;
+	}
+	
+}
+
+.resource-tools-container {
+	width: 90%;
+	margin: auto;
 }
 
 #collection-title, #project-metadata, #season-metadata, #excavation-metadata, #archival-metadata {
@@ -330,11 +452,31 @@ body.viewer.standalone {
 }
 
 #other-resources {
-	float: left;
-	width: 105%;
-	margin-left: -9px;
-	height: 120px;
-	background: #f9f9f9;
-	border-top: 1px solid #cdcdcd;
+	min-height: 220px;
+	width: 100%;
+	background: #efefef;
 	margin-bottom: 75px;
+	position: relative;
+}
+
+.page {
+	padding-left: 0;
+	padding-right: 0;
+	
+}
+
+.footer {
+    background: #333;
+    text-align: center;
+    color: #888;
+    font-weight: 200;
+    font-size: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 175px;
+    padding-bottom: 75px;
+    margin-top: -110px;
+    float: left;
+    border-top: 15px solid #444;
+    width: 100%;
 }

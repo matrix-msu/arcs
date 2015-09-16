@@ -116,7 +116,7 @@
 <div class="viewer-footer"></div> 
 
 -->
-
+<div class="viewers-container">
 <div id="viewer-left">
 	<div id="viewer-tools">
 		<div class="container1">
@@ -124,24 +124,23 @@
 			
 			<div class="tools">
 				<a href="#">
-					<span>
+					<span class="content">
 						Annotate
 					</span>
+					<div class="icon-annotate"></div>
 				</a>
 				<a href="#">
-					<span>
+					<span class="content">
 						Flag
 					</span>
+					<div class="icon-flag"></div>
 				</a>
+				
 				<a href="#">
-					<span>
-						Settings
-					</span>
-				</a>
-				<a href="#">
-					<span>
+					<span class="content">
 						Export
 					</span>
+					<div class="icon-export"></div>
 				</a>
 			</div>
 		</div>
@@ -154,7 +153,33 @@
 	</div>
 	
 	<div id="resource-tools">
-		
+		<div class="resource-tools-container">
+			<!-- TO DO: Add onClick events here for each icon -->
+			<div>
+				<img class="arrow-left-icon" src="../img/ArrowLeft.svg">
+			</div>
+			<div>
+	  			<img class="resources-annotate-icon" src="../img/AnnotationsTooltip.svg">
+			</div>
+			<div>
+				<img class="resources-fullscreen-icon" src="../img/Fullscreen.svg">
+			</div>
+			<div>
+				<img class="resources-zoom-out-icon" src="../img/zoomOut.svg">
+			</div>
+			<div>
+	  			<input type="range" min="1" max="5" value="1" step="0.1" class="zoom-bar">
+			</div>
+			<div>
+				<img class="resources-zoom-in-icon" src="../img/ZoomIn.svg">
+			</div>
+			<div>
+				<img class="resources-rotate-icon" src="../img/Rotate.svg">
+			</div>
+			<div>
+				<img class="arrow-right-icon" src="../img/ArrowRight.svg">
+			</div>
+		</div>
 	</div>
 	
 </div>
@@ -437,6 +462,7 @@
 		
 	</div>	
 		
+</div>
 </div>
 
 <div id="other-resources">
