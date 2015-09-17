@@ -8,10 +8,9 @@
 /* The following is for the scroll-to-zoom feature*/	
 input[type=range] {
   -webkit-appearance: none;
-  width: 10%;
+  width: 75%;
   margin: 3.5px 0;
-  margin-left: 3%;
-  display: inline;
+
 }
 input[type=range]:focus {
   outline: none;
@@ -110,6 +109,19 @@ input[type=range]:focus::-ms-fill-upper {
 	width: 30%;
 	height: 100%;
 	border-left: 1px solid #cdcdcd;
+}
+
+.icon-edit {
+    width: 19px;
+    height: 19px;
+    background-image: url("../img/Edit.svg");
+    background-position: center;
+    cursor: pointer;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    float: right;
+    margin-top: 20px;
+    margin-left: 5px;
 }
 
 .container1 {
@@ -378,13 +390,49 @@ input[type=range]:focus::-ms-fill-upper {
 	background: #f9f9f9;
 	border-bottom: 1px solid #ccc !important;
 	
+	.annotate-fullscreen-div {
+    width: 15%;
+    float: left;
+    height: 60px;
+    margin-top: 20px;
+    margin-left: 15%;
+	}
+	
+	.zoom-out-div {
+    float: left;
+    margin-top: 20px;
+    height: 60px;
+    margin-left: 14%;
+	}
+	
+	.zoom-range-div {
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    margin-top: 25px;
+    margin-left: 1%;
+	}
+	
+	.zoom-in-div {
+    float: left;
+    margin-top: 20px;
+    height: 60px;
+    margin-left: -1%;
+	}
+	
+	.rotate-div {
+    float: left;
+    width: 20%;
+    height: 60px;
+    margin-left: 15%;
+    margin-top: 20px;
+	}
 	
 	img.arrow-left-icon {
     	width: 20px;
 		height: 20px;
 		margin-top: 20px;
 		float: left;
-		display: inline;
 	}
 	
 	img.arrow-right-icon {
@@ -392,48 +440,34 @@ input[type=range]:focus::-ms-fill-upper {
 		height: 20px;
 		margin-top: 20px;
 		float: right;
-		position: relative;
-		display: inline;
 	}
 	
 	img.resources-annotate-icon {
-        margin-top: 20px;
-		margin-left: 10%;
 		height: 20px;
 		width: 20px;
-		display: inline;
+		float: left;
 	}
 	
 	img.resources-fullscreen-icon {
-    	margin-top: 20px;
-		margin-left: 10%;
 		height: 20px;
 		width: 20px;
-		display: inline;
+		float: right;
 	}
 	
 	img.resources-zoom-out-icon {
-        margin-top: 20px;
-		margin-left: 10%;
 	    height: 20px;
 		width: 20px;
-		display: inline;
 	}
 	
 	img.resources-zoom-in-icon {
-    	margin-top: 20px;
-		margin-left: 3%;
 		height: 20px;
 		width: 20px;
-		display: inline;
 	}
 	
 	img.resources-rotate-icon {
-    	margin-top: 20px;
-		margin-left: 17%;
+		margin-left: 25%;
 		height: 20px;
 		width: 20px;
-		display: inline;
 	}
 	
 }

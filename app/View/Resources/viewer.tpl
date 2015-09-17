@@ -158,30 +158,27 @@
 			<div>
 				<img class="arrow-left-icon" src="../img/ArrowLeft.svg">
 			</div>
-			<div>
+			<div class="annotate-fullscreen-div">
 	  			<img class="resources-annotate-icon" src="../img/AnnotationsTooltip.svg">
-			</div>
-			<div>
 				<img class="resources-fullscreen-icon" src="../img/Fullscreen.svg">
 			</div>
-			<div>
+			<div class="zoom-out-div">
 				<img class="resources-zoom-out-icon" src="../img/zoomOut.svg">
 			</div>
-			<div>
+			<div class="zoom-range-div">
 	  			<input type="range" min="1" max="5" value="1" step="0.1" class="zoom-bar">
 			</div>
-			<div>
+			<div class="zoom-in-div">
 				<img class="resources-zoom-in-icon" src="../img/ZoomIn.svg">
 			</div>
-			<div>
+			<div class="rotate-div">
 				<img class="resources-rotate-icon" src="../img/Rotate.svg">
 			</div>
 			<div>
 				<img class="arrow-right-icon" src="../img/ArrowRight.svg">
 			</div>
-		</div>
+		</div>	
 	</div>
-	
 </div>
 
 <div id="viewer-right">
@@ -207,7 +204,7 @@
 			
 			<div class="accordion metadata-accordion">
 	
-				<h3 class="level-tab">Project Level Metadata <span>Edit</span></h3>
+				<h3 class="level-tab">Project Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -265,7 +262,7 @@
 					
 				</div>
 				
-				<h3 class="level-tab">Season Level Metadata <span>Edit</span></h3>
+				<h3 class="level-tab">Season Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -323,7 +320,7 @@
 					
 				</div>
 				
-				<h3 class="level-tab">Excavation/Survey Level Metadata <span>Edit</span></h3>
+				<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -381,7 +378,7 @@
 					
 				</div>
 				
-				<h3 class="level-tab">Archival Object Level Metadata <span>Edit</span></h3>
+				<h3 class="level-tab">Archival Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
