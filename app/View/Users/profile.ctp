@@ -1,6 +1,8 @@
 <div id="user-profile">
     <div class="row" id="user-info">
         <div>
+        <!-- TO DO: Add code that calculates total score and places it in the score bubble -->
+        	<div class="score-bubble">3</div>
             <img class="profile-image thumbnail"
                 src="http://gravatar.com/avatar/<?php echo $user_info['User']['gravatar'] ?>">
             <dl>
