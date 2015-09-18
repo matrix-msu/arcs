@@ -4,6 +4,7 @@
 @toolbarFontSize: 12px;
 @toolbarLineHeight: @toolbarFontSize * 4;
 @ArcsBlue: rgb(0, 147, 190);
+@ToolbarColor: #F4F4F4;
 
 div#toolbar {
     position: fixed;
@@ -11,7 +12,7 @@ div#toolbar {
     left: 0;
     z-index: 1;
     width: 100%;
-    background: #ccc;
+    background: @ToolbarColor;
     //  margin-bottom: 10px;
     //  margin-left: -10px;
     //  margin-right: -10px;
@@ -43,7 +44,7 @@ div#toolbar {
     }
 
     .btn-grey {
-        background: #ccc;
+        background: @ToolbarColor;
         border: none;
         border-radius: 0;
         height: 60px;
@@ -98,7 +99,7 @@ div#toolbar {
 
 .dropped-menu {
     display: none;
-    background: #ccc;
+    background: #F4F4F4;
     a {
         color: #808080;
         display: block;
@@ -107,7 +108,7 @@ div#toolbar {
     a:hover {
         text-decoration: none;
         color: rgb(252, 252, 252);
-        background: #808080;
+        background: #777;
     }
 }
 
