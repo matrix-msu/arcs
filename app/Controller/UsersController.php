@@ -53,7 +53,6 @@ class UsersController extends AppController {
      * @param string $id   user id
      */
     public function edit($id=null) {
-        debug("editttt");
 		$this->Session->setFlash($this->data['User']['id']);
         // Change to return json error! Otherwise it is nearly impossible to diagnois why ajax isn't working. 
 		if (!($this->request->is('put') || $this->request->is('post')))
@@ -76,7 +75,6 @@ class UsersController extends AppController {
         // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
         if (!$this->User->add($this->request->data)) {
 			// throw new InternalErrorException();
-            debug("in here");
             debug($this->validationErrors);
             return $this->json(500);
         }
@@ -261,6 +259,8 @@ class UsersController extends AppController {
      * Register a user FROM NO INVITE
      */
     public function register() {
+        debug($_POST);
+        debug($this);
         if ($this->request->is('post')) {
 			$this->User->permit('role');
             $this->User->permit('last_login');

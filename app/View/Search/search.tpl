@@ -111,7 +111,7 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          {% if user.role == "Admin" || user.role == "Moderator" %}
+          {% if user.role != "Researcher" %}
           <li><a id="access-btn">Set Access...</a></li>
           <li class="divider"></li>
           {% endif %}

@@ -15,6 +15,7 @@
 
         <!-- app/webroot/js/vendor/leaflet-src.js and app/webroot/js/vendor/leaflet.js don't make the leaflet map. -->
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
 
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
 
