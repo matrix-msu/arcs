@@ -27,11 +27,9 @@ class arcs.views.Profile extends Backbone.View
             arcs.loader.show()
             @model.save vals,
               success: (model, response, options) ->
-                console.log "Model successfully saved."
                 arcs.loader.hide()
                 return
               error: (model, response, options) ->
-                console.log "Error: Model failed to save."
-                arcs.loader.hide()
+                arcs.loader.hide() # this is very finicky and returns when the request succeeds
                 return
         cancel: ->

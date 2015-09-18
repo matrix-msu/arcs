@@ -44,11 +44,9 @@
                 arcs.loader.show();
                 return _this.model.save(vals, {
                   success: function(model, response, options) {
-                    console.log("Model successfully saved.");
                     arcs.loader.hide();
                   },
                   error: function(model, response, options) {
-                    console.log("Error: Model failed to save.");
                     arcs.loader.hide();
                   }
                 });

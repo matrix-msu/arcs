@@ -65,9 +65,7 @@
             };
           })(this),
           facetMatches: (function(_this) {
-            return function(callback) {
-              return callback(_.keys(_this.facets));
-            };
+            return function(callback) {};
           })(this),
           valueMatches: (function(_this) {
             return function(facet, searchTerm, callback) {
@@ -96,12 +94,13 @@
     };
 
     Search.prototype.run = function(query, options) {
-      var params;
+      var params, sid;
       options = _.extend(_.clone(this.options), options);
       if (query == null) {
         query = this.vs.searchBox.value();
       }
-      params = ("?related&n=" + options.n) + ("&page=" + options.page) + ("&order=" + options.order) + ("&direction=" + options.direction);
+      sid = query[0] === "Collection" ? 0 : 736;
+      params = ("?related&n=" + options.n) + ("&page=" + options.page) + ("&order=" + options.order) + ("&direction=" + options.direction) + "&sid=" + sid;
       if (query) {
         params += "&q=" + (encodeURIComponent(query));
       }
@@ -129,7 +128,6 @@
           };
         })(this)
       });
-      this.query = this.vs.searchBox.value();
       this.page = options.page;
       return this.results;
     };

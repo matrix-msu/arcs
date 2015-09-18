@@ -50,6 +50,7 @@
       arcs.bus.on('selection', this.afterSelection, this);
       arcs.keys.map(this, {
         'ctrl+a': this.selectAll,
+        'enter': this.search,
         '?': this.showHotkeys,
         t: this.scrollTop
       });
@@ -66,7 +67,7 @@
       'click .sort-btn': 'setSort',
       'click .dir-btn': 'setSortDir',
       'click .search-page-btn': 'setPage',
-      'click .search-type': 'search'
+      'click .search-type': 'addFacet'
     };
 
 
@@ -284,11 +285,16 @@
       }, true);
     };
 
+    Search.prototype.addFacet = function(e) {
+      e.preventDefault();
+      return this.search.vs.searchBox.addFacet(e.target.text, '', 10);
+    };
+
     Search.prototype.search = function(e) {
       var query;
       e.preventDefault();
       query = [e.target.text, "like", $(".VS-search-inner").val()];
-      console.log(query);
+      console.log(this.search.vs.searchBox);
       return this.search.run(query, {
         order: 'type',
         direction: this.options.sortDir
