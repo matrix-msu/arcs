@@ -15,7 +15,7 @@
         <div id="droppedMenu" class="dropped-menu">
             <?php echo $this->Html->link('Profile', 
                 '/user/' . $user['username'] . '/') ?>
-            <?php if ($user['role'] === 0): ?>
+            <?php if ($user['role'] == "Admin"): ?>
             <?php echo $this->Html->link('Admin', 
                 '/admin') ?>
             <?php endif ?>

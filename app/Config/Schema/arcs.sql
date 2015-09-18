@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100),
     username VARCHAR(100),
     password VARCHAR(100),
-    role INT(1),
+    role VARCHAR(100),
     activation CHAR(36),
     reset CHAR(36),
     last_login DATETIME,

@@ -36,7 +36,7 @@
       <ul class="dropdown-menu">
         <li><a id="rethumb-btn">Re-thumbnail</a></li>
         <li><a id="split-btn">Split PDF</a></li>
-        {% if user.role == 0 %}
+        {% if user.role == "Admin" %}
         <li><a id="delete-btn">Delete</a></li>
         {% endif %}
       </ul>

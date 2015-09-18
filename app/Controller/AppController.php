@@ -33,7 +33,7 @@ class AppController extends Controller {
                 'name' => $this->Auth->user('name'),
                 'email' => $this->Auth->user('email'),
                 'role' => $this->Auth->loggedIn() ? 
-                    intVal($this->Auth->user('role')) : 3,
+                    $this->Auth->user('role') : "Researcher",
                 'username' => $this->Auth->user('username'),
                 'gravatar' => md5(strtolower($this->Auth->user('email')))
             ),

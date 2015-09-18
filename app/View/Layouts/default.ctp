@@ -41,7 +41,7 @@
             <?php endif ?>
         </div>
         <?php echo $this->element('footer') ?>
-        <?php if ($user['role'] == 0 && Configure::read('debug') == 2) echo $this->element('sql') ?> 
+        <?php if ($user['role'] == "Admin" && Configure::read('debug') == 2) echo $this->element('sql') ?> 
         <!-- user voice -->
         <script type="text/javascript">
             var uvOptions = {};

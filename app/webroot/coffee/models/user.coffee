@@ -1,11 +1,11 @@
 # user.coffee
 # -----------
 class arcs.models.User extends Backbone.Model
+  # ROLES is no longer needed.  
   ROLES:
     'Admin'          : 0
-    'Sr. Researcher' : 1
+    'Moderator'      : 1
     'Researcher'     : 2
-    'Guest'          : 3
 
   urlRoot: arcs.baseURL + 'users/'
 

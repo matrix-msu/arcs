@@ -13,9 +13,8 @@ class AccessComponent extends Component {
 
     public $roles = array(
         'Admin' => 0,
-        'SrResearcher' => 1,
-        'Researcher' => 2,
-        'Unknown' => 3
+        'Moderator' => 1,
+        'Researcher' => 2
     );
 
     public function __call($name, $arguments) {

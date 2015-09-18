@@ -10,14 +10,7 @@
                         <?php echo $user_info['User']['email']; ?></a>
                 </dd>
                 <dd><?php echo $user_info['User']['username']?></dd>
-                <dd>Role: 
-                <?php 
-                    $role = $user_info['User']['role'];
-                    if ($role == 0) echo "Admin";
-                    if ($role == 1) echo "Moderator";
-                    if ($role == 2) echo "Researcher";
-                ?>
-                </dd>
+                <dd>Role: <?php echo $user_info['User']['role']; ?></dd>
                 <dd>Projects: Polis, Isthmia, Chersonesos, Nemea</dd>
                 <dd>Active Since: <?php echo $user_info['User']['activeSince']; ?></dd>
                 <?php if ($user['id'] == $user_info['User']['id']): ?>

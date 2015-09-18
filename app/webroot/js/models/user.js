@@ -12,9 +12,8 @@
 
     User.prototype.ROLES = {
       'Admin': 0,
-      'Sr. Researcher': 1,
-      'Researcher': 2,
-      'Guest': 3
+      'Moderator': 1,
+      'Researcher': 2
     };
 
     User.prototype.urlRoot = arcs.baseURL + 'users/';

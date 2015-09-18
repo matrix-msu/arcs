@@ -8938,6 +8938,7 @@ ul.annotations li.annotation:hover {
 .accordion-wrapper details {
   min-height: 20px;
   margin: 15px 0 0;
+  border: 1px solid #ccc;
 }
 .accordion-wrapper details div {
   visibility: hidden;
@@ -8947,7 +8948,7 @@ ul.annotations li.annotation:hover {
   outline: none;
 }
 .accordion-wrapper details .summaryTitle {
-  padding-left: 30px;
+  padding-left: 50px;
 }
 .accordion-wrapper details summary {
   width: 100%;
@@ -8958,7 +8959,6 @@ ul.annotations li.annotation:hover {
   font-size: 12;
   line-height: normal;
   color: #333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: #ddd;
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
@@ -9045,7 +9045,6 @@ ul.annotations li.annotation:hover {
   font-size: 12;
   line-height: normal;
   color: #333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background: none;
   border: none;
   border-radius: 0;
@@ -10343,11 +10342,11 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
   text-align: left;
   margin-bottom: -5px;
   border-radius: 0;
+  padding-left: 0;
 }
 .collection-list-wrapper .dropdown .dropdown-open {
   z-index: 1;
   outline: none;
-  background: #fff;
 }
 .collection-list-wrapper .dropdown .dropdown-menu {
   width: 12em;
@@ -10357,7 +10356,7 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
 }
 .collection-list-wrapper .dropdown .pointerDown {
   position: absolute;
-  left: 7em;
+  left: 6em;
   width: 8px;
   height: 8px;
   border: solid #808080;
@@ -10385,6 +10384,7 @@ footer#standard-MSU-footer #standard-footer-MSU-wordmark img {
 .collection-list-wrapper .collection-list details {
   min-height: 20px;
   margin: 25px 0 0;
+  border: 1px solid #ccc;
 }
 .collection-list-wrapper .collection-list details div {
   visibility: hidden;

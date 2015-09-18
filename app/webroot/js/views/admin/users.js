@@ -16,9 +16,9 @@
     }
 
     Users.prototype.USER_ROLES = {
-      'Researcher': 2,
-      'Sr. Researcher': 1,
-      'Admin': 0
+      'Researcher': 'Reseacher',
+      'Moderator': 'Moderator',
+      'Admin': 'Admin'
     };
 
     Users.prototype.initialize = function(options) {

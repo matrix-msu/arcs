@@ -44,7 +44,7 @@
       <ul class="dropdown-menu">
         <li><a id="rethumb-btn">Re-thumbnail</a></li>
         <li><a id="split-btn">Split PDF</a></li>
-        {% if user.role == 0 %}
+        {% if user.role == "Admin" %}
         <li class="divider"></li>
         <li><a id="delete-btn">Delete this resource...</a></li>
         <li><a id="delete-col-btn">Delete collection...</a></li>

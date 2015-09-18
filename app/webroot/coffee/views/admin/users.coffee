@@ -5,9 +5,9 @@ arcs.views.admin ?= {}
 class arcs.views.admin.Users extends Backbone.View
 
   USER_ROLES:
-    'Researcher': 2
-    'Sr. Researcher': 1
-    'Admin': 0
+    'Researcher': 'Reseacher'
+    'Moderator': 'Moderator'
+    'Admin': 'Admin'
 
   initialize: (options) ->
     _.extend @options, _.pick(options, 'el', 'collection')
