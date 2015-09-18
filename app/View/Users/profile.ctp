@@ -6,30 +6,37 @@
             <dl>
                 <dd><h2><?php echo $user_info['User']['name']?></h2></dd>
                 <dd>
-                    <a href="mailto:<?php echo $user_info['User']['email'] ?>">
-                        <?php echo $user_info['User']['email']; ?></a>
+                	<?php echo $user_info['User']['email']?>
                 </dd>
-                <dd><?php echo $user_info['User']['username']?></dd>
-                <dd>Role: <?php echo $user_info['User']['role']; ?></dd>
-                <dd>Projects: Polis, Isthmia, Chersonesos, Nemea</dd>
-                <dd>Active Since: <?php echo $user_info['User']['activeSince']; ?></dd>
+                <dd>
+                	<?php echo $user_info['User']['username']?></dd>
+                <dd><span class="bolded">Role:</span> 
+                <?php 
+                    $role = $user_info['User']['role'];
+                    if ($role == 0) echo "Admin";
+                    if ($role == 1) echo "Moderator";
+                    if ($role == 2) echo "Researcher";
+                ?>
+                </dd>
+                <dd><span class="bolded">Projects: </span>Polis, Isthmia, Chersonesos, Nemea</dd>
+                <dd><span class="bolded">Active Since: </span><?php echo $user_info['User']['activeSince']; ?></dd>
                 <?php if ($user['id'] == $user_info['User']['id']): ?>
                     <dd><a href="#" id="edit-profile" onclick="return false;">Edit Profile</a></dd>
                 <?php endif ?>
             </dl> 
             
-            <dl>
+            <dl class="score-description-list">
             	<dd>
-            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['annotationsCount']; ?> Annotations Made
+            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['annotationsCount']; ?> <span class="description-text">Annotations Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['metadataCount']; ?> Metadata Edits Made
+            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['metadataCount']; ?> <span class="description-text">Metadata Edits Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['commentsCount']; ?> Comments Made
+            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['commentsCount']; ?> <span class="description-text">Comments Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['monthsCount']; ?> Months On Site
+            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['User']['monthsCount']; ?><span class="description-text">Months On Site</span>
             	</dd>
             </dl>
         </div>

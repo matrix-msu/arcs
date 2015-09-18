@@ -7,6 +7,26 @@
     padding: 0;
 }
 
+
+
+span.bolded {
+    font-weight: 600;
+}
+
+// controls the static text the follows the retrieved score values
+span.description-text {
+    margin-left: 1em;
+    color: #1C95BA;
+    text-transform: uppercase;
+    line-height: 3.9;
+}
+
+// controls the color of the description list on the right, which describes scores
+dl.score-description-list {
+    color: #1C95BA;
+    margin-left: 2em;
+}
+
 #user-info {
     width: 90%;
     margin: auto;
@@ -15,7 +35,6 @@
         float:left;
         position: relative;
         top: -20px;
-        max-height: 183px;
         margin-top: 16px;
         margin-right: 42px;
         
@@ -26,6 +45,14 @@
             #edit-profile {
                 font-size: 120%;
                 text-transform: uppercase;
+                color: #1C95BA;
+            }
+            
+            img {
+	            width: 28px;
+				height: 28px;
+				vertical-align: middle;
+				margin-right: 2em;
             }
         }
         
@@ -49,11 +76,12 @@
     }
     
     .profile-image {
-        float: left;
-        margin-right: 3em;
-        background: #fff;
-        border-radius: 50%;
-        height: 183px;
+	    float: left;
+		margin-right: 4em;
+		border-radius: 50%;
+		border: 2px solid #ccc !important;
+		height: 205px;
+		padding: 0;
     }
     #edit-btn {
         display: inline;
@@ -62,9 +90,11 @@
         left: 10px;
     }
     h2 {
-        display: inline-block;
-        margin-top: 0;
-        margin-bottom: -2em;
+           display: inline-block;
+		   margin-top: 0;
+		   margin-bottom: -2em;
+		   text-shadow: none;
+		   font-weight: 400;
     }
 }
 
@@ -81,14 +111,16 @@
         margin: 0 0 20px 5em;
         
         .active {
-            background: #808080;
-            border-radius: 0;
-            border: 0;
+            background: #F4F4F4;
+			border-top: 1px solid #ccc !important;
+			border-left: 1px solid #ccc !important;
+			border-right: 1px solid #ccc !important;
+			max-height: 39px;
             
             a {
-                color: #fff;
-                background: transparent;
-                border: 0;
+               color: #777;
+			   background: transparent;
+			   border: 0;
             }
         }
         
@@ -99,26 +131,31 @@
             text-transform: uppercase;
             
             a {
-                color: inherit;
+                color: #555;
                 border: 0;
             }
             a:hover, a:focus {
-                background: transparent;
-                border: 0;
+	            background:transparent;
+	            border: 0;
+	            color: black;
             }
         }
     }
 
     .tab-content {
-        padding: 0 1em 0 0 ;
-        background: #808080;
-        margin-bottom: -1em;
+        padding: 0 1em 0 0;
+		background: #F4F4F4;
+		margin-bottom: -1em;
+		border-top: 1px solid #ccc !important;
         
         #uploads-tab, #annotations-tab, #flagged-tab, #discussion-tab, #collections-tab {
             width: 90%;
             margin: auto;
-            background: #808080;
-            color: #fff;
+            color: #555;
+        }
+        
+        h3 {
+	        color: #555;
         }
 
         .tab-pane {
