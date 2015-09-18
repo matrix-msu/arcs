@@ -259,35 +259,47 @@ class UsersController extends AppController {
      * Register a user FROM NO INVITE
      */
     public function register() {
-        debug($_POST);
-        debug($this);
         if ($this->request->is('post')) {
-			$this->User->permit('role');
-            $this->User->permit('last_login');
-			if ($this->User->add(array(
-                'name' => $this->request->data['User']['name'],
-                'username' => $this->request->data['User']['usernameReg'],
-				'email' => $this->request->data['User']['email'],
-                'password' => $this->request->data['User']['passwd'],
-				'role' => "Researcher",
-				'activation' => null,
-                'last_login' => date("Y-m-d H:i:s")
-			))) {
-                $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                $user = array_merge($user, $this->request->data['User']);
-                $this->Auth->login($user);
-                $this->redirect($this->referer());
+            if ($this->request->data('g-recaptcha-response')) {
+                $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
+                $response = json_decode($response, true);
+                if ($response['success'] === true) {
+                    $this->User->permit('role');
+                    $this->User->permit('last_login');
+                    if ($this->User->add(array(
+                        'name' => $this->request->data['User']['name'],
+                        'username' => $this->request->data['User']['usernameReg'],
+                        'email' => $this->request->data['User']['email'],
+                        'password' => $this->request->data['User']['passwd'],
+                        'role' => "Researcher",
+                        'activation' => null,
+                        'last_login' => date("Y-m-d H:i:s")
+                    ))) {
+                        $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
+                        $user = array_merge($user, $this->request->data['User']);
+                        $this->Auth->login($user);
+                        $this->redirect($this->referer());
+                    } else {
+                        $error_message = "";
+                        foreach(array_keys($this->User->validationErrors) as $key) {
+                            $error_message .= ucfirst($key) . ': ';
+                            for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
+                                $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
+                            $error_message .= "<br>";
+                        }
+                        $this->Session->setFlash($error_message, 'flash_error');
+                        $this->redirect($this->referer());
+                    }
+                } elseif ($response['success'] === false) {
+                    $this->Session->setFlash("There was an error with the reCaptcha.", 'flash_error');
+                    $this->redirect($this->referer());
+                }     
             } else {
-                $error_message = "";
-                foreach(array_keys($this->User->validationErrors) as $key) {
-                    $error_message .= ucfirst($key) . ': ';
-                    for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
-                        $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
-                    $error_message .= "<br>";
-                }
-                $this->Session->setFlash($error_message, 'flash_error');
+                $this->Session->setFlash("Please do the reCaptcha.", 'flash_error');
                 $this->redirect($this->referer());
             }
+        } else {
+            $this->redirect($this->referer());
         }
     }
 

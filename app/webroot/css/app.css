@@ -8729,6 +8729,33 @@ ul.annotations li.annotation:hover {
   background: #0093be;
   color: #fff;
 }
+#registerModal .register-content .right input[type="text"],
+#registerModal .register-content .right input[type="password"] {
+  margin-top: 5.8%;
+  padding: 1em 2em 1em 2em;
+  width: 360px;
+  height: 60px;
+  background: #0093be;
+  color: #fff;
+  border: 2px;
+  border-style: solid;
+  border-color: #fff;
+  font-size: 100%;
+}
+#registerModal .register-content .right input::-webkit-input-placeholder {
+  color: #fff;
+}
+#registerModal .register-content .right input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #fff;
+}
+#registerModal .register-content .right input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #fff;
+}
+#registerModal .register-content .right input:-ms-input-placeholder {
+  color: #fff;
+}
 #registerModal .register-content .right p {
   margin-top: 2.5%;
   line-height: 200%;

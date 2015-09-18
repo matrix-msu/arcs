@@ -257,6 +257,35 @@
             height: 100%;
             background: @ArcsBlue;
             color: #fff;
+
+            input[type="text"], input[type="password"] {
+                margin-top: 5.8%;
+                padding: 1em 2em 1em 2em;
+                width: 360px;
+                height: 60px;
+                background: @ArcsBlue;
+                color: #fff;
+                border: 2px;
+                border-style: solid;
+                border-color: #fff;
+                font-size: 100%;
+            }
+            
+            input::-webkit-input-placeholder {
+               color: #fff;
+            }
+
+            input:-moz-placeholder { /* Firefox 18- */
+               color: #fff;  
+            }
+
+            input::-moz-placeholder {  /* Firefox 19+ */
+               color: #fff;  
+            }
+
+            input:-ms-input-placeholder {  
+               color: #fff;  
+            }
             
             p {
                 margin-top: 2.5%;
