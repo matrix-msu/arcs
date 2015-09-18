@@ -191,7 +191,8 @@ class ResourcesController extends AppController {
             'title_for_layout' => $resource['Resource']['title']
         ));
 
-        debug($resource);
+		/* The debug sends a var dump to the single resource view */
+        //debug($resource);
 
         //Debugger::var_dump($resource);
         # On the first request of a particular resource (usually directly 
