@@ -98,21 +98,23 @@
 
         <a id="#close" href="#"><img class="exit" src="http://cdn.flaticon.com/png/256/59254.png" alt="Exit"></a>
 
+        <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register')); ?>
+
         <div class="left">
             <div class="registerContainer">
 
                 <h1>Register</h1>
-
-                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register')); ?>
 
                 <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
 
                 <?php echo $this->Form->input('usernameReg', array('label' => false, 'placeholder' => 'Username *')); ?>
 				<?php echo "<p id='getUsername' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getUsername'))."</p>";?>
 
+                <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Email *')); ?>
+                <?php echo "<p id='getEmail' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getEmail'))."</p>";?>
+
                 <?php echo $this->Form->input('passwd', array('label' => false, 'placeholder' => 'Password *'));?>
-                <!-- g-recaptcha has to be inside the <form method="post"></form> aka left side (also form method is post) -->
-                <div class="g-recaptcha" data-sitekey="6LdFHQ0TAAAAAFZ2cLF1oq7X1zoUJapbhYgpYVh2"></div>
+
                 <span class="requiredfield">* Required Field</span>
                 
             </div>
@@ -123,12 +125,15 @@
                 <h1>&nbsp;</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
 
-                <?php echo $this->Form->input('email', array('label' => false, 'placeholder' => 'Email *')); ?>
-                <?php echo "<p id='getEmail' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getEmail'))."</p>";?>
+                <!-- g-recaptcha has to be inside the <form method="post"></form> aka left side (also form method is post) -->
+                <div class="g-recaptcha" data-sitekey="6LdFHQ0TAAAAAFZ2cLF1oq7X1zoUJapbhYgpYVh2"></div>
 
 				<?php echo $this->Form->submit('Register', array('class' => 'btn btn-success', 'id' => 'register')); ?>
-				<?php echo $this->Form->end() ?>
+
             </div>
         </div>
+
+        <?php echo $this->Form->end() ?>
+
     </div>
 </div>
