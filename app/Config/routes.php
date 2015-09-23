@@ -53,6 +53,11 @@
         array('controller' => 'users', 'action' => 'register')
     );
 
+    # Invitation Signup
+    Router::connect('/invitation/register/*',
+        array('controller' => 'users', 'action' => 'registerByInvite')
+    );
+
     # logout
     Router::connect('/logout', 
         array('controller' => 'users', 'action' => 'logout')
@@ -125,6 +130,10 @@
     );
     Router::connect('/api/resources/comments/*',
         array('controller' => 'resources', 'action' => 'keywords')
+    );
+
+    Router::connect('/api/users/invite',
+        array('controller' => 'users', 'action' => 'ajaxInvite')
     );
 
     $restful = array(
