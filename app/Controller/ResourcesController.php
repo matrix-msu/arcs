@@ -82,8 +82,7 @@ class ResourcesController extends AppController {
         if (!$id) throw new BadRequestException();
         $resource = $this->Resource->findById($id);
         if (!$resource) throw new NotFoundException();
-        $public = $this->Resource->flatten ? $resource['public'] : 
-            $resource['Resource']['public'];
+        $public = $this->Resource->flatten ? $resource['public'] : $resource['Resource']['public'];
         if (!($public || $this->Auth->loggedIn())) throw new UnauthorizedException();
         $this->json(200, $resource);
     }
@@ -145,17 +144,21 @@ class ResourcesController extends AppController {
         $this->Resource->flatten = false;
 
 		$query = "kid,=,".$id;
-		$sid = "736";
 		$display = "json";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=123&sid=".$sid."&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		
+		//get kids (call1)
+		//get allocator = kid (call2)
+		//pull field image upload & thumbnails
 
-		///capture results and display
+		//capture results and display
 		$resource = json_decode(curl_exec($ch), true);
-		$resource[$id]['thumb'] = KORA_BASE."files/123/".$sid."/".$resource[$id]['Resource Identifier'].".jpg";
+		//var_dump($resource);
+		$resource[$id]['thumb'] = KORA_BASE."files/123/".RESOURCE_SID."/".$resource[$id]['Resource Identifier'].".jpg";
 		$resource = $resource[$id];
 		
 		//var_dump($resource);

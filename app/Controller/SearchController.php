@@ -45,13 +45,13 @@ class SearchController extends AppController {
             
 
 		//old code using old searcher. outdated now that kora is being used?
-        $searcher = $this->getSearcher();
-        if ($this->Auth->loggedIn())
-            $searcher->publicFilter = false;
-        $query = $searcher->parseQuery($this->request->query['q']);
+        //$searcher = $this->getSearcher();
+        //if ($this->Auth->loggedIn())
+        //    $searcher->publicFilter = false;
+        //$query = $searcher->parseQuery($this->request->query['q']);
 
-        # Get the result ids.
-        $response = $searcher->search($query, $options);
+        // Get the result ids.
+        //$response = $searcher->search($query, $options);
 
         if ($response['order'] == 'relevance') {
             $response['results'] = $this->Resource->findAllFromIds($response['results']);
@@ -61,19 +61,30 @@ class SearchController extends AppController {
                 'order' => "Resource.{$options['order']} {$options['direction']}"
             ));
         }
-        # The searcher will return debug information that should be hidden for
-        # most account types.
+        // The searcher will return debug information that should be hidden for
+        // most account types.
         if (!$this->Access->isAdmin()) {
             unset($response['raw_query']);
             unset($response['mode']);
         } 
 		
+		//Get the Images
+		$user = "";
+		$pass = "";
+		$display = "json";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display;
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		
+		//Get the Data
 		$user = "";
 		$pass = "";
 		$query = $this->request->query['q'];
 		$sid = $this->request->query['sid'];
 		$display = "json";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=123&sid=".$sid."&token=8b88eecedaa2d3708ebec77a&display=json&query=".urlencode($query);
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -83,13 +94,11 @@ class SearchController extends AppController {
 		$response['results'] = json_decode(curl_exec($ch), true);
 		$returnResults = array();
 		foreach($response['results'] as $item) {
-			
-			$item['thumb'] = KORA_BASE."files/123/".$sid."/".$item['Resource Identifier'].".jpg";
+			$item['thumb'] = KORA_BASE.LOCAL_URI."files/".$sid."/".$item['Resource Identifier'].".jpg";
 			array_push($returnResults, $item);
 		}
 		$response['results'] = $returnResults;
 		$response['total'] = count($response['results']);
-		//var_dump($returnResults);
         $this->json(200, $response);
     }
 
@@ -119,7 +128,7 @@ class SearchController extends AppController {
 
 		$display = "json";
 		$query = "";
-		$url = "http://kora.matrix.msu.edu/api/restful.php"."?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=".urlencode($display);//."query=".urlencode($query);
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".urlencode($display);//."query=".urlencode($query);
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

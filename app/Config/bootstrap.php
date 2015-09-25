@@ -35,8 +35,14 @@ Configure::load('assets');
 # Basic Kora Information
 define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
+define ("LOCAL_URI", "~james.green/arcs/webroot/");
 define ("PID", "123");
-define ("SID", "734");
+define ("PROJECT_SID", "734");
+define ("SEASON_SID", "735");
+define ("SURVEY_SID", "736");
+define ("RESOURCE_SID", "738");
+define ("PAGES_SID", "739");
+define ("SUBJECT_SID", "740");
 define ("TOKEN", "8b88eecedaa2d3708ebec77a");
 
 define("TWIG_VIEW_CACHE", APP . 'tmp');
