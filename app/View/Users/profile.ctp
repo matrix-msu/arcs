@@ -1,8 +1,13 @@
 <div id="user-profile">
+
     <div class="row" id="user-info">
         <div>
-        <!-- TO DO: Add code in the DB that calculates total score so that this is accurate -->
-        	<div class="score-bubble"><?php echo $user_info['User']['totalCount']; ?></div>
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+            <a href="#" data-toggle="tooltip" title="User Contributions">
+                <div class="score-bubble"><?php echo $user_info['User']['totalCount']; ?></div>
+            </a>
+
             <img class="profile-image thumbnail"
                 src="http://gravatar.com/avatar/<?php echo $user_info['User']['gravatar'] ?>">
             <dl>
@@ -61,10 +66,14 @@
     </div>
 </div>
 
-<script type='text/javascript'>	
+<script type='text/javascript'>
     arcs.profileView = new arcs.views.Profile({
         el: $('#user-profile'),
         model: new arcs.models.User(<?php echo json_encode($user); ?>)
+    });
+
+    $(document).ready(function() {
+        $("[data-toggle='tooltip']").tooltip();
     });
 
 	// used to open tabs
