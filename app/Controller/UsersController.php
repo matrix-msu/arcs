@@ -499,7 +499,7 @@ class UsersController extends AppController
         $now = new Datetime();
         $created = new Datetime($user['User']['created']);
         $user['User']['monthsCount'] = $created->diff($now)->m + ($created->diff($now)->y * 12);
-        $user['User']['totalCount'] = $user['User']['annotationsCount'] + $user['User']['commentsCount'] + $user['User']['metadataCount'] + $user['User']['months'];
+        $user['User']['totalCount'] = $user['User']['annotationsCount'] + $user['User']['commentsCount'] + $user['User']['metadataCount'] + $user['User']['monthsCount'];
         $user['User']['activeSince'] = $created->format('F Y');
 
         if (!$user) {

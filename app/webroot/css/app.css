@@ -6665,7 +6665,6 @@ h4 {
   padding-right: 30px;
   padding-top: 75px;
   padding-bottom: 75px;
-  margin-top: -110px;
   border-top: 15px solid #444;
 }
 .footer img {
@@ -7179,7 +7178,7 @@ div#toolbar {
   left: 0;
   z-index: 1;
   width: 100%;
-  background: #ccc;
+  background: #f4f4f4;
   padding-left: 10px;
   height: 60px;
 }
@@ -7205,7 +7204,7 @@ div#toolbar .btn {
   padding-left: 30px;
 }
 div#toolbar .btn-grey {
-  background: #ccc;
+  background: #f4f4f4;
   border: none;
   border-radius: 0;
   height: 60px;
@@ -7255,7 +7254,7 @@ div#toolbar .toolbar-btn {
 }
 .dropped-menu {
   display: none;
-  background: #ccc;
+  background: #F4F4F4;
 }
 .dropped-menu a {
   color: #808080;
@@ -7265,7 +7264,7 @@ div#toolbar .toolbar-btn {
 .dropped-menu a:hover {
   text-decoration: none;
   color: #fcfcfc;
-  background: #808080;
+  background: #777;
 }
 .pointerDown {
   float: right;
@@ -7332,18 +7331,23 @@ div#toolbar .toolbar-btn {
 .hotkeys-modal .modal-body table th {
   font-weight: bold;
 }
+a.search-type {
+  color: #0093be;
+}
 .searchIntro {
   padding-top: 40px;
   margin: 2em 4em;
+  color: #444444;
 }
 .searchIntro h1 {
   margin-bottom: 25px;
+  font-size: 25px;
 }
 .searchIntro p {
   line-height: 200%;
 }
 div#searchBox {
-  margin: 2em 4em;
+  margin: 0 4em 5em;
 }
 span.stretcher {
   width: 100%;
@@ -7367,6 +7371,7 @@ div#searchCriteriaWrapper {
   text-transform: uppercase;
   /* font-size: 95%; */
   margin: 2em 4em;
+  margin-top: 3em;
 }
 #searchCriteria li {
   text-transform: uppercase;
@@ -7502,7 +7507,7 @@ div#searchCriteria ul {
 div#search-results-wrapper {
   float: left;
   width: 100vw;
-  background: #ddd;
+  background: #f9f9f9;
   min-height: 70%;
 }
 div#search-results-wrapper div#search-results {
@@ -7514,7 +7519,7 @@ div#search-results-wrapper div#search-results table {
   border-collapse: separate;
 }
 div#search-results-wrapper div#search-actions {
-  background: #cecece;
+  background: #f4f4f4;
   padding-left: 0px;
   padding-right: 3em;
   margin-bottom: 19px;
@@ -7685,7 +7690,7 @@ div#search-results-wrapper .toolbar-fixed {
 #search-bottom-bar {
   float: left;
   width: 100%;
-  background: #cecece;
+  background: #f4f4f4;
 }
 #search-pagination {
   width: 90%;
@@ -7801,8 +7806,10 @@ input[type=range]:focus::-ms-fill-upper {
   background: #e4e4e4;
 }
 .viewers-container {
+  margin-top: -60px;
   position: relative;
   height: 959px;
+  border-top: 1px solid #ccc !important;
 }
 #viewer-left {
   float: left;
@@ -7964,8 +7971,10 @@ input[type=range]:focus::-ms-fill-upper {
   background: #F9F9F9;
 }
 .metadata .metadata-tab.ui-state-active {
-  color: #0093be !important;
   border-bottom: 4px solid #0093be !important;
+}
+.metadata .metadata-tab.ui-state-active a {
+  color: #0093be;
 }
 .metadata .metadata-content {
   float: left;
@@ -8061,7 +8070,7 @@ input[type=range]:focus::-ms-fill-upper {
   float: left;
   height: 60px;
   margin-top: 20px;
-  margin-left: 15%;
+  margin-left: 13%;
 }
 #resource-tools .zoom-out-div {
   float: left;
@@ -8084,9 +8093,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 #resource-tools .rotate-div {
   float: left;
-  width: 20%;
   height: 60px;
-  margin-left: 15%;
+  margin-left: 19%;
   margin-top: 20px;
 }
 #resource-tools img.arrow-left-icon {
@@ -8120,7 +8128,7 @@ input[type=range]:focus::-ms-fill-upper {
   width: 20px;
 }
 #resource-tools img.resources-rotate-icon {
-  margin-left: 25%;
+  margin-left: 19%;
   height: 20px;
   width: 20px;
 }
@@ -8160,7 +8168,6 @@ input[type=range]:focus::-ms-fill-upper {
   padding-right: 30px;
   padding-top: 175px;
   padding-bottom: 75px;
-  margin-top: -110px;
   float: left;
   border-top: 15px solid #444;
   width: 100%;
@@ -8788,6 +8795,45 @@ ul.annotations li.annotation:hover {
   margin: 0;
   padding: 0;
 }
+.score-bubble {
+  position: absolute;
+  height: 75px;
+  width: 75px;
+  background-color: #CEEAEF;
+  border: 3px solid #0094bc !important;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 70px;
+  color: #0094bc;
+  font-size: 25px;
+  margin-top: -15px;
+  margin-left: -10px;
+}
+span.bolded {
+  font-weight: 600;
+}
+span.description-text {
+  margin-left: 1em;
+  color: #1C95BA;
+  text-transform: uppercase;
+  line-height: 3.9;
+}
+dl.score-description-list {
+  color: #1C95BA;
+  margin-left: 2em;
+}
+table.user-tabs-table {
+  width: 100%;
+  height: 100%;
+}
+th.user-tabs-header {
+  text-align: left;
+  font-weight: 300;
+  padding: 8px;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #898989;
+}
 #user-info {
   width: 90%;
   margin: auto;
@@ -8796,7 +8842,6 @@ ul.annotations li.annotation:hover {
   float: left;
   position: relative;
   top: -20px;
-  max-height: 183px;
   margin-top: 16px;
   margin-right: 42px;
 }
@@ -8807,6 +8852,13 @@ ul.annotations li.annotation:hover {
 #user-info dl dd #edit-profile {
   font-size: 120%;
   text-transform: uppercase;
+  color: #1C95BA;
+}
+#user-info dl dd img {
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+  margin-right: 2em;
 }
 #user-info dl a[href^="mailto"] {
   text-transform: none;
@@ -8824,10 +8876,11 @@ ul.annotations li.annotation:hover {
 }
 #user-info .profile-image {
   float: left;
-  margin-right: 3em;
-  background: #fff;
+  margin-right: 4em;
   border-radius: 50%;
-  height: 183px;
+  border: 2px solid #ccc !important;
+  height: 205px;
+  padding: 0;
 }
 #user-info #edit-btn {
   display: inline;
@@ -8839,10 +8892,11 @@ ul.annotations li.annotation:hover {
   display: inline-block;
   margin-top: 0;
   margin-bottom: -2em;
+  text-shadow: none;
+  font-weight: 400;
 }
 #user-actions {
-  width: 105%;
-  margin: 0 -10px 0 -10px;
+  width: 100%;
   padding: 0;
 }
 #user-actions .nav-tabs {
@@ -8852,12 +8906,14 @@ ul.annotations li.annotation:hover {
   margin: 0 0 20px 5em;
 }
 #user-actions .nav .active {
-  background: #808080;
-  border-radius: 0;
-  border: 0;
+  background: #F4F4F4;
+  border-top: 1px solid #ccc !important;
+  border-left: 1px solid #ccc !important;
+  border-right: 1px solid #ccc !important;
+  max-height: 39px;
 }
 #user-actions .nav .active a {
-  color: #fff;
+  color: #777;
   background: transparent;
   border: 0;
 }
@@ -8868,37 +8924,48 @@ ul.annotations li.annotation:hover {
   text-transform: uppercase;
 }
 #user-actions .nav li a {
-  color: inherit;
+  color: #555;
   border: 0;
 }
 #user-actions .nav li a:hover,
 #user-actions .nav li a:focus {
   background: transparent;
   border: 0;
+  color: black;
 }
 #user-actions .tab-content {
-  padding: 0 1em 0 0 ;
-  background: #808080;
+  padding: 0 5em 0 0;
+  background: #F4F4F4;
   margin-bottom: -1em;
+  border-top: 1px solid #ccc !important;
 }
 #user-actions .tab-content #uploads-tab,
 #user-actions .tab-content #annotations-tab,
 #user-actions .tab-content #flagged-tab,
 #user-actions .tab-content #discussion-tab,
-#user-actions .tab-content #collections-tab {
+#user-actions .tab-content #collections-tab,
+#user-actions .tab-content #activity-tab,
+#user-actions .tab-content #achievements-tab {
   width: 90%;
   margin: auto;
-  background: #808080;
-  color: #fff;
+  color: #555;
+}
+#user-actions .tab-content h3 {
+  color: #555;
 }
 #user-actions .tab-content .tab-pane {
   min-height: 869px;
   overflow: auto;
   padding: 1em 0;
 }
-#user-actions .tab-content .tab-pane tr:nth-of-type(even) {
-  background: rgba(255, 255, 255, 0.85);
-  color: #808080;
+#user-actions .tab-content .tab-pane tr {
+  color: #898989;
+  height: 5em;
+  line-height: 5em;
+  vertical-align: middle;
+}
+#user-actions .tab-content .tab-pane tr:nth-child(n+2) {
+  border-top: 1px solid rgba(204, 204, 204, 0.36) !important;
 }
 #user-actions .tab-content .tab-pane .label {
   color: #808080;
@@ -9306,7 +9373,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: #F9F9F9;
+  background: #fff;
 }
 ul {
   list-style: none;
