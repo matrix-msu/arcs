@@ -2,14 +2,14 @@
 <?php if (empty($user_info['Collection'])): ?>
     <h4>No collections</h4>
 <?php else: ?>
-    <table class="table table-striped">
-        <thead>
+    <table class="user-tabs-table">
+        <!-- <thead>
             <tr>
-                <th>Public?</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Date</th>
-            </tr>
+                <th class="user-tabs-header">Public?</th>
+                <th class="user-tabs-header">Title</th>
+                <th class="user-tabs-header">Description</th>
+                <th class="user-tabs-header">Date</th>
+            </tr> -->
         </thead>
         <tbody>
         <?php foreach($user_info['Collection'] as $collection): ?>

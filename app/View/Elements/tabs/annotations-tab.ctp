@@ -1,4 +1,4 @@
-<div class="tab-pane" id="annotations-tab">        		
+<div class="tab-pane active" id="annotations-tab">        		
 <?php if(empty($user_info['Annotation'])): ?>
     <h3>This user hasn't made any annotations yet</h3>
 <?php else: ?>
