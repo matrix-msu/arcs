@@ -1,8 +1,8 @@
 <div id="user-profile">
     <div class="row" id="user-info">
         <div>
-        <!-- TO DO: Add code that calculates total score and places it in the score bubble -->
-        	<div class="score-bubble">3</div>
+        <!-- TO DO: Add code in the DB that calculates total score so that this is accurate -->
+        	<div class="score-bubble"><?php echo $user_info['User']['totalCount']; ?></div>
             <img class="profile-image thumbnail"
                 src="http://gravatar.com/avatar/<?php echo $user_info['User']['gravatar'] ?>">
             <dl>
@@ -45,18 +45,18 @@
     </div>
     <div class="row tabbable" id="user-actions">
         <ul class="nav nav-tabs">
-            <li id='uploads' class=''><a href="#" onclick="changeTab('uploads'); return false;">Uploads</a></li>
             <li id='annotations' class=''><a href="#" onclick="changeTab('annotations'); return false;">Annotations</a></li>
-            <li id='flagged' class=''><a href="#" onclick="changeTab('flagged'); return false;">Flagged Items</a></li>
             <li id='discussion' class=''><a href="#" onclick="changeTab('discussion'); return false;">Discussions</a></li>
             <li id='collections' class=''><a href="#" onclick="changeTab('collections'); return false;">Collections</a></li>
+            <li id='achievements' class=''><a href="#" onclick="changeTab('achievements'); return false;">Achievements</a></li>
+            <li id='activity' class=''><a href="#" onclick="changeTab('activity'); return false;">Activity</a></li>
         </ul>
         <div class="tab-content">
-            <?php echo $this->element('tabs/uploads-tab') ?>
             <?php echo $this->element('tabs/annotations-tab') ?>
-            <?php echo $this->element('tabs/flags-tab') ?>
             <?php echo $this->element('tabs/discussion-tab') ?>
             <?php echo $this->element('tabs/collection-tab') ?>
+            <?php echo $this->element('tabs/achievements-tab') ?>
+            <?php echo $this->element('tabs/activity-tab') ?>
         </div>
     </div>
 </div>
@@ -68,8 +68,8 @@
     });
 
 	// used to open tabs
-	var currentTab = 'uploads';
-	$('li[id=uploads]').addClass('active');
+	var currentTab = 'annotations';
+	$('li[id=annotations]').addClass('active');
 	function changeTab(tab) {
 		if (currentTab != tab) {
 		 	$("li[id="+currentTab+"]").removeClass('active');

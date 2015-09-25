@@ -40,6 +40,21 @@ dl.score-description-list {
     margin-left: 2em;
 }
 
+// controls the tables one sees in the tabs
+table.user-tabs-table {
+    width: 100%;
+    height: 100%;
+}
+
+th.user-tabs-header {
+    text-align: left;
+    font-weight: 300;
+    padding: 8px;
+    text-transform: uppercase;
+    font-size: 15px;
+    color: #898989;
+}
+
 #user-info {
     width: 90%;
     margin: auto;
@@ -112,8 +127,8 @@ dl.score-description-list {
 }
 
 #user-actions {
-    width: 105%;
-    margin: 0 -10px 0 -10px;
+    width: 100%;
+    //margin: 0 -10px 0 -10px;
     padding: 0;
     
     .nav-tabs {
@@ -156,12 +171,12 @@ dl.score-description-list {
     }
 
     .tab-content {
-        padding: 0 1em 0 0;
+        padding: 0 5em 0 0;
 		background: #F4F4F4;
 		margin-bottom: -1em;
 		border-top: 1px solid #ccc !important;
         
-        #uploads-tab, #annotations-tab, #flagged-tab, #discussion-tab, #collections-tab {
+        #uploads-tab, #annotations-tab, #flagged-tab, #discussion-tab, #collections-tab, #activity-tab, #achievements-tab {
             width: 90%;
             margin: auto;
             color: #555;
@@ -176,10 +191,17 @@ dl.score-description-list {
             overflow: auto;
             padding: 1em 0;
             
-            tr:nth-of-type(even) {
-	            background: rgba(255, 255, 255, .85);
-	            color: #808080;
+            tr {
+	            color: #898989;
+				height: 5em;
+				line-height: 5em;
+				vertical-align: middle;
             }
+            
+            tr:nth-child(n+2) {
+				border-top: 1px solid rgba(204, 204, 204, 0.36) !important;
+            }
+            
             
             .label {
 	            color: #808080;

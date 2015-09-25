@@ -341,7 +341,7 @@
 			
 		</div>
 		
-	</div>	
+	</div>
 		
 </div>
 </div>
@@ -358,7 +358,9 @@
 	
 	$(function() {
 		$( ".accordion" ).accordion({
-			heightStyle: "fill"
+			heightStyle: "fill",
+			collapsible: true,
+            autoHeight: true
 		});
 	});
 		
