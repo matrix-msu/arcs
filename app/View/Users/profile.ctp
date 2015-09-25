@@ -4,9 +4,11 @@
         <div>
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 
-            <a href="#" data-toggle="tooltip" title="User Contributions">
+            <!-- <a href="#" data-toggle="tooltip" title="User Contributions">
                 <div class="score-bubble"><?php echo $user_info['User']['totalCount']; ?></div>
-            </a>
+            </a>-->
+
+            <div class="score-bubble"><?php echo $user_info['User']['totalCount']; ?></div>
 
             <img class="profile-image thumbnail"
                 src="http://gravatar.com/avatar/<?php echo $user_info['User']['gravatar'] ?>">
@@ -73,7 +75,12 @@
     });
 
     $(document).ready(function() {
-        $("[data-toggle='tooltip']").tooltip();
+        $(".score-bubble").tooltipster({
+            content: $('<span>User Contributions</span><span><?php echo $this->Html->image("annotationsProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("metadataProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("discussionsProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("timeOnSiteProfile.svg", array("width"=>"35px", "height"=>"35px")) ?></span>'),
+            touchDevices: false,
+            trigger: 'hover',
+            position: 'right'
+        });
     });
 
 	// used to open tabs
