@@ -409,7 +409,8 @@ class UsersController extends AppController
 						//Login and redirect
 						$user = $this->User->findById($user['id']);
 						$this->Auth->login($user);
-                        $this->redirect(array('controller' => 'projects', 'action' => 'display'));
+						$this->Session->setFlash("Your account has been created successfully!", 'flash_success');
+						$this->redirect('/');
 					}
 				} else {
 					//Error getting user
@@ -612,3 +613,4 @@ class UsersController extends AppController
         $this->render(implode('/', $path));
     }
 }
+?>

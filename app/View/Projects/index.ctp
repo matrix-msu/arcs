@@ -1,3 +1,5 @@
+<?php echo $this->Session->flash(); ?>
+
 <div class="intro">
     <h1>The Archaeological Resource Cataloging System</h1>
     <br>
