@@ -299,7 +299,7 @@ class UsersController extends AppController
 
 
         $response["message"] = [];
-        $response["status"] = $this->User->add(array('email' => $data['email'], 'role' => $data['role'], 'activation' => $token));
+        $response["status"] = $this->User->add(array('email' => $data['email'], 'role' => $data['role'], 'activation' => $token, 'status' => "invited"));
         if ($response["status"] == false) {
             $response["message"] = $this->User->invalidFields();
             return $this->json(400, ($response));
@@ -329,7 +329,8 @@ class UsersController extends AppController
                         'password' => $this->request->data['User']['passwd'],
                         'role' => "Researcher",
                         'activation' => null,
-                        'last_login' => date("Y-m-d H:i:s")
+                        'last_login' => date("Y-m-d H:i:s"),
+						'status' => 'pending'
                     ))
                     ) {
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
@@ -379,6 +380,8 @@ class UsersController extends AppController
 
         $this->set('email', $user['email']);
 		
+		
+		
 		if (isset($this->data['User'])) {
 			//Check if passwords match
 			if ($this->data['User']['password'] != $this->data['User']['password_confirm']) {
@@ -392,7 +395,11 @@ class UsersController extends AppController
 				//Check if user was found
 				if ($this->User->id) {
 					//Try to save data
-					if (!$this->User->save($this->data['User'])) {
+					$newUser = $this->data['User'];
+					$newUser['status'] = "active";
+					//$this->data['User']['status'] = "active";
+					// var_dump($newUser);
+					if (!$this->User->save($newUser)) {
 						//Print error messages
 						$error_message = "";
 						foreach (array_keys($this->User->validationErrors) as $key) {

@@ -43,7 +43,7 @@ class User extends AppModel {
                 'rule' => 'isUnique',
                 'message' => "Email must be unique"
             )
-		)
+		),
 	);
 
     public $hasMany = array(
@@ -56,7 +56,7 @@ class User extends AppModel {
     );
 
     public $whitelist = array(
-        'name', 'email', 'username', 'password'
+        'name', 'email', 'username', 'password', 'status'
     );
 
     public $actsAs = array('Containable');
