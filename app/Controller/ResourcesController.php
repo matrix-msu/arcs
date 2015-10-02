@@ -139,10 +139,31 @@ class ResourcesController extends AppController {
      *                              collection view when the resource has a 
      *                              non-null context attribute. 
      */
-    public function viewer($id, $ignore_ctx=false) {
+    public function viewer($id, $page=0, $ignore_ctx=false) {
         $this->Resource->recursive = 1;
         $this->Resource->flatten = false;
-
+		
+		//Get the Images
+		$query = "Resource Associator,=,".$id;
+		$user = "";
+		$pass = "";
+		$display = "json";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		//capture results and map to array
+		$pages = json_decode(curl_exec($ch), true);
+		$first = true;
+		foreach($pages as $p) {
+			if ($first == true) {
+				$firstPage = $p['kid'];
+				$first = false;
+			}
+			$pages[$p['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
+		}
+		
 		$query = "kid,=,".$id;
 		$display = "json";
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
@@ -150,18 +171,18 @@ class ResourcesController extends AppController {
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-		
-		//get kids (call1)
-		//get allocator = kid (call2)
-		//pull field image upload & thumbnails
 
 		//capture results and display
 		$resource = json_decode(curl_exec($ch), true);
-		//var_dump($resource);
-		$resource[$id]['thumb'] = KORA_BASE."files/123/".RESOURCE_SID."/".$resource[$id]['Resource Identifier'].".jpg";
+		//First associated page
+		if ($page == 0 ) {
+			$resource[$id]['thumb'] = $pages[$firstPage]['thumb'];
+		} else {
+		//Other pages
+			$resource[$id]['thumb'] = $pages[$page]['thumb'];
+		}
 		$resource = $resource[$id];
 		
-		//var_dump($resource);
         $public = $resource['Resource']['public'];
         $allowed = $public || $this->Auth->loggedIn();
 
@@ -188,10 +209,10 @@ class ResourcesController extends AppController {
         )));
         $this->set(array(
             'resource' => $resource,
+			'pages' => $pages,
             'toolbar' => array('actions' => true),
             'footer' => false,
-            'body_class' => 'viewer standalone',
-            'title_for_layout' => $resource['Resource']['title']
+            'body_class' => 'viewer standalone'
         ));
 
 		/* The debug sends a var dump to the single resource view */

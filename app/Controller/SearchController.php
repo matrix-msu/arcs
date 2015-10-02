@@ -42,16 +42,6 @@ class SearchController extends AppController {
 			$limit = $this->request->query['n'];
 			$response['limit'] = $limit;
 		}
-            
-
-		//old code using old searcher. outdated now that kora is being used?
-        //$searcher = $this->getSearcher();
-        //if ($this->Auth->loggedIn())
-        //    $searcher->publicFilter = false;
-        //$query = $searcher->parseQuery($this->request->query['q']);
-
-        // Get the result ids.
-        //$response = $searcher->search($query, $options);
 
         if ($response['order'] == 'relevance') {
             $response['results'] = $this->Resource->findAllFromIds($response['results']);
@@ -77,7 +67,14 @@ class SearchController extends AppController {
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		//capture results and map to array
+		$response['results'] = json_decode(curl_exec($ch), true);
+		$imageResults = array();
+		foreach($response['results'] as $image) {
+			$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+		}
 		
+
 		//Get the Data
 		$user = "";
 		$pass = "";
@@ -94,7 +91,11 @@ class SearchController extends AppController {
 		$response['results'] = json_decode(curl_exec($ch), true);
 		$returnResults = array();
 		foreach($response['results'] as $item) {
-			$item['thumb'] = KORA_BASE.LOCAL_URI."files/".$sid."/".$item['Resource Identifier'].".jpg";
+			if ($imageResults[$item['Resource Identifier']] != null) { 
+				$item['thumb'] = $imageResults[$item['Resource Identifier']];
+			} else {
+				$item['thumb'] = DEFAULT_THUMB;
+			}
 			array_push($returnResults, $item);
 		}
 		$response['results'] = $returnResults;
