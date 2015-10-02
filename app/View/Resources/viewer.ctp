@@ -319,6 +319,80 @@
 					</table>
 					
 				</div>
+				<h3 class="level-tab">Resource Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
+				
+				<div class="level-content">
+					
+					<table>
+						<tr>
+							<td>Resource Identifier</td>
+							<td><?php echo $resource['Resource Identifier']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Type</td>
+							<td><?php echo $resource['Type']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Tile</td>
+							<td><?php echo $resource['Title']; ?></td>
+						</tr>
+						
+						<?php if ($resource['Sub-title'] != null) {?>
+						<tr>
+							<td>Sub-Tile</td>
+							<td><?php echo $resource['Sub-Tile']; ?></td>
+						</tr>
+						<?php } ?>
+						
+						<tr>
+							<td>Creator</td>
+							<td><?php foreach($resource['Creator'] as $creator) {echo $creator.'<br>'; } ?></td>
+						</tr>
+						
+						<tr>
+							<td>Role</td>
+							<td><?php echo $resource['Role']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Date</td>
+							<td><?php echo $resource['Date']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Date Range</td>
+							<td><?php echo $resource['Date Range']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Description</td>
+							<td><?php echo $resource['Description']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Pages</td>
+							<td><?php echo $resource['Pages']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Condition</td>
+							<td><?php echo $resource['Condition']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Access Level</td>
+							<td><?php echo $resource['Access Level']; ?></td>
+						</tr>
+						
+						<tr>
+							<td>Accession Number</td>
+							<td><?php echo $resource['Accession Number']; ?></td>
+						</tr>
+					</table>
+					
+				</div>
 			</div>
 			
 		</div>
@@ -348,10 +422,10 @@
 
 <div id="other-resources">
 	<?php foreach($pages as $r): ?>
-	<a href="<?php echo $this->Html->url(array('action' => 'viewer', $r['Resource Associator'][0], $r['kid'])) ?>">
-        <img height="100px" width="100px" style="padding: 10px 10px" src="<?php echo $r['thumb'] ?>">
-    </a>
-<?php endforeach ?>
+		<a href="<?php echo $this->Html->url(array('action' => 'viewer', $r['Resource Associator'][0], $r['kid'])) ?>">
+			<img height="100px" width="100px" style="padding: 10px 10px" src="<?php echo $r['thumb'] ?>">
+		</a>
+	<?php endforeach ?>
 </div>
 
 <!-- Give the resource array to the client-side code -->
