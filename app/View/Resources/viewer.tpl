@@ -49,7 +49,7 @@
 				<img class="resources-zoom-out-icon" src="../img/zoomOut.svg">
 			</div>
 			<div class="zoom-range-div">
-	  			<input type="range" min="1" max="5" value="1" step="0.1" class="zoom-bar">
+	  			<input type="range" min="1" max="20" value="10" step="0.1" class="zoom-bar">
 			</div>
 			<div class="zoom-in-div">
 				<img class="resources-zoom-in-icon" src="../img/ZoomIn.svg">

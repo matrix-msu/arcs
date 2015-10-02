@@ -1,18 +1,22 @@
 <?php echo $this->Form->create('User') ?>
-<div class="registration well span-6">
+<div class="registration span-6">
     <h2>Create your Account</h2>
     <h4>Almost done. We just need your name, a username, and a password for your new account.</h4>
     <br>
     <div class="account span-6">
-        <label for="data[User][Name]">Name (first and last, please)</label>
-        <?php echo $this->Form->input('name', array('label' => false)) ?>
-        <label for="email">Email</label>
-        <input type="text" name="email" disabled value="<?php echo $email ?>" />
+	    <div class="user-reg-input-div">
+        	<?php echo $this->Form->input('name', array('label' => false)) ?>
+	    </div>
+	    <div class="user-reg-input-div-right">
         <?php echo $this->Form->input('username') ?>
+	    </div>
+	    <div class="user-reg-pw-input-div">
         <?php echo $this->Form->input('password') ?>
+	    </div>
+	    <div class="user-reg-pw-input-div-right">
         <?php echo $this->Form->input('password_confirm', 
             array('label' => 'Confirm your password', 'type' => 'password')) ?>
-        <br>
+	    </div>
         <?php echo $this->Form->submit('Create Account', array('class' => 'btn btn-success')); ?>
     </div>
     <div class="gravatar span-6">
