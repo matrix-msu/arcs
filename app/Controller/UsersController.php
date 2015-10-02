@@ -162,16 +162,18 @@ class UsersController extends AppController
                 }
                 /* log user in */
             } else {
-                $userByEmail = $this->User->findByEmail($this->request->data['User']['username']);
-                if ($userByEmail)
-                    $this->request->data['User']['username'] = $userByEmail['User']['username'];
-                if ($this->Auth->login()) {
-                    // given username get user's id
-                    $this->User->id = $this->User->findByRef($this->request->data['User']['username'])['User']['id'];
-                    $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                    return $this->redirect($this->Auth->redirect());
+                $user = $this->User->findByRef($this->request->data['User']['username']);
+                if ($user['User']['activation'] == null) {
+                    if ($this->Auth->login()) {
+                        $this->User->id = $user['User']['id'];
+                        $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                        return $this->redirect($this->Auth->redirect());
+                    } else {
+                        $this->Session->setFlash("Wrong username or password.  Please try again or reset your password.", 'flash_error');
+                        $this->redirect($this->referer());
+                    }
                 } else {
-                    $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                    $this->Session->setFlash("This account is not active.  An admin needs to approve your account before access is granted.", 'flash_error');
                     $this->redirect($this->referer());
                 }
             }
@@ -320,22 +322,38 @@ class UsersController extends AppController
                 $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
                 $response = json_decode($response, true);
                 if ($response['success'] === true) {
-                    $this->User->permit('role');
-                    $this->User->permit('last_login');
+                    $this->User->permit('role', 'last_login', 'activation');
                     if ($this->User->add(array(
                         'name' => $this->request->data['User']['name'],
                         'username' => $this->request->data['User']['usernameReg'],
                         'email' => $this->request->data['User']['email'],
                         'password' => $this->request->data['User']['passwd'],
                         'role' => "Researcher",
-                        'activation' => null,
+                        'activation' => null,  # $this->User->getToken(),
                         'last_login' => date("Y-m-d H:i:s"),
 						'status' => 'pending'
                     ))
                     ) {
-                        $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        $user = array_merge($user, $this->request->data['User']);
-                        $this->Auth->login($user);
+                        // $this->Session->setFlash("Account has been registered.  Please wait for an admin to approve your account.", flash_success);
+                        // App::uses('CakeEmail', 'Network/Email');
+                        // $user = $this->User->find('all', array(
+                        //     'conditions' => array(
+                        //         'OR' => array('User.role' => "Admin")
+                        //     )
+                        // ));
+                        // foreach($user as $u) {
+                        //     $Email = new CakeEmail();
+                        //     $Email->viewVars(array(
+                        //         'pending_users' => $this->baseURL() . '/register/' . $token,
+                        //         'user' => $this->request->data['User']['name']
+                        //     ))
+                        //         ->template('new_user', 'default')
+                        //         ->emailFormat('html')
+                        //         ->subject('ARCS New User')
+                        //         ->to($u['User']['email'])
+                        //         ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+                        //     $Email->send();
+                        // }
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";
