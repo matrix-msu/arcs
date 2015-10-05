@@ -26,7 +26,7 @@
 
   arcs.version = "0.9.6";
 
-  arcs.baseURL = '';
+  arcs.baseURL = '/~jacob.buckley/arcs/';
 
   arcs.url = function() {
     var components;

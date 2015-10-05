@@ -161,21 +161,28 @@ class UsersController extends AppController
                     $this->redirect('/');
                 }
                 /* log user in */
-            } else {
-                $user = $this->User->findByRef($this->request->data['User']['username']);
-                if ($user['User']['activation'] == null) {
-                    if ($this->Auth->login()) {
-                        $this->User->id = $user['User']['id'];
-                        $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                        return $this->redirect($this->Auth->redirect());
-                    } else {
-                        $this->Session->setFlash("Wrong username or password.  Please try again or reset your password.", 'flash_error');
-                        $this->redirect($this->referer());
-                    }
-                } else {
-                    $this->Session->setFlash("This account is not active.  An admin needs to approve your account before access is granted.", 'flash_error');
-                    $this->redirect($this->referer());
-                }
+            } else {				
+				//Handles active, pending, and invited users
+				$user = $this->User->findByRef($this->request->data['User']['username']);
+				if($user['User']['status'] == 'active'){
+					if ($this->Auth->login()) {
+						$this->User->id = $user['User']['id'];
+						$this->User->saveField('last_login', date("Y-m-d H:i:s"));
+						return $this->redirect($this->Auth->redirect());
+					} else {
+						$this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+						$this->redirect($this->referer());
+					}
+				}
+				else if($user['User']['status'] == 'pending') {
+					$this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
+					$this->redirect($this->referer());
+				}
+				//Invited users will not be found by findByRef until activated
+				else if(!$user) {
+					$this->Session->setFlash("Username not found.", 'flash_error');
+					$this->redirect($this->referer());
+				}
             }
         }
     }
@@ -334,26 +341,10 @@ class UsersController extends AppController
 						'status' => 'pending'
                     ))
                     ) {
-                        // $this->Session->setFlash("Account has been registered.  Please wait for an admin to approve your account.", flash_success);
-                        // App::uses('CakeEmail', 'Network/Email');
-                        // $user = $this->User->find('all', array(
-                        //     'conditions' => array(
-                        //         'OR' => array('User.role' => "Admin")
-                        //     )
-                        // ));
-                        // foreach($user as $u) {
-                        //     $Email = new CakeEmail();
-                        //     $Email->viewVars(array(
-                        //         'pending_users' => $this->baseURL() . '/register/' . $token,
-                        //         'user' => $this->request->data['User']['name']
-                        //     ))
-                        //         ->template('new_user', 'default')
-                        //         ->emailFormat('html')
-                        //         ->subject('ARCS New User')
-                        //         ->to($u['User']['email'])
-                        //         ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-                        //     $Email->send();
-                        // }
+                        $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
+                        $user = array_merge($user, $this->request->data['User']);
+						$this->pendingUserEmail($user);
+						$this->Session->setFlash("Thank you for registering. You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";
@@ -397,9 +388,7 @@ class UsersController extends AppController
         }
 
         $this->set('email', $user['email']);
-		
-		
-		
+
 		if (isset($this->data['User'])) {
 			//Check if passwords match
 			if ($this->data['User']['password'] != $this->data['User']['password_confirm']) {
@@ -580,6 +569,22 @@ class UsersController extends AppController
             ->emailFormat('html')
             ->template('welcome', 'default')
             ->subject('Welcome to ARCS')
+            ->to($data['email'])
+            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        $Email->send();
+    }
+	
+	/**
+     * Send pending user email
+     * @param array data
+     */
+    public function pendingUserEmail($data)
+    {
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail();
+        $Email->emailFormat('html')
+            ->template('pending_user', 'default')
+            ->subject('ARCS Registration')
             ->to($data['email'])
             ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
