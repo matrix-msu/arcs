@@ -79,7 +79,25 @@ class arcs.utils.Search extends Backbone.View
   run: (query, options) ->
     # Use this.options for default opts, but don't alter it.
     options = _.extend _.clone(@options), options
-    query ?= @vs.searchBox.value()
+    #query ?= @vs.searchBox.value()
+    query_array = @vs.searchQuery.facets()
+    query = ""
+    if query_array['length'] == 1
+        for x in query_array
+            x_array = ((JSON.stringify(x).replace /":"/g, ":").slice(2,-2) .split ":")
+            query = x_array[0] + ",like," + x_array[1]
+    else
+        for x in query_array
+            x_array = ((JSON.stringify(x).replace /":"/g, ":").slice(2,-2) .split ":")
+            string = x_array[0] + ",like," + x_array[1]
+            query = query + "(" + string + ")" + ",OR,"
+        query = query.slice(0,-4)
+	#QUERY BUILDING
+    #console.log(query)
+    
+    
+	
+    #console.log(query)
 
     sid = if query[0] == "Collection" then 0 else 736
 
@@ -108,4 +126,4 @@ class arcs.utils.Search extends Backbone.View
     #@query = $("#search-box").val()
     #console.log(query)
     @page = options.page
-    @results
+    @results.query
