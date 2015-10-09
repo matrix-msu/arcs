@@ -234,20 +234,20 @@ class arcs.views.search.Search extends Backbone.View
     e.preventDefault() 
     @search.vs.searchBox.addFacet(e.target.text,'',10)	
 
-  search: (e) ->
-    e.preventDefault()
-    
-    query = [e.target.text, "like", $(".VS-search-inner").val()]
-    console.log(@search.vs.searchBox)
-    @search.run query,
-      order: 'type'
-      direction: @options.sortDir
+  #USELESS?
+  #search: (e) ->
+  #  e.preventDefault()
+  #  
+  #  query = [e.target.text, "like", $(".VS-search-inner").val()]
+  #  console.log(query)
+  #  @search.run query,
+  #    order: 'type'
+  #    direction: @options.sortDir
 
   # Render the results.
   render: ->
     @_render results: @search.results.toJSON()
     data = @search.results.query
-    
     data.page = @search.page
     data.query = encodeURIComponent @search.query
     $('#search-pagination').html arcs.tmpl('search/paginate', results: data)
@@ -257,6 +257,8 @@ class arcs.views.search.Search extends Backbone.View
   _render: (results, append=false) ->
     $results = $('#search-results')
     template = if @options.grid then 'search/grid' else 'search/list'
-    $results[if append then 'append' else 'html'] arcs.tmpl(template, results)
+    results = @search.results.query.results
+    console.log(@search.results.query.results)
+    $results[if append then 'append' else 'html'] arcs.tmpl(template, results: @search.results.query.results)
     if not @search.results.query.total > 0
       $results.html "<div id='no-results'>No Results</div>"
