@@ -33,7 +33,7 @@ Configure::load('arcs');
 Configure::load('assets');
 
 # Basic Kora Information
-define("DEFAULT_THUMB", "https://pbs.twimg.com/profile_images/627543112433336322/HX-8MTXH.jpg");
+define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
 define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
 define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
