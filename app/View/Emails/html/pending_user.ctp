@@ -1,3 +1,5 @@
-<p>Thank you for registering for ARCS. 
+<p>A new user (<?php echo $user ?>) has registered an account on ARCS.
 
-<p>Your registration is waiting to be approved by an administrator. You will be notified when your request has been processed.
+<p>Please follow the link below to add the user.
+
+<p><a href="<?php echo $link; ?>"><?php echo $link; ?>

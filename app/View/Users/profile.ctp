@@ -63,11 +63,13 @@
 </div>
 
 <script type='text/javascript'>
+    // EDIT USER
     arcs.profileView = new arcs.views.Profile({
         el: $('#user-profile'),
         model: new arcs.models.User(<?php echo json_encode($user); ?>)
     });
 
+    // SCORE BUBBLE TOOLTIP
     $(document).ready(function() {
         $(".score-bubble").tooltipster({
             content: $('<span>User Contributions</span><br><span><?php echo $this->Html->image("annotationsProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("metadataProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("discussionsProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("timeOnSiteProfile.svg", array("width"=>"35px", "height"=>"35px")) ?></span>'),
@@ -77,7 +79,7 @@
         });
     });
 
-	// used to open tabs
+	// CHANGE TAB
 	var currentTab = 'annotations';
 	$('li[id=annotations]').addClass('active');
 	function changeTab(tab) {

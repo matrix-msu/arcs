@@ -15,7 +15,7 @@ class UsersController extends AppController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow('signup', 'special_login', 'register', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite');
+        $this->Auth->allow('signup', 'special_login', 'register', 'confirm_user', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
@@ -132,12 +132,16 @@ class UsersController extends AppController
     {
         $this->User->flatten = false;
         if ($this->request->is('post')) {
-            /* reset user's password */
             if ($this->request->data['User']['forgot_password']) {
-                $email = $this->request->data['User']['username'];
-                $user = $this->User->findByEmail($email);
+                /* Reset user's password */
+                $email = $this->request->data['User']['username']; // actually is email because the reset form overrides the login form
+                $user = $this->User->findByEmail($this->request->data['User']['username']);
                 if (!$user) {
                     $this->Session->setFlash("Sorry, we couldn't find an account with that email address.", 'flash_error');
+                    $this->redirect('/');
+                } else if ($user['User']['reset'] != null) {
+                    $this->Session->setFlash("Your password is already in the process of being reset.  We have sent you another email with instruction to reset your password.", 'flash_error');
+                    $this->sendEmailResetPassword($email, $user['User']['reset']);
                     $this->redirect('/');
                 } else {
                     $token = $this->User->getToken();
@@ -147,22 +151,12 @@ class UsersController extends AppController
                     ));
 
                     $this->sendEmailResetPassword($email, $token);
-                    $this->Job->enqueue('email', array(
-                        'to' => $email,
-                        'subject' => 'Reset Password',
-                        'template' => 'reset_password',
-                        'vars' => array(
-                            'name' => array_shift(explode(' ', $user['User']['name'])),
-                            'reset' => $this->baseURL() . '/users/reset_password/' . $token
-                        )
-                    ));
                     $this->Session->setFlash("We've sent an email to $email. It contains a special " .
                         "link to reset your password.", 'flash_success');
                     $this->redirect('/');
                 }
-                /* log user in */
             } else {				
-				//Handles active, pending, and invited users
+				/* Logs user in */
 				$user = $this->User->findByRef($this->request->data['User']['username']);
 				if($user['User']['status'] == 'active'){
 					if ($this->Auth->login()) {
@@ -187,41 +181,6 @@ class UsersController extends AppController
         }
     }
 
-    // duplicate
-    /**
-     * Create a reset password link and queue an email to the user.
-     *
-     * @param string $email
-     */
-    public function send_reset($email)
-    {
-        $user = $this->User->findByEmail($email);
-
-        if (!$user) {
-            $this->Session->setFlash("Sorry, we couldn't find an account with that " .
-                "email address.", 'flash_error');
-        } else {
-            $token = $this->User->getToken();
-            $this->User->permit('reset');
-            $this->User->saveById($user['User']['id'], array(
-                'reset' => $token
-            ));
-
-            $this->sendEmailResetPassword($email, $token);
-            $this->Job->enqueue('email', array(
-                'to' => $email,
-                'subject' => 'Reset Password',
-                'template' => 'reset_password',
-                'vars' => array(
-                    'name' => array_shift(explode(' ', $user['User']['name'])),
-                    'reset' => $this->baseURL() . '/users/reset_password/' . $token
-                )
-            ));
-            $this->Session->setFlash("We've sent an email to $email. It contains a special " .
-                "link to reset your password.", 'flash_success');
-        }
-        $this->redirect('/#loginModal');
-    }
 
     /**
      * Change the password.
@@ -252,6 +211,25 @@ class UsersController extends AppController
                 $this->Session->setFlash("There was an error.  Please try again.", 'flash_error');
             }
         }
+    }
+
+    /**
+     * Change the password.
+     *
+     * @param string $username a valid user whose status is unconfirmed
+     */
+    public function confirm_user($username = null)
+    {
+        $user = $this->User->findByRef($username);
+        if ($username == null || !$user || $user['status'] != 'unconfirmed') {throw new BadRequestException();}
+        $this->User->id = $user['id'];
+        $this->User->saveField('status', "pending");
+        $admins = $this->User->find('all', array('conditions' => array('User.role' => 'Admin')));
+        foreach ($admins as $admin) {
+            $this->pendingUserEmail($admin, $user['name']);
+        }
+        $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
+        $this->redirect('/');
     }
 
     /**
@@ -306,7 +284,6 @@ class UsersController extends AppController
         $token = $this->User->getToken();
         $this->User->permit('activation', 'role');
 
-
         $response["message"] = [];
         $response["status"] = $this->User->add(array('email' => $data['email'], 'role' => $data['role'], 'activation' => $token, 'status' => "invited"));
         if ($response["status"] == false) {
@@ -329,27 +306,44 @@ class UsersController extends AppController
                 $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
                 $response = json_decode($response, true);
                 if ($response['success'] === true) {
-                    $this->User->permit('role', 'last_login', 'activation');
+                    $this->User->permit('role', 'last_login');
                     if ($this->User->add(array(
                         'name' => $this->request->data['User']['name'],
                         'username' => $this->request->data['User']['usernameReg'],
                         'email' => $this->request->data['User']['email'],
                         'password' => $this->request->data['User']['passwd'],
                         'role' => "Researcher",
-                        'activation' => null,  # $this->User->getToken(),
-                        'last_login' => date("Y-m-d H:i:s"),
-						'status' => 'pending'
-                    ))
-                    ) {
-                        $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        $user = array_merge($user, $this->request->data['User']);
-						$this->pendingUserEmail($user);
-						$this->Session->setFlash("Thank you for registering. You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
+                        'last_login' => null,
+						'status' => 'active'  // 'unconfirmed'
+                    ))) {
+                        // 'enctype' => 'multipart/form-data', 
+                        // <input type="file" name="user_image" /> <br>
+                        // if (isset($_FILES['user_image'])) {
+                        //     $uploads_path = Configure::read('uploads.path');
+                        //     if (getimagesize($_FILES['user_image']['tmp_name']) && $_FILES['user_image']['error'] == 0 && $_FILES['user_image']['size'] <= 500000) {
+                        //         $file_ext = strtolower(end(explode('.',$_FILES['user_image']['name'])));
+                        //         $uploadFile = "/matrix/dev/public_html/arcs/app/webroot/uploads/profileImages/" . $this->request->data['User']['usernameReg'] . ".";
+                        //         if (file_exists($uploadFile.$file_ext)) {
+                        //             unlink($uploadFile.$file_ext);
+                        //         }
+                        //         if (!move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
+                        //             debug("failure");
+                        //             $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
+                        //         }
+                        //     } else {
+                        //         $this->Session->setFlash("Failed to upload the image.", 'flash_error');
+                        //     }
+                        // }
+
+                        // $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
+                        // $this->confirmUserEmail($user);
+						// $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
+                        $this->Session->setFlash("Thank you for registering.");
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";
                         foreach (array_keys($this->User->validationErrors) as $key) {
-                            $error_message .= ucfirst($key) . ': ';
+                            $error_message .= "Error with " . strtolower(ucfirst($key)) . ': ';
                             for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
                                 $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
                             $error_message .= "<br>";
@@ -377,8 +371,6 @@ class UsersController extends AppController
     {
         $this->set('activation', $token);
         $this->set('error', false);
-
-        // $this->User->permit('last_login');
 
         $conditions = array('User.activation' => $token);
         $user = $this->User->find('first', array('conditions' => $conditions));
@@ -428,7 +420,7 @@ class UsersController extends AppController
 					}
 				} else {
 					//Error getting user
-					$this->Session->setFlash(__('Could not create account.'));
+					$this->Session->setFlash('Account count not be created.', 'flash_error');
 				}
 			}
 		}
@@ -563,14 +555,30 @@ class UsersController extends AppController
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array(
-            'activation' => $this->baseURL() . '/invitation/register/' . $token
-        ))
-            ->emailFormat('html')
-            ->template('welcome', 'default')
-            ->subject('Welcome to ARCS')
-            ->to($data['email'])
-            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        $Email->viewVars(array('activation' => $this->baseURL() . '/invitation/register/' . $token))
+              ->emailFormat('html')
+              ->template('welcome', 'default')
+              ->subject('Welcome to ARCS')
+              ->to($data['email'])
+              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        $Email->send();
+    }
+
+    /**
+     * Send pending user email
+     * @param array data
+     * @param string user
+     */
+    public function pendingUserEmail($data, $user)
+    {
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail();
+        $Email->viewVars(array('user' => $user, 'link' => $this->baseURL()))
+              ->emailFormat('html')
+              ->template('pending_user', 'default')
+              ->subject('ARCS New User Has Registered')
+              ->to($data['email'])
+              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }
 	
@@ -578,15 +586,16 @@ class UsersController extends AppController
      * Send pending user email
      * @param array data
      */
-    public function pendingUserEmail($data)
+    public function confirmUserEmail($data)
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->emailFormat('html')
-            ->template('pending_user', 'default')
-            ->subject('ARCS Registration')
-            ->to($data['email'])
-            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        $Email->viewVars(array('link' => $this->baseURL() . '/users/confirm_user/' . $data['username']))
+              ->emailFormat('html')
+              ->template('confirm_user', 'default')
+              ->subject('ARCS Registration')
+              ->to($data['email'])
+              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }
 
@@ -600,14 +609,12 @@ class UsersController extends AppController
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array(
-            'reset' => $this->baseURL() . '/users/reset_password/' . $token
-        ))
-            ->template('reset_password', 'default')
-            ->emailFormat('html')
-            ->subject('Reset Password');
-        $Email->to($email);
-        $Email->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        $Email->viewVars(array('reset' => $this->baseURL() . '/users/reset_password/' . $token))
+              ->emailFormat('html')
+              ->template('reset_password', 'default')
+              ->subject('Reset Password')
+              ->to($email)
+              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }
 

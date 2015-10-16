@@ -8094,7 +8094,7 @@ input[type=range]:focus::-ms-fill-upper {
 #resource-tools .rotate-div {
   float: left;
   height: 60px;
-  margin-left: 19%;
+  margin-left: 20%;
   margin-top: 20px;
 }
 #resource-tools img.arrow-left-icon {
@@ -8168,6 +8168,7 @@ input[type=range]:focus::-ms-fill-upper {
   padding-right: 30px;
   padding-top: 175px;
   padding-bottom: 75px;
+  margin-top: -110px;
   float: left;
   border-top: 15px solid #444;
   width: 100%;
@@ -9005,26 +9006,129 @@ th.user-tabs-header {
   margin: 0 auto;
 }
 .registration {
-  margin-top: 20px;
-  background: #ccc;
-  border: 1px solid #999;
-}
-.registration .span-6 {
-  margin-right: 40px;
-  width: 300px;
+  width: 90%;
+  background-color: transparent;
+  margin: auto;
+  border: none;
+  box-shadow: none;
+  color: #4C4C4C;
 }
 .registration .gravatar .thumbnail {
   margin: 20px 0;
   background: #fff;
-  border: 1px solid #999;
 }
 .registration .account {
-  margin-left: 0px;
+  font-size: 16px;
+  font-weight: 200;
 }
 .registration h2,
 .registration h4 {
   color: #333;
   font-weight: 200;
+}
+.submit {
+  float: right;
+  padding-top: 2em;
+}
+.input.password.user-reg-input-div {
+  display: inline-block;
+  width: 50%;
+  float: left;
+  padding-top: 2em;
+}
+.input.password.user-reg-input-div-right {
+  display: inline-block;
+  width: 50%;
+  float: right;
+  padding-top: 2em;
+}
+.input.password.user-reg-pw-input-div {
+  display: inline-block;
+  width: 50%;
+  float: left;
+  padding-top: 2em;
+}
+.input.password.user-reg-pw-input-div-right {
+  display: inline-block;
+  width: 50%;
+  float: right;
+  padding-top: 2em;
+}
+.user-reg-div {
+  display: inline-block;
+  width: 50%;
+  float: left;
+  padding-top: 2em;
+}
+input#UserName {
+  background-color: #fff;
+  border: 1px solid #ccc !important;
+  width: 85%;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+}
+.user-reg-div-right {
+  display: inline-block;
+  width: 50%;
+  float: right;
+  padding-top: 2em;
+}
+input#UserUsername {
+  background-color: #fff;
+  border: 1px solid #ccc !important;
+  width: 85%;
+  float: right;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+}
+.user-reg-input {
+  display: inline-block;
+  width: 50%;
+  float: left;
+  padding-top: 2em;
+}
+input#UserPassword {
+  background-color: #fff;
+  border: 1px solid #ccc !important;
+  width: 85%;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  padding-left: 20px;
+}
+.user-reg-input-right {
+  display: inline-block;
+  width: 50%;
+  float: right;
+  padding-top: 2em;
+}
+input#UserPasswordConfirm {
+  background-color: #fff;
+  border: 1px solid #ccc !important;
+  width: 85%;
+  float: right;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  padding-left: 20px;
+}
+input.user-reg-btn.btn.btn-success {
+  color: #ffffff;
+  background-color: #0094BC;
+  height: 50px;
+  width: 18em;
+  font-weight: 200;
+  border: none;
+  text-transform: uppercase;
+}
+.reg-description {
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 3em;
 }
 #batch-upload {
   background-color: #ccc;
