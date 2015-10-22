@@ -181,6 +181,7 @@ class ResourcesController extends AppController {
 		//Other pages
 			$resource[$id]['thumb'] = $pages[$page]['thumb'];
 		}
+
 		$resource = $resource[$id];
 		
         $public = $resource['Resource']['public'];

@@ -353,12 +353,12 @@
 						
 						<tr>
 							<td>Role</td>
-							<td><?php echo $resource['Role']; ?></td>
+							<td><?php foreach($resource['Role'] as $role) {echo $role.'<br>'; } ?></td>
 						</tr>
 						
 						<tr>
-							<td>Date</td>
-							<td><?php echo $resource['Date']; ?></td>
+							<td>Earliest Date</td>
+							<td><? echo $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'] ?></td>
 						</tr>
 						
 						<tr>
@@ -422,7 +422,7 @@
 
 <div id="other-resources">
 	<?php foreach($pages as $r): ?>
-		<a href="<?php echo $this->Html->url(array('action' => 'viewer', $r['Resource Associator'][0], $r['kid'])) ?>">
+		<a href="<?php echo $this->Html->url(array('action' => 'viewer', $r['Resource Associator'][0])) ?>">
 			<img height="100px" width="100px" style="padding: 10px 10px" src="<?php echo $r['thumb'] ?>">
 		</a>
 	<?php endforeach ?>
