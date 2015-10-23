@@ -72,10 +72,12 @@
     // SCORE BUBBLE TOOLTIP
     $(document).ready(function() {
         $(".score-bubble").tooltipster({
-            content: $('<span>User Contributions</span><br><span><?php echo $this->Html->image("annotationsProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("metadataProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("discussionsProfile.svg", array("width"=>"35px", "height"=>"35px")) . "+" . $this->Html->image("timeOnSiteProfile.svg", array("width"=>"35px", "height"=>"35px")) ?></span>'),
+            content: $('<span>User Contributions</span><br><span><?php echo $this->Html->image("annotationsProfile.svg", array("width"=>"25px", "height"=>"25px")) . "+" . $this->Html->image("metadataProfile.svg", array("width"=>"25px", "height"=>"25px")) . "+" . $this->Html->image("discussionsProfile.svg", array("width"=>"25px", "height"=>"25px")) . "+" . $this->Html->image("timeOnSiteProfile.svg", array("width"=>"25px", "height"=>"25px")) ?></span>'),
+            contentAsHTML: true,
             touchDevices: false,
             trigger: 'hover',
-            position: 'right'
+            position: 'right',
+            theme: 'tooltipster-custom'
         });
     });
 

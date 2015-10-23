@@ -290,17 +290,6 @@
       return this.search.vs.searchBox.addFacet(e.target.text, '', 10);
     };
 
-    Search.prototype.search = function(e) {
-      var query;
-      e.preventDefault();
-      query = [e.target.text, "like", $(".VS-search-inner").val()];
-      console.log(this.search.vs.searchBox);
-      return this.search.run(query, {
-        order: 'type',
-        direction: this.options.sortDir
-      });
-    };
-
     Search.prototype.render = function() {
       var data;
       this._render({
@@ -321,7 +310,11 @@
       }
       $results = $('#search-results');
       template = this.options.grid ? 'search/grid' : 'search/list';
-      $results[append ? 'append' : 'html'](arcs.tmpl(template, results));
+      results = this.search.results.query.results;
+      console.log(this.search.results.query.results);
+      $results[append ? 'append' : 'html'](arcs.tmpl(template, {
+        results: this.search.results.query.results
+      }));
       if (!this.search.results.query.total > 0) {
         return $results.html("<div id='no-results'>No Results</div>");
       }

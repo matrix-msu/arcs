@@ -94,10 +94,24 @@
     };
 
     Search.prototype.run = function(query, options) {
-      var params, sid;
+      var i, j, len, len1, params, query_array, sid, string, x, x_array;
       options = _.extend(_.clone(this.options), options);
-      if (query == null) {
-        query = this.vs.searchBox.value();
+      query_array = this.vs.searchQuery.facets();
+      query = "";
+      if (query_array['length'] === 1) {
+        for (i = 0, len = query_array.length; i < len; i++) {
+          x = query_array[i];
+          x_array = (JSON.stringify(x).replace(/":"/g, ":")).slice(2, -2).split(":");
+          query = x_array[0] + ",like," + x_array[1];
+        }
+      } else {
+        for (j = 0, len1 = query_array.length; j < len1; j++) {
+          x = query_array[j];
+          x_array = (JSON.stringify(x).replace(/":"/g, ":")).slice(2, -2).split(":");
+          string = x_array[0] + ",like," + x_array[1];
+          query = query + "(" + string + ")" + ",OR,";
+        }
+        query = query.slice(0, -4);
       }
       sid = query[0] === "Collection" ? 0 : 736;
       params = ("?related&n=" + options.n) + ("&page=" + options.page) + ("&order=" + options.order) + ("&direction=" + options.direction) + "&sid=" + sid;
@@ -129,7 +143,7 @@
         })(this)
       });
       this.page = options.page;
-      return this.results;
+      return this.results.query;
     };
 
     return Search;
