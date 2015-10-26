@@ -6,7 +6,7 @@
 
 
 <!-- Horizontal Menu -->
-<div id="searchCriteriaWrapper">
+<!-- <div id="searchCriteriaWrapper">
 	<div class="searchCriteriaItem"><a class="search-type" href="#">Season Title</a></div>
     <div class="searchCriteriaItem"><a class="search-type" href="#">Type</a></div>
     <div class="searchCriteriaItem"><a class="search-type" href="#">Title</a></div>
@@ -18,10 +18,10 @@
     <div class="searchCriteriaItem"><a class="search-type" href="#">Keyword</a></div>
     <div class="searchCriteriaItem"><a class="search-type" href="#">Filetype</a></div>
   <span class="stretcher"></span>
-</div>
+</div> -->
 
 <div id="searchBox">
-		<div class="VS-search">
+	<!-- <div class="VS-search">
 			<div class="VS-search-box-wrapper VS-search-box">
 				<span class="VS-icon VS-icon-search"></span>
 				<div class="VS-search-inner">
@@ -29,14 +29,18 @@
 						<div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: 								nowrap;">	
 						</div>
 					</div>
-				</div>	
-				<div class="VS-icon VS-icon-info" title="Show Search Help"></div>
-				<div class="VS-icon VS-icon-clear-text VS-cancel-search-box" title="Clear Search"></div>
+				</div>
 			</div>
-		</div>
+	</div> -->
+	<div class="searchIcon"></div>
+	<input type="text" class="searchBoxInput">
 </div>
 
-<div class="search-help" style="display:none">
+<div id="advanced">
+	<a class="advancedSearch" href="#">Advanced Search</a>
+</div>
+
+<!-- <div class="search-help" style="display:none">
   <div class="search-help-arrow"></div>
   <a class="search-help-close">close</a>
   <div class="tips">
@@ -74,7 +78,7 @@
   <div>
     For more search tips, see the <a href="../help/searching">Search</a> help page.
   </div>
-</div>
+</div> -->
 
 <div id="search-results-wrapper">
   <div id="search-actions" class="search-toolbar">
@@ -131,14 +135,14 @@
     {% endif %}
     </div>
 
-    <div id="view-buttons" class="btn-group actions-right">
+    <!-- <div id="view-buttons" class="btn-group actions-right">
       <button id="grid-btn" class="btn notactive active">
         <i class='icon-th-large'></i> Grid
       </button>
       <button id="list-btn" class="btn notactive">
         <i class='icon-th-list'></i> List
       </button>
-    </div>
+    </div> -->
 
     <div id="sort-buttons" class="btn-group actions-right">
       <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">

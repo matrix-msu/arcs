@@ -9,7 +9,9 @@ a.search-type {
 
 .searchIntro {  
 	padding-top: 40px;
-	margin: 2em 4em;
+	margin: auto;
+	width: 90%;
+	margin-bottom: 4em;
 	color: #444444;
     h1 {
         margin-bottom: 25px;
@@ -22,7 +24,50 @@ a.search-type {
 }
 
 div#searchBox {
-    margin: 0 4em 5em;
+    margin: auto;
+    background: transparent;
+    min-height: 50px;
+    width: 90%;
+}
+
+.searchIcon {
+	background-repeat: no-repeat;
+    background-position: center center;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background: url("../img/SearchDark.svg") no-repeat;
+    position: absolute;
+    margin: 1em;
+    margin-top: 18px;
+}
+input.searchBoxInput {
+    background: transparent !important;
+    min-height: 50px;
+    width: 100%;
+    font-size: 14px !important;
+    border: 1px solid #ccc !important;
+    padding-left: 50px !important;
+
+}
+
+input.searchBoxInput:focus {
+	border: 1px solid #2FA6C7 !important;
+}
+
+div#advanced {
+    margin: auto;
+    width: 90%;
+    margin-top: 1em;
+}
+
+a.advancedSearch {
+    float: right;
+    text-transform: uppercase;
+    color: #2FA6C7 !important;
+    margin-bottom: 4em;
+    font-size: 12px;
 }
 
 span.stretcher {
