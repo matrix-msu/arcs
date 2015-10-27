@@ -1,22 +1,24 @@
 <?php echo $this->Session->flash(); ?>
 
 <div class="intro">
-    <h1>The Archaeological Resource Cataloging System</h1>
-    <br>
-    
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex. Nulla fermentum, est ut suscipit interdum, lorem eros gravida lorem, eu lobortis purus ligula in orci. Duis massa neque, rhoncus sit amet sem ut, cursus interdum ligula. Duis ultricies euismod ligula, sed lacinia turpis laoreet ac. Donec tristique scelerisque tristique. Aliquam non enim non purus faucibus viverra. Phasellus euismod vestibulum enim.</p>
-    
-    <div id="map"></div>
+    <div class="landing_header">The Archaeological Resource Cataloging System</div>
+
+    <div class="landing_body_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex. Nulla fermentum, est ut suscipit interdum, lorem eros gravida lorem, eu lobortis purus ligula in orci. Duis massa neque, rhoncus sit amet sem ut, cursus interdum ligula. Duis ultricies euismod ligula, sed lacinia turpis laoreet ac. Donec tristique scelerisque tristique. Aliquam non enim non purus faucibus viverra. Phasellus euismod vestibulum enim.</div>
+
+	<div class="landing_header_two">Choose a project site below to get started.</div>
+
 </div>
+
+<div id="map"></div>
+
  
 <script>
-    var map = L.map('map', { zoomControl:true });
+    var map = L.map('map', { zoomControl:false });
 
     map.scrollWheelZoom.disable();
 
     L.tileLayer('http://{s}.tiles.mapbox.com/v3/austintruchan.m3e777m7/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18 }).addTo(map);
+                maxZoom: 18 }).addTo(map);
 	
 	map.on('popupopen', function(e) {
 	    var px = map.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
@@ -68,6 +70,6 @@
 	?>
 	var group = new L.featureGroup(marker_array);
 
-	map.fitBounds(group.getBounds()).setZoom(4);
+	map.fitBounds(group.getBounds()).setZoom(7);
 
 </script>

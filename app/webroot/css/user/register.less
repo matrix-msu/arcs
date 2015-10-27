@@ -118,6 +118,9 @@ input#UserPassword {
     font-size: 16px;
     padding-left: 20px;
 }
+input#UserPassword:focus {
+    outline: 0;
+}
 
 .user-reg-input-right {
     display: inline-block;
@@ -137,6 +140,10 @@ input#UserPasswordConfirm {
     padding-left: 20px;
 }
 
+input#UserPasswordConfirm:focus {
+	outline: 0;
+}
+
 input.user-reg-btn.btn.btn-success {
     color: #ffffff;
     background-color: #0094BC;
@@ -147,8 +154,16 @@ input.user-reg-btn.btn.btn-success {
     text-transform: uppercase;
 }
 
+input.user-reg-btn.btn.btn-success:focus{
+	outline: 0;
+}
+
 .reg-description {
     font-size: 16px;
     font-weight: 200;
     line-height: 3em;
+}
+
+.error-message {
+    display:none;
 }
