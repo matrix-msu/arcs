@@ -1,5 +1,29 @@
-
 <div class="viewers-container">
+
+<div class="modalBackground">
+	<div class="flagWrap">
+		<div id="flagModal">
+			<div class="flagModalHeader">NEW FLAG <img src="../app/webroot/assets/img/Close.svg" class="modalClose"></img></div>
+			<hr>
+			<form id="flagForm" action="/">
+				<p class="flagSuccess">Flag submitted successfully.</p>
+				<p class="formError reasonError">Select a reason for this flag.</p>
+				<select class="formInput" id="flagReason">
+				  <option value="">SELECT REASON</option>
+				  <option value="incorrect">Incorrect Attribute</option>
+				  <option value="spam">Spam</option>
+				  <option value="duplicate">Duplicate</option>
+				  <option value="other">Other</option>
+				</select>
+				<p class="formError explanationError">Give an explanation for this flag.</p>
+				<textarea class="formInput" id="flagExplanation" placeholder="EXPLAIN REASONING"></textarea>
+				
+				<button class="flagSubmit" type="submit">CREATE FLAG</button>
+			</form>
+		</div>
+	</div>
+</div>
+
 <div id="viewer-left">
 	<div id="viewer-tools">
 		<div class="container1">
@@ -12,7 +36,7 @@
 					</span>
 					<div class="icon-annotate"></div>
 				</a>
-				<a href="#">
+				<a id="flag" href="#">
 					<span class="content">
 						Flag
 					</span>
@@ -446,7 +470,61 @@
 		( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
 	});
 		
+	$(function() {
+		$( "#flag" ).click(function(){
+			$( ".modalBackground" ).show();
+		});
+		
+		$( ".modalClose" ).click(function(){
+			$( ".modalBackground" ).hide();
+		});
+		
+		$( "#flagForm" ).submit(function( event ) {
+ 
+			// Stop form from submitting normally
+			event.preventDefault();
+			
+			$(".flagSuccess").hide();
+			
+			if ($("#flagReason").val() == '') {
+				$(".reasonError").show();
+			} else {
+				$(".reasonError").hide();
+			}
+			
+			if ($("#flagExplanation").val() == '') {
+				$(".explanationError").show();
+			} else {
+				$(".explanationError").hide();
+			}
+			
+			if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '') {
+				var formdata = {
+					kid: "<?php echo $kid; ?>",
+					resource_name: "<?php echo $resource['Resource Identifier']; ?>",
+					reason: $("#flagReason").val(),
+					explanation: $("#flagExplanation").val(),
+					status: "pending"				
+				}
+				
+				$.ajax({
+					url: "<?php echo Router::url('/', true); ?>resources/flags/add",
+					type: "POST",
+					data: formdata,
+					statusCode: {
+						201: function() {
+							$("#flagReason").val('');
+							$("#flagExplanation").val('');
+							$(".flagSuccess").show();
+						}
+					}
+					
+				});
+			}
+		});
+	});
 </script>
+
 
 <!--
 <script> 

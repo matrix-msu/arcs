@@ -314,7 +314,7 @@ class UsersController extends AppController
                         'password' => $this->request->data['User']['passwd'],
                         'role' => "Researcher",
                         'last_login' => null,
-						'status' => 'active'  // 'unconfirmed'
+						'status' => 'pending'  // This needs to stay pending
                     ))) {
                         // 'enctype' => 'multipart/form-data', 
                         // <input type="file" name="user_image" /> <br>
@@ -338,7 +338,7 @@ class UsersController extends AppController
                         // $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         // $this->confirmUserEmail($user);
 						// $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
-                        $this->Session->setFlash("Thank you for registering.");
+                        $this->Session->setFlash("Thank you for registering.", 'flash_success');
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";

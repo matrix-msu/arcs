@@ -96,6 +96,11 @@
     Router::connect('/resources/complete', 
         array('controller' => 'search', 'action' => 'complete')
     );
+	
+	Router::connect('/resources/flags/add', 
+        array('controller' => 'flags', 'action' => 'add')
+    );
+
 
     # Search must have a trailing slash, for the client-side code's sanity. 
     Router::redirect('/search', 'search/');

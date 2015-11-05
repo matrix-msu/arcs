@@ -30,7 +30,7 @@ class MetaResourcesController extends AppController {
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
         if (!$this->request->data) throw new BadRequestException;
         $model = $this->modelClass;
-        debug($model);
+        //debug($model);
         # if ($model == 'bookmarks' || $model == 'comments' || $model == 'jobs' || $model == 'keywords') {
         $this->$model->permit('user_id');
         $this->request->data['user_id'] = $this->Auth->user('id');
