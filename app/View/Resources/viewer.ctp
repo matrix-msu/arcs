@@ -118,53 +118,103 @@
 					
 					<table>
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+							<td>Name</td>
+							<td><?php echo $project['Name'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Country</td>
+							<td><?php echo $project['Country'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Region</td>
+							<td><?php echo $project['Region'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Geolocation</td>
+							<td><?php foreach($project['Geolocation'] as $geolocation) {echo $geolocation."<br>";} ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Modern Name</td>
+							<td><?php echo $project['Modern Name'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+							<td>Location Identifier</td>
+							<td><?php echo $project['Location Identifier'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Location Identifier Scheme</td>
+							<td><?php echo $project['Location Identifier Scheme'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Elevation</td>
+							<td><?php echo $project['Elevation'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Earliest Date</td>
+							<td><?php echo $project['Earliest Date'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Latest Date</td>
+							<td><?php echo $project['Latest Date'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Records Archive</td>
+							<td><?php echo $project['Records Archive'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Persistent Name</td>
+							<td><?php echo $project['Persistent Name'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Complex Title</td>
+							<td><?php echo $project['Complex Title'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Terminus Ante Quem</td>
+							<td><?php echo $project['Terminus Ante Quem'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Terminus Post Quem</td>
+							<td><?php echo $project['Terminus Post Quem'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Period</td>
+							<td><?php echo $project['Period'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Archaeological Culture</td>
+							<td><?php echo $project['Archaeological Culture'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Description</td>
+							<td><?php echo $project['Description'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Brief Description</td>
+							<td><?php echo $project['Brief Description'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Permitting Heritage Body</td>
+							<td><?php echo $project['Permitting Heritage Body'] ?></td>
 						</tr>
 					</table>
 					
@@ -175,55 +225,140 @@
 				<div class="level-content">
 					
 					<table>
+						<?php foreach($seasons as $season) { ?>
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Title</td>
+							<td><?php echo $season['Title'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Type</td>
+							<td><?php echo $season['Type'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Director</td>
+							<td><?php echo $season['Director'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Registrar</td>
+							<td><?php echo $season['Registrar'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Sponsor</td>
+							<td><?php echo $season['Sponsor'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+							<td>Earliest Date</td>
+							<td><?php if ($season['Earliest Date']['year']) {echo $season['Earliest Date']['year'] . "/" . $season['Earliest Date']['month'] . "/" . $season['Earliest Date']['day'];} ?></td>
+							
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Latest Date</td>
+							<td><?php if ($season['Latest Date']['year']) {echo $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];} ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Terminus Ante Quem</td>
+							<td><?php echo $season['Terminus Ante Quem'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Terminus Post Quem</td>
+							<td><?php echo $season['Terminus Post Quem'] ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Description</td>
+							<td><?php echo $season['Description'] ?></td>
 						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 2'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 2'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 3'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 3'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 4'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 4'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 5'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 5'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 6'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 6'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 7'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 7'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor</td>
+							<td><?php echo $season['Contributor 8'] ?></td>
+						</tr>
+						
+						<tr>
+							<td>Contributor Role</td>
+							<td><?php echo $season['Contributor Role 8'] ?></td>
+						</tr>
+						
+						<?php } ?>
+						
 					</table>
 					
 				</div>
@@ -235,7 +370,7 @@
 					<table>
 						<tr>
 							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td><?php var_dump($survey); ?></td>
 						</tr>
 						
 						<tr>
@@ -292,63 +427,6 @@
 					
 					<table>
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-					</table>
-					
-				</div>
-				<h3 class="level-tab">Resource Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
-				
-				<div class="level-content">
-					
-					<table>
-						<tr>
 							<td>Resource Identifier</td>
 							<td><?php echo $resource['Resource Identifier']; ?></td>
 						</tr>
@@ -382,7 +460,7 @@
 						
 						<tr>
 							<td>Earliest Date</td>
-							<td><? echo $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'] ?></td>
+							<td><?php if ($resource['Earliest Date']['year']) {echo $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'];} ?></td>
 						</tr>
 						
 						<tr>
@@ -446,11 +524,34 @@
 
 <div id="other-resources">
 	<?php foreach($pages as $r): ?>
-		<a href="<?php echo $this->Html->url(array('action' => 'viewer', $r['Resource Associator'][0])) ?>">
-			<img height="100px" width="100px" style="padding: 10px 10px" src="<?php echo $r['thumb'] ?>">
+		<a href="#" onclick="GetNewResource(<?php echo "'".$r['kid']."'"?>)">
+		<img class="other-resource"
+		     src="<?php echo $r['thumb'] ?>"
+
+
+		     height="100px"
+			 width="100px"
+			 style="padding: 10px 10px"
+			>
 		</a>
 	<?php endforeach ?>
 </div>
+
+<script>
+	  function GetNewResource($id) {
+		return $.ajax({
+		  url: 'resource/loadNewResource/'.$id,
+		  type: 'GET',
+		  data: {
+			id: $id
+		  },
+		  success: function(res) {
+			return console.log("Hi hannah", res.imgSrc);
+			//Document.getElementById('viewer-window').childNodes[0].src = res.imgSrc
+		  }
+		});
+	  }
+</script>
 
 <!-- Give the resource array to the client-side code -->
 <script>

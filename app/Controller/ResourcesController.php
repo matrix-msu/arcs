@@ -156,6 +156,9 @@ class ResourcesController extends AppController {
 		//capture results and map to array
 		$pages = json_decode(curl_exec($ch), true);
 		$first = true;
+
+        //////////////////////////
+        //Currently we only use the first image... there's a cleaner way to do this
 		foreach($pages as $p) {
 			if ($first == true) {
 				$firstPage = $p['kid'];
@@ -163,7 +166,9 @@ class ResourcesController extends AppController {
 			}
 			$pages[$p['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
 		}
+        //////////////////////////
 		
+		//resource
 		$query = "kid,=,".$id;
 		$display = "json";
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
@@ -171,18 +176,63 @@ class ResourcesController extends AppController {
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-
 		//capture results and display
 		$resource = json_decode(curl_exec($ch), true);
+		$resource = $resource[$id];
+		
+		//season
+		$seasons = array();
+		$projectKid = '';
+		foreach($resource['Season Associator'] as $kid) {
+			$query = "kid,=,".$kid;
+			$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SEASON_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+			///initialize post request to KORA API using curl
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+			//capture results and display
+			$season = json_decode(curl_exec($ch), true);
+			$season = $season[$kid];
+			if ($projectKid == '') {
+				$projectKid = $season['Project Associator'][0];
+			}
+			array_push($seasons, $season);
+		}
+		
+		//project
+		$query = "kid,=,".$projectKid;
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		//capture results and display
+		$project = json_decode(curl_exec($ch), true);
+		$project = $project[$projectKid];
+		//debug($project);
+		
+		//survey
+		$query = "Season Associator, =, ".$season['kid'];
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SURVEY_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		//capture results and display
+		$survey = json_decode(curl_exec($ch), true);
+
+        //////////////////////////
+        //else is never hit... clean this up.
 		//First associated page
 		if ($page == 0 ) {
-			$resource[$id]['thumb'] = $pages[$firstPage]['thumb'];
+			$resource['thumb'] = $pages[$firstPage]['thumb'];
 		} else {
 		//Other pages
-			$resource[$id]['thumb'] = $pages[$page]['thumb'];
+			$resource['thumb'] = $pages[$page]['thumb'];
 		}
+        //////////////////////////
 
-		$resource = $resource[$id];
+		
 		
         $public = $resource['Resource']['public'];
         $allowed = $public || $this->Auth->loggedIn();
@@ -210,6 +260,9 @@ class ResourcesController extends AppController {
         )));
         $this->set(array(
             'resource' => $resource,
+			'project' => $project,
+			'seasons' => $seasons,
+			'survey' => $survey,
 			'pages' => $pages,
             'toolbar' => array('actions' => true),
             'footer' => false,
@@ -409,5 +462,15 @@ class ResourcesController extends AppController {
                 $values = array();
         }
         $this->json(200, $values);
+    }
+
+    /**
+     * Lightweight version of what viewer() does.
+     * Instead of returning the entire page content though
+     * 
+     * return only the image for viewer-window and content for right sidebar
+     */
+    public function loadNewResource($id) {
+		return "SUCCESS";
     }
 }
