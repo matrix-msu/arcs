@@ -258,6 +258,14 @@ class ResourcesController extends AppController {
                 'Collection.title !=' => 'Temporary Collection'
             )
         )));
+		
+		//Set kid for viewer
+		if (isset($pages[$page]['kid'])) {
+			$this->set(array('kid' =>$pages[$page]['kid']));
+		} else {
+			$this->set(array('kid' => $resource['kid']));
+		}
+		
         $this->set(array(
             'resource' => $resource,
 			'project' => $project,
@@ -266,7 +274,7 @@ class ResourcesController extends AppController {
 			'pages' => $pages,
             'toolbar' => array('actions' => true),
             'footer' => false,
-            'body_class' => 'viewer standalone'
+            'body_class' => 'viewer standalone',
         ));
 
 		/* The debug sends a var dump to the single resource view */
