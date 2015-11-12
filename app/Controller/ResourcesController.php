@@ -479,6 +479,22 @@ class ResourcesController extends AppController {
      * return only the image for viewer-window and content for right sidebar
      */
     public function loadNewResource($id) {
-		return "SUCCESS";
+        $this->autoRender = false;
+
+        //Get the Images
+        $query = "kid,=,".$id;
+        $user = "";
+        $pass = "";
+        $display = "json";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        //capture results and map to array
+        $page = json_decode(curl_exec($ch), true);
+        $p = $page[$id];
+
+		return KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
     }
 }

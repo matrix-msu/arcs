@@ -55,7 +55,7 @@
 	
 	<div id="viewer-window">
 		
-		<img src="<?php echo $resource['thumb'] ?>" >
+		<img src="<?php echo $resource['thumb'] ?>" id="PageImage" >
 		
 	</div>
 	
@@ -538,16 +538,13 @@
 </div>
 
 <script>
-	  function GetNewResource($id) {
+	  function GetNewResource(id) {
 		return $.ajax({
-		  url: 'resource/loadNewResource/'.$id,
+		  url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
 		  type: 'GET',
-		  data: {
-			id: $id
-		  },
 		  success: function(res) {
-			return console.log("Hi hannah", res.imgSrc);
-			//Document.getElementById('viewer-window').childNodes[0].src = res.imgSrc
+			console.log("Hi hannah", res);
+			document.getElementById('PageImage').src = res;
 		  }
 		});
 	  }
