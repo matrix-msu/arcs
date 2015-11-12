@@ -221,18 +221,7 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$survey = json_decode(curl_exec($ch), true);
 
-        //////////////////////////
-        //else is never hit... clean this up.
-		//First associated page
-		if ($page == 0 ) {
-			$resource['thumb'] = $pages[$firstPage]['thumb'];
-		} else {
-		//Other pages
-			$resource['thumb'] = $pages[$page]['thumb'];
-		}
-        //////////////////////////
-
-		
+		$resource['thumb'] = $pages[$firstPage]['thumb'];		
 		
         $public = $resource['Resource']['public'];
         $allowed = $public || $this->Auth->loggedIn();
@@ -260,13 +249,15 @@ class ResourcesController extends AppController {
         )));
 		
 		//Set kid for viewer
-		if (isset($pages[$page]['kid'])) {
-			$this->set(array('kid' =>$pages[$page]['kid']));
+        //moved to line 260
+		/*if (isset($pages[$firstPage]['kid'])) {
+			$this->set(array('kid' =>$pages[$firstPage]['kid']));
 		} else {
 			$this->set(array('kid' => $resource['kid']));
-		}
+		}*/
 		
         $this->set(array(
+            'kid' =>$pages[$firstPage]['kid'],
             'resource' => $resource,
 			'project' => $project,
 			'seasons' => $seasons,
@@ -494,6 +485,8 @@ class ResourcesController extends AppController {
         //capture results and map to array
         $page = json_decode(curl_exec($ch), true);
         $p = $page[$id];
+
+        //$this->_View->viewVars['kid'] = $p['kid'];
 
 		return KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
     }
