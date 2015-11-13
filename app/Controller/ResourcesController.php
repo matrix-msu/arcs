@@ -179,25 +179,46 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$resource = json_decode(curl_exec($ch), true);
 		$resource = $resource[$id];
+
+        //survey
+        $surveys = array();
+        $seasonKID = '';
+        foreach ($resource['Excavation - Survey Associator'] as $kid) {
+            $query = "kid,=,".$kid;
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SURVEY_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+            ///initialize post request to KORA API using curl
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and display
+            $survey = json_decode(curl_exec($ch), true);
+            $survey = $survey[$kid];
+            array_push($surveys, $survey);
+            if ($seasonKID == '' ) {
+                $seasonKID = $survey['Season Associator'][0];
+            }
+        }
+
+        //If no seasons for a resource, use resource season associator
+        if ($seasonKID == '') {
+            $seasonKID = $resource['Season Associator'][0];
+        }
 		
 		//season
-		$seasons = array();
 		$projectKid = '';
-		foreach($resource['Season Associator'] as $kid) {
-			$query = "kid,=,".$kid;
-			$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SEASON_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-			///initialize post request to KORA API using curl
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-			//capture results and display
-			$season = json_decode(curl_exec($ch), true);
-			$season = $season[$kid];
-			if ($projectKid == '') {
-				$projectKid = $season['Project Associator'][0];
-			}
-			array_push($seasons, $season);
+		$query = "kid,=,".$seasonKID;
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SEASON_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+		///initialize post request to KORA API using curl
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		//capture results and display
+		$season = json_decode(curl_exec($ch), true);
+		$season = $season[$seasonKID];
+		if ($projectKid == '') {
+			$projectKid = $season['Project Associator'][0];
 		}
+		array_push($seasons, $season);
 		
 		//project
 		$query = "kid,=,".$projectKid;
@@ -209,18 +230,7 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$project = json_decode(curl_exec($ch), true);
 		$project = $project[$projectKid];
-		//debug($project);
 		
-		//survey
-		$query = "Season Associator, =, ".$season['kid'];
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SURVEY_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-		///initialize post request to KORA API using curl
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-		//capture results and display
-		$survey = json_decode(curl_exec($ch), true);
-
 		$resource['thumb'] = $pages[$firstPage]['thumb'];		
 		
         $public = $resource['Resource']['public'];
@@ -258,11 +268,11 @@ class ResourcesController extends AppController {
 		
         $this->set(array(
             'kid' =>$pages[$firstPage]['kid'],
+            'pages' => $pages,
             'resource' => $resource,
-			'project' => $project,
-			'seasons' => $seasons,
-			'survey' => $survey,
-			'pages' => $pages,
+            'surveys' => $surveys,
+			'season' => $season,
+            'project' => $project,
             'toolbar' => array('actions' => true),
             'footer' => false,
             'body_class' => 'viewer standalone',

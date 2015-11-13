@@ -225,7 +225,6 @@
 				<div class="level-content">
 					
 					<table>
-						<?php foreach($seasons as $season) { ?>
 						<tr>
 							<td>Title</td>
 							<td><?php echo $season['Title'] ?></td>
@@ -356,9 +355,6 @@
 							<td>Contributor Role</td>
 							<td><?php echo $season['Contributor Role 8'] ?></td>
 						</tr>
-						
-						<?php } ?>
-						
 					</table>
 					
 				</div>
@@ -366,58 +362,59 @@
 				<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
-					
+					<?php foreach ($surveys as $survey) { ?>
 					<table>
 						<tr>
-							<td>Metadata Title</td>
-							<td><?php var_dump($survey); ?></td>
+							<td>Name</td>
+							<td><?php echo $survey['Name']; ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Type</td>
+							<td><?php echo $survey['Type']; ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Supervisor</td>
+							<td><?php foreach ($survey['Supervisor'] as $s) {echo $s."<br>";} ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Earliest Date</td>
+							<td><?php if ($survey['Earliest Date']['year']) {echo $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];} ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Latest Date</td>
+							<td><?php if ($survey['Latest Date']['year']) {echo $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];} ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
+							<td>Terminus Ante Quem</td>
+							<td><?php echo $survey['Terminus Ante Quem']; ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Terminus Post Quem</td>
+							<td><?php echo $survey['Terminus Post Quem']; ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Survey Conditions</td>
+							<td><?php echo $survey['Survey Conditions']; ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Excavation Stratigraphy</td>
+							<td><?php echo $survey['Excavation Stratigraphy']; ?></td>
 						</tr>
 						
 						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
+							<td>Transformation</td>
+							<td><?php echo $survey['Transformation']; ?></td>
 						</tr>
 					</table>
+					<?php } ?>
 					
 				</div>
 				
