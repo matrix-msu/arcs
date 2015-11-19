@@ -276,6 +276,7 @@ class ResourcesController extends AppController {
             'toolbar' => array('actions' => true),
             'footer' => false,
             'body_class' => 'viewer standalone',
+			'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
         ));
 
 		/* The debug sends a var dump to the single resource view */
@@ -498,6 +499,7 @@ class ResourcesController extends AppController {
 
         //$this->_View->viewVars['kid'] = $p['kid'];
 
-		return KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
+		// return KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
+		return json_encode($p);
     }
 }

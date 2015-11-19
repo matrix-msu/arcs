@@ -225,6 +225,7 @@
 				<div class="level-content">
 					
 					<table>
+						<?php foreach($seasons as $season) { ?>
 						<tr>
 							<td>Title</td>
 							<td><?php echo $season['Title'] ?></td>
@@ -355,6 +356,9 @@
 							<td>Contributor Role</td>
 							<td><?php echo $season['Contributor Role 8'] ?></td>
 						</tr>
+						
+						<?php } ?>
+						
 					</table>
 					
 				</div>
@@ -362,59 +366,58 @@
 				<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
-					<?php foreach ($surveys as $survey) { ?>
+					
 					<table>
 						<tr>
-							<td>Name</td>
-							<td><?php echo $survey['Name']; ?></td>
+							<td>Metadata Title</td>
+							<td><?php var_dump($survey); ?></td>
 						</tr>
 						
 						<tr>
-							<td>Type</td>
-							<td><?php echo $survey['Type']; ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Supervisor</td>
-							<td><?php foreach ($survey['Supervisor'] as $s) {echo $s."<br>";} ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Earliest Date</td>
-							<td><?php if ($survey['Earliest Date']['year']) {echo $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];} ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Latest Date</td>
-							<td><?php if ($survey['Latest Date']['year']) {echo $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];} ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Terminus Ante Quem</td>
-							<td><?php echo $survey['Terminus Ante Quem']; ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
 						</tr>
 						
 						<tr>
-							<td>Terminus Post Quem</td>
-							<td><?php echo $survey['Terminus Post Quem']; ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Survey Conditions</td>
-							<td><?php echo $survey['Survey Conditions']; ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Excavation Stratigraphy</td>
-							<td><?php echo $survey['Excavation Stratigraphy']; ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 						
 						<tr>
-							<td>Transformation</td>
-							<td><?php echo $survey['Transformation']; ?></td>
+							<td>Metadata Title</td>
+							<td>Metadata Information</td>
 						</tr>
 					</table>
-					<?php } ?>
 					
 				</div>
 				
@@ -535,7 +538,8 @@
 </div>
 
 <script>
-	  function GetNewResource(id) {
+	var kid = "<?php echo $kid; ?>";
+	function GetNewResource(id) {
 	  	image = document.getElementById('PageImage')
 	  	image.src = 'http://media3.giphy.com/media/nZQIwSpCXFweQ/giphy.gif';
 	  	image.style.height = '100%';
@@ -547,10 +551,14 @@
 		  url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
 		  type: 'GET',
 		  success: function(res) {
-			document.getElementById('PageImage').src = res;
+			//document.getElementById('PageImage').src = res;
+			res = JSON.parse(res);
+			kid = res['kid'];
+			//console.log(res['kid']);
+			document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
 		  }
 		});
-	  }
+	}
 </script>
 
 <!-- Give the resource array to the client-side code -->
@@ -601,13 +609,14 @@
 			
 			if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '') {
 				var formdata = {
-					kid: "<?php echo $kid; ?>",
+					kid: kid,
+					resource_kid: "<?php echo $resource['kid']; ?>",
 					resource_name: "<?php echo $resource['Resource Identifier']; ?>",
 					reason: $("#flagReason").val(),
 					explanation: $("#flagExplanation").val(),
 					status: "pending"				
 				}
-				
+								
 				$.ajax({
 					url: "<?php echo Router::url('/', true); ?>resources/flags/add",
 					type: "POST",
