@@ -4,189 +4,213 @@
     <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
 </div>
 
-
-<!-- Horizontal Menu -->
-<!-- <div id="searchCriteriaWrapper">
-	<div class="searchCriteriaItem"><a class="search-type" href="#">Season Title</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Type</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Title</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Creator</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Scan Creator</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">User</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">ID</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Modified</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Keyword</a></div>
-    <div class="searchCriteriaItem"><a class="search-type" href="#">Filetype</a></div>
-  <span class="stretcher"></span>
-</div> -->
-
+<a name="searchJump"></a>
 <div id="searchBox">
-	<!-- <div class="VS-search">
-			<div class="VS-search-box-wrapper VS-search-box">
-				<span class="VS-icon VS-icon-search"></span>
-				<div class="VS-search-inner">
-					<div class="search_input not_selected not_editing"><input type="text" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
-						<div class="VS-input-width-tester VS-interface" style="opacity: 0; top: -9999px; left: -9999px; position: absolute; white-space: 								nowrap;">	
-						</div>
-					</div>
-				</div>
-			</div>
-	</div> -->
 	<div class="searchIcon"></div>
-	<input type="text" class="searchBoxInput">
+		<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
 </div>
+
 
 <div id="advanced">
 	<a class="advancedSearch" href="#">Advanced Search</a>
 </div>
 
-<!-- <div class="search-help" style="display:none">
-  <div class="search-help-arrow"></div>
-  <a class="search-help-close">close</a>
-  <div class="tips">
-    Use search facets to narrow down results. For example, 
-    <a href='type%3A%20"Photograph"'>type: Photograph</a>
-  </div>
-  <ul class="terms">
-    <li>collection</li>
-    <li>comment</li>
-    <li>filename</li>
-    <li>filetype</li>
-    <li>modified</li>
-  </ul>
-  <ul class="definitons">
-    <li>Filter by collection name</li>
-    <li>Filter by text in a resource comment</li>
-    <li>Filter by the original filename</li>
-    <li>Filter by the file type (e.g. pdf, jpeg, png)</li>
-    <li>Filter by last modified date</li>
-  </ul>
-  <ul class="terms">
-    <li>keyword</li>
-    <li>title</li>
-    <li>type</li>
-    <li>uploaded</li>
-    <li>user</li>
-  </ul>
-  <ul class="definitons">
-    <li>Filter by keyword</li>
-    <li>Filter by resource title</li>
-    <li>Filter by resource type (e.g. Notebook, Photograph)</li>
-    <li>Filter by uploaded date</li>
-    <li>Filter by uploader</li>
-  </ul>
-  <div>
-    For more search tips, see the <a href="../help/searching">Search</a> help page.
-  </div>
-</div> -->
-
 <div id="search-results-wrapper">
-  <div id="search-actions" class="search-toolbar">
-    <div id="action-buttons" class="btn-group">
-    {% if user.loggedIn %}
-      <div id="collection-buttons" class="btn-group pull-left">
-        <button id="test-btn" class="btn no-rounded needs-resource disabled"
-           data-toggle="dropdown"><i class="icon-book"></i> Collection
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a id="collection-btn">Create new collection...</a></li>
-          <li><a id="collection-add-btn">Add to existing collection...</a></li>
-          <li><a id="bookmark-btn">Add to bookmarks</a></li>
-        </ul>
-      </div>
-      <button id="keyword-btn" class="btn needs-resource disabled" rel="tooltip"
-        title="Keyword the selected results" data-placement="bottom">
-        <i class="icon-tag"></i> Keyword
-      </button>
-      <button id="attribute-btn" class="btn needs-resource no-rounded disabled" 
-        rel="tooltip" title="Edit the attributes of the selected results" 
-        data-placement="bottom">
-        <i class="icon-pencil"></i> Edit
-      </button>
-      <button id="flag-btn" class="btn needs-resource disabled" rel="tooltip"
-        title="Flag the selected results" data-placement="bottom">
-        <i class="icon-flag"></i> Flag
-      </button>
-      <div id="advanced-buttons" class="btn-group pull-left">
-        <button id="advanced-btn" class="btn needs-resource no-rounded disabled" 
-          rel="tooltip" style="border-left:none" data-toggle="dropdown">
-          <i class="icon-cog"></i>
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          {% if user.role != "Researcher" %}
-          <li><a id="access-btn">Set Access...</a></li>
-          <li class="divider"></li>
-          {% endif %}
-          <li><a id="rethumb-btn">Redo thumbnail</a></li>
-          <li><a id="repreview-btn">Redo preview</a></li>
-          <li><a id="split-btn">Split PDF</a></li>
-          {% if user.role == "Admin" %}
-          <li class="divider"></li>
-          <li><a id="delete-btn">Delete...</a></li>
-          <li class="divider"></li>
-          <li><a id="solr-btn">Queue SOLR index</a></li>
-          {% endif %}
-        </ul>
-      </div>
-    {% else %}
-      <div style="height:28px"></div>
-    {% endif %}
-    </div>
+	<div class="SearchBar">
+		<div id="search-actions" class="search-toolbar">
+			<div id="sites-buttons" class="btn-group actions-left">
+		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      	Sites
+		      	<span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="open-btn">Isthmia&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Polis&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		    <div id="seasons-buttons" class="btn-group actions-left">
+		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      	Season
+		      	<span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="open-btn">Option 1&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		    <div id="resources-buttons" class="btn-group actions-left">
+		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      	Resource Type
+		      	<span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="open-btn">Drawing&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Inventory Card&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">Map&nbsp;</a></li>
+		         <li><a class="sort-btn" id="open-btn">Notebook&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Notebook Page&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">Photograph&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">Report&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		    <div id="author-buttons" class="btn-group actions-left">
+		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      	Author
+		      	<span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="open-btn">Option 1&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		    <div id="data-buttons" class="btn-group actions-left">
+		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      	Data
+		      	<span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="open-btn">Option 1&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
+		      </ul>
+		    </div>
 
-    <!-- <div id="view-buttons" class="btn-group actions-right">
-      <button id="grid-btn" class="btn notactive active">
-        <i class='icon-th-large'></i> Grid
-      </button>
-      <button id="list-btn" class="btn notactive">
-        <i class='icon-th-list'></i> List
-      </button>
-    </div> -->
-
-    <div id="sort-buttons" class="btn-group actions-right">
-      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-        Sort by <span id="sort-by">title</span>
-        <span class="pointerDown sort-arrow"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="sort-btn" id="sort-title-btn">title&nbsp;
-          <i class="icon-ok"></i></a></li>
-        <li><a class="sort-btn" id="sort-modified-btn">modified&nbsp;</a></li>
-        <li><a class="sort-btn" id="sort-created-btn">created&nbsp;</a></li>
-        <li class="divider"></li>
-        <li><a class="dir-btn" id="dir-asc-btn">ascending&nbsp;
-          <i class="icon-ok"></i></a></li>
-        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
-      </ul>
-    </div>
-    <div id="open-buttons" class="btn-group actions-right">
-      <button id="open-btn" class="btn needs-resource disabled" rel="tooltip"
-        title="Open selected results" data-placement="bottom">Open</button>
-      <button class="btn needs-resource disabled dropdown-toggle" 
-        data-toggle="dropdown">
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a id="open-btn">In separate windows</a></li>
-        <li><a id="open-colview-btn">In a collection view</a></li>
-      </ul>
-    </div>
-    <div id="export-buttons" class="btn-group actions-right" style="margin-right:30px">
-      <button id="export-btn" class="btn dropdown-toggle needs-resource disabled" 
-        data-toggle="dropdown">
-        <i class="icon-download-alt"></i> Export
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a id="download-btn">Download</a></li>
-        <li><a id="zipped-btn">Download as zipfile</a></li>
-      </ul>
-    </div>
+			<div id="options-buttons" class="btn-group actions-right">
+		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      	Options
+		      	<span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="open-btn">In separate windows&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">In a collection view&nbsp;</a></li>
+		        <li class="divider"></li>
+		        <li><a class="sort-btn" id="open-btn">Download&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		    <div id="view-buttons" class="btn-group actions-right">
+		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		        <span id="sort-by">view</span>
+		        <span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="sort-title-btn">simple&nbsp;
+		          <i class="icon-ok"></i></a></li>
+		        <li><a class="sort-btn" id="sort-modified-btn">detailed&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		    <div id="sorting-buttons" class="btn-group actions-right">
+		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		        Sort by
+		        <span class="pointerDown sort-arrow"></span>
+		      </button>
+		      <ul class="dropdown-menu">
+		        <li><a class="sort-btn" id="sort-title-btn">title&nbsp;
+		          <i class="icon-ok"></i></a></li>
+		        <li><a class="sort-btn" id="sort-modified-btn">modified&nbsp;</a></li>
+		        <li><a class="sort-btn" id="sort-created-btn">created&nbsp;</a></li>
+		        <li class="divider"></li>
+		        <li><a class="dir-btn" id="dir-asc-btn">ascending&nbsp;
+		          <i class="icon-ok"></i></a></li>
+		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
+		      </ul>
+		    </div>
+		    
+		</div>
+	</div>
+  <div id="search-results">
+	  <ul class="flex-container">
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">1</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">2</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">3</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">4</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">5</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">6</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">7</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">8</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">9</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">10</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">11</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+	  		<div class="resource-item-container">
+		  		<li class="flex-item">12</li>
+		  		<div class="resource-title">Resource Title</div>
+		  		<div class="resource-type">Resource Type</div>
+		  	</div>
+		</ul>
   </div>
-  <div id="search-results"></div>
+  
   <div id='search-bottom-bar'>
+	  <div id="search-actions" class="search-toolbar">
+		  <div id="items-per-pages-buttons" class="btn-group actions-left">
+			      <button id="items-per-page-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+			      	20 Items per Page
+			      	<span class="pointerDown sort-arrow"></span>
+			      </button>
+			      <ul class="dropdown-menu">
+			        <li><a class="sort-btn" id="open-btn">20 Items&nbsp;</a></li>
+			        <li><a class="sort-btn" id="open-colview-btn">40 Items&nbsp;</a></li>
+			        <li><a class="sort-btn" id="open-btn">60 Items&nbsp;</a></li>
+			      </ul>
+			</div>
+			<div id="search-again">
+				<a class="search-again-link" href="#" onclick="movePage()">Search again</a>
+			</div>
+	  </div>
     <div id="search-pagination"></div>
+    
   </div>
 </div>
 
@@ -194,14 +218,32 @@
   arcs.searchView = new arcs.views.search.Search({
     el: $('.wrap')
   });
+   
+   function toggle_search_visibility() {
+       var e = document.getElementById("search-results-wrapper");
+       if(e.style.visibility == 'hidden')
+       		console.log("hi");
+	   		e.style.visibility = 'visible';
+    }
     
-    $( '.dropdown-toggle' ).click(function() {
-        $( '.sort-arrow' ).toggleClass(  'pointerUp'  );
+    function movePage() {
+	    console.log("hiiiiiiGUH");
+	    window.location.hash = "searchJump";
+	    }
+    
+    $(document).ready(function () {
+    $("li").click(function () {
+        $('li > ul').not($(this).children("ul")).hide();
+        $(this).children("ul").toggle();
     });
-    
-    $( window ).click(function() {
-		if ( $( '#sort-buttons' ).hasClass( 'open' ) == false && $( '.sort-arrow' ).hasClass( 'pointerUp' ) ) {
-			$( '.sort-arrow' ).removeClass( 'pointerUp' );
-		}
 	});
+	
+	$(".searchBoxInput").keyup(function (e) {
+    if (e.keyCode === 13) {
+        console.log("Hiiii");
+        toggle_search_visibility();
+    }
+});
+    
+ 
 </script>
