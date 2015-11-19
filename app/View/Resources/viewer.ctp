@@ -536,11 +536,17 @@
 
 <script>
 	  function GetNewResource(id) {
+	  	image = document.getElementById('PageImage')
+	  	image.src = 'http://media3.giphy.com/media/nZQIwSpCXFweQ/giphy.gif';
+	  	image.style.height = '100%';
+	  	image.style.width = '100%';
+	  	setTimeout(function(){
+		    console.log("See the loader? I'm waiting.");
+		}, 10000);
 		return $.ajax({
 		  url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
 		  type: 'GET',
 		  success: function(res) {
-			console.log("Hi hannah", res);
 			document.getElementById('PageImage').src = res;
 		  }
 		});
