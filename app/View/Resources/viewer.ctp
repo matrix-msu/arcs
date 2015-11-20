@@ -541,7 +541,7 @@
 	var kid = "<?php echo $kid; ?>";
 	function GetNewResource(id) {
 	  	image = document.getElementById('PageImage')
-	  	image.src = 'http://media3.giphy.com/media/nZQIwSpCXFweQ/giphy.gif';
+	  	image.src = '../img/arcs-preloader.gif';
 	  	image.style.height = '100%';
 	  	image.style.width = '100%';
 	  	setTimeout(function(){
