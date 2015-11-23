@@ -24,7 +24,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="open-btn">Isthmia&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">Isthmia&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Polis&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
 		      </ul>
@@ -36,7 +36,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="open-btn">Option 1&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
@@ -48,7 +48,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="open-btn">Drawing&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">Drawing&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Inventory Card&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-btn">Map&nbsp;</a></li>
 		         <li><a class="sort-btn" id="open-btn">Notebook&nbsp;</a></li>
@@ -64,7 +64,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="open-btn">Option 1&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
@@ -76,7 +76,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="open-btn">Option 1&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
@@ -88,7 +88,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="open-btn">In separate windows&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">In separate windows&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">In a collection view&nbsp;</a></li>
 		        <li class="divider"></li>
 		        <li><a class="sort-btn" id="open-btn">Download&nbsp;</a></li>
@@ -102,7 +102,7 @@
 		        <span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="sort-title-btn">simple&nbsp;
+		        <li><a class="sort-btn active" id="sort-title-btn">simple&nbsp;
 		          <i class="icon-ok"></i></a></li>
 		        <li><a class="sort-btn" id="sort-modified-btn">detailed&nbsp;</a></li>
 		      </ul>
@@ -114,7 +114,7 @@
 		        <span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn" id="sort-title-btn">title&nbsp;
+		        <li><a class="sort-btn active" id="sort-title-btn">title&nbsp;
 		          <i class="icon-ok"></i></a></li>
 		        <li><a class="sort-btn" id="sort-modified-btn">modified&nbsp;</a></li>
 		        <li><a class="sort-btn" id="sort-created-btn">created&nbsp;</a></li>
@@ -133,21 +133,30 @@
 		  		<li class="flex-item">1</li>
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
+		  		<div class="icon-annotate"></div>
 		  	</div>
 	  		<div class="resource-item-container">
 		  		<li class="flex-item">2</li>
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
+		  		<div class="icon-annotate"></div>
+		  		<div class="icon-flag"></div>
 		  	</div>
 	  		<div class="resource-item-container">
 		  		<li class="flex-item">3</li>
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
+		  		<div class="icon-flag"></div>
+		  		<div class="search-icon-edit"></div>
+		  		<div class="icon-in-collection"></div>
+		  		<div class="icon-discussed"></div>
+		  		<div class="icon-tagged"></div>
 		  	</div>
 	  		<div class="resource-item-container">
 		  		<li class="flex-item">4</li>
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
+		  		<div class="icon-flag search-icon-edit"></div>
 		  	</div>
 	  		<div class="resource-item-container">
 		  		<li class="flex-item">5</li>
@@ -205,6 +214,13 @@
 			        <li><a class="sort-btn" id="open-btn">60 Items&nbsp;</a></li>
 			      </ul>
 			</div>
+			<ul class="pagination">
+				<li><a href="#">1</a></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+			</ul>
 			<div id="search-again">
 				<a class="search-again-link" href="#" onclick="movePage()">Search again</a>
 			</div>
