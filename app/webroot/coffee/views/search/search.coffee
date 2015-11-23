@@ -18,13 +18,13 @@ class arcs.views.search.Search extends Backbone.View
     @setupSearch()
 
     # Init our sub-view for actions.
-    @actions = new arcs.views.search.Actions
-      el: @$el
-      collection: @search.results
+    #@actions = new arcs.views.search.Actions
+    #  el: @$el
+    #  collection: @search.results
 
     # Setup our Router
-    @router = new arcs.routers.Search
-      search: @search
+    #@router = new arcs.routers.Search
+    #  search: @search
     
     # Start Backbone.history
     Backbone.history.start
@@ -32,10 +32,10 @@ class arcs.views.search.Search extends Backbone.View
       root: @options.url
 
     # Search unless the Router already delegated it.
-    unless @router.searched 
-      @search.run null,
-        order: @options.sort
-        direction: @options.sortDir
+    #unless @router.searched 
+    #  @search.run null,
+    #    order: @options.sort
+    #    direction: @options.sortDir
 
     # Set up some event bindings.
     @search.results.on 'change remove', @render, @
@@ -44,7 +44,7 @@ class arcs.views.search.Search extends Backbone.View
     # <ctrl>-a to select all
     arcs.keys.map @,
       'ctrl+a': @selectAll
-      'enter': @search
+      #'return': @search()
       '?': @showHotkeys
       t: @scrollTop
 
@@ -89,7 +89,7 @@ class arcs.views.search.Search extends Backbone.View
   setupSearch: ->
     @scrollReady = false
     @search = new arcs.utils.Search 
-      container: $('.VS-search')
+      container: $('search-box')
       order: @options.sort
       run: false
       loader: true
@@ -232,33 +232,87 @@ class arcs.views.search.Search extends Backbone.View
 	
   addFacet: (e) ->
     e.preventDefault() 
-    @search.vs.searchBox.addFacet(e.target.text,'',10)	
+    @search.vs.searchBox.addFacet(e.target.text,'',10)
+  
+  #Activates on enter press: search
+  $ ->   
+    $("#search-container").submit (e) ->
+      e.preventDefault()
+      #resources search
+      val = $("#search-box").val()
+      resources = new Promise((resolve, reject) ->
+        resourcequery = encodeURIComponent("(Type,like,#{val}),or,(Resource Identifier,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+        req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736", (response) ->
+          resolve(response)
+      )
+      projects = new Promise((resolve, reject) ->
+        projectquery = encodeURIComponent("(Country,like,#{val})")
+        req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734", (response) ->
+          resolve(response)
+      )
+      seasons = new Promise((resolve, reject) ->
+        seasonquery = encodeURIComponent("(Title,like,#{val}),or,(Description,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+        req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735", (response) ->
+          resolve(response)
+      )
+      excavations = new Promise((resolve, reject) ->
+        excavationquery = encodeURIComponent("(Name,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+        req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740", (response) ->
+          resolve(response)
+      )
+      observations = new Promise((resolve, reject) ->
+        observationquery = encodeURIComponent("(Monument Classification,like,#{val}),or,(Monument.Type,like,#{val}),or,(Monument.Material,like,#{val}),or,(Monument.Technique,like,#{val}),or,(Monument.Period,like,#{val}),or,(Monument.Terminus Ante Quem,like,#{val}),or,(Monument.Terminus Post Quem,like,#{val})")
+        req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739", (response) ->
+          resolve(response)
+      )
+      
+      totalResults = {}
+      Promise.all([resources,projects,seasons,excavations,observations]).then((values) ->
+        #console.log(values)
+        
+        for item in values
+          Array::push.apply totalResults, item.results
+        #console.log(totalResults)
+        Search.prototype._render results: totalResults
+        $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
+      )
+      
+        
+      #projects search
+      #resourcequery = encodeURIComponent("(Type,like,Pho),or,(Type,like,Note)")
+      #$.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=734", (response) ->
+      #  totalResults.push.apply(totalResults, response.results)
+      #  console.log(totalResults)
+      #  console.log(response)
+        
+      
+      #Search.prototype._render results: totalResults
+      #$('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
+      
+      
+      #query = encodeURIComponent("Type,like," + $("#search-box").val())
+      #console.log(query)
+      #sid = 736
+      #$.getJSON arcs.baseURL + "resources/search?n=12&q=#{query}&sid=#{sid}", (response) ->
+      #  Search.prototype._render results: response.results
+      #  $('#search-pagination').html arcs.tmpl('search/paginate', results: response)
 
-  #USELESS?
-  #search: (e) ->
-  #  e.preventDefault()
-  #  
-  #  query = [e.target.text, "like", $(".VS-search-inner").val()]
-  #  console.log(query)
-  #  @search.run query,
-  #    order: 'type'
-  #    direction: @options.sortDir
-
-  # Render the results.
-  render: ->
-    @_render results: @search.results.toJSON()
-    data = @search.results.query
-    data.page = @search.page
-    data.query = encodeURIComponent @search.query
-    $('#search-pagination').html arcs.tmpl('search/paginate', results: data)
+  # Render the results. USELESS???
+  #render: ->
+  #  @_render results: @search.results.toJSON()
+  #  data = @search.results.query
+  #  data.page = @search.page
+  #  data.query = encodeURIComponent @search.query
+  #  $('#search-pagination').html arcs.tmpl('search/paginate', results: data)
 
   # Actually render the results. Can append or replace.
   # If there are no results, adds a 'No Results' message.
   _render: (results, append=false) ->
     $results = $('#search-results')
     template = if @options.grid then 'search/grid' else 'search/list'
-    results = @search.results.query.results
-    console.log(@search.results.query.results)
-    $results[if append then 'append' else 'html'] arcs.tmpl(template, results: @search.results.query.results)
-    if not @search.results.query.total > 0
+    console.log(results)
+    results = results.results
+    console.log(results)
+    $results[if append then 'append' else 'html'] arcs.tmpl(template, results: results)
+    if not results.length > 0
       $results.html "<div id='no-results'>No Results</div>"
