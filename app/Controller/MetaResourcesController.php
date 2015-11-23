@@ -14,6 +14,9 @@
 class MetaResourcesController extends AppController {
 
     public function beforeFilter() {
+		if ($this->request->accepts('application/json')) {
+			$this->RequestHandler->renderAs($this, 'json');
+		}
         parent::beforeFilter();
         $this->Auth->allow('view');
         $model = $this->modelClass;
@@ -74,10 +77,10 @@ class MetaResourcesController extends AppController {
      * @param string $id
      */
     public function view($id) {
-        if (!$this->request->is('get')) throw new MethodNotAllowedException();
+        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
         $model = $this->modelClass;
         $result = $this->$model->findById($id);
-        if (!$result) throw new NotFoundException(); 
+        //if (!$result) throw new NotFoundException(); 
         $this->json(200, $result);
     }
 
