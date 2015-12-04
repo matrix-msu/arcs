@@ -1,4 +1,5 @@
 <?php
+App::uses('MetaResourcesController', 'Controller');
 /**
  * Metadata controller.
  *
@@ -7,14 +8,14 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-class MetadataController extends AppController {
-    $name = 'Metadata';
+class MetadataController extends MetaResourcesController {
+    public $name = 'Metadata';
 
     public function beforeFilter() {
         parent::beforeFilter();
-        if (!$this->request->is('ajax')) {
-            return $this->redirect('/400');
-        }
+        // if (!$this->request->is('ajax')) {
+            // return $this->redirect('/400');
+        // }
     }
 
     public function add() {

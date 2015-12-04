@@ -79,7 +79,10 @@ class MetaResourcesController extends AppController {
     public function view($id) {
         //if (!$this->request->is('get')) throw new MethodNotAllowedException();
         $model = $this->modelClass;
-        $result = $this->$model->findById($id);
+        //$result = $this->$model->findById($id);
+		$result = $this->$model->find('first', array(
+			'conditions' => array('resource_id' => $id)
+		));
         //if (!$result) throw new NotFoundException(); 
         $this->json(200, $result);
     }

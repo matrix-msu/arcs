@@ -127,9 +127,9 @@
     Router::connect('/api/search',
         array('controller' => 'search', 'action' => 'resources')
     );
-    Router::connect('/api/metadata/*',
-        array('controller' => 'resources', 'action' => 'metadata')
-    );
+    // Router::connect('/api/metadata/*',
+        // array('controller' => 'resources', 'action' => 'metadata')
+    // );
     Router::connect('/api/resources/keywords/*',
         array('controller' => 'resources', 'action' => 'keywords')
     );
