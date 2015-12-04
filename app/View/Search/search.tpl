@@ -7,7 +7,7 @@
 <a name="searchJump"></a>
 <div id="searchBox">
 	<div class="searchIcon"></div>
-		<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+			<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
 </div>
 
 
@@ -128,8 +128,8 @@
 		</div>
 	</div>
   <div id="search-results">
-	  <ul class="flex-container">
-	  		<div class="resource-item-container">
+	  <!--<ul class="flex-container">
+	  		<!--<div class="resource-item-container">
 		  		<li class="flex-item">1</li>
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
@@ -197,8 +197,8 @@
 		  		<li class="flex-item">12</li>
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-		</ul>
+		  	</div>-->
+		</ul>-->
   </div>
   
   <div id='search-bottom-bar'>
@@ -255,11 +255,11 @@
 	});
 	
 	$(".searchBoxInput").keyup(function (e) {
-    if (e.keyCode === 13) {
-        console.log("Hiiii");
-        toggle_search_visibility();
-    }
-});
+		if (e.keyCode === 13) {
+			console.log("Hiiii");
+			toggle_search_visibility();
+		}
+	});
     
  
 </script>
