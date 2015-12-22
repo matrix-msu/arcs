@@ -150,7 +150,7 @@
         'users',
         'flags',
         'jobs',
-        'metadata'
+        'metadata',
     );
 
     Router::mapResources($restful);

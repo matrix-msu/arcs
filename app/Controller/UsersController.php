@@ -46,7 +46,7 @@ class UsersController extends AppController
         if (!($this->request->is('post') && $this->request->data))
             return $this->json(400);
         if ($this->Access->isAdmin())
-            $this->User->permit('role');
+            $this->User->permit('isAdmin');
         if (!$this->User->add($this->request->data))
             return $this->json(400);
         $this->json(201, $this->User->findById($this->User->id));
@@ -59,7 +59,7 @@ class UsersController extends AppController
     {
         if (!($this->request->is('post') && $this->request->data))
             return $this->json(400);
-        $this->User->permit('role');
+        $this->User->permit('isAdmin');
         $response["message"] = [];
         $response["status"] = $this->User->add($this->request->data);
         if ($response["status"] == false) {
@@ -94,7 +94,7 @@ class UsersController extends AppController
             return $this->json(403);
         # Only admins can change user roles.
         if ($this->Access->isAdmin())
-            $this->User->permit('role');
+            $this->User->permit('isAdmin');
         // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
         if (!$this->User->save($this->request->data)) {
             // throw new InternalErrorException();
@@ -224,7 +224,7 @@ class UsersController extends AppController
         if ($username == null || !$user || $user['status'] != 'unconfirmed') {throw new BadRequestException();}
         $this->User->id = $user['id'];
         $this->User->saveField('status', "pending");
-        $admins = $this->User->find('all', array('conditions' => array('User.role' => 'Admin')));
+        $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
         foreach ($admins as $admin) {
             $this->pendingUserEmail($admin, $user['name']);
         }
@@ -250,13 +250,13 @@ class UsersController extends AppController
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
         $data = $this->request->data;
 
-        if (!($data && $data['email'] && !is_null($data['role'])))
+        if (!($data && $data['email']))
             throw new BadRequestException();
         $token = $this->User->getToken();
-        $this->User->permit('activation', 'role');
+        $this->User->permit('activation');
         $this->User->add(array(
             'email' => $data['email'],
-            'role' => $data['role'],
+            'isAdmin' => $data['isAdmin'],
             'activation' => $token
         ));
         /* $this->Job->enqueue('email', array(
@@ -279,13 +279,16 @@ class UsersController extends AppController
     {
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
         $data = $this->request->data;
-        if (!($data && $data['email'] && !is_null($data['role'])))
+        if (!($data && $data['email']))
             throw new BadRequestException();
         $token = $this->User->getToken();
-        $this->User->permit('activation', 'role');
+        $this->User->permit('activation');
+        $this->User->permit('isAdmin');
+		
+		$name = $data['firstName'] . " " . $data['lastName'];
 
         $response["message"] = [];
-        $response["status"] = $this->User->add(array('email' => $data['email'], 'role' => $data['role'], 'activation' => $token, 'status' => "invited"));
+        $response["status"] = $this->User->add(array('name' => $name, 'isAdmin' => $data['isAdmin'], 'email' => $data['email'], 'activation' => $token, 'status' => "invited"));
         if ($response["status"] == false) {
             $response["message"] = $this->User->invalidFields();
             return $this->json(400, ($response));
@@ -306,13 +309,13 @@ class UsersController extends AppController
                 $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
                 $response = json_decode($response, true);
                 if ($response['success'] === true) {
-                    $this->User->permit('role', 'last_login');
+                    $this->User->permit('isAdmin', 'last_login');
                     if ($this->User->add(array(
                         'name' => $this->request->data['User']['name'],
                         'username' => $this->request->data['User']['usernameReg'],
                         'email' => $this->request->data['User']['email'],
                         'password' => $this->request->data['User']['passwd'],
-                        'role' => "Researcher",
+                        'isAdmin' => 0,
                         'last_login' => null,
 						'status' => 'pending'  // This needs to stay pending
                     ))) {
@@ -338,7 +341,7 @@ class UsersController extends AppController
                         // $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         // $this->confirmUserEmail($user);
 						// $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
-                        $this->Session->setFlash("Thank you for registering.", 'flash_success');
+                        $this->Session->setFlash("Thank you for registering.  You will be notified when an administrator processes your request.", 'flash_success');
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";
@@ -380,6 +383,7 @@ class UsersController extends AppController
         }
 
         $this->set('email', $user['email']);
+        $this->set('name', $user['name']);
 
 		if (isset($this->data['User'])) {
 			//Check if passwords match

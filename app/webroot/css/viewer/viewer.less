@@ -376,6 +376,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 #viewer-window {
+	position: relative;
 	float: left;
 	width: 100%;
 	height: 87.5%;
@@ -530,6 +531,7 @@ input[type=range]:focus::-ms-fill-upper {
 	color: #fff;
 }
 
+/** Flag **/
 
 #flagModal .flagModalHeader {
 	color: #fff;
@@ -636,4 +638,17 @@ input[type=range]:focus::-ms-fill-upper {
 	left:       0; 
 	position:   fixed; 
 	z-index: 999;
+}
+
+/** Annotate **/
+
+.annotateHelp {
+	position: absolute;
+	right: 5px;
+	display: none;
+}
+
+.annotationHelpOk {
+	display: inline-block;
+	cursor: pointer;
 }

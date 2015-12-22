@@ -1,3 +1,7 @@
+<?php
+//$this->Html->script('annotation.js', array('inline' => false));
+?>
+
 <div class="viewers-container">
 
 <div class="modalBackground">
@@ -30,7 +34,7 @@
 			<h3><?php echo $resource['Title']; ?></h3>
 			
 			<div class="tools">
-				<a href="#">
+				<a id="annotate-new-btn" class="annotate" href="#">
 					<span class="content">
 						Annotate
 					</span>
@@ -54,7 +58,7 @@
 	</div>
 	
 	<div id="viewer-window">
-		
+		<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>
 		<img src="<?php echo $resource['thumb'] ?>" id="PageImage" >
 		
 	</div>
@@ -551,10 +555,8 @@
 		  url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
 		  type: 'GET',
 		  success: function(res) {
-			//document.getElementById('PageImage').src = res;
 			res = JSON.parse(res);
 			kid = res['kid'];
-			//console.log(res['kid']);
 			document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
 		  }
 		});
@@ -631,6 +633,14 @@
 					
 				});
 			}
+		});
+		
+		$( ".annotate" ).click(function(){
+			$( ".annotateHelp" ).show();
+		});
+		
+		$( ".annotationHelpOk" ).click(function(){
+			$( ".annotateHelp" ).hide();
 		});
 	});
 </script>

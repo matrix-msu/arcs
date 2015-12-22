@@ -5,31 +5,31 @@
     <?php } else {
         echo $this->Form->create('User', array('action' => 'registerByInvite/'.$activation));?>
         <h2>Create Your Account</h2>
-        <div class="reg-description">Almost done. We just need your name, a username, and a password for your new account.</div>
-        <br>
+        <div class="reg-description">Almost done. We just need a username and a password for your new account.</div>
         <div class="account span-6">
         
-            <span>Your Email: </span><?php echo $email ?><br>
-			<div class="user-reg-div">
-            	<?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Your Full Name')); ?>
-            </div>
-            <div class="user-reg-div-right">
+            <h3><?php echo $name; ?></h3>
+            <?php echo $email ?><br>
+			<br>
+            <div>
             	<?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Your New Username')); ?>
             </div>
-            <div class="user-reg-input">
+            <div>
             	<?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'New Password')); ?>
             </div>
-            <div class="user-reg-input-right">
+            <div>
             	<?php echo $this->Form->input('password_confirm',
                 	array('label' => false, 'placeholder' => 'Confirm Password', 'type' => 'password')); ?>
             </div>
-			<?php echo $this->Form->hidden('activation',
-                array('value' => $activation)); ?>
-            <br>
+			<?php 
+				echo $this->Form->hidden('activation',
+                array('value' => $activation)); 
+			?>
             <?php echo $this->Form->submit('Create Account', array('class' => 'user-reg-btn btn btn-success')); ?>
         </div>
         <?php echo $this->Form->end();
     } ?>
+	<br>
 </div>
 
 
