@@ -220,13 +220,18 @@ class UsersController extends AppController
     public function confirm_user($username = null)
     {
         $user = $this->User->findByRef($username);
-        if ($username == null || !$user || $user['status'] != 'unconfirmed') {throw new BadRequestException();}
+        if ($username == null || !$user || $user['status'] != 'unconfirmed') throw new BadRequestException();
+
+        // change status of user
         $this->User->id = $user['id'];
         $this->User->saveField('status', "pending");
+
+        // notify admins of the new user
         $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
         foreach ($admins as $admin) {
             $this->pendingUserEmail($admin, $user['name']);
         }
+
         $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
         $this->redirect('/');
     }
@@ -316,15 +321,13 @@ class UsersController extends AppController
                         'password' => $this->request->data['User']['passwd'],
                         'isAdmin' => 0,
                         'last_login' => null,
-						'status' => 'pending'  // This needs to stay pending
+						'status' => 'unconfirmed'
                     ))) {
 
-                        // TODO: uncomment these lines and change default status to unconfirmed to implement the new sign up
-                        // $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        // $this->confirmUserEmail($user);
-						// $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
-                        
-                        $this->Session->setFlash("Thank you for registering.");
+                        $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
+                        $this->confirmUserEmail($user);
+						$this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
+
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";
@@ -342,7 +345,7 @@ class UsersController extends AppController
                     $this->redirect($this->referer());
                 }
             } else {
-                $this->Session->setFlash("Please do the reCaptcha.", 'flash_error');
+                $this->Session->setFlash("Please complete the reCaptcha.", 'flash_error');
                 $this->redirect($this->referer());
             }
         } else {
@@ -467,6 +470,7 @@ class UsersController extends AppController
         $this->User->flatten = false;
         $this->User->recursive = 1;
 
+        /*** Begin Getting User Information ***/
         $user = $this->User->find('first', array(
             'conditions' => array(
                 'OR' => array('User.username' => $ref, 'User.id' => $ref),
@@ -477,7 +481,26 @@ class UsersController extends AppController
         if ($ref == "" || !$user)
             throw new NotFoundException();
 
-        /*** Profile Picture ***/
+        $this->loadModel('Annotation');
+        $user['annotationsCount'] = $this->Annotation->find('count', array(
+            'conditions' => array('Annotation.user_username' => $user['username'])
+        ));
+        $this->loadModel('Comment');
+        $user['commentsCount'] = $this->Comment->find('count', array(
+            'conditions' => array('Comment.user_id' => $user['id'])
+        ));
+        $this->loadModel('Metadatum');
+        $user['metadataCount'] = $this->Metadatum->find('count', array(
+            'conditions' => array('Metadatum.user_username' => $user['username'])
+        ));
+        $now = new Datetime();
+        $created = new Datetime($user['created']);
+        $user['monthsCount'] = $created->diff($now)->m + ($created->diff($now)->y * 12);
+        $user['totalCount'] = $user['annotationsCount'] + $user['commentsCount'] + $user['metadataCount'] + $user['monthsCount'];
+        $user['activeSince'] = $created->format('F Y');
+        /*** End Getting User Information ***/
+
+        /*** Begin Profile Picture ***/
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
@@ -523,24 +546,7 @@ class UsersController extends AppController
         }
         /*** End Profile Picture ***/
 
-        $this->loadModel('Annotation');
-        $user['annotationsCount'] = $this->Annotation->find('count', array(
-            'conditions' => array('Annotation.user_username' => $user['username'])
-        ));
-        $this->loadModel('Comment');
-        $user['commentsCount'] = $this->Comment->find('count', array(
-            'conditions' => array('Comment.user_id' => $user['id'])
-        ));
-        $this->loadModel('Metadatum');
-        $user['metadataCount'] = $this->Metadatum->find('count', array(
-            'conditions' => array('Metadatum.user_username' => $user['username'])
-        ));
-        $now = new Datetime();
-        $created = new Datetime($user['created']);
-        $user['monthsCount'] = $created->diff($now)->m + ($created->diff($now)->y * 12);
-        $user['totalCount'] = $user['annotationsCount'] + $user['commentsCount'] + $user['metadataCount'] + $user['monthsCount'];
-        $user['activeSince'] = $created->format('F Y');
-
+        // set user and admin status
         $this->set('isAdmin', $this->Access->isAdmin());
         $this->set('user_info', $user);
     }
@@ -660,7 +666,7 @@ class UsersController extends AppController
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array('user' => $user, 'link' => $this->baseURL()))
+        $Email->viewVars(array('user' => $user, 'link' => "link"))
               ->emailFormat('html')
               ->template('pending_user', 'default')
               ->subject('ARCS New User Has Registered')
