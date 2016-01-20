@@ -15,7 +15,7 @@ class UsersController extends AppController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow('signup', 'special_login', 'register', 'confirm_user', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite');
+        $this->Auth->allow('crop', 'signup', 'special_login', 'register', 'confirm_user', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
@@ -98,7 +98,6 @@ class UsersController extends AppController
         // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
         if (!$this->User->save($this->request->data)) {
             // throw new InternalErrorException();
-            debug($this->validationErrors);
             return $this->json(500);
         }
         # Update the Auth Session var, if necessary.
@@ -319,29 +318,13 @@ class UsersController extends AppController
                         'last_login' => null,
 						'status' => 'pending'  // This needs to stay pending
                     ))) {
-                        // 'enctype' => 'multipart/form-data', 
-                        // <input type="file" name="user_image" /> <br>
-                        // if (isset($_FILES['user_image'])) {
-                        //     $uploads_path = Configure::read('uploads.path');
-                        //     if (getimagesize($_FILES['user_image']['tmp_name']) && $_FILES['user_image']['error'] == 0 && $_FILES['user_image']['size'] <= 500000) {
-                        //         $file_ext = strtolower(end(explode('.',$_FILES['user_image']['name'])));
-                        //         $uploadFile = "/matrix/dev/public_html/arcs/app/webroot/uploads/profileImages/" . $this->request->data['User']['usernameReg'] . ".";
-                        //         if (file_exists($uploadFile.$file_ext)) {
-                        //             unlink($uploadFile.$file_ext);
-                        //         }
-                        //         if (!move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
-                        //             debug("failure");
-                        //             $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
-                        //         }
-                        //     } else {
-                        //         $this->Session->setFlash("Failed to upload the image.", 'flash_error');
-                        //     }
-                        // }
 
+                        // TODO: uncomment these lines and change default status to unconfirmed to implement the new sign up
                         // $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         // $this->confirmUserEmail($user);
 						// $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly and will be notified when an administrator processes your request.", 'flash_success');
-                        $this->Session->setFlash("Thank you for registering.  You will be notified when an administrator processes your request.", 'flash_success');
+                        
+                        $this->Session->setFlash("Thank you for registering.");
                         $this->redirect($this->referer());
                     } else {
                         $error_message = "";
@@ -483,41 +466,141 @@ class UsersController extends AppController
     {
         $this->User->flatten = false;
         $this->User->recursive = 1;
+
         $user = $this->User->find('first', array(
             'conditions' => array(
                 'OR' => array('User.username' => $ref, 'User.id' => $ref),
             ),
             'order' => array('id' => 'DESC'),
-            'contain' => array(
-                'Resource' => array('limit' => 30),
-                'Annotation' => array('limit' => 30),
-                'Collection' => array('limit' => 30),
-                'Comment' => array('limit' => 30)
-            )
-        ));
+        ))['User'];
+
+        if ($ref == "" || !$user)
+            throw new NotFoundException();
+
+        /*** Profile Picture ***/
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
+
+        if ($this->request->is("post")) {
+            if (isset($_FILES['user_image'])) {
+                $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
+                $file_ext = strtolower(end(explode('.',$_FILES['user_image']['name'])));
+
+                if (!getimagesize($_FILES['user_image']['tmp_name'])) {
+                    $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
+                } elseif ($_FILES['user_image']['error'] > 0 ) {
+                    $errorOut = '';
+                    foreach ($_FILES['user_image']['error'] as $e)
+                        $errorOut .= "  " . $e;
+                    $this->Session->setFlash("Failed to upload the image." . $errorOut, 'flash_error');
+                } elseif ($_FILES['user_image']['size'] > 500000) {
+                    $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
+                } elseif (!in_array($file_ext, $vaildExtensions)) {
+                    $this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
+                } else {
+                    $uploadFile = $uploads_path . $user['username'] . ".";
+                    if (count(glob($uploadFile."*")) > 0) {
+                        foreach (glob($uploadFile."*") as $file) {
+                            unlink($file);
+                        }
+                    }
+                    if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
+                        $this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
+                        $this->redirect('/users/crop/' . $user["username"] . '/');
+                    } else {
+                        $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
+                        $this->redirect(["controller" => "user", "action" => "profile", $user["username"]]);
+                    }
+                }
+            }
+        }
+
+        // display profile picture on page by storing the image in '$user["profileImage"]'
+        $user["profileImage"] = NULL;
+        $profileImage = glob($uploads_path . $user['username'] . ".*");
+        if (count($profileImage)) {
+            $user["profileImage"] = $uploads_url . explode('/', $profileImage[0])[9];
+        }
+        /*** End Profile Picture ***/
+
         $this->loadModel('Annotation');
-        $user['User']['annotationsCount'] = $this->Annotation->find('count', array(
-            'conditions' => array('Annotation.user_username' => $user['User']['username'])
+        $user['annotationsCount'] = $this->Annotation->find('count', array(
+            'conditions' => array('Annotation.user_username' => $user['username'])
         ));
         $this->loadModel('Comment');
-        $user['User']['commentsCount'] = $this->Comment->find('count', array(
-            'conditions' => array('Comment.user_id' => $user['User']['id'])
+        $user['commentsCount'] = $this->Comment->find('count', array(
+            'conditions' => array('Comment.user_id' => $user['id'])
         ));
         $this->loadModel('Metadatum');
-        $user['User']['metadataCount'] = $this->Metadatum->find('count', array(
-            'conditions' => array('Metadatum.user_username' => $user['User']['username'])
+        $user['metadataCount'] = $this->Metadatum->find('count', array(
+            'conditions' => array('Metadatum.user_username' => $user['username'])
         ));
         $now = new Datetime();
-        $created = new Datetime($user['User']['created']);
-        $user['User']['monthsCount'] = $created->diff($now)->m + ($created->diff($now)->y * 12);
-        $user['User']['totalCount'] = $user['User']['annotationsCount'] + $user['User']['commentsCount'] + $user['User']['metadataCount'] + $user['User']['monthsCount'];
-        $user['User']['activeSince'] = $created->format('F Y');
+        $created = new Datetime($user['created']);
+        $user['monthsCount'] = $created->diff($now)->m + ($created->diff($now)->y * 12);
+        $user['totalCount'] = $user['annotationsCount'] + $user['commentsCount'] + $user['metadataCount'] + $user['monthsCount'];
+        $user['activeSince'] = $created->format('F Y');
 
-        if (!$user) {
-            throw new NotFoundException();
-        }
         $this->set('isAdmin', $this->Access->isAdmin());
         $this->set('user_info', $user);
+    }
+
+    /**
+     * Give users the options to crop profile image.
+     *
+     * @param string $ref username or id of an existing user
+     */
+    public function crop($ref)
+    {
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
+
+        // change picture with cropped version
+        if ($this->request->is('post') && $this->request->data('id')) {
+            $user = $this->User->findById($this->request->data('id'));
+
+            $imageData = $this->request->data('canvasData');
+            $filteredData = substr($imageData, strpos($imageData, ",")+1);
+            $unencodedData = base64_decode($filteredData);
+
+            $uploadFile = $uploads_path . $user['username'] . ".";
+            if (count(glob($uploadFile."*")) > 0) {
+                foreach (glob($uploadFile."*") as $file) {
+                    unlink($file);
+                }
+            }
+            debug($unencodedData);
+            debug($uploadFile);
+
+            $imageFile = fopen($uploadFile . "png", 'wb');
+            fwrite($imageFile, $unencodedData);
+            fclose($imageFile);
+
+            $this->Session->setFlash("Profile picture has successfully been cropped.", 'flash_success');
+            return;
+        }
+
+        $user = $this->User->findByRef($ref);
+
+        if ($ref == "" || !$user)
+            throw new NotFoundException();
+        if (!($user['id'] == $this->Auth->user('id') || $this->Access->isAdmin()))
+            throw new ForbiddenException();
+
+        // get current profile picture
+        $user["profileImage"] = NULL;
+        $profileImage = glob($uploads_path . $user['username'] . ".*");
+
+        // only grab the first image; there could be multiple images with same name and different extensions
+        if (count($profileImage) > 0) {
+            $user["profileImage"] = $uploads_url . explode('/', $profileImage[0])[9];
+        }
+
+        $this->set('isAdmin', $this->Access->isAdmin());
+        $this->set('user_info', $user);
+
+        $baseURL = $this->baseURL() . "/user/" . $user['username'] . "/";
+        $this->set("baseURL", $baseURL);
     }
 
     /**
