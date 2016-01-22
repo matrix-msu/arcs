@@ -504,29 +504,48 @@ class UsersController extends AppController
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
+        // For reference:
+        // $uploads_path = '/matrix/dev/public_html/arcs/app/webroot/uploads/profileImages/'
+        // $uploads_url = 'http://dev2.matrix.msu.edu/arcs/uploads/profileImages/'
+
         if ($this->request->is("post")) {
             if (isset($_FILES['user_image'])) {
                 $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
                 $file_ext = strtolower(end(explode('.',$_FILES['user_image']['name'])));
 
-                if (!getimagesize($_FILES['user_image']['tmp_name'])) {
+                if ($_FILES['user_image']['error'] > 0 ) {
+                    // check if php finds any errors
+                    $error    = $_FILES['user_image']['error'];
+                    $errorOut = "Unknown upload error.";
+                    if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini"; 
+                    elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"; 
+                    elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded"; 
+                    elseif ($error == 4) $errorOut = "No file was uploaded"; 
+                    elseif ($error == 6) $errorOut = "Missing a temporary folder"; 
+                    elseif ($error == 7) $errorOut = "Failed to write file to disk"; 
+                    elseif ($error == 8) $errorOut = "File upload stopped by extension";
+
+                    $this->Session->setFlash("Error: " . $errorOut, 'flash_error');
+                } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
+                    // check if image file exists
                     $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
-                } elseif ($_FILES['user_image']['error'] > 0 ) {
-                    $errorOut = '';
-                    foreach ($_FILES['user_image']['error'] as $e)
-                        $errorOut .= "  " . $e;
-                    $this->Session->setFlash("Failed to upload the image." . $errorOut, 'flash_error');
                 } elseif ($_FILES['user_image']['size'] > 500000) {
+                    // check if file size is extremely large
                     $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
                 } elseif (!in_array($file_ext, $vaildExtensions)) {
+                    // check if file extension is valid
                     $this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
                 } else {
+                    // try to upload the image.
                     $uploadFile = $uploads_path . $user['username'] . ".";
+
+                    // each user is allowed one profile picture
                     if (count(glob($uploadFile."*")) > 0) {
                         foreach (glob($uploadFile."*") as $file) {
                             unlink($file);
                         }
                     }
+
                     if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
                         $this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
                         $this->redirect('/users/crop/' . $user["username"] . '/');
@@ -539,10 +558,13 @@ class UsersController extends AppController
         }
 
         // display profile picture on page by storing the image in '$user["profileImage"]'
+        // pull image from the cropped folder
         $user["profileImage"] = NULL;
-        $profileImage = glob($uploads_path . $user['username'] . ".*");
-        if (count($profileImage)) {
+        $profileImage = glob($uploads_path . $user['username'] . '.*');
+
+        if (count($profileImage) == 1) {
             $user["profileImage"] = $uploads_url . explode('/', $profileImage[0])[9];
+            // explode seperates the url on '/', we want the 'username.ext' part
         }
         /*** End Profile Picture ***/
 
@@ -561,28 +583,32 @@ class UsersController extends AppController
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
+        // For reference:
+        // $uploads_path = '/matrix/dev/public_html/arcs/app/webroot/uploads/profileImages/'
+        // $uploads_url = 'http://dev2.matrix.msu.edu/arcs/uploads/profileImages/'
+
         // change picture with cropped version
         if ($this->request->is('post') && $this->request->data('id')) {
             $user = $this->User->findById($this->request->data('id'));
 
-            $imageData = $this->request->data('canvasData');
-            $filteredData = substr($imageData, strpos($imageData, ",")+1);
-            $unencodedData = base64_decode($filteredData);
+            if ($user) {
+                $imageData = $this->request->data('canvasData');
+                $filteredData = substr($imageData, strpos($imageData, ",")+1);
+                $unencodedData = base64_decode($filteredData);
 
-            $uploadFile = $uploads_path . $user['username'] . ".";
-            if (count(glob($uploadFile."*")) > 0) {
-                foreach (glob($uploadFile."*") as $file) {
-                    unlink($file);
+                $uploadFile = $uploads_path . $user['username'] . ".";
+                if (count(glob($uploadFile."*")) > 0) {
+                    foreach (glob($uploadFile."*") as $file) {
+                        unlink($file);
+                    }
                 }
+
+                $imageFile = fopen($uploadFile . "png", 'wb');
+                fwrite($imageFile, $unencodedData);
+                fclose($imageFile);
+
+                $this->Session->setFlash("Profile picture has successfully been cropped.", 'flash_success');
             }
-            debug($unencodedData);
-            debug($uploadFile);
-
-            $imageFile = fopen($uploadFile . "png", 'wb');
-            fwrite($imageFile, $unencodedData);
-            fclose($imageFile);
-
-            $this->Session->setFlash("Profile picture has successfully been cropped.", 'flash_success');
             return;
         }
 
@@ -600,6 +626,7 @@ class UsersController extends AppController
         // only grab the first image; there could be multiple images with same name and different extensions
         if (count($profileImage) > 0) {
             $user["profileImage"] = $uploads_url . explode('/', $profileImage[0])[9];
+            // explode seperates the url on '/', we want the 'username.ext' part
         }
 
         $this->set('isAdmin', $this->Access->isAdmin());
