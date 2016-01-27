@@ -240,27 +240,27 @@ class arcs.views.search.Search extends Backbone.View
     console.log(val)
     resources = new Promise((resolve, reject) ->
       resourcequery = encodeURIComponent("(Type,like,#{val}),or,(Resource Identifier,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736", (response) ->
+      req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736&count=20", (response) ->
         resolve(response)
     )
     projects = new Promise((resolve, reject) ->
       projectquery = encodeURIComponent("(Country,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734", (response) ->
+      req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734&count=20", (response) ->
         resolve(response)
     )
     seasons = new Promise((resolve, reject) ->
       seasonquery = encodeURIComponent("(Title,like,#{val}),or,(Description,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735", (response) ->
+      req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735&count=20", (response) ->
         resolve(response)
     )
     excavations = new Promise((resolve, reject) ->
       excavationquery = encodeURIComponent("(Name,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740", (response) ->
+      req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740&count=20", (response) ->
         resolve(response)
     )
     observations = new Promise((resolve, reject) ->
       observationquery = encodeURIComponent("(Monument Classification,like,#{val}),or,(Monument.Type,like,#{val}),or,(Monument.Material,like,#{val}),or,(Monument.Technique,like,#{val}),or,(Monument.Period,like,#{val}),or,(Monument.Terminus Ante Quem,like,#{val}),or,(Monument.Terminus Post Quem,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739", (response) ->
+      req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739&count=20", (response) ->
         resolve(response)
     )
     
