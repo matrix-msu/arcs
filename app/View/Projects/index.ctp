@@ -11,7 +11,7 @@
 
 <div id="map"></div>
 
- 
+
 <script>
     var map = L.map('map', { zoomControl:false });
 
@@ -19,7 +19,7 @@
 
     L.tileLayer('http://{s}.tiles.mapbox.com/v3/austintruchan.m3e777m7/{z}/{x}/{y}.png', {
                 maxZoom: 18 }).addTo(map);
-	
+
 	map.on('popupopen', function(e) {
 	    var px = map.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
 	    px.y -= e.popup._container.clientHeight/2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
@@ -28,9 +28,20 @@
 
     var marker_array = [];
 	var coords_array = [];
-	<?php 
+	
+	// Customize map pin using MapPin.svg and default shadow
+    var marker_icon = L.icon({
+      iconUrl: 'img/MapPin.svg',
+      shadowUrl: 'img/marker-shadow.png',
+      iconSize: [33, 42],
+      shadowSize: [41, 41],
+      iconAnchor: [16.5, 39],
+      shadowAnchor: [7, 41],
+      popupAnchor: [2,-40]
+    });
+	<?php
 		//$projects_array = json_decode($projects, true);
-		
+
 		foreach($projects as $item) {
 			$link = $this->Html->link(
 				'VIEW PROJECT',
@@ -40,25 +51,25 @@
 					$item["Name"]
 				)
 			);
-			
+
 			//Convert KORA Geolocation to array of coordinate pairs
 			$geo = $item['Geolocation'];
-			
+
 			//commented out markers in case we choose to reuse them later. Not using them as of 11/5/15
 			foreach($geo as $marker) {
 				$coords = explode(",", $marker);
 				//markers
 				$html = "";
-				$html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {opacity:0})";
+				$html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
 				$html .= ".addTo(map);";
 				$html .= "marker_array.push(marker);";
 				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
 				$brief = str_replace("'", "\'", $item['Brief Description']);
-				//$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+				$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
 				print $html; //print markers and set coords_array
 				//print "console.log('".$coords[0]."', '".$coords[1]."');";
 			}
-			
+
 			//print polygon
 			$html = "";
 			$html = "var polygon = L.polygon(coords_array)";
