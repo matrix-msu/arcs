@@ -11,6 +11,6 @@ class Annotation extends AppModel {
     public $name = 'Annotation';
     public $belongsTo = array('Resource', 'User');
     public $whitelist = array(
-        'resource_id', 'resource_name', 'user_id', 'user_name', 'user_email', 'user_username', 'relation', 'url', 'transcript', 'x1', 'y1', 'x2', 'y2'
+        "page_kid", "resource_kid", "relation_resource_kid", 'relation_page_kid', 'relation_resource_name', 'resource_id', 'resource_name', 'user_id', 'user_name', 'user_email', 'user_username', 'relation', 'url', 'transcript', 'x1', 'y1', 'x2', 'y2'
     );
 }

@@ -28,6 +28,32 @@
 	</div>
 </div>
 
+<div class="annotateModalBackground">
+	<div class="annotateWrap">
+		<div id="annotateModal">
+			<div class="annotateModalHeader">NEW ANNOTATION<img src="../app/webroot/assets/img/Close.svg" class="modalClose"></img></div>
+			<hr class="annotateHeaderDivider">
+			<p class="annotateTab annotateTabRelation activeTab">RELATION</p>
+			<p class="annotateTab annotateTabTranscript">TRANSCRIPT</p>
+			<p class="annotateTab annotateTabUrl">URL</p>
+			<div class="annotateRelationContainer">
+				<form class="annotateSearchForm" action="#">
+				  <input class="annotateSearch" placeholder="SEARCH"/>
+				</form>
+				<div class="resultsContainer"></div>
+			</div>
+			<div class="annotateTranscriptContainer">
+				<textarea class="annotateTranscript" placeholder="ENTER TRANSCRIPT"></textarea>
+			</div>
+			<div class="annotateUrlContainer">
+				<textarea class="annotateUrl" placeholder="ENTER URL"></textarea>
+			</div>
+			<button class="annotateSubmit" type="submit">CREATE ANNOTATION</button>
+		</div>
+		
+	</div>
+</div>
+
 <div id="viewer-left">
 	<div id="viewer-tools">
 		<div class="container1">
@@ -59,8 +85,8 @@
 	
 	<div id="viewer-window">
 		<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>
-		<img src="<?php echo $resource['thumb'] ?>" id="PageImage" >
-		
+		<img src="<?php echo $resource['thumb'] ?>" id="PageImage">
+		<div class='canvas'></div>
 	</div>
 	
 	<div id="resource-tools">
@@ -548,9 +574,7 @@
 	  	image.src = '../img/arcs-preloader.gif';
 	  	image.style.height = '100%';
 	  	image.style.width = '100%';
-	  	setTimeout(function(){
-		    console.log("See the loader? I'm waiting.");
-		}, 10000);
+	  	setTimeout(function(){}, 10000);
 		return $.ajax({
 		  url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
 		  type: 'GET',
@@ -558,6 +582,9 @@
 			res = JSON.parse(res);
 			kid = res['kid'];
 			document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
+			$(".canvas").height($("#PageImage").height());
+			$(".canvas").width($("#PageImage").width());
+			$(".canvas").css({bottom:$("#PageImage").height()});
 		  }
 		});
 	}
@@ -588,6 +615,14 @@
 		
 		$( ".modalClose" ).click(function(){
 			$( ".modalBackground" ).hide();
+			$( ".annotateModalBackground" ).hide();
+			$( ".annotateHelp" ).hide();
+			if (gen_box != null) {
+				$(gen_box).remove();
+			}
+			disabled = true;
+			$( ".canvas" ).selectable({ disabled: true });
+			$(".annotate").removeClass("annotateActive");
 		});
 		
 		$( "#flagForm" ).submit(function( event ) {
@@ -635,13 +670,386 @@
 			}
 		});
 		
+		var annotateData = {
+			transcript: "",
+			url: "",
+			page_kid: "",
+			resource_kid: "",
+			resource_name: "",
+			relation_resource_kid: "",
+			relation_page_kid: "",
+			relation_resource_name: "",
+			x1: "",
+			x2: "",
+			y1: "",
+			y2: ""
+		};
+		var selected = false;
+		
+		function waitForElement(){
+			if($("#PageImage").height() !== 0){
+				$(".canvas").height($("#PageImage").height());
+				$(".canvas").width($("#PageImage").width());
+				$(".canvas").css({bottom:$("#PageImage").height()});
+				DrawBoxes(kid);
+			}
+			else{
+				setTimeout(function(){
+					waitForElement();
+				},250);
+			}
+		}
+		waitForElement();
+		
+		var gen_box = null;
+		var disabled;
 		$( ".annotate" ).click(function(){
+			$(this).addClass("annotateActive");
 			$( ".annotateHelp" ).show();
+			$(".canvas").addClass("select");
+			//Draw box
+			var i = 0;
+			disabled = false;
+			$(".canvas").selectable({ 
+				disabled: false,
+				start: function(e) {
+					if (!disabled) {
+						//get the mouse position on start
+						x_begin = e.pageX,
+						y_begin = e.pageY;
+					}
+				},
+				stop: function(e) {
+					if (!disabled) {
+						//get the mouse position on stop
+						x_end = e.pageX,
+						y_end = e.pageY;
+
+						/***  if dragging mouse to the right direction, calcuate width/height  ***/
+
+						if( x_end - x_begin >= 1 ) {
+							width  = x_end - x_begin,
+							height = y_end - y_begin;
+						
+						/***  if dragging mouse to the left direction, calcuate width/height (only change is x) ***/
+						
+						} else {
+							
+							width  = x_begin - x_end,
+							height =  y_end - y_begin;
+							var drag_left = true;
+						}
+						
+						//append a new div and increment the class and turn it into jquery selector
+						$(this).append('<div class="gen_box gen_box_' + i + '"></div>');
+						gen_box = $('.gen_box_' + i);
+
+						//add css to generated div and make it resizable & draggable
+						$(gen_box).css({
+							 'width'     : width,
+							 'height'    : height,
+							 'left'      : x_begin,
+							 'top'       : y_begin - 120
+						})
+						//.draggable({ grid: [20, 20] })
+						//.resizable();
+
+						//if the mouse was dragged left, offset the gen_box position 
+						drag_left ? $(gen_box).offset({ left: x_end, top: y_begin }) : $(gen_box).offset({ left: x_begin, top: y_begin });
+						//console.log( 'width: ' + width + 'px');
+						//console.log( 'height: ' + height + 'px' );
+						//add the styles of generated div into .inner_col_one
+						i++;
+						disabled = true;
+						
+						annotateData.x1 = parseFloat($(gen_box).css('left'), 10) / $(".canvas").width();
+						annotateData.x2 = (parseFloat($(gen_box).css('left')) + width) / $(".canvas").width();
+						annotateData.y1 = (parseFloat($(gen_box).css('top'))) / $(".canvas").height();
+						annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
+						
+						$( ".annotateModalBackground" ).show();
+					}
+				}
+			});
 		});
+		
+		//Load boxes
+		function DrawBoxes(pageKid) {
+			$.ajax({
+				url: "<?php echo Router::url('/', true); ?>api/annotations/findall.json",
+				type: "POST",
+				data: {
+					id: pageKid
+				},
+				success: function(data) {
+					$.each(data, function (k, v) {
+						$(".canvas").append('<div class="gen_box gen_box_' + v.id + '"></div>');
+						gen_box = $('.gen_box_' + v.id);
+						
+						//add css to generated div and make it resizable & draggable
+						$(gen_box).css({
+							 'width'     : $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,
+							 'height'    : $(".canvas").height() * v.y2 - $(".canvas").height() * v.y1,
+							 'left'      : $(".canvas").width() * v.x1,
+							 'top'       : $(".canvas").height() * v.y1
+						})
+					})
+				}
+			});
+		}
+		
+		
+		
+		//Annotation search
+		$( ".annotateSearchForm" ).submit(function( event ) {
+			$(".resultsContainer").empty();
+			$.ajax({
+				url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent(
+					"(Type,like,"+$(".annotateSearch").val()
+					+"),or,(Title,like,"+$(".annotateSearch").val()
+					+"),or,(Resource Identifier,like,"+$(".annotateSearch").val()
+					+"),or,(Description,like,"+$(".annotateSearch").val()
+					+"),or,(Accession Number,like,"+$(".annotateSearch").val()
+					+"),or,(Earliest Date,like,"+$(".annotateSearch").val()
+					+"),or,(Latest Date,like,"+$(".annotateSearch").val()
+					+")")+"&sid=736",
+				type: "POST",
+				success: function(data) {
+					BuildResults(data);
+				}
+			}); 
+			
+			event.preventDefault();
+		});
+		
+		function BuildResults(data) {
+			// var icons = ["annotations", "comments", "keywords", "bookmarks", "metadata"];
+			if (data.total > 0) {
+				//Iterate search results
+				$.each( data.results, function( key, value ) {
+					/* $.each( icons, function (k, v) {
+						// $.ajax({
+							// url: "<?php echo Router::url('/', true); ?>api/"+v+"/kid/"+value.kid+".json",
+							// type: "POST",
+							// success: function(data) {
+								
+							// }
+						// });
+					// });*/
+					
+					$(".resultsContainer").append("<div class='annotateSearchResult' id='"+value.kid+"'></div>");
+					if (value.thumb == "img/DefaultResourceImage.svg") {
+						$("#"+value.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/"+value.thumb+"'/></div>");
+					}
+					else {
+						$("#"+value.kid).append("<div class='imageWrap'><img class='resultImage' src='"+value.thumb+"'/></div>");
+					}
+					
+					//$(".resultsContainer").append("<div class='icon-annotate'></div>");
+					  
+					$("#"+value.kid).append(
+						"<div class='resultInfo'>" +
+						"<p>"+ value['Accession Number'] + "</p>" +
+						"<p>"+ value['Type'] + "</p>" +
+						"</div>"
+					);
+						
+					$("#"+value.kid).append("<hr class='resultDivider'>");
+					
+					//Get related pages
+					$.ajax({
+						url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent("(Resource Associator,like,"+value.kid+"),or,(Resource Identifier,like,"+value['Resource Identifier']+")")+"&sid=738",
+						type: "POST",
+						success: function(pages) {
+							$.each( pages.results, function( k, v ) {
+								$("#"+value.kid).after("<div class='annotateSearchResult resultPage' id='"+v.kid+"'></div>");
+								if (v.thumb == "img/DefaultResourceImage.svg") {
+									$("#"+v.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/"+v.thumb+"'/></div>");
+								}
+								else {
+									$("#"+v.kid).append("<div class='imageWrap'><img class='resultImage' src='"+v.thumb+"'/></div>");
+								}
+							
+								$("#"+v.kid).append(
+									"<div class='pageInfo'>" +
+									"<p>"+ v['Page Identifier'] + "</p>" +
+									"</div>"
+								);
+								
+								$("#"+v.kid).append("<hr class='resultDivider'>");
+								
+								//Clicked a page
+								$("#"+v.kid).click(function() {
+									if ($(this).hasClass("selectedRelation")) {
+										$(this).removeClass("selectedRelation");
+										selected = false;
+										annotateData.page_kid = "";
+										annotateData.resource_kid = "";
+										annotateData.resource_name = "";
+										annotateData.relation_resource_kid = "";
+										annotateData.relation_page_kid = "";
+										annotateData.relation_resource_name = "";
+									}
+									else {
+										$(".annotateSearchResult").removeClass('selectedRelation');
+										$(this).addClass("selectedRelation");
+										selected = true;
+										annotateData.page_kid = kid;
+										annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
+										annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+										annotateData.relation_resource_name = v['Resource Identifier'];
+										annotateData.relation_resource_kid = v['Resource Associator'][0];
+										annotateData.relation_page_kid = v.kid;
+									}
+									
+									if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
+										$(".annotateSubmit").show();
+									}
+									else {
+										$(".annotateSubmit").hide();
+									}
+								})
+							})
+						}
+					}); 
+					
+					//Clicked a resource
+					$("#"+value.kid).click(function() {
+						//console.log($(this).attr('id'));
+						if ($(this).hasClass("selectedRelation")) {
+							$(this).removeClass("selectedRelation");
+							selected = false;
+							annotateData.relation_resource_kid = "";
+							annotateData.relation_page_kid = "";
+							annotateData.relation_resource_name = "";
+						}
+						else {
+							$(".annotateSearchResult").removeClass('selectedRelation');
+							$(this).addClass("selectedRelation");
+							selected = true;
+							annotateData.relation_resource_name = value['Resource Identifier'];
+							annotateData.relation_resource_kid = $(this).attr('id');
+						}
+						
+						if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
+							$(".annotateSubmit").show();
+						}
+						else {
+							$(".annotateSubmit").hide();
+						}
+					})
+		
+				});
+			}
+		}
+		
+		//Set transcript and url
+		var lastValue = '';
+		$(".annotateTranscript, .annotateUrl").on('change keyup paste mouseup', function() {
+			if ($(this).val() != lastValue) {
+				lastValue = $(this).val();
+				annotateData.transcript = $(".annotateTranscript").val();
+				annotateData.url = $(".annotateUrl").val();
+				if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
+					$(".annotateSubmit").show();
+				}
+				else {
+					$(".annotateSubmit").hide();
+				}
+			}
+		});
+		
+		$(".annotateSubmit").click(function() {
+			annotateData.page_kid = kid;
+			annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
+			annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+			
+			//First relation
+			$.ajax({
+				url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+				type: "POST",
+				data: annotateData,
+				success: function(data) {
+				}
+			});
+			
+			if (annotateData.relation_resource_kid != "") {
+				//Backwards relation
+				$.ajax({
+					url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+					type: "POST",
+					data: {
+						resource_kid: annotateData.relation_resource_kid,
+						page_kid: annotateData.relation_page_kid,
+						resource_name: annotateData.relation_resource_name,
+						relation_resource_kid: annotateData.resource_kid,
+						relation_page_kid: annotateData.page_kid,
+						relation_resource_name: annotateData.resource_name,
+						transcript: annotateData.transcript,
+						url: annotateData.url
+					},
+					success: function(data) {
+					}
+				});
+			}
+			
+			//Reset modal
+			$(".annotateSearchResult").removeClass('selectedRelation');
+			selected = false;
+			annotateData.page_kid = "";
+			annotateData.resource_kid = "";
+			annotateData.relation_resource_kid = "";
+			annotateData.relation_page_kid = "";
+			annotateData.resource_name = "";
+			annotateData.url = "";
+			annotateData.transcript = "";
+			annotateData.x1 = "";
+			annotateData.x2 = "";
+			annotateData.y1 = "";
+			annotateData.y2 = "";
+			
+			gen_box = null;
+			disabled = true;
+			$( ".canvas" ).selectable({ disabled: true });
+			$(".annotate").removeClass("annotateActive");
+		});
+		
+		//Tabs
+		$(".annotateTabRelation").click(function() {
+			$(".annotateRelationContainer").show();
+			$(".annotateTranscriptContainer").hide();
+			$(".annotateUrlContainer").hide();
+			$(".annotateTabRelation").addClass("activeTab");
+			$(".annotateTabTranscript").removeClass("activeTab");
+			$(".annotateTabUrl").removeClass("activeTab");
+		})
+		
+		$(".annotateTabTranscript").click(function() {
+			$(".annotateTranscriptContainer").show();
+			$(".annotateRelationContainer").hide();
+			$(".annotateUrlContainer").hide();
+			$(".annotateTabTranscript").addClass("activeTab");
+			$(".annotateTabRelation").removeClass("activeTab");
+			$(".annotateTabUrl").removeClass("activeTab");
+		})
+		
+		$(".annotateTabUrl").click(function() {
+			$(".annotateUrlContainer").show();
+			$(".annotateTranscriptContainer").hide();
+			$(".annotateRelationContainer").hide();
+			$(".annotateTabUrl").addClass("activeTab");
+			$(".annotateTabTranscript").removeClass("activeTab");
+			$(".annotateTabRelation").removeClass("activeTab");
+		})
 		
 		$( ".annotationHelpOk" ).click(function(){
 			$( ".annotateHelp" ).hide();
 		});
+		
+		
+		
+		
+		
 	});
 </script>
 

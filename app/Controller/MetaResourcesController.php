@@ -86,6 +86,21 @@ class MetaResourcesController extends AppController {
         //if (!$result) throw new NotFoundException(); 
         $this->json(200, $result);
     }
+	
+	/**
+     * Find all meta-resources
+     *
+     * @param string $id
+     */
+    public function findAll() {
+        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
+        $model = $this->modelClass;
+		$results = $this->$model->find('all', array(
+			'conditions' => array('page_kid' => $this->request->data['id'])
+		));
+        //if (!$result) throw new NotFoundException(); 
+        $this->json(200, $results);
+    }
 
     /**
      * Delete a meta-resource

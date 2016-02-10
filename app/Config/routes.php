@@ -140,6 +140,10 @@
     Router::connect('/api/users/invite',
         array('controller' => 'users', 'action' => 'ajaxInvite')
     );
+	
+	Router::connect('/api/annotations/findall',
+        array('controller' => 'annotations', 'action' => 'findAll')
+    );
 
     $restful = array(
         'resources',
