@@ -619,10 +619,9 @@
 			$( ".annotateHelp" ).hide();
 			if (gen_box != null) {
 				$(gen_box).remove();
+				gen_box = null;
 			}
-			disabled = true;
-			$( ".canvas" ).selectable({ disabled: true });
-			$(".annotate").removeClass("annotateActive");
+			ResetAnnotationModal();
 		});
 		
 		$( "#flagForm" ).submit(function( event ) {
@@ -670,6 +669,16 @@
 			}
 		});
 		
+		$("#PageImage").mouseenter(function() {
+			$( ".canvas" ).show();
+		});
+		
+		$(".canvas").mouseleave(function() {
+			if (disabled) {
+				$( ".canvas" ).hide();
+			}
+		});
+				
 		var annotateData = {
 			transcript: "",
 			url: "",
@@ -691,6 +700,7 @@
 				$(".canvas").height($("#PageImage").height());
 				$(".canvas").width($("#PageImage").width());
 				$(".canvas").css({bottom:$("#PageImage").height()});
+				$(".canvas").hide();
 				DrawBoxes(kid);
 			}
 			else{
@@ -702,9 +712,10 @@
 		waitForElement();
 		
 		var gen_box = null;
-		var disabled;
+		var disabled = true;
 		$( ".annotate" ).click(function(){
 			$(this).addClass("annotateActive");
+			$( ".canvas" ).show();
 			$( ".annotateHelp" ).show();
 			$(".canvas").addClass("select");
 			//Draw box
@@ -726,18 +737,25 @@
 						y_end = e.pageY;
 
 						/***  if dragging mouse to the right direction, calcuate width/height  ***/
-
 						if( x_end - x_begin >= 1 ) {
-							width  = x_end - x_begin,
-							height = y_end - y_begin;
+							width  = x_end - x_begin;
 						
 						/***  if dragging mouse to the left direction, calcuate width/height (only change is x) ***/
-						
 						} else {
 							
-							width  = x_begin - x_end,
-							height =  y_end - y_begin;
+							width  = x_begin - x_end;
 							var drag_left = true;
+						}
+						
+						/***  if dragging mouse to the down direction, calcuate width/height  ***/
+						if( y_end - y_begin >= 1 ) {
+							height = y_end - y_begin;
+						
+						/***  if dragging mouse to the up direction, calcuate width/height (only change is x) ***/
+						} else {
+							
+							height =  y_begin - y_end;
+							var drag_up = true;
 						}
 						
 						//append a new div and increment the class and turn it into jquery selector
@@ -755,13 +773,12 @@
 						//.resizable();
 
 						//if the mouse was dragged left, offset the gen_box position 
-						drag_left ? $(gen_box).offset({ left: x_end, top: y_begin }) : $(gen_box).offset({ left: x_begin, top: y_begin });
-						//console.log( 'width: ' + width + 'px');
-						//console.log( 'height: ' + height + 'px' );
-						//add the styles of generated div into .inner_col_one
-						i++;
-						disabled = true;
+						drag_left ? $(gen_box).offset({ left: x_end }) : $(gen_box).offset({ left: x_begin });
+						drag_up ? $(gen_box).offset({ top: y_end }) : $(gen_box).offset({ top: y_begin });
 						
+						i++;
+						
+						//Add coordinates to annotation to save
 						annotateData.x1 = parseFloat($(gen_box).css('left'), 10) / $(".canvas").width();
 						annotateData.x2 = (parseFloat($(gen_box).css('left')) + width) / $(".canvas").width();
 						annotateData.y1 = (parseFloat($(gen_box).css('top'))) / $(".canvas").height();
@@ -783,8 +800,8 @@
 				},
 				success: function(data) {
 					$.each(data, function (k, v) {
-						$(".canvas").append('<div class="gen_box gen_box_' + v.id + '"></div>');
-						gen_box = $('.gen_box_' + v.id);
+						$(".canvas").append('<div class="gen_box" id="'+v.id+'"></div>');
+						gen_box = $('#' + v.id);
 						
 						//add css to generated div and make it resizable & draggable
 						$(gen_box).css({
@@ -970,6 +987,8 @@
 				type: "POST",
 				data: annotateData,
 				success: function(data) {
+					$(gen_box).attr("id", data.id);
+					gen_box = null;
 				}
 			});
 			
@@ -992,7 +1011,11 @@
 					}
 				});
 			}
-			
+			//location.reload();
+			ResetAnnotationModal();
+		});
+		
+		function ResetAnnotationModal() {
 			//Reset modal
 			$(".annotateSearchResult").removeClass('selectedRelation');
 			selected = false;
@@ -1008,11 +1031,26 @@
 			annotateData.y1 = "";
 			annotateData.y2 = "";
 			
-			gen_box = null;
 			disabled = true;
+			
+			$(".annotateRelationContainer").show();
+			$(".annotateTranscriptContainer").hide();
+			$(".annotateUrlContainer").hide();
+			$(".annotateTabRelation").addClass("activeTab");
+			$(".annotateTabTranscript").removeClass("activeTab");
+			$(".annotateTabUrl").removeClass("activeTab");
+			
+			$( ".annotateModalBackground" ).hide();
+			$( ".annotateHelp" ).hide();
+			$(".annotateSearch").val("");
+			$(".annotateTranscript").val("");
+			$(".annotateUrl").val("");
+			$(".resultsContainer").empty();
 			$( ".canvas" ).selectable({ disabled: true });
+			$( ".canvas" ).hide();
 			$(".annotate").removeClass("annotateActive");
-		});
+			$(".annotateSubmit").hide();
+		}
 		
 		//Tabs
 		$(".annotateTabRelation").click(function() {
