@@ -44,10 +44,16 @@
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 	<!--Display regular buttons for other pages-->
 	<div class="btn-group toolbar-btn">
-		<a id="about" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/about')?>">
-			<i class="icon-white icon-folder-open"></i> About
-		</a>
+		 <!-- Arrow won't work-->
+		 <div id="projects" class="btn btn-grey">
+			<i class="icon-white icon-folder-open"></i> Projects
+			<div id="projectsMenu" class="projects-menu">
+				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
+				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
+				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
+			</div>
+		</div>
+		
 		 <a id="resources" class="btn btn-grey"
 			href="<?php echo $this->Html->url('/resources')?>">
 			<i class="icon-white icon-folder-open"></i> Resources
