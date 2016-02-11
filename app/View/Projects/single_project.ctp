@@ -11,7 +11,8 @@
         <script src="js/leaflet/leaflet.js"></script>
     </head>
     <body>
-        
+        <!-- Useless Header
+		
         <div class="header">
             <div class="logo"><a href="index.html"><img class="logo" src="img/ARCS-Logo.png"/><h1>ARCS</h1></a></div>
             <div class="project-navigation"><div class="nav projects active">POLIS
@@ -23,100 +24,14 @@
                 <a class="nav-link" href="#"><div class="nav">COLLECTIONS</div></a>
                 <a class="nav-link" href="#"><div class="nav">SEARCH</div></a>
                 <a class="nav-link" href="#"><div class="nav">HELP</div></a>
-                <a class="nav-link" href="#loginRegister"><div class="nav">LOGIN / REGISTER</div></a></div></div>
-        
+                <a class="nav-link" href="#loginRegister"><div class="nav">LOGIN / REGISTER</div></a>
+			</div>
+		</div>
+        -->
         <div class="intro">
             <h1><?php echo $project["Name"]; ?></h1>
             <p><?php echo $project["Description"]; ?></p>
         </div>
-        
-
-<div id="loginRegister" class="login">
-	<div>
-		<a href="#close" title="Close" class="close">X</a>
-		 <section class="container">
-    <div class="login-content">
-      <h1>Login to Web App</h1>
-      <form method="post" action="index.html">
-        <p><input type="text" name="login" value="" placeholder="Username or Email"></p>
-        <p><input type="password" name="password" value="" placeholder="Password"></p>
-        <p class="remember_me">
-          <label>
-            <input type="checkbox" name="remember_me" id="remember_me">
-            Remember me on this computer
-          </label>
-        </p>
-        <p class="submit"><input type="submit" name="commit" value="Login"></p>
-      </form>
-    </div>
-
-    <div class="login-help">
-      <p>Forgot your password? <a href="index.html">Click here to reset it</a>.</p>
-    </div>
-  </section>
-        <a href="#register">REGISTER</a>
-	</div>
-</div>
-        
-        <div id="register" class="register">
-	<div>
-		<a href="#close" title="Close" class="close">X</a>
-		 <h1>Login to Web App</h1>
-      <form method="post" action="index.html">
-        <p><input type="text" name="login" value="" placeholder="NAME"></p>
-          <p><input type="text" name="login" value="" placeholder="Username"></p>
-          <p><input type="text" name="login" value="" placeholder="Email"></p>
-        <p><input type="password" name="password" value="" placeholder="Password"></p>
-        <p class="remember_me">
-        </p>
-        <p class="submit"><input type="submit" name="commit" value="REGISTER"></p>
-      </form>
-    </div>
-  </section>
-	</div>
-</div>
-        
-        
-        <div class="footer-wrap">
-        <footer class="row clearfix dark-background" role="contentinfo" id="standard-MSU-footer">
-						<div class="twelve columns">
-
-							<div id="standard-footer-site-links">
-								<ul>
-									
-									<li>Call us: <strong>(###) ###-####</strong></li>
-									<li><a href="contact/index.html">Contact Information</a></li>
-									<li><a href="site-map.html">Site Map</a></li>
-									<li><a href="privacy.html">Privacy Policy</a></li>
-									<li><a href="accessibility.html">Site Accessibility</a></li>
-								</ul>
-								
-							</div>
-
-							<div class="clearfix" id="standard-footer-MSU-info">
-							
-									<ul class="msu-info-list">
-										<li>Call MSU: <strong><span class="msu-phone">(517) 355-1855</span></strong></li>
-										<li>Visit: <strong><a href="http://msu.edu">msu.edu</a></strong></li>
-										<li>MSU is an affirmative-action, <span>equal-opportunity employer.</span></li>
-									</ul>
-									<ul class="copyright">
-										<li class="spartans-will">Spartans Will.</li>
-										<li>&#169; Michigan State University</li> 
-										
-									</ul>
-							</div>
-						</div>
-						<div class="four columns" id="standard-footer-MSU-wordmark">
-								<a href="http://www.msu.edu">
-
-									<!-- If using a light background change the img src to images/msu-wordmark-green-221x47.png-->
-									<img class="screen-msuwordmark" alt="Michigan State University Wordmark" src="img/msu-wordmark-white.png"/>
-									<img class="print-msuwordmark" alt="Michigan State University Wordmark" src="images/msu-wordmark-black.png"/>
-								</a>
-						</div>
-
-					</footer></div>
         
         <script>
             var map = L.map('map', { zoomControl:false }).setView([38.6, 26.049], 6);
@@ -134,10 +49,8 @@
             marker.bindPopup("<h1>Polis</h1><br><p style='margin:0;'>This is a Description</p><br><a href='polis.html'>VIEW PROJECT</a>").openPopup();
         
         </script>
+		
+
     </body>
 </html>
-<!--
 
-
-
--->

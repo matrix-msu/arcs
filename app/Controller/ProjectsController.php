@@ -80,7 +80,11 @@ class ProjectsController extends AppController {
 
 		$display = "json";
 		$query = "Name,=,".$this->request->params['pass'][0];
-		$url = KORA_RESTFUL_URL."??request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json&query=".urlencode($query);
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json&query=".urlencode($query);
+		
+		// Debug string w/o query.
+		//$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
+		
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

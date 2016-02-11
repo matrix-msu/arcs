@@ -6,51 +6,91 @@
             </h1>
         </a>
     <?php endif ?>
-    <?php if ($user['loggedIn']): ?>
-    <div id="menu" class="btn-group toolbar-btn">
-        <button id="menuButton" class="btn btn-dark">
-            <?php echo $user['name'] ?> 
-            <span class="pointerDown"></span>
-        </button>
-        <div id="droppedMenu" class="dropped-menu">
-            <?php echo $this->Html->link('Profile', 
-                '/user/' . $user['username'] . '/') ?>
-            <?php if ($user['role'] == "Admin"): ?>
-            <?php echo $this->Html->link('Admin', 
-                '/admin') ?>
-            <?php endif ?>
-            <?php echo $this->Html->link('Sign Out', 
-                '/logout') ?>
-        </div>
-    </div>
-    <?php else: ?>
+	
+	
+	<!--Check if it is index page or not, display accordingly-->
+	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
+		<!--Display login button for other pages-->
+		<?php if ($user['loggedIn']): ?>
+		<div id="menu" class="btn-group toolbar-btn">
+			<button id="menuButton" class="btn btn-dark">
+				<?php echo $user['name'] ?> 
+				<span class="pointerDown"></span>
+			</button>
+			<div id="droppedMenu" class="dropped-menu">
+				<?php echo $this->Html->link('Profile', 
+					'/user/' . $user['username'] . '/') ?>
+				<?php if ($user['role'] == "Admin"): ?>
+				<?php echo $this->Html->link('Admin', 
+					'/admin') ?>
+				<?php endif ?>
+				<?php echo $this->Html->link('Sign Out', 
+					'/logout') ?>
+			</div>
+		</div>
+		<?php else: ?>
+		<a class="btn btn-dark toolbar-btn" 
+			href="#loginModal">Login / Register</a>
+		<?php endif ?>
+		
+	<?php else: ?>
+		<!--Display search bar for index page. Placeholder, require backend programming.-->
+		<div class="search-bar">
+			<input type="text" class="search-bar indexSearchBox" placeholder="|&nbsp;&nbsp;Search">
+			<div class="indexSearchIcon"></div>
+		</div>
+	<?php endif ?>
+	
+	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
+	<!--Display regular buttons for other pages-->
+	<div class="btn-group toolbar-btn">
+		<a id="about" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/about')?>">
+			<i class="icon-white icon-folder-open"></i> About
+		</a>
+		 <a id="resources" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/resources')?>">
+			<i class="icon-white icon-folder-open"></i> Resources
+		</a>
+		<a id="collections" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/collections')?>">
+			<i class="icon-white icon-folder-open"></i> Collections
+		</a>
+		<a id="search" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/search')?>">
+			<i class="icon-white icon-search"></i> Search
+		</a>
+		<a id="help" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/help/')?>">
+			<i class="icon-white icon-book"></i> Help
+		</a>
+	</div>
+	<?php else: ?>
+	<!--Display three buttons for index page with search bar-->
+	<div class="btn-group toolbar-btn">
+		<a id="about" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/about')?>">
+			<i class="icon-white icon-folder-open"></i> About ARCS
+		</a>
+		 
+		 <!-- Arrow won't work-->
+		 <div id="projects" class="btn btn-grey">
+			<i class="icon-white icon-folder-open"></i> Projects
+			<div id="projectsMenu" class="projects-menu">
+				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
+				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
+				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
+			</div>
+		</div>
+		
+		<a id="help" class="btn btn-grey"
+			href="<?php echo $this->Html->url('/help/')?>">
+			<i class="icon-white icon-book"></i> Help
+		</a>
+		
+	</div>	
+	<?php endif ?>
 
-    <a class="btn btn-dark toolbar-btn" 
-        href="#loginModal">Login / Register</a>
-    <?php endif ?>
-
-    <div class="btn-group toolbar-btn">
-        <a id="about" class="btn btn-grey"
-            href="<?php echo $this->Html->url('/about')?>">
-            <i class="icon-white icon-folder-open"></i> About
-        </a>
-         <a id="resources" class="btn btn-grey"
-            href="<?php echo $this->Html->url('/resources')?>">
-            <i class="icon-white icon-folder-open"></i> Resources
-        </a>
-        <a id="collections" class="btn btn-grey"
-            href="<?php echo $this->Html->url('/collections')?>">
-            <i class="icon-white icon-folder-open"></i> Collections
-        </a>
-        <a id="search" class="btn btn-grey"
-            href="<?php echo $this->Html->url('/search')?>">
-            <i class="icon-white icon-search"></i> Search
-        </a>
-        <a id="help" class="btn btn-grey"
-            href="<?php echo $this->Html->url('/help/')?>">
-            <i class="icon-white icon-book"></i> Help
-        </a>
-    </div>
 </div>
 
 <div id="loginModal" class="login">

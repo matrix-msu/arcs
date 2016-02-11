@@ -1,4 +1,5 @@
 <?php echo $this->Session->flash(); ?>
+<?php $this->set('index_toolbar', true); ?>
 
 <div class="intro">
     <div class="landing_header">The Archaeological Resource Cataloging System</div>
@@ -64,7 +65,7 @@
 				$html .= ".addTo(map);";
 				$html .= "marker_array.push(marker);";
 				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
-				$brief = str_replace("'", "\'", $item['Brief Description']);
+				$brief = str_replace("'", "\'", $item['Description']);
 				$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
 				print $html; //print markers and set coords_array
 				//print "console.log('".$coords[0]."', '".$coords[1]."');";
@@ -74,7 +75,7 @@
 			$html = "";
 			$html = "var polygon = L.polygon(coords_array)";
 			$html .= ".addTo(map);";
-			$brief = str_replace("'", "\'", $item['Brief Description']);
+			$brief = str_replace("'", "\'", $item['Description']);
 			$html .= 'polygon.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
 			print $html;
 			//print "console.log(coords_array);";

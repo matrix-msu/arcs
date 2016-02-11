@@ -18,6 +18,7 @@ div#toolbar {
     //  margin-right: -10px;
     padding-left: 10px;
     height: 60px;
+	border-bottom: 1px solid #e9e9e9;
 
     a#logo-wrapper {
         &:hover { text-decoration: none; }
@@ -41,6 +42,7 @@ div#toolbar {
     .btn {
         padding-right: 30px;
         padding-left: 30px;
+		border-bottom: 1px solid #e9e9e9;
     }
 
     .btn-grey {
@@ -54,6 +56,7 @@ div#toolbar {
         text-transform: uppercase;
         font-size: @toolbarFontSize;
         line-height: @toolbarLineHeight;
+		border-bottom: 1px solid #e9e9e9;
     }
 
     .btn-dark {
@@ -67,6 +70,7 @@ div#toolbar {
         text-transform: uppercase;
         font-size: @toolbarFontSize;
         line-height: @toolbarLineHeight;
+		border-bottom: 1px solid #e9e9e9;
     }
 
     .btn-blue {
@@ -80,6 +84,7 @@ div#toolbar {
         text-transform: uppercase;
         font-size: @toolbarFontSize;
         line-height: @toolbarLineHeight;
+		border-bottom: 1px solid #e9e9e9;
     }
 
     .toolbar-btn {
@@ -94,6 +99,7 @@ div#toolbar {
         text-transform: uppercase;
         font-size: @toolbarFontSize;
         line-height: @toolbarLineHeight;
+		border-bottom: 1px solid #e9e9e9;
     }
 }
 
@@ -137,4 +143,66 @@ div#toolbar {
     -o-transform: rotate(315deg);
     transform: rotate(315deg);
     margin: 20px 0 0 10px;
+}
+
+#projects:hover .projects-menu{
+	display: block;
+}
+
+.projects-menu {
+  display: none;
+  background: #F4F4F4;
+  position: absolute;
+  width: 120% !important;
+  left: -10%;
+  margin-top: 5px;
+}
+.projects-menu a {
+  color: #808080;
+  display: block;
+  text-align: left;
+  padding-left: 20px;
+}
+.projects-menu a:hover {
+  text-decoration: none;
+  color: #fcfcfc;
+  background: #777;
+}
+
+.search-bar {
+	background: @ToolbarColor;
+	color: #808080;
+	margin-left: 5px;
+	height: 60px;
+	width: 300px !important;
+	float: right;
+	position: relative;
+	border-bottom: 1px solid #e9e9e9 !important;
+	border-left: 1px solid #e9e9e9 !important;
+	border-radius: 0;
+	text-transform: uppercase;
+	font-size: @toolbarFontSize;
+	line-height: @toolbarLineHeight;
+}
+
+.indexSearchIcon {
+  background-repeat: no-repeat;
+  background-position: center center;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background: url("../img/SearchDark.svg") no-repeat;
+  position: absolute;
+  margin-left: 255px;
+  margin-top: 22px;
+}
+input.indexSearchBox {
+  background: transparent !important;
+  min-height: 50px;
+  width: 100%;
+  font-size: @toolbarFontSize;
+  border: none !important;
+  padding-left: 25px !important;
+  padding-right: 50px !important;
 }
