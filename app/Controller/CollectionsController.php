@@ -28,6 +28,20 @@ class CollectionsController extends AppController {
                 'conditions' => array('Collection.user_id' => $this->Auth->user('id')),
                 'order' => 'Collection.modified DESC'
             )));
+
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
+        $user = $this->viewVars['user'];
+        $profileSrc = NULL;
+        $profileImage = glob($uploads_path . $user['username'] . '.*');
+        if (count($profileImage) == 1) {
+            $profileSrc = $uploads_url . explode('/', $profileImage[0])[9];
+            // explode seperates the url on '/', we want the 'username.ext' part
+        }
+        if ($profileSrc == NULL) {
+            $profileSrc = "http://gravatar.com/avatar/" + $user["gravatar"] + "?s=50";
+        }
+        $this->set("profileSrc", $profileSrc);
     }
 
     /**

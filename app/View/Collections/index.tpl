@@ -1,8 +1,7 @@
 {% if user_collections and user_collections|length > 0 %}
   <div class="collection-list-wrapper">
     <h2>
-      <img class="profile-image thumbnail" 
-        src="http://gravatar.com/avatar/{{ user.gravatar }}?s=50"/>
+      <img class="profile-image thumbnail" src="{{ profileSrc }}" width="100" height="100"/>
       Your Collections
     </h2>
 	
@@ -129,4 +128,5 @@
 			$( '.dropdown-toggle' ).removeClass( 'dropdown-open' );
 		}
 	});
+
 </script>
