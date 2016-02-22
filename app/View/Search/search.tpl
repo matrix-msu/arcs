@@ -24,7 +24,7 @@
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Isthmia&nbsp;</a></li>
+		        <li><a class="sort-site-btn active" id="open-btn">Isthmia&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Polis&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
 		      </ul>
@@ -128,7 +128,7 @@
 		</div>
 	</div>
   <div id="search-results">
-	  <!--<ul class="flex-container">
+	  <ul class="flex-container">
 	  		<!--<div class="resource-item-container">
 		  		<li class="flex-item">1</li>
 		  		<div class="resource-title">Resource Title</div>
@@ -198,7 +198,7 @@
 		  		<div class="resource-title">Resource Title</div>
 		  		<div class="resource-type">Resource Type</div>
 		  	</div>-->
-		</ul>-->
+		</ul>
   </div>
   
   <div id='search-bottom-bar'>
@@ -247,12 +247,12 @@
 	    window.location.hash = "searchJump";
 	    }
     
-    $(document).ready(function () {
+    /*$(document).ready(function () {
     $("li").click(function () {
         $('li > ul').not($(this).children("ul")).hide();
         $(this).children("ul").toggle();
     });
-	});
+	});*/
 	
 	$(".searchBoxInput").keyup(function (e) {
 		if (e.keyCode === 13) {

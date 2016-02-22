@@ -221,6 +221,9 @@ class arcs.views.search.Search extends Backbone.View
         $('#search input').blur()
       else
         $('.btn.needs-resource').addClass 'disabled'
+        
+  $('.dropdown-menu').change (event) ->
+    console.log("Dropdown select")
 
   # Append more results. 
   #
@@ -230,50 +233,72 @@ class arcs.views.search.Search extends Backbone.View
     return unless @search.results.length > @search.options.n
     results = new arcs.collections.ResultSet @search.getLast()
     @_render results: results.toJSON(), true
-	
   addFacet: (e) ->
     e.preventDefault() 
     @search.vs.searchBox.addFacet(e.target.text,'',10)
     
+  #MULTIPROJECT SEARCH  
   search = () ->
     val = $(".searchBoxInput").val()
     console.log(val)
     resources = new Promise((resolve, reject) ->
-      resourcequery = encodeURIComponent("(Type,like,#{val}),or,(Resource Identifier,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736&count=20", (response) ->
-        resolve(response)
-    )
-    projects = new Promise((resolve, reject) ->
-      projectquery = encodeURIComponent("(Country,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734&count=20", (response) ->
-        resolve(response)
-    )
-    seasons = new Promise((resolve, reject) ->
-      seasonquery = encodeURIComponent("(Title,like,#{val}),or,(Description,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735&count=20", (response) ->
-        resolve(response)
-    )
-    excavations = new Promise((resolve, reject) ->
-      excavationquery = encodeURIComponent("(Name,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740&count=20", (response) ->
-        resolve(response)
-    )
-    observations = new Promise((resolve, reject) ->
-      observationquery = encodeURIComponent("(Monument Classification,like,#{val}),or,(Monument.Type,like,#{val}),or,(Monument.Material,like,#{val}),or,(Monument.Technique,like,#{val}),or,(Monument.Period,like,#{val}),or,(Monument.Terminus Ante Quem,like,#{val}),or,(Monument.Terminus Post Quem,like,#{val})")
-      req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739&count=20", (response) ->
+      resourcequery = encodeURIComponent("#{val}")
+      req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=kid&order=SORT_ASC",(response) ->
         resolve(response)
     )
     
-    totalResults = {}
-    Promise.all([resources,projects,seasons,excavations,observations]).then((values) ->
-      #console.log(values)
-      for item in values
-        Array::push.apply totalResults, item.results
-      #console.log(totalResults)
+    totalResults = []
+    Promise.all([resources]).then((values) ->
+      #console.log(values[0])
+      for key,value of values[0]
+        #console.log(value)
+        #Array::push.apply totalResults, value
+        totalResults.push value
+      console.log(totalResults)
       Search.prototype._render results: totalResults
       $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
     )
-  
+    
+  #search = () ->
+  #  val = $(".searchBoxInput").val()
+  #  console.log(val)
+  #  resources = new Promise((resolve, reject) ->
+  #    resourcequery = encodeURIComponent("(Type,like,#{val}),or,(Resource Identifier,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+  #    #resourcequery = encodeURIComponent("#{val}")
+  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736&count=20", (response) ->
+  #    #req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=Title&order=SORT_ASC",(response) ->
+  #      resolve(response)
+  #  )
+  #  projects = new Promise((resolve, reject) ->
+  #    projectquery = encodeURIComponent("(Country,like,#{val})")
+  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734&count=20", (response) ->
+  #      resolve(response)
+  #  )
+  #  seasons = new Promise((resolve, reject) ->
+  #    seasonquery = encodeURIComponent("(Title,like,#{val}),or,(Description,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735&count=20", (response) ->
+  #      resolve(response)
+  #  )
+  #  excavations = new Promise((resolve, reject) ->
+  #    excavationquery = encodeURIComponent("(Name,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740&count=20", (response) ->
+  #     resolve(response)
+  #  )
+  #  observations = new Promise((resolve, reject) ->
+  #    observationquery = encodeURIComponent("(Monument Classification,like,#{val}),or,(Monument.Type,like,#{val}),or,(Monument.Material,like,#{val}),or,(Monument.Technique,like,#{val}),or,(Monument.Period,like,#{val}),or,(Monument.Terminus Ante Quem,like,#{val}),or,(Monument.Terminus Post Quem,like,#{val})")
+  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739&count=20", (response) ->
+  #      resolve(response)
+  #  )
+  #  
+  #  totalResults = {}
+  #  Promise.all([resources,projects,seasons,excavations,observations]).then((values) ->
+  #    for item in values
+  #      Array::push.apply totalResults, item.results
+  #    #console.log(totalResults)
+  #    Search.prototype._render results: totalResults
+  #    $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
+  #  )
+
   #Activates on enter press: search
   $ ->   
     $(".searchBoxInput").keyup (e) ->
@@ -281,36 +306,6 @@ class arcs.views.search.Search extends Backbone.View
         e.preventDefault()
         search()
               
-        
-      #projects search
-      #resourcequery = encodeURIComponent("(Type,like,Pho),or,(Type,like,Note)")
-      #$.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=734", (response) ->
-      #  totalResults.push.apply(totalResults, response.results)
-      #  console.log(totalResults)
-      #  console.log(response)
-        
-      
-      #Search.prototype._render results: totalResults
-      #$('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
-      
-      
-      #query = encodeURIComponent("Type,like," + $("#search-box").val())
-      #console.log(query)
-      #sid = 736
-      #$.getJSON arcs.baseURL + "resources/search?n=12&q=#{query}&sid=#{sid}", (response) ->
-      #  Search.prototype._render results: response.results
-      #  $('#search-pagination').html arcs.tmpl('search/paginate', results: response)
-
-  # Render the results. USELESS???
-  #render: ->
-  #  @_render results: @search.results.toJSON()
-  #  data = @search.results.query
-  #  data.page = @search.page
-  #  data.query = encodeURIComponent @search.query
-  #  $('#search-pagination').html arcs.tmpl('search/paginate', results: data)
-
-  # Actually render the results. Can append or replace.
-  # If there are no results, adds a 'No Results' message.
   _render: (results, append=false) ->
     $results = $('.flex-container')
     template = if @options.grid then 'search/grid' else 'search/list'
