@@ -89,11 +89,11 @@ class UsersController extends AppController
             // throw new NotFoundException();
             return $this->json(404);
         # Must be editing own account, or an admin.
-        if (!($this->User->id == $this->Auth->user('id') || $this->Access->isAdmin()))
+       if (!($this->User->id == $this->Auth->user('id') || $this->Access->isAdmin()))
             // throw new ForbiddenException();
             return $this->json(403);
         # Only admins can change user roles.
-        if ($this->Access->isAdmin())
+       if ($this->Access->isAdmin())
             $this->User->permit('isAdmin');
         // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
         if (!$this->User->save($this->request->data)) {
@@ -101,7 +101,7 @@ class UsersController extends AppController
             return $this->json(500);
         }
         # Update the Auth Session var, if necessary.
-        if ($id == $this->Auth->user('id'))
+       if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));
         $this->json(200, $this->User->findById($id));
     }
@@ -154,28 +154,28 @@ class UsersController extends AppController
                         "link to reset your password.", 'flash_success');
                     $this->redirect('/');
                 }
-            } else {				
-				/* Logs user in */
-				$user = $this->User->findByRef($this->request->data['User']['username']);
-				if($user['User']['status'] == 'active'){
-					if ($this->Auth->login()) {
-						$this->User->id = $user['User']['id'];
-						$this->User->saveField('last_login', date("Y-m-d H:i:s"));
-						return $this->redirect($this->Auth->redirect());
-					} else {
-						$this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
-						$this->redirect($this->referer());
-					}
-				}
-				else if($user['User']['status'] == 'pending') {
-					$this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
-					$this->redirect($this->referer());
-				}
-				//Invited users will not be found by findByRef until activated
-				else if(!$user) {
-					$this->Session->setFlash("Username not found.", 'flash_error');
-					$this->redirect($this->referer());
-				}
+            } else {                            
+                                /* Logs user in */
+                                $user = $this->User->findByRef($this->request->data['User']['username']);
+                                if($user['User']['status'] == 'active'){
+                                        if ($this->Auth->login()) {
+                                                $this->User->id = $user['User']['id'];
+                                                $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                                                return $this->redirect($this->Auth->redirect());
+                                        } else {
+                                                $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                                                $this->redirect($this->referer());
+                                        }
+                                }
+                                else if($user['User']['status'] == 'pending') {
+                                        $this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
+                                        $this->redirect($this->referer());
+                                }
+                                //Invited users will not be found by findByRef until activated
+                                else if(!$user) {
+                                        $this->Session->setFlash("Username not found.", 'flash_error');
+                                        $this->redirect($this->referer());
+                                }
             }
         }
     }
@@ -288,8 +288,8 @@ class UsersController extends AppController
         $token = $this->User->getToken();
         $this->User->permit('activation');
         $this->User->permit('isAdmin');
-		
-		$name = $data['firstName'] . " " . $data['lastName'];
+                
+                $name = $data['firstName'] . " " . $data['lastName'];
 
         $response["message"] = [];
         $response["status"] = $this->User->add(array('name' => $name, 'isAdmin' => $data['isAdmin'], 'email' => $data['email'], 'activation' => $token, 'status' => "invited"));
@@ -321,12 +321,12 @@ class UsersController extends AppController
                         'password' => $this->request->data['User']['passwd'],
                         'isAdmin' => 0,
                         'last_login' => null,
-						'status' => 'unconfirmed'
+                                                'status' => 'unconfirmed'
                     ))) {
 
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         $this->confirmUserEmail($user);
-						$this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
+                                                $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
 
                         $this->redirect($this->referer());
                     } else {
@@ -371,49 +371,49 @@ class UsersController extends AppController
         $this->set('email', $user['email']);
         $this->set('name', $user['name']);
 
-		if (isset($this->data['User'])) {
-			//Check if passwords match
-			if ($this->data['User']['password'] != $this->data['User']['password_confirm']) {
-				$this->Session->setFlash('Passwords do not match', 'flash_error');
-			} else {
-				//Find user
-				$conditions = array('User.activation' => $this->data['User']['activation']);
-				$user = $this->User->find('first', array('conditions' => $conditions));
-				$this->User->id = $user['id'];
-				
-				//Check if user was found
-				if ($this->User->id) {
-					//Try to save data
-					$newUser = $this->data['User'];
-					$newUser['status'] = "active";
-					//$this->data['User']['status'] = "active";
-					// var_dump($newUser);
-					if (!$this->User->save($newUser)) {
-						//Print error messages
-						$error_message = "";
-						foreach (array_keys($this->User->validationErrors) as $key) {
-						   $error_message .= ucfirst($key) . ': ';
-						   for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
-							   $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
-						   $error_message .= "<br>";
-						}
-						$this->Session->setFlash($error_message, 'flash_error');
-					} else {
-						//Remove activation token from user
-						$this->User->saveField('activation', null);
-						
-						//Login and redirect
-						$user = $this->User->findById($user['id']);
-						$this->Auth->login($user);
-						$this->Session->setFlash("Your account has been created successfully!", 'flash_success');
-						$this->redirect('/');
-					}
-				} else {
-					//Error getting user
-					$this->Session->setFlash('Account count not be created.', 'flash_error');
-				}
-			}
-		}
+                if (isset($this->data['User'])) {
+                        //Check if passwords match
+                        if ($this->data['User']['password'] != $this->data['User']['password_confirm']) {
+                                $this->Session->setFlash('Passwords do not match', 'flash_error');
+                        } else {
+                                //Find user
+                                $conditions = array('User.activation' => $this->data['User']['activation']);
+                                $user = $this->User->find('first', array('conditions' => $conditions));
+                                $this->User->id = $user['id'];
+                                
+                                //Check if user was found
+                                if ($this->User->id) {
+                                        //Try to save data
+                                        $newUser = $this->data['User'];
+                                        $newUser['status'] = "active";
+                                        //$this->data['User']['status'] = "active";
+                                        // var_dump($newUser);
+                                        if (!$this->User->save($newUser)) {
+                                                //Print error messages
+                                                $error_message = "";
+                                                foreach (array_keys($this->User->validationErrors) as $key) {
+                                                   $error_message .= ucfirst($key) . ': ';
+                                                   for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
+                                                           $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
+                                                   $error_message .= "<br>";
+                                                }
+                                                $this->Session->setFlash($error_message, 'flash_error');
+                                        } else {
+                                                //Remove activation token from user
+                                                $this->User->saveField('activation', null);
+                                                
+                                                //Login and redirect
+                                                $user = $this->User->findById($user['id']);
+                                                $this->Auth->login($user);
+                                                $this->Session->setFlash("Your account has been created successfully!", 'flash_success');
+                                                $this->redirect('/');
+                                        }
+                                } else {
+                                        //Error getting user
+                                        $this->Session->setFlash('Account count not be created.', 'flash_error');
+                                }
+                        }
+                }
     }
 
     /**
@@ -557,15 +557,24 @@ class UsersController extends AppController
             }
         }
 
-        // display profile picture on page by storing the image in '$user["profileImage"]'
-        // pull image from the cropped folder
-        $user["profileImage"] = NULL;
+        $user['profileImage'] = NULL;
         $profileImage = glob($uploads_path . $user['username'] . '.*');
-
         if (count($profileImage) == 1) {
-            $user["profileImage"] = $uploads_url . explode('/', $profileImage[0])[9];
+            $user['profileImage'] = $uploads_url . explode('/', $profileImage[0])[9];
             // explode seperates the url on '/', we want the 'username.ext' part
         }
+
+        // user has no profile image on the site so check gravatar
+        // might not be a good idea because the image will be incredibly blurry due to how gravatar saves images
+        if ($user['profileImage'] == NULL && getimagesize("http://gravatar.com/avatar/" . $user["gravatar"] . "/?s=500&d=404")) {
+            $user['profileImage'] = "http://gravatar.com/avatar/" . $user["gravatar"] . "/?d=404";
+        }
+
+        // user has no profile image on the site nor an image on gravatar so give default image
+        if ($user['profileImage'] == NULL) {
+            $user['profileImage'] = $this->webroot . "app/webroot/img/DefaultProfilePic.svg";
+        }
+
         /*** End Profile Picture ***/
 
         // set user and admin status
@@ -701,8 +710,8 @@ class UsersController extends AppController
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }
-	
-	/**
+        
+        /**
      * Send pending user email
      * @param array data
      */

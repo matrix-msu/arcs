@@ -4,14 +4,7 @@
         <div>
             <div class="score-bubble"><?php echo $user_info['totalCount']; ?></div>
 
-            <!-- In gravatar to set default use '?d=' followed by url-encoded url to pic -->
-            <img class="profile-image thumbnail"
-                <?php if ($user_info["profileImage"] != NULL): ?>
-                    src = "<?php echo $user_info['profileImage']; ?>"
-                <?php else: ?>
-                    src="http://secure.gravatar.com/avatar/<?php echo $user_info['gravatar']; ?>"
-                <?php endif; ?>
-            >
+            <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
 
             <dl>
                 <dd>

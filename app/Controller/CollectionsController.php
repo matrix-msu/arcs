@@ -20,27 +20,49 @@ class CollectionsController extends AppController {
      */
     public function index() {
         $this->Collection->recursive = -1;
+
+        $collections = $this->Collection->find('all', array(
+            'order' => 'Collection.modified DESC'
+        ));
+
+        $usercollections = $this->Collection->find('all', array(
+            'conditions' => array('Collection.user_id' => $this->Auth->user('id')),
+            'order' => 'Collection.modified DESC'
+        ));
+
         $this->set('collections', $this->Collection->find('all', array(
             'order' => 'Collection.modified DESC'
         )));
+
         if ($this->Auth->loggedIn())
             $this->set('user_collections', $this->Collection->find('all', array(
                 'conditions' => array('Collection.user_id' => $this->Auth->user('id')),
                 'order' => 'Collection.modified DESC'
             )));
 
+        // get profile image
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
         $user = $this->viewVars['user'];
+
         $profileSrc = NULL;
         $profileImage = glob($uploads_path . $user['username'] . '.*');
         if (count($profileImage) == 1) {
             $profileSrc = $uploads_url . explode('/', $profileImage[0])[9];
             // explode seperates the url on '/', we want the 'username.ext' part
         }
-        if ($profileSrc == NULL) {
-            $profileSrc = "http://gravatar.com/avatar/" + $user["gravatar"] + "?s=50";
+
+        // user has no profile image on the site so check gravatar
+        // might not be a good idea because the image will be incredibly blurry due to how gravatar saves images
+        if ($profileSrc == NULL && getimagesize("http://gravatar.com/avatar/" . $user["gravatar"] . "/?s=500&d=404")) {
+            $profileSrc = "http://gravatar.com/avatar/" . $user["gravatar"] . "/?d=404";
         }
+
+        // user has no profile image on the site nor an image on gravatar so give default image
+        if ($profileSrc == NULL) {
+            $profileSrc = $this->webroot . "app/webroot/img/DefaultProfilePic.svg";
+        }
+
         $this->set("profileSrc", $profileSrc);
     }
 
