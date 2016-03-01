@@ -9,8 +9,6 @@
   }
 
   arcs.views.search.Search = (function(superClass) {
-    var search;
-
     extend(Search, superClass);
 
     function Search() {
@@ -31,14 +29,28 @@
       _.extend(this.options, _.pick(options, 'el'));
       this.setupSelect();
       this.setupSearch();
+      this.actions = new arcs.views.search.Actions({
+        el: this.$el,
+        collection: this.search.results
+      });
+      this.router = new arcs.routers.Search({
+        search: this.search
+      });
       Backbone.history.start({
         pushState: true,
         root: this.options.url
       });
+      if (!this.router.searched) {
+        this.search.run(null, {
+          order: this.options.sort,
+          direction: this.options.sortDir
+        });
+      }
       this.search.results.on('change remove', this.render, this);
       arcs.bus.on('selection', this.afterSelection, this);
       arcs.keys.map(this, {
         'ctrl+a': this.selectAll,
+        'enter': this.search,
         '?': this.showHotkeys,
         t: this.scrollTop
       });
@@ -95,7 +107,7 @@
     Search.prototype.setupSearch = function() {
       this.scrollReady = false;
       return this.search = new arcs.utils.Search({
-        container: $('searchBox'),
+        container: $('.VS-search'),
         order: this.options.sort,
         run: false,
         loader: true,
@@ -262,10 +274,6 @@
       })(this));
     };
 
-    $('.dropdown-menu').change(function(event) {
-      return console.log("Dropdown select");
-    });
-
     Search.prototype.append = function() {
       var results;
       if (!(this.search.results.length > this.search.options.n)) {
@@ -282,57 +290,32 @@
       return this.search.vs.searchBox.addFacet(e.target.text, '', 10);
     };
 
-    search = function() {
-      var resources, totalResults, val;
-      val = $(".searchBoxInput").val();
-      console.log(val);
-      resources = new Promise(function(resolve, reject) {
-        var req, resourcequery;
-        resourcequery = encodeURIComponent("" + val);
-        return req = $.getJSON("http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords=" + resourcequery + "&sort=kid&order=SORT_ASC", function(response) {
-          return resolve(response);
-        });
+    Search.prototype.render = function() {
+      var data;
+      this._render({
+        results: this.search.results.toJSON()
       });
-      totalResults = [];
-      return Promise.all([resources]).then(function(values) {
-        var key, ref, value;
-        ref = values[0];
-        for (key in ref) {
-          value = ref[key];
-          totalResults.push(value);
-        }
-        console.log(totalResults);
-        Search.prototype._render({
-          results: totalResults
-        });
-        return $('#search-pagination').html(arcs.tmpl('search/paginate', {
-          results: totalResults
-        }));
-      });
+      data = this.search.results.query;
+      data.page = this.search.page;
+      data.query = encodeURIComponent(this.search.query);
+      return $('#search-pagination').html(arcs.tmpl('search/paginate', {
+        results: data
+      }));
     };
-
-    $(function() {
-      return $(".searchBoxInput").keyup(function(e) {
-        if (e.keyCode === 13) {
-          e.preventDefault();
-          return search();
-        }
-      });
-    });
 
     Search.prototype._render = function(results, append) {
       var $results, template;
       if (append == null) {
         append = false;
       }
-      $results = $('.flex-container');
+      $results = $('#search-results');
       template = this.options.grid ? 'search/grid' : 'search/list';
-      results = results.results;
-      console.log(results);
+      results = this.search.results.query.results;
+      console.log(this.search.results.query.results);
       $results[append ? 'append' : 'html'](arcs.tmpl(template, {
-        results: results
+        results: this.search.results.query.results
       }));
-      if (!results.length > 0) {
+      if (!this.search.results.query.total > 0) {
         return $results.html("<div id='no-results'>No Results</div>");
       }
     };
