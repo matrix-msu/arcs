@@ -1,31 +1,33 @@
 <div class="footer">
-    <?php 
+    <?php
+	echo "<div class='footer-logo'>";
     echo $this->Html->link(
-        $this->Html->image('neh-logo.png'),
+        $this->Html->image('Footer-NEH.svg', array('class' => 'neh')),
         'http://neh.gov',
         array('escape' => false)
     );
     echo $this->Html->link(
-        $this->Html->image('Matrix.svg'),
+        $this->Html->image('Matrix.svg', array('class' => 'matrix')),
         'http://matrix.msu.edu',
         array('escape' => false)
     );
     echo $this->Html->link(
-        $this->Html->image('cal-white-masthead.png'),
+        $this->Html->image('cal-white-masthead.png', array('class' => 'cal')),
         'http://cal.msu.edu',
         array('escape' => false)
     );
 	
 	// CE Logo, not specified on InvisionApp
     /*echo $this->Html->link(
-        $this->Html->image('ce-logo.png'),
+        $this->Html->image('ce-logo.png', array('class' => 'ce')),
         'http://ce.cal.msu.edu',
         array('escape' => false)
     );*/
+	echo "</div>";
 	
-	echo '<br><br>';
+	echo '<br>';
 	echo $this->Html->link(
-		$this->Html->image('MSU.svg'),
+		$this->Html->image('MSU.svg', array('class' => 'msu')),
 		'http://www.msu.edu',
 		array('escape' => false)
 	);
