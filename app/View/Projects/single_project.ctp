@@ -11,7 +11,7 @@
         <script src="js/leaflet/leaflet.js"></script>
     </head>
     <body>
-        <!-- Useless Header
+        <!-- Previous Header
 		
         <div class="header">
             <div class="logo"><a href="index.html"><img class="logo" src="img/ARCS-Logo.png"/><h1>ARCS</h1></a></div>
@@ -33,6 +33,8 @@
             <p><?php echo $project["Description"]; ?></p>
         </div>
         
+		<!-- Map Display Script
+		<div id='map'></div>
         <script>
             var map = L.map('map', { zoomControl:false }).setView([38.6, 26.049], 6);
             map.scrollWheelZoom.disable();
@@ -49,7 +51,7 @@
             marker.bindPopup("<h1>Polis</h1><br><p style='margin:0;'>This is a Description</p><br><a href='polis.html'>VIEW PROJECT</a>").openPopup();
         
         </script>
-		
+		-->
 
     </body>
 </html>
