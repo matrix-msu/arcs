@@ -862,11 +862,70 @@ input[type=range]:focus::-ms-fill-upper {
 
 .gen_box {
 	position: absolute;
-	background-color: #2A9FD8;
-    opacity: .5;
-    border: 3px solid rgba(42, 159, 216, 0.9);
+	background: rgba(42, 159, 216, 0.5);
+    border: 3px solid rgba(42, 159, 216, 0.7);
 }
 
 .annotateActive {
 	color: #0093be !important;
+}
+
+.canvas {
+	display: none;
+}
+
+.annotationPopup {
+	width: 160px;
+ 	background: rgba(51, 51, 51, 1);
+	position: relative;
+	color: #fff;
+	padding: 5px;
+	z-index: 99;
+}
+
+.annotationData {
+	margin: 5px;
+}
+
+.annotationImage {
+	max-height: 135px !important;
+}
+
+.deleteAnnotation {
+	display: inline-block;
+	height: 27px;
+	width: 27px;
+	top: -29px;
+	left: -3px;
+	text-align: center;
+	position: relative;
+	background: rgba(42, 159, 216, 0.5);
+	border: 3px solid rgba(42, 159, 216, 0.7);
+	border-bottom: 0px;
+	cursor: pointer;
+}
+
+.flagAnnotation {
+	display: inline-block;
+	height: 27px;
+	width: 27px;
+	top: -29px;
+	left: -6px;
+	text-align: center;
+	position: relative;
+	background: rgba(42, 159, 216, 0.5);
+	border: 3px solid rgba(42, 159, 216, 0.7);
+	border-bottom: 0px;
+	border-left: 0px;
+	cursor: pointer;
+}
+
+/*Discussion*/
+
+.newCommentForm {
+	display: none;
+}
+
+.commentContainer {
+
 }

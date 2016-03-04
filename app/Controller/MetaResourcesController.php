@@ -81,7 +81,12 @@ class MetaResourcesController extends AppController {
         $model = $this->modelClass;
         //$result = $this->$model->findById($id);
 		$result = $this->$model->find('first', array(
-			'conditions' => array('resource_id' => $id)
+			'conditions' => array(
+				"OR" => array(
+					'resource_id' => $id,
+					'id' => $id
+				)
+			)
 		));
         //if (!$result) throw new NotFoundException(); 
         $this->json(200, $result);
@@ -89,16 +94,12 @@ class MetaResourcesController extends AppController {
 	
 	/**
      * Find all meta-resources
-     *
-     * @param string $id
      */
     public function findAll() {
-        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
         $model = $this->modelClass;
 		$results = $this->$model->find('all', array(
 			'conditions' => array('page_kid' => $this->request->data['id'])
 		));
-        //if (!$result) throw new NotFoundException(); 
         $this->json(200, $results);
     }
 

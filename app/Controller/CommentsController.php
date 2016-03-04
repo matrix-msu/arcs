@@ -12,4 +12,22 @@ App::uses('MetaResourcesController', 'Controller');
  */
 class CommentsController extends MetaResourcesController {
     public $name = 'Comments';
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+
+        $user = $this->Auth->User();
+        $this->request->data['user_id'] = $user['id'];
+    }
+
+    /**
+     * Find all meta-resources
+     */
+    public function findAll() {
+        $model = $this->modelClass;
+        $results = $this->$model->find('all', array(
+            'conditions' => array('resource_kid' => $this->request->data['id'])
+        ));
+        $this->json(200, $results);
+    }
 }

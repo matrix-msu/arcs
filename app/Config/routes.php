@@ -145,6 +145,10 @@
         array('controller' => 'annotations', 'action' => 'findAll')
     );
 
+    Router::connect('/api/comments/findall',
+        array('controller' => 'comments', 'action' => 'findAll')
+    );
+
     $restful = array(
         'resources',
         'comments',
