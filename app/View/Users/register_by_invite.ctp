@@ -1,4 +1,4 @@
-
+<script>document.title = "Create Account - ARCS";</script>
 <div class="registration span-6">
     <?php if ($error) {?>
         <h2>This link is no longer active.</h2>
