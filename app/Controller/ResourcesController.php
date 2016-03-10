@@ -271,6 +271,7 @@ class ResourcesController extends AppController {
             'pages' => $pages,
             'resource' => $resource,
             'surveys' => $surveys,
+            'subject' => $subject,
 			'season' => $season,
             'project' => $project,
             'toolbar' => array('actions' => true),

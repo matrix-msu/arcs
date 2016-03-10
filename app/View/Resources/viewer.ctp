@@ -158,7 +158,7 @@
 			
 			<div class="accordion metadata-accordion">
 	
-				<h3 class="level-tab">Project Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
+				<h3 class="level-tab">Project Level Metadata <div class="icon-edit" id="edit-project"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -408,66 +408,85 @@
 					</table>
 					
 				</div>
-				
-				<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
+
+			<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
+				
+					<div id="tabs-1" class="metadata-content">
 					
-					<table>
-						<tr>
-							<td>Metadata Title</td>
-							<td><?php var_dump($survey); ?></td>
-						</tr>
+						<div class="accordion metadata-accordion">
+							
+							<?php if(count($surveys) > 0) { ?>
+									<?php $count=0; ?>
+									<?php foreach($surveys as $survey) { $count++; ?>		
+							
+								<h3 class="level-tab smaller">Excavation/Survey Level Metadata Section <?php echo $count ?></h3>	
+								
+									<div class="level-content auto-height">
+									
+										<table>
+											<tr>
+												<td>Name</td>
+												<td><?php echo $survey['Name'] ?></td>
+											</tr>
+											<tr>
+												<td>Type</td>
+												<td><?php echo $survey['Type'] ?></td>
+											</tr>
+											<tr>
+												<td>Supervisor</td>
+												<td><?php echo $survey['Supervisor'] ?></td>
+											</tr>
+											<tr>
+												<td>Earliest Date</td>
+												<td><?php if ($survey['Earliest Date']['year']) {echo $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];} ?></td>
+											</tr>
+											<tr>
+												<td>Latest Date</td>
+												<td><?php if ($survey['Latest Date']['year']) {echo $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];} ?></td>
+											</tr>
+											<tr>
+												<td>Terminus Ante Quem</td>
+												<td><?php echo $survey['Terminus Ante Quem'] ?></td>
+											</tr>
+											<tr>
+												<td>Terminus Post Quem</td>
+												<td><?php echo $survey['Terminus Post Quem'] ?></td>
+											</tr>
+											<tr>
+												<td>Excavation Stratigraphy</td>
+												<td><?php echo $survey['Excavation Stratigraphy'] ?></td>
+											</tr>
+											<tr>
+												<td>Survey Conditions</td>
+												<td><?php echo $survey['Survey Conditions'] ?></td>
+											</tr>
+											<tr>
+												<td>Post Dispositional Transformation</td>
+												<td><?php echo $survey['Post Dispositional Transformation'] ?></td>
+											</tr>
+											<tr>
+												<td>Legacy</td>
+												<td><?php echo $survey['Legacy'] ?></td>
+											</tr>
+																					
+											</table>
+									</div>
+											
+							<?php } ?>
+							<?php } else { ?> 
+								<div class="no-data">
+									This is a surface find, which doesn’t have associated excavation metadata.
+								</div>				
+							<?php } ?> 
+							</div>
 						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information needs more room so it will expand the height of the column like so.</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-						
-						<tr>
-							<td>Metadata Title</td>
-							<td>Metadata Information</td>
-						</tr>
-					</table>
+					</div>	
 					
 				</div>
-				
-				<h3 class="level-tab">Archival Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
+
+					<h3 class="level-tab">Archival Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -544,6 +563,88 @@
 			</div>
 			
 		</div>
+			<h3 class="level-tab">Subject of Observation<div class="icon-edit"></div><span>Edit</span></h3>
+				
+				<div class="level-content">
+				
+					<div id="tabs-1" class="metadata-content">
+					
+						<div class="accordion metadata-accordion">
+							
+							<?php if(count($subject) > 0) { ?>
+									<?php $count=0; ?>
+									<?php foreach($subject as $subjects) { $count++; ?>		
+							
+								<h3 class="level-tab smaller">Subject of Observation Section <?php echo $count ?></h3>	
+								
+									<div class="level-content auto-height">
+									
+										<table>
+											<tr>
+												<td>Pages Associator</td>
+												<td><?php echo $subjects['Pages Associator'] ?></td>
+											</tr>
+											<tr>
+												<td>Resource Identifier</td>
+												<td><?php echo $subjects['Resource Identifier'] ?></td>
+											</tr>
+											<tr>
+												<td>Subject of Observation Associator</td>
+												<td><?php echo $subjects['Subject of Observation Associator'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Classification</td>
+												<td><?php echo $subjects['Artifact - Structure Classification'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Type</td>
+												<td><?php echo $subjects['Artifact - Structure Type'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Terminus Ante Quem</td>
+												<td><?php echo $subjects['Artifact - Structure Terminus Ante Quem'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Terminus Post Quem</td>
+												<td><?php echo $subjects['Artifact - Structure Terminus Post Quem'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Title</td>
+												<td><?php echo $subjects['Artifact - Structure title'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Geolocation</td>
+												<td><?php echo $subjects['Artifact - Structure Geolocation'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Excavation Unit</td>
+												<td><?php echo $subjects['Artifact - Structure Excavation Unit'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Description</td>
+												<td><?php echo $subjects['Artifact - Structure Description'] ?></td>
+											</tr>
+											<tr>
+												<td>Artifact - Structure Location</td>
+												<td><?php echo $subjects['Artifact - Structure Location'] ?></td>
+											</tr>
+																					
+											</table>
+									</div>
+											
+							<?php } ?>
+							<?php } else { ?> 
+								<div class="no-data">
+									This resource doesn’t have associated SOO data.
+								</div>				
+							<?php } ?> 
+						
+						</div>
+						
+					</div>	
+					
+				</div>
+				
 		
 		<div id="tabs-2" class="metadata-content">
 			
@@ -573,18 +674,18 @@
 </div>
 
 <div id="other-resources">
-	<?php foreach($pages as $r): ?>
-		<a href="#" class="pageThumb" id="<?php echo $r['kid']?>">
-		<img class="other-resource"
-		     src="<?php echo $r['thumb'] ?>"
+    <?php foreach($pages as $r): ?>
+        <a href="#" onclick="GetNewResource(<?php echo "'".$r['kid']."'"?>)">
+        <img class="other-resource"
+             src="<?php echo $r['thumb'] ?>"
 
 
-		     height="100px"
-			 width="100px"
-			 style="padding: 10px 10px"
-			>
-		</a>
-	<?php endforeach ?>
+             height="100px"
+             width="100px"
+             style="padding: 10px 10px"
+            >
+        </a>
+    <?php endforeach ?>
 </div>
 
 <script>
@@ -593,19 +694,23 @@
 	$(function() {
 		$( "#tabs" ).tabs();
 	});
-
 	$(function() {
 		$( ".accordion" ).accordion({
-			heightStyle: "fill"
+			heightStyle: "fill",
+			collapsible: true, 
+			active: false
+		});
+		$("#edit-project").click(function(){
+			//TODO HERE CREATE EDITABLE TABLE
 		});
 	});
 
 	$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
 
-	$( window ).resize(function() {
+/*	$( window ).resize(function() {
 		( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
 	});
-
+*/
 	$(function() {
 		var kid = "<?php echo $kid; ?>";
 		function GetNewResource(id) {
