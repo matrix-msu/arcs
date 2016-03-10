@@ -44,7 +44,7 @@
     <div></div>
   </details>
 
-  <details class="unselectable" data-type="Map">
+  <details class="unselectable" data-type="Plan or Elevation">
     <summary class="large"><span class="summaryTitle">Maps</span></summary>
     <div></div>
   </details>
