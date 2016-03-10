@@ -14,16 +14,16 @@
   </div>
   {% endif %}
 
-  <details class="unselectable" open="open" data-type="Notebook">
+  <details class="unselectable" open="open" data-type="Field Journal" >
     <summary class="large"><span class="summaryTitle">Notebooks <?php echo $user['id']; ?></span></summary>
     <div></div>
   </details>
-
+<!--
   <details class="unselectable" data-type="Notebook Page">
     <summary class="large"><span class="summaryTitle">Notebooks Pages</span></summary>
     <div></div>
   </details>
-
+-->
   <details class="unselectable" data-type="Photograph">
     <summary class="large"><span class="summaryTitle">Photographs</span></summary>
     <div></div>
