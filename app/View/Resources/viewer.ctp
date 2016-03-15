@@ -3,7 +3,7 @@
 <div class="modalBackground">
 	<div class="flagWrap">
 		<div id="flagModal">
-			<div class="flagModalHeader">NEW FLAG <img src="../app/webroot/assets/img/Close.svg" class="modalClose"/></div>
+			<div class="flagModalHeader">NEW FLAG <img src="../app/webroot/assets/img/Close.svg" class="modalClose"></img></div>
 			<hr>
 			<form id="flagForm" action="/">
 				<p class="flagSuccess">Flag submitted successfully.</p>
@@ -24,45 +24,6 @@
 	</div>
 </div>
 
-<div class="annotateModalBackground">
-	<div class="annotateWrap">
-		<div id="annotateModal">
-			<div class="annotateModalHeader">NEW ANNOTATION<img src="../app/webroot/assets/img/Close.svg" class="modalClose"/></div>
-			<hr class="annotateHeaderDivider">
-			<p class="annotateTab annotateTabRelation activeTab">RELATION</p>
-			<p class="annotateTab annotateTabTranscript">TRANSCRIPT</p>
-			<p class="annotateTab annotateTabUrl">URL</p>
-			<div class="annotateRelationContainer">
-				<form class="annotateSearchForm" action="#">
-				  <input class="annotateSearch" placeholder="SEARCH"/>
-				</form>
-				<div class="resultsContainer"></div>
-			</div>
-			<div class="annotateTranscriptContainer">
-				<textarea class="annotateTranscript" placeholder="ENTER TRANSCRIPT"></textarea>
-			</div>
-			<div class="annotateUrlContainer">
-				<textarea class="annotateUrl" placeholder="ENTER URL"></textarea>
-			</div>
-			<button class="annotateSubmit" type="submit">CREATE ANNOTATION</button>
-		</div>
-		
-	</div>
-</div>
-
-<div class="collectionModalBackground">
-	<div class="collectionWrap">
-		<div id="collectionModal">
-			<div class="collectionModalHeader">Add to collection <img src="../app/webroot/assets/img/Close.svg" class="modalClose"/></div>
-			<hr>
-			<form id="collectionForm" action="/">
-				<textarea class="formInput" id="collectionTitle" placeholder="ENTER NEW COLLECTION TITLE"></textarea>
-				<button class="collectionSubmit" type="submit">Add to new collection</button>
-			</form>
-		</div>
-	</div>
-</div>
-
 <div id="viewer-left">
 	<div id="viewer-tools">
 		<div class="container1">
@@ -75,12 +36,12 @@
 					</span>
 					<div class="icon-annotate"></div>
 				</a>
-				<!--<a id="flag" href="#">-->
-					<!--<span class="content">-->
-						<!--Flag-->
-					<!--</span>-->
-					<!--<div class="icon-flag"></div>-->
-				<!--</a>-->
+				<a id="flag" href="#">
+					<span class="content">
+						Flag
+					</span>
+					<div class="icon-flag"></div>
+				</a>
 				
 				<a href="#">
 					<span class="content">
@@ -94,8 +55,8 @@
 	
 	<div id="viewer-window">
 		
-		<img src="<?php echo $resource['thumb'] ?>" id="PageImage">
-		<div class='canvas'></div>
+		<img src="<?php echo $resource['thumb'] ?>" id="PageImage" >
+		
 	</div>
 	
 	<div id="resource-tools">
@@ -135,7 +96,7 @@
 		<ul class="metadata-tabs">
 			<li class="metadata-tab"><a href="#tabs-1">Info</a></li>
 			<li class="metadata-tab"><a href="#tabs-2">Notations</a></li>
-			<li class="metadata-tab discussion"><a href="#tabs-3">Discussions</a></li>
+			<li class="metadata-tab"><a href="#tabs-3">Discussions</a></li>
 			<li class="metadata-tab"><a href="#tabs-4">Instances</a></li>
 		</ul>
 		
@@ -151,7 +112,7 @@
 			
 			<div class="accordion metadata-accordion">
 	
-				<h3 class="level-tab">Project Level Metadata <div class="icon-edit" id="edit-project"></div><span>Edit</span></h3>
+				<h3 class="level-tab">Project Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -379,12 +340,10 @@
 								</div>				
 							<?php } ?> 
 				</div>
-
-			<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
+				
+				<h3 class="level-tab">Excavation/Survey Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
-				
-					<div id="tabs-1" class="metadata-content">
 				
 					<div id="tabs-1" class="metadata-content">
 					
@@ -459,8 +418,8 @@
 					</div>	
 					
 				</div>
-
-					<h3 class="level-tab">Archival Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
+				
+				<h3 class="level-tab">Archival Object Level Metadata <div class="icon-edit"></div><span>Edit</span></h3>
 				
 				<div class="level-content">
 					
@@ -632,88 +591,6 @@
 			</div>
 			
 		</div>
-			<h3 class="level-tab">Subject of Observation<div class="icon-edit"></div><span>Edit</span></h3>
-				
-				<div class="level-content">
-				
-					<div id="tabs-1" class="metadata-content">
-					
-						<div class="accordion metadata-accordion">
-							
-							<?php if(count($subject) > 0) { ?>
-									<?php $count=0; ?>
-									<?php foreach($subject as $subjects) { $count++; ?>		
-							
-								<h3 class="level-tab smaller">Subject of Observation Section <?php echo $count ?></h3>	
-								
-									<div class="level-content auto-height">
-									
-										<table>
-											<tr>
-												<td>Pages Associator</td>
-												<td><?php echo $subjects['Pages Associator'] ?></td>
-											</tr>
-											<tr>
-												<td>Resource Identifier</td>
-												<td><?php echo $subjects['Resource Identifier'] ?></td>
-											</tr>
-											<tr>
-												<td>Subject of Observation Associator</td>
-												<td><?php echo $subjects['Subject of Observation Associator'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Classification</td>
-												<td><?php echo $subjects['Artifact - Structure Classification'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Type</td>
-												<td><?php echo $subjects['Artifact - Structure Type'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Terminus Ante Quem</td>
-												<td><?php echo $subjects['Artifact - Structure Terminus Ante Quem'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Terminus Post Quem</td>
-												<td><?php echo $subjects['Artifact - Structure Terminus Post Quem'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Title</td>
-												<td><?php echo $subjects['Artifact - Structure title'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Geolocation</td>
-												<td><?php echo $subjects['Artifact - Structure Geolocation'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Excavation Unit</td>
-												<td><?php echo $subjects['Artifact - Structure Excavation Unit'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Description</td>
-												<td><?php echo $subjects['Artifact - Structure Description'] ?></td>
-											</tr>
-											<tr>
-												<td>Artifact - Structure Location</td>
-												<td><?php echo $subjects['Artifact - Structure Location'] ?></td>
-											</tr>
-																					
-											</table>
-									</div>
-											
-							<?php } ?>
-							<?php } else { ?> 
-								<div class="no-data">
-									This resource doesn’t have associated SOO data.
-								</div>				
-							<?php } ?> 
-						
-						</div>
-						
-					</div>	
-					
-				</div>
-				
 		
 		<div id="tabs-2" class="metadata-content">
 			
@@ -722,13 +599,9 @@
 		</div>
 		
 		<div id="tabs-3" class="metadata-content">
-			<div class="commentContainer"></div>
-			<button class="newComment">New Comment</button>
-			<br>
-			<form class="newCommentForm">
-				<textarea name="comment" class="commentTextArea"></textarea><br>
-				<button type="submit">Submit</button>
-			</form>
+			
+			<p>Discussions</p>
+			
 		</div>
 		
 		<div id="tabs-4" class="metadata-content">
@@ -743,18 +616,18 @@
 </div>
 
 <div id="other-resources">
-    <?php foreach($pages as $r): ?>
-        <a href="#" onclick="GetNewResource(<?php echo "'".$r['kid']."'"?>)">
-        <img class="other-resource"
-             src="<?php echo $r['thumb'] ?>"
+	<?php foreach($pages as $r): ?>
+		<a href="#" onclick="GetNewResource(<?php echo "'".$r['kid']."'"?>)">
+		<img class="other-resource"
+		     src="<?php echo $r['thumb'] ?>"
 
 
-             height="100px"
-             width="100px"
-             style="padding: 10px 10px"
-            >
-        </a>
-    <?php endforeach ?>
+		     height="100px"
+			 width="100px"
+			 style="padding: 10px 10px"
+			>
+		</a>
+	<?php endforeach ?>
 </div>
 
 <script>
@@ -781,140 +654,52 @@
 	}
 </script>
 
-
+<!-- Give the resource array to the client-side code -->
+<script>
 	$(function() {
 		$( "#tabs" ).tabs();
 	});
+	
 	$(function() {
 		$( ".accordion" ).accordion({
-			heightStyle: "fill",
-			collapsible: true, 
-			active: false
-		});
-		$("#edit-project").click(function(){
-			//TODO HERE CREATE EDITABLE TABLE
+			heightStyle: "fill"
 		});
 	});
-
+		
 	$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
-
-/*	$( window ).resize(function() {
+	
+	$( window ).resize(function() {
 		( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
 	});
-*/
+		
 	$(function() {
-		var kid = "<?php echo $kid; ?>";
-		function GetNewResource(id) {
-			image = document.getElementById('PageImage')
-			image.src = '../img/arcs-preloader.gif';
-			//image.style.height = '100%';
-			//image.style.width = '100%';
-			setTimeout(function(){}, 10000);
-			return $.ajax({
-				url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
-				type: 'GET',
-				success: function(res) {
-					res = JSON.parse(res);
-					kid = res['kid'];
-					$("#PageImage").empty();
-					document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
-					waitForElement();
-				}
-			});
-		}
-
-		$( ".pageThumb" ).click(function(){
-			GetNewResource($(this).attr('id'));
-		});
-
-
-		// Discussion
-
-		function getComments() {
-			$.ajax({
-				url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
-				type: "POST",
-				data: {
-					id: "<?php echo $resource['kid']; ?>"
-				},
-				success: function(data) {
-					$(".commentContainer").empty();
-					for (comment of data) {
-						$(".commentContainer").append("<p class='discussionComment'>"+comment.content+" <div class='reply'>Reply</div></p>");
-					}
-				}
-			});
-		}
-
-		$(".discussion").click(function() {
-			getComments();
-		});
-
-		$(".newComment").click(function() {
-			$(".newCommentForm").show();
-		});
-
-		$(".newCommentForm").submit(function(e) {
-			e.preventDefault();
-			$.ajax({
-				url: "<?php echo Router::url('/', true); ?>api/comments.json",
-				type: "POST",
-				data: {
-					resource_kid: "<?php echo $resource['kid']; ?>",
-					content: $(".commentTextArea").val()
-				},
-				success: function(data) {
-					$(".commentTextArea").empty();
-					getComments();
-				}
-
-			});
-		});
-
-
-
-
-
-
-
-
-
-		// Flags
-
-		$( ".flagAnnotation" ).click(function(){
+		$( "#flag" ).click(function(){
 			$( ".modalBackground" ).show();
 		});
-
+		
 		$( ".modalClose" ).click(function(){
 			$( ".modalBackground" ).hide();
-			$( ".annotateModalBackground" ).hide();
-			$( ".annotateHelp" ).hide();
-			if (gen_box != null) {
-				$(gen_box).remove();
-				gen_box = null;
-			}
-			ResetAnnotationModal();
 		});
-
+		
 		$( "#flagForm" ).submit(function( event ) {
-
+ 
 			// Stop form from submitting normally
 			event.preventDefault();
-
+			
 			$(".flagSuccess").hide();
-
+			
 			if ($("#flagReason").val() == '') {
 				$(".reasonError").show();
 			} else {
 				$(".reasonError").hide();
 			}
-
+			
 			if ($("#flagExplanation").val() == '') {
 				$(".explanationError").show();
 			} else {
 				$(".explanationError").hide();
 			}
-
+			
 			if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '') {
 				var formdata = {
 					kid: kid,
@@ -922,9 +707,9 @@
 					resource_name: "<?php echo $resource['Resource Identifier']; ?>",
 					reason: $("#flagReason").val(),
 					explanation: $("#flagExplanation").val(),
-					status: "pending"
+					status: "pending"				
 				}
-
+								
 				$.ajax({
 					url: "<?php echo Router::url('/', true); ?>resources/flags/add",
 					type: "POST",
@@ -936,10 +721,26 @@
 							$(".flagSuccess").show();
 						}
 					}
-
+					
 				});
 			}
 		});
-
 	});
 </script>
+
+
+<!--
+<script> 
+  arcs.resource = new arcs.models.Resource({{ resource|json_encode }});
+  arcs.collection = new arcs.collections.Collection();
+  arcs.viewer = new arcs.views.Viewer({
+    model: arcs.resource,
+    collection: arcs.collection,
+    el: $('#viewer')
+  });
+
+  if ($("img[alt='resource']").length == 0) {
+    $("#resource").height("700");
+  }
+    
+</script> -->
