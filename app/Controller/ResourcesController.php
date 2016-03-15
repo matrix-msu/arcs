@@ -143,6 +143,8 @@ class ResourcesController extends AppController {
         $this->Resource->recursive = 1;
         $this->Resource->flatten = false;
 		
+		
+		
 		//Get the Images
 		$query = "Resource Associator,=,".$id;
 		$user = "";
@@ -180,6 +182,9 @@ class ResourcesController extends AppController {
 		$resource = json_decode(curl_exec($ch), true);
 		$resource = $resource[$id];
 
+		$resource_id = $resource['Resource Identifier'];
+		
+		
         //survey
         $surveys = array();
         $seasonKID = '';
@@ -194,17 +199,33 @@ class ResourcesController extends AppController {
             $survey = json_decode(curl_exec($ch), true);
             $survey = $survey[$kid];
             array_push($surveys, $survey);
-            if ($seasonKID == '' ) {
-                $seasonKID = $survey['Season Associator'][0];
-            }
+            if (s)
+            //If no seasons for a resource, use resource season associator
+			if ($seasonKID == '') {
+            	$seasonKID = $survey['Season Associator'][0];	// does nothing?
+        	}
         }
 
         //If no seasons for a resource, use resource season associator
         if ($seasonKID == '') {
             $seasonKID = $resource['Season Associator'][0];
         }
+        
+        
+        // SOO - Subject of Observation
+        $query = "Resource Identifier,=,".$resource_id; // use this particular resource identifier
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SUBJECT_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		//capture results and display
+		$subject = json_decode(curl_exec($ch), true); // this is actually an array
+		
+		
+		// seasonKID is 7b-2df-a
 		
 		//season
+		$seasons = array();
 		$projectKid = '';
 		$query = "kid,=,".$seasonKID;
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SEASON_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
@@ -215,10 +236,30 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$season = json_decode(curl_exec($ch), true);
 		$season = $season[$seasonKID];
+		
+		// get the season type from the array (even though there is only one object, an array is returned by Kora) 
+		$type = $season['Type'];
+		$season['Type'] = $type[0];
+		
+		// get the director from the array (even though there is only one object, an array is returned by Kora) 
+		$director = $season['Director'];
+		$season['Director'] = $director[0];
+		
+		// get the registrar from the array (even though there is only one object, an array is returned by Kora) 
+		$registrar = $season['Registrar'];
+		$season['Registrar'] = $registrar[0];
+		
+		// get the sponsor from the array (even though there is only one object, an array is returned by Kora) 
+		$sponsor = $season['Sponsor'];
+		$season['Sponsor'] = $sponsor[0];
+		
+		
+				
 		if ($projectKid == '') {
 			$projectKid = $season['Project Associator'][0];
 		}
-		array_push($seasons, $season);
+		
+		//array_push($seasons, $season);
 		
 		//project
 		$query = "kid,=,".$projectKid;
@@ -270,6 +311,7 @@ class ResourcesController extends AppController {
             'kid' =>$pages[$firstPage]['kid'],
             'pages' => $pages,
             'resource' => $resource,
+            'subject' => $subject,
             'surveys' => $surveys,
             'subject' => $subject,
 			'season' => $season,
