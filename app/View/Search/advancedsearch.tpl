@@ -5,14 +5,24 @@
 </div>
 
 <a name="searchJump"></a>
-<div id="searchBox">
-	<div class="searchIcon"></div>
-			<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
-</div>
 
-
-<div id="advanced">
-	<a class="advancedSearch" href="#">Advanced Search</a>
+<div id="searchBoxAdvanced">
+	<div class='searchBoxColumn'>
+		<input type="text" class="searchBoxAdvanced" name="Coverage" placeholder="Coverage">
+		<input type="text" class="searchBoxAdvanced" name="Date" placeholder="Date">
+		<input type="text" class="searchBoxAdvanced" name="Description" placeholder="Description">
+		<input type="text" class="searchBoxAdvanced" name="Identifier" placeholder="Identifier">
+		<input type="text" class="searchBoxAdvanced" name="Location" placeholder="Location">
+		<input type="text" class="searchBoxAdvanced" name="Subject" placeholder="Subject">
+	</div>
+	<div class='searchBoxColumn'>
+		<input type="text" class="searchBoxAdvanced" name="Creator" placeholder="Creator">
+		<input type="text" class="searchBoxAdvanced" name="DateModified" placeholder="Date - Modified">
+		<input type="text" class="searchBoxAdvanced" name="Format" placeholder="Format">
+		<input type="text" class="searchBoxAdvanced" name="Language" placeholder="Language">
+		<input type="text" class="searchBoxAdvanced" name="Medium" placeholder="Medium">
+		<input type='submit' class='user-reg-btn btn btn-success searchButton' value='Search'></input>
+	</div>	
 </div>
 
 <div id="search-results-wrapper">
