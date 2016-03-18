@@ -155,27 +155,27 @@ class UsersController extends AppController
                     $this->redirect('/');
                 }
             } else {                            
-                                /* Logs user in */
-                                $user = $this->User->findByRef($this->request->data['User']['username']);
-                                if($user['User']['status'] == 'active'){
-                                        if ($this->Auth->login()) {
-                                                $this->User->id = $user['User']['id'];
-                                                $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                                                return $this->redirect($this->Auth->redirect());
-                                        } else {
-                                                $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
-                                                $this->redirect($this->referer());
-                                        }
-                                }
-                                else if($user['User']['status'] == 'pending') {
-                                        $this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
-                                        $this->redirect($this->referer());
-                                }
-                                //Invited users will not be found by findByRef until activated
-                                else if(!$user) {
-                                        $this->Session->setFlash("Username not found.", 'flash_error');
-                                        $this->redirect($this->referer());
-                                }
+                /* Logs user in */
+                $user = $this->User->findByRef($this->request->data['User']['username']);
+                if($user['User']['status'] == 'active'){
+                        if ($this->Auth->login()) {
+                                $this->User->id = $user['User']['id'];
+                                $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                                return $this->redirect($this->Auth->redirect());
+                        } else {
+                                $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                                $this->redirect($this->referer());
+                        }
+                }
+                else if($user['User']['status'] == 'pending') {
+                        $this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
+                        $this->redirect($this->referer());
+                }
+                //Invited users will not be found by findByRef until activated
+                else if(!$user) {
+                        $this->Session->setFlash("Username not found.", 'flash_error');
+                        $this->redirect($this->referer());
+                }
             }
         }
     }
@@ -481,14 +481,20 @@ class UsersController extends AppController
         if ($ref == "" || !$user)
             throw new NotFoundException();
 
+        $this->loadModel('Comment');
+
+        // temporary fix
+        $user['commentsCount'] = $this->Comment->query("SELECT COUNT(*) FROM comments WHERE user_id = '" . $user['id'] . "'")[0][0]['COUNT(*)'];
+        
+        // $user['commentsCount'] = $this->Comment->find('count', array(
+        //     'conditions' => array('Comment.user_id' => $user['id'])
+        // ));
+
         $this->loadModel('Annotation');
         $user['annotationsCount'] = $this->Annotation->find('count', array(
             'conditions' => array('Annotation.user_username' => $user['username'])
         ));
-        $this->loadModel('Comment');
-        $user['commentsCount'] = $this->Comment->find('count', array(
-            'conditions' => array('Comment.user_id' => $user['id'])
-        ));
+
         $this->loadModel('Metadatum');
         $user['metadataCount'] = $this->Metadatum->find('count', array(
             'conditions' => array('Metadatum.user_username' => $user['username'])

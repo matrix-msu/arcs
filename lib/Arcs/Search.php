@@ -89,7 +89,7 @@ class Search {
             'joins' => array(
                 'comments' => array(
                     'Resource' => 'id', 
-                    'Comment' => 'resource_id'
+                    'Comment' => 'resource_kid'
                 )
             ),
             'comparison' => 'match'

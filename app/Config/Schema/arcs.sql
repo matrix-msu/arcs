@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS collections (
 -- comments
 CREATE TABLE IF NOT EXISTS comments (
     id CHAR(36) PRIMARY KEY,
-    resource_id CHAR(36),
+    resource_kid CHAR(36),
     user_id CHAR(36),
     content TEXT,
     created DATETIME DEFAULT NULL,

@@ -71,5 +71,13 @@ install:
 	npm install -g clean-css
 	npm install -g less
 
+# use to clear all tmp files.  This can be beneficial if the cache is preventing things (cached old html not updating to new html, database, etc.) from updating.
+clear_tmp:
+	rm -f app/tmp/cache/models/*
+	rm -f app/tmp/cache/persistent/*
+	rm -f app/tmp/cache/views/*
+	rm -f app/tmp/sessions/*
+	rm -f app/tmp/tests/*
+
 # Make everything.
 all: js css docs
