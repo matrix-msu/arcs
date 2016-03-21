@@ -557,6 +557,22 @@ input[type=range]:focus::-ms-fill-upper {
 	
 }
 
+.footer {
+    background: #333;
+    text-align: center;
+    color: #888;
+    font-weight: 200;
+    font-size: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 175px;
+    padding-bottom: 75px;
+    margin-top: -110px;
+    float: left;
+    border-top: 15px solid #444;
+    width: 100%;
+}
+
 #flagModal {
 	background-color: #565656 ;
 	margin-top: 60px;
@@ -922,10 +938,30 @@ input[type=range]:focus::-ms-fill-upper {
 
 /*Discussion*/
 
-.newCommentForm {
-	display: none;
+#discussionTab {
+	overflow: auto;
+	height: 743px;
 }
 
-.commentContainer {
+.newComment {
+	width: 100%;
+}
 
+.newCommentForm {
+	display: none;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.newCommentForm textarea, .newCommentForm button {
+	width: 100%;
+}
+
+.discussionComment {
+	padding: 5px;
+	border: 1px solid #cdcdcd;
+}
+
+.discussionReply {
+	padding: 15px;
 }

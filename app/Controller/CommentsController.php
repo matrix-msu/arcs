@@ -18,6 +18,7 @@ class CommentsController extends MetaResourcesController {
 
         $user = $this->Auth->User();
         $this->request->data['user_id'] = $user['id'];
+        $this->request->data['name'] = $user['name'];
     }
 
     /**
@@ -26,7 +27,8 @@ class CommentsController extends MetaResourcesController {
     public function findAll() {
         $model = $this->modelClass;
         $results = $this->$model->find('all', array(
-            'conditions' => array('resource_kid' => $this->request->data['id'])
+            'conditions' => array('resource_kid' => $this->request->data['id']),
+            'order' => array('created DESC')
         ));
         $this->json(200, $results);
     }

@@ -10,5 +10,5 @@
 class Comment extends AppModel {
     public $name = 'Comment';
     public $belongsTo = array('User', 'Resource');
-    public $whitelist = array('resource_kid', 'content');
+    public $whitelist = array('resource_kid', 'content', 'parent_id', 'name');
 }
