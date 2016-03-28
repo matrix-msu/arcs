@@ -394,6 +394,7 @@ input[type=range]:focus::-ms-fill-upper {
 	height: 87.5%;
 	background: #fff;
 	border-bottom: 1px solid #cdcdcd;
+    overflow: hidden;
 	
 	.canvas {
 		position: relative;
@@ -408,6 +409,7 @@ input[type=range]:focus::-ms-fill-upper {
 		display: block;
 		margin-right: auto;
 		margin-left: auto;
+        transform: scale(1.0);
 	}
 }
 
@@ -544,11 +546,49 @@ input[type=range]:focus::-ms-fill-upper {
 	line-height: 30px;
 }
 
-#other-resources {
-	min-height: 220px;
-	width: 100%;
-	background: #efefef;
-	position: relative;
+#resources-nav {
+    margin-bottom: 345px;
+    white-space: nowrap;
+    background: #efefef;
+    height: 220px;
+    width: 100%;
+}
+
+#other-resources-container {
+    overflow: hidden;
+    float: left;
+    width: 95%;
+    height: 220px;
+}
+
+#other-resources{
+    float: left;
+    width: auto;
+    height: 220px;
+}
+
+#other-resources a {
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+    float: left;
+    position: relative;
+}
+
+#button-left {
+    width: 50px;
+    height: 220px;
+    float: left;
+    cursor: pointer;
+    transform: rotate(180deg);
+    display: none;
+}
+
+#button-right {
+    width: 50px;
+    height: 220px;
+    float: right;
+    cursor: pointer;
 }
 
 .page {
