@@ -659,9 +659,9 @@
 		<div id="tabs-3" class="metadata-content">
 			<div id="discussionTab">
 				<div class="commentContainer"></div>
+				<button class="newComment">ADD NEW DISCUSSION</button>
+				<form class="newCommentForm"><textarea name="comment" class="commentTextArea" placeholder="Enter text here ..."></textarea><br><button type="submit">SUBMIT</button></form>
 			</div>
-			<button class="newComment">New Comment</button>
-			<form class="newCommentForm"><textarea name="comment" class="commentTextArea"></textarea><br><button type="submit">Submit</button></form>
 		</div>
 		
 		<div id="tabs-4" class="metadata-content">
@@ -713,7 +713,7 @@
 	$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
 	
 	$( window ).resize(function() {
-		( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
+		$( '.metadata-accordion' ).height( $( '#viewer-window' ).height() );
 	});
 </script>
 
@@ -1412,15 +1412,15 @@
 			},
 			success: function (data) {
 				$(".commentContainer").empty();
-
+				console.log(data);
 				$.each(data, function(index, comment) {
 					if (!comment.parent_id) {
 						$(".commentContainer").append(
 								"<div class='discussionComment' id='" + comment.id + "'>" +
-								"<div class='commentName'>" + comment.name + "</div>" +
-								"<br>" +
-								formatDate(comment.created) +
-								"<br>" +
+								"<div class='commentName'>" + comment.name +
+								"</div><div class='commentDate'>" +
+								formatDate(comment.created) + 
+								"</div><br>" +
 								comment.content +
 								"<div class='reply'>Reply</div>" +
 								"</div>"
@@ -1431,13 +1431,12 @@
 				$.each(data, function(index, comment) {
 					if (comment.parent_id) {
 						$("#" + comment.parent_id).append(
-								"<div class='discussionReply' id='" + comment.id + "'>" +
+								"<div class='discussionReply' id='" + comment.id + "'><div class='replyTo'>" +
 								"In reply to " + $("#" + comment.parent_id + " > .commentName").html() +
-								"<br>" +
-								comment.name +
-								"<br>" +
+								"</div><div class='commentName'>" + comment.name +
+								"</div><div class='commentDate'>" +
 								formatDate(comment.created) +
-								"<br>" +
+								"</div><br>" +
 								comment.content +
 								"</div>");
 					}
@@ -1447,6 +1446,11 @@
 					$(".commentTextArea").val("");
 					$(this).parent().append($(".newCommentForm"));
 					$(".newCommentForm").show();
+					$(".newCommentForm").css({
+						"display": "inline",
+						"position": "relative",
+						"margin-top": "0px"
+					});
 					$(".newComment").show();
 					parent = $(this).parent().attr("id");
 				});
@@ -1469,6 +1473,8 @@
 		$("#tabs-3").append($(".newCommentForm"));
 		$(".commentTextArea").val("");
 		$(".newCommentForm").show();
+		$(".newCommentForm").removeAttr('style');
+		$(".newCommentForm").css("display", "inline");
 		$(this).hide();
 		parent = null;
 	});
