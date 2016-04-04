@@ -126,8 +126,10 @@
 				<img class="resources-zoom-out-icon" src="../img/zoomOut.svg">
                 </a>
 			</div>
-			<div class="zoom-range-div">
+			<div id="zoom-range-div" class="zoom-range-div">
+                <a href="#">
 	  			<input type="range" min="1" max="10" value="1" step="0.1" class="zoom-bar" id="zoom-range">
+                </a>
 			</div>
 			<div id="zoom-in" class="zoom-in-div">
                 <a href="#">
@@ -678,13 +680,13 @@
 <div id="resources-nav">
     <div id="button-left">
         <a href="#" id="left-button">
-            <img src="/~wyatt.roehler/arcs/img/Arrow-White.svg" height="220px" width="50px" style="background: black;"/>
+            <img src="../img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
     <div id="other-resources-container">
     <div id="other-resources" style="min-width: <?php $length = 220*count($pages); echo "$length";?>px">
         <?php foreach($pages as $r): ?>
-            <a href="#" onclick="GetNewResource(<?php echo "'".$r['kid']."'"?>)">
+            <a href="#">
             <img class="other-resource"
                  src="<?php echo $r['thumb'] ?>" height="200px" width="200px"/>
             </a>
@@ -693,7 +695,7 @@
     </div>
     <div id="button-right">
         <a href="#" id="right-button">
-            <img src="/~wyatt.roehler/arcs/img/Arrow-White.svg" height="220px" width="50px" style="background: black;"/>
+            <img src="../img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
 </div>
@@ -1307,6 +1309,7 @@
 	// other resources
     $(document).ready(function() {
         var $item = $('#other-resources a'),
+            $pics = $('#other-resources a img'),
             index = 0, //Starting index
             current = 0,
             keys = <?php echo json_encode(array_keys($pages)); ?>,
@@ -1314,9 +1317,29 @@
             shift = visible * 220,
             anim = {},
             value = "",
+            oldzoom = 1,
             endIndex = <?php $length = count($pages); echo "$length";?> / visible -1;
+            
+            for(var i=0; i<$pics.length; i++){
+                $pics[i].style.borderColor = "#0094BC";
+                $pics[i].style.borderStyle = "solid";
+                $item[i].onclick = createFunc(i);
+            }
+            
+            $pics[0].style.borderWidth = "5px";
+            
+        function createFunc(i){
+            return function(event){
+                    event.preventDefault();
+                    $pics[current].style.borderWidth = "0px";
+                    current = i;
+                    $pics[current].style.borderWidth = "5px";
+                    var kid = keys[current];
+                    GetNewResource(kid);
+                }
+        }
         
-        $('#button-right').click(function(){
+        $('#button-right').click(function(event){
             event.preventDefault();
             if(index < endIndex ){
                 if(index == 0){
@@ -1332,7 +1355,7 @@
             }
         });
         
-        $('#button-left').click(function(){
+        $('#button-left').click(function(event){
             event.preventDefault();
             if(index > 0){
                 index--; 
@@ -1348,25 +1371,29 @@
             }
         });
         
-        $('#prev-resource').click(function(){
+        $('#prev-resource').click(function(event){
             event.preventDefault();
             if(current > 0){
-                current--; 
+                $pics[current].style.borderWidth = "0px";
+                current--;
+                $pics[current].style.borderWidth = "5px";
                 var kid = keys[current];
                 GetNewResource(kid);
             }
         });
         
-        $('#next-resource').click(function(){
+        $('#next-resource').click(function(event){
             event.preventDefault();
             if(current < keys.length-1){
+                $pics[current].style.borderWidth = "0px";
                 current++; 
+                $pics[current].style.borderWidth = "5px";
                 var kid = keys[current];
                 GetNewResource(kid);
             }
         });
         
-        $('#zoom-out').click(function(){
+        $('#zoom-out').click(function(event){
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var image = document.getElementById("PageImage");
@@ -1376,12 +1403,14 @@
                 zoom = zoomrange.value;
                 zoomratio = 10/(11-zoom);
                 image.style.transform = "scale(" + zoomratio + ")";
+                image.style.left = "0px";
+                image.style.top = "0px";
             }
             
             console.log(zoomrange.value);
         });
         
-        $('#zoom-in').click(function(){
+        $('#zoom-in').click(function(event){
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var image = document.getElementById("PageImage");
@@ -1396,65 +1425,63 @@
             
             console.log(zoomrange.value);
         });
+        
+        $('#zoom-range-div').click(function(event){
+            event.preventDefault();
+            var zoomrange = document.getElementById("zoom-range");
+            var image = document.getElementById("PageImage");
+            var zoom;
+            
+            zoom = zoomrange.value;
+            
+            if(oldzoom > zoom){
+                image.style.left = "0px";
+                image.style.top = "0px";
+            }
+            
+            oldzoom = zoom;
+            zoomratio = 10/(11-zoom);
+            image.style.transform = "scale(" + zoomratio + ")";
+            
+            console.log(zoomrange.value);
+        });
+        
+        var jq = document.createElement('script');
+        jq.src = "//code.jquery.com/ui/1.11.4/jquery-ui.js";
+        document.querySelector('head').appendChild(jq);
+        
+        jq.onload = drag;
+        
+        function drag(){
+            $("#PageImage").draggable();
+        }
+        
     });
 </script>
 
+
+
 <script>
-	// Discussion
-	var parent;
-
-	function getComments() {
-		$.ajax({
-			url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
-			type: "POST",
-			data: {
-				id: "<?php echo $resource['kid']; ?>"
-			},
-			success: function (data) {
-				$(".commentContainer").empty();
-				console.log(data);
-				$.each(data, function(index, comment) {
-					if (!comment.parent_id) {
-						$(".commentContainer").append(
-								"<div class='discussionComment' id='" + comment.id + "'>" +
-								"<div class='commentName'>" + comment.name +
-								"</div><div class='commentDate'>" +
-								formatDate(comment.created) + 
-								"</div><br>" +
-								comment.content +
-								"<div class='reply'>Reply</div>" +
-								"</div>"
-						);
-					}
-				});
-
-				$.each(data, function(index, comment) {
-					if (comment.parent_id) {
-						$("#" + comment.parent_id).append(
-								"<div class='discussionReply' id='" + comment.id + "'><div class='replyTo'>" +
-								"In reply to " + $("#" + comment.parent_id + " > .commentName").html() +
-								"</div><div class='commentName'>" + comment.name +
-								"</div><div class='commentDate'>" +
-								formatDate(comment.created) +
-								"</div><br>" +
-								comment.content +
-								"</div>");
-					}
-				});
-
-				$(".reply").click(function () {
-					$(".commentTextArea").val("");
-					$(this).parent().append($(".newCommentForm"));
-					$(".newCommentForm").show();
-					$(".newCommentForm").css({
-						"display": "inline",
-						"position": "relative",
-						"margin-top": "0px"
-					});
-					$(".newComment").show();
-					parent = $(this).parent().attr("id");
-				});
-			}
+	var kid = "<?php echo $kid; ?>";
+	function GetNewResource(id) {
+        //console.log(current);
+	  	image = document.getElementById('PageImage')
+	  	image.src = '../img/arcs-preloader.gif';
+	  	image.style.height = '100%';
+	  	image.style.width = '100%';
+	  	setTimeout(function(){
+		    console.log("See the loader? I'm waiting.");
+		}, 10000);
+		return $.ajax({
+		  url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
+		  type: 'GET',
+		  success: function(res) {
+			//document.getElementById('PageImage').src = res;
+			res = JSON.parse(res);
+			kid = res['kid'];
+			//console.log(res['kid']);
+			document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
+		  }
 		});
 	}
 
