@@ -27,7 +27,7 @@
 <div class="annotateModalBackground">
 	<div class="annotateWrap">
 		<div id="annotateModal">
-			<div class="annotateModalHeader">NEW ANNOTATION<img src="../app/webroot/assets/img/Close.svg" class="modalClose"/></div>
+			<div class="annotateModalHeader">NEW ANNOTATION<img src="../app/webroot/assets/img/Close.svg" class="modalClose annotationClose"/></div>
 			<hr class="annotateHeaderDivider">
 			<p class="annotateTab annotateTabRelation activeTab">RELATION</p>
 			<p class="annotateTab annotateTabTranscript">TRANSCRIPT</p>
@@ -688,6 +688,7 @@
         <?php foreach($pages as $r): ?>
             <a href="#">
             <img class="other-resource"
+            <img class="other-resource"
                  src="<?php echo $r['thumb'] ?>" height="200px" width="200px"/>
             </a>
         <?php endforeach ?>
@@ -805,14 +806,16 @@
 
 <script>
 	// Annotations
+	var showAnnotations = true;
 
-	$("#PageImage").mouseenter(function() {
-		$( ".canvas" ).show();
-	});
-
-	$(".canvas").mouseleave(function() {
-		if (disabled) {
+	$(".resources-annotate-icon").click(function() {
+		if (showAnnotations) {
 			$( ".canvas" ).hide();
+			showAnnotations = false;
+		}
+		else {
+			$( ".canvas" ).show();
+			showAnnotations = true;
 		}
 	});
 
@@ -837,7 +840,6 @@
 			$(".canvas").height($("#PageImage").height());
 			$(".canvas").width($("#PageImage").width());
 			$(".canvas").css({bottom:$("#PageImage").height()});
-			$(".canvas").hide();
 			DrawBoxes(kid);
 		}
 		else{
@@ -1482,6 +1484,59 @@
 			//console.log(res['kid']);
 			document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
 		  }
+		});
+	}
+
+	var parent;
+
+	function getComments() {
+		$.ajax({
+			url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
+			type: "POST",
+			data: {
+				id: "<?php echo $resource['kid']; ?>"
+			},
+			success: function (data) {
+				$(".commentContainer").empty();
+
+				$.each(data, function(index, comment) {
+					if (!comment.parent_id) {
+						$(".commentContainer").append(
+								"<div class='discussionComment' id='" + comment.id + "'>" +
+								"<div class='commentName'>" + comment.name + "</div>" +
+								"<br>" +
+								formatDate(comment.created) +
+								"<br>" +
+								comment.content +
+								"<div class='reply'>Reply</div>" +
+								"</div>"
+						);
+					}
+				});
+
+				$.each(data, function(index, comment) {
+					if (comment.parent_id) {
+						$("#" + comment.parent_id).append(
+								"<div class='discussionReply' id='" + comment.id + "'>" +
+								"In reply to " + $("#" + comment.parent_id + " > .commentName").html() +
+								"<br>" +
+								comment.name +
+								"<br>" +
+								formatDate(comment.created) +
+								"<br>" +
+								comment.content +
+								"</div>");
+					}
+				});
+
+				$(".reply").click(function () {
+					$(".commentTextArea").val("");
+					$(this).parent().append($(".newCommentForm"));
+					$(".newCommentForm").show();
+					$(".newComment").show();
+					parent = $(this).parent().attr("id");
+				});
+			}
 		});
 	}
 
