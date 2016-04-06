@@ -102,9 +102,11 @@
 	</div>
 	
 	<div id="viewer-window">
-		<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>
+		<!--<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>-->
+        <div id="ImageWrapper">
 		<img src="<?php echo $resource['thumb'] ?>" id="PageImage">
-		<div class='canvas'></div>
+        </div>
+		<!--<div class='canvas'></div>-->
 	</div>
 	
 	<div id="resource-tools">
@@ -680,7 +682,7 @@
 <div id="resources-nav">
     <div id="button-left">
         <a href="#" id="left-button">
-            <img src="../img/Arrow-White.svg" height="220px" width="50px"/>
+            <img src="/~wyatt.roehler/arcs/img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
     <div id="other-resources-container">
@@ -696,7 +698,7 @@
     </div>
     <div id="button-right">
         <a href="#" id="right-button">
-            <img src="../img/Arrow-White.svg" height="220px" width="50px"/>
+            <img src="/~wyatt.roehler/arcs/img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
 </div>
@@ -1399,14 +1401,15 @@
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var image = document.getElementById("PageImage");
+            var wrapper = document.getElementById("ImageWrapper");
             var zoom, ratio;
             if(zoomrange.value > 1){
                 zoomrange.value -= 1;
                 zoom = zoomrange.value;
                 zoomratio = 10/(11-zoom);
                 image.style.transform = "scale(" + zoomratio + ")";
-                image.style.left = "0px";
-                image.style.top = "0px";
+                wrapper.style.left = "0px";
+                wrapper.style.top = "0px";
             }
             
             console.log(zoomrange.value);
@@ -1428,17 +1431,19 @@
             console.log(zoomrange.value);
         });
         
-        $('#zoom-range-div').click(function(event){
+        $('#zoom-range').click(function(event){
+            console.log("range click");
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var image = document.getElementById("PageImage");
+            var wrapper = document.getElementById("ImageWrapper");
             var zoom;
             
             zoom = zoomrange.value;
             
             if(oldzoom > zoom){
-                image.style.left = "0px";
-                image.style.top = "0px";
+                wrapper.style.left = "0px";
+                wrapper.style.top = "0px";
             }
             
             oldzoom = zoom;
@@ -1455,12 +1460,11 @@
         jq.onload = drag;
         
         function drag(){
-            $("#PageImage").draggable();
+            $("#ImageWrapper").draggable();
         }
         
     });
 </script>
-
 
 
 <script>
