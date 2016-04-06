@@ -682,7 +682,7 @@
 <div id="resources-nav">
     <div id="button-left">
         <a href="#" id="left-button">
-            <img src="/~wyatt.roehler/arcs/img/Arrow-White.svg" height="220px" width="50px"/>
+            <img src="..arcs/img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
     <div id="other-resources-container">
@@ -698,7 +698,7 @@
     </div>
     <div id="button-right">
         <a href="#" id="right-button">
-            <img src="/~wyatt.roehler/arcs/img/Arrow-White.svg" height="220px" width="50px"/>
+            <img src="../img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
 </div>
