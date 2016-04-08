@@ -394,16 +394,14 @@ input[type=range]:focus::-ms-fill-upper {
 	height: 87.5%;
 	background: #fff;
 	border-bottom: 1px solid #cdcdcd;
-    /*overflow: hidden;*/
+    overflow: hidden !important;
 	
-	.canvas {
-		position: relative;
-		display: block;
-		margin-right: auto;
-		margin-left: auto;
-	}
-	
-	img {
+	#ImageWrap{
+    width: 100%;
+	height: 100%;
+    
+    
+    img {
 		max-width: 90%;
 		max-height: 90%;
 		display: block;
@@ -411,7 +409,19 @@ input[type=range]:focus::-ms-fill-upper {
 		margin-left: auto;
         transform: scale(1.0);
 	}
+    
+    .canvas {
+		position: relative;
+		display: block;
+		margin-right: auto;
+		margin-left: auto;
+	}
 }
+	
+	
+}
+
+
 
 #resource-tools {
 	float: left;
@@ -750,6 +760,7 @@ input[type=range]:focus::-ms-fill-upper {
 	background-color: #333;
 	color: #fff;
 	padding: 0px 0px 0px 5px;
+    z-index: 2;
 }
 
 .annotationHelpOk {
@@ -927,7 +938,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .canvas {
-	//display: none;
+	display: none;
 }
 
 .annotationPopup {
@@ -980,86 +991,28 @@ input[type=range]:focus::-ms-fill-upper {
 
 #discussionTab {
 	overflow: auto;
-}
-
-.commentContainer {
-	height:787px;
-	overflow: overlay;
-	text-transform: none;
+	height: 743px;
 }
 
 .newComment {
 	width: 100%;
-	background: none;
-}
-
-.newComment:hover {
-	width: 100%;
-	background: #0093be;
-	color: white;
-}
-
-.newCommentForm button {
-	width: 100%;
-	background: #0093be;
-	color: white;
-	margin-top: -4px;
-}
-
-.newCommentForm textarea {
-	width: 100%;
-	height: 100px;
-	background: white;
-	-webkit-appearance: none;  /*Removes default chrome and safari style*/
-	-moz-appearance: none; /* Removes Default Firefox style*/
-	border-radius: 0 !important;
-	border: 1px solid #0093be;
-	padding: 15px;
 }
 
 .newCommentForm {
 	display: none;
+	margin-top: 10px;
 	width: 100%;
-	position: absolute;
-	margin-top: -102px;
+}
+
+.newCommentForm textarea, .newCommentForm button {
+	width: 100%;
 }
 
 .discussionComment {
-	padding: 10px;
+	padding: 5px;
 	border: 1px solid #cdcdcd;
 }
 
 .discussionReply {
 	padding: 15px;
-	border-top: 1px dashed #cdcdcd;
-}
-
-.reply {
-	text-align: right;
-	margin: 15px 15px 15px 60%;
-}
-
-.reply:hover {
-	color: #0093be;
-	cursor: pointer;
-}
-
-.replyTo {
-	font-size: 10px;
-	color: #cdcdcd;
-	margin-bottom: 10px;
-}
-
-.commentName {
-	width: 50%;
-	height: 25px;
-	display: inline-block;
-}
-
-.commentDate {
-	width: 50%;
-	height: 25px;
-	display: inline-block;
-	text-align: right;
-	padding-right: 5px;
 }

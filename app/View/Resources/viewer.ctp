@@ -104,9 +104,10 @@
 	<div id="viewer-window">
 		<!--<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>-->
         <div id="ImageWrapper">
-		<img src="<?php echo $resource['thumb'] ?>" id="PageImage">
+		<div id="ImageWrap">
+        <img src="<?php echo $resource['thumb'] ?>" id="PageImage">
+		<div id="canvas" class='canvas'></div>
         </div>
-		<!--<div class='canvas'></div>-->
 	</div>
 	
 	<div id="resource-tools">
@@ -809,6 +810,11 @@
 <script>
 	// Annotations
 	var showAnnotations = true;
+    
+    $( ".annotationClose" ).click(function(){
+        $( ".annotateModalBackground" ).hide();
+        ResetAnnotationModal();
+    });
 
 	$(".resources-annotate-icon").click(function() {
 		if (showAnnotations) {
@@ -1271,7 +1277,7 @@
 		$(".annotateUrl").val("");
 		$(".resultsContainer").empty();
 		$( ".canvas" ).selectable({ disabled: true });
-		$( ".canvas" ).hide();
+		//$( ".canvas" ).removeClass("select ui-selectable ui-selectable-disabled");
 		$(".annotate").removeClass("annotateActive");
 		$(".annotateSubmit").hide();
 	}
@@ -1401,12 +1407,14 @@
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var image = document.getElementById("PageImage");
+            var canvas = $('.canvas');
             var wrapper = document.getElementById("ImageWrapper");
             var zoom, ratio;
             if(zoomrange.value > 1){
                 zoomrange.value -= 1;
                 zoom = zoomrange.value;
                 zoomratio = 10/(11-zoom);
+                canvas.css("transform" , "scale(" + zoomratio + ")");
                 image.style.transform = "scale(" + zoomratio + ")";
                 wrapper.style.left = "0px";
                 wrapper.style.top = "0px";
@@ -1418,6 +1426,7 @@
         $('#zoom-in').click(function(event){
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
+            var canvas = document.getElementById("canvas");
             var image = document.getElementById("PageImage");
             var zoom;
             if(zoomrange.value < 10){
@@ -1425,6 +1434,7 @@
                 zoom = Number(zoom) + Number(1); 
                 zoomrange.value = zoom;
                 zoomratio = 10/(11-zoom);
+                canvas.style.transform = "scale(" + zoomratio + ")";
                 image.style.transform = "scale(" + zoomratio + ")";
             }
             
@@ -1435,6 +1445,7 @@
             console.log("range click");
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
+            var canvas = $('.canvas');
             var image = document.getElementById("PageImage");
             var wrapper = document.getElementById("ImageWrapper");
             var zoom;
@@ -1448,6 +1459,7 @@
             
             oldzoom = zoom;
             zoomratio = 10/(11-zoom);
+            canvas.css("transform" , "scale(" + zoomratio + ")");
             image.style.transform = "scale(" + zoomratio + ")";
             
             console.log(zoomrange.value);
@@ -1459,8 +1471,27 @@
         
         jq.onload = drag;
         
+        function waitForElement(){
+            if($("#PageImage").height() !== 0){
+                $(".canvas").height($("#PageImage").height());
+                $(".canvas").width($("#PageImage").width());
+                $(".canvas").css({left: $("#PageImage").css("left")});
+                $(".canvas").css({bottom:$("#PageImage").height()});
+                DrawBoxes(kid);
+            }
+            else{
+                setTimeout(function(){
+                    waitForElement();
+                },250);
+            }
+        }
+        
+        
         function drag(){
-            $("#ImageWrapper").draggable();
+            $("#ImageWrap").draggable();
+            //$("#canvas").draggable({
+            //handle: $('#ImageWrap')
+            //});
         }
         
     });
