@@ -215,14 +215,14 @@
 			      </ul>
 			</div>
 			<ul class="pagination">
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
+				<li><a class='selected pageNumber' id='1'>1</a></li>
+				<li><a class='pageNumber' id='2'>2</a></li>
+				<li><a class='pageNumber' id='3'>3</a></li>
+				<li><a class='pageNumber' id='4'>4</a></li>
+				<li><a class='pageNumber' id='5'>5</a></li>
 			</ul>
 			<div id="search-again">
-				<a class="search-again-link" href="#" onclick="movePage()">Search again</a>
+				<a class="search-again-link" id='top-btn'>Search again</a>
 			</div>
 	  </div>
     <div id="search-pagination"></div>
@@ -241,12 +241,13 @@
        		console.log("hi");
 	   		e.style.visibility = 'visible';
     }
-    
-    function movePage() {
-	    console.log("hiiiiiiGUH");
+    /* Replaced with search.js' scrollTop */
+    /*function movePage() {
+	    console.log("HI");
 	    window.location.hash = "searchJump";
-	    }
-    
+	}
+    */
+	
     /*$(document).ready(function () {
     $("li").click(function () {
         $('li > ul').not($(this).children("ul")).hide();
@@ -256,10 +257,17 @@
 	
 	$(".searchBoxInput").keyup(function (e) {
 		if (e.keyCode === 13) {
-			console.log("Hiiii");
+			console.log("Hi");
 			toggle_search_visibility();
 		}
 	});
-    
- 
+	
+	/* function for page numbers */
+	$('.pageNumber').click(function(){
+		/* console.log(this.id); */
+		$('.pageNumber').removeClass('selected');
+		$(this).addClass('selected');
+		/* add functions here, use this.id to identify page number. */
+	});
+	
 </script>
