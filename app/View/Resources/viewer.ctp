@@ -102,8 +102,7 @@
 	</div>
 	
 	<div id="viewer-window">
-		<!--<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>-->
-        <div id="ImageWrapper">
+		<div class="annotateHelp">Click and drag to outline the area you would like to annotate. <div class="annotationHelpOk">OK</div></div>
 		<div id="ImageWrap">
         <img src="<?php echo $resource['thumb'] ?>" id="PageImage">
 		<div id="canvas" class='canvas'></div>
@@ -683,7 +682,7 @@
 <div id="resources-nav">
     <div id="button-left">
         <a href="#" id="left-button">
-            <img src="..arcs/img/Arrow-White.svg" height="220px" width="50px"/>
+            <img src="../img/Arrow-White.svg" height="220px" width="50px"/>
         </a>
     </div>
     <div id="other-resources-container">
@@ -1416,8 +1415,8 @@
                 zoomratio = 10/(11-zoom);
                 canvas.css("transform" , "scale(" + zoomratio + ")");
                 image.style.transform = "scale(" + zoomratio + ")";
-                wrapper.style.left = "0px";
-                wrapper.style.top = "0px";
+                image.style.left = "0px";
+                image.style.top = "0px";
             }
             
             console.log(zoomrange.value);
@@ -1447,14 +1446,13 @@
             var zoomrange = document.getElementById("zoom-range");
             var canvas = $('.canvas');
             var image = document.getElementById("PageImage");
-            var wrapper = document.getElementById("ImageWrapper");
             var zoom;
             
             zoom = zoomrange.value;
             
             if(oldzoom > zoom){
-                wrapper.style.left = "0px";
-                wrapper.style.top = "0px";
+                image.style.left = "0px";
+                image.style.top = "0px";
             }
             
             oldzoom = zoom;
@@ -1496,6 +1494,7 @@
         
     });
 </script>
+
 
 
 <script>
