@@ -150,7 +150,7 @@
 	</div>
 </div>
 
-<div id="viewer-right">
+<div id="viewer-right" style="position:relative; z-index: 5;" >
 	
 	<div id="tabs" class="metadata">
 		
@@ -663,8 +663,14 @@
 		<div id="tabs-3" class="metadata-content">
 			<div id="discussionTab">
 				<div class="commentContainer"></div>
-				<button class="newComment">ADD NEW DISCUSSION</button>
-				<form class="newCommentForm"><textarea name="comment" class="commentTextArea" placeholder="Enter text here ..."></textarea><br><button type="submit">SUBMIT</button></form>
+				
+				<div class="submitContainer">
+					<button class="newComment">ADD NEW DISCUSSION</button>
+					
+					<form class="newCommentForm"><textarea name="comment" class="commentTextArea" placeholder="Enter discussion here ..."></textarea><br><button type="submit">ADD NEW DISCUSSION</button><?php echo $this->Html->image('CloseComment.svg', array('class' => 'closeComment'));?></form>
+					
+					<form class="newReplyForm"><textarea name="comment" class="replyTextArea" placeholder="Enter reply here..."></textarea><br><button type="submit">ADD NEW REPLY</button><?php echo $this->Html->image('CloseComment.svg', array('class' => 'closeComment'));?></form>
+				</div>
 			</div>
 		</div>
 		
@@ -1537,12 +1543,12 @@
 					if (!comment.parent_id) {
 						$(".commentContainer").append(
 								"<div class='discussionComment' id='" + comment.id + "'>" +
-								"<div class='commentName'>" + comment.name + "</div>" +
-								"<br>" +
+								"<span class='commentName'>" + comment.name + "</span>" +
+								"<span class='commentDate'>" +
 								formatDate(comment.created) +
-								"<br>" +
+								"</span><br><span class='commentBody'>" +
 								comment.content +
-								"<div class='reply'>Reply</div>" +
+								"</span><div class='reply'>Reply</div>" +
 								"</div>"
 						);
 					}
@@ -1551,24 +1557,30 @@
 				$.each(data, function(index, comment) {
 					if (comment.parent_id) {
 						$("#" + comment.parent_id).append(
-								"<div class='discussionReply' id='" + comment.id + "'>" +
+								"<div class='discussionReply' id='" + comment.id + "'><span class='replyTo'>" +
 								"In reply to " + $("#" + comment.parent_id + " > .commentName").html() +
-								"<br>" +
+								"</span><br><span class='commentName'>" +
 								comment.name +
-								"<br>" +
+								"</span><span class='commentDate'>" +
 								formatDate(comment.created) +
-								"<br>" +
+								"</span><br><span class='commentBody'>" +
 								comment.content +
-								"</div>");
+								"</span></div>");
 					}
 				});
 
 				$(".reply").click(function () {
-					$(".commentTextArea").val("");
-					$(this).parent().append($(".newCommentForm"));
-					$(".newCommentForm").show();
+					$("#tabs-3").append($(".newReplyForm"));
+					$(".replyTextArea").val("");
+					// $(this).parent().append($(".newReplyForm"));
+					$(".newReplyForm").show();
+					$(".newReplyForm").removeAttr('style');
+					$(".newReplyForm").css("display", "inline");
 					$(".newComment").show();
 					parent = $(this).parent().attr("id");
+					$('html, body').animate({
+						scrollTop: $(".newReplyForm").offset().top - 600
+					}, 1000);
 				});
 			}
 		});
@@ -1595,7 +1607,13 @@
 		parent = null;
 	});
 
-	$(".newCommentForm").submit(function (e) {
+	$(".closeComment").click(function (){
+		$(".commentTextArea,.replyTextArea").val("");
+		$(".newCommentForm,.newReplyForm").hide();
+		$(".newComment").show();
+	});
+	
+	$(".newCommentForm,.newReplyForm").submit(function (e) {
 		e.preventDefault();
 		if ($(".commentTextArea").val() != "") {
 			$.ajax({
@@ -1608,8 +1626,26 @@
 				},
 				success: function (data) {
 					$(".commentTextArea").val("");
-					$("#tabs-3").append($(".newCommentForm"));
-					$(".newCommentForm").hide();
+					$("#tabs-3").append($(".newCommentForm,.newReplyForm"));
+					$(".newCommentForm,.newReplyForm").hide();
+					$(".newComment").show();
+					getComments();
+				}
+			});
+		}
+		else if ($(".replyTextArea").val() != "") {
+			$.ajax({
+				url: "<?php echo Router::url('/', true); ?>api/comments.json",
+				type: "POST",
+				data: {
+					resource_kid: "<?php echo $resource['kid']; ?>",
+					content: $(".replyTextArea").val(),
+					parent_id: parent
+				},
+				success: function (data) {
+					$(".replyTextArea").val("");
+					$("#tabs-3").append($(".newCommentForm,.newReplyForm"));
+					$(".newCommentForm,.newReplyForm").hide();
 					$(".newComment").show();
 					getComments();
 				}
