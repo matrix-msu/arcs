@@ -15,6 +15,13 @@
 				  <option value="duplicate">Duplicate</option>
 				  <option value="other">Other</option>
 				</select>
+				<p class="formError targetError">Give a target for this annotation.</p>
+				<select class="formInput" id="flagTarget">
+					<option value="">SELECT TARGET</option>
+					<option value="Outgoing Relation">Outgoing Relation</option>
+					<option value="Transcript">Transcript</option>
+					<option value="URL">URL</option>
+				</select>
 				<p class="formError explanationError">Give an explanation for this flag.</p>
 				<textarea class="formInput" id="flagExplanation" placeholder="EXPLAIN REASONING"></textarea>
 				
@@ -763,6 +770,7 @@
 		
 		$( ".modalClose" ).click(function(){
 			$( ".modalBackground" ).hide();
+			$("#flagTarget").hide();
 		});
 		
 		$( "#flagForm" ).submit(function( event ) {
@@ -783,16 +791,24 @@
 			} else {
 				$(".explanationError").hide();
 			}
+
+			if ($("#flagTarget").val() == '' && $("#flagTarget").isVisible()) {
+				$(".targetError").show();
+			} else {
+				$(".targetError").hide();
+			}
 			
-			if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '') {
+			if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && ($("#flagTarget").val() != '' && $("#flagTarget").isVisible())) {
 				var formdata = {
 					kid: kid,
 					resource_kid: "<?php echo $resource['kid']; ?>",
 					resource_name: "<?php echo $resource['Resource Identifier']; ?>",
 					reason: $("#flagReason").val(),
+					annotation_target: $("#flagTarget").val(),
+					annotation_id: $("#flagTarget").val(),
 					explanation: $("#flagExplanation").val(),
 					status: "pending"				
-				}
+				};
 								
 				$.ajax({
 					url: "<?php echo Router::url('/', true); ?>resources/flags/add",
@@ -802,6 +818,8 @@
 						201: function() {
 							$("#flagReason").val('');
 							$("#flagExplanation").val('');
+							$("#flagTarget").val('');
+							$("#flagTarget").hide();
 							$(".flagSuccess").show();
 						}
 					}
@@ -928,8 +946,6 @@
 					drag_left ? $(gen_box).offset({ left: x_end }) : $(gen_box).offset({ left: x_begin });
 					drag_up ? $(gen_box).offset({ top: y_end }) : $(gen_box).offset({ top: y_begin });
 
-					i++;
-
 					//Add coordinates to annotation to save
 					annotateData.x1 = parseFloat($(gen_box).css('left'), 10) / $(".canvas").width();
 					annotateData.x2 = (parseFloat($(gen_box).css('left')) + width) / $(".canvas").width();
@@ -943,22 +959,23 @@
 						ShowAnnotation($(this).attr('id'));
 					});
 
-					$(gen_box).append("<div class='deleteAnnotation'>X</div>");
+					$(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_"+ i +"'>X</div>");
 					$(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
 
-					$(".deleteAnnotation").click(function() {
+					$("#deleteAnnotation_"+ i).click(function() {
+						$(this).parent().remove();
 						$.ajax({
 							url: "<?php echo Router::url('/', true); ?>api/annotations/"+$(this).parent().attr("id")+".json",
-							type: "DELETE",
-							success: function(data) {
-								$(gen_box).remove();
-							}
+							type: "DELETE"
 						})
 					});
 
 					$( ".flagAnnotation" ).click(function(){
-						$( ".modalBackground" ).show();
+						$(".modalBackground").show();
+						$("#flagTarget").show();
 					});
+
+					i++;
 				}
 			}
 		});
@@ -986,22 +1003,30 @@
 						'top'       : $(".canvas").height() * v.y1
 					});
 
-					$(gen_box).append("<div class='deleteAnnotation'>X</div>");
+					$(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_"+ v.id +"'>X</div>");
 					$(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
 
-					$(".deleteAnnotation").click(function() {
+					$("#deleteAnnotation_" + v.id).click(function() {
+						var box = $(this).parent();
 						$.ajax({
 							url: "<?php echo Router::url('/', true); ?>api/annotations/"+$(this).parent().attr("id")+".json",
 							type: "DELETE",
-							success: function(data) {
-								$(gen_box).remove();
+							statusCode: {
+								204: function() {
+									box.remove();
+								},
+								// Make modal for this
+								403: function() {
+									alert("You don't have permission to delete this annotation");
+								}
 							}
 						})
 					});
 				});
 
 				$( ".flagAnnotation" ).click(function(){
-					$( ".modalBackground" ).show();
+					$(".modalBackground").show();
+					$("#flagTarget").show();
 				});
 
 				//Mouse over annotation
@@ -1474,22 +1499,6 @@
         document.querySelector('head').appendChild(jq);
         
         jq.onload = drag;
-        
-        function waitForElement(){
-            if($("#PageImage").height() !== 0){
-                $(".canvas").height($("#PageImage").height());
-                $(".canvas").width($("#PageImage").width());
-                $(".canvas").css({left: $("#PageImage").css("left")});
-                $(".canvas").css({bottom:$("#PageImage").height()});
-                DrawBoxes(kid);
-            }
-            else{
-                setTimeout(function(){
-                    waitForElement();
-                },250);
-            }
-        }
-        
         
         function drag(){
             $("#ImageWrap").draggable();

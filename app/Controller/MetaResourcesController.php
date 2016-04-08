@@ -113,10 +113,10 @@ class MetaResourcesController extends AppController {
         $model = $this->modelClass;
         $this->$model->flatten = true;
         $result = $this->$model->findById($id);
-        if (!$result) throw new NotFoundException();
-        if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result)))
-            throw new ForbiddenException();
-        if (!$this->$model->delete($id)) throw new InternalErrorException();
-        $this->json(204);
+        if (!$result) $this->json(404);
+        else if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result)))
+            $this->json(403);
+        else if (!$this->$model->delete($id)) $this->json(500);
+        else $this->json(204);
     }
 }
