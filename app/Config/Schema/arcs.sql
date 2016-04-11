@@ -35,12 +35,13 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 -- collections
 CREATE TABLE IF NOT EXISTS collections (
     id CHAR(36) PRIMARY KEY,
+    collection_id, CHAR(36),
+    resource_kid CHAR(36),
+    user_id CHAR(36),    
     title TEXT, 
     description TEXT,
     public BOOL,
-    user_id CHAR(36),
-    pdf CHAR(36),       
-    temporary BOOL DEFAULT FALSE,
+    pdf CHAR(36),
     created DATETIME DEFAULT NULL,
     modified DATETIME DEFAULT NULL,
     FULLTEXT(title, description)

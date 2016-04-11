@@ -159,16 +159,9 @@ class ResourcesController extends AppController {
 		$pages = json_decode(curl_exec($ch), true);
 		$first = true;
 
-        //////////////////////////
-        //Currently we only use the first image... there's a cleaner way to do this
-		foreach($pages as $p) {
-			if ($first == true) {
-				$firstPage = $p['kid'];
-				$first = false;
-			}
-			$pages[$p['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
-		}
-        //////////////////////////
+        // get the first entry in $pages
+        $firstPage = array_values($pages)[0]['kid'];
+        $pages[$firstPage]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$firstPage]['Image Upload']['localName'];
 		
 		//resource
 		$query = "kid,=,".$id;
@@ -221,9 +214,6 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$subject = json_decode(curl_exec($ch), true); // this is actually an array
 		
-		
-		// seasonKID is 7b-2df-a
-		
 		//season
 		$seasons = array();
 		$projectKid = '';
@@ -253,8 +243,7 @@ class ResourcesController extends AppController {
 		$sponsor = $season['Sponsor'];
 		$season['Sponsor'] = $sponsor[0];
 		
-		
-				
+
 		if ($projectKid == '') {
 			$projectKid = $season['Project Associator'][0];
 		}
@@ -291,13 +280,6 @@ class ResourcesController extends AppController {
                 $resource['Resource']['context'] . '/' . $id
             );
         }
-
-        $this->set('memberships', $this->Resource->Membership->find('all', array(
-            'conditions' => array(
-                'Membership.resource_id' => $id,
-                'Collection.title !=' => 'Temporary Collection'
-            )
-        )));
 		
 		//Set kid for viewer
         //moved to line 260
@@ -306,7 +288,12 @@ class ResourcesController extends AppController {
 		} else {
 			$this->set(array('kid' => $resource['kid']));
 		}*/
-		
+
+        $collections = json_encode($this->Collection->find('all', array(
+            'fields' => 'DISTINCT collection_id, title, user_name',
+            'order'  => 'created DESC')
+        ));
+
         $this->set(array(
             'kid' =>$pages[$firstPage]['kid'],
             'pages' => $pages,
@@ -315,16 +302,13 @@ class ResourcesController extends AppController {
             'surveys' => $surveys,
 			'season' => $season,
             'project' => $project,
+            'collections' => $collections,
             'toolbar' => array('actions' => true),
             'footer' => false,
             'body_class' => 'viewer standalone',
 			'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
         ));
 
-		/* The debug sends a var dump to the single resource view */
-        //debug($resource);
-
-        //Debugger::var_dump($resource);
         # On the first request of a particular resource (usually directly 
         # after upload), we might prompt the user for additional 
         # actions/information. Here we're turning that off for future 

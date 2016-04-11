@@ -24,72 +24,65 @@ class CollectionsController extends AppController {
         $collections = $this->Collection->find('all', array(
             'order' => 'Collection.modified DESC'
         ));
-
-        $usercollections = $this->Collection->find('all', array(
-            'conditions' => array('Collection.user_id' => $this->Auth->user('id')),
-            'order' => 'Collection.modified DESC'
-        ));
-
+        
         $this->set('collections', $this->Collection->find('all', array(
             'order' => 'Collection.modified DESC'
         )));
-
-        if ($this->Auth->loggedIn())
-            $this->set('user_collections', $this->Collection->find('all', array(
-                'conditions' => array('Collection.user_id' => $this->Auth->user('id')),
-                'order' => 'Collection.modified DESC'
-            )));
-
-        // get profile image
-        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
-        $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
-        $user = $this->viewVars['user'];
-
-        $profileSrc = NULL;
-        $profileImage = glob($uploads_path . $user['username'] . '.*');
-        if (count($profileImage) == 1) {
-            $profileSrc = $uploads_url . explode('/', $profileImage[0])[9];
-            // explode seperates the url on '/', we want the 'username.ext' part
-        }
-
-        // user has no profile image on the site so check gravatar
-        // might not be a good idea because the image will be incredibly blurry due to how gravatar saves images
-        if ($profileSrc == NULL && getimagesize("http://gravatar.com/avatar/" . $user["gravatar"] . "/?s=500&d=404")) {
-            $profileSrc = "http://gravatar.com/avatar/" . $user["gravatar"] . "/?d=404";
-        }
-
-        // user has no profile image on the site nor an image on gravatar so give default image
-        if ($profileSrc == NULL) {
-            $profileSrc = $this->webroot . "app/webroot/img/DefaultProfilePic.svg";
-        }
-
-        $this->set("profileSrc", $profileSrc);
     }
 
     /**
      * Create a new collection.
      */
     public function add() {
-        if (!$this->request->is('post')) throw new MethodNotAllowedException();
-        if (!$this->request->data) throw new BadRequestException();
-        # Save the collection.
+        if (!$this->request->is('post')) {throw new MethodNotAllowedException();}
+        if (!$this->request->data) {throw new BadRequestException();}
+
+        // Save the collection.
+        $this->request->data['collection_id'] = String::uuid();
+        $this->Collection->permit('collection_id');
+        $this->Collection->permit('resource_kid');
         $this->request->data['user_id'] = $this->Auth->user('id');
         $this->Collection->permit('user_id');
+        $this->request->data['user_name'] = $this->Auth->user('name');
+        $this->Collection->permit('user_name');
         $this->Collection->add($this->request->data);
-        # The 'Members' key may be given as a list of resource 
-        # id's that will be saved as Memberships.
-        if ($this->request->data['members']) {
-            $ci = $this;
-            $members = array_map(function($m) use ($ci) { 
-                return array(
-                    'collection_id' => $ci->Collection->id,
-                    'resource_id' => $m
-                );
-            }, $this->request->data['members']);
-            $this->Collection->Membership->saveMany($members);
-        }
         $this->Collection->flatten = true;
         $this->json(201, $this->Collection->findById($this->Collection->id));
+    }
+
+    /**
+     * Add resource to an existing collection(s).
+     */
+    public function addToExisting() {
+        if (!$this->request->is('post')) {throw new MethodNotAllowedException();}
+        if (!$this->request->data) {throw new BadRequestException();}
+
+        $length = count($this->request->data['collections']);
+        debug($length);
+        for ($i=0; $i<$length; $i++) {
+            // make sure collection already exists
+            $collection = $this->Collection->findById($this->request->data['collections'][$i]);
+            if ($collection) {
+                $object = array(
+                    'collection_id' => $collection['collection_id'],
+                    'resource_kid'  => $this->request->data['resource_kid'],
+                    'user_id'       => $this->Auth->user('id'),
+                    'user_name'     => $this->Auth->user('name'),
+                    'title'         => $collection['title'],
+                    'description'   => $collection['description'],
+                    'public'        => $collection['public']
+                );
+                $this->Collection->permit('collection_id');
+                $this->Collection->permit('resource_kid');
+                $this->Collection->permit('user_id');
+                $this->Collection->permit('user_name');
+
+                debug($object);
+
+                $this->Collection->add($object);
+            }
+        }
+        $this->json(201);
     }
 
     /**
@@ -111,21 +104,6 @@ class CollectionsController extends AppController {
         if (!$this->Access->isAdmin()) throw new ForbiddenException();
         if (!$this->Collection->delete($id)) throw new NotFoundException();
         $this->json(204);
-    }
-
-    /**
-     * Add members to an existing collection.
-     */
-    public function append($id) {
-        $collection = $this->Collection->findById($id);
-        if (!$collection) throw new NotFoundException();
-        if (!is_array($this->request->data['members']))
-            throw new BadRequestException();
-        foreach($this->request->data['members'] as $m) {
-            $this->Collection->Membership->pair($m, $id);
-            $this->Collection->Membership->create();
-        }
-        $this->json(201);
     }
 
     /**
