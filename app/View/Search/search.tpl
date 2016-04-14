@@ -7,7 +7,7 @@
 <a name="searchJump"></a>
 <div id="searchBox">
 	<div class="searchIcon"></div>
-			<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
 </div>
 
 
@@ -127,92 +127,101 @@
 		    
 		</div>
 	</div>
-  <div id="search-results">
-	  <ul class="flex-container">
-	  		<!--<div class="resource-item-container">
-		  		<li class="flex-item">1</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-annotate"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">2</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-annotate"></div>
-		  		<div class="icon-flag"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">3</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-flag"></div>
-		  		<div class="search-icon-edit"></div>
-		  		<div class="icon-in-collection"></div>
-		  		<div class="icon-discussed"></div>
-		  		<div class="icon-tagged"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">4</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-flag search-icon-edit"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">5</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">6</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">7</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">8</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">9</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">10</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">11</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">12</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>-->
+	
+
+	
+	<div id="search-results">
+	
+		<div class='toolbar-fixed'>
+			<a id='select-all'>SELECT ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
+			<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/Info.svg' class='collectionIcon'/></a>
+		</div>
+		
+		<ul class="flex-container">
+			<!--<div class="resource-item-container">
+				<li class="flex-item">1</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+				<div class="icon-annotate"></div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">2</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+				<div class="icon-annotate"></div>
+				<div class="icon-flag"></div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">3</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+				<div class="icon-flag"></div>
+				<div class="search-icon-edit"></div>
+				<div class="icon-in-collection"></div>
+				<div class="icon-discussed"></div>
+				<div class="icon-tagged"></div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">4</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+				<div class="icon-flag search-icon-edit"></div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">5</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">6</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">7</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">8</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">9</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">10</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">11</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>
+			<div class="resource-item-container">
+				<li class="flex-item">12</li>
+				<div class="resource-title">Resource Title</div>
+				<div class="resource-type">Resource Type</div>
+			</div>-->
 		</ul>
-  </div>
-  
-  <div id='search-bottom-bar'>
-	  <div id="search-actions" class="search-toolbar">
-		  <div id="items-per-pages-buttons" class="btn-group actions-left">
-			      <button id="items-per-page-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-			      	20 Items per Page
-			      	<span class="pointerDown sort-arrow"></span>
-			      </button>
-			      <ul class="dropdown-menu">
-			        <li><a class="sort-btn" id="open-btn">20 Items&nbsp;</a></li>
-			        <li><a class="sort-btn" id="open-colview-btn">40 Items&nbsp;</a></li>
-			        <li><a class="sort-btn" id="open-btn">60 Items&nbsp;</a></li>
-			      </ul>
+	</div>
+
+	<div id='search-bottom-bar'>
+		<div id="search-actions" class="search-toolbar">
+			<div id="items-per-pages-buttons" class="btn-group actions-left">
+				  <button id="items-per-page-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+					20 Items per Page
+					<span class="pointerDown sort-arrow"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+					<li><a class="sort-btn" id="open-btn">20 Items&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-colview-btn">40 Items&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-btn">60 Items&nbsp;</a></li>
+				  </ul>
 			</div>
 			<ul class="pagination">
 				<li><a class='selected pageNumber' id='1'>1</a></li>
@@ -224,10 +233,10 @@
 			<div id="search-again">
 				<a class="search-again-link" id='top-btn'>Search again</a>
 			</div>
-	  </div>
-    <div id="search-pagination"></div>
-    
-  </div>
+		</div>
+	<div id="search-pagination"></div>
+
+	</div>
 </div>
 
 <script>

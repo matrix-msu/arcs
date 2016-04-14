@@ -254,6 +254,7 @@ class arcs.views.search.Search extends Backbone.View
         #console.log(value)
         #Array::push.apply totalResults, value
         totalResults.push value
+      $('#results-count').html(totalResults.length)
       console.log(totalResults)
       Search.prototype._render results: totalResults
       $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
