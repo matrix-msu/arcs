@@ -24,6 +24,7 @@
                                 </select>
                                 <p class="formError explanationError">Give an explanation for this flag.</p>
                                 <textarea class="formInput" id="flagExplanation" placeholder="EXPLAIN REASONING"></textarea>
+								<input id="flagAnnotation_id"/>
                                 
                                 <button class="flagSubmit" type="submit">CREATE FLAG</button>
                         </form>
@@ -104,12 +105,12 @@
                                         <div class="icon-annotate"></div>
                                 </a>
                                 
-                                <a id="flag" href="#">
-                                        <span class="content">
-                                                Flag
-                                        </span>
-                                        <div class="icon-flag"></div>
-                                </a>
+                                <!--<a id="flag" href="#">-->
+                                        <!--<span class="content">-->
+                                                <!--Flag-->
+                                        <!--</span>-->
+                                        <!--<div class="icon-flag"></div>-->
+                                <!--</a>-->
                                 
                                 <a href="#">
                                         <span class="content">
@@ -804,20 +805,20 @@
                                 $(".explanationError").hide();
                         }
 
-                        if ($("#flagTarget").val() == '' && $("#flagTarget").isVisible()) {
+                        if ($("#flagTarget").val() == '' && $("#flagTarget").is(":visible")) {
                                 $(".targetError").show();
                         } else {
                                 $(".targetError").hide();
                         }
                         
-                        if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && ($("#flagTarget").val() != '' && $("#flagTarget").isVisible())) {
+                        if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && ($("#flagTarget").val() != '' && $("#flagTarget").is(":visible"))) {
                                 var formdata = {
-                                        kid: kid,
+                                        page_kid: kid,
                                         resource_kid: "<?php echo $resource['kid']; ?>",
                                         resource_name: "<?php echo $resource['Resource Identifier']; ?>",
                                         reason: $("#flagReason").val(),
                                         annotation_target: $("#flagTarget").val(),
-                                        annotation_id: $("#flagTarget").val(),
+                                        annotation_id: $("#flagAnnotation_id").val(),
                                         explanation: $("#flagExplanation").val(),
                                         status: "pending"                               
                                 };
@@ -831,8 +832,9 @@
                                                         $("#flagReason").val('');
                                                         $("#flagExplanation").val('');
                                                         $("#flagTarget").val('');
-                                                        $("#flagTarget").hide();
+                                                        //$("#flagTarget").hide();
                                                         $(".flagSuccess").show();
+														$("#flagAnnotation_id").val('');
                                                 }
                                         }
                                         
@@ -964,10 +966,6 @@
         // Annotations
         var showAnnotations = true;
     
-    $( ".annotationClose" ).click(function(){
-        $( ".annotateModalBackground" ).hide();
-        ResetAnnotationModal();
-    });
 
         $(".resources-annotate-icon").click(function() {
                 if (showAnnotations) {
@@ -1011,6 +1009,13 @@
         }
         waitForElement();
 
+        $( ".annotationClose" ).click(function(){
+                $( ".annotateModalBackground" ).hide();
+                ResetAnnotationModal();
+                $('.gen_box').remove();
+                DrawBoxes(kid);
+        });
+
         var gen_box = null;
         var disabled = true;
         $( ".annotate" ).click(function(){
@@ -1026,8 +1031,8 @@
                         start: function(e) {
                                 if (!disabled) {
                                         //get the mouse position on start
-                                        x_begin = e.pageX,
-                                                        y_begin = e.pageY;
+                                        x_begin = e.pageX;
+                                        y_begin = e.pageY;
                                 }
                         },
                         stop: function(e) {
@@ -1090,7 +1095,7 @@
                                         });
 
                                         $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_"+ i +"'>X</div>");
-                                        $(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
+                                        //$(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
 
                                         $("#deleteAnnotation_"+ i).click(function() {
                                                 $(this).parent().remove();
@@ -1100,10 +1105,11 @@
                                                 })
                                         });
 
-                                        $( ".flagAnnotation" ).click(function(){
-                                                $(".modalBackground").show();
-                                                $("#flagTarget").show();
-                                        });
+//                                        $( ".flagAnnotation" ).click(function(){
+//                                                $(".modalBackground").show();
+//                                                $("#flagTarget").show();
+//												$('#flagAnnotation_id').val();
+//                                        });
 
                                         i++;
                                 }
@@ -1157,6 +1163,7 @@
                                 $( ".flagAnnotation" ).click(function(){
                                         $(".modalBackground").show();
                                         $("#flagTarget").show();
+										$('#flagAnnotation_id').val($(this).parent().attr("id"));
                                 });
 
                                 //Mouse over annotation
@@ -1179,8 +1186,9 @@
                                 $(".annotationPopup").remove();
                                 $("#"+id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
                                 $(".annotationPopup").css("left", $("#"+id).width()+10);
-                                if (data.relation_resource_name != "") {
+                                if (data.relation_page_kid != "") {
                                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
+                                        // Fix hard coded values
                                         var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? 736 : 738;
                                         $.ajax({
                                                 url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent(
@@ -1230,20 +1238,9 @@
         });
 
         function BuildResults(data) {
-                // var icons = ["annotations", "comments", "keywords", "bookmarks", "metadata"];
                 if (data.total > 0) {
                         //Iterate search results
                         $.each( data.results, function( key, value ) {
-                                /* $.each( icons, function (k, v) {
-                                 // $.ajax({
-                                 // url: "<?php echo Router::url('/', true); ?>api/"+v+"/kid/"+value.kid+".json",
-                                 // type: "POST",
-                                 // success: function(data) {
-
-                                 // }
-                                 // });
-                                 // });*/
-
                                 $(".resultsContainer").append("<div class='annotateSearchResult' id='"+value.kid+"'></div>");
                                 if (value.thumb == "img/DefaultResourceImage.svg") {
                                         $("#"+value.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/"+value.thumb+"'/></div>");
@@ -1251,8 +1248,6 @@
                                 else {
                                         $("#"+value.kid).append("<div class='imageWrap'><img class='resultImage' src='"+value.thumb+"'/></div>");
                                 }
-
-                                //$(".resultsContainer").append("<div class='icon-annotate'></div>");
 
                                 $("#"+value.kid).append(
                                                 "<div class='resultInfo'>" +
@@ -1268,7 +1263,7 @@
                                         url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent("(Resource Associator,like,"+value.kid+"),or,(Resource Identifier,like,"+value['Resource Identifier']+")")+"&sid=738",
                                         type: "POST",
                                         success: function(pages) {
-                                                $.each( pages.results, function( k, v ) {
+                                                $.each( pages.results, function( k, v ) { console.log("POOP")
                                                         $("#"+value.kid).after("<div class='annotateSearchResult resultPage' id='"+v.kid+"'></div>");
                                                         if (v.thumb == "img/DefaultResourceImage.svg") {
                                                                 $("#"+v.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/"+v.thumb+"'/></div>");
@@ -1322,7 +1317,7 @@
 
                                 //Clicked a resource
                                 $("#"+value.kid).click(function() {
-                                        //console.log($(this).attr('id'));
+                                        console.log($(this).attr('id'));
                                         if ($(this).hasClass("selectedRelation")) {
                                                 $(this).removeClass("selectedRelation");
                                                 selected = false;
@@ -1336,6 +1331,7 @@
                                                 selected = true;
                                                 annotateData.relation_resource_name = value['Resource Identifier'];
                                                 annotateData.relation_resource_kid = $(this).attr('id');
+												annotateData.relation_page_kid = $(this).attr('id');
                                         }
 
                                         if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
