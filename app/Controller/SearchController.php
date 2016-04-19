@@ -56,7 +56,9 @@ class SearchController extends AppController {
         if (!$this->Access->isAdmin()) {
             unset($response['raw_query']);
             unset($response['mode']);
-        } 
+        }
+
+
 		
 		//Get the Images
 		$user = "";
@@ -73,19 +75,27 @@ class SearchController extends AppController {
 		foreach($response['results'] as $image) {
 			$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
 		}
-		
+
 
 		//Get the Data
 		$user = "";
 		$pass = "";
 		$query = $this->request->query['q'];
-		//$sid = $this->request->query['sid'];
+
+        if (isset($this->request->query['sid'])) {
+            $sid = $this->request->query['sid'];
+        }
+        else {
+            $sid = RESOURCE_SID;
+        }
+
 		$display = "json";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&fields=ALL&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&fields=ALL&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
 
 		///capture results and display
 		$response['results'] = json_decode(curl_exec($ch), true);

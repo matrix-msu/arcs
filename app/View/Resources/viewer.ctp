@@ -758,7 +758,6 @@
                 //image.style.height = '100%';
                 //image.style.width = '100%';
                 setTimeout(function(){
-                    console.log("See the loader? I'm waiting.");
                 }, 10000);
                 return $.ajax({
                   url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
@@ -767,7 +766,6 @@
                         //document.getElementById('PageImage').src = res;
                         res = JSON.parse(res);
                         kid = res['kid'];
-                        //console.log(res['kid']);
                         document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
                   }
                 });
@@ -883,15 +881,12 @@
 			data: formdata,
 			statusCode: {
 				201: function() {
-					console.log("Success");
 					window.location.reload();
 				},
 				400: function() {
-					console.log("Bad Request");
 					$(".collectionModalBackground").hide();
 				},
 				405: function() {
-					console.log("Method Not Allowed");
 					$(".collectionModalBackground").hide();
 				} 
 			}
@@ -911,24 +906,18 @@
 			resource_kid: "<?php echo $resource['kid']; ?>"
 		};
 
-		console.log(formdata);
-		console.log(formdata['collections']);
-
 		$.ajax({
 			url: "<?php echo Router::url('/', true); ?>collections/addToExisting",
 			type: "POST",
 			data: formdata,
 			statusCode: {
 				201: function(data) {
-					console.log("Success");
 					$(".collectionModalBackground").hide();
 				},
 				400: function() {
-					console.log("Bad Request");
 					$(".collectionModalBackground").hide();
 				},
 				405: function() {
-					console.log("Method Not Allowed");
 					$(".collectionModalBackground").hide();
 				} 
 			}
@@ -1128,36 +1117,38 @@
                         },
                         success: function(data) {
                                 $.each(data, function (k, v) {
-                                        $(".canvas").append('<div class="gen_box" id="'+v.id+'"></div>');
-                                        gen_box = $('#' + v.id);
+                                        if (v.x1) {
+                                                $(".canvas").append('<div class="gen_box" id="' + v.id + '"></div>');
+                                                gen_box = $('#' + v.id);
 
-                                        //add css to generated div and make it resizable & draggable
-                                        $(gen_box).css({
-                                                'width'     : $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,
-                                                'height'    : $(".canvas").height() * v.y2 - $(".canvas").height() * v.y1,
-                                                'left'      : $(".canvas").width() * v.x1,
-                                                'top'       : $(".canvas").height() * v.y1
-                                        });
+                                                //add css to generated div and make it resizable & draggable
+                                                $(gen_box).css({
+                                                        'width': $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,
+                                                        'height': $(".canvas").height() * v.y2 - $(".canvas").height() * v.y1,
+                                                        'left': $(".canvas").width() * v.x1,
+                                                        'top': $(".canvas").height() * v.y1
+                                                });
 
-                                        $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_"+ v.id +"'>X</div>");
-                                        $(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
+                                                $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'>X</div>");
+                                                $(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
 
-                                        $("#deleteAnnotation_" + v.id).click(function() {
-                                                var box = $(this).parent();
-                                                $.ajax({
-                                                        url: "<?php echo Router::url('/', true); ?>api/annotations/"+$(this).parent().attr("id")+".json",
-                                                        type: "DELETE",
-                                                        statusCode: {
-                                                                204: function() {
-                                                                        box.remove();
-                                                                },
-                                                                // Make modal for this
-                                                                403: function() {
-                                                                        alert("You don't have permission to delete this annotation");
+                                                $("#deleteAnnotation_" + v.id).click(function () {
+                                                        var box = $(this).parent();
+                                                        $.ajax({
+                                                                url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+                                                                type: "DELETE",
+                                                                statusCode: {
+                                                                        204: function () {
+                                                                                box.remove();
+                                                                        },
+                                                                        // Make modal for this
+                                                                        403: function () {
+                                                                                alert("You don't have permission to delete this annotation");
+                                                                        }
                                                                 }
-                                                        }
-                                                })
-                                        });
+                                                        })
+                                                });
+                                        }
                                 });
 
                                 $( ".flagAnnotation" ).click(function(){
@@ -1188,8 +1179,7 @@
                                 $(".annotationPopup").css("left", $("#"+id).width()+10);
                                 if (data.relation_page_kid != "") {
                                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
-                                        // Fix hard coded values
-                                        var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? 736 : 738;
+                                        var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
                                         $.ajax({
                                                 url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent(
                                                                 "kid,=,"+paramKid)+"&sid="+paramSid,
@@ -1227,7 +1217,7 @@
                                         +"),or,(Accession Number,like,"+$(".annotateSearch").val()
                                         +"),or,(Earliest Date,like,"+$(".annotateSearch").val()
                                         +"),or,(Latest Date,like,"+$(".annotateSearch").val()
-                                        +")")+"&sid=736",
+                                        +")")+"&sid=<?php echo RESOURCE_SID;?>",
                         type: "POST",
                         success: function(data) {
                                 BuildResults(data);
@@ -1260,10 +1250,10 @@
 
                                 //Get related pages
                                 $.ajax({
-                                        url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent("(Resource Associator,like,"+value.kid+"),or,(Resource Identifier,like,"+value['Resource Identifier']+")")+"&sid=738",
+                                        url: "<?php echo Router::url('/', true); ?>resources/search?q="+encodeURIComponent("(Resource Associator,like,"+value.kid+"),or,(Resource Identifier,like,"+value['Resource Identifier']+")")+"&sid=<?php echo PAGES_SID;?>",
                                         type: "POST",
                                         success: function(pages) {
-                                                $.each( pages.results, function( k, v ) { console.log("POOP")
+                                                $.each( pages.results, function( k, v ) {
                                                         $("#"+value.kid).after("<div class='annotateSearchResult resultPage' id='"+v.kid+"'></div>");
                                                         if (v.thumb == "img/DefaultResourceImage.svg") {
                                                                 $("#"+v.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/"+v.thumb+"'/></div>");
@@ -1317,7 +1307,6 @@
 
                                 //Clicked a resource
                                 $("#"+value.kid).click(function() {
-                                        console.log($(this).attr('id'));
                                         if ($(this).hasClass("selectedRelation")) {
                                                 $(this).removeClass("selectedRelation");
                                                 selected = false;
@@ -1397,7 +1386,6 @@
                                 }
                         });
                 }
-                //location.reload();
                 ResetAnnotationModal();
         });
 
@@ -1576,7 +1564,6 @@
                 image.style.top = "0px";
             }
             
-            console.log(zoomrange.value);
         });
         
         $('#zoom-in').click(function(event){
@@ -1594,11 +1581,9 @@
                 image.style.transform = "scale(" + zoomratio + ")";
             }
             
-            console.log(zoomrange.value);
         });
         
         $('#zoom-range').click(function(event){
-            console.log("range click");
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var canvas = $('.canvas');
@@ -1617,7 +1602,6 @@
             canvas.css("transform" , "scale(" + zoomratio + ")");
             image.style.transform = "scale(" + zoomratio + ")";
             
-            console.log(zoomrange.value);
         });
         
         var jq = document.createElement('script');
@@ -1639,13 +1623,11 @@
 <script>
         var kid = "<?php echo $kid; ?>";
         function GetNewResource(id) {
-        //console.log(current);
                 image = document.getElementById('PageImage')
                 image.src = '../img/arcs-preloader.gif';
                 image.style.height = '100%';
                 image.style.width = '100%';
                 setTimeout(function(){
-                    console.log("See the loader? I'm waiting.");
                 }, 10000);
                 return $.ajax({
                   url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/"+id,
@@ -1654,7 +1636,6 @@
                         //document.getElementById('PageImage').src = res;
                         res = JSON.parse(res);
                         kid = res['kid'];
-                        //console.log(res['kid']);
                         document.getElementById('PageImage').src = "<?php echo $kora_url; ?>"+res['Image Upload']['localName'];
                   }
                 });
