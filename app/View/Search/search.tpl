@@ -128,17 +128,16 @@
 		</div>
 	</div>
 	
-
-	
 	<div id="search-results">
 	
 		<div class='toolbar-fixed'>
-			<a id='select-all'>SELECT ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
-			<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/Info.svg' class='collectionIcon'/></a>
+			<a id='select-all' onclick=''><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
+			<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/BelongsToCollectionTooltip.svg' class='collectionIcon'/></a>
 		</div>
 		
 		<ul class="flex-container">
-			<!--<div class="resource-item-container">
+			<!--
+			<div class="resource-item-container">
 				<li class="flex-item">1</li>
 				<div class="resource-title">Resource Title</div>
 				<div class="resource-type">Resource Type</div>
@@ -161,52 +160,7 @@
 				<div class="icon-discussed"></div>
 				<div class="icon-tagged"></div>
 			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">4</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-				<div class="icon-flag search-icon-edit"></div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">5</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">6</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">7</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">8</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">9</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">10</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">11</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">12</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-			</div>-->
+			-->
 		</ul>
 	</div>
 
@@ -278,5 +232,17 @@
 		$(this).addClass('selected');
 		/* add functions here, use this.id to identify page number. */
 	});
-	
+
+	$('#select-all, #deselect-all').click(function(){
+		if (this.id === 'select-all') {
+			this.id = 'deselect-all';
+			arcs.searchView.selectAll();
+			$('#toggle-select').html('DE-SELECT');
+		} else {
+			this.id = 'select-all';
+			arcs.searchView.unselectAll();
+			$('#toggle-select').html('SELECT');
+		}
+		
+	});
 </script>

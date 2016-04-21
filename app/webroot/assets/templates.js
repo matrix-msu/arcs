@@ -12,7 +12,11 @@ JST["collections/list"] = "<% _.each(collections, function(c, i) { %><% if (i ==
 
 JST["home/details"] = "<ul class=\"resource-thumbs\"><% _.each(resources, function(r, i) { %>  <li class=\"resource-thumb\">    <a href=\"<%= arcs.baseURL + 'resource/' + r.kid %>\">      <img src=\"<%= r.thumb %>\" alt=\"resource\" />    </a>    <a class=\"subtle\" href=\"<%= arcs.baseURL + 'resource/' + r.kid %>\"><%= r.title %></a>  </li><% }) %><% if (!resources.length) { %>  <li>    <i class=\"icon-exclamation-sign\"></i> No Results Found  </li><% } else { %>  <li class=\"resource-thumb\">    <% if (typeof searchURL != \"undefined\") { %>      <a href='<%= searchURL %>'><i class=\"icon-share-alt\"></i> Show all</a>    <% } else { %>      <a href='<%= arcs.baseURL + 'search/type:\"' + resources[0].type + '\"' %>'>        <i class=\"icon-share-alt\"></i> Show all      </a>    <% } %>  </li><% } %></ul>";
 
+/*
 JST["search/grid"] = "<% _.each(results, function(r, i) { %>  <a href='resource/<%= r.kid %>' class='resource-item-container' data-id='<%= r.kid %>'>  <li class='flex-item'><img class='flex-img' src='<%= r.thumb %>'></li>  <div class='resource-title'><%= r.Title %></div>  <div class='resource-type'><%= r.Type %></div>  <div class='icon-flag'></div>  <div class='search-icon-edit'></div>  <div class='icon-in-collection'></div>  <div class='icon-discussed'></div>  <div class='icon-tagged'></div>  </a>  <% }) %>";
+*/
+
+JST["search/grid"] = "<% _.each(results, function(r, i) { %>  <div class='resource-item-container result' data-id='<%= r.kid %>'>  <li class='flex-item img-wrapper'><img class='flex-img' src='<%= r.thumb ? r.thumb : 'img/DefaultImage.svg' %>'></li>  <span class='select-button' style='display:none;'>SELECT</span>  <a href='resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>  <div class='resource-type'><%= r.Type %></div></a>  <div class='icon-flag'></div>  <div class='search-icon-edit'></div>  <div class='icon-in-collection'></div>  <div class='icon-discussed'></div>  <div class='icon-tagged'></div>  </div>  <% }) %>";
 
 JST["search/help-toggle"] = "<i class=\"search-help-btn icon-info-sign\" rel=\"tooltip\"   data-placement=\"top\" data-original-title=\"Show Search Help\"></i>";
 

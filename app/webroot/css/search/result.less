@@ -2,6 +2,11 @@
 // -----------
 
 .result {
+	
+  &:hover,
+  a:hover {
+	  text-decoration: none !important;
+  }
 
   &.grid {
     text-align: center;
@@ -43,7 +48,6 @@
   &.selected img {
     padding: 0px;
     border: 3px solid #08c;
-    margin: 1px;
   }
 
   div {
@@ -55,12 +59,35 @@
   }
 
   img {
-    padding: 1px;
+    padding: 3px;
     background: #444;
     margin: 3px;
-
-    &:hover {
-      cursor: pointer;
-    }
+	width: 175px !important;
+	height: 125px !important;
+  }
+  
+  .img-hover {
+	  padding: 0px;
+	  cursor: pointer;
+	  border: 3px solid #08c;
+  }
+  
+  .select-button {
+	  color: white;
+	  background: #08c;
+	  opacity: 0.6;
+	  width: 80px;
+	  height: 40px;
+	  font-size: 15px;
+	  text-transform: uppercase;
+	  padding: 10px;
+	  position: absolute;
+	  margin-top: -120px;
+	  margin-left: 4px;
+	  cursor: pointer;
+  }
+  .de-select {
+	  width: 175px !important;
+	  height: 125px !important;
   }
 }

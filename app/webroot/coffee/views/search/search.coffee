@@ -52,9 +52,10 @@ class arcs.views.search.Search extends Backbone.View
     @setupHelp()
 
   events:
-    'click img'                : 'toggle'
-    'click .result'            : 'maybeUnselectAll'
-    'click #search-results'    : 'maybeUnselectAll'
+    
+    #'click img'                : 'toggle' # Click on the image to select, conflicts with select button
+    #'click .result'            : 'maybeUnselectAll' # Click on the container to deselect, conflicts with select button
+    #'click #search-results'    : 'maybeUnselectAll' # Click on the whitespace to deselect, conflicts with select button
     'click #grid-btn'          : 'toggleView'
     'click #list-btn'          : 'toggleView'
     'click #top-btn'           : 'scrollTop'
@@ -169,10 +170,16 @@ class arcs.views.search.Search extends Backbone.View
 
   unselectAll: (trigger=true) -> 
     @$('.result').removeClass('selected')
+    @$('.select-button').removeClass('de-select')
+    @$('.select-button, #toggle-select').html('SELECT')
+    @$('#deselect-all').attr id: 'select-all'
     arcs.bus.trigger 'selection' if trigger
 
   selectAll: (trigger=true) -> 
     @$('.result').addClass('selected')
+    @$('.select-button').addClass('de-select')
+    @$('.select-button, #toggle-select').html('DE-SELECT')
+    @$('#select-all').attr id: 'deselect-all'
     arcs.bus.trigger 'selection' if trigger
   
   # Select a result and unselect everything else, unless a modifier key
@@ -213,6 +220,14 @@ class arcs.views.search.Search extends Backbone.View
   afterSelection: ->
     _.defer =>
       selected = $('.result.selected').map( -> $(@).data('id')).get()
+      # get the count of the selected items, change the style accordingly
+      num = $('.result.selected').length
+      $('#selected-count').html(num)
+      if (num != 0)
+        $('#selected-all').css({color:'black'})
+      else
+        $('#selected-all').css({color:'#C1C1C1'})
+      
       @search.results.unselectAll()
       @search.results.select selected if selected.length
       if @search.results.anySelected()
@@ -313,5 +328,30 @@ class arcs.views.search.Search extends Backbone.View
     results = results.results
     console.log(results)
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results: results)
+    
+    # add hover effects (select button, border) for the displayed images 
+    $('div.result').hover (->
+      $(this).find('.select-button').show()
+      $(this).find('img').addClass 'img-hover'
+      return
+    ), ->
+      $(this).find('.select-button').hide()
+      $(this).find('img').removeClass 'img-hover'
+      return
+    
+    # add click effect for the select-button
+    $('.select-button').click ->
+      if $(this).html() == 'SELECT'
+        $(this).html 'DE-SELECT'
+        $(this).addClass 'de-select'
+        $(this).parents('.result').addClass 'selected'
+        arcs.bus.trigger 'selection'
+      else
+        $(this).html 'SELECT'
+        $(this).removeClass 'de-select'
+        $(this).parents('.result').removeClass 'selected'
+        arcs.bus.trigger 'selection'
+      return
+      
     if not results.length > 0
       $results.html "<div id='no-results'>No Results</div>"
