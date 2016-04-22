@@ -177,19 +177,18 @@
                 
                 <!-- TO DO: Add click events for highlighting the text on the tabs (in Arcs blue) -->
                 <ul class="metadata-tabs">
-                        <li class="metadata-tab"><a href="#tabs-1">Info</a></li>
-                        <li class="metadata-tab"><a href="#tabs-2">Notations</a></li>
+                        <li class="metadata-tab"><a href="#tabs-1">Metadata</a></li>
+                        <li class="metadata-tab"><a href="#tabs-2">Details</a></li>
                         <li class="metadata-tab discussion"><a href="#tabs-3">Discussions</a></li>
-                        <li class="metadata-tab"><a href="#tabs-4">Instances</a></li>
                 </ul>
                 
-                <div id="search">
-                        <span class="title">
-                                <p>Collection Title</p>
-                        </span>
-                        
-                        <input type="text" placeholder="SEARCH COLLECTION">
-                </div>
+                <!--<div id="search">-->
+                        <!--<span class="title">-->
+                                <!--<p>Collection Title</p>-->
+                        <!--</span>-->
+                        <!---->
+                        <!--<input type="text" placeholder="SEARCH COLLECTION">-->
+                <!--</div>-->
                 
                 <div id="tabs-1" class="metadata-content">
                         
@@ -676,9 +675,31 @@
                 </div>
                 
                 <div id="tabs-2" class="metadata-content">
-                        
-                        <p>Notations</p>
-                        
+                        <div class="accordion metadata-accordion">
+                                <h3 class="level-tab">Transcriptions</h3>
+
+                                <div class="level-content">
+                                        Transcriptions
+                                </div>
+
+                                <h3 class="level-tab">Annotations</h3>
+
+                                <div class="level-content">
+                                        Annotations
+                                </div>
+
+                                <h3 class="level-tab">Keywords</h3>
+
+                                <div class="level-content">
+                                        Keywords
+                                </div>
+
+                                <h3 class="level-tab">Collections</h3>
+
+                                <div class="level-content">
+                                        Collections
+                                </div>
+                        </div>
                 </div>
                 
                 <div id="tabs-3" class="metadata-content">
@@ -693,12 +714,6 @@
                                         <form class="newReplyForm"><textarea name="comment" class="replyTextArea" placeholder="Enter reply here..."></textarea><br><button type="submit">ADD NEW REPLY</button><?php echo $this->Html->image('CloseComment.svg', array('class' => 'closeComment'));?></form>
                                 </div>
                         </div>
-                </div>
-                
-                <div id="tabs-4" class="metadata-content">
-                        
-                        <p>Instances</p>
-                        
                 </div>
                 
         </div>  
