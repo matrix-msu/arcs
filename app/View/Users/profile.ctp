@@ -32,6 +32,16 @@
                         <dd><input type="submit" value="Upload Profile Image"></dd>
                     </form>
                 <?php endif ?>
+                <?php if ($role == 0): ?>
+                    <?php 
+                        $User = new User();
+                        $User->id = $user_info['id'];
+                        if($user_info['status'] == 'pending'){
+                            $User->saveField('status', "active");
+                            echo "User Confirmed";
+                        }
+                        ?>
+                <?php endif ?>
             </dl> 
             
             <dl class="score-description-list">

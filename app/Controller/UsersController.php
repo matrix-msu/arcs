@@ -161,6 +161,7 @@ class UsersController extends AppController
                         if ($this->Auth->login()) {
                                 $this->User->id = $user['User']['id'];
                                 $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                                //return $this->redirect('/');
                                 return $this->redirect($this->Auth->redirect());
                         } else {
                                 $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
@@ -169,12 +170,27 @@ class UsersController extends AppController
                 }
                 else if($user['User']['status'] == 'pending') {
                         $this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
-                        $this->redirect($this->referer());
+                        return $this->redirect('/');
+                }
+                else if($user['User']['status'] == 'unconfirmed') {
+           
+                    // change status of user
+                    $this->User->id = $user['User']['id'];
+                    $this->User->saveField('status', "pending");
+
+                    // notify admins of the new user
+                    $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
+                    foreach ($admins as $admin) {
+                        $this->pendingUserEmail($admin, $user);
+
+                    }
+                    $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
+                    $this->redirect('/');
                 }
                 //Invited users will not be found by findByRef until activated
                 else if(!$user) {
                         $this->Session->setFlash("Username not found.", 'flash_error');
-                        $this->redirect($this->referer());
+                        $this->redirect('/');
                 }
             }
         }
@@ -700,17 +716,17 @@ class UsersController extends AppController
     /**
      * Send pending user email
      * @param array data
-     * @param string user
+     * @param array user
      */
     public function pendingUserEmail($data, $user)
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array('user' => $user, 'link' => "link"))
+        $Email->viewVars(array('user' => $user['User']['name'], 'link' => $this->baseURL() . "/user/" . $user['User']['username']))
               ->emailFormat('html')
               ->template('pending_user', 'default')
               ->subject('ARCS New User Has Registered')
-              ->to($data['email'])
+              ->to($data['User']['email'])
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }

@@ -8991,26 +8991,106 @@ input[type=range]:focus::-ms-fill-upper {
 /*Discussion*/
 #discussionTab {
   overflow: auto;
-  height: 743px;
+  /*height: 743px;*/
+}
+.commentContainer {
+  height: 778px;
+  overflow: overlay;
+  text-transform: none;
+  border-bottom: 1px solid #cdcdcd !important;
+}
+.submitContainer {
+  height: 60px;
+  overflow: overlay;
+  text-transform: none;
+  display: relative;
+  border-bottom: 1px solid #cdcdcd !important;
 }
 .newComment {
   width: 100%;
+  height: 60px;
+  background: none;
 }
-.newCommentForm {
-  display: none;
-  margin-top: 10px;
+.newComment:hover {
   width: 100%;
+  height: 61px;
+  background: #0093be;
+  color: white;
+}
+.newCommentForm,
+.newReplyForm {
+  display: none;
+  width: 100%;
+  position: absolute;
+  margin-top: -161px;
+}
+.newCommentForm button,
+.newReplyForm button {
+  width: 100%;
+  height: 60px;
+  background: #0093be;
+  color: white;
+  margin-top: -4px;
 }
 .newCommentForm textarea,
-.newCommentForm button {
+.newReplyForm textarea {
   width: 100%;
+  height: 100px;
+  background: white;
+  -webkit-appearance: none;
+  /*Removes default chrome and safari style*/
+  -moz-appearance: none;
+  /* Removes Default Firefox style*/
+  border-radius: 0 !important;
+  border: 1px solid #0093be;
+  padding: 15px;
 }
 .discussionComment {
-  padding: 5px;
-  border: 1px solid #cdcdcd;
+  margin-top: 10px;
+  padding: 0px 20px;
+  border-bottom: 1px solid #cdcdcd;
 }
 .discussionReply {
-  padding: 15px;
+  margin-top: 10px;
+  padding: 0px 15px;
+  border-top: 1px dashed #cdcdcd;
+}
+.reply {
+  text-align: right;
+  margin: 10px 15px 10px 60%;
+  text-transform: uppercase;
+}
+.closeComment {
+  position: relative;
+  top: -177px;
+  float: right;
+  width: 17px;
+  height: 17px;
+  padding: 1px;
+  border: 1px solid #cdcdcd;
+  background: white;
+}
+.reply:hover,
+.closeComment:hover {
+  color: #0093be;
+  cursor: pointer;
+}
+.replyTo {
+  font-size: 10px;
+  color: #cdcdcd;
+  margin-bottom: 10px;
+}
+.commentName {
+  width: 50%;
+  height: 25px;
+  display: inline-block;
+}
+.commentDate {
+  width: 50%;
+  height: 25px;
+  display: inline-block;
+  text-align: right;
+  padding-right: 5px;
 }
 #viewer-controls {
   background: #ddd;
