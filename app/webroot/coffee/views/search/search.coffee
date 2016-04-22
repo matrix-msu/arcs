@@ -76,15 +76,23 @@ class arcs.views.search.Search extends Backbone.View
       # Make jQuery UI call our selection methods.
       selecting: (e, ui) => 
         $(ui.selecting).parents('.result').addClass('selected')
+        $(ui.selecting).parents('.result').children('.select-button').html 'DE-SELECT'
+        $(ui.selecting).parents('.result').children('.select-button').addClass 'de-select'
         @afterSelection()
       selected: (e, ui) =>
         $(ui.selected).parents('.result').addClass('selected')
+        $(ui.selected).parents('.result').children('.select-button').html 'DE-SELECT'
+        $(ui.selected).parents('.result').children('.select-button').addClass 'de-select'
         @afterSelection()
       unselecting: (e, ui) =>
         $(ui.unselecting).parents('.result').removeClass('selected')
+        $(ui.unselecting).parents('.result').children('.select-button').html 'SELECT'
+        $(ui.unselecting).parents('.result').children('.select-button').removeClass 'de-select'
         @afterSelection()
       unselected: (e, ui) =>
         $(ui.unselected).parents('.result').removeClass('selected')
+        $(ui.unselected).parents('.result').children('.select-button').html 'SELECT'
+        $(ui.unselected).parents('.result').children('.select-button').removeClass 'de-select'
         @afterSelection()
 
   # Make an instance of our Search utility and setup endless scrolling.
