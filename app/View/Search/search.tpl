@@ -12,7 +12,7 @@
 
 
 <div id="advanced">
-	<a class="advancedSearch" href="#">Advanced Search</a>
+	<a class="advancedSearch" href="advancedsearch">Advanced Search</a>
 </div>
 
 <div id="search-results-wrapper">
