@@ -290,9 +290,10 @@ class ResourcesController extends AppController {
 		}*/
 
         $collections = json_encode($this->Collection->find('all', array(
-            'fields' => 'DISTINCT collection_id, title, user_name',
-            'order'  => 'created DESC')
-        ));
+            'fields'    => array('DISTINCT collection_id', 'title', 'user_name'),
+            'order'     => 'created DESC',
+            'recursive' => -1
+        )));
 
         $this->set(array(
             'kid' =>$pages[$firstPage]['kid'],

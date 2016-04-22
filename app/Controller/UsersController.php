@@ -321,7 +321,7 @@ class UsersController extends AppController
                         'password' => $this->request->data['User']['passwd'],
                         'isAdmin' => 0,
                         'last_login' => null,
-                                                'status' => 'unconfirmed'
+                        'status' => 'unconfirmed'
                     ))) {
 
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
@@ -483,12 +483,10 @@ class UsersController extends AppController
 
         $this->loadModel('Comment');
 
-        // temporary fix
-        $user['commentsCount'] = $this->Comment->query("SELECT COUNT(*) FROM comments WHERE user_id = '" . $user['id'] . "'")[0][0]['COUNT(*)'];
-        
-        // $user['commentsCount'] = $this->Comment->find('count', array(
-        //     'conditions' => array('Comment.user_id' => $user['id'])
-        // ));
+        $user['commentsCount'] = $this->Comment->find('count', array(
+            'conditions' => array('Comment.user_id' => $user['id']),
+            'recursive' => -1
+        ));
 
         $this->loadModel('Annotation');
         $user['annotationsCount'] = $this->Annotation->find('count', array(
