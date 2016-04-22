@@ -843,112 +843,121 @@
 </script>
 
 <script>
-	// collection
-	$("#collection-modal-btn").click(function(){
-		$(".collectionModalBackground").show();
-	});
-	
-	$(".modalClose").click(function(){
-		$(".collectionModalBackground").hide();
-	});
+    // collection
+    $("#collection-modal-btn").click(function(){
+        $(".collectionModalBackground").show();
+    });
+    
+    $(".modalClose").click(function(){
+        $(".collectionModalBackground").hide();
+    });
 
-	function collectionsSearch() {
-		var query = $(".collectionSearchBar").val();
+    function collectionsSearch() {
+        var query = $(".collectionSearchBar").val();
 
-		var populateCheckboxes = "";
-		for (var i=0; i<collections.length; i++) {
-			if ((collections[i]['title'].toLowerCase()).indexOf(query.toLowerCase()) != -1 || 
-				(collections[i]['user_name'].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
-				
-				populateCheckboxes += "<input type='checkbox' name='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
+        // only put collections in between the div if they include the query.
+        // I.E. "" is in every collection title and user_name
+        var populateCheckboxes = "";
+        for (var i=0; i<collections.length; i++) {
+            if ((collections[i]['title'].toLowerCase()).indexOf(query.toLowerCase()) != -1 || 
+                (collections[i]['user_name'].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
+                
+                populateCheckboxes += "<input type='checkbox' name='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
                                    + collections[i]['title'] + " " + collections[i]['user_name'] + "<br />";
-			}
-		}
-		$("#collectionSearchObjects").html(populateCheckboxes);
-	}
+            }
+        }
+        $("#collectionSearchObjects").html(populateCheckboxes);
+    }
 
-	$(".collectionNewSubmit").click(function() {
-		var formdata = {
-			title: $('#collectionTitle').val(),
-			resource_kid: "<?php echo $resource['kid']; ?>",
-			description: "",
-			public: 1
-		};
-						
-		$.ajax({
-			url: "<?php echo Router::url('/', true); ?>collections/add",
-			type: "POST",
-			data: formdata,
-			statusCode: {
-				201: function() {
-					window.location.reload();
-				},
-				400: function() {
-					$(".collectionModalBackground").hide();
-				},
-				405: function() {
-					$(".collectionModalBackground").hide();
-				} 
-			}
-		});
-	});
+    $(".collectionNewSubmit").click(function() {
+        // creates a single, new collection entry based on the resource it is viewing
+        
+        var formdata = {
+            title: $('#collectionTitle').val(),
+            resource_kid: "<?php echo $resource['kid']; ?>",
+            description: "",
+            public: 1
+        };
 
-	$(".collectionSearchSubmit").click(function() {
-		var collectionsClicked = {};
-		var i = 0;
-		$('#collectionSearchObjects input:checked').each(function() {
-			collectionsClicked[i] = ($(this).val());
-			i++;
-		});
+        $.ajax({
+            url: "<?php echo Router::url('/', true); ?>collections/add",
+            type: "POST",
+            data: formdata,
+            statusCode: {
+                201: function() {
+                    console.log("Success");
+                    window.location.reload();
+                },
+                400: function() {
+                    console.log("Bad Request");
+                    $(".collectionModalBackground").hide();
+                },
+                405: function() {
+                    console.log("Method Not Allowed");
+                    $(".collectionModalBackground").hide();
+                } 
+            }
+        });
+    });
 
-		var formdata = {
-			collections: collectionsClicked,
-			resource_kid: "<?php echo $resource['kid']; ?>"
-		};
+    $(".collectionSearchSubmit").click(function() {
+        // creates 1+ collection entries based on the resource (IE adds the resource to old collections)
+        
+        var resource_kid = "<?php echo $resource['kid']; ?>";
 
-		$.ajax({
-			url: "<?php echo Router::url('/', true); ?>collections/addToExisting",
-			type: "POST",
-			data: formdata,
-			statusCode: {
-				201: function(data) {
-					$(".collectionModalBackground").hide();
-				},
-				400: function() {
-					$(".collectionModalBackground").hide();
-				},
-				405: function() {
-					$(".collectionModalBackground").hide();
-				} 
-			}
-		});
-	});
+        $('#collectionSearchObjects input:checked').each(function() {
+            var formdata = {
+                collection: $(this).val(),
+                resource_kid: resource_kid
+            }
 
-	// collection tabs
-	$(".collectionTabSearch").click(function() {
-		$(".collectionSearchContainer").show();
-		$(".collectionNewContainer").hide();
-		$(".collectionTabSearch").addClass("activeTab");
-		$(".collectionTabNew").removeClass("activeTab");
-	});
+            // TODO: sometimes returns an error but it will always upload to the sql database
+            $.ajax({
+                url: "<?php echo Router::url('/', true); ?>collections/addToExisting",
+                type: "POST",
+                data: formdata,
+                statusCode: {
+                    201: function(data) {
+                        console.log("Success");
+                        console.log(data);  
+                    },
+                    400: function() {
+                        console.log("Bad Request");
+                    },
+                    405: function() {
+                        console.log("Method Not Allowed");
+                    } 
+                }
+            });
+        });
+        $(".collectionModalBackground").hide();
+    });
 
-	$(".collectionTabNew").click(function() {
-		$(".collectionNewContainer").show();
-		$(".collectionSearchContainer").hide();
-		$(".collectionTabNew").addClass("activeTab");
-		$(".collectionTabSearch").removeClass("activeTab");
-	});
+    // collection tabs
+    $(".collectionTabSearch").click(function() {
+        $(".collectionSearchContainer").show();
+        $(".collectionNewContainer").hide();
+        $(".collectionTabSearch").addClass("activeTab");
+        $(".collectionTabNew").removeClass("activeTab");
+    });
 
-	// run on page load
-	$(".collectionNewContainer").hide();
-	<?php echo "var collectionArray = " . $collections . ";"; ?>
+    $(".collectionTabNew").click(function() {
+        $(".collectionNewContainer").show();
+        $(".collectionSearchContainer").hide();
+        $(".collectionTabNew").addClass("activeTab");
+        $(".collectionTabSearch").removeClass("activeTab");
+    });
 
-	var collections = [];
-	collectionArray.forEach(function(element) {
-		collections.push(element['Collection']);
-	});
+    // run on page load
+    $(".collectionNewContainer").hide();
+    <?php echo "var collectionArray = " . $collections . ";"; ?>
 
-	collectionsSearch();
+    var collections = [];
+    collectionArray.forEach(function(element) {
+        collections.push(element['Collection']);
+    });
+
+    collectionsSearch();
 </script>
 
 <script>

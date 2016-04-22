@@ -34,8 +34,8 @@ class CollectionsController extends AppController {
      * Create a new collection.
      */
     public function add() {
-        if (!$this->request->is('post')) {throw new MethodNotAllowedException();}
-        if (!$this->request->data) {throw new BadRequestException();}
+        if (!$this->request->is('post')) {$this->json(405); throw new MethodNotAllowedException();}
+        if (!$this->request->data) {$this->json(400); throw new BadRequestException();}
 
         // Save the collection.
         $this->request->data['collection_id'] = String::uuid();
@@ -54,35 +54,34 @@ class CollectionsController extends AppController {
      * Add resource to an existing collection(s).
      */
     public function addToExisting() {
-        if (!$this->request->is('post')) {throw new MethodNotAllowedException();}
-        if (!$this->request->data) {throw new BadRequestException();}
+        if (!$this->request->is('post')) {$this->json(405); throw new MethodNotAllowedException();}
+        if (!$this->request->data) {$this->json(400); throw new BadRequestException();}
 
-        $length = count($this->request->data['collections']);
-        debug($length);
-        for ($i=0; $i<$length; $i++) {
-            // make sure collection already exists
-            $collection = $this->Collection->findById($this->request->data['collections'][$i]);
-            if ($collection) {
-                $object = array(
-                    'collection_id' => $collection['collection_id'],
-                    'resource_kid'  => $this->request->data['resource_kid'],
-                    'user_id'       => $this->Auth->user('id'),
-                    'user_name'     => $this->Auth->user('name'),
-                    'title'         => $collection['title'],
-                    'description'   => $collection['description'],
-                    'public'        => $collection['public']
-                );
-                $this->Collection->permit('collection_id');
-                $this->Collection->permit('resource_kid');
-                $this->Collection->permit('user_id');
-                $this->Collection->permit('user_name');
+        $this->Collection->permit('collection_id');
+        $this->Collection->permit('resource_kid');
+        $this->Collection->permit('user_id');
+        $this->Collection->permit('user_name');
 
-                debug($object);
+        $collection = $this->Collection->findByCollection_id($this->request->data['collection']);
 
-                $this->Collection->add($object);
-            }
+        if (isset($collection)) {
+            $collection = $collection['Collection'];
+
+            $object = array(
+                'collection_id' => $collection['collection_id'],
+                'resource_kid'  => $this->request->data['resource_kid'],
+                'user_id'       => $this->Auth->user('id'),
+                'user_name'     => $this->Auth->user('name'),
+                'title'         => $collection['title'],
+                'description'   => $collection['description'],
+                'public'        => $collection['public']
+            );
+
+            $this->Collection->add($object);
+            $this->json(201, $object);
+            return;
         }
-        $this->json(201);
+        $this->json(400);
     }
 
     /**
