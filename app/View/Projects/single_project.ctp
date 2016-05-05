@@ -6,9 +6,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>ARCS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
-        <link rel="stylesheet" href="css/main.css">
+   <!--     <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="js/leaflet/leaflet.css"/>
-        <script src="js/leaflet/leaflet.js"></script>
+        <script src="js/leaflet/leaflet.js"></script>-->
     </head>
     <body>
         <!-- Previous Header
@@ -30,7 +30,9 @@
         -->
         <div class="intro">
             <h1><?php echo $project["Name"]; ?></h1>
+            <br>
             <p><?php echo $project["Description"]; ?></p>
+         
         </div>
         
 		<!-- Map Display Script
