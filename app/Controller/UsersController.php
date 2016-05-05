@@ -549,7 +549,7 @@ class UsersController extends AppController
                 } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
                     // check if image file exists
                     $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
-                } elseif ($_FILES['user_image']['size'] > 500000) {
+                } elseif ($_FILES['user_image']['size'] > 5242880) {
                     // check if file size is extremely large
                     $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
                 } elseif (!in_array($file_ext, $vaildExtensions)) {
