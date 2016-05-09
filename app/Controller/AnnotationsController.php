@@ -21,4 +21,4 @@ class AnnotationsController extends MetaResourcesController {
 		$this->request->data['user_username'] = $user['username'];
 		$this->request->data['user_email'] = $user['email'];
     }
-} 
+}
