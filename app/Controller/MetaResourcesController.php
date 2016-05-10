@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MetaResources controller.
  *
@@ -11,12 +12,14 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-class MetaResourcesController extends AppController {
+class MetaResourcesController extends AppController
+{
 
-    public function beforeFilter() {
-		if ($this->request->accepts('application/json')) {
-			$this->RequestHandler->renderAs($this, 'json');
-		}
+    public function beforeFilter()
+    {
+        if ($this->request->accepts('application/json')) {
+            $this->RequestHandler->renderAs($this, 'json');
+        }
         parent::beforeFilter();
         $this->Auth->allow('view');
         $model = $this->modelClass;
@@ -29,7 +32,8 @@ class MetaResourcesController extends AppController {
     /**
      * Add a meta-resource
      */
-    public function add() {
+    public function add()
+    {
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
         if (!$this->request->data) throw new BadRequestException;
         $model = $this->modelClass;
@@ -43,7 +47,7 @@ class MetaResourcesController extends AppController {
         # if ($model == 'flags') {
         # add status
         # }
-        if (!$this->$model->add($this->request->data)) 
+        if (!$this->$model->add($this->request->data))
             throw new InternalErrorException();
         $this->json(201, $this->$model->findById($this->$model->id));
     }
@@ -53,21 +57,22 @@ class MetaResourcesController extends AppController {
      *
      * @param string $id
      */
-    public function edit($id) {
-        if (!($this->request->is('put') || $this->request->is('post'))) 
+    public function edit($id)
+    {
+        if (!($this->request->is('put') || $this->request->is('post')))
             throw new MethodNotAllowedException();
-            // return $this->json(405);
+        // return $this->json(405);
         $model = $this->modelClass;
         $this->$model->read(null, $id);
-        if (!$this->$model->exists()) 
+        if (!$this->$model->exists())
             throw new NotFoundException();
-            // return $this->json(404);
-        if (!$this->request->data) 
+        // return $this->json(404);
+        if (!$this->request->data)
             throw new BadRequestException();
-            // return $this->json(400);
-        if (!$this->$model->add($this->request->data)) 
+        // return $this->json(400);
+        if (!$this->$model->add($this->request->data))
             throw new InternalErrorException();
-            // return $this->json(500);
+        // return $this->json(500);
         $this->json(200, $this->$model->findById($this->$model->id));
     }
 
@@ -76,30 +81,32 @@ class MetaResourcesController extends AppController {
      *
      * @param string $id
      */
-    public function view($id) {
+    public function view($id)
+    {
         //if (!$this->request->is('get')) throw new MethodNotAllowedException();
         $model = $this->modelClass;
         //$result = $this->$model->findById($id);
-		$result = $this->$model->find('first', array(
-			'conditions' => array(
-				"OR" => array(
-					'resource_id' => $id,
-					'id' => $id
-				)
-			)
-		));
+        $result = $this->$model->find('first', array(
+            'conditions' => array(
+                "OR" => array(
+                    'resource_id' => $id,
+                    'id' => $id
+                )
+            )
+        ));
         //if (!$result) throw new NotFoundException(); 
         $this->json(200, $result);
     }
-	
-	/**
+
+    /**
      * Find all meta-resources
      */
-    public function findAll() {
+    public function findAll()
+    {
         $model = $this->modelClass;
-		$results = $this->$model->find('all', array(
-			'conditions' => array('page_kid' => $this->request->data['id'])
-		));
+        $results = $this->$model->find('all', array(
+            'conditions' => array('page_kid' => $this->request->data['id'])
+        ));
         $this->json(200, $results);
     }
 
@@ -108,14 +115,14 @@ class MetaResourcesController extends AppController {
      *
      * @param string $id
      */
-    public function delete($id) {
-        if (!$this->request->is('delete')) throw new MethodNotAllowedException();
+    public function delete($id)
+    {
+        //if (!$this->request->is('delete')) throw new MethodNotAllowedException();
         $model = $this->modelClass;
         $this->$model->flatten = true;
         $result = $this->$model->findById($id);
         if (!$result) $this->json(404);
-        else if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result)))
-            $this->json(403);
+        else if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result))) $this->json(403);
         else if (!$this->$model->delete($id)) $this->json(500);
         else $this->json(204);
     }

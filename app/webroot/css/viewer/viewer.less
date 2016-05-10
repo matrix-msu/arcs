@@ -201,8 +201,8 @@ input[type=range]:focus::-ms-fill-upper {
 		}
 		
 		.icon-flag {
-			width: 19px;
-			height: 19px;
+			width: 15px;
+			height: 15px;
 			background-image: url("../img/FlagTooltip.svg");
 			background-position: center;
 			cursor: pointer;
@@ -893,7 +893,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .resultPage {
 	cursor: pointer;
-	//margin-left: 25px;
+	margin-left: 25px;
 }
 
 .selectedRelation {
@@ -943,7 +943,7 @@ input[type=range]:focus::-ms-fill-upper {
 	display: inline-block;
 	height: 27px;
 	width: 27px;
-	top: -29px;
+	top: -36px;
 	left: -3px;
 	text-align: center;
 	position: relative;
@@ -953,11 +953,16 @@ input[type=range]:focus::-ms-fill-upper {
 	cursor: pointer;
 }
 
+.deleteAnnotation img {
+	display: inline-block !important;
+	height: 15px;
+}
+
 .flagAnnotation {
-	display: inline-block;
+	display: inline-block !important;
 	height: 27px;
 	width: 27px;
-	top: -29px;
+	top: -27px;
 	left: -6px;
 	text-align: center;
 	position: relative;
@@ -966,6 +971,59 @@ input[type=range]:focus::-ms-fill-upper {
 	border-bottom: 0px;
 	border-left: 0px;
 	cursor: pointer;
+}
+
+.flagAnnotation img {
+	height: 15px;
+	position: relative;
+	left: 1px;
+	top: 3px;
+}
+
+.transcript_display {
+	padding: 5px 0px 5px 0px !important;
+	margin: 15px;
+	border-bottom: 1px solid rgb(185, 185, 185);
+}
+
+.annotation_display {
+	padding: 5px 0px 5px 0px !important;
+	margin: 15px;
+	border-bottom: 1px solid rgb(185, 185, 185);
+}
+
+.deleteTranscript {
+	height: 15px;
+	position: relative;
+	float: right;
+	margin-right: 15px;
+	opacity: .4;
+	cursor: pointer;
+}
+
+.annotateRelation {
+	height: 15px;
+	position: relative;
+	float: right;
+	margin-right: 15px;
+	opacity: .4;
+	cursor: pointer;
+}
+
+.flagTranscript {
+	height: 15px;
+	position: relative;
+	float: right;
+	opacity: .6;
+	cursor: pointer;
+}
+
+.annotationLabel {
+	margin: 15px;
+}
+
+.outgoing_relations, .incoming_relations, .urls {
+	margin-bottom: 35px;
 }
 
 /*Discussion*/

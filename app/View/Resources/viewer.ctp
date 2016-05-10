@@ -702,13 +702,13 @@
 
                     <div class="level-content content_annotations">
 						<div class="outgoing_relations">
-							Outgoing Relations
+							<h4 class="annotationLabel">Outgoing Relations</h4>
 						</div>
 						<div class="incoming_relations">
-							Incoming Relations
+                            <h4 class="annotationLabel">Incoming Relations</h4>
 						</div>
 						<div class="urls">
-							URLs
+                            <h4 class="annotationLabel">URLs</h4>
 						</div>
                     </div>
 
@@ -829,7 +829,12 @@
 
         $(".modalClose").click(function () {
             $(".modalBackground").hide();
+            $(".flagSuccess").hide();
             $("#flagTarget").hide();
+            $("#flagReason").val('');
+            $("#flagExplanation").val('');
+            $("#flagTarget").val('');
+            $("#flagAnnotation_id").val('');
         });
 
         $("#flagForm").submit(function (event) {
@@ -857,7 +862,7 @@
                 $(".targetError").hide();
             }
 
-            if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && ($("#flagTarget").val() != '' && $("#flagTarget").is(":visible"))) {
+            if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && (($("#flagTarget").val() != '' && $("#flagTarget").is(":visible")) || !$("#flagTarget").is(":visible"))) {
                 var formdata = {
                     page_kid: kid,
                     resource_kid: "<?php echo $resource['kid']; ?>",
@@ -878,7 +883,6 @@
                             $("#flagReason").val('');
                             $("#flagExplanation").val('');
                             $("#flagTarget").val('');
-                            //$("#flagTarget").hide();
                             $(".flagSuccess").show();
                             $("#flagAnnotation_id").val('');
                         }
@@ -1011,7 +1015,7 @@
 <script>
     // Annotations
     var showAnnotations = true;
-
+    var mouseOn = false;
 
     $(".resources-annotate-icon").click(function () {
         if (showAnnotations) {
@@ -1064,7 +1068,8 @@
 
     var gen_box = null;
     var disabled = true;
-    $(".annotate").click(function () {
+    function Draw(showForm = true) {
+        console.log("here");
         $(this).addClass("annotateActive");
         $(".canvas").show();
         $(".annotateHelp").show();
@@ -1133,15 +1138,14 @@
                     annotateData.y1 = (parseFloat($(gen_box).css('top'))) / $(".canvas").height();
                     annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
 
-                    $(".annotateModalBackground").show();
+                    if (showForm) $(".annotateModalBackground").show();
 
                     //Mouse over annotation
                     $(".gen_box").mouseenter(function () {
                         ShowAnnotation($(this).attr('id'));
                     });
 
-                    $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + i + "'>X</div>");
-                    //$(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
+                    $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + i + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
 
                     $("#deleteAnnotation_" + i).click(function () {
                         $(this).parent().remove();
@@ -1151,17 +1155,13 @@
                         })
                     });
 
-//                                        $( ".flagAnnotation" ).click(function(){
-//                                                $(".modalBackground").show();
-//                                                $("#flagTarget").show();
-//												$('#flagAnnotation_id').val();
-//                                        });
-
                     i++;
                 }
             }
         });
-    });
+    };
+
+    $(".annotate").click(function(){Draw()});
 
     //Load boxes
     function DrawBoxes(pageKid) {
@@ -1186,8 +1186,8 @@
                             'top': $(".canvas").height() * v.y1
                         });
 
-                        $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'>X</div>");
-                        $(gen_box).append("<div class='flagAnnotation '><div class='icon-flag'></div></div>");
+                        $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
+                        $(gen_box).append("<div class='flagAnnotation'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
 
                         $("#deleteAnnotation_" + v.id).click(function () {
                             var box = $(this).parent();
@@ -1216,10 +1216,12 @@
 
                 //Mouse over annotation
                 $(".gen_box").mouseenter(function () {
+                    mouseOn = true;
                     ShowAnnotation($(this).attr('id'));
                 });
 
                 $(".gen_box").mouseleave(function () {
+                    mouseOn = false;
                     $(".annotationPopup").remove();
                 });
             }
@@ -1232,31 +1234,33 @@
             type: "GET",
             success: function (data) {
                 $(".annotationPopup").remove();
-                $("#" + id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
-                $(".annotationPopup").css("left", $("#" + id).width() + 10);
-                if (data.relation_page_kid != "") {
-                    var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
-                    var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
-                    $.ajax({
-                        url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
-                                "kid,=," + paramKid) + "&sid=" + paramSid,
-                        type: "POST",
-                        success: function (page) {
-                            $(".annotationImage").attr('src', page.results[0].thumb);
-                            $(".annotationData").append("<p>Relation</p>");
-                            $(".annotationData").append("<p>Name: " + data.relation_resource_name + "</p>");
-                            $(".annotationData").append("<p>Type: " + page.results[0].Type + "</p>");
-                            $(".annotationData").append("<p>Scan #: " + page.results[0]["Scan Number"] + "</p>");
-                        }
-                    });
-                }
+                if (mouseOn) {
+                    $("#" + id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
+                    $(".annotationPopup").css("left", $("#" + id).width() + 10);
+                    if (data.relation_page_kid != "") {
+                        var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
+                        var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
+                        $.ajax({
+                            url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
+                                    "kid,=," + paramKid) + "&sid=" + paramSid,
+                            type: "POST",
+                            success: function (page) {
+                                $(".annotationImage").attr('src', page.results[0].thumb);
+                                $(".annotationData").append("<p>Relation</p>");
+                                $(".annotationData").append("<p>Name: " + data.relation_resource_name + "</p>");
+                                $(".annotationData").append("<p>Type: " + page.results[0].Type + "</p>");
+                                $(".annotationData").append("<p>Scan #: " + page.results[0]["Scan Number"] + "</p>");
+                            }
+                        });
+                    }
 
-                if (data.transcript != "") {
-                    $(".annotationData").append("<p>Transcript: " + data.transcript + "</p>");
-                }
+                    if (data.transcript != "") {
+                        $(".annotationData").append("<p>Transcript: " + data.transcript + "</p>");
+                    }
 
-                if (data.url != "") {
-                    $(".annotationData").append("<p>URL: " + data.url + "</p>");
+                    if (data.url != "") {
+                        $(".annotationData").append("<p>URL: " + data.url + "</p>");
+                    }
                 }
             }
         });
@@ -1302,7 +1306,6 @@
 //                        "<p>" + value['Type'] + "</p>" +
 //                        "</div>"
 //                );
-
                 //$("#" + value.kid).append("<hr class='resultDivider'>");
 
                 //Get related pages
@@ -1361,33 +1364,6 @@
                         })
                     }
                 });
-
-                //Clicked a resource
-                /*$("#" + value.kid).click(function () {
-                    if ($(this).hasClass("selectedRelation")) {
-                        $(this).removeClass("selectedRelation");
-                        selected = false;
-                        annotateData.relation_resource_kid = "";
-                        annotateData.relation_page_kid = "";
-                        annotateData.relation_resource_name = "";
-                    }
-                    else {
-                        $(".annotateSearchResult").removeClass('selectedRelation');
-                        $(this).addClass("selectedRelation");
-                        selected = true;
-                        annotateData.relation_resource_name = value['Resource Identifier'];
-                        annotateData.relation_resource_kid = $(this).attr('id');
-                        annotateData.relation_page_kid = $(this).attr('id');
-                    }
-
-                    if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
-                        $(".annotateSubmit").show();
-                    }
-                    else {
-                        $(".annotateSubmit").hide();
-                    }
-                })*/
-
             });
         }
     }
@@ -1397,9 +1373,9 @@
     $(".annotateTranscript, .annotateUrl").on('change keyup paste mouseup', function () {
         if ($(this).val() != lastValue) {
             lastValue = $(this).val();
-            annotateData.transcript = $(".annotateTranscript").val();
+            //annotateData.transcript = $(".annotateTranscript").val();
             annotateData.url = $(".annotateUrl").val();
-            if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
+            if (selected || annotateData.url.length > 0) {
                 $(".annotateSubmit").show();
             }
             else {
@@ -1430,6 +1406,7 @@
                 url: "<?php echo Router::url('/', true); ?>api/annotations.json",
                 type: "POST",
                 data: {
+                    incoming: 'true',
                     resource_kid: annotateData.relation_resource_kid,
                     page_kid: annotateData.relation_page_kid,
                     resource_name: annotateData.relation_resource_name,
@@ -1527,19 +1504,63 @@
             success: function (data) {
                 $.each(data, function (key, value) {
                     if (value.page_kid == kid && value.transcript != "") {
-                        $(".content_transcripts").append("<div class='transcript_display'>"+ value.transcript +"</div>");
+                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>"+ value.transcript +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
                     }
                     else {
-						if (value.relation_page_kid != "" && value.x1) {
-							$(".outgoing_relations").append("<div class='annotation_display'>"+ value.relation_resource_name +"</div>");
+						if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
+							$(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'>"+ value.relation_resource_name +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
 						}
-						if (value.relation_page_kid != "" && !value.x1) {
-							$(".incoming_relations").append("<div class='annotation_display'>"+ value.relation_resource_name +"</div>");
+						else if (value.relation_page_kid != "" && value.incoming == "true") {
+							$(".incoming_relations").append("<div class='annotation_display' id='" + value.id + "'>"+ value.relation_resource_name +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/><img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/></div>");
 						}
                     }
 					if (value.url != "") {
-						$(".urls").append("<div class='transcript_display'>"+ value.url +"</div>");
+						$(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
 					}
+                });
+
+                $(".flagTranscript").click(function () {
+                    $(".modalBackground").show();
+                    $("#flagTarget").val("Transcript");
+                    $('#flagAnnotation_id').val($(this).parent().attr("id"));
+                });
+
+                $(".deleteTranscript").click(function () {
+                    $.ajax({
+                        url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+                        type: "DELETE",
+                        statusCode: {
+                            204: function () {
+                                $(this).parent().remove();
+                            },
+                            // Make modal for this
+                            403: function () {
+                                alert("You don't have permission to delete this annotation");
+                            }
+                        }
+                    })
+                });
+
+                $(".annotateRelation").click(function() {
+                    Draw(false);
+
+                   /* $.ajax({
+                        url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+                        type: "POST",
+                        data: {
+                            incoming: 'true',
+                            resource_kid: annotateData.relation_resource_kid,
+                            page_kid: annotateData.relation_page_kid,
+                            resource_name: annotateData.relation_resource_name,
+                            relation_resource_kid: annotateData.resource_kid,
+                            relation_page_kid: annotateData.page_kid,
+                            relation_resource_name: annotateData.resource_name,
+                            transcript: annotateData.transcript,
+                            url: annotateData.url
+                        },
+                        success: function (data) {
+                        }
+                    });*/
                 });
             }
         })
