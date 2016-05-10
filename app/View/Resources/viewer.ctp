@@ -1068,8 +1068,7 @@
 
     var gen_box = null;
     var disabled = true;
-    function Draw(showForm = true) {
-        console.log("here");
+    function Draw(showForm = true, id = null) {
         $(this).addClass("annotateActive");
         $(".canvas").show();
         $(".annotateHelp").show();
@@ -1139,6 +1138,18 @@
                     annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
 
                     if (showForm) $(".annotateModalBackground").show();
+                    else {
+                        $.ajax({
+                            url: "<?php echo Router::url('/', true); ?>api/annotations/"+id+".json",
+                            type: "POST",
+                            data: {
+                                x1: annotateData.x1,
+                                x2: annotateData.x2,
+                                y1: annotateData.y1,
+                                y2: annotateData.y2
+                            }
+                        });
+                    }
 
                     //Mouse over annotation
                     $(".gen_box").mouseenter(function () {
@@ -1542,25 +1553,7 @@
                 });
 
                 $(".annotateRelation").click(function() {
-                    Draw(false);
-
-                   /* $.ajax({
-                        url: "<?php echo Router::url('/', true); ?>api/annotations.json",
-                        type: "POST",
-                        data: {
-                            incoming: 'true',
-                            resource_kid: annotateData.relation_resource_kid,
-                            page_kid: annotateData.relation_page_kid,
-                            resource_name: annotateData.relation_resource_name,
-                            relation_resource_kid: annotateData.resource_kid,
-                            relation_page_kid: annotateData.page_kid,
-                            relation_resource_name: annotateData.resource_name,
-                            transcript: annotateData.transcript,
-                            url: annotateData.url
-                        },
-                        success: function (data) {
-                        }
-                    });*/
+                    Draw(false, $(this).parent().attr("id"));
                 });
             }
         })
