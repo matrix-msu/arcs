@@ -342,7 +342,7 @@ class UsersController extends AppController
 
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         $this->confirmUserEmail($user);
-                                                $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
+                        $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
 
                         $this->redirect($this->referer());
                     } else {
@@ -549,7 +549,7 @@ class UsersController extends AppController
                 } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
                     // check if image file exists
                     $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
-                } elseif ($_FILES['user_image']['size'] > 5242880) {
+                } elseif ($_FILES['user_image']['size'] > 500000) {
                     // check if file size is extremely large
                     $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
                 } elseif (!in_array($file_ext, $vaildExtensions)) {
@@ -745,7 +745,8 @@ class UsersController extends AppController
               ->subject('ARCS Registration')
               ->to($data['email'])
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        $Email->send();
+        /* Here is where the problem is.*/
+        //$Email->send();
     }
 
     /**
@@ -764,7 +765,7 @@ class UsersController extends AppController
               ->subject('Reset Password')
               ->to($email)
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        $Email->send();
+        //$Email->send();
     }
 
     /**
