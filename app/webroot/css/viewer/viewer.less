@@ -913,6 +913,10 @@ input[type=range]:focus::-ms-fill-upper {
     border: 3px solid rgba(42, 159, 216, 0.7);
 }
 
+.initialBox {
+	top: -28px !important;
+}
+
 .annotateActive {
 	color: #0093be !important;
 }
@@ -928,7 +932,12 @@ input[type=range]:focus::-ms-fill-upper {
 	color: #fff;
 	padding: 5px;
 	z-index: 99;
-	top: -30px;
+	top: -39px;
+}
+
+.detailsPopup {
+	position: absolute;
+	top: -40px;
 }
 
 .annotationData {
@@ -937,6 +946,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .annotationImage {
 	max-height: 135px !important;
+	max-width: 150px;
 }
 
 .deleteAnnotation {
@@ -1018,12 +1028,68 @@ input[type=range]:focus::-ms-fill-upper {
 	cursor: pointer;
 }
 
+.annotateLabel {
+	position: relative;
+	float: right;
+	opacity: .6;
+	left: -7px;
+}
+
 .annotationLabel {
 	margin: 15px;
 }
 
 .outgoing_relations, .incoming_relations, .urls {
 	margin-bottom: 35px;
+}
+
+.relationName {
+	position: relative;
+	display: inline-block;
+}
+
+.transcriptionTab {
+	/*display: inline-block;*/
+}
+
+.editTranscriptions {
+	position: relative;
+	float: right;
+	display: inline-block;
+}
+
+.editOptions {
+	display: inline-block;
+	display: none;
+	position: relative;
+	float: right;
+}
+
+.newTranscription {
+	display: inline-block;
+}
+
+.saveTranscription {
+	display: inline-block;
+	margin-left: 25px;
+}
+
+.newTranscriptionForm {
+	display: none;
+	width: 100%;
+
+	button {
+		width: 100%;
+		height: 60px;
+		background: #0093be;
+		color: white;
+	}
+
+	textarea {
+		width: 100%;
+		height: 100px;
+		background: white;
+	}
 }
 
 /*Discussion*/

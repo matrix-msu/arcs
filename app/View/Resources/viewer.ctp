@@ -693,9 +693,20 @@
 
             <div id="tabs-2" class="metadata-content">
                 <div class="accordion metadata-accordion">
-                    <h3 class="level-tab">Transcriptions</h3>
+                    <h3 class="level-tab transcriptionTab">
+                        Transcriptions
+                        <div class="editTranscriptions">Edit</div>
+                        <div class="editOptions">
+                            <div class="newTranscription">Add New</div>
+                            <div class="saveTranscription">Save</div>
+                        </div>
+                    </h3>
 
                     <div class="level-content content_transcripts">
+                        <form class="newTranscriptionForm">
+                            <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>
+                            <button type="submit">SUBMIT NEW TRANSCRIPTION</button>
+                        </form>
                     </div>
 
                     <h3 class="level-tab">Annotations</h3>
@@ -1069,7 +1080,7 @@
     var gen_box = null;
     var disabled = true;
     function Draw(showForm = true, id = null) {
-        $(this).addClass("annotateActive");
+        $(".annotate").addClass("annotateActive");
         $(".canvas").show();
         $(".annotateHelp").show();
         $(".canvas").addClass("select");
@@ -1123,7 +1134,7 @@
                         'height': height,
                         'left': x_begin,
                         'top': y_begin - 120
-                    })
+                    });
                     //.draggable({ grid: [20, 20] })
                     //.resizable();
 
@@ -1137,6 +1148,7 @@
                     annotateData.y1 = (parseFloat($(gen_box).css('top'))) / $(".canvas").height();
                     annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
 
+                    // Show annotation modal or update incoming annotation coordinates
                     if (showForm) $(".annotateModalBackground").show();
                     else {
                         $.ajax({
@@ -1147,6 +1159,10 @@
                                 x2: annotateData.x2,
                                 y1: annotateData.y1,
                                 y2: annotateData.y2
+                            },
+                            success: function() {
+                                ResetAnnotationModal();
+                                GetDetails();
                             }
                         });
                     }
@@ -1156,7 +1172,7 @@
                         ShowAnnotation($(this).attr('id'));
                     });
 
-                    $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + i + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
+                    $(gen_box).append("<div class='initialBox deleteAnnotation' id='deleteAnnotation_" + i + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
 
                     $("#deleteAnnotation_" + i).click(function () {
                         $(this).parent().remove();
@@ -1170,13 +1186,14 @@
                 }
             }
         });
-    };
+    }
 
     $(".annotate").click(function(){Draw()});
 
     //Load boxes
     function DrawBoxes(pageKid) {
         $(gen_box).remove();
+        $(".gen_box").remove();
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>api/annotations/findall.json",
             type: "POST",
@@ -1239,6 +1256,7 @@
         });
     }
 
+    // Annotation popup on the canvas
     function ShowAnnotation(id) {
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>api/annotations/" + id + ".json",
@@ -1248,6 +1266,46 @@
                 if (mouseOn) {
                     $("#" + id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
                     $(".annotationPopup").css("left", $("#" + id).width() + 10);
+                    if (data.relation_page_kid != "") {
+                        var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
+                        var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
+                        $.ajax({
+                            url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
+                                    "kid,=," + paramKid) + "&sid=" + paramSid,
+                            type: "POST",
+                            success: function (page) {
+                                $(".annotationImage").attr('src', page.results[0].thumb);
+                                $(".annotationData").append("<p>Relation</p>");
+                                $(".annotationData").append("<p>Name: " + data.relation_resource_name + "</p>");
+                                $(".annotationData").append("<p>Type: " + page.results[0].Type + "</p>");
+                                $(".annotationData").append("<p>Scan #: " + page.results[0]["Scan Number"] + "</p>");
+                            }
+                        });
+                    }
+
+                    if (data.transcript != "") {
+                        $(".annotationData").append("<p>Transcript: " + data.transcript + "</p>");
+                    }
+
+                    if (data.url != "") {
+                        $(".annotationData").append("<p>URL: " + data.url + "</p>");
+                    }
+                }
+            }
+        });
+    }
+
+    // Annotation popup in details tab
+    function ShowDetailsAnnotation(t) {
+        var id  = t.parent().attr('id');
+        $.ajax({
+            url: "<?php echo Router::url('/', true); ?>api/annotations/" + id + ".json",
+            type: "GET",
+            success: function (data) {
+                $(".annotationPopup").remove();
+                if (mouseOn) {
+                    t.append("<div class='annotationPopup detailsPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
+                    $(".annotationPopup").css("left", t.width() + 30);
                     if (data.relation_page_kid != "") {
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
                         var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
@@ -1504,8 +1562,9 @@
     });
 
 
-    // Details tab
-    $(".details").click(function () {
+    function GetDetails() {
+        $(".transcript_display").remove();
+        $(".annotation_display").remove();
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>api/annotations/findall.json",
             type: "POST",
@@ -1518,16 +1577,40 @@
                         $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>"+ value.transcript +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
                     }
                     else {
-						if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-							$(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'>"+ value.relation_resource_name +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
-						}
-						else if (value.relation_page_kid != "" && value.incoming == "true") {
-							$(".incoming_relations").append("<div class='annotation_display' id='" + value.id + "'>"+ value.relation_resource_name +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/><img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/></div>");
-						}
+                        if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
+                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
+                        }
+                        else if (value.relation_page_kid != "" && value.incoming == "true") {
+                            var text = value.x1 ? "Revert to whole resource" : "Define space";
+                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/><img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
+                        }
                     }
-					if (value.url != "") {
-						$(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
-					}
+                    if (value.url != "") {
+                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
+                    }
+
+                    // Set incoming coordinates or reset incoming annotation coordinates to null
+                    $("."+value.id).click(function() {
+                        if (!value.x1) {
+                            Draw(false, value.id);
+                        }
+                        else {
+                            $.ajax({
+                                url: "<?php echo Router::url('/', true); ?>api/annotations/" + value.id + ".json",
+                                type: "POST",
+                                data: {
+                                    x1: null,
+                                    x2: null,
+                                    y1: null,
+                                    y2: null
+                                },
+                                success: function() {
+                                    DrawBoxes(kid);
+                                    GetDetails();
+                                }
+                            });
+                        }
+                    });
                 });
 
                 $(".flagTranscript").click(function () {
@@ -1542,9 +1625,8 @@
                         type: "DELETE",
                         statusCode: {
                             204: function () {
-                                $(this).parent().remove();
+                                GetDetails();
                             },
-                            // Make modal for this
                             403: function () {
                                 alert("You don't have permission to delete this annotation");
                             }
@@ -1552,11 +1634,69 @@
                     })
                 });
 
-                $(".annotateRelation").click(function() {
-                    Draw(false, $(this).parent().attr("id"));
+                //Mouse over annotation
+                $(".relationName").mouseenter(function () {
+                    mouseOn = true;
+                    ShowDetailsAnnotation($(this));
+                })
+                .mouseleave(function () {
+                    mouseOn = false;
+                    $(".annotationPopup").remove();
                 });
             }
         })
+    }
+
+    // Details tab
+    $(".details").click(function () {
+        GetDetails();
+    });
+
+    $(".level-tab").click(function() {
+        if ($(this).hasClass("transcriptionTab") && !$(".editTranscriptions").is(":visible") && !$(".editOptions").is(":visible")) $(".editTranscriptions").show();
+        if (!$(this).hasClass("transcriptionTab")) {
+            $(".editTranscriptions").hide();
+            $(".editOptions").hide();
+            $(".newTranscriptionForm").hide();
+        }
+    });
+
+    $(".editTranscriptions").click(function() {
+        $(".editOptions").show();
+        $(".editTranscriptions").hide();
+    });
+
+    $(".newTranscription").click(function() {
+        $('.content_transcripts').append($(".newTranscriptionForm"));
+        $(".newTranscriptionForm").show();
+    });
+
+    $(".saveTranscription").click(function() {
+        $(".transcriptionTextarea").val('');
+        $(".newTranscriptionForm").hide();
+        $(".editOptions").hide();
+        $(".editTranscriptions").show();
+    });
+
+    $(".newTranscriptionForm").submit(function(e) {
+        e.preventDefault();
+        annotateData.page_kid = kid;
+        annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
+        annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+        annotateData.transcript = $(".transcriptionTextarea").val();
+
+        if (annotateData.transcript.length > 0)
+            $.ajax({
+                url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+                type: "POST",
+                data: annotateData,
+                success: function () {
+                    $(".transcriptionTextarea").val('');
+                    $(".newTranscriptionForm").hide();
+                    ResetAnnotationModal();
+                    GetDetails();
+                }
+            });
     });
 
 </script>
