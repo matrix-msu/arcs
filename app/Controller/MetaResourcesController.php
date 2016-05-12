@@ -122,7 +122,7 @@ class MetaResourcesController extends AppController
         $this->$model->flatten = true;
         $result = $this->$model->findById($id);
         if (!$result) $this->json(404);
-        else if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result))) $this->json(403);
+        else if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result) || $this->Auth->user('isAdmin') != 1)) $this->json(403);
         else if (!$this->$model->delete($id)) $this->json(500);
         else $this->json(204);
     }

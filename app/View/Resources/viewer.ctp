@@ -702,7 +702,9 @@
                         </div>
                     </h3>
 
-                    <div class="level-content content_transcripts">
+                    <div class="level-content">
+                        <div class="editInstructions">Drag and drop transcriptions to reorder them.</div>
+                        <div class="content_transcripts"></div>
                         <form class="newTranscriptionForm">
                             <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>
                             <button type="submit">SUBMIT NEW TRANSCRIPTION</button>
@@ -1024,6 +1026,8 @@
 </script>
 
 <script>
+    var isAdmin = "<?php echo $admin; ?>";
+
     // Annotations
     var showAnnotations = true;
     var mouseOn = false;
@@ -1135,8 +1139,6 @@
                         'left': x_begin,
                         'top': y_begin - 120
                     });
-                    //.draggable({ grid: [20, 20] })
-                    //.resizable();
 
                     //if the mouse was dragged left, offset the gen_box position
                     drag_left ? $(gen_box).offset({left: x_end}) : $(gen_box).offset({left: x_begin});
@@ -1163,24 +1165,10 @@
                             success: function() {
                                 ResetAnnotationModal();
                                 GetDetails();
+                                DrawBoxes(kid);
                             }
                         });
                     }
-
-                    //Mouse over annotation
-                    $(".gen_box").mouseenter(function () {
-                        ShowAnnotation($(this).attr('id'));
-                    });
-
-                    $(gen_box).append("<div class='initialBox deleteAnnotation' id='deleteAnnotation_" + i + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
-
-                    $("#deleteAnnotation_" + i).click(function () {
-                        $(this).parent().remove();
-                        $.ajax({
-                            url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
-                            type: "DELETE"
-                        })
-                    });
 
                     i++;
                 }
@@ -1214,8 +1202,13 @@
                             'top': $(".canvas").height() * v.y1
                         });
 
-                        $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
-                        $(gen_box).append("<div class='flagAnnotation'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                        if (isAdmin == 1) {
+                            $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
+                            $(gen_box).append("<div class='flagAnnotation'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                        }
+                        else {
+                            $(gen_box).append("<div class='flagAnnotation notAdmin'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                        }
 
                         $("#deleteAnnotation_" + v.id).click(function () {
                             var box = $(this).parent();
@@ -1225,6 +1218,7 @@
                                 statusCode: {
                                     204: function () {
                                         box.remove();
+                                        GetDetails();
                                     },
                                     // Make modal for this
                                     403: function () {
@@ -1466,6 +1460,10 @@
             success: function (data) {
                 $(gen_box).attr("id", data.id);
                 gen_box = null;
+                DrawBoxes(kid);
+                if (annotateData.relation_resource_kid == "") {
+                    GetDetails();
+                }
             }
         });
 
@@ -1486,6 +1484,7 @@
                     url: annotateData.url
                 },
                 success: function (data) {
+                    GetDetails();
                 }
             });
         }
@@ -1572,21 +1571,27 @@
                 id: kid
             },
             success: function (data) {
+                data.sort(function (a, b) {
+                    if (a.order_transcript < b.order_transcript) return -1;
+                    if (a.order_transcript > b.order_transcript) return 1;
+                });
+
                 $.each(data, function (key, value) {
+                    var trashButton = isAdmin == 1 ? "<img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
                     if (value.page_kid == kid && value.transcript != "") {
-                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>"+ value.transcript +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
+                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>"+ value.transcript +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"</div>");
                     }
                     else {
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
+                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"</div>");
                         }
                         else if (value.relation_page_kid != "" && value.incoming == "true") {
                             var text = value.x1 ? "Revert to whole resource" : "Define space";
-                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/><img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
+                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"<img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
                         }
                     }
                     if (value.url != "") {
-                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/></div>");
+                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"</div>");
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
@@ -1626,6 +1631,7 @@
                         statusCode: {
                             204: function () {
                                 GetDetails();
+                                DrawBoxes(kid);
                             },
                             403: function () {
                                 alert("You don't have permission to delete this annotation");
@@ -1645,6 +1651,17 @@
                 });
             }
         })
+
+//        $.ajax({
+//            url: "<?php echo Router::url('/', true); ?>api/collections/memberships/.json",
+//            type: "POST",
+//            data: {
+//                id: kid
+//            },
+//            success: function (data) {
+//
+//            }
+//        })
     }
 
     // Details tab
@@ -1664,6 +1681,16 @@
     $(".editTranscriptions").click(function() {
         $(".editOptions").show();
         $(".editTranscriptions").hide();
+
+        $(".content_transcripts").sortable({
+            disabled: false,
+            sort: function(e) {
+                $(".newTranscriptionForm").hide();
+            }
+        });
+
+        $('.transcript_display').addClass("editable");
+        $(".editInstructions").show();
     });
 
     $(".newTranscription").click(function() {
@@ -1676,6 +1703,21 @@
         $(".newTranscriptionForm").hide();
         $(".editOptions").hide();
         $(".editTranscriptions").show();
+
+        var sortedIDs = $(".content_transcripts").sortable("toArray");
+        $.each(sortedIDs, function(k, v) {
+            $.ajax({
+                url: "<?php echo Router::url('/', true); ?>api/annotations/"+ v +".json",
+                type: "POST",
+                data: {
+                    order_transcript: k
+                }
+            });
+        });
+
+        $(".content_transcripts").sortable({disabled: true});
+        $('.transcript_display').removeClass("editable");
+        $(".editInstructions").hide();
     });
 
     $(".newTranscriptionForm").submit(function(e) {
@@ -1684,6 +1726,7 @@
         annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
         annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
         annotateData.transcript = $(".transcriptionTextarea").val();
+        annotateData.order_transcript = 1000000;
 
         if (annotateData.transcript.length > 0)
             $.ajax({

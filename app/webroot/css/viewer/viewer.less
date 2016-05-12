@@ -990,6 +990,11 @@ input[type=range]:focus::-ms-fill-upper {
 	top: 3px;
 }
 
+.notAdmin {
+	border-left: 3px solid rgba(42, 159, 216, 0.7);
+	left: -3px;
+}
+
 .transcript_display {
 	padding: 5px 0px 5px 0px !important;
 	margin: 15px;
@@ -1048,8 +1053,8 @@ input[type=range]:focus::-ms-fill-upper {
 	display: inline-block;
 }
 
-.transcriptionTab {
-	/*display: inline-block;*/
+.transcript_display {
+	text-transform: none;
 }
 
 .editTranscriptions {
@@ -1072,6 +1077,16 @@ input[type=range]:focus::-ms-fill-upper {
 .saveTranscription {
 	display: inline-block;
 	margin-left: 25px;
+}
+
+.editable {
+	cursor: pointer;
+}
+
+.editInstructions {
+	display: none;
+	padding: 15px;
+	text-transform: none;
 }
 
 .newTranscriptionForm {

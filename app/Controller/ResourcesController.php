@@ -308,6 +308,7 @@ class ResourcesController extends AppController {
             'footer' => false,
             'body_class' => 'viewer standalone',
 			'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
+            'admin' => $this->Auth->user('isAdmin') == 1
         ));
 
         # On the first request of a particular resource (usually directly 

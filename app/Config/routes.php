@@ -145,8 +145,8 @@
         array('controller' => 'annotations', 'action' => 'findAll')
     );
 
-    Router::connect('/api/comments/findall',
-        array('controller' => 'comments', 'action' => 'findAll')
+    Router::connect('/api/collections/memberships',
+        array('controller' => 'collections', 'action' => 'memberships')
     );
 
     $restful = array(
@@ -159,6 +159,7 @@
         'flags',
         'jobs',
         'metadata',
+        'collections',
     );
 
     Router::mapResources($restful);

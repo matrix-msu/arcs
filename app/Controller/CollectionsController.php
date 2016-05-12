@@ -31,6 +31,21 @@ class CollectionsController extends AppController {
     }
 
     /**
+     * Get all collections a resource is a part of
+     */
+    public function memberships($id) {
+        $this->loadModel('Membership');
+        $ids = $this->Membership->memberships($id);
+        $collections = $this->Collection->find('all', array(
+            'order' => 'Collection.modified DESC',
+            'conditions' => array(
+                "Collection.id" => $ids
+            )
+        ));
+        $this->json(200, $collections);
+    }
+
+    /**
      * Create a new collection.
      */
     public function add() {
