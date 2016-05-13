@@ -94,6 +94,72 @@ class User extends AppModel {
     }
 
     /**
+     * finds user by Id
+     * returns false if user not in database
+     */
+    function findById($ref){
+        /* Initialize variables to use for database communication */
+        $servername = "rush.matrix.msu.edu";
+        $username = "arcs_dev";
+        $password = "uohE4n032x";
+        $myDB ="arcs_dev";
+
+        /* try to connect to the database */
+        try{
+            $con = new PDO("mysql:host=$servername;dbname=$myDB", $username, $password);
+            $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+            /* Catch error if we can't connect */
+        catch(PDOException $e){
+            echo "CONNECTION TO DATABASE FAILED. " . $e->getMessage(). "<br>";
+        }
+
+        // gets the info for the current image needed
+        $sql = <<<SQL
+        select *
+        from users
+        where id=?
+SQL;
+        $stmnt = $con->prepare($sql);
+        $stmnt->execute(array($ref));
+        $user = $stmnt->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
+    /**
+     * finds user by username
+     * returns false if cannot find username
+     */
+    function findByUsername($ref){
+        /* Initialize variables to use for database communication */
+        $servername = "rush.matrix.msu.edu";
+        $username = "arcs_dev";
+        $password = "uohE4n032x";
+        $myDB ="arcs_dev";
+
+        /* try to connect to the database */
+        try{
+            $con = new PDO("mysql:host=$servername;dbname=$myDB", $username, $password);
+            $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } /* Catch error if we can't connect */
+        catch(PDOException $e){
+            echo "CONNECTION TO DATABASE FAILED. " . $e->getMessage(). "<br>";
+        }
+
+        // gets the info for the current image needed
+        $sql = <<<SQL
+        select *
+        from users
+        where username=?
+SQL;
+        $stmnt = $con->prepare($sql);
+        $stmnt->execute(array($ref));
+        $user = $stmnt->fetch(PDO::FETCH_ASSOC);
+        //var_dump($user);
+        return $user;
+    }
+
+    /**
      * Return a UUID suitable for account activation and reset tokens.
      */
     function getToken() {
