@@ -1,3 +1,4 @@
+
 <div id="toolbar" class="row">
     <?php if (!isset($logo) || $logo): ?>
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
@@ -40,20 +41,21 @@
 			<div class="indexSearchIcon"></div>
 		</div>
 	<?php endif ?>
-	
+
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 	<!--Display regular buttons for other pages-->
+
+    
 	<div class="btn-group toolbar-btn">
 		 <!-- Arrow won't work-->
 		 <div id="projects" class="btn btn-grey">
-			<i class="icon-white icon-folder-open"></i> Projects
+             <i class="icon-white icon-folder-open"></i> <div id="toolbarHead"></div>
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
 			</div>
 		</div>
-		
 		 <a id="resources" class="btn btn-grey"
 			href="<?php echo $this->Html->url('/resources')?>">
 			<i class="icon-white icon-folder-open"></i> Resources
@@ -70,6 +72,9 @@
 			href="<?php echo $this->Html->url('/help/')?>">
 			<i class="icon-white icon-book"></i> Help
 		</a>
+        
+    <?php echo $this->Html->script('toolbar.js');?>
+        
 	</div>
 	<?php else: ?>
 	<!--Display three buttons for index page with search bar-->
@@ -80,6 +85,7 @@
 		</a>
 		 
 		 <!-- Arrow won't work-->
+        
 		 <div id="projects" class="btn btn-grey">
 			<i class="icon-white icon-folder-open"></i> Projects
 			<div id="projectsMenu" class="projects-menu">
@@ -183,3 +189,4 @@
 
     </div>
 </div>
+

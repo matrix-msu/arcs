@@ -1,3 +1,17 @@
+<?php
+    $url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $lastChar = substr($url,-1);
+    if ($lastChar != '0' && $lastChar != '1' && $lastChar != '2'){
+        echo $this->Session->flash();
+        $this->set('index_toolbar', true);
+    }
+    else{
+        echo $this->Session->flash();
+        $this->set('index_toolbar', false);
+
+    }
+?>
+
 <h1 id="installing-arcs">Installing ARCS</h1>
 <h2 id="install-guide">Install Guide</h2>
 <p>We'll be setting ARCS up on a fresh installation of Ubuntu 11.10 Server, using

@@ -50,3 +50,5 @@ define ("TOKEN", "8b88eecedaa2d3708ebec77a");
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
+//used for help toolbar
+

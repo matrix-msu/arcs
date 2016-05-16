@@ -26,11 +26,16 @@ class HelpController extends AppController {
      * @return void
      */
 	public function display($doc) {
+		
         $this->set(array(
             'title_for_layout' => $doc == 'index' ? 
                 'Getting Started' : Inflector::humanize($doc),
             'active' => $doc == 'index' ? '' : $doc
         ));
 		$this->render($doc);
+		
 	}
+    
+    
 }
+

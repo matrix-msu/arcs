@@ -1,6 +1,19 @@
+
 <!doctype html>
+
+<?php
+	
+    $url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    if(strpos($url, 'arcs/about') != false){
+         echo $this->Session->flash();
+         $this->set('index_toolbar', true);
+    }
+?>
+
 <html lang="en">
+
     <head>
+
       <meta charset="utf-8">
         <title><?php echo $title_for_layout; ?> - ARCS</title>
         <link rel="shortcut icon" 
@@ -30,6 +43,7 @@
     <body class="<?php echo $body_class ?>">
         <div class="wrap">
             <div class="page fluid-container">
+				
             <?php
                 echo $this->element('toolbar', $toolbar);
                 echo $this->Session->flash();

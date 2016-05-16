@@ -7746,14 +7746,6 @@ div#search-results-wrapper div#search-results {
 div#search-results-wrapper div#search-results table {
   border-collapse: separate;
 }
-div#search-results-wrapper div#search-bottom-bar {
-  bottom: 0;
-  position: absolute;
-  height: 60px;
-  background: #f4f4f4;
-  border-top: 1px solid #e9e9e9;
-  border-bottom: 1px solid #e9e9e9;
-}
 div#search-results-wrapper div#search-actions {
   padding: 5px;
   width: 90%;
@@ -7847,6 +7839,11 @@ div#search-results-wrapper div#search-actions #sort-buttons .dropdown-menu {
   padding-top: 5em;
   box-shadow: none !important;
 }
+div#search-results-wrapper div#search-actions ul.dropdown-menu {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
 div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   cursor: pointer;
   display: block;
@@ -7859,10 +7856,40 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   font-size: 13px;
 }
 div#search-results-wrapper .toolbar-fixed {
-  border-bottom: 1px solid #999;
-  position: fixed;
+  border-bottom: 1px solid #eee;
+  color: #888;
   top: 0px;
   width: 100%;
+  height: 35px;
+}
+div#search-results-wrapper .toolbar-fixed a#select-all,
+div#search-results-wrapper .toolbar-fixed a#deselect-all {
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 12px;
+  height: 35px;
+  padding: 10px;
+  float: left;
+  color: #888;
+}
+div#search-results-wrapper .toolbar-fixed a#selected-all {
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 12px;
+  height: 35px;
+  padding: 10px;
+  float: right;
+  color: #C1C1C1;
+}
+div#search-results-wrapper .toolbar-fixed a:hover {
+  cursor: pointer;
+  color: #0093be !important;
+  text-decoration: none !important;
+}
+div#search-results-wrapper .toolbar-fixed img.collectionIcon {
+  float: right;
+  padding: 0 5px;
+  margin-top: -2.5px;
 }
 div#search-again {
   float: right;
@@ -7877,6 +7904,11 @@ a.search-again-link {
   color: #6f6f6f !important;
   margin-bottom: 4em;
   font-size: 12px;
+}
+a.search-again-link:hover {
+  cursor: pointer;
+  color: #0093be !important;
+  text-decoration: none !important;
 }
 #no-results {
   margin: 20% auto;
@@ -7912,9 +7944,9 @@ img.search-results-thumbnall {
   font-weight: bold;
   font-size: 3em;
   text-align: center;
-  -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.19);
-  -moz-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.19);
-  box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.19);
 }
 .resource-title {
   width: 160px;
@@ -7932,22 +7964,33 @@ img.search-results-thumbnall {
 ul.pagination {
   margin-left: auto !important;
   margin-right: auto !important;
-  width: 165px;
+  width: 215px;
   line-height: 50px;
   vertical-align: middle;
   margin: 0;
   display: block !important;
 }
+ul.pagination .selected {
+  border: 1px solid #0093be !important;
+  border-radius: 100% !important;
+  background: #0093be !important;
+  color: white !important;
+}
 .pagination > li > a,
 .pagination > li > span {
   position: relative;
   float: left;
-  padding: 0px 12px !important;
-  line-height: 50px !important;
+  margin: 8px 5px !important;
+  /*line-height: 50px !important;*/
   text-decoration: none;
   color: #6f6f6f;
   background-color: transparent !important;
   border: none !important;
+  font-weight: bold;
+}
+.pagination > li > a:hover {
+  text-decoration: none;
+  cursor: pointer;
 }
 .icon-annotate {
   width: 19px;
@@ -7971,7 +8014,7 @@ ul.pagination {
   background-repeat: no-repeat;
 }
 .icon-flag {
-  width: 18px;
+  width: 15px;
   height: 19px;
   background-image: url("../img/FlagTooltip.svg");
   background-position: center;
@@ -7981,8 +8024,8 @@ ul.pagination {
   background-repeat: no-repeat;
 }
 .search-icon-edit {
-  width: 16px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   background-image: url("../img/metadataTooltip.svg");
   background-position: center;
   vertical-align: middle;
@@ -7991,7 +8034,7 @@ ul.pagination {
 }
 .icon-in-collection {
   width: 19px;
-  height: 19px;
+  height: 15px;
   background-image: url("../img/BelongsToCollectionTooltip.svg");
   background-position: center;
   vertical-align: middle;
@@ -8000,7 +8043,7 @@ ul.pagination {
 }
 .icon-discussed {
   width: 19px;
-  height: 19px;
+  height: 15px;
   background-image: url("../img/DiscussedTooltip.svg");
   background-position: center;
   vertical-align: middle;
@@ -8009,7 +8052,7 @@ ul.pagination {
 }
 .icon-tagged {
   width: 19px;
-  height: 19px;
+  height: 16px;
   background-image: url("../img/TaggedTooltip.svg");
   background-position: center;
   vertical-align: middle;
@@ -8019,6 +8062,10 @@ ul.pagination {
 .result {
   border-collapse: separate;
   border-spacing: 1px;
+}
+.result:hover,
+.result a:hover {
+  text-decoration: none !important;
 }
 .result.grid {
   text-align: center;
@@ -8054,7 +8101,6 @@ ul.pagination {
 .result.selected img {
   padding: 0px;
   border: 3px solid #08c;
-  margin: 1px;
 }
 .result div {
   font-weight: 200;
@@ -8064,17 +8110,44 @@ ul.pagination {
   font-weight: 200;
 }
 .result img {
-  padding: 1px;
+  padding: 3px;
   background: #444;
   margin: 3px;
+  width: 175px !important;
+  height: 125px !important;
 }
-.result img:hover {
+.result .img-hover {
+  padding: 0px;
+  cursor: pointer;
+  border: 3px solid #08c;
+}
+.result .select-button {
+  color: white;
+  background: #08c;
+  opacity: 0.6;
+  width: 80px;
+  height: 40px;
+  font-size: 15px;
+  text-transform: uppercase;
+  padding: 10px;
+  position: absolute;
+  margin-top: -120px;
+  margin-left: 4px;
   cursor: pointer;
 }
-#search-bottom-bar {
+.result .de-select {
+  width: 175px !important;
+  height: 125px !important;
+}
+div#search-bottom-bar {
   float: left;
+  bottom: 0;
+  position: absolute;
+  height: 60px;
   width: 100%;
   background: #f4f4f4;
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
 }
 #search-pagination {
   width: 90%;
@@ -8353,7 +8426,7 @@ input[type=range]:focus::-ms-fill-upper {
   font-size: 80%;
   border: 0;
   margin: 0 !important;
-  width: 25%;
+  width: 33%;
   text-transform: uppercase;
 }
 .metadata .metadata-tab a {
@@ -8521,6 +8594,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 20px;
   width: 20px;
   float: left;
+  cursor: pointer;
 }
 #resource-tools img.resources-fullscreen-icon {
   height: 20px;
@@ -8561,7 +8635,13 @@ input[type=range]:focus::-ms-fill-upper {
   position: fixed;
   z-index: 999;
 }
-#collectionModal .collectionModalHeader {
+.collectionTab {
+  padding-left: 15px;
+  cursor: pointer;
+  color: #7B7B7B;
+  display: inline-block;
+}
+.collectionModalHeader {
   color: #fff;
   font-size: 16px;
   padding-left: 15px;
@@ -8590,38 +8670,6 @@ input[type=range]:focus::-ms-fill-upper {
   background: #efefef;
   height: 220px;
   width: 100%;
-}
-#other-resources-container {
-  overflow: hidden;
-  float: left;
-  width: 95%;
-  height: 220px;
-}
-#other-resources {
-  float: left;
-  width: auto;
-  height: 220px;
-}
-#other-resources a {
-  margin: 10px;
-  width: 200px;
-  height: 200px;
-  float: left;
-  position: relative;
-}
-#button-left {
-  width: 50px;
-  height: 220px;
-  float: left;
-  cursor: pointer;
-  transform: rotate(180deg);
-  display: none;
-}
-#button-right {
-  width: 50px;
-  height: 220px;
-  float: right;
-  cursor: pointer;
 }
 .page {
   padding-left: 0;
@@ -8758,6 +8806,10 @@ input[type=range]:focus::-ms-fill-upper {
   left: 0;
   position: fixed;
   z-index: 999;
+}
+#flagTarget,
+#flagAnnotation_id {
+  display: none;
 }
 /** Annotate **/
 .annotateHelp {
@@ -8954,6 +9006,7 @@ input[type=range]:focus::-ms-fill-upper {
   color: #fff;
   padding: 5px;
   z-index: 99;
+  top: -30px;
 }
 .annotationData {
   margin: 5px;
@@ -9046,28 +9099,30 @@ input[type=range]:focus::-ms-fill-upper {
   padding: 15px;
 }
 .discussionComment {
-  margin-top: 10px;
-  padding: 0px 20px;
+  padding: 20px 30px 20px 20px;
   border-bottom: 1px solid #cdcdcd;
 }
 .discussionReply {
-  margin-top: 10px;
-  padding: 0px 15px;
+  margin: 20px 0 0 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 0;
   border-top: 1px dashed #cdcdcd;
 }
 .reply {
   text-align: right;
-  margin: 10px 15px 10px 60%;
+  margin: 10px 0 0 60%;
   text-transform: uppercase;
 }
 .closeComment {
   position: relative;
-  top: -177px;
+  top: -212px;
   float: right;
-  width: 17px;
-  height: 17px;
-  padding: 1px;
-  border: 1px solid #cdcdcd;
+  /*width: 17px;*/
+  /*height: 17px;*/
+  padding: 20px;
+  border: 1px solid #0093be;
   background: white;
 }
 .reply:hover,
@@ -9083,14 +9138,19 @@ input[type=range]:focus::-ms-fill-upper {
 .commentName {
   width: 50%;
   height: 25px;
+  font-size: 15px;
   display: inline-block;
 }
 .commentDate {
   width: 50%;
   height: 25px;
+  font-size: 10px;
   display: inline-block;
   text-align: right;
   padding-right: 5px;
+}
+.commentBody {
+  font-size: 12px;
 }
 #viewer-controls {
   background: #ddd;
