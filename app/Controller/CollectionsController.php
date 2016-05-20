@@ -26,7 +26,10 @@ class CollectionsController extends AppController {
         ));
         
         $this->set('collections', $this->Collection->find('all', array(
-            'order' => 'Collection.modified DESC'
+            'order' => 'Collection.modified DESC',
+
+            //Josh- added this line to group by collection
+            'group' => 'collection_id'
         )));
     }
 
