@@ -41,7 +41,11 @@
             <?php foreach($user_info['Collection'] as $collection): ?>
                 <details class="closed">
 
-                    <summary><h3><?php echo $collection[0]['col_title']; ?></h3></summary>
+                    <summary>
+                        <h3><?php echo $collection[0]['col_title']; ?></h3>
+                        <h4></h4>
+                        <h5><?php echo $collection[0]['date']; ?></h5>
+                    </summary>
 
                     <div class="results">
                         <ul class="resource-thumbs">

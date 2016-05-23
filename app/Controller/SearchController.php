@@ -57,7 +57,11 @@ class SearchController extends AppController {
                                     //'collection_id' => substr($this->request->query['q'],15,-1));
             //// Start SQL Area
             ///////////////////
-            $mysqli = new mysqli('rush.matrix.msu.edu', 'arcs_dev', 'uohE4n032x', 'arcs_dev');
+            $db = new DATABASE_CONFIG;
+            $db_object =  (object) $db;
+            $db_array = $db_object->{'default'};
+            $response['db_info'] = $db_array['host'];
+            $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
 
             if ($mysqli->connect_error) {
                 die('Connect Error (' . $mysqli->connect_errno . ') '

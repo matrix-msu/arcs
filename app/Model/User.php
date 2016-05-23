@@ -83,20 +83,30 @@ class User extends AppModel {
 
                 //// Start SQL Area
                 ///////////////////
-                $mysqli = new mysqli('rush.matrix.msu.edu', 'arcs_dev', 'uohE4n032x', 'arcs_dev');
+                $db = new DATABASE_CONFIG;
+                $db_object =  (object) $db;
+                $db_array = $db_object->{'default'};
+                $response['db_info'] = $db_array['host'];
+                $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
 
                 if ($mysqli->connect_error) {
                     die('Connect Error (' . $mysqli->connect_errno . ') '
                         . $mysqli->connect_error);
                 }
                 //Get a collection_id from the id
-                $sql = "SELECT DISTINCT collection_id, title FROM arcs_dev.collections WHERE collections.user_id ='".$r['id']."';";
+                //Get the title
+                //Get the newest date
+                $sql = "SELECT DISTINCT collection_id, title, max(modified) AS DATE 
+                        FROM arcs_dev.collections 
+                        WHERE collections.user_id ='".$r['id']."'
+                        GROUP BY title;";
                 //WHERE title = '".$file_name."'";
                 $result = $mysqli->query($sql);
                 while($row = mysqli_fetch_assoc($result)) {
                     //$row['temporary'] = 1;
                     $temp_array = array('id' => $row['collection_id'],
-                        'title' => $row['title']);
+                        'title' => $row['title'],
+                        'date' => $row['DATE']);
                     $test[] = $temp_array;
                 }
                 //$response['collection_table_id'] = $collection_table_id;
@@ -105,11 +115,15 @@ class User extends AppModel {
                 //$collection_id = $collection_id['collection_id'];
                 //$r['query'] = $sql;
                 $r['Collection'] = $test;
+                //return $r;
                 $temp_array = array();
                 foreach ($test as $collection) {
                     $test2 = array();
                     //Get the kid's from the collection_id
-                    $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='".$collection['id']."' LIMIT 12;";
+                    $sql = "SELECT resource_kid 
+                            FROM arcs_dev.collections 
+                            WHERE collections.collection_id ='".$collection['id']."' 
+                            LIMIT 12;";
                     $result = $mysqli->query($sql);
                     while($row = mysqli_fetch_assoc($result))
                         $test2[] = $row;
@@ -120,6 +134,7 @@ class User extends AppModel {
                     $temp_array2 = array();
                     $temp_array2['id'] = $collection['id'];
                     $temp_array2['title'] = $collection['title'];
+                    $temp_array2['date'] = $collection['date'];
                     $temp_array2['kids'] = $test2;
                     $temp_array[] = $temp_array2;
                 }
@@ -154,8 +169,20 @@ class User extends AppModel {
                         //$r['Resources'][] = $temp_resource;
                         //$r = $page[$kid];
 
+                        //Set the collection's title
                         $temp_array['col_title'] = $collection['title'];
                         unset($collection['title']);
+
+                        //Set the collection's last modified date
+                        $date = $collection['date'];
+                        $year = substr($date,0,4);
+                        $months = array('January','February', 'March', 'April', 'May', 'June', 'July', 'August',
+                                            'September', 'October', 'November', 'December');
+                        $month = substr($date,5,2);
+                        $day = substr($date,8,2);
+                        $return_date = array_values($months)[intval($month)-1].' '.$day.', '.$year;
+                        $temp_array['date'] = $return_date;
+                        unset($collection['date']);
 
                         //Handle resource title
                         $resource_title = $temp_resource['Title'];
