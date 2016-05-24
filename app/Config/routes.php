@@ -98,8 +98,8 @@
 
     # We can access the JSON search through either /api/search or this:
     Router::connect('/simple_search/*',
-        array('controller' => 'search', 'action' => 'simple_search')
-        # array('controller' => 'search', 'action' => 'resources')
+        # array('controller' => 'search', 'action' => 'simple_search')
+        array('controller' => 'search', 'action' => 'resources')
     );
 
 
