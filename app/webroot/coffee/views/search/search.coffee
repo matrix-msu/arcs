@@ -260,28 +260,30 @@ class arcs.views.search.Search extends Backbone.View
     e.preventDefault() 
     @search.vs.searchBox.addFacet(e.target.text,'',10)
     
-  #MULTIPROJECT SEARCH  
+  #MULTIPROJECT SEARCH
   search = () ->
     val = $(".searchBoxInput").val()
-    console.log(val)
     resources = new Promise((resolve, reject) ->
       resourcequery = encodeURIComponent("#{val}")
-      req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=kid&order=SORT_ASC",(response) ->
+      # req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=kid&order=SORT_ASC",(response) ->
+      req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery, (response) ->
+        console.log(response)
+        console.log('Imepita hapa')
         resolve(response)
     )
-    
+
     totalResults = []
     Promise.all([resources]).then((values) ->
-      #console.log(values[0])
       for key,value of values[0]
-        #console.log(value)
         #Array::push.apply totalResults, value
         totalResults.push value
       $('#results-count').html(totalResults.length)
-      console.log(totalResults)
+      # console.log(totalResults)
       Search.prototype._render results: totalResults
       $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
     )
+
+
     
   #search = () ->
   #  val = $(".searchBoxInput").val()
@@ -334,7 +336,6 @@ class arcs.views.search.Search extends Backbone.View
     $results = $('.flex-container')
     template = if @options.grid then 'search/grid' else 'search/list'
     results = results.results
-    console.log(results)
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results: results)
     
     # add hover effects (select button, border) for the displayed images 

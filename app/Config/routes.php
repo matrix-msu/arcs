@@ -82,9 +82,32 @@
         array('controller' => 'users', 'action' => 'edit')
     );
 
+
+
     # Search 
     # (we're using the greedy pattern so that we can match urls with slashes, 
     # e.g. 'search/filetype:application/pdf')
+
+
+
+    # We can access the JSON search through either /api/search or this:
+    # Router::connect('/resources/search/*',
+    #     array('controller' => 'search', 'action' => 'resources')
+    # );
+
+
+    # We can access the JSON search through either /api/search or this:
+    Router::connect('/simple_search/*',
+        array('controller' => 'search', 'action' => 'simple_search')
+        # array('controller' => 'search', 'action' => 'resources')
+    );
+
+
+    Router::connect('/api/simple_search/*',
+        array('controller' => 'search', 'action' => 'simple_search')
+    );
+
+
     Router::connect('/search/**', 
         array('controller' => 'search', 'action' => 'search')
     );
@@ -160,11 +183,13 @@
         'jobs',
         'metadata',
         'collections',
+        'simple_search'
     );
 
     Router::mapResources($restful);
     Router::mapResources($restful, array('prefix' => '/api/'));
     Router::parseExtensions();
+    Router::parseExtensions( 'json' );
 
 	CakePlugin::routes();
 	require CAKE . 'Config' . DS . 'routes.php';

@@ -8357,8 +8357,8 @@ input[type=range]:focus::-ms-fill-upper {
   background-repeat: no-repeat;
 }
 #viewer-tools .tools .icon-flag {
-  width: 19px;
-  height: 19px;
+  width: 15px;
+  height: 15px;
   background-image: url("../img/FlagTooltip.svg");
   background-position: center;
   cursor: pointer;
@@ -8993,6 +8993,9 @@ input[type=range]:focus::-ms-fill-upper {
   background: rgba(42, 159, 216, 0.5);
   border: 3px solid rgba(42, 159, 216, 0.7);
 }
+.initialBox {
+  top: -28px !important;
+}
 .annotateActive {
   color: #0093be !important;
 }
@@ -9006,19 +9009,24 @@ input[type=range]:focus::-ms-fill-upper {
   color: #fff;
   padding: 5px;
   z-index: 99;
-  top: -30px;
+  top: -39px;
+}
+.detailsPopup {
+  position: absolute;
+  top: -40px;
 }
 .annotationData {
   margin: 5px;
 }
 .annotationImage {
   max-height: 135px !important;
+  max-width: 150px;
 }
 .deleteAnnotation {
   display: inline-block;
   height: 27px;
   width: 27px;
-  top: -29px;
+  top: -36px;
   left: -3px;
   text-align: center;
   position: relative;
@@ -9027,11 +9035,15 @@ input[type=range]:focus::-ms-fill-upper {
   border-bottom: 0px;
   cursor: pointer;
 }
+.deleteAnnotation img {
+  display: inline-block !important;
+  height: 15px;
+}
 .flagAnnotation {
-  display: inline-block;
+  display: inline-block !important;
   height: 27px;
   width: 27px;
-  top: -29px;
+  top: -27px;
   left: -6px;
   text-align: center;
   position: relative;
@@ -9040,6 +9052,111 @@ input[type=range]:focus::-ms-fill-upper {
   border-bottom: 0px;
   border-left: 0px;
   cursor: pointer;
+}
+.flagAnnotation img {
+  height: 15px;
+  position: relative;
+  left: 1px;
+  top: 3px;
+}
+.notAdmin {
+  border-left: 3px solid rgba(42, 159, 216, 0.7);
+  left: -3px;
+}
+.transcript_display {
+  padding: 5px 0px 5px 0px !important;
+  margin: 15px;
+  border-bottom: 1px solid #b9b9b9;
+}
+.annotation_display {
+  padding: 5px 0px 5px 0px !important;
+  margin: 15px;
+  border-bottom: 1px solid #b9b9b9;
+}
+.deleteTranscript {
+  height: 15px;
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  opacity: .4;
+  cursor: pointer;
+}
+.annotateRelation {
+  height: 15px;
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  opacity: .4;
+  cursor: pointer;
+}
+.flagTranscript {
+  height: 15px;
+  position: relative;
+  float: right;
+  opacity: .6;
+  cursor: pointer;
+}
+.annotateLabel {
+  position: relative;
+  float: right;
+  opacity: .6;
+  left: -7px;
+}
+.annotationLabel {
+  margin: 15px;
+}
+.outgoing_relations,
+.incoming_relations,
+.urls {
+  margin-bottom: 35px;
+}
+.relationName {
+  position: relative;
+  display: inline-block;
+}
+.transcript_display {
+  text-transform: none;
+}
+.editTranscriptions {
+  position: relative;
+  float: right;
+  display: inline-block;
+}
+.editOptions {
+  display: inline-block;
+  display: none;
+  position: relative;
+  float: right;
+}
+.newTranscription {
+  display: inline-block;
+}
+.saveTranscription {
+  display: inline-block;
+  margin-left: 25px;
+}
+.editable {
+  cursor: pointer;
+}
+.editInstructions {
+  display: none;
+  padding: 15px;
+  text-transform: none;
+}
+.newTranscriptionForm {
+  display: none;
+  width: 100%;
+}
+.newTranscriptionForm button {
+  width: 100%;
+  height: 60px;
+  background: #0093be;
+  color: white;
+}
+.newTranscriptionForm textarea {
+  width: 100%;
+  height: 100px;
+  background: white;
 }
 /*Discussion*/
 #discussionTab {
@@ -10017,6 +10134,256 @@ span.view-collection {
 /*summary::-webkit-details-marker {
   display: none
 }*/
+.profile-collection-list-wrapper {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 90%;
+  margin: 50px auto;
+}
+.profile-collection-list-wrapper .dropdown {
+  position: relative;
+}
+.profile-collection-list-wrapper .dropdown .dropdown-toggle {
+  width: 12em;
+  background: transparent;
+  color: #808080;
+  border: none;
+  text-transform: uppercase;
+  text-align: left;
+  margin-bottom: -5px;
+  border-radius: 0;
+  padding-left: 0;
+}
+.profile-collection-list-wrapper .dropdown .dropdown-open {
+  z-index: 1;
+  outline: none;
+}
+.profile-collection-list-wrapper .dropdown .dropdown-menu {
+  width: 12em;
+  border-radius: 0;
+  background: #fff;
+  border: 0;
+}
+.profile-collection-list-wrapper .dropdown .pointerDown {
+  position: absolute;
+  left: 6em;
+  width: 8px;
+  height: 8px;
+  border: solid #808080;
+  border-width: 2.5px 2.5px 0 0;
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+  margin: 5px 0 0 0;
+}
+.profile-collection-list-wrapper .dropdown .pointerUp {
+  display: inline;
+  width: 8px;
+  height: 8px;
+  border: solid #808080;
+  border-width: 2.5px 2.5px 0 0;
+  -webkit-transform: rotate(315deg);
+  -moz-transform: rotate(315deg);
+  -ms-transform: rotate(315deg);
+  -o-transform: rotate(315deg);
+  transform: rotate(315deg);
+  margin: 8px 0 0 0;
+}
+.profile-collection-list-wrapper .collection-list details {
+  min-height: 20px;
+  margin: 25px 0 0;
+  border: 1px solid #ccc;
+}
+.profile-collection-list-wrapper .collection-list details div {
+  visibility: hidden;
+  display: none;
+}
+.profile-collection-list-wrapper .collection-list details:focus {
+  outline: none;
+}
+.profile-collection-list-wrapper .collection-list details summary {
+  width: 100%;
+  visibility: visible;
+  display: inline;
+  padding: 10px 0 15px 20px;
+  font-size: 12;
+  line-height: normal;
+  color: #333;
+  background: #fff;
+  cursor: pointer;
+  -webkit-transition: 0.1s linear all;
+  -o-transition: 0.1s linear all;
+  transition: 0.1s linear all;
+}
+.profile-collection-list-wrapper .collection-list details summary:focus {
+  outline: none;
+}
+.profile-collection-list-wrapper .collection-list details summary h5,
+.profile-collection-list-wrapper .collection-list details summary .h5 {
+  text-shadow: none;
+}
+.profile-collection-list-wrapper .collection-list details summary h3,
+.profile-collection-list-wrapper .collection-list details summary .h3 {
+  text-shadow: none;
+}
+.profile-collection-list-wrapper .collection-list details summary h3 {
+  text-shadow: none;
+}
+.profile-collection-list-wrapper .collection-list details summary.large {
+  padding: 15px 25px;
+  font-size: 16px;
+  text-transform: uppercase;
+  line-height: normal;
+  display: block;
+}
+.profile-collection-list-wrapper .collection-list details summary.small {
+  padding: 7px 9px 7px;
+  font-size: 10px;
+}
+.profile-collection-list-wrapper .collection-list details.disabled {
+  cursor: default;
+  background-image: none;
+  opacity: 65;
+  filter: alpha(opacity=6500);
+  filter: alpha(opacity=65);
+  -moz-opacity: 0.65;
+  -khtml-opacity: 0.65;
+  opacity: 0.65;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.profile-collection-list-wrapper .collection-list details[disabled] {
+  cursor: default;
+  background-image: none;
+  opacity: 65;
+  filter: alpha(opacity=6500);
+  filter: alpha(opacity=65);
+  -moz-opacity: 0.65;
+  -khtml-opacity: 0.65;
+  opacity: 0.65;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.profile-collection-list-wrapper .collection-list details.large {
+  padding: 10px 14px 6px;
+  font-size: 16px;
+  text-transform: uppercase;
+  line-height: normal;
+}
+.profile-collection-list-wrapper .collection-list details.small {
+  padding: 7px 9px 7px;
+  font-size: 10px;
+}
+.profile-collection-list-wrapper .collection-list details[open] {
+  min-height: 20px;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  background: #fff;
+}
+.profile-collection-list-wrapper .collection-list details[open] blockquote {
+  border-color: #ddd;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+.profile-collection-list-wrapper .collection-list details[open] div {
+  visibility: visible;
+  display: block;
+}
+.profile-collection-list-wrapper .collection-list details[open] ul.resource-thumbs {
+  display: block;
+  padding-left: 20px;
+  padding-bottom: 10px;
+}
+.profile-collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb {
+  display: inline-block;
+}
+.profile-collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb a img {
+  height: 100px;
+}
+.profile-collection-list-wrapper .collection-list details[open] summary {
+  padding: 10px 0 15px 20px;
+  font-size: 12;
+  line-height: normal;
+  color: #333;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #bbb;
+  cursor: pointer;
+  box-shadow: none;
+  -webkit-transition: 0.1s linear all;
+  -o-transition: 0.1s linear all;
+  transition: 0.1s linear all;
+}
+.profile-collection-list-wrapper .collection-list details[open] summary:focus {
+  outline: none;
+}
+.profile-collection-list-wrapper .collection-list details .results {
+  min-height: 55px;
+}
+.profile-collection-list-wrapper .collection-list details ul.resource-thumbs {
+  padding: 10px;
+}
+.profile-collection-list-wrapper .collection-list .actions {
+  float: right;
+  position: relative;
+  top: 10px;
+  padding-right: 10px;
+}
+.profile-collection-list-wrapper .collection-list .actions a {
+  margin-left: 5px;
+}
+.profile-collection-list-wrapper .collection-list .actions .btn-group {
+  visibility: hidden;
+}
+.profile-collection-list-wrapper .collection-list h3,
+.profile-collection-list-wrapper .collection-list h4,
+.profile-collection-list-wrapper .collection-list h5 {
+  display: inline;
+  padding-left: 30px;
+  text-shadow: none;
+}
+.profile-collection-list-wrapper .collection-list h4,
+.profile-collection-list-wrapper .collection-list h5 {
+  color: #868686;
+  font-size: 14px;
+  font-weight: 400;
+}
+.profile-collection-list-wrapper summary::-webkit-details-marker {
+  display: none;
+}
+.profile-collection-list-wrapper summary:after {
+  float: left;
+  width: 8px;
+  height: 8px;
+  border: solid #0093be;
+  border-width: 2.5px 2.5px 0 0;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  margin: 12px 0 0 5px;
+  content: "";
+}
+.profile-collection-list-wrapper details[open] summary:after {
+  float: left;
+  width: 8px;
+  height: 8px;
+  border: solid #0093be;
+  border-width: 2.5px 2.5px 0 0;
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+  margin: 10px 0 0 5px;
+  content: "";
+}
 #UserRegisterForm {
   width: 800px;
   margin: 0 auto;

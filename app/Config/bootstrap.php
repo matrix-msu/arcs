@@ -37,7 +37,7 @@ define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
 define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
 define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
-define ("LOCAL_URI", "~james.green/arcs/webroot/");
+define ("LOCAL_URI", "~arnold.mutayoba/arcs/webroot/");
 define ("PID", "123");
 define ("PROJECT_SID", "734");
 define ("SEASON_SID", "735");

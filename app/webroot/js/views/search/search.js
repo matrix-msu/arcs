@@ -311,11 +311,12 @@
     search = function() {
       var resources, totalResults, val;
       val = $(".searchBoxInput").val();
-      console.log(val);
       resources = new Promise(function(resolve, reject) {
         var req, resourcequery;
         resourcequery = encodeURIComponent("" + val);
-        return req = $.getJSON("http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords=" + resourcequery + "&sort=kid&order=SORT_ASC", function(response) {
+        return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery, function(response) {
+          console.log(response);
+          console.log('Imepita hapa');
           return resolve(response);
         });
       });
@@ -328,7 +329,6 @@
           totalResults.push(value);
         }
         $('#results-count').html(totalResults.length);
-        console.log(totalResults);
         Search.prototype._render({
           results: totalResults
         });
@@ -355,7 +355,6 @@
       $results = $('.flex-container');
       template = this.options.grid ? 'search/grid' : 'search/list';
       results = results.results;
-      console.log(results);
       $results[append ? 'append' : 'html'](arcs.tmpl(template, {
         results: results
       }));
