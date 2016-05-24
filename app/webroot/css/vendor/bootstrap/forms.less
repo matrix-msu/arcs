@@ -56,6 +56,37 @@ input[type="checkbox"] {
   line-height: normal;
 }
 
+input[type="checkbox"]  {
+  display: none;
+  //background-color:#c1c1c1c1;
+}
+input[type="checkbox"] + label {
+  margin-left: 4%;
+  margin-top: 2%;
+  padding: .75em 1em .75em 1em;
+  //padding-right:5px;
+  //border-radius:15px;
+
+  //display:none;
+  //-webkit-appearance:button;
+  width: 92%;
+  background-color:#949494;
+  color:#FFF;
+  white-space: nowrap;
+  overflow:hidden;
+
+
+}
+
+input[type="checkbox"]:checked + label {
+  color: #fff;
+  background-color:#949494;
+  //border-left-color:#06F;
+  //border-right-color:#06F;
+  border: double 2px #00F;
+}
+
+
 // Set the height of file controls to match text inputs
 input[type="file"] {
   display: block;

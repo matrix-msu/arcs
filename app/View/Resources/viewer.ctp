@@ -61,8 +61,8 @@
     </div>
 
     <div class="collectionModalBackground">
-        <div class="collectionWrap">
-            <div id="collectionModal">
+        <div class="collectionWrap" style="margin-top:9em;">
+            <div id="collectionModal" style="width:35em;">
                 <div class="collectionModalHeader">Add to collection <img src="../app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
@@ -73,7 +73,7 @@
                         <input type="text" class="collectionSearchBar" placeholder="Search for collections">
                     </form>
                     <form id="collectionSearchForm" action="#">
-                        <div id="collectionSearchObjects">
+                        <div id="collectionSearchObjects" style="height:25em;overflow-y:scroll;">
                         </div>
                         <button class="collectionSearchSubmit" type="submit">Add to collection</button>
                     </form>
@@ -922,13 +922,13 @@
 
         // only put collections in between the div if they include the query.
         // I.E. "" is in every collection title and user_name
-        var populateCheckboxes = "";
+        var populateCheckboxes = "<hr>";
         for (var i = 0; i < collections.length; i++) {
             if ((collections[i]['title'].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
                     (collections[i]['user_name'].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
 
-                populateCheckboxes += "<input type='checkbox' name='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
-                        + collections[i]['title'] + " " + collections[i]['user_name'] + "<br />";
+                populateCheckboxes += "<input type='checkbox' name='item-" + i + "' id='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
+                        + "<label for='item-" + i + "'><p style='float:left'>" + collections[i]['title'] + " </p><p style='float:right'>" + collections[i]['user_name']+ "</p></label><br />";
             }
         }
         $("#collectionSearchObjects").html(populateCheckboxes);
