@@ -928,7 +928,7 @@
                     (collections[i]['user_name'].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
 
                 populateCheckboxes += "<input type='checkbox' name='item-" + i + "' id='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
-                        + "<label for='item-" + i + "'><p style='float:left'>" + collections[i]['title'] + " </p><p style='float:right'>" + collections[i]['user_name']+ "</p></label><br />";
+                        + "<label for='item-" + i + "'><div style='float:left'>" + collections[i]['title'] + " </div><div style='float:right'>" + collections[i]['user_name']+ "</div></label><br />";
             }
         }
         $("#collectionSearchObjects").html(populateCheckboxes);
