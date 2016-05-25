@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -42,6 +43,7 @@
     Router::connect('/500', 
         array('controller' => 'pages', 'action' => 'display', '500')
     );
+
 
     # About
     Router::connect('/about', 

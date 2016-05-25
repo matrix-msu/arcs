@@ -6437,8 +6437,8 @@ body {
 }
 .wrap {
   min-height: 100%;
-  margin: auto auto -350px auto;
   padding-top: 120px !important;
+  padding-bottom: 0px;
 }
 .push {
   height: 350px;
@@ -7813,7 +7813,7 @@ a.search-type {
 }
 div#searchBox {
   margin: auto;
-  background: transparent;
+  background: white;
   min-height: 50px;
   width: 90%;
 }
@@ -7869,11 +7869,12 @@ input.searchBoxAdvanced:focus {
   border: 0;
 }
 div#advanced {
-  margin: auto;
+  margin: 80px;
   width: 90%;
   margin-top: 1em;
 }
 a.advancedSearch {
+  margin-right: 1.5%;
   float: right;
   text-transform: uppercase;
   color: #2FA6C7 !important;
@@ -12788,4 +12789,68 @@ footer#standard-MSU-footer {
 }
 .doc-nav .sub-nav li a:hover {
   text-decoration: none;
+}
+.greybg {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #E2E2E2;
+  background-color: #F4F4F4;
+}
+.projectIntro {
+  padding-top: 40px;
+  margin: auto;
+  width: 90%;
+  margin-bottom: 1em;
+}
+h1.title {
+  font-size: 26px;
+  color: #515151;
+  margin-bottom: 25px;
+}
+.projectIntro p {
+  line-height: 200%;
+}
+img.resource_pic {
+  width: 200px;
+  height: 150px;
+}
+.resource-thumbs .resource-thumb .resource-title {
+  color: #6D6E70;
+  font-size: 16px;
+}
+.resource-thumbs .resource-thumb .resource-type {
+  color: #6D6E70;
+  font-size: 12px;
+}
+.projectIntro .resource-thumbs .resource-thumb {
+  margin: 20px auto;
+}
+.more-info {
+  margin: 50px auto;
+  text-align: right;
+  color: #0094BC;
+  font-size: 18px;
+}
+p.login_msg {
+  margin: 20px auto;
+  color: #898989;
+  font-size: 13px;
+}
+a.view-colc {
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+  text-align: right;
+  color: #0094BC;
+  font-size: 15px;
+}
+.collection-list details[open] ul li a .view-all-icon {
+  width: 120px;
+  height: 100px;
+  background-image: url("../img/Arrow-ViewAll.svg");
+  background-size: 50px 50px;
+  margin: auto;
+  background-repeat: no-repeat;
+  border: 1px solid grey;
+  background-position: center;
 }

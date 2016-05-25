@@ -1,60 +1,387 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>ARCS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
-   <!--     <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="js/leaflet/leaflet.css"/>
-        <script src="js/leaflet/leaflet.js"></script>-->
+   
     </head>
-    <body>
-        <!-- Previous Header
-		
-        <div class="header">
-            <div class="logo"><a href="index.html"><img class="logo" src="img/ARCS-Logo.png"/><h1>ARCS</h1></a></div>
-            <div class="project-navigation"><div class="nav projects active">POLIS
-                    <div class="subnav">
-                        <a>ISTHMIA</a>
-                        <a>NEMEA</a>
-                        <a>CHERSONESOS</a></div></div>
-                <a class="nav-link" href="#"><div class="nav">RESOURCES</div></a>
-                <a class="nav-link" href="#"><div class="nav">COLLECTIONS</div></a>
-                <a class="nav-link" href="#"><div class="nav">SEARCH</div></a>
-                <a class="nav-link" href="#"><div class="nav">HELP</div></a>
-                <a class="nav-link" href="#loginRegister"><div class="nav">LOGIN / REGISTER</div></a>
-			</div>
-		</div>
-        -->
-        <div class="intro">
-            <h1><?php echo $project["Name"]; ?></h1>
-            <br>
-            <p><?php echo $project["Description"]; ?></p>
-         
-        </div>
-        
-		<!-- Map Display Script
-		<div id='map'></div>
-        <script>
-            var map = L.map('map', { zoomControl:false }).setView([38.6, 26.049], 6);
-            map.scrollWheelZoom.disable();
-        L.tileLayer('http://{s}.tiles.mapbox.com/v3/austintruchan.m3e777m7/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 18 }).addTo(map);
-        
-            var marker = L.marker([38.6, 26.049])
-            .addTo(map);
-            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-            
-             var marker = L.marker([39.6, 26.049])
-            .addTo(map);
-            marker.bindPopup("<h1>Polis</h1><br><p style='margin:0;'>This is a Description</p><br><a href='polis.html'>VIEW PROJECT</a>").openPopup();
-        
-        </script>
-		-->
 
+
+    <body>
+
+		<div class="intro">
+           <h1><?php echo $project["Name"]; ?></h1>
+           <br>
+           <p><?php echo $project["Description"]; ?></p>
+		</div>
+
+
+        <div class="greybg">
+		<div class="projectIntro">
+            <h1 class="title">Recently Added Resources</h1>
+			<ul class="resource-thumbs">
+				<li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>
+			   <li class="resource-thumb">
+			      <a>
+				  <img class=resource_pic src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+				  </a>
+				  <h class="resource-title">Resource Title</h><br>
+				  <p class="resource-type">Resource Type</p>
+				</li>   
+			</ul>
+
+			<div class="more-info"><a>EXPLORE MORE RESOURCES</a></div>
+		</div>
+        </div>
+
+
+
+        <div class="collection-list-wrapper">
+            <h1 class="title">Recent Collections</h1>
+			<p class="login_msg">You're viewing publicly available resources. 
+			You'll need to <a href=#loginModal">log in</a> to see the rest.
+			</p>
+			<div class="collection-list" id="all-collections">
+				
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				<details>
+					<summary>
+						<h3>Collection Tittle</h3>
+						<h4>Author Name</h4>
+						<h5>A week ago</h5>
+						<a class="view-colc">VIEW COLLECTION</a>
+					</summary>
+					<ul class="resource-thumbs">
+						<li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <img src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg" width=120 height=100>
+						  </a>
+						  <h class="resource-title">Resource Title</h><br>
+						  <p class="resource-type">Resource Type</p>
+						</li>
+					   <li class="resource-thumb">
+						  <a>
+						  <div class="view-all-icon"></div>
+						  </a>
+						  <h class="resource-title">VIEW COLLECTION</h><br>
+						  <br>
+						</li>  
+					</ul>
+				</details>
+				
+				<div class="more-info"><a>VIEW  ALL COLLECTIOPNS</a></div>
+			</div>
+			
+        </div>
+
+        <div class="greybg">
+          <div class = "projectIntro">
+            <h1 class="title">Search</h1>
+            <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.
+            </p>
+          </div>
+		  <br>
+          <a name="searchJump"></a>
+          <div id="searchBox">
+          	<div class="searchIcon"></div>
+          	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+          </div>
+          <div id="advanced">
+          	<a class="advancedSearch" href="advancedsearch">Advanced Search</a>
+          </div>
+
+        </div>
     </body>
 </html>
-
