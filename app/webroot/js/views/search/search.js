@@ -316,6 +316,7 @@
         resourcequery = encodeURIComponent("" + val);
         return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery, function(response) {
           var resp;
+          console.log(response);
           resp = jQuery.parseJSON(response['results']);
           return resolve(resp);
         });

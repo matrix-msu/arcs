@@ -270,7 +270,7 @@ class arcs.views.search.Search extends Backbone.View
       # funtion will be used to get the requiered information according to the excel sheet on TRAC matrix ticket
       # To know the flow of information look at the route.php and read more about cakePHP
       req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery, (response) ->
-        # console.log(response)
+        console.log(response)
         resp = jQuery.parseJSON( response['results'])
         resolve(resp)
     )
@@ -278,9 +278,6 @@ class arcs.views.search.Search extends Backbone.View
     totalResults = []
     Promise.all([resources]).then((values) ->
       for key,value of values[0]
-        #Array::push.apply totalResults, value
-        # console.log(value)
-        # console.log(key)
         totalResults.push value
       $('#results-count').html(totalResults.length)
       Search.prototype._render results: totalResults

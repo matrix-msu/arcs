@@ -2501,6 +2501,22 @@ input[type="checkbox"] {
   margin-top: 1px \9;
   line-height: normal;
 }
+input[type="checkbox"] {
+  display: none;
+}
+input[type="checkbox"] + label {
+  margin-left: 4%;
+  margin-top: 2%;
+  padding: .75em 1em .75em 1em;
+  width: 92%;
+  background-color: #949494;
+  color: #FFF;
+  white-space: nowrap;
+  overflow: hidden;
+}
+input[type="checkbox"]:checked + label {
+  border: double 1.5px #4899CF;
+}
 input[type="file"] {
   display: block;
 }
