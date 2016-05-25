@@ -24,6 +24,33 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         # Use Basic Auth for API requests.
+//ADDed from here 
+		$this->isMobile = false;
+        if ($this->RequestHandler->isMobile() ) {
+
+            // required for CakePHP 2.2.2
+            $viewDir = App::path('View');
+            // returns an array
+            /*
+             * array(
+             *      (int) 0 => '/var/www/maps-cakephp2/app/View/'
+             * ) 
+             */
+             //path to your folder for mobile views . You must modify these lines that you want
+             //in my case I have views in folders in to /app/view/mobile and here users folder etc.
+            $mobileView = $viewDir[0] .
+                    'mobile' . DS . $this->name . DS;
+            $mobileViewFile = $mobileView .
+                    Inflector::underscore($this->action) . '.ctp';
+
+            if (file_exists($mobileViewFile)) {
+                $this->isMobile = true;
+                $this->viewPath = 'mobile' . DS . $this->name;
+
+            }
+
+    }
+//To here.
         if (substr($this->request->url, 0, 3) == 'api')
             $this->Auth->authenticate = array('Basic');
         $this->set(array(
@@ -47,6 +74,15 @@ class AppController extends Controller {
         ));
         $this->RequestHandler->addInputType('json', array('json_decode', true));
     }
+//added here to 
+	public function beforeRender() {
+    	if ($this->isMobile == true) {
+        	$this->autorender = true;
+        	//app/View/Layouts/mobile.ctp
+			$this->layout = 'mobile';
+    	}
+	}
+//here
 
     /**
      * Convenience method for multiple Request->is($type) checks.

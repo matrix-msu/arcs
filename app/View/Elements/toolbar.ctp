@@ -1,4 +1,5 @@
-
+<!-- <script>console.log(checkMobile());</script> -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 <div id="toolbar" class="row">
     <?php if (!isset($logo) || $logo): ?>
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
@@ -6,6 +7,10 @@
                 <?php echo isset($logo) && is_string($logo) ? $logo : "ARCS" ?>
             </h1>
         </a>
+	
+	
+	<h1 id= "hamburger" class='hamburger'></h1>
+	
     <?php endif ?>
 	
 	
@@ -30,10 +35,12 @@
 			</div>
 		</div>
 		<?php else: ?>
-		<a class="btn btn-dark toolbar-btn" 
-			href="#loginModal">Login / Register</a>
+		<div id='log'>
+			<a class="btn btn-dark toolbar-btn" 
+				href="#loginModal">Login / Register</a>
+		</div>
 		<?php endif ?>
-		
+	
 	<?php else: ?>
 		<!--Display search bar for index page. Placeholder, require backend programming.-->
 		<div class="search-bar">
@@ -45,36 +52,39 @@
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 	<!--Display regular buttons for other pages-->
 
-    
+   
 	<div class="btn-group toolbar-btn">
 		 <!-- Arrow won't work-->
 		 <div id="projects" class="btn btn-grey">
-             <i class="icon-white icon-folder-open"></i> <div id="toolbarHead"></div>
+			 <i class="icon-white icon-folder-open"></i> 
+			 <div id="toolbarHead" > <div id="dropArrow" class=dropArrowFull> </div> </div> 
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
 			</div>
 		</div>
-		 <a id="resources" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/resources')?>">
-			<i class="icon-white icon-folder-open"></i> Resources
-		</a>
-		<a id="collections" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/collections')?>">
-			<i class="icon-white icon-folder-open"></i> Collections
-		</a>
-		<a id="search" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/search')?>">
-			<i class="icon-white icon-search"></i> Search
-		</a>
-		<a id="help" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/help/')?>">
-			<i class="icon-white icon-book"></i> Help
-		</a>
+		<div id= 'belowProjects'>
+			 <a id="resources" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/resources')?>">
+				<i class="icon-white icon-folder-open"></i> Resources 
+
+			</a>
+			<a id="collections" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/collections')?>">
+				<i class="icon-white icon-folder-open"></i> Collections
+			</a>
+			<a id="search" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/search')?>">
+				<i class="icon-white icon-search"></i> Search
+			</a>
+			<a id="help" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/help/')?>">
+				<i class="icon-white icon-book"></i> Help
+			</a>
         
-    <?php echo $this->Html->script('toolbar.js');?>
-        
+			<?php echo $this->Html->script('utils/toolbarAssist.js');?>
+        </div>
 	</div>
 	<?php else: ?>
 	<!--Display three buttons for index page with search bar-->
@@ -86,21 +96,27 @@
 		 
 		 <!-- Arrow won't work-->
         
-		 <div id="projects" class="btn btn-grey">
-			<i class="icon-white icon-folder-open"></i> Projects
+		 <div id="projectsHeader" class="btn btn-grey">
+			<i class="icon-white icon-folder-open"></i> Projects 
+			 <div id="dropArrow" class=dropArrow> </div> 
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
 			</div>
 		</div>
-		
+		<div id='helpSearch'>
 		<a id="help" class="btn btn-grey"
 			href="<?php echo $this->Html->url('/help/')?>">
 			<i class="icon-white icon-book"></i> Help
 		</a>
-		
-	</div>	
+		<a id="searchHeader" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/search')?>">
+				<i class="icon-white icon-search"></i> Search
+			</a>
+		</div>
+		</div>
+				
 	<?php endif ?>
 
 </div>

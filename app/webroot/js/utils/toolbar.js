@@ -1,34 +1,161 @@
+function checkMobile(){
+    if(window.matchMedia("(max-width: 930px)").matches){     
+        return true;        
+    }
+    return false;
+    
+}
+
 // toggles menu button
 $(document).ready(function(){
+	
 	$( '#menu' ).hover(function(){
 		$( '.pointerDown' ).addClass( 'pointerUp' ),
 		$( '#droppedMenu' ).show();
 	}, function() {
 		$( '.pointerDown' ).removeClass( 'pointerUp' ),
 		$( '#droppedMenu' ).hide();
+	});	
+	
+	//mobile display drop down
+	$( '#hamburger' ).click(function(){
+			
+			if($( '.toolbar-btn' ).css('display') === 'none'){
+				
+				//switch to blue hamburger
+				$('#hamburger').toggleClass('hamburgerActive');
+				$('#hamburger').toggleClass('hamburger');
+				$( '.toolbar-btn' ).css('display', 'block');
+			}
+			else{
+				//switch to grey hamburger
+				$('#hamburger').toggleClass('hamburgerActive');
+				$('#hamburger').toggleClass('hamburger');
+				$( '.toolbar-btn' ).css('display', 'none');
+			}
 	});
+	var mouseoverHandler = function(){
+		$( '.projects-menu' ).css('display', 'block');
+	}
+	var mouseoutHandler = function(){
+		$( '.projects-menu' ).css('display', 'none');
+	}
+	$('#projects').on('click',function(event){
+		if(checkMobile()) {
+				if(($( '#log' ).css('top') === '233px') ){
+					$( '#log' ).css('top','378px');
+					$( '#belowProjects' ).css('top','89px');
+					$( '.projects-menu' ).css('display', 'block');
+			}
+				else{
+					$( '#log' ).css('top','233px');
+					$( '#belowProjects' ).css('top','-55px');
+					$( '.projects-menu' ).css('display', 'none');
+				}
+		}
+	});
+	$('#projectsHeader').on('click',function(event){
+		if(checkMobile()){
+			if(($('#helpSearch').css('top') == '0px')){
+				$( '#helpSearch' ).css('top', '148px');
+				$( '.projects-menu' ).css('display', 'block');
+			}
+			else{
+				
+				$( '#helpSearch' ).css('top', '0px');
+				$( '.projects-menu' ).css('display', 'none');
+			}
+		}
+		
+	});
+	
+	$( window ).load(function(){
+		if(!checkMobile()){
+			$( '.toolbar-btn' ).css('display', 'block');
+			$( '.projects-menu' ).css('display', 'none');
+			$('#projects').bind('mouseover', mouseoverHandler); 
+			$('#projects').bind('mouseout', mouseoutHandler); 
+			$('#projectsHeader').bind('mouseover', mouseoverHandler); 
+			$('#projectsHeader').bind('mouseout', mouseoutHandler); 
+		}
+		else{
+			$( '.toolbar-btn' ).css('display', 'none');
+			$( '.projects-menu' ).css('display', 'none');
+			$( '#log' ).css('top','233px');
+			$( '#belowProjects' ).css('top','-55px');
+			$( '#helpSearch').css('top','0px');
+			$('#projects').unbind('mouseout mouseover');
+			$('#projectsHeader').unbind('mouseout mouseover');
+		}
+		
+	});
+	
+
+	
+	$( window ).resize(function(){
+		if(!checkMobile()){
+			$( '.toolbar-btn' ).css('display', 'block');
+			$( '.projects-menu' ).css('display', 'none');
+			$('#projects').bind('mouseover', mouseoverHandler); 
+			$('#projects').bind('mouseout', mouseoutHandler); 
+			$('#projectsHeader').bind('mouseover', mouseoverHandler); 
+			$('#projectsHeader').bind('mouseout', mouseoutHandler); 
+		}
+		else{
+			//console.log($( '.toolbar-btn' ).css('display') === 'block');
+			if($( '.toolbar-btn' ).css('display') === 'block'){
+				$('#hamburger').toggleClass('hamburgerActive');
+				$('#hamburger').toggleClass('hamburger');
+			}
+			$( '.toolbar-btn' ).css('display', 'none');
+			$( '.projects-menu' ).css('display', 'none');
+			$( '#log' ).css('top','233px');
+			$( '#belowProjects' ).css('top','-55px');
+			$( '#helpSearch').css('top','0px');
+			$('#projects').unbind('mouseout mouseover');
+			$('#projectsHeader').unbind('mouseout mouseover');
+		}
+	});
+	
+	
 });
 
 // highlights current page in blue
 $(document).ready(function(){
 	var pathname = window.location.pathname;
-
-	if (pathname.includes( 'upload' )) {
+	//console.log(pathname);
+	if (pathname.includes( 'arcs/upload' )) {
+		//console.log("in uploads");
 		$( '#upload' ).addClass( 'btn-blue' );
-	} else if (pathname.includes( 'resource' )) {
+	} else if (pathname.includes( '/resource' )) {
+		//console.log("in resources");
 		$( '#resources' ).addClass( 'btn-blue' );
-	} else if (pathname.includes( 'about' )) {
+	} else if (pathname.includes( 'arcs/about' )) {
+		//console.log('in about');
 		$( '#about' ).addClass( 'btn-blue' ); 
-	} else if (pathname.includes( 'collections' )) {
+	} else if (pathname.includes( 'arcs/collections' )) {
+		//console.log("collections")
 		$( '#collections' ).addClass( 'btn-blue' );
-	} else if (pathname.includes( 'search' )) {
+	} else if (pathname.includes( 'arcs/search' )) {
+		//console.log('search')
 		$( '#search' ).addClass( 'btn-blue' );
-	} else if (pathname.includes( 'help' )) {
+	} else if (pathname.includes( 'arcs/help/' )) {
+		//console.log("Got to the help tab");
 		$( '#help' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
+		console.log("admin/user");
 		$( '#menuButton' ).addClass( 'btn-blue' );
 		$( '#menuButton' ).css('height', '62px');
-	}
+	} else if (pathname.includes( 'arcs/projects/single_project' )){
+		//console.log("Projects");
+		$( '#projects' ).addClass( 'btn-blue' );
+		$( '.btn-blue' ).css('padding-right', '37px');
+		$('#dropArrow').addClass('dropArrow-whiteFull');
+		
+		
+		//console.log(imgPath);
+	} 
+	
 });
 
 function IsEmail(email) {
