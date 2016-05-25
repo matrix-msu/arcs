@@ -7388,6 +7388,7 @@ div#toolbar .toolbar-btn {
   padding-left: 20px;
 }
 .projects-menu a:hover {
+  display: block;
   text-decoration: none;
   color: #fcfcfc;
   background: #777;
@@ -7610,8 +7611,8 @@ input.indexSearchBox {
     margin: 20px 0 0 10px;
   }
   /*#projects:hover .projects-menu{
-		display: none;
-	}*/
+        display: none;
+    }*/
   .projects-menu {
     display: none;
     background: #F4F4F4;
@@ -7679,16 +7680,16 @@ input.indexSearchBox {
     top: 8px;
   }
   /*#hamburger{
-		cursor:pointer;
-		background-image: url(../img/Hamburger.svg);
-		height: 15px;
-		width: 20px;
-		right: 17px;
-		top: 0;
-		bottom: 0;
-		position: absolute;
-		margin: auto;
-	}*/
+        cursor:pointer;
+        background-image: url(../img/Hamburger.svg);
+        height: 15px;
+        width: 20px;
+        right: 17px;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+        margin: auto;
+    }*/
   .hamburgerActive {
     cursor: pointer;
     background-image: url(../img/Hamburger-Active.svg);
@@ -7738,22 +7739,22 @@ input.indexSearchBox {
     border-top: 1px solid gray;
   }
   /*
-	#search{
-		position: absolute;
+    #search{
+        position: absolute;
     top: 176px;
     right: 0;
-		
-	}
-	#help{
-		    position: absolute;
+
+    }
+    #help{
+            position: absolute;
     top: 117px;
     right: 0;
-	}
-	#collections{
-		position: absolute;
+    }
+    #collections{
+        position: absolute;
     top: 58px;
     right: 0;
-	}*/
+    }*/
 }
 .hotkeys-modal {
   font-family: 'Pontano Sans', sans-serif;
@@ -8662,6 +8663,8 @@ input[type=range]:focus::-ms-fill-upper {
 #viewer-tools h3 {
   display: inline;
   line-height: 60px;
+  font-size: 16px;
+  font-weight: bold;
 }
 #viewer-tools .tools {
   display: inline;
@@ -8672,7 +8675,7 @@ input[type=range]:focus::-ms-fill-upper {
   margin-left: 16px;
   color: #5A5B5D;
   text-transform: uppercase;
-  font-size: 80%;
+  font-size: 11px;
   display: inline-block;
 }
 #viewer-tools .tools span .content {
@@ -8771,7 +8774,7 @@ input[type=range]:focus::-ms-fill-upper {
   line-height: 40px;
   background: #F9F9F9;
   outline: none;
-  font-size: 80%;
+  font-size: 11px;
   border: 0;
   margin: 0 !important;
   width: 33%;
@@ -8808,9 +8811,9 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
 }
 .metadata .metadata-content .metadata-accordion .level-tab {
-  height: 60px;
-  font-size: 100%;
-  line-height: 60px;
+  height: 40px;
+  font-size: 12px;
+  line-height: 40px;
   border-radius: 0;
   border: 0;
   outline: none;
@@ -8842,7 +8845,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .metadata .metadata-content .metadata-accordion .level-content table {
   width: 100%;
-  font-size: 80%;
+  font-size: 10px;
 }
 .metadata .metadata-content .metadata-accordion .level-content table tr:nth-child(even) {
   background: rgba(241, 241, 241, 0.6);
@@ -8864,7 +8867,7 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
   float: left;
   width: 100%;
-  height: 87.5%;
+  height: 89.7%;
   background: #fff;
   border-bottom: 1px solid #cdcdcd;
   overflow: hidden !important;
@@ -8890,52 +8893,52 @@ input[type=range]:focus::-ms-fill-upper {
 #resource-tools {
   float: left;
   width: 100%;
-  height: 60px;
+  height: 40px;
   background: #f9f9f9;
   border-bottom: 1px solid #ccc !important;
 }
 #resource-tools .annotate-fullscreen-div {
   width: 15%;
   float: left;
-  height: 60px;
-  margin-top: 20px;
+  height: 40px;
+  margin-top: 10px;
   margin-left: 13%;
 }
 #resource-tools .zoom-out-div {
   float: left;
-  margin-top: 20px;
-  height: 60px;
+  margin-top: 10px;
+  height: 40px;
   margin-left: 14%;
 }
 #resource-tools .zoom-range-div {
   float: left;
-  height: 60px;
+  height: 40px;
   line-height: 60px;
-  margin-top: 25px;
+  margin-top: 15px;
   margin-left: 1%;
 }
 #resource-tools .zoom-in-div {
   float: left;
-  margin-top: 20px;
-  height: 60px;
+  margin-top: 10px;
+  height: 40px;
   margin-left: -1%;
 }
 #resource-tools .rotate-div {
   float: left;
-  height: 60px;
-  margin-left: 20%;
-  margin-top: 20px;
+  height: 40px;
+  margin-left: 14%;
+  margin-top: 10px;
 }
 #resource-tools img.arrow-left-icon {
   width: 20px;
   height: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
   float: left;
 }
 #resource-tools img.arrow-right-icon {
   width: 20px;
   height: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
   float: right;
 }
 #resource-tools img.resources-annotate-icon {

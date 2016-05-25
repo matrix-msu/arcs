@@ -97,7 +97,7 @@
                 <div class="tools">
                     <a id="collection-modal-btn" href="#">
                                         <span class="content">
-                                                Collection
+                                                Add To Collection
                                         </span>
                         <div class="icon-collection"></div>
                     </a>
@@ -200,8 +200,8 @@
 
                 <div class="accordion metadata-accordion">
 
-                    <h3 class="level-tab">Project Level Metadata
-                        <div class="icon-edit"></div>
+                    <h3 class="level-tab">Project
+                        <!--<div class="icon-edit"></div>-->
                         <span>Edit</span></h3>
 
                     <div class="level-content">
@@ -312,8 +312,8 @@
 
                     </div>
 
-                    <h3 class="level-tab">Season Level Metadata
-                        <div class="icon-edit"></div>
+                    <h3 class="level-tab">Season
+                        <!--<div class="icon-edit"></div>-->
                         <span>Edit</span></h3>
 
                     <div class="level-content">
@@ -435,8 +435,8 @@
                         <?php } ?>
                     </div>
 
-                    <h3 class="level-tab">Excavation/Survey Level Metadata
-                        <div class="icon-edit"></div>
+                    <h3 class="level-tab">Excavation/Survey
+                        <!--<div class="icon-edit"></div>-->
                         <span>Edit</span></h3>
 
                     <div class="level-content">
@@ -516,8 +516,8 @@
 
                     </div>
 
-                    <h3 class="level-tab">Archival Object Level Metadata
-                        <div class="icon-edit"></div>
+                    <h3 class="level-tab">Archival Object
+                        <!--<div class="icon-edit"></div>-->
                         <span>Edit</span></h3>
 
                     <div class="level-content">
@@ -595,7 +595,7 @@
 
 
                     <h3 class="level-tab">Subject of Observation
-                        <div class="icon-edit"></div>
+                        <!--<div class="icon-edit"></div>-->
                         <span>Edit</span></h3>
 
                     <div class="level-content">
@@ -803,7 +803,7 @@
         });
     });
 
-    $('.metadata-accordion').height($('#viewer-window').height());
+    $('.metadata-accordion').height($('#viewer-window').height() + 40);
 
     $(window).resize(function () {
         $('.metadata-accordion').height($('#viewer-window').height());
