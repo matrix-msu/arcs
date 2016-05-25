@@ -57,7 +57,7 @@
 		 <!-- Arrow won't work-->
 		 <div id="projects" class="btn btn-grey">
 			 <i class="icon-white icon-folder-open"></i> 
-			 <div id="toolbarHead" > <div id="dropArrow" class=dropArrowFull> </div> </div> 
+			 <div id="toolbarHead" > Projects <div id="dropArrow" class=dropArrowFull> </div> </div> 
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
