@@ -315,9 +315,9 @@
         var req, resourcequery;
         resourcequery = encodeURIComponent("" + val);
         return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery, function(response) {
-          console.log(response);
-          console.log('Imepita hapa');
-          return resolve(response);
+          var resp;
+          resp = jQuery.parseJSON(response['results']);
+          return resolve(resp);
         });
       });
       totalResults = [];

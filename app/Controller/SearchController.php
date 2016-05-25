@@ -237,7 +237,7 @@ class SearchController extends AppController {
 
 
 
-    public function simple_search() {
+    public function simple_search($query) {
         $options = $this->parseParams();
 
         if (!isset($this->request->query['q']))
@@ -269,6 +269,13 @@ class SearchController extends AppController {
         $user = "";
         $pass = "";
         $display = "json";
+
+        // Variables to check for so as to return our search with the approapiate data
+        $r_id =  'Resource Identifier';
+        $type = 'type';
+        $e_date = 'Earliest Date';
+        $l_date = 'Latest Date';
+        // "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=kid&order=SORT_ASC
         $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
         ///initialize post request to KORA API using curl
         $ch = curl_init($url);
@@ -278,7 +285,17 @@ class SearchController extends AppController {
         $response['results'] = json_decode(curl_exec($ch), true);
         $imageResults = array();
         foreach($response['results'] as $image) {
-            $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            if ($query == $response['results'].$r_id) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else if ($query == $response['results'].$e_date) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else if ($query == $response['results'].$l_date) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else if ($query == $response['results'].$type){
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else {
+                // do nothing - probs not efficient to let a free cycle got o waste
+            }
         }
 
 
@@ -295,7 +312,8 @@ class SearchController extends AppController {
         }
 
         $display = "json";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&fields=ALL&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
+        // $url = "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords=".query."&sort=kid&order=SORT_ASC";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&sort=kid&order=SORT_ASC";
         ///initialize post request to KORA API using curl
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -305,6 +323,20 @@ class SearchController extends AppController {
         ///capture results and display
         $response['results'] = json_decode(curl_exec($ch), true);
         $returnResults = array();
+        foreach($response['results'] as $item) {
+            if ($query == $item.$r_id) {
+                $returnResults['results'] =
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else if ($query == $item.$e_date) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else if ($query == $item.$l_date) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else if ($query == $item.$type){
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }else {
+                // do nothing - probs not efficient to let a free cycle got o waste
+            }
+        }
         foreach($response['results'] as $item) {
             if ($imageResults[$item['Resource Identifier']] != null) {
                 $item['thumb'] = $imageResults[$item['Resource Identifier']];
@@ -316,7 +348,7 @@ class SearchController extends AppController {
         $response['results'] = $returnResults;
         $response['total'] = count($response['results']);
         $this->json(200, $response);
-        # $this->set('_serialize', array( 'projects' ) );
+        //$this->set('_serialize', array( $response ) );
     }
 
 
