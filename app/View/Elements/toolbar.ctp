@@ -1,5 +1,5 @@
 <!-- <script>console.log(checkMobile());</script> -->
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
 <div id="toolbar" class="row">
     <?php if (!isset($logo) || $logo): ?>
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
@@ -63,6 +63,7 @@
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
 			</div>
+			
 		</div>
 		<div id= 'belowProjects'>
 			 <a id="resources" class="btn btn-grey"
@@ -83,8 +84,9 @@
 				<i class="icon-white icon-book"></i> Help
 			</a>
         
-			<?php echo $this->Html->script('utils/toolbarAssist.js');?>
+			
         </div>
+         
 	</div>
 	<?php else: ?>
 	<!--Display three buttons for index page with search bar-->
