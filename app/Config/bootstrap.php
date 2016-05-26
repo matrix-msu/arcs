@@ -26,6 +26,7 @@
 # Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
 App::uses('IniReader', 'Configure', 'Security');
+App::uses('CakeLog', 'Log');
 Configure::config('default', new IniReader(APP . 'Config' . DS));
 
 # Load additional config files.

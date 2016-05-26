@@ -259,18 +259,20 @@ class arcs.views.search.Search extends Backbone.View
   addFacet: (e) ->
     e.preventDefault() 
     @search.vs.searchBox.addFacet(e.target.text,'',10)
-    
+
+
+
+
+
+
   #MULTIPROJECT SEARCH
   search = () ->
     val = $(".searchBoxInput").val()
+    # console.log(val)
     resources = new Promise((resolve, reject) ->
       resourcequery = encodeURIComponent("#{val}")
-      # req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=kid&order=SORT_ASC",(response) ->
-      # Here we are using a JSON call to direct information to the search controller where the simple_search
-      # funtion will be used to get the requiered information according to the excel sheet on TRAC matrix ticket
-      # To know the flow of information look at the route.php and read more about cakePHP
       req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery, (response) ->
-        console.log(response)
+        console.log(response['results'])
         resp = jQuery.parseJSON( response['results'])
         resolve(resp)
     )
