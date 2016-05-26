@@ -1,3 +1,6 @@
+var viewportScale = 1 / window.devicePixelRatio;
+$("#viewport").attr("content","user-scalable=no, initial-scale="+viewportScale+", minimum-scale=0.2, maximum-scale=2, width=device-width");
+
 function checkMobile(){
     if(window.matchMedia("(max-width: 930px)").matches){     
         return true;        
@@ -94,6 +97,8 @@ $(document).ready(function(){
 	
 	$( window ).resize(function(){
 		if(!checkMobile()){
+			console.log(window.innerWidth);
+			console.log(screen.width);
 			$( '.toolbar-btn' ).css('display', 'block');
 			$( '.projects-menu' ).css('display', 'none');
 			$('#projects').bind('mouseover', mouseoverHandler); 
@@ -102,10 +107,11 @@ $(document).ready(function(){
 			$('#projectsHeader').bind('mouseout', mouseoutHandler); 
 		}
 		else{
+			
 			//console.log($( '.toolbar-btn' ).css('display') === 'block');
 			if($( '.toolbar-btn' ).css('display') === 'block'){
-				$('#hamburger').toggleClass('hamburgerActive');
-				$('#hamburger').toggleClass('hamburger');
+				$('#hamburger').removeClass('hamburgerActive');
+				$('#hamburger').addClass('hamburger');
 			}
 			$( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');

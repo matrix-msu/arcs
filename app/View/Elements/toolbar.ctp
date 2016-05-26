@@ -1,4 +1,5 @@
 <!-- <script>console.log(checkMobile());</script> -->
+<meta id="viewport" name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"/>
 
 <div id="toolbar" class="row">
     <?php if (!isset($logo) || $logo): ?>
@@ -57,7 +58,7 @@
 		 <!-- Arrow won't work-->
 		 <div id="projects" class="btn btn-grey">
 			 <i class="icon-white icon-folder-open"></i> 
-			 <div id="toolbarHead" > Projects <div id="dropArrow" class=dropArrowFull> </div> </div> 
+			 <div id="toolbarHead" > <div id="dropArrow" class=dropArrowFull> </div> </div> 
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
@@ -86,7 +87,7 @@
         
 			
         </div>
-         
+         <?php echo $this->Html->script('toolbarAssist.js');?>
 	</div>
 	<?php else: ?>
 	<!--Display three buttons for index page with search bar-->

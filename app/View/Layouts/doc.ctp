@@ -17,6 +17,7 @@
 ?>
 <html>
     <head>
+		
         <title><?php echo $title_for_layout; ?> - ARCS</title>
         <link rel="shortcut icon" 
             href="<?php echo $this->Html->url('/favicon.ico') ?>" 
@@ -28,7 +29,7 @@
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
         <?php 
         echo $this->Assets->stylesheets();
-        echo $this->Html->css('docs');
+        echo $this->Html->less('webroot/css/docs/docs');
         echo $this->Assets->scripts();
         ?>
     </head>
