@@ -66,23 +66,23 @@
                 <div class="collectionModalHeader">Add to collection <img src="../app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
-                <p class="collectionTab collectionTabSearch activeTab">Search</p>
+                <p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
                 <p class="collectionTab collectionTabNew">Add to a new collection</p>
                 <div class="collectionSearchContainer">
                     <form id="collectionSearchBarForm" onsubmit="collectionsSearch(); return false;">
                         <input type="text" class="collectionSearchBar" placeholder="Search for collections">
                     </form>
                     <form id="collectionSearchForm" action="#">
-                        <div id="collectionSearchObjects" style="height:25em;overflow-y:scroll;">
+                        <div id="collectionSearchObjects">
                         </div>
-                        <button class="collectionSearchSubmit" type="submit">Add to collection</button>
+                        <button class="collectionSearchSubmit" type="submit">ADD TO COLLECTION</button>
                     </form>
                 </div>
                 <div class="collectionNewContainer">
                     <form id="collectionNewForm" action="#">
                         <textarea class="formInput" id="collectionTitle"
                                   placeholder="ENTER NEW COLLECTION TITLE"></textarea>
-                        <button class="collectionNewSubmit" type="submit">Add to new collection</button>
+                        <button class="collectionNewSubmit" type="submit">ADD TO NEW COLLECTION</button>
                     </form>
                 </div>
             </div>
@@ -910,6 +910,7 @@
 <script>
     // collection
     $("#collection-modal-btn").click(function () {
+        console.log("hello-testing-click");
         $(".collectionModalBackground").show();
     });
 
@@ -1015,7 +1016,10 @@
 
     // run on page load
     $(".collectionNewContainer").hide();
+
     <?php echo "var collectionArray = ".$collections.";";?>
+    console.log("collections-here");
+    console.log(collectionArray);
 
     var collections = [];
     collectionArray.forEach(function (element) {

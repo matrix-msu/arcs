@@ -15,7 +15,7 @@
   {% endif %}
 
   <details class="unselectable" open="open" data-type="Field Journal" >
-    <summary class="large"><span class="summaryTitle">Notebooks <?php echo $user['id']; ?></span></summary>
+    <summary class="large"><span class="summaryTitle">Notebooktest<?php echo $user['id']; ?></span></summary>
     <div></div>
   </details>
 <!--

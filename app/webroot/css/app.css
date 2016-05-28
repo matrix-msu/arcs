@@ -2514,8 +2514,14 @@ input[type="checkbox"] + label {
   white-space: nowrap;
   overflow: hidden;
 }
-input[type="checkbox"]:checked + label {
+#collectionSearchObjects label:hover {
   border: double 1.5px #4899CF;
+}
+input[type="checkbox"]:hover + label {
+  border: double 1.5px #4899CF;
+}
+input[type="checkbox"]:checked + label {
+  background-color: #4899CF;
 }
 input[type="file"] {
   display: block;
@@ -8994,15 +9000,37 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .collectionModalHeader {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   padding-left: 15px;
   padding-right: 15px;
+  padding-top: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: .6em;
 }
 #collectionModal hr {
   margin: 0px;
   margin-bottom: 15px;
+}
+#collectionSearchObjects {
+  height: 28em;
+  overflow-y: scroll;
+}
+#collectionSearchBarForm input {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 15px;
+  width: 90%;
+  height: 2.5em;
+}
+.collectionSearchSubmit,
+.collectionNewSubmit {
+  height: 3em;
+  background-color: #4899CF;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
 }
 #collection-title,
 #project-metadata,

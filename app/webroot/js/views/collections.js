@@ -37,6 +37,7 @@
 
     CollectionList.prototype.onClick = function(e) {
       var $el, ref;
+      console.log("Josh- clicked spot");
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
       } else {
@@ -78,6 +79,7 @@
 
     CollectionList.prototype.render = function() {
       console.log(this.$el);
+      console.log("Josh Test Here1");
       this.$el.html(arcs.tmpl('collections/list', {
         collections: this.collection.toJSON()
       }));

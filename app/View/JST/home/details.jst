@@ -4,20 +4,21 @@
     <a href="<%= arcs.baseURL + 'resource/' + r.kid %>">
       <img src="<%= r.thumb %>" alt="resource" />
     </a>
-    <a class="subtle" href="<%= arcs.baseURL + 'resource/' + r.kid %>"><%= r.title %></a>
+    <a class="subtle" href="<%= arcs.baseURL + 'resource/' + r.kid %>"><%= r.title %><br>Josh Testing</a>
+    <p> Josh's testing </p>
   </li>
 <% }) %>
 <% if (!resources.length) { %>
   <li>
-    <i class="icon-exclamation-sign"></i> No Results Found
+    <i class="icon-exclamation-sign"></i> No Results Found-Josh Yay
   </li>
 <% } else { %>
   <li class="resource-thumb">
     <% if (typeof searchURL != "undefined") { %>
-      <a href='<%= searchURL %>'><i class="icon-share-alt"></i> Show all</a>
+      <a href='<%= searchURL %>'><i class="icon-share-alt"></i> Show aljhdfkasjfhkjll</a>
     <% } else { %>
       <a href='<%= arcs.baseURL + 'search/type:"' + resources[0].type + '"' %>'>
-        <i class="icon-share-alt"></i> Show all
+        <i class="icon-share-alt"></i> Show allgfsjklfsdkj
       </a>
     <% } %>
   </li>

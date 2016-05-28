@@ -3,6 +3,7 @@
     <a href="<?php echo $this->Html->url(
         array('action' => 'view', $r['Resource']['id'])) ?>">
         <img src="<?php echo $r['Resource']['thumb'] ?>">
+        <br />
     </a>
 <?php endforeach ?>
 </div>

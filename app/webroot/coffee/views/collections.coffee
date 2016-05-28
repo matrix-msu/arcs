@@ -4,7 +4,9 @@ class arcs.views.CollectionList extends Backbone.View
 
   initialize: (options) ->
     _.extend @options, _.pick(options, 'model', 'collection', 'el')
-    
+
+    #console.log("collection list initialize2");
+    #first loads the collection list here.... -Josh
     @search = new arcs.utils.Search
       container: $('.search-wrapper')
       run: false
@@ -20,6 +22,8 @@ class arcs.views.CollectionList extends Backbone.View
     'click #delete-btn': 'deleteCollection'
 
   onClick: (e) ->
+    #Loads individual collections here----Josh
+    console.log("Josh- clicked spot");
     if e.currentTarget.tagName == 'DETAILS'
       $el = $(e.currentTarget)
     else
@@ -57,10 +61,12 @@ class arcs.views.CollectionList extends Backbone.View
 
   render: ->
     console.log @$el
+    console.log "Josh Test Here1"
     @$el.html arcs.tmpl 'collections/list',
       collections: @collection.toJSON()
     @
 
+  #Josh- collections fills in the template here!!
   renderDetails: ($el) ->
     id = $el.data 'id'
     query = encodeURIComponent('collection_id:"' + id + '"')

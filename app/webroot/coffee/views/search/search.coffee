@@ -16,6 +16,7 @@ class arcs.views.search.Search extends Backbone.View
     _.extend @options, _.pick(options, 'el')
     @setupSelect()
     @setupSearch()
+    #@setupCollections()
 
     # Init our sub-view for actions.
     #@actions = new arcs.views.search.Actions
@@ -111,6 +112,7 @@ class arcs.views.search.Search extends Backbone.View
         @setupHelp()
         @render()
 
+
   # Setup the endless scroll. This is called after we've received our first set
   # of results. 
   setupScroll: ->
@@ -176,7 +178,7 @@ class arcs.views.search.Search extends Backbone.View
     @search.options.page = @$el.data('page')
     @search.run()
 
-  unselectAll: (trigger=true) -> 
+  unselectAll: (trigger=true) ->
     @$('.result').removeClass('selected')
     @$('.select-button').removeClass('de-select')
     @$('.select-button, #toggle-select').html('SELECT')
@@ -228,6 +230,10 @@ class arcs.views.search.Search extends Backbone.View
   afterSelection: ->
     _.defer =>
       selected = $('.result.selected').map( -> $(@).data('id')).get()
+      console.log("coffee selected")
+      console.log(selected)
+      arcs.selected = selected
+      $('#selected-resource-ids').html(selected)
       # get the count of the selected items, change the style accordingly
       num = $('.result.selected').length
       $('#selected-count').html(num)

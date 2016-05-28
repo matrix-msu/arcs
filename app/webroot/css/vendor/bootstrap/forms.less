@@ -56,6 +56,7 @@ input[type="checkbox"] {
   line-height: normal;
 }
 
+//use this stuff for add to collections
 input[type="checkbox"]  {
   display: none;
   //background-color:#c1c1c1c1;
@@ -77,9 +78,17 @@ input[type="checkbox"] + label {
 
 
 }
+#collectionSearchObjects {
+  label:hover {
+    border: double 1.5px #4899CF;
+  }
+}
+input[type="checkbox"]:hover + label {
+  border: double 1.5px #4899CF;
+}
 
 input[type="checkbox"]:checked + label {
-  border: double 1.5px #4899CF;
+  background-color: #4899CF;
 }
 
 

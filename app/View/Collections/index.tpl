@@ -11,6 +11,7 @@
         model: arcs.models.Collection,
         collection: new arcs.collections.CollectionList({{ user_collections|json_encode }}),
         el: $('#user-collections')
+	  	console.log("Josh- The first collection-list spot - apparently does nothing...");
       });
     </script>
   </div>
@@ -40,6 +41,7 @@
       el: $('#all-collections')
     });
 	arcs.user_viewer.collection.each(function(model) {
+		console.log("something happens here...");
 		console.log(model);
 	});
   </script>

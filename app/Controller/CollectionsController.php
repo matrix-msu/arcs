@@ -160,6 +160,19 @@ class CollectionsController extends AppController {
     }
 
     /**
+     * Return an array of (id, title, collection_id) pairs. Similar to `complete`, but includes
+     * the ids.
+     */
+    public function titlesAndIds() {
+        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
+        return $this->json(200, $this->Collection->find('all', array(
+            'fields' => array('Collection.title', 'Collection.collection_id', 'Collection.user_name'),
+            'group' => 'collection_id',
+            'order' => 'modified DESC'
+        )));
+    }
+
+    /**
      * Complete collection titles.
      */
     public function complete() {
