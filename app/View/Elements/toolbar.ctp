@@ -13,35 +13,34 @@
 	<h1 id= "hamburger" class='hamburger'></h1>
 	
     <?php endif ?>
-	
+		
 	
 	<!--Check if it is index page or not, display accordingly-->
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 		<!--Display login button for other pages-->
+	<div id='log'>
 		<?php if ($user['loggedIn']): ?>
-		<div id="menu" class="btn-group toolbar-btn">
-			<button id="menuButton" class="btn btn-dark">
+			<div id="menu" class="btn btn-grey toolbar-btn"> 
 				<?php echo $user['name'] ?> 
 				<span class="pointerDown"></span>
-			</button>
-			<div id="droppedMenu" class="dropped-menu">
-				<?php echo $this->Html->link('Profile', 
-					'/user/' . $user['username'] . '/') ?>
-				<?php if ($user['role'] == "Admin"): ?>
-				<?php echo $this->Html->link('Admin', 
-					'/admin') ?>
-				<?php endif ?>
-				<?php echo $this->Html->link('Sign Out', 
-					'/logout') ?>
+				<div id="droppedMenu" class="dropped-menu">
+					<?php echo $this->Html->link('Profile', 
+						'/user/' . $user['username'] . '/') ?>
+					<?php if ($user['role'] == "Admin"): ?>
+					<?php echo $this->Html->link('Admin', 
+						'/admin') ?>
+					<?php endif ?>
+					<?php echo $this->Html->link('Sign Out', 
+						'/logout') ?>
+				</div>
 			</div>
-		</div>
 		<?php else: ?>
-		<div id='log'>
-			<a class="btn btn-dark toolbar-btn" 
+		
+			<a class="btn btn-grey toolbar-btn" 
 				href="#loginModal">Login / Register</a>
-		</div>
+		
 		<?php endif ?>
-	
+	</div>
 	<?php else: ?>
 		<!--Display search bar for index page. Placeholder, require backend programming.-->
 		<div class="search-bar">
@@ -101,7 +100,7 @@
         
 		 <div id="projectsHeader" class="btn btn-grey">
 			<i class="icon-white icon-folder-open"></i> Projects 
-			 <div id="dropArrow" class=dropArrow> </div> 
+			 <div id="dropArrowHome" class=dropArrowHome> </div> 
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>

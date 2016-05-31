@@ -7328,16 +7328,25 @@ div#toolbar .toolbar-btn {
   position: relative;
   border: none;
   border-radius: 0;
-  background: #808080;
-  color: #fff;
+  background: #F4F4F4;
+  color: grey;
   text-transform: uppercase;
   font-size: 12px;
   line-height: 48px;
   border-bottom: 1px solid #e9e9e9;
+  border-left: 1px solid #e9e9e9;
+}
+#menuButton {
+  top: 2px;
 }
 .dropped-menu {
   display: none;
   background: #F4F4F4;
+  width: 100%;
+  position: absolute;
+  top: 59px;
+  right: 0;
+  border: 1px solid #e9e9e9;
 }
 .dropped-menu a {
   color: #808080;
@@ -7360,7 +7369,7 @@ div#toolbar .toolbar-btn {
   -ms-transform: rotate(135deg);
   -o-transform: rotate(135deg);
   transform: rotate(135deg);
-  margin: 17px 0 0 10px;
+  margin: 17px 0 0 10px !important;
 }
 .pointerUp {
   float: right;
@@ -7373,7 +7382,10 @@ div#toolbar .toolbar-btn {
   -ms-transform: rotate(315deg);
   -o-transform: rotate(315deg);
   transform: rotate(315deg);
-  margin: 20px 0 0 10px;
+  margin-top: 21px !important;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
 }
 /*#projects:hover .projects-menu{
 	display: block;
@@ -7386,6 +7398,7 @@ div#toolbar .toolbar-btn {
   width: 130% !important;
   left: -12.5%;
   margin-top: 5px;
+  border: 1px solid #e9e9e9;
 }
 .projects-menu a {
   color: #808080;
@@ -7467,6 +7480,18 @@ input.indexSearchBox {
   background-size: 10px 20px;
   height: 27px;
 }
+.dropArrowHome {
+  background-image: url(../img/ArrowDown.svg);
+  width: 15px;
+  height: 15px;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: -100px;
+  top: 7px;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+}
 #belowProjects {
   float: right;
   top: 0;
@@ -7480,6 +7505,9 @@ input.indexSearchBox {
 #helpSearch {
   float: right;
   top: 0;
+}
+#menuBox {
+  border-left: 1px solid #e9e9e9;
 }
 @media screen and (max-width: 930px) {
   div#toolbar {
@@ -7574,6 +7602,10 @@ input.indexSearchBox {
     width: 110%;
     right: -6px;
     top: 120px;
+  }
+  #menuButton {
+    top: 2px;
+    border-left: 1px solid #e9e9e9;
   }
   .dropped-menu {
     background: #F4F4F4;
@@ -7743,6 +7775,11 @@ input.indexSearchBox {
   }
   .toolbar-btn {
     border-top: 1px solid gray;
+  }
+  #menuBox {
+    top: 349px;
+    position: absolute;
+    width: 100%;
   }
   /*
     #search{

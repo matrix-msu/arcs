@@ -1,3 +1,4 @@
+
 var viewportScale = 1 / window.devicePixelRatio;
 $("#viewport").attr("content","user-scalable=no, initial-scale="+viewportScale+", minimum-scale=0.2, maximum-scale=2, width=device-width");
 
@@ -11,14 +12,82 @@ function checkMobile(){
 
 // toggles menu button
 $(document).ready(function(){
+	function removeHighlight(){
+		var pathname = window.location.pathname;
+		
+	//console.log(pathname);
+		if (pathname.includes( 'arcs/upload' )) {
+			//console.log("in uploads");
+			$( '#upload' ).removeClass( 'btn-blue' );
+		} else if (pathname.includes( '/resource' )) {
+			//console.log("in resources");
+			$( '#resources' ).removeClass( 'btn-blue' );
+		} else if (pathname.includes( 'arcs/about' )) {
+			//console.log('in about');
+			$( '#about' ).removeClass( 'btn-blue' ); 
+		} else if (pathname.includes( 'arcs/collections' )) {
+			//console.log("collections")
+			$( '#collections' ).removeClass( 'btn-blue' );
+		} else if (pathname.includes( 'arcs/search' )) {
+			//console.log('search')
+			$( '#search' ).removeClass( 'btn-blue' );
+		} else if (pathname.includes( 'arcs/help/' )) {
+			//console.log("Got to the help tab");
+			$( '#help' ).removeClass( 'btn-blue' );
+		} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
+			console.log("admin/user");
+			$( '#menuButton' ).removeClass( 'btn-blue' );
+			$( '#menuButton' ).css('height', '62px');
+		}else if (pathname.includes( 'arcs/projects/single_project' )){
+		//console.log("Projects");
+			$( '#projects' ).addClass( 'btn-blue' );
+			$( '.btn-blue' ).css('padding-right', '37px');
+			$('#dropArrow').addClass('dropArrow-whiteFull');
+		} 
+	}
+	function addHighlght(){
+		var pathname = window.location.pathname;
+	//console.log(pathname);
+		if (pathname.includes( 'arcs/upload' )) {
+			//console.log("in uploads");
+			$( '#upload' ).addClass( 'btn-blue' );
+		} else if (pathname.includes( '/resource' )) {
+			//console.log("in resources");
+			$( '#resources' ).addClass( 'btn-blue' );
+		} else if (pathname.includes( 'arcs/about' )) {
+			//console.log('in about');
+			$( '#about' ).addClass( 'btn-blue' ); 
+		} else if (pathname.includes( 'arcs/collections' )) {
+			//console.log("collections")
+			$( '#collections' ).addClass( 'btn-blue' );
+		} else if (pathname.includes( 'arcs/search' )) {
+			//console.log('search')
+			$( '#search' ).addClass( 'btn-blue' );
+		} else if (pathname.includes( 'arcs/help/' )) {
+			//console.log("Got to the help tab");
+			$( '#help' ).addClass( 'btn-blue' );
+		} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
+			console.log("admin/user");
+			$( '#menuButton' ).addClass( 'btn-blue' );
+			$( '#menuButton' ).css('height', '62px');
+		}else if (pathname.includes( 'arcs/projects/single_project' )){
+		//console.log("Projects");
+			$( '#projects' ).addClass( 'btn-blue' );
+			$( '.btn-blue' ).css('padding-right', '37px');
+			$('#dropArrow').addClass('dropArrow-whiteFull');
+		} 
+	}
 	
-	$( '#menu' ).hover(function(){
-		$( '.pointerDown' ).addClass( 'pointerUp' ),
-		$( '#droppedMenu' ).show();
-	}, function() {
-		$( '.pointerDown' ).removeClass( 'pointerUp' ),
-		$( '#droppedMenu' ).hide();
-	});	
+//	if (!checkMobile()){
+//		$( '#menu' ).hover(function(){
+//		$( '.pointerDown' ).addClass( 'pointerUp' ),
+//		$( '#droppedMenu' ).show();
+//	}, function() {
+//		$( '.pointerDown' ).removeClass( 'pointerUp' ),
+//		$( '#droppedMenu' ).hide();
+//	});	
+//	}
+	
 	
 	//mobile display drop down
 	$( '#hamburger' ).click(function(){
@@ -38,11 +107,38 @@ $(document).ready(function(){
 			}
 	});
 	var mouseoverHandler = function(){
+		$( '#projects' ).addClass( 'btn-blue' );
+		$('#dropArrow').addClass('dropArrow-whiteFull');
+		
+		removeHighlight();
 		$( '.projects-menu' ).css('display', 'block');
+		
 	}
 	var mouseoutHandler = function(){
+		$( '#projects' ).removeClass( 'btn-blue' );
+		$('#dropArrow').removeClass('dropArrow-whiteFull');
+		
+		addHighlght();
 		$( '.projects-menu' ).css('display', 'none');
 	}
+	var logMouseover = function(){
+		$( '.pointerDown' ).addClass( 'pointerUp' ),
+		$( '#droppedMenu' ).show();
+	}
+	var logMouseout = function(){
+		$( '.pointerDown' ).removeClass( 'pointerUp' ),
+		$( '#droppedMenu' ).hide();
+	}
+	
+//	var logMousover = function(){
+//		$( '#menu' ).hover(function(){
+//			$( '.pointerDown' ).addClass( 'pointerUp' ),
+//			$( '#droppedMenu' ).show();
+//		}, function() {
+//			$( '.pointerDown' ).removeClass( 'pointerUp' ),
+//			$( '#droppedMenu' ).hide();
+//		});	
+//	}
 	$('#projects').on('click',function(event){
 		if(checkMobile()) {
 				if(($( '#log' ).css('top') === '233px') ){
@@ -55,6 +151,18 @@ $(document).ready(function(){
 					$( '#belowProjects' ).css('top','-55px');
 					$( '.projects-menu' ).css('display', 'none');
 				}
+		}
+	});
+	$('#menu').on('click',function(event){
+		if(checkMobile()){
+			if(($( '#droppedMenu' ).css('display') === 'none')){
+				$( '.pointerDown' ).addClass( 'pointerUp' ),
+				$( '#droppedMenu' ).show();
+			}
+			else{
+				$( '.pointerDown' ).removeClass( 'pointerUp' ),
+				$( '#droppedMenu' ).hide();
+			}
 		}
 	});
 	$('#projectsHeader').on('click',function(event){
@@ -79,7 +187,9 @@ $(document).ready(function(){
 			$('#projects').bind('mouseover', mouseoverHandler); 
 			$('#projects').bind('mouseout', mouseoutHandler); 
 			$('#projectsHeader').bind('mouseover', mouseoverHandler); 
-			$('#projectsHeader').bind('mouseout', mouseoutHandler); 
+			$('#projectsHeader').bind('mouseout', mouseoutHandler);
+			$('#menu').bind('mouseover', logMouseover);
+			$('#menu').bind('mouseout', logMouseout);
 		}
 		else{
 			$( '.toolbar-btn' ).css('display', 'none');
@@ -89,6 +199,8 @@ $(document).ready(function(){
 			$( '#helpSearch').css('top','0px');
 			$('#projects').unbind('mouseout mouseover');
 			$('#projectsHeader').unbind('mouseout mouseover');
+			$('#menu').unbind('mouseover', logMouseover);
+			$('#menu').unbind('mouseout', logMouseout);
 		}
 		
 	});
@@ -97,14 +209,14 @@ $(document).ready(function(){
 	
 	$( window ).resize(function(){
 		if(!checkMobile()){
-			console.log(window.innerWidth);
-			console.log(screen.width);
 			$( '.toolbar-btn' ).css('display', 'block');
 			$( '.projects-menu' ).css('display', 'none');
 			$('#projects').bind('mouseover', mouseoverHandler); 
 			$('#projects').bind('mouseout', mouseoutHandler); 
 			$('#projectsHeader').bind('mouseover', mouseoverHandler); 
-			$('#projectsHeader').bind('mouseout', mouseoutHandler); 
+			$('#projectsHeader').bind('mouseout', mouseoutHandler);
+			$('#menu').bind('mouseover', logMouseover);
+			$('#menu').bind('mouseout', logMouseout);
 		}
 		else{
 			
@@ -120,6 +232,8 @@ $(document).ready(function(){
 			$( '#helpSearch').css('top','0px');
 			$('#projects').unbind('mouseout mouseover');
 			$('#projectsHeader').unbind('mouseout mouseover');
+			$('#menu').unbind('mouseover', logMouseover);
+			$('#menu').unbind('mouseout', logMouseout);
 		}
 	});
 	

@@ -97,18 +97,29 @@ div#toolbar {
         position: relative;
         border: none;
         border-radius: 0;
-        background: #808080;
-        color: #fff;
+        background: @ToolbarColor;
+        color: grey;
         text-transform: uppercase;
         font-size: @toolbarFontSize;
         line-height: @toolbarLineHeight;
         border-bottom: 1px solid #e9e9e9;
+		border-left: 1px solid #e9e9e9;
     }
+}
+
+#menuButton{
+	top:2px;
+	
 }
 
 .dropped-menu {
     display: none;
     background: #F4F4F4;
+    width: 100%;
+    position: absolute;
+    top: 59px;
+    right: 0;
+    border: 1px solid #e9e9e9;
     a {
         color: #808080;
         display: block;
@@ -132,7 +143,7 @@ div#toolbar {
     -ms-transform: rotate(135deg);
     -o-transform: rotate(135deg);
     transform: rotate(135deg);
-    margin: 17px 0 0 10px;
+    margin: 17px 0 0 10px !important;
 }
 .pointerUp {
     float: right;
@@ -145,7 +156,11 @@ div#toolbar {
     -ms-transform: rotate(315deg);
     -o-transform: rotate(315deg);
     transform: rotate(315deg);
-    margin: 20px 0 0 10px;
+    //margin: 17px 0 0 10px;
+	margin-top: 21px !important;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 10px;
 }
 
 /*#projects:hover .projects-menu{
@@ -164,6 +179,7 @@ div#toolbar {
     width: 130% !important;
     left: -12.5%;
     margin-top: 5px;
+	border: 1px solid #e9e9e9;
 }
 .projects-menu a {
     color: #808080;
@@ -250,6 +266,18 @@ input.indexSearchBox {
     background-size: 10px 20px;
     height: 27px;
 }
+.dropArrowHome{
+	background-image: url(../img/ArrowDown.svg);
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: -100px;
+    top: 7px;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+}
 #belowProjects{
     float: right;
     top:0;
@@ -263,6 +291,9 @@ input.indexSearchBox {
 #helpSearch{
     float: right;
     top: 0;
+}
+#menuBox{
+	border-left: 1px solid #e9e9e9;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -373,6 +404,10 @@ input.indexSearchBox {
         }
     }
 
+	#menuButton{
+		top:2px;
+		border-left: 1px solid #e9e9e9;
+	}
     .dropped-menu {
         background: #F4F4F4;
         display: none;
@@ -558,6 +593,11 @@ input.indexSearchBox {
     .toolbar-btn{
         border-top: 1px solid gray;
     }
+	#menuBox{
+		top: 349px;
+		position: absolute;
+		width: 100%;
+	}
     /*
     #search{
         position: absolute;

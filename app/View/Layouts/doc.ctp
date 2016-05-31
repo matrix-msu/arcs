@@ -4,6 +4,7 @@
    $url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
    if (strpos($url, 'arcs/help') != false){
 		$lastChar = substr($url,-1);
+	   //change to what ever the paramaters will be changed too
 		if ($lastChar != '0' && $lastChar != '1' && $lastChar != '2'){
 			echo $this->Session->flash();
 			$this->set('index_toolbar', true);
