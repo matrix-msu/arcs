@@ -37,6 +37,41 @@ class CollectionsController extends AppController {
      * Get all collections a resource is a part of
      */
     public function memberships($id) {
+
+        //handle collections info on the single resource page
+        if (isset($this->request->query['id'])){
+            $resource_id = $this->request->query['id'];
+            $retval['id'] = $resource_id;
+
+            //$collections = array();
+            //// Start SQL Area
+            ///////////////////
+            include_once("../Config/database.php");
+            $db = new DATABASE_CONFIG();
+            $db_object =  (object) $db;
+            $db_array = $db_object->{'default'};
+            $response['db_info'] = $db_array['host'];
+            $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+            if ($mysqli->connect_error) {
+                die('Connect Error (' . $mysqli->connect_errno . ') '
+                    . $mysqli->connect_error);
+            }
+            //Get collections info from the resource_kid
+            $sql = "SELECT DISTINCT collections.collection_id, collections.title, collections.user_name
+                    FROM arcs_dev.collections 
+                    WHERE collections.resource_kid ='".$resource_id."'";
+            $result = $mysqli->query($sql);
+            while($row = mysqli_fetch_assoc($result))
+              $collections[] = $row;
+            //$response['collection_table_id'] = $collection_table_id;
+            //$response['sql'] = $sql;
+            //$collection_id = mysqli_fetch_assoc($result);
+            //$collection_id = $collection_id['collection_id'];
+
+            $retval['collections'] = $collections;
+            return $this->json(200, $retval);
+        }
         $this->loadModel('Membership');
         $ids = $this->Membership->memberships($id);
         $collections = $this->Collection->find('all', array(

@@ -731,10 +731,10 @@
                         Keywords
                     </div>
 
-                    <h3 class="level-tab">Collections</h3>
+                    <h3 class="level-tab" id="collections_tab">Collections</h3>
 
                     <div class="level-content">
-                        Collections
+                        <div id="collections_table"></div>
                     </div>
                 </div>
             </div>
@@ -1656,21 +1656,48 @@
             }
         })
 
-//        $.ajax({
-//            url: "<?php echo Router::url('/', true); ?>api/collections/memberships/.json",
-//            type: "POST",
-//            data: {
-//                id: kid
-//            },
-//            success: function (data) {
-//
-//            }
-//        })
+    }
+
+    getCollections();
+    var numCollections = 0;
+
+    function getCollections() {
+        $.ajax({
+            url: arcs.baseURL + "collections/memberships",
+            type: "get",
+            data: {
+                id: "<?php echo $resource['kid']; ?>"
+            },
+            success: function (data) {
+                console.log("memberships here");
+                console.log(data);
+                //console.log(data.collections);
+                //console.log(data.collections.length);
+                numCollections = data.collections.length;
+                if (data.collections.length > 0){
+                    //document.getElementById("ui-id-50").style.color = "blue";
+                    var ctab = document.getElementById("collections_tab");
+                    ctab.innerHTML = "COLLECTIONS (" + numCollections + ")";
+                    var populateCollections = "<table><tbody>"+
+                        "<tr><td colspan='2'>This resource is apart of the following "+numCollections+" collections...</td></tr>";
+                    for (var i = 0; i < numCollections; i++) {
+                        console.log("got-here1");
+                        var collection = collections[i];
+                        populateCollections += "<tr><td style='width:50%'>"+ collection.title +"</td><td>"+ collection.user_name +"</td></tr>";
+                    }
+                    populateCollections += "</tbody></table>";
+                    console.log(populateCollections);
+                    $("#collections_table").html(populateCollections);
+                }
+            }
+        })
+
     }
 
     // Details tab
     $(".details").click(function () {
         GetDetails();
+
     });
 
     $(".level-tab").click(function() {
