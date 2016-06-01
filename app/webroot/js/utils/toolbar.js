@@ -12,82 +12,7 @@ function checkMobile(){
 
 // toggles menu button
 $(document).ready(function(){
-	function removeHighlight(){
-		var pathname = window.location.pathname;
-		
-	//console.log(pathname);
-		if (pathname.includes( 'arcs/upload' )) {
-			//console.log("in uploads");
-			$( '#upload' ).removeClass( 'btn-blue' );
-		} else if (pathname.includes( '/resource' )) {
-			//console.log("in resources");
-			$( '#resources' ).removeClass( 'btn-blue' );
-		} else if (pathname.includes( 'arcs/about' )) {
-			//console.log('in about');
-			$( '#about' ).removeClass( 'btn-blue' ); 
-		} else if (pathname.includes( 'arcs/collections' )) {
-			//console.log("collections")
-			$( '#collections' ).removeClass( 'btn-blue' );
-		} else if (pathname.includes( 'arcs/search' )) {
-			//console.log('search')
-			$( '#search' ).removeClass( 'btn-blue' );
-		} else if (pathname.includes( 'arcs/help/' )) {
-			//console.log("Got to the help tab");
-			$( '#help' ).removeClass( 'btn-blue' );
-		} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
-			console.log("admin/user");
-			$( '#menuButton' ).removeClass( 'btn-blue' );
-			$( '#menuButton' ).css('height', '62px');
-		}else if (pathname.includes( 'arcs/projects/single_project' )){
-		//console.log("Projects");
-			$( '#projects' ).addClass( 'btn-blue' );
-			$( '.btn-blue' ).css('padding-right', '37px');
-			$('#dropArrow').addClass('dropArrow-whiteFull');
-		} 
-	}
-	function addHighlght(){
-		var pathname = window.location.pathname;
-	//console.log(pathname);
-		if (pathname.includes( 'arcs/upload' )) {
-			//console.log("in uploads");
-			$( '#upload' ).addClass( 'btn-blue' );
-		} else if (pathname.includes( '/resource' )) {
-			//console.log("in resources");
-			$( '#resources' ).addClass( 'btn-blue' );
-		} else if (pathname.includes( 'arcs/about' )) {
-			//console.log('in about');
-			$( '#about' ).addClass( 'btn-blue' ); 
-		} else if (pathname.includes( 'arcs/collections' )) {
-			//console.log("collections")
-			$( '#collections' ).addClass( 'btn-blue' );
-		} else if (pathname.includes( 'arcs/search' )) {
-			//console.log('search')
-			$( '#search' ).addClass( 'btn-blue' );
-		} else if (pathname.includes( 'arcs/help/' )) {
-			//console.log("Got to the help tab");
-			$( '#help' ).addClass( 'btn-blue' );
-		} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
-			console.log("admin/user");
-			$( '#menuButton' ).addClass( 'btn-blue' );
-			$( '#menuButton' ).css('height', '62px');
-		}else if (pathname.includes( 'arcs/projects/single_project' )){
-		//console.log("Projects");
-			$( '#projects' ).addClass( 'btn-blue' );
-			$( '.btn-blue' ).css('padding-right', '37px');
-			$('#dropArrow').addClass('dropArrow-whiteFull');
-		} 
-	}
-	
-//	if (!checkMobile()){
-//		$( '#menu' ).hover(function(){
-//		$( '.pointerDown' ).addClass( 'pointerUp' ),
-//		$( '#droppedMenu' ).show();
-//	}, function() {
-//		$( '.pointerDown' ).removeClass( 'pointerUp' ),
-//		$( '#droppedMenu' ).hide();
-//	});	
-//	}
-	
+
 	
 	//mobile display drop down
 	$( '#hamburger' ).click(function(){
@@ -107,46 +32,51 @@ $(document).ready(function(){
 			}
 	});
 	var mouseoverHandler = function(){
-		$( '#projects' ).addClass( 'btn-blue' );
-		$('#dropArrow').addClass('dropArrow-whiteFull');
+		//$( '#projects' ).addClass( 'btn-blue' );
+		//$('#dropArrow').addClass('dropArrow-whiteFull');
 		
-		removeHighlight();
+		//removeHighlight();
+//		$('#dropArrow').css('transform', 'rotate(180deg)');
+//		$('.dropArrowFull').css('top', '-11px');
+//		$('.dropArrowFull').css('right', '12px');
+		$('#dropArrow').addClass( 'pointerUp' );
 		$( '.projects-menu' ).css('display', 'block');
 		
 	}
 	var mouseoutHandler = function(){
-		$( '#projects' ).removeClass( 'btn-blue' );
-		$('#dropArrow').removeClass('dropArrow-whiteFull');
-		
-		addHighlght();
+//		if (!window.location.pathname.includes( 'arcs/projects/single_project' )){
+//			$( '#projects' ).removeClass( 'btn-blue' );
+//			$('#dropArrow').removeClass('dropArrow-whiteFull');
+//		}
+//		$('#dropArrow').css('transform',' rotate(0deg)');
+//		$('.dropArrowFull').css('top', '7px');
+//		$('.dropArrowFull').css('right', '6px');
+		$('#dropArrow').removeClass( 'pointerUp' );
 		$( '.projects-menu' ).css('display', 'none');
+		
+		//addHighlght();
+		
 	}
 	var logMouseover = function(){
-		$( '.pointerDown' ).addClass( 'pointerUp' ),
+		$( '#logDrop' ).addClass( 'pointerUp' ),
 		$( '#droppedMenu' ).show();
 	}
 	var logMouseout = function(){
-		$( '.pointerDown' ).removeClass( 'pointerUp' ),
+		$('#logDrop').removeClass( 'pointerUp' ),
 		$( '#droppedMenu' ).hide();
 	}
 	
-//	var logMousover = function(){
-//		$( '#menu' ).hover(function(){
-//			$( '.pointerDown' ).addClass( 'pointerUp' ),
-//			$( '#droppedMenu' ).show();
-//		}, function() {
-//			$( '.pointerDown' ).removeClass( 'pointerUp' ),
-//			$( '#droppedMenu' ).hide();
-//		});	
-//	}
+
 	$('#projects').on('click',function(event){
 		if(checkMobile()) {
 				if(($( '#log' ).css('top') === '233px') ){
+					$('#dropArrow').addClass( 'pointerUp' );
 					$( '#log' ).css('top','378px');
 					$( '#belowProjects' ).css('top','89px');
 					$( '.projects-menu' ).css('display', 'block');
 			}
 				else{
+					$('#dropArrow').removeClass( 'pointerUp' );
 					$( '#log' ).css('top','233px');
 					$( '#belowProjects' ).css('top','-55px');
 					$( '.projects-menu' ).css('display', 'none');
@@ -156,11 +86,11 @@ $(document).ready(function(){
 	$('#menu').on('click',function(event){
 		if(checkMobile()){
 			if(($( '#droppedMenu' ).css('display') === 'none')){
-				$( '.pointerDown' ).addClass( 'pointerUp' ),
+				$( '#logDrop' ).addClass( 'pointerUp' ),
 				$( '#droppedMenu' ).show();
 			}
 			else{
-				$( '.pointerDown' ).removeClass( 'pointerUp' ),
+				$( '#logDrop' ).removeClass( 'pointerUp' ),
 				$( '#droppedMenu' ).hide();
 			}
 		}
@@ -168,11 +98,12 @@ $(document).ready(function(){
 	$('#projectsHeader').on('click',function(event){
 		if(checkMobile()){
 			if(($('#helpSearch').css('top') == '0px')){
+				$('#dropArrow').addClass( 'pointerUp' );
 				$( '#helpSearch' ).css('top', '148px');
 				$( '.projects-menu' ).css('display', 'block');
 			}
 			else{
-				
+				$('#dropArrow').removeClass( 'pointerUp' );
 				$( '#helpSearch' ).css('top', '0px');
 				$( '.projects-menu' ).css('display', 'none');
 			}
@@ -190,6 +121,7 @@ $(document).ready(function(){
 			$('#projectsHeader').bind('mouseout', mouseoutHandler);
 			$('#menu').bind('mouseover', logMouseover);
 			$('#menu').bind('mouseout', logMouseout);
+			
 		}
 		else{
 			$( '.toolbar-btn' ).css('display', 'none');
@@ -201,6 +133,12 @@ $(document).ready(function(){
 			$('#projectsHeader').unbind('mouseout mouseover');
 			$('#menu').unbind('mouseover', logMouseover);
 			$('#menu').unbind('mouseout', logMouseout);
+			$('#dropArrow').removeClass( 'whiteArrow' );
+		    $('#dropArrow').removeClass( 'whiteArrow' );
+			$('#logDrop').removeClass( 'whiteArrow' );
+		    $('#logDrop').removeClass( 'whiteArrow' );
+			$( '#menu' ).css('background', '')
+			$( '#menu' ).css('color', '')
 		}
 		
 	});
@@ -217,6 +155,16 @@ $(document).ready(function(){
 			$('#projectsHeader').bind('mouseout', mouseoutHandler);
 			$('#menu').bind('mouseover', logMouseover);
 			$('#menu').bind('mouseout', logMouseout);
+			if(window.location.pathname.includes( 'arcs/projects/single_project' )){
+				$('#dropArrow').addClass( 'whiteArrow' );
+				$('#dropArrow').addClass( 'whiteArrow' );
+			}
+			if(window.location.pathname.includes( 'user' || 'admin' )){
+				$('#logDrop').addClass( 'whiteArrow' );
+				$('#logDrop').addClass( 'whiteArrow' );
+				$( '#menu' ).css('background', '#0093be')
+				$( '#menu' ).css('color', 'white')
+			}
 		}
 		else{
 			
@@ -234,6 +182,12 @@ $(document).ready(function(){
 			$('#projectsHeader').unbind('mouseout mouseover');
 			$('#menu').unbind('mouseover', logMouseover);
 			$('#menu').unbind('mouseout', logMouseout);
+			$('#dropArrow').removeClass( 'whiteArrow' );
+		    $('#dropArrow').removeClass( 'whiteArrow' );
+			$('#logDrop').removeClass( 'whiteArrow' );
+		    $('#logDrop').removeClass( 'whiteArrow' );
+			$( '#menu' ).css('background', '')
+			$( '#menu' ).css('color', '')
 		}
 	});
 	
@@ -264,13 +218,18 @@ $(document).ready(function(){
 		$( '#help' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
 		console.log("admin/user");
-		$( '#menuButton' ).addClass( 'btn-blue' );
-		$( '#menuButton' ).css('height', '62px');
+		$( '#menu' ).addClass( 'btn-blue' );
+		$( '#menu' ).css('background', '#0093be')
+		$( '#menu' ).css('color', 'white')
+		$('#logDrop').addClass( 'whiteArrow' );
+		$('#logDrop').addClass( 'whiteArrow' );
 	} else if (pathname.includes( 'arcs/projects/single_project' )){
 		//console.log("Projects");
 		$( '#projects' ).addClass( 'btn-blue' );
-		$( '.btn-blue' ).css('padding-right', '37px');
-		$('#dropArrow').addClass('dropArrow-whiteFull');
+		//$('#dropArrow').addClass('dropArrow-whiteFull');
+		$('#dropArrow').addClass( 'whiteArrow' );
+		$('#dropArrow').addClass( 'whiteArrow' );
+		
 		
 		
 		//console.log(imgPath);

@@ -14,15 +14,18 @@
 	
     <?php endif ?>
 		
-	
 	<!--Check if it is index page or not, display accordingly-->
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 		<!--Display login button for other pages-->
 	<div id='log'>
 		<?php if ($user['loggedIn']): ?>
 			<div id="menu" class="btn btn-grey toolbar-btn"> 
+				<div id="cage">
 				<?php echo $user['name'] ?> 
-				<span class="pointerDown"></span>
+				<div id="dropBox">
+					<span id='logDrop' class="pointerDown"></span>
+				</div>
+				</div>
 				<div id="droppedMenu" class="dropped-menu">
 					<?php echo $this->Html->link('Profile', 
 						'/user/' . $user['username'] . '/') ?>
@@ -33,6 +36,8 @@
 					<?php echo $this->Html->link('Sign Out', 
 						'/logout') ?>
 				</div>
+				
+				
 			</div>
 		<?php else: ?>
 		
@@ -55,9 +60,17 @@
    
 	<div class="btn-group toolbar-btn">
 		 <!-- Arrow won't work-->
-		 <div id="projects" class="btn btn-grey">
+		 <div  id= "projects" class="btn btn-grey">
+			 <div id='projCage'>
 			 <i class="icon-white icon-folder-open"></i> 
-			 <div id="toolbarHead" > <div id="dropArrow" class=dropArrowFull> </div> </div> 
+			 <div id="toolbarHead" > 
+				 	<div id="dropArrow" class='pointerDown'>
+				 
+				    </div> 
+				 
+				 </div> 
+			 
+			 </div>
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
@@ -99,8 +112,16 @@
 		 <!-- Arrow won't work-->
         
 		 <div id="projectsHeader" class="btn btn-grey">
-			<i class="icon-white icon-folder-open"></i> Projects 
-			 <div id="dropArrowHome" class=dropArrowHome> </div> 
+			<div id='projCageHome'>
+			 <i class="icon-white icon-folder-open"></i> 
+			 <div id="toolbarHead" > Projects
+				 	<div id="dropArrow" class='pointerDown'>
+				 
+				    </div> 
+				 
+				 </div> 
+			 
+			 </div>
 			<div id="projectsMenu" class="projects-menu">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>

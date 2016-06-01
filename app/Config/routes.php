@@ -108,6 +108,12 @@
         array('controller' => 'search', 'action' => 'simple_search')
     );
 
+//	Router::connect('/toolbar/*',
+//        array('controller' => 'toolbar', 'action' => 'passName')
+//    );
+//	Router::connect('/api/toolbar/*',
+//        array('controller' => 'toolbar', 'action' => 'passName')
+//    );
 
     Router::connect('/search/**', 
         array('controller' => 'search', 'action' => 'search')

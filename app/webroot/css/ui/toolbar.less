@@ -91,7 +91,7 @@ div#toolbar {
 
     .toolbar-btn {
         display: block;
-        right: -5px;
+        right: 4px;
         height: 60px;
         float: right;
         position: relative;
@@ -161,6 +161,10 @@ div#toolbar {
     margin-right: 0px;
     margin-bottom: 0px;
     margin-left: 10px;
+}
+.whiteArrow{
+	border: solid white !important;
+	border-width: 2.5px 2.5px 0 0 !important;
 }
 
 /*#projects:hover .projects-menu{
@@ -232,40 +236,40 @@ input.indexSearchBox {
     padding-right: 50px !important;
 }
 
-.dropArrow{
-    background-image: url(../img/ArrowDown.svg);
-    width: 15px;
-    height: 15px;
-    background-repeat: no-repeat;
-    position: absolute;
-    right: 6px;
-    top: 7px;
-    bottom: 0;
-    margin: auto;
-
-}
-.dropArrowFull{
-    background-image: url(../img/ArrowDown.svg);
-    width: 15px;
-    height: 15px;
-    background-repeat: no-repeat;
-    position: absolute;
-    right: 6px;
-    top: 7px;
-    bottom: 0;
-    margin: auto;
-
-}
-.dropArrow-white{
-    background-image: url(../img/ArrowDownWhite.svg);
-    background-size: 10px 20px;
-    height: 27px;
-}
-.dropArrow-whiteFull{
-    background-image: url(../img/ArrowDownWhite.svg);
-    background-size: 10px 20px;
-    height: 27px;
-}
+//.dropArrow{
+//    background-image: url(../img/ArrowDown.svg);
+//    width: 15px;
+//    height: 15px;
+//    background-repeat: no-repeat;
+//    position: absolute;
+//    right: 6px;
+//    top: 7px;
+//    bottom: 0;
+//    margin: auto;
+//
+//}
+//.dropArrowFull{
+//    background-image: url(../img/ArrowDown.svg);
+//    width: 15px;
+//    height: 15px;
+//    background-repeat: no-repeat;
+//    position: absolute;
+//    right: 6px;
+//    top: 7px;
+//    bottom: 0;
+//    margin: auto;
+//
+//}
+//.dropArrow-white{
+//    background-image: url(../img/ArrowDownWhite.svg);
+//    background-size: 10px 20px;
+//    height: 27px;
+//}
+//.dropArrow-whiteFull{
+//    background-image: url(../img/ArrowDownWhite.svg);
+//    background-size: 10px 20px;
+//    height: 27px;
+//}
 .dropArrowHome{
 	background-image: url(../img/ArrowDown.svg);
     width: 15px;
@@ -293,8 +297,14 @@ input.indexSearchBox {
     top: 0;
 }
 #menuBox{
-	border-left: 1px solid #e9e9e9;
+	border: 1px solid #e9e9e9;
 }
+#dropBox{
+    position: absolute;
+    right: 12px;
+    top: 6px;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -344,7 +354,7 @@ input.indexSearchBox {
             border-radius: 0;
             height: 60px;
             color: #808080;
-            padding-right: 30px;
+            padding-right: 0px;
             padding-left: 30px;
             text-transform: uppercase;
             font-size: @toolbarFontSize;
@@ -375,7 +385,7 @@ input.indexSearchBox {
             border-radius: 0;
             height: 60px;
             color: #808080;
-            padding-right: 30px;
+            padding-right: 0px;
             padding-left: 30px;
             text-transform: uppercase;
             font-size: @toolbarFontSize;
@@ -403,6 +413,11 @@ input.indexSearchBox {
             top: 120px;
         }
     }
+	.testBlue{
+		color: rgb(255, 255, 255);
+    	display: block;
+    	background: rgb(0, 147, 190);
+	}
 
 	#menuButton{
 		top:2px;
@@ -411,6 +426,9 @@ input.indexSearchBox {
     .dropped-menu {
         background: #F4F4F4;
         display: none;
+		border:none;
+		border-bottom: 1px solid #e9e9e9;
+
         a {
             color: #808080;
             display: block;
@@ -466,6 +484,7 @@ input.indexSearchBox {
         width: 100% !important;
         left: 0;
         margin-top: 5px;
+		border:none;
     }
     .projects-menu a {
         color: #808080;
@@ -483,55 +502,73 @@ input.indexSearchBox {
         display:none;
     }
 
-
-    .dropArrow{
-        background-image: url(../img/ArrowDown.svg);
-        width: 15px;
-        height: 15px;
-        background-repeat: no-repeat;
-        right: 0;
-        position: absolute;
-        left: 97px;
-        bottom: 0;
-        top: 7px;
-
-    }
-    .dropArrowFull{
-        background-image: url(../img/ArrowDown.svg);
-        width: 15px;
-        height: 15px;
-        background-repeat: no-repeat;
-        right: 0;
-        position: absolute;
-        left: 121px;
-        bottom: 0;
-        top: 8px;
-
-    }
-    .dropArrow-whiteFull{
-        background-image: url(../img/ArrowDown.svg);
-        width: 15px;
-        height: 15px;
-        background-repeat: no-repeat;
-        right: 0;
-        position: absolute;
-        left: 121px;
-        bottom: 0;
-        top: -8px;
-
-    }
-
-    .dropArrow-white {
-        background-image: url(../img/ArrowDown.svg);
-        width: 15px;
-        height: 15px;
-        background-repeat: no-repeat;
-        right: 0;
-        position: absolute;
-        left: 97px;
-        bottom: 0;
-        top: 8px;
-    }
+	#dropArrow{
+		position: relative;
+		top:0;
+		bottom: 0;
+		right: 50%;
+		left:0;
+	}
+//    .dropArrow{
+//        background-image: url(../img/ArrowDown.svg);
+//        width: 15px;
+//        height: 15px;
+//        background-repeat: no-repeat;
+//        position: relative;
+//		bottom: 0;
+//		top: 12px;
+//		float: right;
+//		right: -5px;
+//
+//    }
+//    .dropArrowFull{
+//        background-image: url(../img/ArrowDown.svg);
+//        width: 15px;
+//        height: 15px;
+//        background-repeat: no-repeat;
+//        right: 0;
+//		position: relative;
+//		bottom: 0;
+//		top: 12px;
+//		float: right;
+//		right: -5px;
+//
+//    }
+	.dropArrowHome {
+    background-image: url(../img/ArrowDown.svg);
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+  //  position: absolute;
+    position: relative;
+		bottom: 0;
+		top: 12px;
+		float: right;
+		right: -5px;
+}
+//    .dropArrow-whiteFull{
+//        background-image: url(../img/ArrowDown.svg);
+//        width: 15px;
+//        height: 15px;
+//        background-repeat: no-repeat;
+//        position: relative;
+//		bottom: 0;
+//		top: 12px;
+//		float: right;
+//		right: -5px;
+//    }
+//
+//    .dropArrow-white {
+//        background-image: url(../img/ArrowDown.svg);
+//        width: 15px;
+//        height: 15px;
+//        background-repeat: no-repeat;
+//        position: relative;
+//		bottom: 0;
+//		top: 12px;
+//		float: right;
+//		right: -5px;
+//    }
 
     /*#hamburger{
         cursor:pointer;
@@ -615,5 +652,38 @@ input.indexSearchBox {
     top: 58px;
     right: 0;
     }*/
+	#dropBox{
+		position: absolute;
+		right: -15px;
+		top: 0;
+		width: auto;
+	}
+	#cage{
+		position: relative;
+		right: 0;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: auto;
+		display: inline-block;
 
+	}
+	#projCage{
+		position: relative;
+		right: 0;
+		left: 0px;
+		top: 0;
+		bottom: 0;
+		width: auto;
+		display: inline-block;
+	}
+#projCageHome{
+		position: relative;
+		right: 0;
+		left: 0px;
+		top: 0;
+		bottom: 0;
+		width: auto;
+		display: inline-block;
+	}
 }
