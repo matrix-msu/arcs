@@ -94,10 +94,14 @@ input[type=range]:focus::-ms-fill-upper {
   background: #e4e4e4;
 }
 
+.viewer.standalone {
+	background-color: #333;
+}
+
 .viewers-container {
 	margin-top: -60px;
     position: relative;
-    height: 959px;
+    height: 759px;
     border-top: 1px solid #ccc !important;
 }
 
@@ -128,8 +132,9 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .container1 {
-	width: 90%;
-	margin: auto;
+	width: auto;
+	margin-right: 23px;
+	margin-left: 20px;
 }
 
 #viewer-tools {
@@ -159,7 +164,7 @@ input[type=range]:focus::-ms-fill-upper {
 	.tools {
 		display: inline;
 		float: right;
-		line-height: 70px;
+		line-height: 59px;
 		
 		span {
 			
@@ -179,26 +184,28 @@ input[type=range]:focus::-ms-fill-upper {
 		}
 		
 		.icon-annotate {
-			width: 19px;
-			height: 19px;
+			width: 13px;
+			height: 13px;
 			background-image: url("../img/AnnotationsTooltip.svg");
 			background-position: center;
+			background-size: contain;
 			cursor: pointer;
 			vertical-align: middle;
 			display: inline-block;
-			padding-left: 5px;
+			padding-left: 10px;
 			background-repeat: no-repeat;
 		}
 
 		.icon-collection {
-			width: 19px;
-			height: 19px;
-			background-image: url("../img/BelongsToCollectionTooltip.svg");
+			width: 15px;
+			height: 15px;
+			background-image: url("../img/addToCollection-FullResource.svg");
 			background-position: center;
+			background-size: contain;
 			cursor: pointer;
 			vertical-align: middle;
 			display: inline-block;
-			padding-left: 5px;
+			padding-left: 10px;
 			background-repeat: no-repeat;
 		}
 		
@@ -215,14 +222,15 @@ input[type=range]:focus::-ms-fill-upper {
 		}
 		
 		.icon-export {
-			width: 19px;
-			height: 19px;
+			width: 13px;
+			height: 13px;
 			background-image: url("../img/export.svg");
 			background-position: center;
+			background-size: contain;
 			cursor: pointer;
 			vertical-align: middle;
 			display: inline-block;
-			padding-left: 5px;
+			padding-left: 10px;
 			background-repeat: no-repeat;
 		}
 	}
@@ -232,7 +240,6 @@ input[type=range]:focus::-ms-fill-upper {
 	float: left;
 	border: 0;
 	background: #F9F9F9;
-	float: left;
 	width: 100%;
 	padding: 0;
 	margin: 0;
@@ -285,7 +292,7 @@ input[type=range]:focus::-ms-fill-upper {
 		text-transform: uppercase;
 		
 		a {
-			height: 52px;
+			height: 54px;
 			display: inline-block;
 			width: 100%;
 		    display: block;
@@ -297,7 +304,7 @@ input[type=range]:focus::-ms-fill-upper {
 	
 	
 	.metadata-tab.ui-state-active {
-		border-bottom: 4px solid @ArcsBlue !important;
+		border-bottom: 2px solid @ArcsBlue !important;
 	}
 	
 	.metadata-tab.ui-state-active a {
@@ -348,15 +355,19 @@ input[type=range]:focus::-ms-fill-upper {
 				background: #f9f9f9;
 				border-bottom: 1px solid #cdcdcd !important;
 				color: @ArcsBlue !important;
+				border-left: 2px solid @ArcsBlue;
 			}
 			
 			.level-content {
 				border-radius: 0;
 				margin-bottom: 0px;
+				margin-top: 0;
 				width: 100%;
 				padding: 0;
 				border: 0;
 				border-bottom: 1px solid #ccc !important;
+				border-left: 2px solid @ArcsBlue;
+				top: 0;
 				
 				table {
 					width: 100%;
@@ -370,9 +381,10 @@ input[type=range]:focus::-ms-fill-upper {
 					}
 					
 					tr {
-						
+
 						td {
 							padding: 12px;
+							text-transform: none;
 						}
 						
 						td:nth-child(1) {
@@ -380,8 +392,27 @@ input[type=range]:focus::-ms-fill-upper {
 							border-right: 1px solid #cdcdcd;
 						}
 						td:nth-child(2) {
+							padding-right: 25px;
 							width: 70%;
 						}
+
+						:hover .icon-meta-flag {
+							opacity: 1;
+						}
+					}
+					
+					.icon-meta-flag {
+						width: 8px;
+						height: 11px;
+						background-image: url("../img/FlagTooltip.svg");
+						opacity: 0.2;
+						background-position: top right;
+						background-size: contain;
+						cursor: pointer;
+						background-repeat: no-repeat;
+						float: right;
+						margin-right: -14px;
+						top: 0;
 					}
 				}
 			}
@@ -389,11 +420,19 @@ input[type=range]:focus::-ms-fill-upper {
 	}
 }
 
+.level-content::-webkit-scrollbar-thumb {
+	border-radius: 0;
+}
+
+.level-content::-webkit-scrollbar-track {
+	border-radius: 0;
+}
+
 #viewer-window {
 	position: relative;
 	float: left;
 	width: 100%;
-	height: 89.7%;
+	height: ~"calc(100% - 100px)";//89.7%;
 	background: #fff;
 	border-bottom: 1px solid #cdcdcd;
     overflow: hidden !important;
@@ -401,7 +440,6 @@ input[type=range]:focus::-ms-fill-upper {
 	#ImageWrap{
     width: 100%;
 	height: 100%;
-    
     
     img {
 		max-width: 90%;
@@ -419,7 +457,6 @@ input[type=range]:focus::-ms-fill-upper {
 		margin-left: auto;
 	}
 }
-	
 	
 }
 
@@ -596,11 +633,40 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 #resources-nav {
-    margin-bottom: 345px;
+    //margin-bottom: 345px;
     white-space: nowrap;
     background: #efefef;
-    height: 220px;
+    height: 228px;
     width: 100%;
+
+	div {
+		display: inline-block;
+		float: left;
+	}
+
+	#other-resources-container {
+		width: ~"calc(100% - 120px)";
+		overflow: hidden;
+		height: 200px;
+		margin: 14px 6px;
+
+		a {
+			position: relative;
+		}
+	}
+
+	#button-left, #button-right {
+		width: 54px;
+		height: 228px;
+		background-color: #C9C9C9;
+		cursor: pointer;
+
+		img {
+			margin-top: 4px;
+			margin-left: 22px;
+			margin-right: 22px;
+		}
+	}
 }
 
 
@@ -937,8 +1003,8 @@ input[type=range]:focus::-ms-fill-upper {
 
 .gen_box {
 	position: absolute;
-	background: rgba(42, 159, 216, 0.5);
-    border: 3px solid rgba(42, 159, 216, 0.7);
+	background: rgba(42, 159, 216, 0.3);
+    border: 1px solid rgba(42, 159, 216, 0.7);
 }
 
 .initialBox {
@@ -1001,11 +1067,11 @@ input[type=range]:focus::-ms-fill-upper {
 	height: 27px;
 	width: 27px;
 	top: -27px;
-	left: -6px;
+	//left: -6px;
 	text-align: center;
 	position: relative;
-	background: rgba(42, 159, 216, 0.5);
-	border: 3px solid rgba(42, 159, 216, 0.7);
+	background: rgba(42, 159, 216, 0.3);
+	border: 1px solid rgba(42, 159, 216, 0.7);
 	border-bottom: 0px;
 	border-left: 0px;
 	cursor: pointer;
@@ -1019,20 +1085,22 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .notAdmin {
-	border-left: 3px solid rgba(42, 159, 216, 0.7);
-	left: -3px;
+	border-left: 1px solid rgba(42, 159, 216, 0.7);
+	left: -1px;
 }
 
 .transcript_display {
 	padding: 5px 0px 5px 0px !important;
-	margin: 15px;
+	margin: 0 15px 15px 15px; //15px;
 	border-bottom: 1px solid rgb(185, 185, 185);
+	font-size: 10px;
 }
 
 .annotation_display {
 	padding: 5px 0px 5px 0px !important;
-	margin: 15px;
+	margin: 0 15px 15px 15px; //15px;
 	border-bottom: 1px solid rgb(185, 185, 185);
+	font-size: 10px;
 }
 
 .deleteTranscript {
@@ -1069,7 +1137,10 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .annotationLabel {
-	margin: 15px;
+	//margin: 15px;
+	margin: 0 15px;
+	font-size: 12px;
+	line-height: 40px;
 }
 
 .outgoing_relations, .incoming_relations, .urls {
@@ -1079,6 +1150,7 @@ input[type=range]:focus::-ms-fill-upper {
 .relationName {
 	position: relative;
 	display: inline-block;
+	font-size: 10px;
 }
 
 .transcript_display {
