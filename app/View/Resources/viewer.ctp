@@ -63,7 +63,7 @@
     <div class="collectionModalBackground">
         <div class="collectionWrap" style="margin-top:9em;">
             <div id="collectionModal" style="width:35em;">
-                <div class="collectionModalHeader">Add to collection <img src="../app/webroot/assets/img/Close.svg"
+                <div class="collectionModalHeader">Add to Collection <img src="../app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
                 <p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
@@ -930,7 +930,7 @@
                     (collections[i]['user_name'].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
 
                 populateCheckboxes += "<input type='checkbox' name='item-" + i + "' id='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
-                        + "<label for='item-" + i + "'><div style='float:left'>" + collections[i]['title'] + " </div><div style='float:right'>" + collections[i]['user_name']+ "</div></label><br />";
+                        + "<label for='item-" + i + "'><div class='left'>" + collections[i]['title'] + " </div><div class='right'>" + collections[i]['user_name']+ "</div></label><br />";
             }
         }
         $("#collectionSearchObjects").html(populateCheckboxes);

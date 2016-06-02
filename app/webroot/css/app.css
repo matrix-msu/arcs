@@ -9061,6 +9061,7 @@ input[type=range]:focus::-ms-fill-upper {
   cursor: pointer;
   color: #7B7B7B;
   display: inline-block;
+  text-transform: uppercase;
 }
 .collectionModalHeader {
   color: #fff;
@@ -9095,6 +9096,16 @@ input[type=range]:focus::-ms-fill-upper {
   font-size: 14px;
   font-weight: 500;
   color: #FFFFFF;
+}
+#collectionSearchObjects label {
+  font-weight: 500;
+}
+#collectionSearchObjects label .left {
+  float: left;
+  font-size: 17px;
+}
+#collectionSearchObjects label .right {
+  float: right;
 }
 #collection-title,
 #project-metadata,
@@ -12522,6 +12533,7 @@ footer#standard-MSU-footer {
   -o-transform: rotate(135deg);
   transform: rotate(135deg);
   margin: 5px 0 0 0;
+  bottom: 19px;
 }
 .collection-list-wrapper .dropdown .pointerUp {
   display: inline;
@@ -12535,6 +12547,7 @@ footer#standard-MSU-footer {
   -o-transform: rotate(315deg);
   transform: rotate(315deg);
   margin: 8px 0 0 0;
+  bottom: 15px;
 }
 .collection-list-wrapper .collection-list details {
   min-height: 20px;
@@ -12556,7 +12569,6 @@ footer#standard-MSU-footer {
   font-size: 12;
   line-height: normal;
   color: #333;
-  background: #ddd;
   cursor: pointer;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
@@ -12626,7 +12638,6 @@ footer#standard-MSU-footer {
   width: 100%;
   padding: 0;
   margin-bottom: 20px;
-  background: #ddd;
 }
 .collection-list-wrapper .collection-list details[open] blockquote {
   border-color: #ddd;
