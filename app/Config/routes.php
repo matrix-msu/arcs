@@ -61,7 +61,7 @@
     );
 
     # logout
-    Router::connect('/logout', 
+    Router::connect('/logout',
         array('controller' => 'users', 'action' => 'logout')
     );
 
@@ -80,13 +80,12 @@
     Router::connect('/user/*', 
         array('controller' => 'users', 'action' => 'profile')
     );
-    Router::connect('/user/edit/*', 
+    Router::connect('/user/edit/*',
         array('controller' => 'users', 'action' => 'edit')
     );
 
 
-
-    # Search 
+# Search
     # (we're using the greedy pattern so that we can match urls with slashes, 
     # e.g. 'search/filetype:application/pdf')
 
@@ -100,20 +99,15 @@
     # We can access the JSON search through either /api/search or this:
     Router::connect('/simple_search/*',
         array('controller' => 'search', 'action' => 'simple_search')
-        # array('controller' => 'search', 'action' => 'resources')
+        // array('controller' => 'search', 'action' => 'sm')
     );
 
 
     Router::connect('/api/simple_search/*',
         array('controller' => 'search', 'action' => 'simple_search')
+        // array('controller' => 'search', 'action' => 'sm')
     );
 
-//	Router::connect('/toolbar/*',
-//        array('controller' => 'toolbar', 'action' => 'passName')
-//    );
-//	Router::connect('/api/toolbar/*',
-//        array('controller' => 'toolbar', 'action' => 'passName')
-//    );
 
     Router::connect('/search/**', 
         array('controller' => 'search', 'action' => 'search')

@@ -263,10 +263,6 @@
           selected = $('.result.selected').map(function() {
             return $(this).data('id');
           }).get();
-          console.log("coffee selected");
-          console.log(selected);
-          arcs.selected = selected;
-          $('#selected-resource-ids').html(selected);
           num = $('.result.selected').length;
           $('#selected-count').html(num);
           if (num !== 0) {
@@ -319,10 +315,8 @@
         var req, resourcequery;
         resourcequery = encodeURIComponent("" + val);
         return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery, function(response) {
-          var resp;
-          console.log(response['results']);
-          resp = jQuery.parseJSON(response['results']);
-          return resolve(resp);
+          console.log(response);
+          return resolve(response['results']);
         });
       });
       totalResults = [];
