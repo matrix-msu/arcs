@@ -155,6 +155,7 @@ $(document).ready(function(){
 			$('#projectsHeader').bind('mouseout', mouseoutHandler);
 			$('#menu').bind('mouseover', logMouseover);
 			$('#menu').bind('mouseout', logMouseout);
+			$('#dropArrow').removeClass( 'pointerUp' );
 			if(window.location.pathname.includes( 'arcs/projects/single_project' )){
 				$('#dropArrow').addClass( 'whiteArrow' );
 				$('#dropArrow').addClass( 'whiteArrow' );
@@ -165,6 +166,8 @@ $(document).ready(function(){
 				$( '#menu' ).css('background', '#0093be')
 				$( '#menu' ).css('color', 'white')
 			}
+			$( '#logDrop' ).removeClass( 'pointerUp' ),
+			$( '#droppedMenu' ).hide();
 		}
 		else{
 			
@@ -188,14 +191,12 @@ $(document).ready(function(){
 		    $('#logDrop').removeClass( 'whiteArrow' );
 			$( '#menu' ).css('background', '')
 			$( '#menu' ).css('color', '')
+			$('#dropArrow').removeClass( 'pointerUp' );
+			$( '#logDrop' ).removeClass( 'pointerUp' ),
+			$( '#droppedMenu' ).hide();
 		}
 	});
 	
-	
-});
-
-// highlights current page in blue
-$(document).ready(function(){
 	var pathname = window.location.pathname;
 	//console.log(pathname);
 	if (pathname.includes( 'arcs/upload' )) {
@@ -235,15 +236,7 @@ $(document).ready(function(){
 		//console.log(imgPath);
 	} 
 	
-});
-
-function IsEmail(email) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-  return regex.test(email);
-}
-//Validation for register
-$(document).ready(function() {
-
+	
 	//$("#register").click(function(e) {
 	$("#UserRegisterForm").on('submit', function(e) {
 		var form = this;
@@ -336,11 +329,8 @@ $(document).ready(function() {
 		$("#email-error").html("&nbsp;");
 		$("#username-error").html("&nbsp;");
 	});
-});
-
-// triggers login modal
-$(document).ready(function() {
-    // Focus the username field on load.
+	
+	// Focus the username field on load.
     $('#UserUsername').focus();
     // Make sure a tab within username goes to password.
     // (There's a help tip in between)
@@ -375,4 +365,16 @@ $(document).ready(function() {
             });
        }
     });
+
 });
+
+
+function IsEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
+//Validation for register
+
+
+// triggers login modal
+
