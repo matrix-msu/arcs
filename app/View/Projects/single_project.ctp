@@ -8,28 +8,6 @@
         <meta name="description" content="An interactive getting started guide for Brackets.">
    
     </head>
-
-    <style>
-    /*	body{
-    		min-width: 420px;
-    		width: auto !important;
-    	}
-
-    	@media screen and (max-width:420px){
-    		img.resource_imginfo_1{
-    			width:150px;
-    			height:120px;
-    		}
-    		img.resource_imginfo_2{
-    			width:150px;
-    			height:120px;
-    		}
-    	}*/
-
-    </style>
-
-
-
     <body>
 
 		<div class="intro">
@@ -547,7 +525,11 @@
 					</ul>
 				</details>
 				
-				<div class="more-info"><span style="cursor:pointer"><a>VIEW  ALL COLLECTIOPNS</a></div></span>
+				<div class="more-info"><span style="cursor:pointer"><a>VIEW  ALL COLLECTIOPNS</a></span></div>
+				<div class="proper-width" id="show-min">
+					<div class="more-info">
+					<span style="cursor:pointer"><a>VIEW ALL COLLECTION</a></span></div>
+				</div>    
 			</div>
 			
         </div>

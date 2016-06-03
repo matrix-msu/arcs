@@ -82,10 +82,23 @@ img.resource_imginfo_2{
 	color: #6D6E70;
 	font-size: 16px;
 }
-e.recnt-resource .resource-pic .resource-type{
+.recnt-resource .resource-pic .resource-type{
 	color: #6D6E70;
 	font-size: 12px;
 }
+
+.recent-resource .resource-pic:hover .resource-title, .recent-resource .resource-pic:hover .resource-type{
+	color: #0094bc;
+}
+
+
+.recent-resource .resource-pic:hover a img.resource_imginfo_1{
+	-webkit-box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75);
+	box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75);
+}
+
+
 
 .resource-thumbs .resource-thumb .resource-title{
 	color: #6D6E70;
@@ -184,6 +197,39 @@ a.view-colc{
 }
 
 
+.collection-list-wrapper .collection-list details.back-color{
+	min-height: 20px;
+    margin: 25px 0 0;
+    border: 1px solid #e2e2e2;
+}
+
+
+.back-color[open] ul.resource-thumbs li.resource-thumb:hover{
+	background-color:transparent;
+    border: 0px;
+}
+
+.back-color[open] ul.resource-thumbs li.resource-thumb:hover .resource-title,
+.back-color[open] ul.resource-thumbs li.resource-thumb:hover .resource-type,
+.back-color[open] ul.resource-thumbs li.resource-thumb:hover .view-title
+{
+	color: #0094bc;
+}
+
+.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb{
+	padding:0px;
+	margin: 10px 15px;
+}
+
+.back-color[open] ul.resource-thumbs li.resource-thumb:hover a img.resource_imginfo_2,
+.back-color[open] ul.resource-thumbs li.resource-thumb:hover a .view-all-icon
+{
+	-webkit-box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75);
+	box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75);
+}
+
+
 .asearch a{
 	text-decoration: none; 
 	font-size:12px;
@@ -208,12 +254,22 @@ a.view-colc{
 
 
 @media screen and (min-width:1500px){
-	p.intro_text{
+	p.intro_text, h1.title, .projectIntro p, div#searchBox{
 		width:1200px;
 		margin:auto;
 	}
 	.intro h1{
 		text-align: center;
+	}
+	ul.recent-resource{
+		width:1300px;
+		margin:auto;
+	}
+	p.login_msg, .more-info, .collection-list-wrapper, .asearch {
+		width:1200px;
+	}
+	li.resource-pic{
+		margin: 10px 50px 30px 50px;
 	}
 }
 
@@ -230,6 +286,9 @@ body{
 
 
 	@media screen and (max-width:550px){
+		.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb{
+			margin:10px;
+		}
 		.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
 			width:180px;
 			height:120px;
