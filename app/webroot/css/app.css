@@ -13002,6 +13002,7 @@ img.resource_imginfo_2 {
   -webkit-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.5s ease;
 }
 .resource-thumbs .resource-thumb .resource-title {
   color: #6D6E70;
@@ -13101,6 +13102,7 @@ a.view-colc {
   -webkit-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.5s ease;
 }
 .asearch a {
   text-decoration: none;
