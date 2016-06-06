@@ -29,6 +29,20 @@ class SearchController extends AppController {
         $this->set('title_for_layout', $title);
     }
 
+
+    /**
+     * Display the advanced search page
+     * @param string $query
+     */
+    public function advance_search($query='') {
+        $title = 'Advanced Search';
+        if ($query) $title .= ' - ' . urldecode($query);
+        $this->set('title_for_layout', $title);
+    }
+
+
+
+
     /**
      * Search resources.
      */
@@ -390,7 +404,9 @@ class SearchController extends AppController {
             $pass = "";
             $display = "json";
             $sid = PAGES_SID;
-            $query2 = '(Type,=,'. $query1.'),||,(Resource Identifier,=,'. $query1.'),||,(Earliest Date,=,'. $query1.'),||,(Latest Date,=,'. $query1.')';
+            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
+            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
+            // I do not think this is very efficient but will modify with time.
             $query2 = 'kid,!=,1';
             $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
             $ch = curl_init($url);
@@ -411,7 +427,8 @@ class SearchController extends AppController {
             $pass = "";
             $display = "json";
             $sid = RESOURCE_SID;
-            $query2 = '(Type,=,'. $query1.'),||,(Resource Identifier,=,'. $query1.'),||,(Earliest Date,=,'. $query1.'),||,(Latest Date,=,'. $query1.')';
+            $query2 = '(Type,like,'. $query1.'),||,(Resource Identifier,like,'. $query1.'),||,(Earliest Date,like,'. $query1.'),||,(Latest Date,like,'. $query1.')';
+            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
             $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -438,6 +455,99 @@ class SearchController extends AppController {
         }
 
 
+    }
+
+
+
+
+
+
+
+
+    public function advanced_search($query1) {
+
+        $options = $this->parseParams();
+
+        if ($query1 == ''){
+            return $this->emptySearch($options);
+        }else {
+            if (isset($this->request->query['n'])) {
+                $limit = $this->request->query['n'];
+                $response['limit'] = $limit;
+            }
+
+
+            if ($response['order'] == 'relevance') {
+                $response['results'] = $this->Resource->findAllFromIds($response['results']);
+            } else {
+                $response['results'] = $this->Resource->find('all', array(
+                    'conditions' => array('Resource.id' => $response['results']),
+                    'order' => "Resource.{$options['order']} {$options['direction']}"
+                ));
+            }
+
+
+            // The searcher will return debug information that should be hidden for
+            // most account types.
+            if (!$this->Access->isAdmin()) {
+                unset($response['raw_query']);
+                unset($response['mode']);
+            }
+
+            //Get the Images
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $sid = PAGES_SID;
+            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
+            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
+            // I do not think this is very efficient but will modify with time.
+            $query2 = 'kid,!=,1';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+            $imageResults = array();
+            foreach($response['results'] as $image) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }
+
+
+
+
+            // Getting the data!!
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $sid = RESOURCE_SID;
+            $query2 = '(Type,like,'. $query1.'),||,(Resource Identifier,like,'. $query1.'),||,(Accession Number,like,'. $query1.')';
+            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+
+
+            $returnResults = array();
+            foreach($response['results'] as $item) {
+                if ($imageResults[$item['Resource Identifier']] != null) {
+                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                } else {
+                    $item['thumb'] = DEFAULT_THUMB;
+                }
+                array_push($returnResults, $item);
+
+            }
+
+            $response['results'] = $returnResults;
+            $response['total'] = count($response['results']);
+            $this->json(200, $response);
+
+        }
     }
 
 

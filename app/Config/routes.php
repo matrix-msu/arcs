@@ -109,6 +109,23 @@
     );
 
 
+    Router::connect('/advanced_search',
+        array('controller' => 'search', 'action' => 'advance_search')
+    // array('controller' => 'search', 'action' => 'sm')
+    );
+
+    Router::connect('/advanced_search/*',
+        array('controller' => 'search', 'action' => 'advanced_search')
+    // array('controller' => 'search', 'action' => 'sm')
+    );
+
+
+    Router::connect('/api/advanced_search/*',
+        array('controller' => 'search', 'action' => 'advanced_search')
+    // array('controller' => 'search', 'action' => 'sm')
+    );
+
+
     Router::connect('/search/**', 
         array('controller' => 'search', 'action' => 'search')
     );

@@ -52,3 +52,4 @@ define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
 //used for help toolbar
+
