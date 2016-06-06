@@ -9091,6 +9091,7 @@ input[type=range]:focus::-ms-fill-upper {
 .collectionSearchSubmit,
 .collectionNewSubmit {
   height: 3em;
+  display: none;
   background-color: #4899CF;
   width: 100%;
   font-size: 14px;

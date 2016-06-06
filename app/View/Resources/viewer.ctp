@@ -934,6 +934,21 @@
             }
         }
         $("#collectionSearchObjects").html(populateCheckboxes);
+
+        // Hide add to collection button in collection modal when no collections are selected
+        var checkboxes = $("#collectionSearchObjects > input");
+        var submitButt = $(".collectionSearchSubmit");
+        console.log(checkboxes);
+
+        checkboxes.click(function() {
+        console.log("here");
+        if(checkboxes.is(":checked")) {
+            submitButt.show();
+        }
+        else {
+            submitButt.hide();
+        }
+        });
     }
 
     $(".collectionNewSubmit").click(function () {
