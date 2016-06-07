@@ -31,40 +31,22 @@
 
     CollectionList.prototype.events = {
       'click summary': 'onClick',
-      'click .btn-view-all-collection': 'onClick',
-      'click .btn-view-collection': 'onClick',
+      'click details.closed': 'onClick',
       'click #delete-btn': 'deleteCollection'
     };
 
     CollectionList.prototype.onClick = function(e) {
-      var $el, limit, ref;
+      var $el, ref;
       console.log("Josh- clicked spot");
-      console.log(e.currentTarget.className);
-      console.log(e.currentTarget.tagName);
-      if (e.currentTarget.className === 'btn-view-all-collection') {
-        $el = $(e.currentTarget).parent().parent();
-        limit = 0;
-        $el.removeClass('closed');
-        $el.addClass('open');
-        $el.attr('open', 'open');
-      } else if (e.currentTarget.tagName === 'SUMMARY') {
-        $el = $(e.currentTarget).parent();
-        limit = 1;
-        $el.toggleAttr('open');
-        $el.toggleClass('closed').toggleClass('open');
-      } else if (e.currentTarget.tagName === 'DETAILS') {
+      if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
-        limit = 1;
-        $el.toggleAttr('open');
-        $el.toggleClass('closed').toggleClass('open');
       } else {
-        $el = $(e.currentTarget).parent().parent();
-        limit = 1;
-        $el.toggleAttr('open');
-        $el.toggleClass('closed').toggleClass('open');
+        $el = $(e.currentTarget).parent();
       }
       console.log($el);
-      this.renderDetails($el, limit);
+      $el.toggleAttr('open');
+      $el.toggleClass('closed').toggleClass('open');
+      this.renderDetails($el);
       if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
         e.preventDefault();
         return false;
@@ -104,15 +86,11 @@
       return this;
     };
 
-    CollectionList.prototype.renderDetails = function($el, limit) {
-      var id, query, query2;
+    CollectionList.prototype.renderDetails = function($el) {
+      var id, query;
       id = $el.data('id');
       query = encodeURIComponent('collection_id:"' + id + '"');
-      query2 = arcs.baseURL + "resources/search?";
-      if (limit === 1) {
-        query2 += "n=15&";
-      }
-      return $.getJSON(query2 + ("q=" + query), function(response) {
+      return $.getJSON(arcs.baseURL + ("resources/search?n=12&q=" + query), function(response) {
         return $el.children('.results').html(arcs.tmpl('home/details', {
           resources: response.results,
           searchURL: arcs.baseURL + ("collection/" + id)

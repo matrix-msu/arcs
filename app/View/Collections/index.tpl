@@ -130,12 +130,5 @@
 			$( '.dropdown-toggle' ).removeClass( 'dropdown-open' );
 		}
 	});
-	
-	function show_all_clicked(e) {
-		//console.log(e);
-		//console.log(e.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("btn-view-all-collection")[0]);
-		e.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("btn-view-all-collection")[0].click();
-		//console.log($(e).parent().parent().parent().parent().$(".btn-view-al-collection:eq(0)"));
-	}
 
 </script>

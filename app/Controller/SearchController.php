@@ -38,7 +38,6 @@ class SearchController extends AppController {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
-		$this -> render('advancedsearch');
     }
 
 
@@ -57,9 +56,6 @@ class SearchController extends AppController {
 			$limit = $this->request->query['n'];
 			$response['limit'] = $limit;
 		}
-        else{
-            $limit = -1;
-        }
 
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
@@ -92,11 +88,7 @@ class SearchController extends AppController {
             $collection_id = $collection_id['collection_id'];
 
             //Get the kid's from the collection_id
-            if ($limit > 0) {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . $limit;
-            }else {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
-            }
+            $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='".$collection_id."' LIMIT 12";
             $result = $mysqli->query($sql);
             while($row = mysqli_fetch_assoc($result))
                 $test[] = $row;

@@ -18,39 +18,20 @@ class arcs.views.CollectionList extends Backbone.View
 
   events:
     'click summary': 'onClick'
-    #'click details': 'onClick'
-    'click .btn-view-all-collection': 'onClick'
-    'click .btn-view-collection': 'onClick'
+    'click details.closed': 'onClick'
     'click #delete-btn': 'deleteCollection'
 
   onClick: (e) ->
     #Loads individual collections here----Josh
     console.log("Josh- clicked spot");
-    console.log(e.currentTarget.className);
-    console.log(e.currentTarget.tagName);
-    if e.currentTarget.className == 'btn-view-all-collection'
-      $el = $(e.currentTarget).parent().parent()
-      limit = 0
-      $el.removeClass('closed')
-      $el.addClass('open')
-      $el.attr('open', 'open')
-    else if e.currentTarget.tagName == 'SUMMARY'
-      $el = $(e.currentTarget).parent()
-      limit = 1
-      $el.toggleAttr('open')
-      $el.toggleClass('closed').toggleClass('open')
-    else if e.currentTarget.tagName == 'DETAILS'
+    if e.currentTarget.tagName == 'DETAILS'
       $el = $(e.currentTarget)
-      limit = 1
-      $el.toggleAttr('open')
-      $el.toggleClass('closed').toggleClass('open')
     else
-      $el = $(e.currentTarget).parent().parent()
-      limit = 1
-      $el.toggleAttr('open')
-      $el.toggleClass('closed').toggleClass('open')
+      $el = $(e.currentTarget).parent()
     console.log($el)
-    @renderDetails $el, limit
+    $el.toggleAttr('open')
+    $el.toggleClass('closed').toggleClass('open')
+    @renderDetails $el
     # Recent versions of webkit will toggle <details> automatically. 
     # Instead of checking for support, we'll just stop it from bubbling up, 
     # since we've just toggled it ourselves.
@@ -86,13 +67,10 @@ class arcs.views.CollectionList extends Backbone.View
     @
 
   #Josh- collections fills in the template here!!
-  renderDetails: ($el, limit) ->
+  renderDetails: ($el) ->
     id = $el.data 'id'
     query = encodeURIComponent('collection_id:"' + id + '"')
-    query2 = arcs.baseURL + "resources/search?"
-    if (limit == 1)
-      query2 += "n=15&"
-    $.getJSON query2 + "q=#{query}", (response) ->
+    $.getJSON arcs.baseURL + "resources/search?n=12&q=#{query}", (response) ->
       $el.children('.results').html arcs.tmpl 'home/details', 
         resources: response.results
         searchURL: arcs.baseURL + "collection/#{id}"

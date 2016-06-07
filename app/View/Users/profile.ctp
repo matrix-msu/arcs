@@ -110,7 +110,4 @@
             currentTab = tab;
         }
     }
-    function show_all_clicked(e) {
-    		e.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("btn-view-all-collection")[0].click();
-    	}
 </script>

@@ -79,12 +79,12 @@ class User extends AppModel {
             //Josh- Find and return collections data also
             /////////////////////////////////////////////
             $catchcollections = 1;
-            if ( $catchcollections == 1 ) {
+            if ( $catchcollections == 1 ){
 
                 //// Start SQL Area
                 ///////////////////
                 $db = new DATABASE_CONFIG;
-                $db_object = (object)$db;
+                $db_object =  (object) $db;
                 $db_array = $db_object->{'default'};
                 $response['db_info'] = $db_array['host'];
                 $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
@@ -96,26 +96,17 @@ class User extends AppModel {
                 //Get a collection_id from the id
                 //Get the title
                 //Get the newest date
-                $sql = "SELECT DISTINCT collection_id, id, title, max(modified) AS DATE 
+                $sql = "SELECT DISTINCT collection_id, title, max(modified) AS DATE 
                         FROM arcs_dev.collections 
-                        WHERE collections.user_id ='" . $r['id'] . "'
+                        WHERE collections.user_id ='".$r['id']."'
                         GROUP BY title;";
                 //WHERE title = '".$file_name."'";
                 $result = $mysqli->query($sql);
-                while ($row = mysqli_fetch_assoc($result)) {
-
-                    //Set the collection's last modified date
-                    $date = $row['DATE'];
-                    $year = substr($date, 0, 4);
-                    $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-                        'September', 'October', 'November', 'December');
-                    $month = substr($date, 5, 2);
-                    $day = substr($date, 8, 2);
-                    $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;;
-
-                    $temp_array = array('id' => $row['id'],
+                while($row = mysqli_fetch_assoc($result)) {
+                    //$row['temporary'] = 1;
+                    $temp_array = array('id' => $row['collection_id'],
                         'title' => $row['title'],
-                        'date' => $return_date);
+                        'date' => $row['DATE']);
                     $test[] = $temp_array;
                 }
                 //$response['collection_table_id'] = $collection_table_id;
@@ -124,9 +115,140 @@ class User extends AppModel {
                 //$collection_id = $collection_id['collection_id'];
                 //$r['query'] = $sql;
                 $r['Collection'] = $test;
-                
-                return $r;
+                //return $r;
+                $temp_array = array();
+                foreach ($test as $collection) {
+                    $test2 = array();
+                    //Get the kid's from the collection_id
+                    $sql = "SELECT resource_kid 
+                            FROM arcs_dev.collections 
+                            WHERE collections.collection_id ='".$collection['id']."' 
+                            LIMIT 12;";
+                    $result = $mysqli->query($sql);
+                    while($row = mysqli_fetch_assoc($result))
+                        $test2[] = $row;
+                    //$response['col_id'] = $collection_id;
+                    //$response['query'] = $sql;
+                    //$response['col_result'] = $test;
+                    //$collection['col_result'] = $test2;
+                    $temp_array2 = array();
+                    $temp_array2['id'] = $collection['id'];
+                    $temp_array2['title'] = $collection['title'];
+                    $temp_array2['date'] = $collection['date'];
+                    $temp_array2['kids'] = $test2;
+                    $temp_array[] = $temp_array2;
+                }
+                //$r['col_test'] = $temp_array;
+                $r['Collection'] = $temp_array;
+                //return $r;
+                //$r['Resources'] = array();
+                //$r['r_query'] = array();
+                //$r['r_kids'] = array();
+                $temp_collection_array = array();
+                foreach( $r['Collection'] as $collection) {
+                    $temp_resource_array = array();
+                    foreach ($collection['kids'] as $kid) {
+                        $temp_array = array();
+                        //Get the Resources from Kora
+                        $query = "kid,=," . $kid['resource_kid'];
+                        //$r['r_kids'][] = $kid['resource_kid'];
+                        //$temp_array['resource_query'] = $query;
+                        $user = "";
+                        $pass = "";
+                        $display = "json";
+                        $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . RESOURCE_SID . "&token=" . TOKEN . "&display=" . $display . "&query=" . urlencode($query);
+                        //$r['r_query'][] = $url;
+                        //$temp_array['resource_url'] = $url;
+                        ///initialize post request to KORA API using curl
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
+                        //capture results and map to array
+                        $resource = json_decode(curl_exec($ch), true);
+                        $temp_resource = array_values($resource)[0];
+                        //$r['Resources'][] = $temp_resource;
+                        //$r = $page[$kid];
+
+                        //Set the collection's title
+                        $temp_array['col_title'] = $collection['title'];
+                        unset($collection['title']);
+
+                        //Set the collection's last modified date
+                        $date = $collection['date'];
+                        $year = substr($date,0,4);
+                        $months = array('January','February', 'March', 'April', 'May', 'June', 'July', 'August',
+                                            'September', 'October', 'November', 'December');
+                        $month = substr($date,5,2);
+                        $day = substr($date,8,2);
+                        $return_date = array_values($months)[intval($month)-1].' '.$day.', '.$year;
+                        $temp_array['date'] = $return_date;
+                        unset($collection['date']);
+
+                        //Handle resource title
+                        $resource_title = $temp_resource['Title'];
+                        if (!empty($resource_title)) {
+                            $temp_array['title'] = $resource_title;
+                        } else {
+                            $temp_array['title'] = 'Unknown Title';
+                        }
+
+                        //Handle resource type
+                        $resource_type = $temp_resource['Type'];
+                        if (!empty($resource_type)) {
+                            $temp_array['type'] = $resource_type;
+                        } else {
+                            $temp_array['type'] = 'Unknown Type';
+                        }
+
+                        $resource_identifier = $temp_resource['Resource Identifier'];
+                        $temp_array['Resource_identifier'] = $resource_identifier;
+
+                        //Get the Pages from Kora
+                        //$new_temp = array('7B-2E0-1');
+                        $query = "Resource Identifier,=," . $resource_identifier;
+                        //$response['query'] = $query;
+                        $user = "";
+                        $pass = "";
+                        $display = "json";
+                        //no query
+                        //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display;
+                        //query
+                        //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".$query;
+                        $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . PAGES_SID . "&token=" . TOKEN . "&display=" . $display . "&query=" . urlencode($query) . "&count=1";
+
+                        ///initialize post request to KORA API using curl
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
+                        //capture results and map to array
+                        $page2 = json_decode(curl_exec($ch), true);
+
+                        //Get the picture URL from the page results
+                        $temp_array['page_search'] = $page2;
+                        $picture_url = array_values($page2)[0]['Image Upload']['localName'];
+                        $kid = array_values($page2)[0]['Resource Associator'][0];
+                        $temp_array['id'] = $kid;
+
+                        //Decide if there is a picture..
+                        if (!empty($picture_url)) {
+                            //$temp_array['pic_url'] = $picture_url;
+                            $kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
+                            $temp_array['thumb'] = $kora_pic_url . $picture_url;
+                        } else {
+                            $temp_array['thumb'] = "img/DefaultResourceImage.svg";
+                        }
+                        //array_push($response['results'], $temp_array);
+                        //array_push($temp_collection_array, $temp_resource_array);
+                        array_push($temp_resource_array, $temp_array);
+                    }
+                    //$temp_resource_array['title'] = $collection['title'];
+                    array_push($temp_collection_array, $temp_resource_array);
+                }
+                $r['Collection'] = $temp_collection_array;
             }
+            //End of collections
+            ///////////////////////////////////////
+            return $r;
         });
         return $results;
     }
