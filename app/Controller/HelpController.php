@@ -35,7 +35,5 @@ class HelpController extends AppController {
 		$this->render($doc);
 		
 	}
-    
-    
 }
 

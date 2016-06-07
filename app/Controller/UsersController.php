@@ -609,6 +609,7 @@ class UsersController extends AppController
      */
     public function crop($ref)
     {
+		
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
@@ -619,7 +620,6 @@ class UsersController extends AppController
         // change picture with cropped version
         if ($this->request->is('post') && $this->request->data('id')) {
             $user = $this->User->findById($this->request->data('id'));
-
             if ($user) {
                 $imageData = $this->request->data('canvasData');
                 $filteredData = substr($imageData, strpos($imageData, ",")+1);
@@ -664,6 +664,7 @@ class UsersController extends AppController
         $baseURL = $this->baseURL() . "/user/" . $user['username'] . "/";
         $this->set("baseURL", $baseURL);
     }
+	
 
     /**
      * Return an array containing values from the users.name column, for

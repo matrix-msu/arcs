@@ -83,6 +83,9 @@
     Router::connect('/user/edit/*',
         array('controller' => 'users', 'action' => 'edit')
     );
+	Router::connect('/user/crop/*',
+        array('controller' => 'users', 'action' => 'crop')
+    );
 
 
 # Search

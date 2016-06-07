@@ -23,7 +23,7 @@
 				<div id="cage">
 				<?php echo $user['name'] ?> 
 				<div id="dropBox">
-					<span id='logDrop' class="pointerDown"></span>
+					<span id='logDrop' class="pointerDown pointerTool"></span>
 				</div>
 				</div>
 				<div id="droppedMenu" class="dropped-menu">
@@ -64,7 +64,7 @@
 			 <div id='projCage'>
 			 <i class="icon-white icon-folder-open"></i> 
 			 <div id="toolbarHead" > 
-				 	<div id="dropArrow" class='pointerDown'>
+				 	<div id="dropArrow" class='pointerDown pointerTool'>
 				 
 				    </div> 
 				 
@@ -115,7 +115,7 @@
 			<div id='projCageHome'>
 			 <i class="icon-white icon-folder-open"></i> 
 			 <div id="toolbarHead" > Projects
-				 	<div id="dropArrow" class='pointerDown'>
+				 	<div id="dropArrow" class='pointerDown pointerTool'>
 				 
 				    </div> 
 				 
