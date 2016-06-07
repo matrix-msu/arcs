@@ -71,8 +71,8 @@ $(document).ready(function(){
 		if(checkMobile()) {
 				if(($( '#log' ).css('top') === '233px') ){
 					$('#dropArrow').addClass( 'pointerUp' );
-					$( '#log' ).css('top','378px');
-					$( '#belowProjects' ).css('top','89px');
+					$( '#log' ).css('top','390px');
+					$( '#belowProjects' ).css('top','106px');
 					$( '.projects-menu' ).css('display', 'block');
 			}
 				else{
@@ -99,7 +99,7 @@ $(document).ready(function(){
 		if(checkMobile()){
 			if(($('#helpSearch').css('top') == '0px')){
 				$('#dropArrow').addClass( 'pointerUp' );
-				$( '#helpSearch' ).css('top', '148px');
+				$( '#helpSearch' ).css('top', '166px');
 				$( '.projects-menu' ).css('display', 'block');
 			}
 			else{

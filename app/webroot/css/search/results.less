@@ -37,6 +37,12 @@
 	border-width: 2.5px 2.5px 0 0;
 }
 
+.pointerLeft{
+	border: solid grey;
+    border-width: 2.5px 2.5px 0 0;
+    transform: rotate(-135deg);
+}
+
 .SearchBar {
     background: #f4f4f4;
     height: 60px;
@@ -172,8 +178,13 @@ div#search-results-wrapper {
 			-webkit-box-shadow: none !important;
 			-moz-box-shadow: none !important;
 			box-shadow: none !important;
+			border-radius: 0 !important;
+			min-width: auto !important;
+			left: 15px;
 		}
-		
+		ul.leftMost{
+			left:-25px;
+		}
         ul.dropdown-menu li a {
             cursor: pointer;
             display: block;
@@ -414,4 +425,7 @@ ul.pagination {
     vertical-align: middle;
     background-repeat: no-repeat;
     display: inline-block;
+}
+#pageBox{
+	
 }

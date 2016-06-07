@@ -38,6 +38,7 @@ class SearchController extends AppController {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
+		$this -> render('advancedsearch');
     }
 
 
