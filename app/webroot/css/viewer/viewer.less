@@ -101,7 +101,7 @@ input[type=range]:focus::-ms-fill-upper {
 .viewers-container {
 	margin-top: -60px;
     position: relative;
-    height: 759px;
+    height: 709px;
     border-top: 1px solid #ccc !important;
 }
 
@@ -357,6 +357,41 @@ input[type=range]:focus::-ms-fill-upper {
 				color: @ArcsBlue !important;
 				border-left: 2px solid @ArcsBlue;
 			}
+
+			ul {
+				background: #f9f9f9;
+				border-top: none;
+				border-left: none;
+				border-right: none;
+				border-bottom: 1px solid #cdcdcd !important;
+				height: 29px;
+				padding: 0;
+
+				li {
+					background: #f9f9f9;
+					border-radius: 100%;
+					height: 20px;
+					width: 20px;
+					margin: 4px 0 4px 4px;
+					border: 1px solid #cdcdcd !important;
+					top: 0;
+					outline: none;
+
+					a {
+						color: inherit;
+						position: relative;
+						padding: 0;
+						width: 100%;
+						text-align: center;
+						outline: none;
+					}
+				}
+
+				li.ui-tabs-active {
+					background-color: @ArcsBlue;
+					color: #f9f9f9;
+				}
+			}
 			
 			.level-content {
 				border-radius: 0;
@@ -415,6 +450,10 @@ input[type=range]:focus::-ms-fill-upper {
 						top: 0;
 					}
 				}
+			}
+
+			.soo {
+				border-left: none;
 			}
 		}
 	}

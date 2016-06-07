@@ -600,17 +600,22 @@
 
                     <div class="level-content">
 
-                        <div id="tabs-1" class="metadata-content">
+                        <div id="soo" class="metadata-content">
 
-                            <div class="accordion metadata-accordion">
+                            <!--<div class="metadata-accordion">-->
 
                                 <?php if(count($subject) > 0) { ?>
+                                <ul>
+                                <?php $count=0; ?>
+                                <?php foreach($subject as $subjects) { $count++; ?>
+                                <li><a href="#soo-<?php echo $count; ?>"><?php echo $count; ?></a></li>
+                                <?php } ?>
+                                </ul>
+
                                 <?php $count=0; ?>
                                 <?php foreach($subject as $subjects) { $count++; ?>
 
-                                <h3 class="level-tab smaller">Subject of Observation Section <?php echo $count ?></h3>
-
-                                <div class="level-content auto-height">
+                                <div class="level-content soo auto-height" id="soo-<?php echo $count; ?>">
 
                                     <table>
                                         <tr>
@@ -672,7 +677,7 @@
                                 </div>
                                 <?php } ?>
 
-                            </div>
+                            <!--</div>-->
 
                         </div>
 
@@ -808,6 +813,10 @@
     $(window).resize(function () {
         $('.metadata-accordion').height($('#viewer-window').height());
     });
+
+    $(function () {
+            $("#soo").tabs();
+        });
 </script>
 
 <script>

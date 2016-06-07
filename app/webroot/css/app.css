@@ -8645,7 +8645,7 @@ input[type=range]:focus::-ms-fill-upper {
 .viewers-container {
   margin-top: -60px;
   position: relative;
-  height: 759px;
+  height: 709px;
   border-top: 1px solid #ccc !important;
 }
 #viewer-left {
@@ -8871,6 +8871,37 @@ input[type=range]:focus::-ms-fill-upper {
   color: #0093be !important;
   border-left: 2px solid #0093be;
 }
+.metadata .metadata-content .metadata-accordion ul {
+  background: #f9f9f9;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #cdcdcd !important;
+  height: 29px;
+  padding: 0;
+}
+.metadata .metadata-content .metadata-accordion ul li {
+  background: #f9f9f9;
+  border-radius: 100%;
+  height: 20px;
+  width: 20px;
+  margin: 4px 0 4px 4px;
+  border: 1px solid #cdcdcd !important;
+  top: 0;
+  outline: none;
+}
+.metadata .metadata-content .metadata-accordion ul li a {
+  color: inherit;
+  position: relative;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  outline: none;
+}
+.metadata .metadata-content .metadata-accordion ul li.ui-tabs-active {
+  background-color: #0093be;
+  color: #f9f9f9;
+}
 .metadata .metadata-content .metadata-accordion .level-content {
   border-radius: 0;
   margin-bottom: 0px;
@@ -8919,6 +8950,9 @@ input[type=range]:focus::-ms-fill-upper {
   float: right;
   margin-right: -14px;
   top: 0;
+}
+.metadata .metadata-content .metadata-accordion .soo {
+  border-left: none;
 }
 .level-content::-webkit-scrollbar-thumb {
   border-radius: 0;
@@ -12581,6 +12615,13 @@ footer#standard-MSU-footer {
 }
 .collection-list-wrapper .collection-list details summary h3 {
   text-shadow: none;
+}
+.collection-list-wrapper .collection-list details summary a {
+  float: right;
+  text-transform: uppercase;
+  margin-right: 30px;
+  margin-left: auto;
+  margin-top: 8px;
 }
 .collection-list-wrapper .collection-list details summary.large {
   padding: 15px 25px;
