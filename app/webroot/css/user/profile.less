@@ -384,7 +384,7 @@ span.view-collection {
                 width: 100%;
                 visibility: visible;
                 display: inline;
-                padding: 10px 0 15px 20px;
+                padding: 0px 0 0px 0px;
                 font-size: @baseFontSize;
                 line-height: normal;
                 color: #333;
@@ -421,6 +421,29 @@ span.view-collection {
                 &.small {
                     padding: 7px 9px 7px;
                     font-size: @baseFontSize - 2px;
+                }
+                .btn-view-all-collection,
+                .btn-view-collection {
+                    visibility: visible;
+                    display: inline-block;
+
+                }
+                .btn-view-collection{
+                    padding: 10px 20px 15px 0px;
+                    height: 51px;
+                }
+                .btn-view-all-collection {
+                    padding-top: 10px;
+                    width: 140px;
+                    height: 51px;
+                    float: right;
+                    h3 {
+                        color: #4899CF !important;
+                        padding: 0 0 0 0;
+                        margin-top: 10px;
+                        margin-right: 1em;
+                        font-size: 13px;
+                    }
                 }
             }
 
@@ -464,7 +487,7 @@ span.view-collection {
                     border-color: rgba(0,0,0,.15);
                 }
 
-                div {
+                .results {
                     visibility: visible;
                     display: block;
                 }

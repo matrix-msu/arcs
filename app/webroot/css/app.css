@@ -10686,7 +10686,7 @@ span.view-collection {
   width: 100%;
   visibility: visible;
   display: inline;
-  padding: 10px 0 15px 20px;
+  padding: 0px 0 0px 0px;
   font-size: 12;
   line-height: normal;
   color: #333;
@@ -10720,6 +10720,28 @@ span.view-collection {
 .profile-collection-list-wrapper .collection-list details summary.small {
   padding: 7px 9px 7px;
   font-size: 10px;
+}
+.profile-collection-list-wrapper .collection-list details summary .btn-view-all-collection,
+.profile-collection-list-wrapper .collection-list details summary .btn-view-collection {
+  visibility: visible;
+  display: inline-block;
+}
+.profile-collection-list-wrapper .collection-list details summary .btn-view-collection {
+  padding: 10px 20px 15px 0px;
+  height: 51px;
+}
+.profile-collection-list-wrapper .collection-list details summary .btn-view-all-collection {
+  padding-top: 10px;
+  width: 140px;
+  height: 51px;
+  float: right;
+}
+.profile-collection-list-wrapper .collection-list details summary .btn-view-all-collection h3 {
+  color: #4899CF !important;
+  padding: 0 0 0 0;
+  margin-top: 10px;
+  margin-right: 1em;
+  font-size: 13px;
 }
 .profile-collection-list-wrapper .collection-list details.disabled {
   cursor: default;
@@ -10766,7 +10788,7 @@ span.view-collection {
   border-color: #ddd;
   border-color: rgba(0, 0, 0, 0.15);
 }
-.profile-collection-list-wrapper .collection-list details[open] div {
+.profile-collection-list-wrapper .collection-list details[open] .results {
   visibility: visible;
   display: block;
 }
@@ -12559,7 +12581,7 @@ footer#standard-MSU-footer {
   width: 100%;
   visibility: visible;
   display: inline;
-  padding: 10px 0 15px 20px;
+  padding: 0px 0 0px 0px;
   font-size: 12;
   line-height: normal;
   color: #333;
@@ -12592,6 +12614,28 @@ footer#standard-MSU-footer {
 .collection-list-wrapper .collection-list details summary.small {
   padding: 7px 9px 7px;
   font-size: 10px;
+}
+.collection-list-wrapper .collection-list details summary .btn-view-all-collection,
+.collection-list-wrapper .collection-list details summary .btn-view-collection {
+  visibility: visible;
+  display: inline-block;
+}
+.collection-list-wrapper .collection-list details summary .btn-view-collection {
+  padding: 10px 20px 15px 0px;
+  height: 51px;
+}
+.collection-list-wrapper .collection-list details summary .btn-view-all-collection {
+  padding-top: 10px;
+  width: 140px;
+  height: 51px;
+  float: right;
+}
+.collection-list-wrapper .collection-list details summary .btn-view-all-collection h3 {
+  color: #4899CF;
+  padding: 0 0 0 0;
+  margin-top: 10px;
+  margin-right: 1em;
+  font-size: 13px;
 }
 .collection-list-wrapper .collection-list details.disabled {
   cursor: default;
@@ -12637,7 +12681,7 @@ footer#standard-MSU-footer {
   border-color: #ddd;
   border-color: rgba(0, 0, 0, 0.15);
 }
-.collection-list-wrapper .collection-list details[open] div {
+.collection-list-wrapper .collection-list details[open] .results {
   visibility: visible;
   display: block;
 }

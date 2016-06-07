@@ -10,8 +10,29 @@
       return Profile.__super__.constructor.apply(this, arguments);
     }
 
+    Profile.prototype.initialize = function(options) {
+      _.extend(this.options, _.pick(options, 'model', 'collection', 'el'));
+      this.search = new arcs.utils.Search({
+        container: $('.search-wrapper'),
+        run: false,
+        onSearch: (function(_this) {
+          return function() {
+            return location.href = arcs.url('search', _this.search.query);
+          };
+        })(this)
+      });
+      return this.$('details.open').each((function(_this) {
+        return function(i, el) {
+          return _this.renderDetails($(el));
+        };
+      })(this));
+    };
+
     Profile.prototype.events = {
-      'click #edit-profile': 'editAccount'
+      'click #edit-profile': 'editAccount',
+      'click summary': 'onClick',
+      'click .btn-view-all-collection': 'onClick',
+      'click .btn-view-collection': 'onClick'
     };
 
     Profile.prototype.editAccount = function() {
@@ -55,6 +76,80 @@
           },
           cancel: function() {}
         }
+      });
+    };
+
+    Profile.prototype.onClick = function(e) {
+      var $el, limit, ref;
+      console.log("Josh- clicked spot");
+      console.log(e.currentTarget.className);
+      console.log(e.currentTarget.tagName);
+      if (e.currentTarget.className === 'btn-view-all-collection') {
+        $el = $(e.currentTarget).parent().parent();
+        limit = 0;
+        $el.removeClass('closed');
+        $el.addClass('open');
+        $el.attr('open', 'open');
+      } else if (e.currentTarget.tagName === 'SUMMARY') {
+        $el = $(e.currentTarget).parent();
+        limit = 1;
+        $el.toggleAttr('open');
+        $el.toggleClass('closed').toggleClass('open');
+      } else if (e.currentTarget.tagName === 'DETAILS') {
+        $el = $(e.currentTarget);
+        limit = 1;
+        $el.toggleAttr('open');
+        $el.toggleClass('closed').toggleClass('open');
+      } else {
+        $el = $(e.currentTarget).parent().parent();
+        limit = 1;
+        $el.toggleAttr('open');
+        $el.toggleClass('closed').toggleClass('open');
+      }
+      console.log($el);
+      this.renderDetails($el, limit);
+      if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    Profile.prototype.deleteCollection = function(e) {
+      var $parent, id, model;
+      e.preventDefault();
+      $parent = $(e.currentTarget).parents('details');
+      id = $parent.data('id');
+      model = this.collection.get(id);
+      return arcs.confirm("Are you sure you want to delete this collection?", ("<p>Collection <b>" + (model.get('title')) + "</b> will be ") + "deleted. <p><b>N.B.</b> Resources within the collection will not be " + "deleted. They may still be accessed from other collections to which they " + "belong.", (function(_this) {
+        return function() {};
+      })(this), arcs.loader.show(), $.ajax({
+        url: arcs.url('collections', 'delete', model.id),
+        type: 'DELETE',
+        success: (function(_this) {
+          return function() {
+            _this.collection.remove(model, {
+              silent: true
+            });
+            _this.render();
+            return arcs.loader.hide();
+          };
+        })(this)
+      }));
+    };
+
+    Profile.prototype.renderDetails = function($el, limit) {
+      var id, query, query2;
+      id = $el.data('id');
+      query = encodeURIComponent('collection_id:"' + id + '"');
+      query2 = arcs.baseURL + "resources/search?";
+      if (limit === 1) {
+        query2 += "n=15&";
+      }
+      return $.getJSON(query2 + ("q=" + query), function(response) {
+        return $el.children('.results').html(arcs.tmpl('home/details', {
+          resources: response.results,
+          searchURL: arcs.baseURL + ("collection/" + id)
+        }));
       });
     };
 
