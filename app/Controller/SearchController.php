@@ -183,7 +183,7 @@ class SearchController extends AppController {
                     $kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
                     $temp_array['thumb'] = $kora_pic_url.$picture_url;
                 }else{
-                    $temp_array['thumb'] = "img/DefaultResourceImage.svg";
+                    $temp_array['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
                 }
                 array_push($response['results'], $temp_array );
             }
