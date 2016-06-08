@@ -7599,9 +7599,9 @@ input.indexSearchBox {
     color: #808080;
     display: block;
     padding-left: 30px;
+    padding-bottom: 5px;
   }
   .dropped-menu a:hover {
-    display: none ;
     text-decoration: none;
     color: #fcfcfc;
     background: #777;
@@ -7641,6 +7641,9 @@ input.indexSearchBox {
     left: 0;
     margin-top: 5px;
     border: none;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-left: 10px;
   }
   .projects-menu a {
     color: #808080;
