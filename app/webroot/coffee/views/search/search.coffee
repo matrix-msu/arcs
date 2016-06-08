@@ -273,8 +273,6 @@ class arcs.views.search.Search extends Backbone.View
       resourcequery = encodeURIComponent("#{val}")
       req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery, (response) ->
         console.log(response)
-        # resp = jQuery.parseJSON( response['results'])
-        # console.log(resp)
         resolve(response['results'])
     )
 

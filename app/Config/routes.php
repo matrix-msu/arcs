@@ -83,9 +83,6 @@
     Router::connect('/user/edit/*',
         array('controller' => 'users', 'action' => 'edit')
     );
-	Router::connect('/user/crop/*',
-        array('controller' => 'users', 'action' => 'crop')
-    );
 
 
 # Search
@@ -118,13 +115,13 @@
     );
 
     Router::connect('/advanced_search/*',
-        array('controller' => 'search', 'action' => 'advanced_search')
+        array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
     // array('controller' => 'search', 'action' => 'sm')
     );
 
 
     Router::connect('/api/advanced_search/*',
-        array('controller' => 'search', 'action' => 'advanced_search')
+        array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
     // array('controller' => 'search', 'action' => 'sm')
     );
 
@@ -148,6 +145,8 @@
 
     # Search must have a trailing slash, for the client-side code's sanity. 
     Router::redirect('/search', 'search/');
+    Router::redirect('/simple_search', 'simple_search/');
+    Router::redirect('/advanced_search', 'advanced_search/');
 
     # Configuration status
     Router::redirect('/admin',
@@ -209,7 +208,8 @@
         'metadata',
         'MetadataEdits',
         'collections',
-        'simple_search'
+        'simple_search',
+        'advanced_search'
     );
 
     Router::mapResources($restful);
