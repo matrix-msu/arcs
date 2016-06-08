@@ -10582,6 +10582,7 @@ th.user-tabs-header {
   border-radius: 0;
   border: 0;
   text-transform: uppercase;
+  font-size: 12px;
 }
 #user-actions .nav li a {
   color: #555;
@@ -10605,7 +10606,8 @@ th.user-tabs-header {
 #user-actions .tab-content #discussion-tab,
 #user-actions .tab-content #collections-tab,
 #user-actions .tab-content #activity-tab,
-#user-actions .tab-content #achievements-tab {
+#user-actions .tab-content #achievements-tab,
+#user-actions .tab-content #transcriptions-tab {
   width: 90%;
   margin: auto;
   color: #555;
