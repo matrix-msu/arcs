@@ -120,7 +120,7 @@
         <div class="collection-list-wrapper">
             <h1 class="title">Recent Collections</h1>
 			<p class="login_msg">You're viewing publicly available resources. 
-			You'll need to <a href=#loginModal">log in</a> to see the rest.
+			You'll need to <a href=#loginModal>log in</a> to see the rest.
 			</p>
 			<div class="collection-list" id="all-collections">
 				
@@ -555,5 +555,11 @@
 		</div>
 		<br><br>
 		</div>
+
+
+
+
+
+		
     </body>
 </html>
