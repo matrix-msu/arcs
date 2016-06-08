@@ -38,17 +38,20 @@
 
         <div class="profile-collection-list-wrapper">
         <div class="collection-list" id="all-collections">
+
             <?php foreach($user_info['Collection'] as $collection): ?>
-                <details class="closed">
+                <details class="closed" data-id="<?php echo $collection['id'] ?>">
 
                     <summary>
-                        <h3><?php echo $collection[0]['col_title']; ?></h3>
+                        <h3><?php echo $collection['title']; ?></h3>
                         <h4></h4>
-                        <h5><?php echo $collection[0]['date']; ?></h5>
+                        <h5><?php echo $collection['date']; ?></h5>
+
+                        <h4 style="float:right;padding-right:10px">EDIT COLLECTION</h3>
                     </summary>
 
                     <div class="results">
-                        <ul class="resource-thumbs">
+                        <!-- ul class="resource-thumbs">
                             <?php foreach( $collection as $resource ): ?>
 
                                     <li class="resource-thumb">
@@ -61,7 +64,7 @@
                                     </li>
 
                             <?php endforeach; ?>
-                        </ul>
+                        </ul -->
                     </div>
 
                 </details>
