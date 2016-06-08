@@ -314,116 +314,116 @@
 
                     <h3 class="level-tab">Season
                         <!--<div class="icon-edit"></div>-->
-                        <span>Edit</span></h3>
+                        <span class="edit-btn">Edit</span></h3>
 
                     <div class="level-content">
 
                         <?php if($season['Title'] != "") { ?>
 
-                        <table>
+                        <table id="Season">
                             <tr>
                                 <td>Title</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Title'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Title"><?php echo $season['Title'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Type</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Type'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Type"><?php echo $season['Type'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Director</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Director'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Director"><?php echo $season['Director'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Registrar</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Registrar'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Registrar"><?php echo $season['Registrar'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Sponsor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Sponsor'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Sponsor"><?php echo $season['Sponsor'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Earliest Date</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php if ($season['Earliest Date']['year']) {echo $season['Earliest Date']['year'] . "/" . $season['Earliest Date']['month'] . "/" . $season['Earliest Date']['day'];} ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Earliest Date"><?php if ($season['Earliest Date']['year']) {echo $season['Earliest Date']['year'] . "/" . $season['Earliest Date']['month'] . "/" . $season['Earliest Date']['day'];} ?></div></td>
                             </tr>
                             <tr>
                                 <td>Latest Date</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php if ($season['Latest Date']['year']) {echo $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];} ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Latest Date"><?php if ($season['Latest Date']['year']) {echo $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];} ?></div></td>
                             </tr>
                             <tr>
                                 <td>Terminus Ante Quem</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Terminus Ante Quem'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Terminus Ante Quem"><?php echo $season['Terminus Ante Quem'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Terminus Post Quem</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Terminus Post Quem'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Terminus Post Quem"><?php echo $season['Terminus Post Quem'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Description</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Description'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Description"><?php echo $season['Description'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor"><?php echo $season['Contributor'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role"><?php echo $season['Contributor Role'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 2'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 2"><?php echo $season['Contributor 2'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 2'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 2"><?php echo $season['Contributor Role 2'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 3'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 3"><?php echo $season['Contributor 3'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 3'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 3"><?php echo $season['Contributor Role 3'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 4'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 4"><?php echo $season['Contributor 4'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 4'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 4"><?php echo $season['Contributor Role 4'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 5'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 5"><?php echo $season['Contributor 5'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 5'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 5"><?php echo $season['Contributor Role 5'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 6'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 6"><?php echo $season['Contributor 6'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 6'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 6"><?php echo $season['Contributor Role 6'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 7'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 7"><?php echo $season['Contributor 7'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 7'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 7"><?php echo $season['Contributor Role 7'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor 8'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor 8"><?php echo $season['Contributor 8'] ?></div></td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $season['Contributor Role 8'] ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Contributor Role 8"><?php echo $season['Contributor Role 8'] ?></div></td>
                             </tr>
 
                         </table>
@@ -437,7 +437,7 @@
 
                     <h3 class="level-tab">Excavation/Survey
                         <!--<div class="icon-edit"></div>-->
-                        <span>Edit</span></h3>
+                        <span class="edit-btn">Edit</span></h3>
 
                     <div class="level-content">
 
@@ -454,50 +454,50 @@
 
                                 <div class="level-content auto-height">
 
-                                    <table>
+                                    <table id="Excavation/Survey">
                                         <tr>
                                             <td>Name</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Name'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Name"><?php echo $survey['Name'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Type</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Type'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Type"><?php echo $survey['Type'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Supervisor</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Supervisor'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Supervisor"><?php echo $survey['Supervisor'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Earliest Date</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php if ($survey['Earliest Date']['year']) {echo $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];} ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Earliest Date"><?php if ($survey['Earliest Date']['year']) {echo $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];} ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Latest Date</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php if ($survey['Latest Date']['year']) {echo $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];} ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Latest Date"><?php if ($survey['Latest Date']['year']) {echo $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];} ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Terminus Ante Quem</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Terminus Ante Quem'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Terminus Ante Quem"><?php echo $survey['Terminus Ante Quem'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Terminus Post Quem</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Terminus Post Quem'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Terminus Post Quem"><?php echo $survey['Terminus Post Quem'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Excavation Stratigraphy</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Excavation Stratigraphy'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Excavation Stratigraphy"><?php echo $survey['Excavation Stratigraphy'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Survey Conditions</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Survey Conditions'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Survey Conditions"><?php echo $survey['Survey Conditions'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Post Dispositional Transformation</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Post Dispositional Transformation'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Post Dispositional Transformation"><?php echo $survey['Post Dispositional Transformation'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Legacy</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $survey['Legacy'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Legacy"><?php echo $survey['Legacy'] ?></div></td>
                                         </tr>
 
                                     </table>
@@ -518,76 +518,76 @@
 
                     <h3 class="level-tab">Archival Object
                         <!--<div class="icon-edit"></div>-->
-                        <span>Edit</span></h3>
+                        <span class="edit-btn">Edit</span></h3>
 
                     <div class="level-content">
 
-                        <table>
+                        <table id="Archival_Object">
                             <tr>
                                 <td>Resource Identifier</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Resource Identifier']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Resource Identifier"><?php echo $resource['Resource Identifier']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Type</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Type']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Type"><?php echo $resource['Type']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Tile</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Title']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Title"><?php echo $resource['Title']; ?></div></td>
                             </tr>
 
                             <?php if ($resource['Sub-title'] != null) {?>
                             <tr>
                                 <td>Sub-Tile</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Sub-Tile']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Sub-Tile"><?php echo $resource['Sub-Tile']; ?></div></td>
                             </tr>
                             <?php } ?>
 
                             <tr>
                                 <td>Creator</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php foreach($resource['Creator'] as $creator) {echo $creator.'<br>'; } ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Creator"><?php foreach($resource['Creator'] as $creator) {echo $creator.'<br>'; } ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Role</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php foreach($resource['Role'] as $role) {echo $role.'<br>'; } ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Role"><?php foreach($resource['Role'] as $role) {echo $role.'<br>'; } ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Earliest Date</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php if ($resource['Earliest Date']['year']) {echo $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'];} ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Earliest Date"><?php if ($resource['Earliest Date']['year']) {echo $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'];} ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Date Range</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Date Range']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Date Range"><?php echo $resource['Date Range']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Description</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Description']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Description"><?php echo $resource['Description']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Pages</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Pages']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Pages"><?php echo $resource['Pages']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Condition</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Condition']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Condition"><?php echo $resource['Condition']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Access Level</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Access Level']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Access Level"><?php echo $resource['Access Level']; ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Accession Number</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><?php echo $resource['Accession Number']; ?></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Accession Number"><?php echo $resource['Accession Number']; ?></div></td>
                             </tr>
                         </table>
 
@@ -596,7 +596,7 @@
 
                     <h3 class="level-tab">Subject of Observation
                         <!--<div class="icon-edit"></div>-->
-                        <span>Edit</span><span id="new">Add New</span></h3>
+                        <span class="edit-btn">Edit</span><span id="new">Add New</span></h3>
 
                     <div class="level-content">
 
@@ -617,54 +617,54 @@
 
                                 <div class="level-content soo auto-height" id="soo-<?php echo $count; ?>">
 
-                                    <table>
+                                    <table id="Subject_Of_Observation">
                                         <tr>
                                             <td>Pages Associator</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Pages Associator'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Pages Associator"><?php echo $subjects['Pages Associator'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Resource Identifier</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Resource Identifier'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Resource Identifier"><?php echo $subjects['Resource Identifier'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Subject of Observation Associator</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Subject of Observation Associator'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Subject of Observation Associator"><?php echo $subjects['Subject of Observation Associator'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Classification</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Classification'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Classification"><?php echo $subjects['Artifact - Structure Classification'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Type</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Type'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Type"><?php echo $subjects['Artifact - Structure Type'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Ante Quem</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Terminus Ante Quem'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Terminus Ante Quem"><?php echo $subjects['Artifact - Structure Terminus Ante Quem'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Post Quem</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Terminus Post Quem'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Terminus Post Quem"><?php echo $subjects['Artifact - Structure Terminus Post Quem'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Title</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure title'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure title"><?php echo $subjects['Artifact - Structure title'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Geolocation</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Geolocation'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Geolocation"><?php echo $subjects['Artifact - Structure Geolocation'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Excavation Unit</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Excavation Unit'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Excavation Unit"><?php echo $subjects['Artifact - Structure Excavation Unit'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Description</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Description'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Description"><?php echo $subjects['Artifact - Structure Description'] ?></div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Location</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><?php echo $subjects['Artifact - Structure Location'] ?></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Location"><?php echo $subjects['Artifact - Structure Location'] ?></div></td>
                                         </tr>
 
                                     </table>
@@ -1791,9 +1791,11 @@
 
     $(document).on("click", ".edit-btn", function() {
         console.log("edit-btn clicked");
-        $(this).text("SAVE");
-        $(this).css({'color':'#0093be'});
-        $(this).addClass("save-btn").removeClass("edit-btn");
+        if (editBtnClick != 1) {
+            $(this).text("SAVE");
+            $(this).css({'color':'#0093be'});
+            $(this).addClass("save-btn").removeClass("edit-btn");
+        }
         editBtnClick = 1;
     });
     $(document).on("click", ".save-btn", function() {
