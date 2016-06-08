@@ -163,6 +163,7 @@ div#search-results-wrapper {
 				top: -14%;
 				padding-top: 5em;            
 				box-shadow: none !important;
+				
 			}
             
         }
@@ -172,6 +173,9 @@ div#search-results-wrapper {
 			-webkit-box-shadow: none !important;
 			-moz-box-shadow: none !important;
 			box-shadow: none !important;
+			border-radius: 0 !important;
+			width: auto !important;
+			min-width: 0;
 		}
 		
         ul.dropdown-menu li a {
@@ -233,7 +237,7 @@ div#search-results-wrapper {
 div#search-again {
     float: right;
     vertical-align: middle;
-    line-height: 50px;
+    line-height: 0;
     color: #747474;
     text-transform: uppercase;
 }
@@ -329,7 +333,7 @@ ul.pagination {
 .pagination > li > a, .pagination > li > span {
     position: relative;
     float: left;
-    margin: 8px 5px !important;
+    margin: 8px 3px !important;
     /*line-height: 50px !important;*/
     text-decoration: none;
     color: #6f6f6f;
@@ -414,4 +418,30 @@ ul.pagination {
     vertical-align: middle;
     background-repeat: no-repeat;
     display: inline-block;
+}
+.leftMost{
+	left: -23px;
+}
+#rightArrow{
+	position: relative;
+    top: 1px;
+    bottom: 0;
+    right: 0px;
+    left: -230px;
+    transform: rotate(-135deg);
+}
+
+#leftArrow{
+	position: relative;
+    left: 0px;
+    right: 0;
+    top: 13px;
+    bottom: 0;
+    transform: rotate(45deg);
+}
+.pointerNum{
+	margin: 5px 0 0 30px;
+	margin-left: 10px;
+	border: solid grey;
+	border-width: 2.5px 2.5px 0 0;
 }

@@ -21,7 +21,7 @@
 			<div id="sites-buttons" class="btn-group actions-left">
 		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Sites
-		      	<span class="pointerDown sort-arrow"></span>
+		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-site-btn active" id="open-btn">Isthmia&nbsp;</a></li>
@@ -33,7 +33,7 @@
 		    <div id="seasons-buttons" class="btn-group actions-left">
 		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Season
-		      	<span class="pointerDown sort-arrow"></span>
+		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
@@ -45,7 +45,7 @@
 		    <div id="resources-buttons" class="btn-group actions-left">
 		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Resource Type
-		      	<span class="pointerDown sort-arrow"></span>
+		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-btn active" id="open-btn">Drawing&nbsp;</a></li>
@@ -61,7 +61,7 @@
 		    <div id="author-buttons" class="btn-group actions-left">
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Author
-		      	<span class="pointerDown sort-arrow"></span>
+		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
@@ -73,7 +73,7 @@
 		    <div id="data-buttons" class="btn-group actions-left">
 		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Data
-		      	<span class="pointerDown sort-arrow"></span>
+		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
@@ -85,9 +85,9 @@
 			<div id="options-buttons" class="btn-group actions-right">
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Options
-		      	<span class="pointerDown sort-arrow"></span>
+		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
-		      <ul class="dropdown-menu">
+		      <ul class="dropdown-menu leftMost">
 		        <li><a class="sort-btn active" id="open-btn">In separate windows&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">In a collection view&nbsp;</a></li>
 		        <li class="divider"></li>
@@ -99,7 +99,7 @@
 		    <div id="view-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        <span id="sort-by">view</span>
-		        <span class="pointerDown sort-arrow"></span>
+		        <span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-btn active" id="sort-title-btn">simple&nbsp;
@@ -111,7 +111,7 @@
 		    <div id="sorting-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        Sort by
-		        <span class="pointerDown sort-arrow"></span>
+		        <span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
 		        <li><a class="sort-btn active" id="sort-title-btn">title&nbsp;
@@ -119,7 +119,7 @@
 		        <li><a class="sort-btn" id="sort-modified-btn">modified&nbsp;</a></li>
 		        <li><a class="sort-btn" id="sort-created-btn">created&nbsp;</a></li>
 		        <li class="divider"></li>
-		        <li><a class="dir-btn" id="dir-asc-btn">ascending&nbsp;
+		        <li><a class="dir-btn active" id="dir-asc-btn">ascending&nbsp;
 		          <i class="icon-ok"></i></a></li>
 		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
 		      </ul>
@@ -172,17 +172,19 @@
 					<span class="pointerDown pointerSearch sort-arrow"></span>
 				  </button>
 				  <ul class="dropdown-menu">
-					<li><a class="sort-btn" id="open-btn">20 Items&nbsp;</a></li>
-					<li><a class="sort-btn" id="open-colview-btn">40 Items&nbsp;</a></li>
-					<li><a class="sort-btn" id="open-btn">60 Items&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-colview-btn">40 Items per Page&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
 				  </ul>
 			</div>
 			<ul class="pagination">
+				<li id='leftArrow' class='pointerDown pointerNum'></li>
 				<li><a class='selected pageNumber' id='1'>1</a></li>
 				<li><a class='pageNumber' id='2'>2</a></li>
 				<li><a class='pageNumber' id='3'>3</a></li>
 				<li><a class='pageNumber' id='4'>4</a></li>
 				<li><a class='pageNumber' id='5'>5</a></li>
+				<li id='rightArrow' class='pointerDown pointerNum'></li>
 			</ul>
 			<div id="search-again">
 				<a class="search-again-link" id='top-btn'>Search again</a>
@@ -231,6 +233,42 @@
 		$('.pageNumber').removeClass('selected');
 		$(this).addClass('selected');
 		/* add functions here, use this.id to identify page number. */
+	});
+	$('#leftArrow').click(function(){
+		if($("#1").hasClass('selected')){
+			$('#1').removeClass('selected');
+			$('#2').addClass('selected');
+		}
+		else if($("#2").hasClass('selected')){
+			$('#2').removeClass('selected');
+			$('#3').addClass('selected');
+		}
+		else if($("#3").hasClass('selected')){
+			$('#3').removeClass('selected');
+			$('#4').addClass('selected');
+		}
+		else if($("#4").hasClass('selected')){
+			$('#4').removeClass('selected');
+			$('#5').addClass('selected');
+		}
+	});
+	$('#rightArrow').click(function(){
+		if($("#5").hasClass('selected')){
+			$('#5').removeClass('selected');
+			$('#4').addClass('selected');
+		}
+		else if($("#4").hasClass('selected')){
+			$('#4').removeClass('selected');
+			$('#3').addClass('selected');
+		}
+		else if($("#3").hasClass('selected')){
+			$('#3').removeClass('selected');
+			$('#2').addClass('selected');
+		}
+		else if($("#2").hasClass('selected')){
+			$('#2').removeClass('selected');
+			$('#1').addClass('selected');
+		}
 	});
 
 	$('#select-all, #deselect-all').click(function(){
