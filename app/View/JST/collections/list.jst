@@ -1,8 +1,8 @@
 <% _.each(collections, function(c, i) { %>
 <% if (i == 0) { %>
-  <details data-id="<%= c.id %>" class="open" open="open">
+  <details data-id="<%= c.id %>" class="open back-color" open="open">
 <% } else { %>
-  <details data-id="<%= c.id %>" class="closed">
+  <details data-id="<%= c.id %>" class="closed back-color">
 <% } %>
     <summary>
       <h3><%= c.title %></h3>

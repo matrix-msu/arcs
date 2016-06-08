@@ -596,7 +596,7 @@
 
                     <h3 class="level-tab">Subject of Observation
                         <!--<div class="icon-edit"></div>-->
-                        <span>Edit</span></h3>
+                        <span>Edit</span><span id="new">Add New</span></h3>
 
                     <div class="level-content">
 

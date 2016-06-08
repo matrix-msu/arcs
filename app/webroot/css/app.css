@@ -8332,7 +8332,7 @@ img.search-results-thumbnall {
   box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.19);
 }
 .resource-title {
-  width: 160px;
+  max-width: 160px;
   margin-top: 12px;
   color: #6f6f6f;
 }
@@ -8893,6 +8893,10 @@ input[type=range]:focus::-ms-fill-upper {
   font-size: 90%;
   color: #808080;
 }
+.metadata .metadata-content .metadata-accordion .level-tab #new {
+  padding-right: 8px;
+  display: none;
+}
 .metadata .metadata-content .metadata-accordion .level-tab:last-child {
   border-bottom: 0 !important;
 }
@@ -8901,6 +8905,9 @@ input[type=range]:focus::-ms-fill-upper {
   border-bottom: 1px solid #cdcdcd !important;
   color: #0093be !important;
   border-left: 2px solid #0093be;
+}
+.metadata .metadata-content .metadata-accordion .level-tab.ui-accordion-header-active #new {
+  display: inline;
 }
 .metadata .metadata-content .metadata-accordion ul {
   background: #f9f9f9;
@@ -8924,10 +8931,11 @@ input[type=range]:focus::-ms-fill-upper {
 .metadata .metadata-content .metadata-accordion ul li a {
   color: inherit;
   position: relative;
-  padding: 0;
+  padding: 2.5px;
   width: 100%;
   text-align: center;
   outline: none;
+  font-size: 10px;
 }
 .metadata .metadata-content .metadata-accordion ul li.ui-tabs-active {
   background-color: #0093be;

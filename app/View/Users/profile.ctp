@@ -64,6 +64,7 @@
     <div class="row tabbable" id="user-actions">
         <ul class="nav nav-tabs">
             <li id='annotations' class=''><a href="#" onclick="changeTab('annotations'); return false;">Annotations</a></li>
+            <li id='transcriptions' class=''><a href="#" onclick="changeTab('transcriptions'); return false;">Transcriptions</a></li>
             <li id='discussion' class=''><a href="#" onclick="changeTab('discussion'); return false;">Discussions</a></li>
             <li id='collections' class=''><a href="#" onclick="changeTab('collections'); return false;">Collections</a></li>
             <li id='achievements' class=''><a href="#" onclick="changeTab('achievements'); return false;">Achievements</a></li>
@@ -71,6 +72,7 @@
         </ul>
         <div class="tab-content">
             <?php echo $this->element('tabs/annotations-tab') ?>
+            <?php echo $this->element('tabs/transcriptions-tab') ?>
             <?php echo $this->element('tabs/discussion-tab') ?>
             <?php echo $this->element('tabs/collection-tab') ?>
             <?php echo $this->element('tabs/achievements-tab') ?>
