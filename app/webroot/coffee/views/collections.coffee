@@ -20,18 +20,28 @@ class arcs.views.CollectionList extends Backbone.View
     'click summary': 'onClick'
     'click details.closed': 'onClick'
     'click #delete-btn': 'deleteCollection'
+    'click .btn-show-all': 'onClick'
 
   onClick: (e) ->
     #Loads individual collections here----Josh
-    console.log("Josh- clicked spot");
+    console.log("Clicked here.");
+    console.log(e.currentTarget.tagName);
     if e.currentTarget.tagName == 'DETAILS'
       $el = $(e.currentTarget)
+      limit = 1
+      $el.toggleAttr('open')
+      $el.toggleClass('closed').toggleClass('open')
+    else if e.currentTarget.className == 'btn-show-all'
+      $el = $(e.currentTarget).parent().parent().parent().parent()
+      $(e.currentTarget).parent().hide()
+      limit = 0
     else
       $el = $(e.currentTarget).parent()
+      limit = 1
+      $el.toggleAttr('open')
+      $el.toggleClass('closed').toggleClass('open')
     console.log($el)
-    $el.toggleAttr('open')
-    $el.toggleClass('closed').toggleClass('open')
-    @renderDetails $el
+    @renderDetails $el, limit
     # Recent versions of webkit will toggle <details> automatically. 
     # Instead of checking for support, we'll just stop it from bubbling up, 
     # since we've just toggled it ourselves.
@@ -66,11 +76,14 @@ class arcs.views.CollectionList extends Backbone.View
       collections: @collection.toJSON()
     @
 
-  #Josh- collections fills in the template here!!
-  renderDetails: ($el) ->
+#Josh- collections fills in the template here!!
+  renderDetails: ($el, limit) ->
     id = $el.data 'id'
     query = encodeURIComponent('collection_id:"' + id + '"')
-    $.getJSON arcs.baseURL + "resources/search?n=12&q=#{query}", (response) ->
-      $el.children('.results').html arcs.tmpl 'home/details', 
+    query2 = arcs.baseURL + "resources/search?"
+    if (limit != 0)
+      query2 += "n=15&"
+    $.getJSON query2 + "q=#{query}", (response) ->
+      $el.children('.results').html arcs.tmpl 'home/details',
         resources: response.results
         searchURL: arcs.baseURL + "collection/#{id}"

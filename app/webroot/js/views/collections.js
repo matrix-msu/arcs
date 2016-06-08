@@ -32,21 +32,31 @@
     CollectionList.prototype.events = {
       'click summary': 'onClick',
       'click details.closed': 'onClick',
-      'click #delete-btn': 'deleteCollection'
+      'click #delete-btn': 'deleteCollection',
+      'click .btn-show-all': 'onClick'
     };
 
     CollectionList.prototype.onClick = function(e) {
-      var $el, ref;
-      console.log("Josh- clicked spot");
+      var $el, limit, ref;
+      console.log("Clicked here.");
+      console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
+        limit = 1;
+        $el.toggleAttr('open');
+        $el.toggleClass('closed').toggleClass('open');
+      } else if (e.currentTarget.className === 'btn-show-all') {
+        $el = $(e.currentTarget).parent().parent().parent().parent();
+        $(e.currentTarget).parent().hide();
+        limit = 0;
       } else {
         $el = $(e.currentTarget).parent();
+        limit = 1;
+        $el.toggleAttr('open');
+        $el.toggleClass('closed').toggleClass('open');
       }
       console.log($el);
-      $el.toggleAttr('open');
-      $el.toggleClass('closed').toggleClass('open');
-      this.renderDetails($el);
+      this.renderDetails($el, limit);
       if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
         e.preventDefault();
         return false;
@@ -86,11 +96,15 @@
       return this;
     };
 
-    CollectionList.prototype.renderDetails = function($el) {
-      var id, query;
+    CollectionList.prototype.renderDetails = function($el, limit) {
+      var id, query, query2;
       id = $el.data('id');
       query = encodeURIComponent('collection_id:"' + id + '"');
-      return $.getJSON(arcs.baseURL + ("resources/search?n=12&q=" + query), function(response) {
+      query2 = arcs.baseURL + "resources/search?";
+      if (limit !== 0) {
+        query2 += "n=15&";
+      }
+      return $.getJSON(query2 + ("q=" + query), function(response) {
         return $el.children('.results').html(arcs.tmpl('home/details', {
           resources: response.results,
           searchURL: arcs.baseURL + ("collection/" + id)

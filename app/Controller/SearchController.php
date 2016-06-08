@@ -53,10 +53,13 @@ class SearchController extends AppController {
         if (!isset($this->request->query['q']))
             return $this->emptySearch($options);
 
-		if (isset($this->request->query['n'])) {
-			$limit = $this->request->query['n'];
-			$response['limit'] = $limit;
-		}
+        if (isset($this->request->query['n'])) {
+            $limit = $this->request->query['n'];
+            $response['limit'] = $limit;
+        }
+        else{
+            $limit = -1;
+        }
 
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
@@ -89,10 +92,21 @@ class SearchController extends AppController {
             $collection_id = $collection_id['collection_id'];
 
             //Get the kid's from the collection_id
-            $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='".$collection_id."' LIMIT 12";
+            if ($limit > 0) {
+                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
+            }else {
+                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
+            }
             $result = $mysqli->query($sql);
             while($row = mysqli_fetch_assoc($result))
                 $test[] = $row;
+            //Test if there are more results--
+            if($limit == -1){
+                $more_results = 0;
+            }else if (count($test) > $limit){
+                $more_results = 1;
+                $pop_last = array_pop($test);
+            }
             $response['col_id'] = $collection_id;
             $response['query'] = $sql;
             $response['col_result'] = $test;
@@ -101,6 +115,7 @@ class SearchController extends AppController {
             $response['results'] = array();
             foreach( $test as $row){
                 $temp_array = array();
+                $temp_array['more_results'] = $more_results;
                 $temp_kid = $row['resource_kid'];
                 $temp_array['kid'] = $temp_kid;
                 //Get the Resources from Kora
