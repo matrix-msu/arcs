@@ -512,12 +512,19 @@ class SearchController extends AppController {
 
             // Lets get the data from KORA multiple schemes
             $kora_data = array();
+            $total= array();
             foreach ($schemes as $scheme) {
                 $kora_data =  $this->search_single_scheme($scheme, $query1);
+                /*
                 foreach($kora_data as $key => $result){
                     $response['results'][$key] = $result;
                 }
+                */
+                foreach($kora_data as $data){
+                    array_push($total,$data);
+                }
             }
+            $response['results'] = $total;
 
             $returnResults = array();
             foreach($response['results'] as $item) {
