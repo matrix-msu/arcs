@@ -510,37 +510,14 @@ class SearchController extends AppController {
                 $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
             }
 
-
-
-
-
             // Lets get the data from KORA multiple schemes
             $kora_data = array();
             foreach ($schemes as $scheme) {
                 $kora_data =  $this->search_single_scheme($scheme, $query1);
-                foreach($kora_data as $item) {
-                    $response['results'] = array_merge($response['results'],$item);
+                foreach($kora_data as $key => $result){
+                    $response['results'][$key] = $result;
                 }
             }
-
-            // $response['results'] = $kora_total_results;
-            // $response['results'] = $this->search_single_scheme(SUBJECT_SID, $query1);
-                /*
-                // Getting the data!!
-                $user = "";
-                $pass = "";
-                $display = "json";
-                $sid = RESOURCE_SID;
-                $query2 = '(Type,like,'. $query1.'),||,(Resource Identifier,like,'. $query1.'),||,(Earliest Date,like,'. $query1.'),||,(Latest Date,like,'. $query1.')';
-                // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
-                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-                //capture results and map to array
-                $response['results'] = json_decode(curl_exec($ch), true);
-
-                */
 
             $returnResults = array();
             foreach($response['results'] as $item) {
@@ -550,7 +527,6 @@ class SearchController extends AppController {
                     $item['thumb'] = DEFAULT_THUMB;
                 }
                 array_push($returnResults, $item);
-
             }
 
             $response['results'] = $returnResults;
