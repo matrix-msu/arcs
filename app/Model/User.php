@@ -99,7 +99,8 @@ class User extends AppModel {
                 $sql = "SELECT DISTINCT collection_id, id, title, max(modified) AS DATE
                         FROM arcs_dev.collections 
                         WHERE collections.user_id ='" . $r['id'] . "'
-                        GROUP BY title;";
+                        GROUP BY title
+                        ORDER BY max(modified) DESC;";
                 //WHERE title = '".$file_name."'";
                 $result = $mysqli->query($sql);
                 while ($row = mysqli_fetch_assoc($result)) {
