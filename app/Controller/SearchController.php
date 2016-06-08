@@ -53,13 +53,10 @@ class SearchController extends AppController {
         if (!isset($this->request->query['q']))
             return $this->emptySearch($options);
 
-        if (isset($this->request->query['n'])) {
-            $limit = $this->request->query['n'];
-            $response['limit'] = $limit;
-        }
-        else{
-            $limit = -1;
-        }
+		if (isset($this->request->query['n'])) {
+			$limit = $this->request->query['n'];
+			$response['limit'] = $limit;
+		}
 
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
@@ -92,21 +89,10 @@ class SearchController extends AppController {
             $collection_id = $collection_id['collection_id'];
 
             //Get the kid's from the collection_id
-            if ($limit > 0) {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
-            }else {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
-            }
+            $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='".$collection_id."' LIMIT 12";
             $result = $mysqli->query($sql);
             while($row = mysqli_fetch_assoc($result))
                 $test[] = $row;
-            //Test if there are more results--
-            if($limit == -1){
-                $more_results = 0;
-            }else if (count($test) > $limit){
-                $more_results = 1;
-                $pop_last = array_pop($test);
-            }
             $response['col_id'] = $collection_id;
             $response['query'] = $sql;
             $response['col_result'] = $test;
@@ -115,7 +101,6 @@ class SearchController extends AppController {
             $response['results'] = array();
             foreach( $test as $row){
                 $temp_array = array();
-                $temp_array['more_results'] = $more_results;
                 $temp_kid = $row['resource_kid'];
                 $temp_array['kid'] = $temp_kid;
                 //Get the Resources from Kora
@@ -403,7 +388,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            //$results = array();
+            $results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == PROJECT_SID) {
@@ -414,7 +399,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            //$results = array();
+            $results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == SEASON_SID) {
@@ -425,7 +410,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            //$results = array();
+            $results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == SURVEY_SID) {
@@ -436,7 +421,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            //$results = array();
+            $results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == SUBJECT_SID) {
@@ -454,7 +439,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            //$results = array();
+            $results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else {
@@ -530,17 +515,15 @@ class SearchController extends AppController {
             $total= array();
             foreach ($schemes as $scheme) {
                 $kora_data =  $this->search_single_scheme($scheme, $query1);
-				////delete this///
-				//$response['results'] = $kora_data;
-				//$this->json(200, $response);
-				//return;
-				///////////////////
+
                 foreach($kora_data as $key => $result){
                     $total[$key] = $result;
                 }
-                /* foreach($kora_data as $data){
+                /*
+                foreach($kora_data as $data){
                     array_push($total,$data);
-                } */
+                }
+                */
             }
             $response['results'] = $total;
             // $response['results'] = $this->search_single_scheme(RESOURCE_SID, $query1);
@@ -553,6 +536,7 @@ class SearchController extends AppController {
                     $item['thumb'] = DEFAULT_THUMB;
                 }
                 $returnResults[$key] = $item;
+                //array_push($returnResults, $item);
             }
 
             $response['results'] = $returnResults;
@@ -568,14 +552,7 @@ class SearchController extends AppController {
 
 
 
-
-
-
-
-
-
-
-
+    /*
     public function advanced_search($query1) {
 
         $options = $this->parseParams();
@@ -661,7 +638,7 @@ class SearchController extends AppController {
 
         }
     }
-
+    */
 
 
 
