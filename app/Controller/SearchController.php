@@ -403,7 +403,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            $results = array();
+            //$results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == PROJECT_SID) {
@@ -414,7 +414,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            $results = array();
+            //$results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == SEASON_SID) {
@@ -425,7 +425,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            $results = array();
+            //$results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == SURVEY_SID) {
@@ -436,7 +436,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            $results = array();
+            //$results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else if ($sid == SUBJECT_SID) {
@@ -454,7 +454,7 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
-            $results = array();
+            //$results = array();
             $results = json_decode(curl_exec($ch), true);
             return $results;
         }else {
@@ -530,25 +530,29 @@ class SearchController extends AppController {
             $total= array();
             foreach ($schemes as $scheme) {
                 $kora_data =  $this->search_single_scheme($scheme, $query1);
-                /*
+				////delete this///
+				//$response['results'] = $kora_data;
+				//$this->json(200, $response);
+				//return;
+				///////////////////
                 foreach($kora_data as $key => $result){
-                    $response['results'][$key] = $result;
+                    $total[$key] = $result;
                 }
-                */
-                foreach($kora_data as $data){
+                /* foreach($kora_data as $data){
                     array_push($total,$data);
-                }
+                } */
             }
             $response['results'] = $total;
+            // $response['results'] = $this->search_single_scheme(RESOURCE_SID, $query1);
 
             $returnResults = array();
-            foreach($response['results'] as $item) {
+            foreach($response['results'] as $key => $item) {
                 if ($imageResults[$item['Resource Identifier']] != null) {
                     $item['thumb'] = $imageResults[$item['Resource Identifier']];
                 } else {
                     $item['thumb'] = DEFAULT_THUMB;
                 }
-                array_push($returnResults, $item);
+                $returnResults[$key] = $item;
             }
 
             $response['results'] = $returnResults;
