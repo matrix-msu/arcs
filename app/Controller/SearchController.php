@@ -93,13 +93,20 @@ class SearchController extends AppController {
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . $limit;
+                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
             }else {
                 $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
             }
             $result = $mysqli->query($sql);
             while($row = mysqli_fetch_assoc($result))
                 $test[] = $row;
+            //Test if there are more results--
+            if($limit == -1){
+                $more_results = 0;
+            }else if (count($test) > $limit){
+                $more_results = 1;
+                $pop_last = array_pop($test);
+            }
             $response['col_id'] = $collection_id;
             $response['query'] = $sql;
             $response['col_result'] = $test;
@@ -108,6 +115,7 @@ class SearchController extends AppController {
             $response['results'] = array();
             foreach( $test as $row){
                 $temp_array = array();
+                $temp_array['more_results'] = $more_results;
                 $temp_kid = $row['resource_kid'];
                 $temp_array['kid'] = $temp_kid;
                 //Get the Resources from Kora
