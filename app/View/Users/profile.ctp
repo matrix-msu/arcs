@@ -113,3 +113,47 @@
         }
     }
 </script>
+
+<script type='text/javascript'>
+$.ajax({
+    url: "<?php echo Router::url('/', true); ?>annotations/findallbyuser",
+    type: "POST",
+    data: {
+        id: "<?php echo $user_info['id']; ?>"
+    },
+    success: function (data) {
+        console.log(data);
+        // Add entries to annotations tab - split by annotations and transcriptions
+        // Format - image, paragraph with span for type and span for date? Then annotation type paragraph and link?
+        // Grabbing the image may take another round of ajax - save for last to put that together?
+        // Oh, resource type is like that too...
+        if (!data.length) {
+            // currently the no annotations by this user is displayed before we do js stuff. If I change that,
+            // we'll actually use this to set it up. And probably may as well, but it won't be first.
+        }
+        else {
+            var contents = ""; // This is the variable we'll store our soon-to-be html in, then put it in the tab all at once
+            data.forEach(function(a) {
+                if (true) { // Obviously shouldn't stay this way - change to whatever we do to make sure it's not a transcription
+                    // Stuff to get the date to the desired format, may or may not work properly just yet
+                    var d = new Date(a['created']);
+                    // And make it a correctly formatted string through magic
+                    // Sort out annotation type
+                    if (a['url'] === null) {
+                        var type = "Relation";
+                    }
+                    else {
+                        type = "URL";
+                    }
+                    // Determine the URL for the link, whether the type is URL or otherwise
+                    // Or is it not a link if it's not a URL...?
+                    // And then add it all on to the end
+                    contents += "<div><img><p>" + a['resource_name'] + "<span class='type'>Resource Type</span><span class='date'>"
+                    + out + "</span></p><p class='annotationType'>" + type + "</p><a href=''>link here</a></div>";
+                }
+            });
+            $("#annotations-tab").innerHTML = contents;
+        }
+    }
+});
+</script>

@@ -21,4 +21,16 @@ class AnnotationsController extends MetaResourcesController {
 		$this->request->data['user_username'] = $user['username'];
 		$this->request->data['user_email'] = $user['email'];
     }
+
+	/**
+	 * Find all meta-resources associated with user id
+	 */
+	public function findAllByUser()
+	{
+		$model = $this->modelClass;
+		$results = $this->$model->find('all', array(
+			'conditions' => array('user_id' => $this->request->data['id'])
+		));
+		$this->json(200, $results);
+	}
 }
