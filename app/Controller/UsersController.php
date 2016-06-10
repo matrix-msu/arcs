@@ -161,8 +161,8 @@ class UsersController extends AppController
                         if ($this->Auth->login()) {
                                 $this->User->id = $user['User']['id'];
                                 $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                                //return $this->redirect('/');
-                                return $this->redirect($this->Auth->redirect());
+                                return $this->redirect($this->referer()); 
+                                // return $this->redirect($this->Auth->redirect());
                         } else {
                                 $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
                                 $this->redirect($this->referer());

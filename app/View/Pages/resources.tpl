@@ -60,7 +60,6 @@
 
 
 
-
 <div class="collection-list-wrapper">
   <h1 class="rsc-title">Publicly Avaliable Resources</h1>
   <p class="login_msg">You're viewing publicly available resources. 
