@@ -530,4 +530,70 @@ class ResourcesController extends AppController {
 		// return KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
 		return json_encode($p);
     }
+
+    /**
+     * View a resource
+     *
+     * @param string $id
+     */
+    public function viewT($id)
+    {
+        $response = ['kid' => $id];
+
+        //resource
+        $query = "kid,=,".$id;
+        $user = "";
+        $pass = "";
+        $display = "json";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        //capture results and map to array
+        $resource = json_decode(curl_exec($ch), true);
+        //echo $resource;
+        $resource = $resource[$id];
+        //$this->json(200, $resource);
+        //return $resource;
+        $response['type'] = $resource['Type'];
+
+        $resource_identifier = $resource['Resource Identifier'];
+
+        //Get the Pages from Kora
+        //$new_temp = array('7B-2E0-1');
+        $query = "Resource Identifier,=,".$resource_identifier;
+        //$response['query'] = $query;
+        $user = "";
+        $pass = "";
+        $display = "json";
+        //no query
+        //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display;
+        //query
+        //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".$query;
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&count=1";
+
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        //capture results and map to array
+        $page2 = json_decode(curl_exec($ch), true);
+
+        //Get the picture URL from the page results
+        $temp_array['page_search'] = $page2;
+        $picture_url = array_values($page2)[0]['Image Upload']['localName'];
+
+        //Decide if there is a picture..
+        if( !empty($picture_url) ){
+            $temp_array['pic_url'] = $picture_url;
+            $kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
+            $response['thumb'] = $kora_pic_url.$picture_url;
+        }else{
+            $response['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
+        }
+
+        $this->json(200, $response);
+        return $response;
+    }
 }

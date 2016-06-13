@@ -23,7 +23,7 @@ class AnnotationsController extends MetaResourcesController {
     }
 
 	/**
-	 * Find all meta-resources associated with user id
+	 * Find all annotations associated with user id
 	 */
 	public function findAllByUser()
 	{

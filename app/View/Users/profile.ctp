@@ -122,7 +122,7 @@ $.ajax({
         id: "<?php echo $user_info['id']; ?>"
     },
     success: function (data) {
-        console.log(data);
+        //console.log(data);
         // Add entries to annotations tab - split by annotations and transcriptions
         // Format - image, paragraph with span for type and span for date? Then annotation type paragraph and link?
         // Grabbing the image may take another round of ajax - save for last to put that together?
@@ -130,29 +130,61 @@ $.ajax({
         if (!data.length) {
             // currently the no annotations by this user is displayed before we do js stuff. If I change that,
             // we'll actually use this to set it up. And probably may as well, but it won't be first.
+            $("#annotations-tab").html("<h3>This user hasn't made any annotations yet</h3>");
         }
         else {
             var contents = ""; // This is the variable we'll store our soon-to-be html in, then put it in the tab all at once
+            var count = 0; // keep track of the current annotation we're on
             data.forEach(function(a) {
-                if (true) { // Obviously shouldn't stay this way - change to whatever we do to make sure it's not a transcription
+                if (a['transcript'] == "" || a['transcript'] === null) {
+                    // Get image and resource type
+                    (function(count) {
+                        $.ajax({
+                            url: "<?php echo Router::url('/', true); ?>resources/viewt/" + a['resource_kid'] + ".json",
+                            type: "GET",
+                            data: {
+                                id: a['resource_kid']//a['page_id']
+                            },
+                            success: function (result) {
+                                //console.log(result);
+                                var thumb = result['thumb'];
+                                var resType = result['type'];
+                                if (resType === null) {
+                                    resType = "Unknown Type";
+                                }
+                                var div = $(".cont")[count];
+                                // So that img gets src set to thumb, and .type gets html (or text?) set to resType.
+                                $(div).find("img").attr('src', thumb);
+                                $(div).find(".type").html(resType);
+                                //console.log(this.url);
+                            }
+                        });
+                    })(count);
+
                     // Stuff to get the date to the desired format, may or may not work properly just yet
                     var d = new Date(a['created']);
+                    var monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"]; // silly nonsense to get month name
+                    var date = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
                     // And make it a correctly formatted string through magic
-                    // Sort out annotation type
-                    if (a['url'] === null) {
+                    // Sort out annotation type, then determine the URL appropriately for that type
+                    if (a['url'] === null || a['url'] == "") {
                         var type = "Relation";
+                        var url = arcs.baseURL + "resource/" + a['relation_page_kid']; // link to related resource page
+                        var linkText = a['relation_resource_name']; // Related Resource Title
                     }
                     else {
                         type = "URL";
+                        url = a['url'];
+                        linkText = a['url'];
                     }
-                    // Determine the URL for the link, whether the type is URL or otherwise
-                    // Or is it not a link if it's not a URL...?
                     // And then add it all on to the end
-                    contents += "<div><img><p>" + a['resource_name'] + "<span class='type'>Resource Type</span><span class='date'>"
-                    + out + "</span></p><p class='annotationType'>" + type + "</p><a href=''>link here</a></div>";
+                    contents += "<div class='cont'><div class='img'><img></div><p>" + a['resource_name'] + "<span class='type'>Resource Type</span><span class='date'>"
+                    + date + "</span></p><p class='annotationType'>" + type + "</p><a href=" + url + ">" + linkText + "</a></div>";
+                    count++;
                 }
             });
-            $("#annotations-tab").innerHTML = contents;
+            $("#annotations-tab").html(contents);
         }
     }
 });

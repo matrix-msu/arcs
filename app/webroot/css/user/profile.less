@@ -158,6 +158,7 @@ th.user-tabs-header {
 			border-left: 1px solid #ccc !important;
 			border-right: 1px solid #ccc !important;
 			max-height: 39px;
+            border-bottom: 1px solid #F4F4F4;
             
             a {
                color: #777;
@@ -186,7 +187,7 @@ th.user-tabs-header {
     }
 
     .tab-content {
-        padding: 0 5em 0 0;
+        //padding: 0 5em 0 0;
 		background: #F4F4F4;
 		margin-bottom: -1em;
 		border-top: 1px solid #ccc !important;
@@ -263,6 +264,53 @@ th.user-tabs-header {
                     text-decoration: none;
                     background-color: gray;
                 }
+            }
+        }
+
+        #annotations-tab, #transcriptions-tab {
+            .img {
+                height: 100px;
+                width: 125px;
+                display: inline;
+                float: left;
+                margin-right: 20px;
+                //border: 1px solid #ccc;
+
+                img {
+                    max-height: 100%;
+                    max-width: 100%;
+                }
+            }
+
+            .cont {
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 40px;
+                margin-top: 30px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .type {
+                font-size: 12px;
+                margin-left: 30px;
+            }
+
+            .date {
+                font-size: 12px;
+                float: right;
+                //margin-right: 10px;
+                margin-top: 4px;
+            }
+
+            .annotationType {
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            a {
+                color: #1C95BA;
             }
         }
     }
