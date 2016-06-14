@@ -3,7 +3,7 @@
     
     <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
 </div>
-	
+
 <a name="searchJump"></a>
 <div id="searchBox">
 	<div class="searchIcon"></div>
@@ -169,7 +169,7 @@
 			<div id="items-per-pages-buttons" class="btn-group actions-left">
 				  <button id="items-per-page-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 					20 Items per Page
-					<span class="pointerDown pointerSearch sort-arrow"></span>
+					<span class="pointerDown sort-arrow"></span>
 				  </button>
 				  <ul class="dropdown-menu">
 					<li><a class="sort-btn" id="open-btn">20 Items per Page&nbsp;</a></li>

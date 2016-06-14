@@ -21,7 +21,7 @@
 		<input type="text" class="searchBoxAdvanced" name="Format" placeholder="Format">
 		<input type="text" class="searchBoxAdvanced" name="Language" placeholder="Language">
 		<input type="text" class="searchBoxAdvanced" name="Medium" placeholder="Medium">
-		<input type='submit' class='user-reg-btn btn btn-success searchButton' value='Search'></input>
+		<input type='submit' onclick="toggle_search_visibility()" class='user-reg-btn btn btn-success searchButton' value='Search'></input>
 	</div>	
 </div>
 
@@ -248,7 +248,7 @@
    function toggle_search_visibility() {
        var e = document.getElementById("search-results-wrapper");
        if(e.style.visibility == 'hidden')
-       		console.log("hi");
+       		console.log("hiiiiiiiiiiiii");
 	   		e.style.visibility = 'visible';
     }
     
@@ -263,13 +263,13 @@
         $(this).children("ul").toggle();
     });
 	});*/
-	
-	$(".searchBoxInput").keyup(function (e) {
-		if (e.keyCode === 13) {
-			console.log("Hiiii");
-			toggle_search_visibility();
-		}
-	});
-    
- 
+
+  /* function for page numbers */
+  $('.pageNumber').click(function(){
+	  /* console.log(this.id); */
+	  $('.pageNumber').removeClass('selected');
+	  $(this).addClass('selected');
+	  /* add functions here, use this.id to identify page number. */
+  });
+
 </script>

@@ -34,12 +34,14 @@ class SearchController extends AppController {
      * Display the advanced search page
      * @param string $query
      */
+    /*
     public function advance_search($query='') {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
         $this -> render('advancedsearch');
     }
+    */
 
 
 
@@ -211,27 +213,27 @@ class SearchController extends AppController {
 
 
 
-		//Get the Images
-		$user = "";
-		$pass = "";
-		$display = "json";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
-		///initialize post request to KORA API using curl
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-		//capture results and map to array
-		$response['results'] = json_decode(curl_exec($ch), true);
-		$imageResults = array();
-		foreach($response['results'] as $image) {
-			$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-		}
+        //Get the Images
+        $user = "";
+        $pass = "";
+        $display = "json";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        //capture results and map to array
+        $response['results'] = json_decode(curl_exec($ch), true);
+        $imageResults = array();
+        foreach($response['results'] as $image) {
+            $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+        }
 
 
-		//Get the Data
-		$user = "";
-		$pass = "";
-		$query = $this->request->query['q'];
+        //Get the Data
+        $user = "";
+        $pass = "";
+        $query = $this->request->query['q'];
 
         if (isset($this->request->query['sid'])) {
             $sid = $this->request->query['sid'];
@@ -240,27 +242,27 @@ class SearchController extends AppController {
             $sid = RESOURCE_SID;
         }
 
-		$display = "json";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&fields=ALL&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
-		///initialize post request to KORA API using curl
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        $display = "json";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&fields=ALL&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 
 
-		///capture results and display
-		$response['results'] = json_decode(curl_exec($ch), true);
-		$returnResults = array();
-		foreach($response['results'] as $item) {
-			if ($imageResults[$item['Resource Identifier']] != null) {
-				$item['thumb'] = $imageResults[$item['Resource Identifier']];
-			} else {
-				$item['thumb'] = DEFAULT_THUMB;
-			}
-			array_push($returnResults, $item);
-		}
-		$response['results'] = $returnResults;
-		$response['total'] = count($response['results']);
+        ///capture results and display
+        $response['results'] = json_decode(curl_exec($ch), true);
+        $returnResults = array();
+        foreach($response['results'] as $item) {
+            if ($imageResults[$item['Resource Identifier']] != null) {
+                $item['thumb'] = $imageResults[$item['Resource Identifier']];
+            } else {
+                $item['thumb'] = DEFAULT_THUMB;
+            }
+            array_push($returnResults, $item);
+        }
+        $response['results'] = $returnResults;
+        $response['total'] = count($response['results']);
         $this->json(200, $response);
     }
 
@@ -268,18 +270,6 @@ class SearchController extends AppController {
 
 
 
-
-
-
-
-    // This is a debug func, use it to throw varibles on the console
-    public function debug_to_console( $data ) {
-        if ( is_array( $data ) )
-            $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
-        else
-            $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
-        echo $output;
-    }
 
 
 
@@ -567,198 +557,12 @@ class SearchController extends AppController {
 
 
 
-    /*
-    public function advanced_search($query1) {
-
-        $options = $this->parseParams();
-
-        if ($query1 == ''){
-            return $this->emptySearch($options);
-        }else {
-            if (isset($this->request->query['n'])) {
-                $limit = $this->request->query['n'];
-                $response['limit'] = $limit;
-            }
-
-
-            if ($response['order'] == 'relevance') {
-                $response['results'] = $this->Resource->findAllFromIds($response['results']);
-            } else {
-                $response['results'] = $this->Resource->find('all', array(
-                    'conditions' => array('Resource.id' => $response['results']),
-                    'order' => "Resource.{$options['order']} {$options['direction']}"
-                ));
-            }
-
-
-            // The searcher will return debug information that should be hidden for
-            // most account types.
-            if (!$this->Access->isAdmin()) {
-                unset($response['raw_query']);
-                unset($response['mode']);
-            }
-
-            //Get the Images
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $sid = PAGES_SID;
-            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
-            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
-            // I do not think this is very efficient but will modify with time.
-            $query2 = 'kid,!=,1';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-            $imageResults = array();
-            foreach($response['results'] as $image) {
-                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-            }
-
-
-
-
-            // Getting the data!!
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $sid = RESOURCE_SID;
-            $query2 = '(Type,like,'. $query1.'),||,(Resource Identifier,like,'. $query1.'),||,(Accession Number,like,'. $query1.')';
-            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-
-
-            $returnResults = array();
-            foreach($response['results'] as $item) {
-                if ($imageResults[$item['Resource Identifier']] != null) {
-                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
-                } else {
-                    $item['thumb'] = DEFAULT_THUMB;
-                }
-                array_push($returnResults, $item);
-
-            }
-
-            $response['results'] = $returnResults;
-            $response['total'] = count($response['results']);
-            $this->json(200, $response);
-
-        }
-    }
-    */
 
 
 
 
 
 
-
-/*
-    public function simple_search($query1) {
-
-        $options = $this->parseParams();
-
-        if (!isset($this->request->query['q']))
-            return $this->emptySearch($options);
-
-        if (isset($this->request->query['n'])) {
-            $limit = $this->request->query['n'];
-            $response['limit'] = $limit;
-        }
-
-        if ($response['order'] == 'relevance') {
-            $response['results'] = $this->Resource->findAllFromIds($response['results']);
-        } else {
-            $response['results'] = $this->Resource->find('all', array(
-                'conditions' => array('Resource.id' => $response['results']),
-                'order' => "Resource.{$options['order']} {$options['direction']}"
-            ));
-        }
-        // The searcher will return debug information that should be hidden for
-        // most account types.
-        if (!$this->Access->isAdmin()) {
-            unset($response['raw_query']);
-            unset($response['mode']);
-        }
-        if (isset($this->request->query['sid'])) {
-            $sid = $this->request->query['sid'];
-        }
-        else {
-            $sid = RESOURCE_SID;
-        }
-
-        //Get the Images
-        $user = "";
-        $pass = "";
-        $display = "json";
-        // $query2 = '((Type, like,' . $query1 . ') , or , (Resource Identifier, like,' . $query1 . '(Earliest Date, like,' . $query1 . '(Latest Date, like,' . $query1 . '))';
-        $query2 = '((Type, like,' . $query1 . ') , or , (Resource Identifier, like ,' . $query1 . ') , or (Earliest Date, like,' . $query1 . ') , or ,(Latest Date, like,' . $query1 . '))';
-        // $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        //capture results and map to array
-        $response['results'] = json_decode(curl_exec($ch), true);
-        $imageResults = array();
-        foreach($response['results'] as $image) {
-            $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-        }
-
-
-
-        //Get the Data
-        $user = "";
-        $pass = "";
-        $query = $this->request->query['q'];
-
-        if (isset($this->request->query['sid'])) {
-            $sid = $this->request->query['sid'];
-        }
-        else {
-            $sid = RESOURCE_SID;
-        }
-
-        $display = "json";
-        //$query2 = '((Type, like,' . $query1 . ') , or , (Resource Identifier, like,' . $query1 . '(Earliest Date, like,' . $query1 . '(Latest Date, like,' . $query1 . '))';
-        $query2 = '((Type, like,' . $query1 . ') , or , (Resource Identifier, like,' . $query1 . ') , or (Earliest Date, like,' . $query1 . ') , or ,(Latest Date, like,' . $query1 . '))';
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-
-
-        ///capture results and display
-        $response['results'] = json_decode(curl_exec($ch), true);
-        $returnResults = array();
-        foreach($response['results'] as $item) {
-            if ($imageResults[$item['Resource Identifier']] != null) {
-                $item['thumb'] = $imageResults[$item['Resource Identifier']];
-            } else {
-                $item['thumb'] = DEFAULT_THUMB;
-            }
-            array_push($returnResults, $item);
-
-       }
-
-        return $response['results'] = $returnResults;
-        $response['total'] = count($response['results']);
-        $this->json(200, $response);
-    }
-
-
-
-*/
 
 
     /**
@@ -783,18 +587,18 @@ class SearchController extends AppController {
     public function emptySearch($options) {
         # No facets provided. Give them back some recent resources.
         $user = "";
-		$pass = "";
+        $pass = "";
 
-		$display = "json";
-		$query = "";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".urlencode($display);//."query=".urlencode($query);
-		///initialize post request to KORA API using curl
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        $display = "json";
+        $query = "";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".urlencode($display);//."query=".urlencode($query);
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 
-		///capture results and display
-		$resources = curl_exec($ch);
+        ///capture results and display
+        $resources = curl_exec($ch);
         $this->json(200, array(
             'results' => $resources,
             'num_results' => count($resources),
@@ -803,8 +607,8 @@ class SearchController extends AppController {
             'offset' => $options['offset'],
             'direction' => $options['direction'],
             'total' => $this->Resource->find('count', array(
-                'conditions' => $this->Auth->loggedIn() ?
-                    null: array('Resource.public' => 1)
+                    'conditions' => $this->Auth->loggedIn() ?
+                        null: array('Resource.public' => 1)
                 )
             )
         ));

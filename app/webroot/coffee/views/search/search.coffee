@@ -24,9 +24,9 @@ class arcs.views.search.Search extends Backbone.View
 
     # Setup our Router
     #router = new arcs.routers.Search
-      #search: @search
+    #search: @search
     #console.log(router)
-    
+
     # Start Backbone.history
     Backbone.history.start
       pushState: true
@@ -45,17 +45,17 @@ class arcs.views.search.Search extends Backbone.View
     # <ctrl>-a to select all
     arcs.keys.map @,
       'ctrl+a': @selectAll
-      #'return': @search()
+#'return': @search()
       '?': @showHotkeys
       t: @scrollTop
 
     @setupHelp()
 
   events:
-    
-    #'click img'                : 'toggle' # Click on the image to select, conflicts with select button
-    #'click .result'            : 'maybeUnselectAll' # Click on the container to deselect, conflicts with select button
-    #'click #search-results'    : 'maybeUnselectAll' # Click on the whitespace to deselect, conflicts with select button
+
+#'click img'                : 'toggle' # Click on the image to select, conflicts with select button
+#'click .result'            : 'maybeUnselectAll' # Click on the container to deselect, conflicts with select button
+#'click #search-results'    : 'maybeUnselectAll' # Click on the whitespace to deselect, conflicts with select button
     'click #grid-btn'          : 'toggleView'
     'click #list-btn'          : 'toggleView'
     'click #top-btn'           : 'scrollTop'
@@ -66,15 +66,15 @@ class arcs.views.search.Search extends Backbone.View
 
   ### More involved setups run by the initialize method ###
 
-  # Set up drag-to-select, using jQuery.ui.selectable
+# Set up drag-to-select, using jQuery.ui.selectable
   setupSelect: ->
     @$el.find('#search-results').selectable
-      # Little bit of drag tolerance
+# Little bit of drag tolerance
       distance: 20
-      # Images are the selectables
+# Images are the selectables
       filter: '.img-wrapper img'
-      # Make jQuery UI call our selection methods.
-      selecting: (e, ui) => 
+# Make jQuery UI call our selection methods.
+      selecting: (e, ui) =>
         $(ui.selecting).parents('.result').addClass('selected')
         $(ui.selecting).parents('.result').children('.select-button').html 'DE-SELECT'
         $(ui.selecting).parents('.result').children('.select-button').addClass 'de-select'
@@ -95,15 +95,15 @@ class arcs.views.search.Search extends Backbone.View
         $(ui.unselected).parents('.result').children('.select-button').removeClass 'de-select'
         @afterSelection()
 
-  # Make an instance of our Search utility and setup endless scrolling.
+# Make an instance of our Search utility and setup endless scrolling.
   setupSearch: ->
     @scrollReady = false
-    @search = new arcs.utils.Search 
+    @search = new arcs.utils.Search
       container: $('searchBox')
       order: @options.sort
       run: false
       loader: true
-      # This callback will be fired each time a search is done.
+# This callback will be fired each time a search is done.
       success: =>
         @router.navigate "#{encodeURIComponent(@search.query)}/p#{@search.page}"
         # Setup the endless scroll unless it's already been done.
@@ -111,19 +111,19 @@ class arcs.views.search.Search extends Backbone.View
         @setupHelp()
         @render()
 
-  # Setup the endless scroll. This is called after we've received our first set
-  # of results. 
+# Setup the endless scroll. This is called after we've received our first set
+# of results.
   setupScroll: ->
     [$actions, $results] = [@$('#search-actions'), @$('#search-results')]
     $window = $(window)
     pos = $actions.offset().top - 10
 
-##    $window.scroll =>
-##      # Toggle the toolbar's fixed position
-##      if $window.scrollTop() > pos
-##        $actions.addClass('toolbar-fixed').width $results.width() + 22
-##      else
-##        $actions.removeClass('toolbar-fixed').width 'auto'
+    ##    $window.scroll =>
+    ##      # Toggle the toolbar's fixed position
+    ##      if $window.scrollTop() > pos
+    ##        $actions.addClass('toolbar-fixed').width $results.width() + 22
+    ##      else
+    ##        $actions.removeClass('toolbar-fixed').width 'auto'
 
     # Fix the toolbar width on resizes. 
     $window.resize ->
@@ -135,21 +135,21 @@ class arcs.views.search.Search extends Backbone.View
       $('.search-help-btn').click(@showHelp)
       $('.search-help-close').click(@closeHelp)
 
-  # Toggle between list and grid view.
+# Toggle between list and grid view.
   toggleView: ->
     @options.grid = !@options.grid
     @$('#grid-btn').toggleClass 'active'
     @$('#list-btn').toggleClass 'active'
     @render()
 
-  # Scroll to the top of the page.
+# Scroll to the top of the page.
   scrollTop: ->
-    # The animation time should be relative to our position on the page.
+# The animation time should be relative to our position on the page.
     time = ($(window).scrollTop() / $(document).height()) * 1000
     $('html, body').animate {scrollTop: 0}, time
 
-  # Set the search sort (a.k.a. order). This triggers a new search
-  # and subsequent render.
+# Set the search sort (a.k.a. order). This triggers a new search
+# and subsequent render.
   setSort: (e) ->
     @options.sort = e.target.id.match(/sort-(\w+)-btn/)[1]
     @$('.sort-btn .icon-ok').remove()
@@ -160,7 +160,7 @@ class arcs.views.search.Search extends Backbone.View
       order: @options.sort
       direction: @options.sortDir
 
-  # Set the search sort direction--either 'asc' or 'desc'.
+# Set the search sort direction--either 'asc' or 'desc'.
   setSortDir: (e) ->
     @options.sortDir = e.target.id.match(/dir-(\w+)-btn/)[1]
     @$('.dir-btn .icon-ok').remove()
@@ -169,41 +169,41 @@ class arcs.views.search.Search extends Backbone.View
       order: @options.sort
       direction: @options.sortDir
 
-  # Set the current search result page
+# Set the current search result page
   setPage: (e) ->
     e.preventDefault()
     @$el = $(e.currentTarget)
     @search.options.page = @$el.data('page')
     @search.run()
 
-  unselectAll: (trigger=true) -> 
+  unselectAll: (trigger=true) ->
     @$('.result').removeClass('selected')
     @$('.select-button').removeClass('de-select')
     @$('.select-button, #toggle-select').html('SELECT')
     @$('#deselect-all').attr id: 'select-all'
     arcs.bus.trigger 'selection' if trigger
 
-  selectAll: (trigger=true) -> 
+  selectAll: (trigger=true) ->
     @$('.result').addClass('selected')
     @$('.select-button').addClass('de-select')
     @$('.select-button, #toggle-select').html('DE-SELECT')
     @$('#select-all').attr id: 'deselect-all'
     arcs.bus.trigger 'selection' if trigger
-  
-  # Select a result and unselect everything else, unless a modifier key
-  # is pressed.n
+
+# Select a result and unselect everything else, unless a modifier key
+# is pressed.n
   toggle: (e) ->
-    # If <ctrl> <shift> or <meta> is pressed allow multi-select
+# If <ctrl> <shift> or <meta> is pressed allow multi-select
     if not (e.ctrlKey or e.shiftKey or e.metaKey)
       @unselectAll false
     $(e.currentTarget).parents('.result').toggleClass('selected')
     arcs.bus.trigger 'selection'
 
-  # Unselect all results unless a modifier key is held down, or
-  # the target isn't right.
+# Unselect all results unless a modifier key is held down, or
+# the target isn't right.
   maybeUnselectAll: (e) ->
-    # If e is not an Event object, do it.
-    return @unselectAll() unless e instanceof jQuery.Event 
+# If e is not an Event object, do it.
+    return @unselectAll() unless e instanceof jQuery.Event
     # If one of the modifier keys is held down, we won't do anything.
     return false if (e.metaKey or e.ctrlKey or e.shiftKey)
     # If the target is the image, we won't do anything.
@@ -221,10 +221,10 @@ class arcs.views.search.Search extends Backbone.View
     $('.search-help').hide()
 
   ### Render the search results ###
-  
-  # Syncs selection states between the ResultSet and the DOM elements that
-  # represent them. Uses Underscore's defer to wait for the call stack to
-  # clear.
+
+# Syncs selection states between the ResultSet and the DOM elements that
+# represent them. Uses Underscore's defer to wait for the call stack to
+# clear.
   afterSelection: ->
     _.defer =>
       selected = $('.result.selected').map( -> $(@).data('id')).get()
@@ -235,7 +235,7 @@ class arcs.views.search.Search extends Backbone.View
         $('#selected-all').css({color:'black'})
       else
         $('#selected-all').css({color:'#C1C1C1'})
-      
+
       @search.results.unselectAll()
       @search.results.select selected if selected.length
       if @search.results.anySelected()
@@ -244,7 +244,7 @@ class arcs.views.search.Search extends Backbone.View
         $('#search input').blur()
       else
         $('.btn.needs-resource').addClass 'disabled'
-        
+
   $('.dropdown-menu').change (event) ->
     console.log("Dropdown select")
 
@@ -257,7 +257,7 @@ class arcs.views.search.Search extends Backbone.View
     results = new arcs.collections.ResultSet @search.getLast()
     @_render results: results.toJSON(), true
   addFacet: (e) ->
-    e.preventDefault() 
+    e.preventDefault()
     @search.vs.searchBox.addFacet(e.target.text,'',10)
 
 
@@ -317,7 +317,7 @@ class arcs.views.search.Search extends Backbone.View
   #    req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739&count=20", (response) ->
   #      resolve(response)
   #  )
-  #  
+  #
   #  totalResults = {}
   #  Promise.all([resources,projects,seasons,excavations,observations]).then((values) ->
   #    for item in values
@@ -328,19 +328,19 @@ class arcs.views.search.Search extends Backbone.View
   #  )
 
   #Activates on enter press: search
-  $ ->   
+  $ ->
     $(".searchBoxInput").keyup (e) ->
       if e.keyCode == 13
         e.preventDefault()
         search()
-              
+
   _render: (results, append=false) ->
     $results = $('.flex-container')
     template = if @options.grid then 'search/grid' else 'search/list'
     results = results.results
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results: results)
-    
-    # add hover effects (select button, border) for the displayed images 
+
+    # add hover effects (select button, border) for the displayed images
     $('div.result').hover (->
       $(this).find('.select-button').show()
       $(this).find('img').addClass 'img-hover'
@@ -349,7 +349,7 @@ class arcs.views.search.Search extends Backbone.View
       $(this).find('.select-button').hide()
       $(this).find('img').removeClass 'img-hover'
       return
-    
+
     # add click effect for the select-button
     $('.select-button').click ->
       if $(this).html() == 'SELECT'
@@ -363,6 +363,6 @@ class arcs.views.search.Search extends Backbone.View
         $(this).parents('.result').removeClass 'selected'
         arcs.bus.trigger 'selection'
       return
-      
+
     if not results.length > 0
       $results.html "<div id='no-results'>No Results</div>"
