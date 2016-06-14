@@ -140,7 +140,7 @@ $.ajax({
                     // Get image and resource type
                     (function(count) {
                         $.ajax({
-                            url: "<?php echo Router::url('/', true); ?>resources/viewt/" + a['resource_kid'] + ".json",
+                            url: "<?php echo Router::url('/', true); ?>resources/viewkid/" + a['resource_kid'] + ".json",
                             type: "GET",
                             data: {
                                 id: a['resource_kid']//a['page_id']
@@ -156,6 +156,7 @@ $.ajax({
                                 // So that img gets src set to thumb, and .type gets html (or text?) set to resType.
                                 $(div).find("img").attr('src', thumb);
                                 $(div).find(".type").html(resType);
+                                $(div).find("span.name").html(result['title']);
                                 //console.log(this.url);
                             }
                         });
@@ -170,7 +171,7 @@ $.ajax({
                     // Sort out annotation type, then determine the URL appropriately for that type
                     if (a['url'] === null || a['url'] == "") {
                         var type = "Relation";
-                        var url = arcs.baseURL + "resource/" + a['relation_page_kid']; // link to related resource page
+                        var url = arcs.baseURL + "resource/" + a['relation_resource_kid']; // link to related resource page
                         var linkText = a['relation_resource_name']; // Related Resource Title
                     }
                     else {
@@ -179,7 +180,7 @@ $.ajax({
                         linkText = a['url'];
                     }
                     // And then add it all on to the end
-                    contents += "<div class='cont'><div class='img'><img></div><p>" + a['resource_name'] + "<span class='type'>Resource Type</span><span class='date'>"
+                    contents += "<div class='cont'><div class='img'><img></div><p><span class='name'>" + a['resource_name'] + "</span><span class='type'>Resource Type</span><span class='date'>"
                     + date + "</span></p><p class='annotationType'>" + type + "</p><a href=" + url + ">" + linkText + "</a></div>";
                     count++;
                 }

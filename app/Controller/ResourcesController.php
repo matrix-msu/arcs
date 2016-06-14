@@ -536,7 +536,7 @@ class ResourcesController extends AppController {
      *
      * @param string $id
      */
-    public function viewT($id)
+    public function viewKid($id)
     {
         $response = ['kid' => $id];
 
@@ -557,6 +557,7 @@ class ResourcesController extends AppController {
         //$this->json(200, $resource);
         //return $resource;
         $response['type'] = $resource['Type'];
+        $response['title'] = $resource['Title'];
 
         $resource_identifier = $resource['Resource Identifier'];
 

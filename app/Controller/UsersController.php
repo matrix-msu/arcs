@@ -766,7 +766,7 @@ class UsersController extends AppController
               ->subject('Reset Password')
               ->to($email)
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        //$Email->send();
+        $Email->send();
     }
 
     /**
