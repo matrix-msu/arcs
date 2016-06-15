@@ -241,7 +241,7 @@ a.view-colc{
 }
 
 #show-min, #show-min .more-info a{
-	font-size:18px;
+	font-size:16px;
 	color:#0094BC;
 	text-decoration: none;
 	text-align: center;
@@ -283,34 +283,59 @@ body{
 		width: auto !important;
 	}
 
-	@media screen and (max-width:700px){
-		.collection-list-wrapper .collection-list h4, .collection-list-wrapper .collection-list h5{
-			display:none;
-		}
+@media screen and (max-width:700px){
+	.collection-list-wrapper .collection-list h4, .collection-list-wrapper .collection-list h5{
+		display:none;
+	}
+}
+
+
+@media screen and (max-width:550px) and (min-width:320px){
+
+	h1{
+		font-size:30px;
+	}
+
+	h1.title{
+		font-size:20px;
 	}
 
 
-	@media screen and (max-width:550px){
-		.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb{
-			margin:10px;
-		}
-		.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
-			width:180px;
-			height:120px;
-		}
-		.collection-list details[open] ul li a .view-all-icon{
-			width:180px;
-			height:120px;
-		}
-		.resource-thumbs .resource-thumb .view-title{
-			color: #6D6E70;
-			font-size: 14px;
-		}
-		.collection-list-wrapper .collection-list a, .asearch a, .more-info a, #extra{
-			display:none;
-		}
-
-		#show-min, #show-min .more-info a{
-			display:block;
-		}
+	img.resource_imginfo_1{
+		width:120px;
+		height: 100px;
 	}
+
+	input.searchBoxInput{
+		font-size:11px;
+	}
+
+	.collection-list-wrapper .collection-list details[open] ul.resource-thumbs{
+		padding:10px 5px;
+	}
+
+	.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb{
+		margin:6px;
+	}
+	.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
+		width:120px;
+		height:100px;
+	}
+	.collection-list details[open] ul li a .view-all-icon{
+		width:120px;
+		height:100px;
+	}
+	.resource-thumbs .resource-thumb .view-title{
+		color: #6D6E70;
+		font-size: 12px;
+	}
+	.collection-list-wrapper .collection-list a, .asearch a, .more-info a, #extra{
+		display:none;
+	}
+
+	#show-min, #show-min .more-info a{
+		display:block;
+	}
+}
+
+
