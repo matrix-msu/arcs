@@ -3,7 +3,7 @@
 <?php //print_r($user_info);//var_dump($user_info); ?>
 </pre -->
 <?php if (empty($user_info['Collection'])): ?>
-    <h4>No collections</h4>
+    <h3>No collections</h3>
 <?php else: ?>
     <table class="user-tabs-table">
         <!-- <thead>

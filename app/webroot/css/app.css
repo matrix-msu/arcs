@@ -10662,47 +10662,66 @@ th.user-tabs-header {
   background-color: gray;
 }
 #user-actions .tab-content #annotations-tab .img,
-#user-actions .tab-content #transcriptions-tab .img {
+#user-actions .tab-content #transcriptions-tab .img,
+#user-actions .tab-content #discussion-tab .img {
   height: 100px;
   width: 125px;
   display: inline;
   float: left;
-  margin-right: 20px;
+  margin-left: -125px;
 }
 #user-actions .tab-content #annotations-tab .img img,
-#user-actions .tab-content #transcriptions-tab .img img {
+#user-actions .tab-content #transcriptions-tab .img img,
+#user-actions .tab-content #discussion-tab .img img {
   max-height: 100%;
   max-width: 100%;
+  box-shadow: 0 0 7px black;
 }
 #user-actions .tab-content #annotations-tab .cont,
-#user-actions .tab-content #transcriptions-tab .cont {
+#user-actions .tab-content #transcriptions-tab .cont,
+#user-actions .tab-content #discussion-tab .cont {
   border-bottom: 1px solid #ccc;
   padding-bottom: 40px;
+  padding-left: 125px;
   margin-top: 30px;
+  min-height: 123px;
 }
 #user-actions .tab-content #annotations-tab p,
-#user-actions .tab-content #transcriptions-tab p {
+#user-actions .tab-content #transcriptions-tab p,
+#user-actions .tab-content #discussion-tab p {
   font-size: 16px;
+  margin-left: 20px;
 }
 #user-actions .tab-content #annotations-tab .type,
-#user-actions .tab-content #transcriptions-tab .type {
+#user-actions .tab-content #transcriptions-tab .type,
+#user-actions .tab-content #discussion-tab .type {
   font-size: 12px;
   margin-left: 30px;
 }
 #user-actions .tab-content #annotations-tab .date,
-#user-actions .tab-content #transcriptions-tab .date {
+#user-actions .tab-content #transcriptions-tab .date,
+#user-actions .tab-content #discussion-tab .date {
   font-size: 12px;
   float: right;
   margin-top: 4px;
 }
 #user-actions .tab-content #annotations-tab .annotationType,
-#user-actions .tab-content #transcriptions-tab .annotationType {
+#user-actions .tab-content #transcriptions-tab .annotationType,
+#user-actions .tab-content #discussion-tab .annotationType {
   font-weight: bold;
   font-size: 14px;
 }
 #user-actions .tab-content #annotations-tab a,
-#user-actions .tab-content #transcriptions-tab a {
+#user-actions .tab-content #transcriptions-tab a,
+#user-actions .tab-content #discussion-tab a {
   color: #1C95BA;
+  margin-left: 20px;
+}
+#user-actions .tab-content #annotations-tab .transcript,
+#user-actions .tab-content #transcriptions-tab .transcript,
+#user-actions .tab-content #discussion-tab .transcript {
+  font-size: 14px;
+  padding-top: 10px;
 }
 summary.collections-details-summary {
   height: 40px;
@@ -11485,66 +11504,6 @@ ul.resource-thumbs li.resource-thumb:hover {
 }
 ul.resource-thumbs li.resource-thumb:hover a {
   text-decoration: underline;
-}
-.collection-list-wrapper h1.rsc-title {
-  font-size: 38px;
-  margin: auto;
-}
-.collection-list-wrapper .collection-list details summary p.rsc-name,
-.collection-list-wrapper .collection-list details[open] summary p.rsc-name {
-  text-shadow: none;
-  font-size: 18px;
-  display: inline;
-  margin: 20px 20px;
-}
-.collection-list-wrapper details .rsc-sum:after,
-.collection-list-wrapper details[open] .rsc-sum:after {
-  margin: 5px 0 0 5px;
-}
-.resource-thumbs .resource-thumb .rsc-text {
-  color: #333;
-  font-size: 16px;
-}
-.back-color[open] ul.resource-thumbs li.resource-thumb:hover .rsc-text {
-  color: #0094bc;
-}
-.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container {
-  visibility: visible;
-  display: block;
-  width: 120px;
-  height: 100px;
-  margin: 0;
-  border: 1px solid #E2E2E2;
-  position: relative;
-}
-.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon {
-  visibility: visible;
-  display: block;
-  width: 120px;
-  height: 100px;
-  margin: 0;
-  border: 0px;
-  background: rgba(0, 0, 0, 0.6);
-  top: 0px;
-  position: absolute;
-}
-.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon img.lock-icon-img {
-  width: 120px;
-  height: 100px;
-  margin: 0;
-  background-repeat: no-repeat;
-  border: 0px;
-  background-position: center;
-  background-image: url("../assets/img/Locked.svg");
-  background-size: 40px 40px;
-}
-@media screen and (max-width: 550px) {
-  .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon img.lock-icon-img,
-  .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon,
-  .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container {
-    width: 180px;
-    height: 120px;
-  }
 }
 html,
 body {

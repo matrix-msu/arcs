@@ -32,4 +32,16 @@ class CommentsController extends MetaResourcesController {
         ));
         $this->json(200, $results);
     }
+
+    /**
+     * Find all comments by user ID
+     */
+    public function findAllByUser() {
+        $model = $this->modelClass;
+        $results = $this->$model->find('all', array(
+            'conditions' => array('user_id' => $this->request->data['id']),
+            'order' => array('created DESC')
+        ));
+        $this->json(200, $results);
+    }
 }

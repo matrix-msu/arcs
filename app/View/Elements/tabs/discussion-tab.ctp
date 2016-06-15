@@ -1,6 +1,6 @@
 <div class="tab-pane" id="discussion-tab">
 <?php if(empty($user_info['Comment'])): ?>
-    <h4>No discussion items</h4>
+    <h3>No discussion items</h3>
 <?php else: ?>
     <table class="table table-striped">
         <thead>

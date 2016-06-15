@@ -130,11 +130,16 @@ $.ajax({
         if (!data.length) {
             // currently the no annotations by this user is displayed before we do js stuff. If I change that,
             // we'll actually use this to set it up. And probably may as well, but it won't be first.
-            $("#annotations-tab").html("<h3>This user hasn't made any annotations yet</h3>");
+            //$("#annotations-tab").html("<h3>This user hasn't made any annotations yet</h3>");
+            //$("#transcriptions-tab").html("<h3>This user hasn't made any transcriptions yet</h3>");
+            // If we switch to using these at any point, we also need the ifs at the bottom to have else clauses
+            // to put this in the correct spot if one is empty and the other isn't.
         }
         else {
             var contents = ""; // This is the variable we'll store our soon-to-be html in, then put it in the tab all at once
             var count = 0; // keep track of the current annotation we're on
+            var tcontents = ""; // As contents, but for transcriptions
+            var tcount = 0; // as count, but for transcriptions
             data.forEach(function(a) {
                 if (a['transcript'] == "" || a['transcript'] === null) {
                     // Get image and resource type
@@ -152,11 +157,13 @@ $.ajax({
                                 if (resType === null) {
                                     resType = "Unknown Type";
                                 }
-                                var div = $(".cont")[count];
+                                var div = $("#annotations-tab .cont")[count];
                                 // So that img gets src set to thumb, and .type gets html (or text?) set to resType.
                                 $(div).find("img").attr('src', thumb);
                                 $(div).find(".type").html(resType);
-                                $(div).find("span.name").html(result['title']);
+                                if (result['title'] !== null) {
+                                    $(div).find("span.name").html(result['title']);
+                                }
                                 //console.log(this.url);
                             }
                         });
@@ -167,7 +174,6 @@ $.ajax({
                     var monthNames = ["January", "February", "March", "April", "May", "June",
                       "July", "August", "September", "October", "November", "December"]; // silly nonsense to get month name
                     var date = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-                    // And make it a correctly formatted string through magic
                     // Sort out annotation type, then determine the URL appropriately for that type
                     if (a['url'] === null || a['url'] == "") {
                         var type = "Relation";
@@ -180,12 +186,110 @@ $.ajax({
                         linkText = a['url'];
                     }
                     // And then add it all on to the end
-                    contents += "<div class='cont'><div class='img'><img></div><p><span class='name'>" + a['resource_name'] + "</span><span class='type'>Resource Type</span><span class='date'>"
-                    + date + "</span></p><p class='annotationType'>" + type + "</p><a href=" + url + ">" + linkText + "</a></div>";
+                    contents += "<div class='cont'><div class='img'><img></div><p><span class='name'>" + a['resource_name']
+                      + "</span><span class='type'>Resource Type</span><span class='date'>" + date
+                      + "</span></p><p class='annotationType'>" + type + "</p><a href=" + url + ">" + linkText + "</a></div>";
                     count++;
                 }
+                else {
+                    // Get image and resource type
+                    (function(tcount) {
+                    $.ajax({
+                        url: "<?php echo Router::url('/', true); ?>resources/viewkid/" + a['resource_kid'] + ".json",
+                        type: "GET",
+                        data: {
+                            id: a['resource_kid']//a['page_id']
+                        },
+                        success: function (result) {
+                            //console.log(result);
+                            var thumb = result['thumb'];
+                            var resType = result['type'];
+                            if (resType === null) {
+                                resType = "Unknown Type";
+                            }
+                            var div = $("#transcriptions-tab .cont")[tcount];
+                            // So that img gets src set to thumb, and .type gets html (or text?) set to resType.
+                            $(div).find("img").attr('src', thumb);
+                            $(div).find(".type").html(resType);
+                            if (result['title'] !== null) {
+                                $(div).find("span.name").html(result['title']);
+                            }
+                        }
+                    });
+                    })(tcount);
+                    // Date stuff
+                    var d = new Date(a['created']);
+                    var monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"]; // silly nonsense to get month name
+                    var date = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    // And then add it all on to the end
+                    tcontents += "<div class='cont'><div class='img'><img></div><p><span class='name'>"
+                      + a['resource_name'] + "</span><span class='type'>Resource Type</span><span class='date'>"
+                      + date + "</span></p><p class='transcript'>" + a['transcript'] + "</p></div>";
+                    tcount++;
+                }
             });
-            $("#annotations-tab").html(contents);
+            if (!contents == "") {
+                $("#annotations-tab").html(contents);
+            }
+            if (!tcontents == "") {
+                $("#transcriptions-tab").html(tcontents);
+            }
+        }
+    }
+});
+
+$.ajax({
+    url: "<?php echo Router::url('/', true); ?>comments/findallbyuser",
+    type: "POST",
+    data: {
+        id: "<?php echo $user_info['id']; ?>"
+    },
+    success: function (data) {
+        console.log(data);
+        if (!data.length) {
+            $("#discussion-tab").html("<h3>No discussion items</h3>");
+        }
+        else {
+            var contents = "";
+            var count = 0;
+            //Get image, resource type, and resource title
+            data.forEach(function(a) {
+                (function(count) {
+                $.ajax({
+                    url: "<?php echo Router::url('/', true); ?>resources/viewkid/" + a['resource_kid'] + ".json",
+                    type: "GET",
+                    data: {
+                        id: a['resource_kid']
+                    },
+                    success: function (result) {
+                        var thumb = result['thumb'];
+                        var resType = result['type'];
+                        if (resType === null) {
+                            resType = "Unknown Type";
+                        }
+                        var div = $("#discussion-tab .cont")[count];
+                        // So that img gets src set to thumb, and .type gets html (or text?) set to resType.
+                        $(div).find("img").attr('src', thumb);
+                        $(div).find(".type").html(resType);
+                        if (result['title'] !== null) {
+                            $(div).find("span.name").html(result['title']);
+                        }
+                    }
+                });
+                })(count);
+                // Stuff to get the date to the desired format
+                var d = new Date(a['created']);
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"]; // silly nonsense to get month name
+                var date = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                // And add it all on
+                contents += "<div class='cont'><div class='img'><img></div><p><span class='name'>Resource Name</span>" +
+                  "<span class='type'>Resource Type</span><span class='date'>" + date + "</span></p><p class='transcript'>"
+                  + a['content'] + "</p></div>";
+                count++;
+            });
+            $("#discussion-tab").html(contents);
         }
     }
 });

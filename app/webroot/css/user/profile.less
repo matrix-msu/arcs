@@ -267,29 +267,32 @@ th.user-tabs-header {
             }
         }
 
-        #annotations-tab, #transcriptions-tab {
+        #annotations-tab, #transcriptions-tab, #discussion-tab {
             .img {
                 height: 100px;
                 width: 125px;
                 display: inline;
                 float: left;
-                margin-right: 20px;
-                //border: 1px solid #ccc;
+                margin-left: -125px;
 
                 img {
                     max-height: 100%;
                     max-width: 100%;
+                    box-shadow: 0 0 7px black;
                 }
             }
 
             .cont {
                 border-bottom: 1px solid #ccc;
                 padding-bottom: 40px;
+                padding-left: 125px;
                 margin-top: 30px;
+                min-height: 123px;
             }
 
             p {
                 font-size: 16px;
+                margin-left: 20px;
             }
 
             .type {
@@ -311,6 +314,12 @@ th.user-tabs-header {
 
             a {
                 color: #1C95BA;
+                margin-left: 20px;
+            }
+
+            .transcript {
+                font-size: 14px;
+                padding-top: 10px;
             }
         }
     }
