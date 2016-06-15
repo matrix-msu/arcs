@@ -287,10 +287,13 @@ body{
 	.collection-list-wrapper .collection-list h4, .collection-list-wrapper .collection-list h5{
 		display:none;
 	}
+	.collection-list-wrapper .collection-list a, .asearch a, .more-info a, #extra{
+		display:none;
+	}
 }
 
 
-@media screen and (max-width:550px) and (min-width:320px){
+@media screen and (max-width:380px){
 
 	h1{
 		font-size:30px;
@@ -300,9 +303,12 @@ body{
 		font-size:20px;
 	}
 
+	li.resource-pic {
+		width:44%!important;
+	}
 
 	img.resource_imginfo_1{
-		width:120px;
+		width:100%!important;
 		height: 100px;
 	}
 
@@ -315,26 +321,33 @@ body{
 	}
 
 	.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb{
-		margin:6px;
+		margin:2%;
+		width:45%;
 	}
 	.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
-		width:120px;
+		width:100%;
 		height:100px;
 	}
 	.collection-list details[open] ul li a .view-all-icon{
-		width:120px;
+		width:100%;
 		height:100px;
 	}
 	.resource-thumbs .resource-thumb .view-title{
 		color: #6D6E70;
 		font-size: 12px;
 	}
-	.collection-list-wrapper .collection-list a, .asearch a, .more-info a, #extra{
-		display:none;
-	}
+	
 
 	#show-min, #show-min .more-info a{
 		display:block;
+	}
+
+	.collection-list-wrapper .collection-list details summary h3{
+		font-size: 16px;
+	}
+
+	.collection-list-wrapper summary:after, .collection-list-wrapper details[open] summary:after {
+		margin: 5px 0;
 	}
 }
 
