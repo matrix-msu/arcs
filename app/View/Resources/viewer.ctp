@@ -1055,6 +1055,7 @@
     console.log("collections-here");
     console.log(collectionArray);
 
+    var collection_members = [];
     var collections = [];
     collectionArray.forEach(function (element) {
         collections.push(element['Collection']);
@@ -1716,7 +1717,7 @@
                         "<tr><td colspan='2'>This resource is apart of the following "+numCollections+" collections...</td></tr>";
                     for (var i = 0; i < numCollections; i++) {
                         //console.log("got-here1");
-                        var collection = collections[i];
+                        var collection = data.collections[i];
                         populateCollections += "<tr><td style='width:50%'>"+ collection.title +"</td><td>"+ collection.user_name +"</td></tr>";
                     }
                     populateCollections += "</tbody></table>";

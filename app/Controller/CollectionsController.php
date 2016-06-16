@@ -60,7 +60,7 @@ class CollectionsController extends AppController {
             //Get collections info from the resource_kid
             $sql = "SELECT DISTINCT collections.collection_id, collections.title, collections.user_name
                     FROM arcs_dev.collections 
-                    WHERE collections.resource_kid ='".$resource_id."'";
+                    WHERE collections.resource_kid ='".$resource_id."';";
             $result = $mysqli->query($sql);
             while($row = mysqli_fetch_assoc($result))
               $collections[] = $row;
