@@ -21,7 +21,7 @@
 		<input type="text" class="searchBoxAdvanced" name="Format" placeholder="Format">
 		<input type="text" class="searchBoxAdvanced" name="Language" placeholder="Language">
 		<input type="text" class="searchBoxAdvanced" name="Medium" placeholder="Medium">
-		<input type='submit' onclick="toggle_search_visibility()" class='user-reg-btn btn btn-success searchButton' value='Search'></input>
+		<input type='submit' onclick="toggle_search_visibility()" class='user-reg-btn btn btn-success searchButton' id="advanced_searchButton" value='Search'></input>
 	</div>	
 </div>
 

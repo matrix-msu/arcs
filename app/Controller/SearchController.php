@@ -34,14 +34,14 @@ class SearchController extends AppController {
      * Display the advanced search page
      * @param string $query
      */
-    /*
+    
     public function advance_search($query='') {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
         $this -> render('advancedsearch');
     }
-    */
+
 
 
 
