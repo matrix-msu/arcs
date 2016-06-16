@@ -219,94 +219,94 @@
 
                             <tr>
                                 <td>Region</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Region'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Region"><?php echo $project['Region'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Geolocation</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit">
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Geolocation">
                                     <?php foreach($project['Geolocation'] as $geolocation) {echo $geolocation."<br>";} ?>
                                 </div></td>
                             </tr>
 
                             <tr>
                                 <td>Modern Name</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Modern Name'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Modern Name"><?php echo $project['Modern Name'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Location Identifier</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Location Identifier'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Location Identifier"><?php echo $project['Location Identifier'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Location Identifier Scheme</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Location Identifier Scheme'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Location Identifier Scheme"><?php echo $project['Location Identifier Scheme'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Elevation</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Elevation'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Elevation"><?php echo $project['Elevation'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Earliest Date</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Earliest Date'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Earlier Date"><?php echo $project['Earliest Date'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Latest Date</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Latest Date'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Latest Date"><?php echo $project['Latest Date'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Records Archive</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Records Archive'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Records Archive"><?php echo $project['Records Archive'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Persistent Name</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Persistent Name'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Persistent Name"><?php echo $project['Persistent Name'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Complex Title</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Complex Title'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Complex Title"><?php echo $project['Complex Title'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Terminus Ante Quem</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Terminus Ante Quem'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Terminus Ante Quem"><?php echo $project['Terminus Ante Quem'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Terminus Post Quem</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Terminus Post Quem'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Terminus Post Quem"><?php echo $project['Terminus Post Quem'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Period</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Period'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Period"><?php echo $project['Period'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Archaeological Culture</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Archaeological Culture'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Archaeological Culture"><?php echo $project['Archaeological Culture'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Description</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Description'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Description"><?php echo $project['Description'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Brief Description</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Brief Description'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Brief Description"><?php echo $project['Brief Description'] ?></div></td>
                             </tr>
 
                             <tr>
                                 <td>Permitting Heritage Body</td>
-                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit"><?php echo $project['Permitting Heritage Body'] ?></div></td>
+                                <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Permitting Heritage Body"><?php echo $project['Permitting Heritage Body'] ?></div></td>
                             </tr>
                         </table>
 
@@ -603,7 +603,7 @@
                         <div id="soo" class="metadata-content">
 
                             <!--<div class="metadata-accordion">-->
-
+                                
                                 <?php if(count($subject) > 0) { ?>
                                 <ul>
                                 <?php $count=0; ?>
@@ -620,7 +620,9 @@
                                     <table id="Subject_Of_Observation">
                                         <tr>
                                             <td>Pages Associator</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Pages Associator"><?php echo $subjects['Pages Associator'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Pages Associator">
+                                                <?php foreach($subjects['Pages Associator'] as $page_associator) { echo $page_associator."<br>";} ?>
+                                            </div></td>
                                         </tr>
                                         <tr>
                                             <td>Resource Identifier</td>
@@ -628,7 +630,9 @@
                                         </tr>
                                         <tr>
                                             <td>Subject of Observation Associator</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Subject of Observation Associator"><?php echo $subjects['Subject of Observation Associator'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Subject of Observation Associator">
+                                                <?php foreach($subjects['Subject of Observation Associator'] as $subject_associator) { echo $subject_associator."<br>";} ?>
+                                            </div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Classification</td>
@@ -636,7 +640,9 @@
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Type</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Type"><?php echo $subjects['Artifact - Structure Type'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Type">
+                                                <?php foreach($subjects['Artifact - Structure Type'] as $structure_type) { echo $structure_type."<br>";} ?>
+                                            </div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Ante Quem</td>
@@ -656,7 +662,9 @@
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Excavation Unit</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Excavation Unit"><?php echo $subjects['Artifact - Structure Excavation Unit'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Excavation Unit">
+                                                <?php foreach( $subjects['Artifact - Structure Excavation Unit'] as $excavation_unit) { echo $excavation_unit."<br>";} ?>
+                                            </div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Description</td>
@@ -664,7 +672,9 @@
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Location</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Location"><?php echo $subjects['Artifact - Structure Location'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Location">
+                                                <?php foreach($subjects['Artifact - Structure Location'] as $structure_location) { echo $structure_location."<br>";} ?>
+                                            </div></td>
                                         </tr>
 
                                     </table>
@@ -1723,18 +1733,23 @@
         switch (meta_scheme_name){
             case "Project":
                 meta_scheme_id = "<?php echo PROJECT_SID; ?>";
+                meta_resource_kid = "<?php echo $project['kid']; ?>";
                 break;
             case "Season":
                 meta_scheme_id = "<?php echo SEASON_SID; ?>";
+                meta_resource_kid = "<?php echo $season['kid']; ?>";
                 break;
             case "Excavation/Survey":
                 meta_scheme_id = "<?php echo SURVEY_SID; ?>";
+                meta_resource_kid = "<?php echo $survey['kid']; ?>";
                 break;
             case "Archival_Object":
                 meta_scheme_id = "<?php echo RESOURCE_SID; ?>";
+                meta_resource_kid = "<?php echo $resource['kid']; ?>";
                 break;
             case "Subject_Of_Observation":
                 meta_scheme_id = "<?php echo SUBJECT_SID; ?>";
+                meta_resource_kid = "<?php echo $subjects['kid']; ?>";
                 break;
         }
         $.ajax({
@@ -1750,8 +1765,9 @@
                 value_before: meta_value_before,
                 new_value: meta_new_value,
                 approved: 0,
-                rejected: 0//,
-                //reason_rejected: "view who knows..."
+                rejected: 0,
+                reason_rejected: "",
+                metadata_kid: meta_resource_kid
             },
             success: function (data) {
                 console.log("MetadataEditsHere");
@@ -1765,6 +1781,7 @@
     var meta_value_before = '';
     var meta_new_value = '';
     var meta_scheme_name = '';
+    var meta_resource_kid = '';
     var meta_scheme_id = 0;
 
     $(".metadataEdit").click(function() {
