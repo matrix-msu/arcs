@@ -228,6 +228,10 @@ class arcs.views.search.Search extends Backbone.View
   afterSelection: ->
     _.defer =>
       selected = $('.result.selected').map( -> $(@).data('id')).get()
+      console.log("coffee selected")
+      console.log(selected)
+      arcs.selected = selected
+      $('#selected-resource-ids').html(selected)
       # get the count of the selected items, change the style accordingly
       num = $('.result.selected').length
       $('#selected-count').html(num)

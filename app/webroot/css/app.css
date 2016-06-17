@@ -9122,6 +9122,15 @@ input[type=range]:focus::-ms-fill-upper {
   position: fixed;
   z-index: 999;
 }
+.collectionAddedModalBackground {
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 999;
+}
 .collectionTab {
   padding-left: 15px;
   cursor: pointer;

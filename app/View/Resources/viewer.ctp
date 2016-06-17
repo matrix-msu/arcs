@@ -89,6 +89,20 @@
         </div>
     </div>
 
+        <div class="collectionAddedModalBackground">
+            <div class="collectionWrap" style="margin-top:9em;">
+                <div id="collectionModal" style="width:35em;">
+                    <div class="collectionModalHeader">ADDED TO COLLECTION <img src="../app/webroot/assets/img/Close.svg"
+                                                                              class="modalClose"/></div>
+                    <hr>
+                    <p>1 resource added to </p><p>Collection Name</p><p>!</p>
+                    <br>
+                    <button class="collectionNewSubmit" type="submit">VIEW COLLECTION</button>
+                    <button class="collectionNewSubmit" type="submit">BACK TO RESOURCE</button>
+                </div>
+            </div>
+        </div>
+
     <div id="viewer-left">
         <div id="viewer-tools">
             <div class="container1">
@@ -959,13 +973,21 @@
         console.log(checkboxes);
 
         checkboxes.click(function() {
-        console.log("here");
-        if(checkboxes.is(":checked")) {
-            submitButt.show();
-        }
-        else {
-            submitButt.hide();
-        }
+            console.log("here");
+            if(checkboxes.is(":checked")) {
+                submitButt.show();
+            }
+            else {
+                submitButt.hide();
+            }
+        });
+        $('#collectionTitle').bind('input propertychange', function() {
+              if(this.value != ""){
+                $(".collectionNewSubmit").show();
+                //console.log('text value not null');
+              }else{
+                $(".collectionNewSubmit").hide();
+              }
         });
     }
 
@@ -985,8 +1007,9 @@
             data: formdata,
             statusCode: {
                 201: function () {
-                    console.log("Success");
-                    window.location.reload();
+                    console.log("Add to Collection Success");
+                    //window.location.reload();
+                    $(".collectionAddedModalBackground").show();
                 },
                 400: function () {
                     console.log("Bad Request");

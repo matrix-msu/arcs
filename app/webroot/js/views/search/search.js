@@ -263,6 +263,10 @@
           selected = $('.result.selected').map(function() {
             return $(this).data('id');
           }).get();
+          console.log("coffee selected");
+          console.log(selected);
+          arcs.selected = selected;
+          $('#selected-resource-ids').html(selected);
           num = $('.result.selected').length;
           $('#selected-count').html(num);
           if (num !== 0) {

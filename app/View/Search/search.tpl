@@ -1,3 +1,33 @@
+<div class="viewers-container">
+	<div class="collectionModalBackground" id="collectionModalBackground">
+		<div class="collectionWrap" style="margin-top:9em;">
+			<div id="collectionModal" style="width:35em;">
+				<div class="collectionModalHeader">Add to collection <img src="../arcs/app/webroot/assets/img/Close.svg"
+																		  class="modalClose"/></div>
+				<hr>
+				<p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
+				<p class="collectionTab collectionTabNew">Add to a new collection</p>
+				<div class="collectionSearchContainer">
+					<form id="collectionSearchBarForm" onsubmit="collectionsSearch(); return false;">
+						<input type="text" class="collectionSearchBar" placeholder="Search for collections">
+					</form>
+					<div id="collectionSearchForm" >
+						<div id="collectionSearchObjects">
+						</div>
+						<button class="collectionSearchSubmit" >ADD TO COLLECTION</button>
+					</div>
+				</div>
+				<div class="collectionNewContainer">
+					<div id="collectionNewForm">
+							<textarea class="formInput" id="collectionTitle"
+									  placeholder="ENTER NEW COLLECTION TITLE"></textarea>
+						<button class="collectionNewSubmit">ADD TO NEW COLLECTION</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 <div class='searchIntro'>
     <h1>Search</h1>
     
@@ -133,6 +163,7 @@
 		<div class='toolbar-fixed'>
 			<a id='select-all' onclick=''><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
 			<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/BelongsToCollectionTooltip.svg' class='collectionIcon'/></a>
+			<div id="selected-resource-ids" style="display: none;"></div>
 		</div>
 		
 		<ul class="flex-container">
@@ -284,3 +315,297 @@
 		
 	});
 </script>
+
+
+	<script>
+		// collection
+		$("#selected-all").click(function () {
+			//console.log("hello-testing-click");
+			var e = document.getElementById("selected-all");
+			//console.log(e.style.color);
+			if(e.style.color == "rgb(0, 0, 0)")
+				$(".collectionModalBackground").show();
+
+		});
+
+		$(".modalClose").click(function () {
+			$(".collectionModalBackground").hide();
+		});
+
+		function collectionsSearch() {
+			var query = $(".collectionSearchBar").val();
+			console.log("search here");
+
+			// only put collections in between the div if they include the query.
+			// I.E. "" is in every collection title and user_name
+			var populateCheckboxes = "<hr>";
+			for (var i = 0; i < collectionArray.length; i++) {
+				if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
+						(collectionArray[i][2].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
+
+					populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='item-" + i + "' id='item-" + i + "' value='" + collectionArray[i][1] + "' />"
+							+ "<label for='item-" + i + "'><div style='float:left'>" + collectionArray[i][0] + " </div><div style='float:right'>" + collectionArray[i][2]+ "</div></label><br />";
+				}
+			}
+			$("#collectionSearchObjects").html(populateCheckboxes);
+
+			// Hide add to collection button in collection modal when no collections are selected
+			var checkboxes = $("#collectionSearchObjects > input");
+			var submitButt = $(".collectionSearchSubmit");
+			console.log(checkboxes);
+
+			checkboxes.click(function() {
+				console.log("here");
+				if(checkboxes.is(":checked")) {
+					submitButt.show();
+				}
+				else {
+					submitButt.hide();
+				}
+			});
+			$('#collectionTitle').bind('input propertychange', function() {
+				if(this.value != ""){
+					$(".collectionNewSubmit").show();
+					//console.log('text value not null');
+				}else{
+					$(".collectionNewSubmit").hide();
+				}
+			});
+		}
+
+		$(".collectionNewSubmit").click(function () {
+			// creates a single, new collection entry based on the resource it is viewing
+			var selected_resources = [];
+			selected_resources = arcs.selected;
+			console.log("selected_resource:");
+			console.log(selected_resources);
+
+			var formdata = {
+				title: $('#collectionTitle').val(),
+				resource_kid: selected_resources[0],
+				description: ""//,
+				//public: 1
+			}
+			console.log("got here 1");
+			$.ajax({
+				url: arcs.baseURL + "collections/add",
+				type: "POST",
+				data: formdata,
+				statusCode: {
+					201: function (data) {
+						console.log("Success");
+						console.log(data);
+						//window.location.reload();
+						selected_resources.shift();
+						var new_col_id = data['collection_id']
+						console.log("newcolid:");
+						console.log(new_col_id);
+
+						selected_resources.forEach(function(resource){
+							var resource_kid = resource;
+							var formdata = {
+								collection: new_col_id,
+								resource_kid: resource_kid
+							};
+							console.log("add to existing");
+							console.log(formdata);
+
+							$.ajax({
+								url: arcs.baseURL + "collections/addToExisting",
+								type: "POST",
+								data: formdata,
+								statusCode: {
+									201: function () {
+										console.log("Success");
+										//window.location.reload();
+									},
+									400: function () {
+										console.log("Bad Request");
+										$(".collectionModalBackground").hide();
+									},
+									405: function () {
+										console.log("Method Not Allowed");
+										$(".collectionModalBackground").hide();
+									}
+								}
+							});
+						})
+						//arcs.Search.prototype.unselectAll();
+						var unselect = function(trigger){
+							if(trigger==null){trigger=true}this.$(".result").removeClass("selected");
+							this.$(".select-button").removeClass("de-select");
+							this.$(".select-button, #toggle-select").html("SELECT");
+							this.$("#deselect-all").attr({id:"select-all"});
+							this.$(".checkedboxes").prop("checked", false);
+							this.$("#collectionTitle").val('');
+							this.$(".collectionTabSearch").trigger("click");
+							collectionList();
+							collectionsSearch();
+							if(trigger){
+								return arcs.bus.trigger("selection")
+							}
+						};
+						var retunselect = unselect(null);
+						console.log("unselect here:");
+						console.log(retunselect);
+						$(".collectionModalBackground").hide();
+						//arcs.selected = 0;
+					},
+					400: function () {
+						console.log("Bad Request");
+						$(".collectionModalBackground").hide();
+					},
+					405: function () {
+						console.log("Method Not Allowed");
+						$(".collectionModalBackground").hide();
+					}
+				}
+
+
+			});
+		});
+
+		$(".collectionSearchSubmit").click(function () {
+			// creates 1+ collection entries based on the resource (IE adds the resource to old collections)
+			//console.log("got to search click");
+			//var selected_resources_string  = document.getElementById("selected-resource-ids").innerHTML;
+			var selected_resources = [];
+			selected_resources = arcs.selected;
+			//console.log(selected_resources);
+			//console.log("type below");
+			//console.log(typeof(selected_resources));
+			selected_resources.forEach(function(resource){
+				var resource_kid = resource;
+
+				$('#collectionSearchObjects input:checked').each(function () {
+					var formdata = {
+						collection: $(this).val(),
+						resource_kid: resource_kid
+					}
+
+					// TODO: sometimes returns an error but it will always upload to the sql database
+					$.ajax({
+						url: arcs.baseURL + "collections/addToExisting",
+						type: "POST",
+						data: formdata,
+						statusCode: {
+							201: function (data) {
+								console.log("Success");
+								console.log(data);
+							},
+							400: function () {
+								console.log("Bad Request");
+							},
+							405: function () {
+								console.log("Method Not Allowed");
+							}
+						}
+					});
+				});
+			})
+			var unselect = function(trigger){
+				if(trigger==null){
+					trigger=true
+				}
+				this.$(".result").removeClass("selected");
+				this.$(".select-button").removeClass("de-select");
+				this.$(".select-button, #toggle-select").html("SELECT");
+				this.$("#deselect-all").attr({id:"select-all"});
+				this.$(".checkedboxes").prop("checked", false);
+				this.$("#collectionTitle").val('');
+				this.$(".collectionTabSearch").trigger("click");
+				collectionList();
+				collectionsSearch();
+				if(trigger){
+					return arcs.bus.trigger("selection")
+				}
+			};
+			var retunselect = unselect(null);
+			$(".collectionModalBackground").hide();
+		});
+
+		// collection tabs
+		$(".collectionTabSearch").click(function () {
+			$(".collectionSearchContainer").show();
+			$(".collectionNewContainer").hide();
+			$(".collectionTabSearch").addClass("activeTab");
+			$(".collectionTabNew").removeClass("activeTab");
+		});
+
+		$(".collectionTabNew").click(function () {
+			$(".collectionNewContainer").show();
+			$(".collectionSearchContainer").hide();
+			$(".collectionTabNew").addClass("activeTab");
+			$(".collectionTabSearch").removeClass("activeTab");
+		});
+
+		// run on page load
+		$(".collectionNewContainer").hide();
+
+		//<?php echo "var collectionArray = ".$collections.";" ?>
+		//console.log("got here");
+		//arcs.user_viewer = new arcs.views.CollectionList({
+		//	model: arcs.models.Collection,
+		//	collection: new arcs.collections.CollectionList({ collections|json_encode }}),
+		//		el: $('#collectionSearchObjects')
+		//});
+		//arcs.user_viewer.collection.each(function(model) {
+		//	console.log("something happens here...");
+		//	console.log(model);
+		//});
+		//console.log("got here");
+		//console.log(arcs.baseURL+ "collections/index");
+		//var temp = getJSON arcs.baseURL + "collections/search?n=12&q=#{query}", (response) ->
+		//resources2: response.results
+		//console.log(arcs.josh_collection);
+		var collectionArray = [];
+		function collectionList() {
+			collectionArray = [];
+			$.ajax({
+				url: arcs.baseURL + "collections/titlesAndIds",
+				type: "get",
+				//data: "",
+				success: function (data) {
+					//console.log("ajax success");
+					//console.log(data);
+					var arr = Object.keys(data).map(function (k) {
+						return data[k]
+					});
+					//console.log('array below here');
+					//console.log(arr);
+					data.forEach(function (tempdata) {
+						var arr = Object.keys(tempdata).map(function (k) {
+							return tempdata[k]
+						});
+						//console.log(tempdata);
+						//console.log("array below");
+						//console.log(arr);
+						arr.forEach(function (temparrdata) {
+							var arr2 = Object.keys(temparrdata).map(function (k) {
+								return temparrdata[k]
+							});
+							//console.log(arr2);
+							if (arr2.length > 0)
+								collectionArray.push(arr2);
+						})
+
+
+					})
+					collectionsSearch();
+					//console.log("finished the ajax");
+					//console.log(collectionArray);
+				}
+			});
+		}
+		collectionList();
+		//var collections = [];
+		//console.log("collectionArray below here");
+		//console.log(collectionArray);
+		//collectionArray.forEach(function (element) {
+		//console.log(element);
+		//collections.push(element['Collection']);
+		//});
+
+		//collectionsSearch();
+	</script>
+
