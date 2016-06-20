@@ -2,14 +2,15 @@
 (function() {
   var base,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
+    hasProp = {}.hasOwnProperty,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if ((base = arcs.views).search == null) {
     base.search = {};
   }
 
   arcs.views.search.Search = (function(superClass) {
-    var search;
+    var fillArray, pagination, search;
 
     extend(Search, superClass);
 
@@ -49,10 +50,12 @@
       'click #grid-btn': 'toggleView',
       'click #list-btn': 'toggleView',
       'click #top-btn': 'scrollTop',
-      'click .sort-btn': 'setSort',
       'click .dir-btn': 'setSortDir',
       'click .search-page-btn': 'setPage',
-      'click .search-type': 'addFacet'
+      'click .search-type': 'addFacet',
+      'click .pageNumber': 'scrollTop',
+      'click #leftArrow': 'scrollTop',
+      'click #rightArrow': 'scrollTop'
     };
 
 
@@ -106,6 +109,7 @@
         loader: true,
         success: (function(_this) {
           return function() {
+            console.log((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             _this.router.navigate((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             if (!_this.scrollReady) {
               _this.setupScroll() && (_this.scrollReady = true);
@@ -181,7 +185,7 @@
     Search.prototype.setPage = function(e) {
       e.preventDefault();
       this.$el = $(e.currentTarget);
-      this.search.options.page = this.$el.data('page');
+      this.search.options.page = this.$el.data('pageNumber');
       return this.search.run();
     };
 
@@ -312,14 +316,97 @@
       return this.search.vs.searchBox.addFacet(e.target.text, '', 10);
     };
 
+    fillArray = function(page, lastPage) {
+      var i, results1;
+      if (page < 3) {
+        page = 3;
+      }
+      if (page === lastPage) {
+        page = page - 2;
+      }
+      if (page === lastPage - 2) {
+        page = page - 1;
+      }
+      i = -1;
+      results1 = [];
+      while (i < 4) {
+        i++;
+        if ((page + (i - 2)) <= lastPage) {
+          results1.push(page + (i - 2));
+        } else {
+          results1.push(0);
+        }
+      }
+      return results1;
+    };
+
+    pagination = function(pageArray, currentPage, lastPage) {
+      var i, j, results1;
+      if (indexOf.call(pageArray, 1) >= 0) {
+        $('#firstPage').css('display', 'none');
+        $('.fDots').css('display', 'none');
+      } else {
+        $('#firstPage').css('display', 'block');
+        $('.fDots').css('display', 'block');
+      }
+      if (1 === currentPage) {
+        $('#rightArrow').css('display', 'none');
+      } else {
+        $('#rightArrow').css('display', 'block');
+      }
+      if (indexOf.call(pageArray, lastPage) >= 0) {
+        $('#lastPage').css('display', 'none');
+        $('.dots').css('display', 'none');
+        $('#leftArrow').css('display', 'none');
+      } else {
+        $('#lastPage').css('display', 'block');
+        $('.dots').css('display', 'block');
+        $('#leftArrow').css('display', 'block');
+      }
+      if (currentPage === lastPage) {
+        $('#lefttArrow').css('display', 'none');
+      } else {
+        $('#leftArrow').css('display', 'block');
+      }
+      results1 = [];
+      for (i = j = 1; j <= 5; i = ++j) {
+        console.log("Array contents: " + pageArray[i - 1] + " i: " + i);
+        if (pageArray[i - 1] === 0) {
+          console.log("undifined");
+          results1.push($('#' + i).css('display', 'none'));
+        } else {
+          $('#' + i).css('display', 'block');
+          $('#' + i).html(pageArray[i - 1]);
+          if (parseInt($('#' + i).html()) === currentPage) {
+            results1.push($('#' + i).addClass('selected'));
+          } else {
+            results1.push(void 0);
+          }
+        }
+      }
+      return results1;
+    };
+
     search = function() {
-      var resources, totalResults, val;
+      var pageNum, perPage, resources, totalResults, val;
       val = $(".searchBoxInput").val();
+      pageNum = $('.selected').html();
+      perPage = $('#items-per-page-btn').html().substring(0, 2);
+      console.log(perPage);
+      $('.pageNumber').removeClass('selected');
       resources = new Promise(function(resolve, reject) {
-        var req, resourcequery;
+        var pageNumber, perPageUrl, req, resourcequery;
         resourcequery = encodeURIComponent("" + val);
-        return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery, function(response) {
+        pageNumber = encodeURIComponent("" + pageNum);
+        perPageUrl = encodeURIComponent("" + perPage);
+        return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery + "/" + pageNumber + "/" + perPageUrl, function(response) {
+          var temp;
           console.log(response);
+          console.log("Current page: " + pageNum + ", " + "Number of total pages: " + response['pages']);
+          $('#lastPage').html(response['pages']);
+          temp = fillArray(parseInt(pageNum), parseInt(response['pages']));
+          console.log(temp);
+          pagination(temp, parseInt(pageNum), parseInt(response['pages']));
           return resolve(response['results']);
         });
       });
@@ -332,18 +419,22 @@
           totalResults.push(value);
         }
         $('#results-count').html(totalResults.length);
+        $('#search-pagination').html(arcs.tmpl('search/paginate', {
+          results: totalResults
+        }));
         Search.prototype._render({
           results: totalResults
         });
-        return $('#search-pagination').html(arcs.tmpl('search/paginate', {
-          results: totalResults
-        }));
       });
     };
 
     $(function() {
       return $(".searchBoxInput").keyup(function(e) {
+        console.log("Ran");
         if (e.keyCode === 13) {
+          $('.pageNumber').removeClass('selected');
+          $("#1").addClass('selected');
+          $("#1").html(1);
           e.preventDefault();
           return search();
         }
@@ -361,6 +452,32 @@
       $results[append ? 'append' : 'html'](arcs.tmpl(template, {
         results: results
       }));
+      $(".pageNumber").unbind().click(function(e) {
+        if ($(this).hasClass('selected')) {
+          console.log("times this was called");
+          e.stopPropagation();
+        } else {
+          $('.pageNumber').removeClass('selected');
+          $(this).addClass('selected');
+          search();
+        }
+      });
+      $('#leftArrow').unbind().click(function(e) {
+        var temp;
+        temp = $('.selected').html();
+        $('.selected').html(parseInt(temp) + 1);
+        return search();
+      });
+      $('#rightArrow').unbind().click(function(e) {
+        var temp;
+        temp = $('.selected').html();
+        if (temp === '1') {
+          console.log("on page 1");
+        } else {
+          $('.selected').html(parseInt(temp) - 1);
+          return search();
+        }
+      });
       $('div.result').hover((function() {
         $(this).find('.select-button').show();
         $(this).find('img').addClass('img-hover');
@@ -380,6 +497,13 @@
           $(this).parents('.result').removeClass('selected');
           arcs.bus.trigger('selection');
         }
+      });
+      $('.sort-btn').unbind().click(function() {
+        $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
+        $('.pageNumber').removeClass('selected');
+        $("#1").addClass('selected');
+        $("#1").html(1);
+        return search();
       });
       if (!results.length > 0) {
         return $results.html("<div id='no-results'>No Results</div>");

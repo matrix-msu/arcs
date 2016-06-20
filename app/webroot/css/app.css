@@ -8225,6 +8225,7 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu {
   border-radius: 0 !important;
   width: auto !important;
   min-width: 0;
+  left: 15px;
 }
 div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   cursor: pointer;
@@ -8443,7 +8444,7 @@ ul.pagination .selected {
   display: inline-block;
 }
 .leftMost {
-  left: -23px;
+  left: -23px !important;
 }
 #rightArrow {
   position: relative;

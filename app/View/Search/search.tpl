@@ -198,9 +198,8 @@
 	<div id='search-bottom-bar'>
 		<div id="search-actions" class="search-toolbar">
 			<div id="items-per-pages-buttons" class="btn-group actions-left">
-				  <button id="items-per-page-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-					20 Items per Page
-					<span class="pointerDown sort-arrow"></span>
+				  <button id='items-per-page-btn' class='btn dropdown-toggle' data-toggle='dropdown'>20 Items per Page
+					<span class='pointerDown sort-arrow pointerSearch'></span>
 				  </button>
 				  <ul class="dropdown-menu">
 					<li><a class="sort-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
@@ -208,20 +207,27 @@
 					<li><a class="sort-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
 				  </ul>
 			</div>
-			<ul class="pagination">
-				<li id='leftArrow' class='pointerDown pointerNum'></li>
-				<li><a class='selected pageNumber' id='1'>1</a></li>
-				<li><a class='pageNumber' id='2'>2</a></li>
-				<li><a class='pageNumber' id='3'>3</a></li>
-				<li><a class='pageNumber' id='4'>4</a></li>
-				<li><a class='pageNumber' id='5'>5</a></li>
-				<li id='rightArrow' class='pointerDown pointerNum'></li>
-			</ul>
+			<div id="pagination">
+				<ul class="pagination">
+					<li id='rightArrow' class='pointerDown pointerNum'></li>
+					<li><a class='pageNumber' id='firstPage'> 1 </a></li>
+					<li class='fDots'> ... </li>
+					<li><a class='selected pageNumber' id='1'></a></li>
+					<li ><a class='pageNumber' id='2' ></a></li>
+					<li><a class='pageNumber' id='3'></a></li>
+					<li><a class='pageNumber' id='4'></a></li>
+					<li><a class='pageNumber' id='5'></a></li>
+					<li class='dots'> ... </li>
+					<li><a class='pageNumber' id="lastPage"></a></li>
+					<li id='leftArrow' class='pointerDown pointerNum'></li>
+				</ul>
+			</div>
+			
 			<div id="search-again">
 				<a class="search-again-link" id='top-btn'>Search again</a>
 			</div>
 		</div>
-	<div id="search-pagination"></div>
+	
 
 	</div>
 </div>
@@ -236,13 +242,15 @@
        if(e.style.visibility == 'hidden')
        		console.log("hi");
 	   		e.style.visibility = 'visible';
+	   		
     }
     /* Replaced with search.js' scrollTop */
-    /*function movePage() {
-	    console.log("HI");
-	    window.location.hash = "searchJump";
-	}
-    */
+//    function movePage() {
+//	    console.log("HI");
+//		$('.open').removeClass('.open');
+//	    window.location.hash = "searchJump";
+//	}
+    
 	
     /*$(document).ready(function () {
     $("li").click(function () {
@@ -257,49 +265,31 @@
 			toggle_search_visibility();
 		}
 	});
-	
-	/* function for page numbers */
-	$('.pageNumber').click(function(){
-		/* console.log(this.id); */
-		$('.pageNumber').removeClass('selected');
-		$(this).addClass('selected');
-		/* add functions here, use this.id to identify page number. */
-	});
+
 	$('#leftArrow').click(function(){
-		if($("#1").hasClass('selected')){
-			$('#1').removeClass('selected');
-			$('#2').addClass('selected');
+		var currentId = $('.selected').html()%5
+		if(currentId != 0){
+			$('#'+currentId).removeClass('selected');
+			var nextId = currentId+1;
+			$('#' + nextId).addClass('selected');
+
 		}
-		else if($("#2").hasClass('selected')){
-			$('#2').removeClass('selected');
-			$('#3').addClass('selected');
-		}
-		else if($("#3").hasClass('selected')){
-			$('#3').removeClass('selected');
-			$('#4').addClass('selected');
-		}
-		else if($("#4").hasClass('selected')){
-			$('#4').removeClass('selected');
-			$('#5').addClass('selected');
-		}
+
 	});
 	$('#rightArrow').click(function(){
-		if($("#5").hasClass('selected')){
-			$('#5').removeClass('selected');
-			$('#4').addClass('selected');
+		var currentId = $('.selected').html()%5
+		if(currentId != 1){
+			$('#'+currentId).removeClass('selected');
+			if(currentId == 0){
+				$('#5').removeClass('selected');
+				$('#4').addClass('selected');
+			}
+			else{
+				var nextId = currentId-1;
+				$('#' + nextId).addClass('selected');
+			}
 		}
-		else if($("#4").hasClass('selected')){
-			$('#4').removeClass('selected');
-			$('#3').addClass('selected');
-		}
-		else if($("#3").hasClass('selected')){
-			$('#3').removeClass('selected');
-			$('#2').addClass('selected');
-		}
-		else if($("#2").hasClass('selected')){
-			$('#2').removeClass('selected');
-			$('#1').addClass('selected');
-		}
+
 	});
 
 	$('#select-all, #deselect-all').click(function(){

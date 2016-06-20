@@ -11,6 +11,18 @@ class SearchController extends AppController {
     public $name = 'Search';
     public $uses = array('Resource');
 
+	public $paginate = [
+		'limit' => 20,
+		'order' => [
+			'Search.response.Title' => 'asc'
+		]
+	];
+	
+	public function initialize(){
+        parent::initialize();
+        $this->loadComponent('Paginator');
+    }
+	
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('search', 'resources');
@@ -462,8 +474,8 @@ class SearchController extends AppController {
 
 
 
-    public function simple_search($query1) {
-
+    public function simple_search($query1,$page,$perPage) {
+		
         $options = $this->parseParams();
 
         // This array will be used to get results from multiple schemes. i.e search mutiple schemes
@@ -546,8 +558,25 @@ class SearchController extends AppController {
 
             $response['results'] = $returnResults;
             $response['total'] = count($response['results']);
-            $this->json(200, $response);
-
+		    $numberOfPages = ceil($response['total']/$perPage);
+			$skip = ($page-1)*$perPage;
+			$response['results'] = array_slice($response['results'],$skip,$perPage);
+			$response['pages'] = $numberOfPages;
+			$response['pageNumber'] = $page;
+			$response['numberPerPage'] = $perPage;  //pass this variable in eventually
+//			$this->layout = false;
+//				$this->Post->recursive = 0;
+//				$this-paginate = array(
+//				'limit' => 20;
+//				);
+			//$this->paginate($response['results']);
+			$this->json(200, $response);
+			
+            //$this->json(200, $this->paginate($response['results']));
+			
+			
+			 //$this->paginate($response);
+			//$paginate($this->json(200, $response));
         }
 
 
@@ -613,6 +642,10 @@ class SearchController extends AppController {
             )
         ));
     }
+	
+	public function paginate(){
+		
+	}
 
     /**
      * Parse the search options from the request parameters.
