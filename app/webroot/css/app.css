@@ -8278,7 +8278,7 @@ div#search-results-wrapper .toolbar-fixed img.collectionIcon {
 div#search-again {
   float: right;
   vertical-align: middle;
-  line-height: 0;
+  line-height: 4;
   color: #747474;
   text-transform: uppercase;
 }
@@ -8346,13 +8346,13 @@ img.search-results-thumbnall {
   margin: 20px;
 }
 ul.pagination {
-  margin-left: auto !important;
-  margin-right: auto !important;
-  width: 215px;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  width: auto;
   line-height: 50px;
   vertical-align: middle;
   margin: 0;
-  display: block !important;
+  display: flex;
 }
 ul.pagination .selected {
   border: 1px solid #0093be !important;
@@ -8448,25 +8448,40 @@ ul.pagination .selected {
 }
 #rightArrow {
   position: relative;
-  top: 1px;
+  top: 15px;
   bottom: 0;
-  right: 0px;
-  left: -230px;
+  right: 0;
+  left: -7px;
   transform: rotate(-135deg);
+}
+#rightArrowBox {
+  cursor: pointer;
 }
 #leftArrow {
   position: relative;
-  left: 0px;
+  left: -2px;
   right: 0;
-  top: 13px;
+  top: 15px;
   bottom: 0;
   transform: rotate(45deg);
+}
+#leftArrowBox {
+  cursor: pointer;
 }
 .pointerNum {
   margin: 5px 0 0 30px;
   margin-left: 10px;
   border: solid grey;
   border-width: 2.5px 2.5px 0 0;
+}
+#pagination {
+  display: inline-block;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
 }
 .result {
   border-collapse: separate;

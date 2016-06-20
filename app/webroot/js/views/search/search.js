@@ -54,8 +54,9 @@
       'click .search-page-btn': 'setPage',
       'click .search-type': 'addFacet',
       'click .pageNumber': 'scrollTop',
-      'click #leftArrow': 'scrollTop',
-      'click #rightArrow': 'scrollTop'
+      'click #leftArrowBox': 'scrollTop',
+      'click #rightArrowBox': 'scrollTop',
+      'click .sort-btn': 'scrollTop'
     };
 
 
@@ -324,7 +325,7 @@
       if (page === lastPage) {
         page = page - 2;
       }
-      if (page === lastPage - 2) {
+      if (page === lastPage - 1) {
         page = page - 1;
       }
       i = -1;
@@ -462,13 +463,13 @@
           search();
         }
       });
-      $('#leftArrow').unbind().click(function(e) {
+      $('#leftArrowBox').unbind().click(function(e) {
         var temp;
         temp = $('.selected').html();
         $('.selected').html(parseInt(temp) + 1);
         return search();
       });
-      $('#rightArrow').unbind().click(function(e) {
+      $('#rightArrowBox').unbind().click(function(e) {
         var temp;
         temp = $('.selected').html();
         if (temp === '1') {

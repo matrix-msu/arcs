@@ -64,8 +64,9 @@ class arcs.views.search.Search extends Backbone.View
     'click .search-page-btn'   : 'setPage'
     'click .search-type'       : 'addFacet'
     'click .pageNumber'        : 'scrollTop'
-    'click #leftArrow'        : 'scrollTop'
-    'click #rightArrow'        : 'scrollTop'
+    'click #leftArrowBox'        : 'scrollTop'
+    'click #rightArrowBox'        : 'scrollTop'
+    'click .sort-btn'        : 'scrollTop'
 
   ### More involved setups run by the initialize method ###
 
@@ -275,7 +276,7 @@ class arcs.views.search.Search extends Backbone.View
       page = 3
     if page is lastPage
       page = page-2
-    if page is lastPage-2
+    if page is lastPage-1
       page = page-1
     i=-1
     while i < 4
@@ -339,10 +340,6 @@ class arcs.views.search.Search extends Backbone.View
         pagination(temp,parseInt(pageNum), parseInt(response['pages']) )
         resolve(response['results'])
     )
-
-
-
-	
     totalResults = []
     Promise.all([resources]).then((values) ->
       for key,value of values[0]
@@ -440,12 +437,12 @@ class arcs.views.search.Search extends Backbone.View
         search()
         return
 
-    $('#leftArrow').unbind().click (e) ->
+    $('#leftArrowBox').unbind().click (e) ->
       temp = $('.selected').html()
       $('.selected').html(parseInt(temp)+1)
       search()
 
-    $('#rightArrow').unbind().click (e) ->
+    $('#rightArrowBox').unbind().click (e) ->
       temp = $('.selected').html()
       if temp is '1'
         console.log("on page 1")

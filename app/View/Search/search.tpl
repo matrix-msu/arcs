@@ -209,17 +209,18 @@
 			</div>
 			<div id="pagination">
 				<ul class="pagination">
-					<li id='rightArrow' class='pointerDown pointerNum'></li>
-					<li><a class='pageNumber' id='firstPage'> 1 </a></li>
-					<li class='fDots'> ... </li>
-					<li><a class='selected pageNumber' id='1'></a></li>
-					<li ><a class='pageNumber' id='2' ></a></li>
-					<li><a class='pageNumber' id='3'></a></li>
-					<li><a class='pageNumber' id='4'></a></li>
-					<li><a class='pageNumber' id='5'></a></li>
-					<li class='dots'> ... </li>
-					<li><a class='pageNumber' id="lastPage"></a></li>
-					<li id='leftArrow' class='pointerDown pointerNum'></li>
+					<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+					
+					<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
+					<li class='fDots' style="display:none"> ... </li>
+					<li><a class='selected pageNumber' id='1' style="display:none"></a></li>
+					<li ><a class='pageNumber' id='2'style="display:none" ></a></li>
+					<li><a class='pageNumber' id='3' style="display:none"></a></li>
+					<li><a class='pageNumber' id='4' style="display:none"></a></li>
+					<li><a class='pageNumber' id='5' style="display:none"></a></li>
+					<li class='dots' style="display:none" style="display:none"> ... </li>
+					<li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
+					<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
 				</ul>
 			</div>
 			
