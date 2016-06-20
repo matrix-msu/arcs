@@ -48,6 +48,10 @@ define ("SUBJECT_SID", "739");
 define ("SURVEY_SID", "740");
 define ("TOKEN", "8b88eecedaa2d3708ebec77a");
 
+# Thumbnail location
+define("THUMBS_URL", "http://dev2.matrix.msu.edu/arcs/app/webroot/thumbs/");
+define("THUMBS", "/matrix/dev/public_html/arcs/app/webroot/thumbs/");
+
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');

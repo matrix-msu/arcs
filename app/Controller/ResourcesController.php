@@ -590,11 +590,113 @@ class ResourcesController extends AppController {
             $temp_array['pic_url'] = $picture_url;
             $kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
             $response['thumb'] = $kora_pic_url.$picture_url;
+            $response['thumb'] = $this->smallThumb($temp_array['pic_url']);
+            $response['largethumb'] = $this->largeThumb($temp_array['pic_url']);
         }else{
             $response['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
         }
 
         $this->json(200, $response);
         return $response;
+    }
+
+
+    /**
+     * Get a small thumb of a resource (240x200), will create thumb if it doesn't already exist
+     *
+     * @param string $name should be name of image file
+     *
+     * @return string the url to the thumb
+     */
+    public function smallThumb($name) {
+        $path = THUMBS . "smallThumbs/";
+        $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
+        $path .= $thumb;
+        $url = THUMBS_URL . "smallThumbs/" . $thumb;
+        if(!file_exists($path)) {
+            $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
+            $image = imagecreatefromstring(file_get_contents($imgpath));
+            $result = $this->resize($image, 240, 200);
+            imagedestroy($image);
+            imagejpeg($result, $path);
+            imagedestroy($result);
+        }
+        return $url;
+    }
+
+    /**
+     * Get a large thumb of a resource (400x400), will create thumb if it doesn't already exist
+     *
+     * @param string $name should be name of image file
+     *
+     * @return string the url to the thumb
+     */
+    public function largeThumb($name) {
+        $path = THUMBS . "largeThumbs/";
+        $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
+        $path .= $thumb;
+        $url = THUMBS_URL . "largeThumbs/" . $thumb;
+        if(!file_exists($path)) {
+            $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
+            $image = imagecreatefromstring(file_get_contents($imgpath));
+            $result = $this->resize($image, 400, 400);
+            imagedestroy($image);
+            imagedestroy($result);
+        }
+        return $url;
+    }
+
+
+    /**
+     * Used by smallThumb and largeThumb to do the resizing work - I think this should work...
+     * @param $image
+     * @param $max_width
+     * @param $max_height
+     * @param string $method
+     * @return resource
+     */
+    private function resize($image, $max_width, $max_height, $method = 'scale')
+    {
+        // get the current dimensions of the image
+        $src_width = imagesx($image);
+        $src_height = imagesy($image);
+
+        // if either max_width or max_height are 0 or null then calculate it proportionally
+        if( !$max_width ){
+            $max_width = $src_width / ($src_height / $max_height);
+        }
+        elseif( !$max_height ){
+            $max_height = $src_height / ($src_width / $max_width);
+        }
+
+        // if scaling the image calculate the dest width and height
+        $dx = $src_width / $max_width;
+        $dy = $src_height / $max_height;
+        if( $method == 'scale' ){
+            $d = max($dx,$dy);
+        }
+        // otherwise assume cropping image
+        else{
+            $d = min($dx, $dy);
+        }
+        $new_width = $src_width / $d;
+        $new_height = $src_height / $d;
+        // sanity check to make sure neither is zero
+        $new_width = max(1,$new_width);
+        $new_height = max(1,$new_height);
+
+        $thumb_width = min($max_width, $new_width);
+        $thumb_height = min($max_height, $new_height);
+
+        // offset into thumbination image
+        $thumb_x = ($thumb_width - $new_width) / 2;
+        $thumb_y = ($thumb_height - $new_height) / 2;
+
+        // create a new image to hold the thumbnail
+        $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+
+        // copy from the source to the thumbnail
+        imagecopyresampled($thumb, $image, $thumb_x, $thumb_y, 0, 0, $new_width, $new_height, $src_width, $src_height);
+        return $thumb;
     }
 }

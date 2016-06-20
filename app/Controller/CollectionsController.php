@@ -218,4 +218,16 @@ class CollectionsController extends AppController {
             )
         ));
     }
+
+    /**
+     * Find all collections associated with user id - may or may not be used by activity tab on user profile page
+     */
+    public function findAllByUser()
+    {
+        $model = $this->modelClass;
+        $results = $this->$model->find('all', array(
+            'conditions' => array('user_id' => $this->request->data['id'])
+        ));
+        $this->json(200, $results);
+    }
 }

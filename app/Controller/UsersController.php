@@ -161,7 +161,7 @@ class UsersController extends AppController
                         if ($this->Auth->login()) {
                                 $this->User->id = $user['User']['id'];
                                 $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                                return $this->redirect($this->referer()); 
+                                return $this->redirect($this->referer());
                                 // return $this->redirect($this->Auth->redirect());
                         } else {
                                 $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
@@ -799,6 +799,18 @@ class UsersController extends AppController
         }
         $this->set(compact('page', 'subpage', 'title_for_layout'));
         $this->render(implode('/', $path));
+    }
+
+    /**
+     * Find user information by id
+     */
+    public function findById()
+    {
+        $model = $this->modelClass;
+        $results = $this->$model->find('first', array(
+            'conditions' => array('id' => $this->request->data['id'])
+        ));
+        $this->json(200, $results);
     }
 }
 ?>

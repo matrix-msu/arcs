@@ -1737,7 +1737,7 @@
                     var ctab = document.getElementById("collections_tab");
                     ctab.innerHTML = "COLLECTIONS (" + numCollections + ")";
                     var populateCollections = "<table><tbody>"+
-                        "<tr><td colspan='2'>This resource is apart of the following "+numCollections+" collections...</td></tr>";
+                        "<tr><td colspan='2'>This resource is a part of the following "+numCollections+" collections...</td></tr>";
                     for (var i = 0; i < numCollections; i++) {
                         //console.log("got-here1");
                         var collection = data.collections[i];

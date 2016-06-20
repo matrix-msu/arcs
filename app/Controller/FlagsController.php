@@ -27,6 +27,16 @@ class FlagsController extends MetaResourcesController {
 		$this->request->data['user_username'] = $user['username'];
 		$this->request->data['user_email'] = $user['email'];
     }
-	
-	
+
+	/**
+	 * Find all flags associated with user id
+	 */
+	public function findAllByUser()
+	{
+		$model = $this->modelClass;
+		$results = $this->$model->find('all', array(
+			'conditions' => array('user_id' => $this->request->data['id'])
+		));
+		$this->json(200, $results);
+	}
 }

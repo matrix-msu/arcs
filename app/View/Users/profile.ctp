@@ -115,7 +115,9 @@
 </script>
 
 <script type='text/javascript'>
-$.ajax({
+var activity = []; // store results for activity tab so they can be sorted by time and used
+
+var annoReady = $.ajax({
     url: "<?php echo Router::url('/', true); ?>annotations/findallbyuser",
     type: "POST",
     data: {
@@ -142,6 +144,9 @@ $.ajax({
             var tcount = 0; // as count, but for transcriptions
             data.forEach(function(a) {
                 if (a['transcript'] == "" || a['transcript'] === null) {
+                    // add to activity array
+                    activity.push({time: a['created'], type: "annotation", kid: a['resource_kid'], name: a['resource_name']});
+
                     // Get image and resource type
                     (function(count) {
                         $.ajax({
@@ -164,7 +169,6 @@ $.ajax({
                                 if (result['title'] !== null) {
                                     $(div).find("span.name").html(result['title']);
                                 }
-                                //console.log(this.url);
                             }
                         });
                     })(count);
@@ -192,6 +196,9 @@ $.ajax({
                     count++;
                 }
                 else {
+                    // add to activity array
+                    activity.push({time: a['created'], type: "transcription", kid: a['resource_kid'], name: a['resource_name']});
+
                     // Get image and resource type
                     (function(tcount) {
                     $.ajax({
@@ -246,7 +253,7 @@ $.ajax({
         id: "<?php echo $user_info['id']; ?>"
     },
     success: function (data) {
-        console.log(data);
+        //console.log(data);
         if (!data.length) {
             $("#discussion-tab").html("<h3>No discussion items</h3>");
         }
@@ -292,5 +299,55 @@ $.ajax({
             $("#discussion-tab").html(contents);
         }
     }
+});
+
+// Either thumb and resource name (and anything else like that) is gotten after the activity array is completed and sorted
+// or we need to adjust these functions so they don't return the deferred object until the inner ajax needed to get that
+// information is completed. Or look more at deferred objects and see if there's a way to get them to do that readily.
+
+var flagsReady = $.ajax({
+    url: "<?php echo Router::url('/', true); ?>flags/findallbyuser",
+    type: "POST",
+    data: {
+        id: "<?php echo $user_info['id']; ?>"
+    },
+    success: function(data) {
+        data.forEach(function(flag) {
+            activity.push({time: flag['created'], type: "flag", kid: flag['resource_kid'], name: flag['resource_name']});
+        });
+    }
+});
+
+var usersReady = $.ajax({
+    url: "<?php echo Router::url('/', true); ?>users/findbyid",
+    type: "POST",
+    data: {
+        id: "<?php echo $user_info['id']; ?>"
+    },
+    success: function(data) {
+        activity.push({time: data['last_login'], type: "login"});
+        // Note the data also has a list of collections created by the user, date included
+    }
+});
+
+$.ajax({
+    url: "<?php echo Router::url('/', true); ?>collections/findallbyuser",
+    type: "POST",
+    data: {
+        id: "<?php echo $user_info['id']; ?>"
+    },
+    success: function(data) {
+    }
+});
+
+// once the activity array is loaded, sort by most recent first and process
+$.when(usersReady, flagsReady, annoReady).then(function() {
+    activity.sort(function(a, b) {
+        var dateA = new Date(a.time);
+        var dateB = new Date(b.time);
+        return dateB - dateA;
+    });
+    console.log(activity);
+    // pagination might happen here, or after, but build the html for the tab and get the images and such as needed
 });
 </script>
