@@ -109,7 +109,7 @@ class arcs.views.search.Search extends Backbone.View
       loader: true
 # This callback will be fired each time a search is done.
       success: =>
-        console.log("#{encodeURIComponent(@search.query)}/p#{@search.page}")
+#        console.log("#{encodeURIComponent(@search.query)}/p#{@search.page}")
         @router.navigate "#{encodeURIComponent(@search.query)}/p#{@search.page}"
         # Setup the endless scroll unless it's already been done.
         @setupScroll() and @scrollReady = true unless @scrollReady
@@ -160,7 +160,7 @@ class arcs.views.search.Search extends Backbone.View
     @$('.sort-btn .icon-ok').remove()
     @$(e.target).append @make 'i', class: 'icon-ok'
     @$('#sort-btn span#sort-by').html @options.sort
-    console.log(("SEARCHING"))
+#    console.log(("SEARCHING"))
     @search.run null,
       order: @options.sort
       direction: @options.sortDir
@@ -310,9 +310,9 @@ class arcs.views.search.Search extends Backbone.View
     else
       $('#leftArrow').css('display', 'block')
     for i in [1..5]
-      console.log("Array contents: "+pageArray[i-1]+" i: "+ i)
+#      console.log("Array contents: "+pageArray[i-1]+" i: "+ i)
       if pageArray[i-1] is 0
-        console.log("undifined")
+#        console.log("undifined")
         $('#'+i).css('display', 'none')
       else
         $('#'+i).css('display', 'block')
@@ -325,18 +325,18 @@ class arcs.views.search.Search extends Backbone.View
     val = $(".searchBoxInput").val()
     pageNum = $('.selected').html()
     perPage = $('#items-per-page-btn').html().substring(0,2)
-    console.log(perPage)
+#    console.log(perPage)
     $('.pageNumber').removeClass('selected')
     resources = new Promise((resolve, reject) ->
       resourcequery = encodeURIComponent("#{val}")
       pageNumber= encodeURIComponent("#{pageNum}")
       perPageUrl = encodeURIComponent("#{perPage}")
       req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery + "/" +pageNumber + "/" + perPageUrl, (response) ->
-        console.log(response)
-        console.log("Current page: "+pageNum+", "+"Number of total pages: "+response['pages'])
+#        console.log(response)
+#        console.log("Current page: "+pageNum+", "+"Number of total pages: "+response['pages'])
         $('#lastPage').html(response['pages'])
         temp = fillArray(parseInt(pageNum),parseInt(response['pages']))
-        console.log(temp)
+#        console.log(temp)
         pagination(temp,parseInt(pageNum), parseInt(response['pages']) )
         resolve(response['results'])
     )
@@ -409,7 +409,7 @@ class arcs.views.search.Search extends Backbone.View
   #Activates on enter press: search
   $ ->
     $(".searchBoxInput").keyup (e) ->
-      console.log("Ran")
+#      console.log("Ran")
       if e.keyCode == 13
         $('.pageNumber').removeClass('selected');
         $("#1").addClass('selected');
@@ -425,7 +425,7 @@ class arcs.views.search.Search extends Backbone.View
 
     $(".pageNumber").unbind().click (e) ->
       if($(this).hasClass('selected'))
-        console.log("times this was called")
+#        console.log("times this was called")
         e.stopPropagation()
         return
       else
@@ -445,7 +445,7 @@ class arcs.views.search.Search extends Backbone.View
     $('#rightArrowBox').unbind().click (e) ->
       temp = $('.selected').html()
       if temp is '1'
-        console.log("on page 1")
+#        console.log("on page 1")
         return
       else
         $('.selected').html(parseInt(temp)-1)

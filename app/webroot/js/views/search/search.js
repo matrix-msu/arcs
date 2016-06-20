@@ -110,7 +110,6 @@
         loader: true,
         success: (function(_this) {
           return function() {
-            console.log((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             _this.router.navigate((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             if (!_this.scrollReady) {
               _this.setupScroll() && (_this.scrollReady = true);
@@ -164,7 +163,6 @@
         "class": 'icon-ok'
       }));
       this.$('#sort-btn span#sort-by').html(this.options.sort);
-      console.log("SEARCHING");
       return this.search.run(null, {
         order: this.options.sort,
         direction: this.options.sortDir
@@ -371,9 +369,7 @@
       }
       results1 = [];
       for (i = j = 1; j <= 5; i = ++j) {
-        console.log("Array contents: " + pageArray[i - 1] + " i: " + i);
         if (pageArray[i - 1] === 0) {
-          console.log("undifined");
           results1.push($('#' + i).css('display', 'none'));
         } else {
           $('#' + i).css('display', 'block');
@@ -393,7 +389,6 @@
       val = $(".searchBoxInput").val();
       pageNum = $('.selected').html();
       perPage = $('#items-per-page-btn').html().substring(0, 2);
-      console.log(perPage);
       $('.pageNumber').removeClass('selected');
       resources = new Promise(function(resolve, reject) {
         var pageNumber, perPageUrl, req, resourcequery;
@@ -402,11 +397,8 @@
         perPageUrl = encodeURIComponent("" + perPage);
         return req = $.getJSON(arcs.baseURL + 'simple_search/' + resourcequery + "/" + pageNumber + "/" + perPageUrl, function(response) {
           var temp;
-          console.log(response);
-          console.log("Current page: " + pageNum + ", " + "Number of total pages: " + response['pages']);
           $('#lastPage').html(response['pages']);
           temp = fillArray(parseInt(pageNum), parseInt(response['pages']));
-          console.log(temp);
           pagination(temp, parseInt(pageNum), parseInt(response['pages']));
           return resolve(response['results']);
         });
@@ -431,7 +423,6 @@
 
     $(function() {
       return $(".searchBoxInput").keyup(function(e) {
-        console.log("Ran");
         if (e.keyCode === 13) {
           $('.pageNumber').removeClass('selected');
           $("#1").addClass('selected');
@@ -455,7 +446,6 @@
       }));
       $(".pageNumber").unbind().click(function(e) {
         if ($(this).hasClass('selected')) {
-          console.log("times this was called");
           e.stopPropagation();
         } else {
           $('.pageNumber').removeClass('selected');
@@ -473,7 +463,7 @@
         var temp;
         temp = $('.selected').html();
         if (temp === '1') {
-          console.log("on page 1");
+
         } else {
           $('.selected').html(parseInt(temp) - 1);
           return search();
