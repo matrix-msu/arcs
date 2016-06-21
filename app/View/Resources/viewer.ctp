@@ -654,11 +654,25 @@
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Ante Quem</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Terminus Ante Quem"><?php echo $subjects['Artifact - Structure Terminus Ante Quem'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Terminus Ante Quem">
+                                                <?php $string = '';
+                                                    foreach( $subjects['Artifact - Structure Terminus Ante Quem'] as $ante_quem) {
+                                                        if($ante_quem != ''){
+                                                            $string = $string.$ante_quem."/";
+                                                        }
+                                                    } echo substr($string, 0, -1); ?>
+                                                </div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Post Quem</td>
-                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Terminus Post Quem"><?php echo $subjects['Artifact - Structure Terminus Post Quem'] ?></div></td>
+                                            <td><div class="icon-meta-flag">&nbsp;</div><div class="metadataEdit" id="Artifact - Structure Terminus Post Quem">
+                                                <?php $string = '';
+                                                    foreach( $subjects['Artifact - Structure Terminus Post Quem'] as $post_quem) {
+                                                        if($post_quem != ''){
+                                                            $string = $string.$post_quem."/";
+                                                        }
+                                                    } echo substr($string, 0, -1); ?>
+                                            </div></td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Title</td>
