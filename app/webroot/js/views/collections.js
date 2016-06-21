@@ -57,9 +57,11 @@
       }
       console.log($el);
       this.renderDetails($el, limit);
-      if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
-        e.preventDefault();
-        return false;
+      if ((e.srcElement != null)) {
+        if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
+          e.preventDefault();
+          return false;
+        }
       }
     };
 

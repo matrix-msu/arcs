@@ -45,9 +45,10 @@ class arcs.views.CollectionList extends Backbone.View
     # Recent versions of webkit will toggle <details> automatically. 
     # Instead of checking for support, we'll just stop it from bubbling up, 
     # since we've just toggled it ourselves.
-    if (e.srcElement.tagName not in ['SPAN', 'BUTTON', 'I', 'A'])
-      e.preventDefault()
-      false
+    if (e.srcElement?)
+      if (e.srcElement.tagName not in ['SPAN', 'BUTTON', 'I', 'A'])
+        e.preventDefault()
+        false
 
   deleteCollection: (e) ->
     e.preventDefault()

@@ -52,6 +52,7 @@
 	$(document).ready(function() {
 		var filter;
 		$( "#new-old" ).trigger( "click" );
+		$( "#all-collections" ).children("details:first").trigger("click");
 	});
 
 
