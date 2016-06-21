@@ -11366,8 +11366,8 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 .accordion-wrapper details {
   min-height: 20px;
-  margin: 15px 0 0;
-  border: 1px solid #ccc;
+  margin: 25px 0 0;
+  border: 1px solid #e2e2e2;
 }
 .accordion-wrapper details div {
   visibility: hidden;
@@ -11544,7 +11544,9 @@ ul.resource-thumbs li.resource-thumb a {
 }
 ul.resource-thumbs li.resource-thumb a img {
   margin: 0 auto;
-  border: 1px solid #444;
+  box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
+  width: 120px;
+  border: 1px solid #e2e2e2;
 }
 ul.resource-thumbs li.resource-thumb:hover {
   background-color: #bbb;

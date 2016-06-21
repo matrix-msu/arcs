@@ -1,8 +1,11 @@
 <!-- Search bar removed because of correspondence to design comps
- -->
- <!-- <div class="search-home search-wrapper"></div>
- -->
-<!-- <div class="accordion-wrapper">
+
+ <div class="search-home search-wrapper"></div>
+-->
+
+
+<!--
+<div class="accordion-wrapper">
   <h1>Resources</h1>
   <br>
 
@@ -17,18 +20,26 @@
   <details class="unselectable" open="open" data-type="Field Journal" >
     <summary class="large"><span class="summaryTitle">Notebooktest<?php echo $user['id']; ?></span></summary>
     <div></div>
-  </details> -->
-<!--
+  </details>
+
+
+
+
+
   <details class="unselectable" data-type="Notebook Page">
     <summary class="large"><span class="summaryTitle">Notebooks Pages</span></summary>
     <div></div>
   </details>
--->
-<!--   <details class="unselectable" data-type="Photograph">
+
+
+
+
+
+ <details class="unselectable" data-type="Photograph">
     <summary class="large"><span class="summaryTitle">Photographs</span></summary>
     <div></div>
   </details>
-  
+
   <details class="unselectable" data-type="Photographic Negative">
     <summary class="large"><span class="summaryTitle">Photographic Negative</span></summary>
     <div></div>
@@ -56,373 +67,113 @@
 
 </div>
 
-<script>arcs.homeView = new arcs.views.Home({el: $('.page')});</script> -->
+<script>arcs.homeView = new arcs.views.Home({el: $('.page')});</script>-->
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<li class="resource-thumb">
+<span style="cursor:pointer">
+<a>
+<div class="lock-img-container">
+  <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+  <div class="lock-icon"><img class="lock-icon-img"></div>
+</div>
+</a>
+</span><br>
+<h class="rsc-text">Resource Title</h><br>
+</li>
+<li class="resource-thumb">
+<span style="cursor:pointer">
+<a>
+<div class="view-all-icon"></div>
+</a>
+</span><br>
+<h class="rsc-text">SHOW ALL</h><br>
+
+</li>-->
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div class="collection-list-wrapper">
-  <h1 class="rsc-title">Publicly Avaliable Resources</h1>
-  <p class="login_msg">You're viewing publicly available resources. 
-  You'll need to <a href=#loginModal>log in</a> to see the rest.
-  </p>
-  <div class="collection-list" id="all-collections">
-    
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">NOTEBOOKS</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-       
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">NOTEBOOK PAGES</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">PHOTOGRAPHS</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">REPORTS</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">DRAWINGS</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">MAPS</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">INVENTORY CARDS</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details>
-    <details class="back-color">
-      <summary class="rsc-sum">
-        <p class="rsc-name">ORPHANED</p>
-      </summary>
-      <ul class="resource-thumbs">
-        <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="lock-img-container">
-            <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-            <div class="lock-icon"><img class="lock-icon-img"></div>
-          </div>
-          </a>
-          </span><br>
-          <h class="rsc-text">Resource Title</h><br>
-        </li>
-         <li class="resource-thumb">
-          <span style="cursor:pointer">
-          <a>
-          <div class="view-all-icon"></div>
-          </a>
-          </span><br>
-          <h class="rsc-text">SHOW ALL</h><br>
-        
-        </li>
-         
-      </ul>
-    </details> 
-  </div>
+    <h1 class="rsc-title">Publicly Avaliable Resources</h1>
+    {% if not user.loggedIn %}
+    <p class="login_msg">You're viewing publicly available resources.
+        You'll need to <a href=#loginModal>log in</a> to see the rest.
+    </p>
+    {% endif %}
 
+    <div class="collection-list" id="all-collections">
+        <details class="back-color"  data-type="Field Journal" >
+            <summary class="rsc-sum">
+                <p class="rsc-name">NOTEBOOKS</p>
+            </summary>
+            <div></div>
+        </details>
+
+        <details class="back-color" data-type="Photograph">
+            <summary class="rsc-sum">
+                <p class="rsc-name">PHOTOGRAPHS</p>
+            </summary>
+            <div></div>
+        </details>
+
+        <details class="back-color" data-type="Photographic Negative">
+            <summary class="rsc-sum">
+                <p class="rsc-name">PHOTOGRAPHIC NEGATIVE</p>
+            </summary>
+            <div></div>
+        </details>
+
+        <details class="back-color" data-type="Report">
+            <summary class="rsc-sum">
+                <p class="rsc-name">REPORTS</p>
+            </summary>
+            <div></div>
+        </details>
+
+        <details class="back-color" data-type="Drawing">
+            <summary class="rsc-sum">
+                <p class="rsc-name">DRAWINGS</p>
+            </summary>
+            <div></div>
+        </details>
+
+        <details class="back-color" data-type="Plan or Elevation">
+            <summary class="rsc-sum">
+                <p class="rsc-name">MAPS</p>
+            </summary>
+            <div></div>
+        </details>
+
+        <details class="back-color" data-type="Inventory Card">
+            <summary class="rsc-sum">
+                <p class="rsc-name">INVENTORY CARDS</p>
+            </summary>
+            <div></div>
+        </details>
+    </div>
+    <script>arcs.homeView = new arcs.views.Home({el: $('.page')});</script>
 </div>
-
 
 
 

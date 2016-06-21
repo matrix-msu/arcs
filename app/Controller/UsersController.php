@@ -747,7 +747,7 @@ class UsersController extends AppController
               ->to($data['email'])
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         /* Here is where the problem is.*/
-        //$Email->send();
+        $Email->send();
     }
 
     /**
