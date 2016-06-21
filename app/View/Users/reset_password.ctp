@@ -1,3 +1,4 @@
+
 <div id="login-header">
     <img src="<?php echo $this->Html->url('/img/arcs-icon-big.png') ?>" />
     <h1>New Password</h1>
@@ -23,3 +24,9 @@
         $('#UserPassword').focus();
     });
 </script>
+
+
+
+<h1> Enter Your New Password </h1>
+
+
