@@ -72,36 +72,30 @@
                     <form id="collectionSearchBarForm" onsubmit="collectionsSearch(); return false;">
                         <input type="text" class="collectionSearchBar" placeholder="Search for collections">
                     </form>
-                    <form id="collectionSearchForm" action="#">
+                    <div id="collectionSearchForm">
                         <div id="collectionSearchObjects">
                         </div>
-                        <button class="collectionSearchSubmit" type="submit">ADD TO COLLECTION</button>
-                    </form>
+                        <button class="collectionSearchSubmit">ADD TO COLLECTION</button>
+                    </div>
                 </div>
                 <div class="collectionNewContainer">
-                    <form id="collectionNewForm" action="#">
+                    <div id="collectionNewForm">
                         <textarea class="formInput" id="collectionTitle"
                                   placeholder="ENTER NEW COLLECTION TITLE"></textarea>
-                        <button class="collectionNewSubmit" type="submit">ADD TO NEW COLLECTION</button>
-                    </form>
+                        <button class="collectionNewSubmit">ADD TO NEW COLLECTION</button>
+                    </div>
                 </div>
+            </div>
+            <div id="addedCollectionModal" style="width:35em;display:none;">
+                <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../app/webroot/assets/img/Close.svg"
+                                                                          class="modalClose"/></div>
+                <hr>
+                <p id="addedCollectionP">1 resource added to Collection Name!</p>
+                <button class="viewCollection" type="submit">VIEW COLLECTION</button>
+                <button class="backToSearch" type="submit">BACK TO SEARCH RESULTS</button>
             </div>
         </div>
     </div>
-
-        <div class="collectionAddedModalBackground">
-            <div class="collectionWrap" style="margin-top:9em;">
-                <div id="collectionModal" style="width:35em;">
-                    <div class="collectionModalHeader">ADDED TO COLLECTION <img src="../app/webroot/assets/img/Close.svg"
-                                                                              class="modalClose"/></div>
-                    <hr>
-                    <p>1 resource added to </p><p>Collection Name</p><p>!</p>
-                    <br>
-                    <button class="collectionNewSubmit" type="submit">VIEW COLLECTION</button>
-                    <button class="collectionNewSubmit" type="submit">BACK TO RESOURCE</button>
-                </div>
-            </div>
-        </div>
 
     <div id="viewer-left">
         <div id="viewer-tools">
@@ -993,7 +987,7 @@
 
     $(".collectionNewSubmit").click(function () {
         // creates a single, new collection entry based on the resource it is viewing
-
+        console.log("collectionNewSubmit");
         var formdata = {
             title: $('#collectionTitle').val(),
             resource_kid: "<?php echo $resource['kid']; ?>",
@@ -1009,7 +1003,8 @@
                 201: function () {
                     console.log("Add to Collection Success");
                     //window.location.reload();
-                    $(".collectionAddedModalBackground").show();
+                    $("#collectionModal").hide();
+                    $("#addedCollectionModal").show();
                 },
                 400: function () {
                     console.log("Bad Request");
@@ -1041,8 +1036,10 @@
                 data: formdata,
                 statusCode: {
                     201: function (data) {
-                        console.log("Success");
-                        console.log(data);
+                        //console.log("Success");
+                        //console.log(data);
+                        $("#collectionModal").hide();
+                        $("#addedCollectionModal").show();
                     },
                     400: function () {
                         console.log("Bad Request");
@@ -1053,7 +1050,7 @@
                 }
             });
         });
-        $(".collectionModalBackground").hide();
+        //$(".collectionModalBackground").hide();
     });
 
     // collection tabs

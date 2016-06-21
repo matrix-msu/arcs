@@ -606,7 +606,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
-#collectionModal {
+#collectionModal, #addedCollectionModal {
 	background-color: #565656 ;
 	margin-top: 60px;
 	margin: auto;
@@ -651,9 +651,15 @@ input[type=range]:focus::-ms-fill-upper {
 	margin-top: 10px;
     margin-bottom: 10px;
 	margin-left: .6em;
+
+}
+#addedCollectionP {
+  margin-bottom: 0px;
+  padding-bottom: 1.7em;
+  padding-left: .5em;
 }
 
-#collectionModal hr {
+#collectionModal hr, #addedCollectionModal hr {
 	margin: 0px;
 	margin-bottom: 15px;
 }
@@ -679,6 +685,22 @@ input[type=range]:focus::-ms-fill-upper {
 	font-size: 14px;
 	font-weight: 500;
 	color: #FFFFFF;
+}
+.viewCollection, .backToSearch{
+	height: 3em;
+	background-color: #4899CF;
+  	display: block;
+	width: 50%;
+	font-size: 14px;
+	font-weight: 500;
+	color: #FFFFFF;
+  	margin-top: 0px;
+}
+.viewCollection{
+  float: left;
+}
+.backToSearch{
+  float: right;
 }
 
 #collectionSearchObjects label {

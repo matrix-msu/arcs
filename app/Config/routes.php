@@ -196,6 +196,10 @@
         array('controller' => 'collections', 'action' => 'memberships')
     );
 
+    Router::connect('/metadataedits/add',
+        array('controller' => 'MetadataEdits', 'action' => 'add')
+    );
+
     $restful = array(
         'resources',
         'comments',
@@ -206,6 +210,7 @@
         'flags',
         'jobs',
         'metadata',
+        'MetadataEdits',
         'collections',
         'simple_search',
         'advanced_search'
