@@ -138,6 +138,9 @@
       if (limit === 1) {
         query2 += "n=15&";
       }
+      console.log('url testing here');
+      console.log(arcs.baseURL);
+      console.log(query2 + ("q=" + query));
       return $.getJSON(query2 + ("q=" + query), function(response) {
         return $el.children('.results').html(arcs.tmpl('home/details', {
           resources: response.results,

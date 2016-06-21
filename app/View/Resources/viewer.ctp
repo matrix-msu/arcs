@@ -999,6 +999,13 @@
         });
     }
 
+    $(".viewCollection").click(function () {
+
+    });
+    $(".backToSearch").click(function () {
+
+    });
+
     $(".collectionNewSubmit").click(function () {
         // creates a single, new collection entry based on the resource it is viewing
         console.log("collectionNewSubmit");

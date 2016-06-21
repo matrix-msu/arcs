@@ -51,6 +51,7 @@
 	//handles filter button click to display filter options
 	$(document).ready(function() {
 		var filter;
+		$( "#new-old" ).trigger( "click" );
 	});
 
 
