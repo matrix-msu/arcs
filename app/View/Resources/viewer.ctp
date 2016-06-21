@@ -814,9 +814,7 @@
         ";?>px">
         <?php foreach($pages as $r): ?>
         <a href="#">
-            <img class="other-resource"
-            <img class="other-resource"
-                 src="<?php echo $r['thumb'] ?>" height="200px" width="200px"/>
+            <img class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
         </a>
         <?php endforeach ?>
     </div>

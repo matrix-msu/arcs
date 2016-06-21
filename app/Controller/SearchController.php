@@ -195,7 +195,8 @@ class SearchController extends AppController {
                 if( !empty($picture_url) ){
                     $temp_array['pic_url'] = $picture_url;
                     $kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
-                    $temp_array['thumb'] = $kora_pic_url.$picture_url;
+                    //$temp_array['thumb'] = $kora_pic_url.$picture_url;
+                    $temp_array['thumb'] = $this->smallThumb($temp_array['pic_url']);
                 }else{
                     $temp_array['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
                 }
@@ -238,7 +239,8 @@ class SearchController extends AppController {
         $response['results'] = json_decode(curl_exec($ch), true);
         $imageResults = array();
         foreach($response['results'] as $image) {
-            $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
         }
 
 
@@ -523,7 +525,8 @@ class SearchController extends AppController {
             $response['results'] = json_decode(curl_exec($ch), true);
             $imageResults = array();
             foreach($response['results'] as $image) {
-                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+                //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+                $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
             }
 
             // Lets get the data from KORA multiple schemes

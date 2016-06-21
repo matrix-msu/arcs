@@ -124,4 +124,110 @@ class AppController extends Controller {
         else
             $this->response->body(json_encode((array)$data));
     }
+
+
+    // So I don't know if this is the best place to put it, but unfortunately the thumbnail code is needed by both
+    // the resource controller and the search controller, and calling anything from the resource controller from the
+    // search controller or vice versa appears to cause an error
+
+    /**
+     * Get a small thumb of a resource (240x200), will create thumb if it doesn't already exist
+     *
+     * @param string $name should be name of image file
+     *
+     * @return string the url to the thumb
+     */
+    public function smallThumb($name) {
+        $path = THUMBS . "smallThumbs/";
+        $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
+        $path .= $thumb;
+        $url = THUMBS_URL . "smallThumbs/" . $thumb;
+        if(!file_exists($path)) {
+            $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
+            $image = imagecreatefromstring(file_get_contents($imgpath));
+            $result = $this->resize($image, 240, 200);
+            imagedestroy($image);
+            imagejpeg($result, $path);
+            imagedestroy($result);
+        }
+        return $url;
+    }
+
+    /**
+     * Get a large thumb of a resource (400x400), will create thumb if it doesn't already exist
+     *
+     * @param string $name should be name of image file
+     *
+     * @return string the url to the thumb
+     */
+    public function largeThumb($name) {
+        $path = THUMBS . "largeThumbs/";
+        $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
+        $path .= $thumb;
+        $url = THUMBS_URL . "largeThumbs/" . $thumb;
+        if(!file_exists($path)) {
+            $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
+            $image = imagecreatefromstring(file_get_contents($imgpath));
+            $result = $this->resize($image, 400, 400);
+            imagedestroy($image);
+            imagejpeg($result, $path);
+            imagedestroy($result);
+        }
+        return $url;
+    }
+
+
+    /**
+     * Used by smallThumb and largeThumb to do the resizing work - I think this should work...
+     * @param $image
+     * @param $min_width
+     * @param $min_height
+     * @param string $method
+     * @return resource
+     */
+    private function resize($image, $min_width, $min_height, $method = 'scale')
+    {
+        // get the current dimensions of the image
+        $src_width = imagesx($image);
+        $src_height = imagesy($image);
+
+        // if either max_width or max_height are 0 or null then calculate it proportionally
+        if( !$min_width ){
+            $min_width = $src_width / ($src_height / $min_height);
+        }
+        elseif( !$min_height ){
+            $min_height = $src_height / ($src_width / $min_width);
+        }
+
+        // if scaling the image calculate the dest width and height
+        $dx = $src_width / $min_width;
+        $dy = $src_height / $min_height;
+        /*if( $method == 'scale' ){
+            $d = max($dx,$dy);
+        }
+        // otherwise assume cropping image
+        else{
+            $d = min($dx, $dy);
+        }*/
+        $d = min($dx, $dy);
+        $new_width = $src_width / $d;
+        $new_height = $src_height / $d;
+        // sanity check to make sure neither is zero
+        $new_width = max(1,$new_width);
+        $new_height = max(1,$new_height);
+
+        $thumb_width = max($min_width, $new_width);
+        $thumb_height = max($min_height, $new_height);
+
+        // offset into thumbination image
+        $thumb_x = ($thumb_width - $new_width) / 2;
+        $thumb_y = ($thumb_height - $new_height) / 2;
+
+        // create a new image to hold the thumbnail
+        $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+
+        // copy from the source to the thumbnail
+        imagecopyresampled($thumb, $image, $thumb_x, $thumb_y, 0, 0, $new_width, $new_height, $src_width, $src_height);
+        return $thumb;
+    }
 }
