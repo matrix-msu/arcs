@@ -475,7 +475,6 @@ class SearchController extends AppController {
 
 
     public function simple_search($query1,$page,$perPage) {
-		
         $options = $this->parseParams();
 
         // This array will be used to get results from multiple schemes. i.e search mutiple schemes

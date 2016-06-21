@@ -109,7 +109,7 @@ class arcs.views.search.Search extends Backbone.View
       loader: true
 # This callback will be fired each time a search is done.
       success: =>
-#        console.log("#{encodeURIComponent(@search.query)}/p#{@search.page}")
+        console.log("#{encodeURIComponent(@search.query)}/p#{@search.page}")
         @router.navigate "#{encodeURIComponent(@search.query)}/p#{@search.page}"
         # Setup the endless scroll unless it's already been done.
         @setupScroll() and @scrollReady = true unless @scrollReady
@@ -160,7 +160,7 @@ class arcs.views.search.Search extends Backbone.View
     @$('.sort-btn .icon-ok').remove()
     @$(e.target).append @make 'i', class: 'icon-ok'
     @$('#sort-btn span#sort-by').html @options.sort
-#    console.log(("SEARCHING"))
+    console.log(("SEARCHING"))
     @search.run null,
       order: @options.sort
       direction: @options.sortDir
@@ -322,6 +322,7 @@ class arcs.views.search.Search extends Backbone.View
 	
   #MULTIPROJECT SEARCH
   search = () ->
+    $('.flex-img').removeClass('selected')
     val = $(".searchBoxInput").val()
     pageNum = $('.selected').html()
     perPage = $('#items-per-page-btn').html().substring(0,2)

@@ -110,6 +110,7 @@
         loader: true,
         success: (function(_this) {
           return function() {
+            console.log((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             _this.router.navigate((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             if (!_this.scrollReady) {
               _this.setupScroll() && (_this.scrollReady = true);
@@ -163,6 +164,7 @@
         "class": 'icon-ok'
       }));
       this.$('#sort-btn span#sort-by').html(this.options.sort);
+      console.log("SEARCHING");
       return this.search.run(null, {
         order: this.options.sort,
         direction: this.options.sortDir
@@ -386,6 +388,7 @@
 
     search = function() {
       var pageNum, perPage, resources, totalResults, val;
+      $('.flex-img').removeClass('selected');
       val = $(".searchBoxInput").val();
       pageNum = $('.selected').html();
       perPage = $('#items-per-page-btn').html().substring(0, 2);

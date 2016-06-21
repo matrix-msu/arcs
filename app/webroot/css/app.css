@@ -7644,6 +7644,7 @@ input.indexSearchBox {
     padding-bottom: 10px;
     padding-top: 5px;
     padding-left: 10px;
+    top: 70px;
   }
   .projects-menu a {
     color: #808080;
@@ -7655,6 +7656,9 @@ input.indexSearchBox {
     text-decoration: none;
     color: #fcfcfc;
     background: #777;
+  }
+  .homeProject {
+    top: 56px;
   }
   .search-bar {
     display: none;
@@ -7716,7 +7720,7 @@ input.indexSearchBox {
   #belowProjects {
     width: 100%;
     position: absolute;
-    top: -55px;
+    top: -40px;
   }
   #log {
     top: 233px;
@@ -7725,7 +7729,9 @@ input.indexSearchBox {
   }
   #searchHeader {
     display: block;
-    border-bottom: 2px solid #e9e9e9;
+    height: 75px!important;
+    padding-top: 5px;
+    border-bottom: 1px solid #e9e9e9 !important;
   }
   #helpSearch {
     float: right;
@@ -7790,6 +7796,21 @@ input.indexSearchBox {
     bottom: 0;
     width: auto;
     display: inline-block;
+  }
+  #projects {
+    height: 75px !important;
+    padding-top: 25px;
+  }
+  #menu {
+    height: 75px !important;
+    padding-top: 5px;
+  }
+  #about {
+    height: 75px !important;
+    padding-top: 25px;
+  }
+  #signOut {
+    padding-bottom: 15px;
   }
 }
 .hotkeys-modal {

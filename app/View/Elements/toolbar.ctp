@@ -17,7 +17,7 @@
 	<!--Check if it is index page or not, display accordingly-->
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 		<!--Display login button for other pages-->
-	<div id='log'>
+	<div id='log' >
 		<?php if ($user['loggedIn']): ?>
 			<div id="menu" class="btn btn-grey toolbar-btn"> 
 				<div id="cage">
@@ -33,15 +33,15 @@
 					<?php echo $this->Html->link('Admin', 
 						'/admin') ?>
 					<?php endif ?>
-					<?php echo $this->Html->link('Sign Out', 
-						'/logout') ?>
+					<div id='signOut'> <?php echo $this->Html->link('Sign Out', 
+						'/logout') ?></div>
 				</div>
 				
 				
 			</div>
 		<?php else: ?>
 		
-			<a class="btn btn-grey toolbar-btn" 
+			<a id='menu' class="btn btn-grey toolbar-btn" 
 				href="#loginModal">Login / Register</a>
 		
 		<?php endif ?>
@@ -122,7 +122,7 @@
 				 </div> 
 			 
 			 </div>
-			<div id="projectsMenu" class="projects-menu">
+			<div id="projectsMenu" class="projects-menu homeProject">
 				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
 				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>

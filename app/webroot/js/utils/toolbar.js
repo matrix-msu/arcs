@@ -69,16 +69,16 @@ $(document).ready(function(){
 
 	$('#projects').on('click',function(event){
 		if(checkMobile()) {
-				if(($( '#log' ).css('top') === '233px') ){
+				if(($( '#log' ).css('top') === '245px') ){
 					$('#dropArrow').addClass( 'pointerUp' );
 					$( '#log' ).css('top','396px');
-					$( '#belowProjects' ).css('top','107px');
+					$( '#belowProjects' ).css('top','115px');
 					$( '.projects-menu' ).css('display', 'block');
 			}
 				else{
 					$('#dropArrow').removeClass( 'pointerUp' );
-					$( '#log' ).css('top','233px');
-					$( '#belowProjects' ).css('top','-55px');
+					$( '#log' ).css('top','245px');
+					$( '#belowProjects' ).css('top','-40px');
 					$( '.projects-menu' ).css('display', 'none');
 				}
 		}
@@ -97,14 +97,14 @@ $(document).ready(function(){
 	});
 	$('#projectsHeader').on('click',function(event){
 		if(checkMobile()){
-			if(($('#helpSearch').css('top') == '0px')){
+			if(($('#helpSearch').css('top') == '22px')){
 				$('#dropArrow').addClass( 'pointerUp' );
-				$( '#helpSearch' ).css('top', '167px');
+				$( '#helpSearch' ).css('top', '175px');
 				$( '.projects-menu' ).css('display', 'block');
 			}
 			else{
 				$('#dropArrow').removeClass( 'pointerUp' );
-				$( '#helpSearch' ).css('top', '0px');
+				$( '#helpSearch' ).css('top', '22px');
 				$( '.projects-menu' ).css('display', 'none');
 			}
 		}
@@ -126,9 +126,9 @@ $(document).ready(function(){
 		else{
 			$( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');
-			$( '#log' ).css('top','233px');
-			$( '#belowProjects' ).css('top','-55px');
-			$( '#helpSearch').css('top','0px');
+			$( '#log' ).css('top','245px');
+			$( '#belowProjects' ).css('top','-40px');
+			$( '#helpSearch').css('top','22px');
 			$('#projects').unbind('mouseout mouseover');
 			$('#projectsHeader').unbind('mouseout mouseover');
 			$('#menu').unbind('mouseover', logMouseover);
@@ -178,9 +178,9 @@ $(document).ready(function(){
 			}
 			$( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');
-			$( '#log' ).css('top','233px');
-			$( '#belowProjects' ).css('top','-55px');
-			$( '#helpSearch').css('top','0px');
+			$( '#log' ).css('top','245px');
+			$( '#belowProjects' ).css('top','-40px');
+			$( '#helpSearch').css('top','22px');
 			$('#projects').unbind('mouseout mouseover');
 			$('#projectsHeader').unbind('mouseout mouseover');
 			$('#menu').unbind('mouseover', logMouseover);

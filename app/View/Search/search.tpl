@@ -266,33 +266,7 @@
 			toggle_search_visibility();
 		}
 	});
-
-	$('#leftArrow').click(function(){
-		var currentId = $('.selected').html()%5
-		if(currentId != 0){
-			$('#'+currentId).removeClass('selected');
-			var nextId = currentId+1;
-			$('#' + nextId).addClass('selected');
-
-		}
-
-	});
-	$('#rightArrow').click(function(){
-		var currentId = $('.selected').html()%5
-		if(currentId != 1){
-			$('#'+currentId).removeClass('selected');
-			if(currentId == 0){
-				$('#5').removeClass('selected');
-				$('#4').addClass('selected');
-			}
-			else{
-				var nextId = currentId-1;
-				$('#' + nextId).addClass('selected');
-			}
-		}
-
-	});
-
+	
 	$('#select-all, #deselect-all').click(function(){
 		if (this.id === 'select-all') {
 			this.id = 'deselect-all';
