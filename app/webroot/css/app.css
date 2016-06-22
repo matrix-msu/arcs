@@ -6756,6 +6756,19 @@ h4 {
 .footer .footer-contact {
   color: #32CD32;
 }
+@media screen and (max-width: 400px) {
+  div.footer {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  div.footer .footer-note {
+    visibility: hidden;
+  }
+  div.footer img.cal {
+    max-width: 250px;
+    margin-top: 40px;
+  }
+}
 #modal {
   padding: 0;
 }
@@ -13428,7 +13441,8 @@ a.view-colc {
     margin: auto;
   }
   .intro h1 {
-    text-align: center;
+    max-width: 1200px;
+    margin: auto;
   }
   ul.recent-resource {
     width: 1300px;
