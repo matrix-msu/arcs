@@ -11235,6 +11235,27 @@ input.user-reg-btn.btn.btn-success:focus {
   display: block;
   min-width: 350px;
 }
+.resetpw-title h1 {
+  font-size: 25px;
+  text-align: center;
+  width: 300px;
+  margin: auto;
+  margin-top: 20%;
+}
+.new-passwd-box {
+  width: 600px;
+  margin: auto;
+  text-align: center;
+}
+.new-passwd-box .change-passwd-btn {
+  color: #ffffff;
+  background-color: #0094BC;
+  height: 50px;
+  width: 300px;
+  font-weight: 200;
+  border: none;
+  text-transform: uppercase;
+}
 #batch-upload {
   background-color: #ccc;
   border: 1px solid #aaa;
