@@ -118,8 +118,8 @@
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu leftMost">
-		        <li><a class="sort-btn active" id="open-btn">In separate windows&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">In a collection view&nbsp;</a></li>
+		        <li><a class="sort-btn active" id="open-btn">open In separate windows&nbsp;</a></li>
+		        <li><a class="sort-btn" id="open-colview-btn">open In a collection view&nbsp;</a></li>
 		        <li class="divider"></li>
 		        <li><a class="sort-btn" id="open-btn">Download&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
@@ -161,7 +161,7 @@
 	<div id="search-results">
 	
 		<div class='toolbar-fixed'>
-			<a id='select-all' onclick=''><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
+			<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
 			<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/BelongsToCollectionTooltip.svg' class='collectionIcon'/></a>
 			<div id="selected-resource-ids" style="display: none;"></div>
 		</div>
@@ -212,13 +212,13 @@
 					<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
 					
 					<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
-					<li class='fDots' style="display:none"> ... </li>
-					<li><a class='selected pageNumber' id='1' style="display:none"></a></li>
+					<div id='fDots'><li class='fDots' style="display:none"> ... </li></div> 
+					<li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
 					<li ><a class='pageNumber' id='2'style="display:none" ></a></li>
 					<li><a class='pageNumber' id='3' style="display:none"></a></li>
 					<li><a class='pageNumber' id='4' style="display:none"></a></li>
 					<li><a class='pageNumber' id='5' style="display:none"></a></li>
-					<li class='dots' style="display:none" style="display:none"> ... </li>
+					<div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
 					<li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
 					<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
 				</ul>
@@ -266,7 +266,7 @@
 			toggle_search_visibility();
 		}
 	});
-	
+	//moved this over to views/search/search.coffee
 	$('#select-all, #deselect-all').click(function(){
 		if (this.id === 'select-all') {
 			this.id = 'deselect-all';
@@ -279,6 +279,7 @@
 		}
 		
 	});
+	
 </script>
 
 
@@ -381,6 +382,7 @@
 								data: formdata,
 								statusCode: {
 									201: function () {
+										//created
 										console.log("Success");
 										//window.location.reload();
 									},

@@ -8478,7 +8478,7 @@ ul.pagination .selected {
   display: inline-block;
 }
 .leftMost {
-  left: -23px !important;
+  left: -46% !important;
 }
 #rightArrow {
   position: relative;
@@ -8500,6 +8500,12 @@ ul.pagination .selected {
   transform: rotate(45deg);
 }
 #leftArrowBox {
+  cursor: pointer;
+}
+#fDots {
+  cursor: pointer;
+}
+#dots {
   cursor: pointer;
 }
 .pointerNum {

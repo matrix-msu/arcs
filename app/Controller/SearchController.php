@@ -476,7 +476,10 @@ class SearchController extends AppController {
 
 
 
-    public function simple_search($query1,$page,$perPage) {
+    public function simple_search($query1="",$page,$perPage) {
+		if($query1 == ""){
+			return 0;
+		}
         $options = $this->parseParams();
 
         // This array will be used to get results from multiple schemes. i.e search mutiple schemes
@@ -562,10 +565,11 @@ class SearchController extends AppController {
             $response['total'] = count($response['results']);
 		    $numberOfPages = ceil($response['total']/$perPage);
 			$skip = ($page-1)*$perPage;
-			$response['results'] = array_slice($response['results'],$skip,$perPage);
+			$response['display'] = array_slice($response['results'],$skip,$perPage);
 			$response['pages'] = $numberOfPages;
 			$response['pageNumber'] = $page;
 			$response['numberPerPage'] = $perPage;  //pass this variable in eventually
+			$response['skip'] = $skip;
 //			$this->layout = false;
 //				$this->Post->recursive = 0;
 //				$this-paginate = array(

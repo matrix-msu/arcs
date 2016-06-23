@@ -1,6 +1,8 @@
 # search.coffee
 # -------------
 # Search View. Select and perform bulk actions on search results.
+selectedMap={}
+selectedCount = 0
 arcs.views.search ?= {}
 class arcs.views.search.Search extends Backbone.View
 
@@ -67,6 +69,8 @@ class arcs.views.search.Search extends Backbone.View
     'click #leftArrowBox'        : 'scrollTop'
     'click #rightArrowBox'        : 'scrollTop'
     'click .sort-btn'        : 'scrollTop'
+    'click .fDots'        : 'scrollTop'
+    'click .dots'        : 'scrollTop'
 
   ### More involved setups run by the initialize method ###
 
@@ -182,6 +186,7 @@ class arcs.views.search.Search extends Backbone.View
     @search.run()
 
   unselectAll: (trigger=true) ->
+    console.log("unselectAll called")
     @$('.result').removeClass('selected')
     @$('.select-button').removeClass('de-select')
     @$('.select-button, #toggle-select').html('SELECT')
@@ -189,6 +194,7 @@ class arcs.views.search.Search extends Backbone.View
     arcs.bus.trigger 'selection' if trigger
 
   selectAll: (trigger=true) ->
+    console.log("selectAll called")
     @$('.result').addClass('selected')
     @$('.select-button').addClass('de-select')
     @$('.select-button, #toggle-select').html('DE-SELECT')
@@ -207,6 +213,7 @@ class arcs.views.search.Search extends Backbone.View
 # Unselect all results unless a modifier key is held down, or
 # the target isn't right.
   maybeUnselectAll: (e) ->
+    console.log("maybeunselectAll called")
 # If e is not an Event object, do it.
     return @unselectAll() unless e instanceof jQuery.Event
     # If one of the modifier keys is held down, we won't do anything.
@@ -230,12 +237,14 @@ class arcs.views.search.Search extends Backbone.View
 # Syncs selection states between the ResultSet and the DOM elements that
 # represent them. Uses Underscore's defer to wait for the call stack to
 # clear.
+
   afterSelection: ->
     _.defer =>
       selected = $('.result.selected').map( -> $(@).data('id')).get()
       console.log("coffee selected")
       console.log(selected)
       arcs.selected = selected
+      console.log(arcs.selected)
       $('#selected-resource-ids').html(selected)
       # get the count of the selected items, change the style accordingly
       num = $('.result.selected').length
@@ -245,7 +254,7 @@ class arcs.views.search.Search extends Backbone.View
       else
         $('#selected-all').css({color:'#C1C1C1'})
 
-      @search.results.unselectAll()
+#      @search.results.unselectAll()
       @search.results.select selected if selected.length
       if @search.results.anySelected()
         $('.btn.needs-resource').removeClass 'disabled'
@@ -270,7 +279,7 @@ class arcs.views.search.Search extends Backbone.View
     @search.vs.searchBox.addFacet(e.target.text,'',10)
 
 
-#Create an array of the page numbers. Still needs to handle when there are less than five pages
+#Create an array of the page numbers. 
   fillArray = (page,lastPage) ->
     if page < 3
       page = 3
@@ -309,6 +318,10 @@ class arcs.views.search.Search extends Backbone.View
       $('#lefttArrow').css('display', 'none')
     else
       $('#leftArrow').css('display', 'block')
+    if 2 is pageArray[0]
+      $('.fDots').css('display', 'none')
+    if lastPage-1 is pageArray[4]
+      $('.dots').css('display', 'none')
     for i in [1..5]
 #      console.log("Array contents: "+pageArray[i-1]+" i: "+ i)
       if pageArray[i-1] is 0
@@ -319,14 +332,25 @@ class arcs.views.search.Search extends Backbone.View
         $('#'+i).html(pageArray[i-1])
         if parseInt($('#'+i).html()) is currentPage
           $('#'+i).addClass('selected')
+          $('#'+i).addClass('currentPage')
+  noResults = () ->
+    $('#firstPage').css('display', 'none')
+    $('.fDots').css('display', 'none')
+    $('#lastPage').css('display', 'none')
+    $('.dots').css('display', 'none')
+    $('#leftArrow').css('display', 'none')
+    $('#rightArrow').css('display', 'none')
+    for i in [1..5]
+      $('#'+i).css('display', 'none')
 	
   #MULTIPROJECT SEARCH
   search = () ->
     $('.flex-img').removeClass('selected')
     val = $(".searchBoxInput").val()
-    pageNum = $('.selected').html()
+    pageNum = $('.currentPage').html()
     perPage = $('#items-per-page-btn').html().substring(0,2)
-#    console.log(perPage)
+#    console.log(val)
+    $('.pageNumber').removeClass('currentPage')
     $('.pageNumber').removeClass('selected')
     resources = new Promise((resolve, reject) ->
       resourcequery = encodeURIComponent("#{val}")
@@ -338,74 +362,64 @@ class arcs.views.search.Search extends Backbone.View
         $('#lastPage').html(response['pages'])
         temp = fillArray(parseInt(pageNum),parseInt(response['pages']))
 #        console.log(temp)
-        pagination(temp,parseInt(pageNum), parseInt(response['pages']) )
-        resolve(response['results'])
+        if response['display'] isnt 0
+#          console.log('pagination was called')
+          pagination(temp,parseInt(pageNum), parseInt(response['pages']) )
+        else
+          noResults()
+        $('#results-count').html(response['results'])
+#        console.log(response['results'].length)
+        resolve(response['display'])
     )
     totalResults = []
     Promise.all([resources]).then((values) ->
       for key,value of values[0]
         totalResults.push value
-#	  displayLimit = 20
-      
       $('#results-count').html(totalResults.length)
       $('#search-pagination').html(arcs.tmpl('search/paginate', results: totalResults))
       Search.prototype._render results: totalResults
       return
     )
+
 #  search = () ->
 #    val = $(".searchBoxInput").val()
-#    pageNum = $('.selected').html()
-#    resourcequery = encodeURIComponent("#{val}")
-#    pageNumber= encodeURIComponent("#{pageNum}")
-#    req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery + "/" +pageNumber, (response) ->
-#      console.log(response)
-##      $('#lastPage').html(response['pages'])
-#      totalResults = []
-#      for i in response['results'] by 1
-#        totalResults.push i
-#      $('#results-count').html(totalResults.length)
+#    console.log(val)
+#    resources = new Promise((resolve, reject) ->
+#      resourcequery = encodeURIComponent("(Type,like,#{val}),or,(Resource Identifier,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+#      #resourcequery = encodeURIComponent("#{val}")
+#      req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736&count=20", (response) ->
+#      #req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=Title&order=SORT_ASC",(response) ->
+#        resolve(response)
+#    )
+#    projects = new Promise((resolve, reject) ->
+#      projectquery = encodeURIComponent("(Country,like,#{val})")
+#      req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734&count=20", (response) ->
+#        resolve(response)
+#    )
+#    seasons = new Promise((resolve, reject) ->
+#      seasonquery = encodeURIComponent("(Title,like,#{val}),or,(Description,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+#      req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735&count=20", (response) ->
+#        resolve(response)
+#    )
+#    excavations = new Promise((resolve, reject) ->
+#      excavationquery = encodeURIComponent("(Name,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
+#      req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740&count=20", (response) ->
+#       resolve(response)
+#    )
+#    observations = new Promise((resolve, reject) ->
+#      observationquery = encodeURIComponent("(Monument Classification,like,#{val}),or,(Monument.Type,like,#{val}),or,(Monument.Material,like,#{val}),or,(Monument.Technique,like,#{val}),or,(Monument.Period,like,#{val}),or,(Monument.Terminus Ante Quem,like,#{val}),or,(Monument.Terminus Post Quem,like,#{val})")
+#      req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739&count=20", (response) ->
+#        resolve(response)
+#    )
+#  
+#    totalResults = {}
+#    Promise.all([resources,projects,seasons,excavations,observations]).then((values) ->
+#      for item in values
+#        Array::push.apply totalResults, item.results
+#      #console.log(totalResults)
 #      Search.prototype._render results: totalResults
-
-
-  #search = () ->
-  #  val = $(".searchBoxInput").val()
-  #  console.log(val)
-  #  resources = new Promise((resolve, reject) ->
-  #    resourcequery = encodeURIComponent("(Type,like,#{val}),or,(Resource Identifier,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-  #    #resourcequery = encodeURIComponent("#{val}")
-  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{resourcequery}&sid=736&count=20", (response) ->
-  #    #req = $.getJSON "http://kora.matrix.msu.edu/api/restful.php?request=GET&pid=123&sid=736&token=8b88eecedaa2d3708ebec77a&display=json&keywords="+resourcequery+"&sort=Title&order=SORT_ASC",(response) ->
-  #      resolve(response)
-  #  )
-  #  projects = new Promise((resolve, reject) ->
-  #    projectquery = encodeURIComponent("(Country,like,#{val})")
-  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{projectquery}&sid=734&count=20", (response) ->
-  #      resolve(response)
-  #  )
-  #  seasons = new Promise((resolve, reject) ->
-  #    seasonquery = encodeURIComponent("(Title,like,#{val}),or,(Description,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{seasonquery}&sid=735&count=20", (response) ->
-  #      resolve(response)
-  #  )
-  #  excavations = new Promise((resolve, reject) ->
-  #    excavationquery = encodeURIComponent("(Name,like,#{val}),or,(Earliest Date,like,#{val}),or,(Latest Date,like,#{val})")
-  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{excavationquery}&sid=740&count=20", (response) ->
-  #     resolve(response)
-  #  )
-  #  observations = new Promise((resolve, reject) ->
-  #    observationquery = encodeURIComponent("(Monument Classification,like,#{val}),or,(Monument.Type,like,#{val}),or,(Monument.Material,like,#{val}),or,(Monument.Technique,like,#{val}),or,(Monument.Period,like,#{val}),or,(Monument.Terminus Ante Quem,like,#{val}),or,(Monument.Terminus Post Quem,like,#{val})")
-  #    req = $.getJSON arcs.baseURL + "resources/search?q=#{observationquery}&sid=739&count=20", (response) ->
-  #      resolve(response)
-  #  )
-  #
-  #  totalResults = {}
-  #  Promise.all([resources,projects,seasons,excavations,observations]).then((values) ->
-  #    for item in values
-  #      Array::push.apply totalResults, item.results
-  #    #console.log(totalResults)
-  #    Search.prototype._render results: totalResults
-  #    $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
-  #  )
+#      $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
+#    )
 
   #Activates on enter press: search
   $ ->
@@ -413,7 +427,9 @@ class arcs.views.search.Search extends Backbone.View
 #      console.log("Ran")
       if e.keyCode == 13
         $('.pageNumber').removeClass('selected');
+        $('.pageNumber').removeClass('currentPage');
         $("#1").addClass('selected');
+        $("#1").addClass('currentPage');
         $("#1").html(1)
         e.preventDefault()
         search()
@@ -431,27 +447,43 @@ class arcs.views.search.Search extends Backbone.View
         return
       else
         $('.pageNumber').removeClass('selected')
+        $('.pageNumber').removeClass('currentPage')
         $(this).addClass('selected')
-#        e.preventDefault()
-#        e.stopPropagation()
-##        console.log("search called")
+        $(this).addClass('currentPage')
         search()
         return
 
     $('#leftArrowBox').unbind().click (e) ->
-      temp = $('.selected').html()
-      $('.selected').html(parseInt(temp)+1)
+      temp = $('.currentPage').html()
+      $('.currentPage').html(parseInt(temp)+1)
       search()
 
     $('#rightArrowBox').unbind().click (e) ->
-      temp = $('.selected').html()
+      temp = $('.currentPage').html()
       if temp is '1'
 #        console.log("on page 1")
         return
       else
-        $('.selected').html(parseInt(temp)-1)
+        $('.currentPage').html(parseInt(temp)-1)
         search()
-	
+    $('#dots').unbind().click ->
+      temp = parseInt($('.currentPage').html())+5
+#      console.log(temp)
+#      console.log($("#lastPage").html())
+      if temp > parseInt($("#lastPage").html())
+        temp = parseInt($("#lastPage").html())
+#        console.log(temp)
+      $('.currentPage').html(temp)
+      search()
+    $('#fDots').unbind().click ->
+      temp = parseInt($('.currentPage').html())-5
+#      console.log(temp)
+#      console.log($("#firstPage").html())
+      if temp < 1
+        temp = 1
+#        console.log(temp)
+      $('.currentPage').html(temp)
+      search()
     # add hover effects (select button, border) for the displayed images
     $('div.result').hover (->
       $(this).find('.select-button').show()
@@ -468,19 +500,35 @@ class arcs.views.search.Search extends Backbone.View
         $(this).html 'DE-SELECT'
         $(this).addClass 'de-select'
         $(this).parents('.result').addClass 'selected'
+        selectedCount++
         arcs.bus.trigger 'selection'
       else
         $(this).html 'SELECT'
         $(this).removeClass 'de-select'
         $(this).parents('.result').removeClass 'selected'
+        selectedCount--
         arcs.bus.trigger 'selection'
+      console.log(selectedCount)
       return
     $('.sort-btn').unbind().click ->
       $('#items-per-page-btn').html($(this).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
       $('.pageNumber').removeClass('selected');
+      $('.pageNumber').removeClass('currentPage');
       $("#1").addClass('selected');
+      $("#1").addClass('currentPage');
       $("#1").html(1)
       search()
-
+#    $('#select-all, #deselect-all').click ->
+#      if this.id is 'select-all'
+#        console.log("in the if statement")
+#        this.id = 'deselect-all'
+#        arcs.searchView.selectAll();
+#        $('#toggle-select').html('DE-SELECT')
+#      else
+#        console.log("in the else statement")
+#        this.id = 'select-all'
+#        arcs.searchView.unselectAll();
+#        $('#toggle-select').html('SELECT')
+		
     if not results.length > 0
       $results.html "<div id='no-results'>No Results</div>"
