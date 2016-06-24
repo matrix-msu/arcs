@@ -90,9 +90,10 @@
                 <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
-                <p id="addedCollectionP">1 resource added to Collection Name!</p>
+                <div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
+                <br>
                 <button class="viewCollection" type="submit">VIEW COLLECTION</button>
-                <button class="backToSearch" type="submit">BACK TO SEARCH RESULTS</button>
+                <button class="backToSearch" type="submit">BACK TO RESOURCE</button>
             </div>
         </div>
     </div>
@@ -955,7 +956,90 @@
 
     $(".modalClose").click(function () {
         $(".collectionModalBackground").hide();
+        $("#collectionModal").show();
+        $("#addedCollectionModal").hide();
+        var retunselect = unselect(null);
+        collectionList();
     });
+    var collectionArray = [];
+    function collectionList() {
+        collectionArray = [];
+        $.ajax({
+            url: arcs.baseURL + "collections/titlesAndIds",
+            type: "get",
+            //data: "",
+            success: function (data) {
+                //console.log("ajax success");
+                //console.log(data);
+                var arr = Object.keys(data).map(function (k) {
+                    return data[k]
+                });
+                //console.log('array below here');
+                //console.log(arr);
+                data.forEach(function (tempdata) {
+                    var arr = Object.keys(tempdata).map(function (k) {
+                        return tempdata[k]
+                    });
+                    //console.log(tempdata);
+                    //console.log("array below");
+                    //console.log(arr);
+                    arr.forEach(function (temparrdata) {
+                        var arr2 = Object.keys(temparrdata).map(function (k) {
+                            return temparrdata[k]
+                        });
+                        //console.log(arr2);
+                        if (arr2.length > 0)
+                            collectionArray.push(arr2);
+                    })
+
+
+                })
+                collectionsSearch();
+                //console.log("finished the ajax");
+                //console.log(collectionArray);
+            }
+        });
+    }
+
+    var unselect = function(trigger){
+        console.log("unselect");
+        if(trigger==null){
+            trigger=true
+        }
+        this.$(".result").removeClass("selected");
+        this.$(".select-button").removeClass("de-select");
+        this.$(".select-button, #toggle-select").html("SELECT");
+        this.$("#deselect-all").attr({id:"select-all"});
+        this.$(".checkedboxes").prop("checked", false);
+        this.$("#collectionTitle").val('');
+        this.$(".collectionTabSearch").trigger("click");
+        collectionList();
+        checkSearchSubmitBtn();
+        //collectionsSearch();
+        //if(trigger){
+          //  return arcs.bus.trigger("selection")
+        //}
+    }
+
+    var isAnyChecked = 0;
+    var lastCheckedId = '';
+    function checkSearchSubmitBtn() {
+        // Hide add to collection button in collection modal when no collections are selected
+        var checkboxes = $("#collectionSearchObjects > input");
+        var submitButt = $(".collectionSearchSubmit");
+        //console.log(checkboxes);
+        //console.log("here");
+        //console.log(this);
+
+        if(checkboxes.is(":checked")) {
+            submitButt.show();
+            isAnyChecked = 1;
+        }
+        else {
+            submitButt.hide();
+            isAnyChecked = 0;
+        }
+    }
 
     function collectionsSearch() {
         var query = $(".collectionSearchBar").val();
@@ -963,29 +1047,28 @@
         // only put collections in between the div if they include the query.
         // I.E. "" is in every collection title and user_name
         var populateCheckboxes = "<hr>";
-        for (var i = 0; i < collections.length; i++) {
-            if ((collections[i]['title'].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
-                    (collections[i]['user_name'].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
+        console.log("new search here");
+        console.log(collections);
+        var populateCheckboxes = "<hr>";
+        for (var i = 0; i < collectionArray.length; i++) {
+            if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
+                    (collectionArray[i][2].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
 
-                populateCheckboxes += "<input type='checkbox' name='item-" + i + "' id='item-" + i + "' value='" + collections[i]['collection_id'] + "' />"
-                        + "<label for='item-" + i + "'><div class='left'>" + collections[i]['title'] + " </div><div class='right'>" + collections[i]['user_name']+ "</div></label><br />";
+                populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='item-" + i + "' id='item-" + i + "' value='" + collectionArray[i][1] + "' />"
+                        + "<label for='item-" + i + "'><div style='float:left'>" + collectionArray[i][0] + " </div><div style='float:right'>" + collectionArray[i][2]+ "</div></label><br />";
             }
         }
         $("#collectionSearchObjects").html(populateCheckboxes);
 
-        // Hide add to collection button in collection modal when no collections are selected
         var checkboxes = $("#collectionSearchObjects > input");
-        var submitButt = $(".collectionSearchSubmit");
-        console.log(checkboxes);
-
         checkboxes.click(function() {
-            console.log("here");
-            if(checkboxes.is(":checked")) {
-                submitButt.show();
+            //console.log('clicked check here');
+            //console.log(this);
+            if(isAnyChecked == 1){
+               $('#'+lastCheckedId).prop("checked", false);
             }
-            else {
-                submitButt.hide();
-            }
+            lastCheckedId = $(this).attr('id');
+            checkSearchSubmitBtn();
         });
         $('#collectionTitle').bind('input propertychange', function() {
               if(this.value != ""){
@@ -997,11 +1080,15 @@
         });
     }
 
-    $(".viewCollection").click(function () {
 
+
+    $(".viewCollection").click(function () {
+        console.log("lastcheckedid");
+        console.log(lastCheckedId);
+        window.location.href = "<?php echo Router::url('/', true); ?>collections?"+lastCheckedId.substr(5);
     });
     $(".backToSearch").click(function () {
-
+        $(".modalClose").trigger("click");
     });
 
     $(".collectionNewSubmit").click(function () {
@@ -1022,8 +1109,11 @@
                 201: function () {
                     console.log("Add to Collection Success");
                     //window.location.reload();
+                    var text = $("label[for="+lastCheckedId+"]").children(":first").text();
+                    $("#collectionName").text(text);
                     $("#collectionModal").hide();
                     $("#addedCollectionModal").show();
+                    getCollections();
                 },
                 400: function () {
                     console.log("Bad Request");
@@ -1035,6 +1125,7 @@
                 }
             }
         });
+
     });
 
     $(".collectionSearchSubmit").click(function () {
@@ -1057,8 +1148,11 @@
                     201: function (data) {
                         //console.log("Success");
                         //console.log(data);
+                        var text = $("label[for="+lastCheckedId+"]").children(":first").text();
+                        $("#collectionName").text(text);
                         $("#collectionModal").hide();
                         $("#addedCollectionModal").show();
+                        getCollections();
                     },
                     400: function () {
                         console.log("Bad Request");
@@ -1090,16 +1184,16 @@
     // run on page load
     $(".collectionNewContainer").hide();
 
-    <?php echo "var collectionArray = ".$collections.";";?>
-    console.log("collections-here");
-    console.log(collectionArray);
+    //<?php echo "var collectionArray = ".$collections.";";?>
+    //console.log("collections-here");
+    //console.log(collectionArray);
 
-    var collection_members = [];
-    var collections = [];
-    collectionArray.forEach(function (element) {
-        collections.push(element['Collection']);
-    });
-
+    //var collection_members = [];
+    //var collections = [];
+    //collectionArray.forEach(function (element) {
+      //  collections.push(element['Collection']);
+    //});
+    collectionList();
     collectionsSearch();
 </script>
 
@@ -1754,7 +1848,7 @@
                     ctab.innerHTML = "COLLECTIONS (" + numCollections + ")";
                     var populateCollections = "<table><tbody>"+
                         "<tr><td colspan='2'>This resource is a part of the following "+numCollections+" collections...</td></tr>";
-                    for (var i = 0; i < numCollections; i++) {
+                    for (var i = numCollections-1; i >= 0; i--) {
                         //console.log("got-here1");
                         var collection = data.collections[i];
                         populateCollections += "<tr><td style='width:50%'>"+ collection.title +"</td><td>"+ collection.user_name +"</td></tr>";

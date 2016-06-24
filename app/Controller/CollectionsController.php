@@ -203,7 +203,7 @@ class CollectionsController extends AppController {
         return $this->json(200, $this->Collection->find('all', array(
             'fields' => array('Collection.title', 'Collection.collection_id', 'Collection.user_name'),
             'group' => 'collection_id',
-            'order' => 'modified DESC'
+            'order' => 'Collection.modified DESC'
         )));
     }
 

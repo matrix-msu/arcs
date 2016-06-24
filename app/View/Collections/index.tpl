@@ -52,7 +52,28 @@
 	$(document).ready(function() {
 		var filter;
 		$( "#new-old" ).trigger( "click" );
-		$( "#all-collections" ).children("details:first").trigger("click");
+
+		console.log( window.location.search );
+		//TODO scroll to nth collection and open the drawer.
+
+		var item = window.location.search.substr(1);
+		if(!isNaN(parseFloat(item)) && isFinite(item) && parseInt(item) <1) {
+			$( "#all-collections" ).children("details:first").trigger("click");
+
+		}else if(!isNaN(parseFloat(item)) && isFinite(item)) {
+			var int_item = parseInt(item);
+			int_item = int_item -1;
+			var openedCollection =  $( "#all-collections" ).children("details").eq(int_item);
+			console.log("openCollection here");
+			console.log(openedCollection);
+			$('html, body').animate({
+				scrollTop: (openedCollection.offset().top)
+			},500);
+			$( "#all-collections" ).children("details").eq(int_item+1).trigger("click");
+
+		}else {
+			$( "#all-collections" ).children("details:first").trigger("click");
+		}
 	});
 
 

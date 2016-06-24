@@ -296,7 +296,44 @@
 
 		$(".modalClose").click(function () {
 			$(".collectionModalBackground").hide();
+			var retunselect = unselect(null);
+			collectionList();
 		});
+
+		var unselect = function(trigger) {
+			if (trigger == null){trigger=true}this.$(".result").removeClass("selected");
+			this.$(".select-button").removeClass("de-select");
+			this.$(".select-button, #toggle-select").html("SELECT");
+			this.$("#deselect-all").attr({id:"select-all"});
+			this.$(".checkedboxes").prop("checked", false);
+			this.$("#collectionTitle").val('');
+			this.$(".collectionTabSearch").trigger("click");
+			collectionList();
+			checkSearchSubmitBtn();
+			//collectionsSearch();
+			if(trigger){
+				return arcs.bus.trigger("selection")
+			}
+		}
+		var isAnyChecked = 0;
+		var lastCheckedId = '';
+		function checkSearchSubmitBtn() {
+			// Hide add to collection button in collection modal when no collections are selected
+			var checkboxes = $("#collectionSearchObjects > input");
+			var submitButt = $(".collectionSearchSubmit");
+			//console.log(checkboxes);
+			//console.log("here");
+			//console.log(this);
+
+			if(checkboxes.is(":checked")) {
+				submitButt.show();
+				isAnyChecked = 1;
+			}
+			else {
+				submitButt.hide();
+				isAnyChecked = 0;
+			}
+		}
 
 		function collectionsSearch() {
 			var query = $(".collectionSearchBar").val();
@@ -321,13 +358,11 @@
 			console.log(checkboxes);
 
 			checkboxes.click(function() {
-				console.log("here");
-				if(checkboxes.is(":checked")) {
-					submitButt.show();
+				if(isAnyChecked == 1){
+					$('#'+lastCheckedId).prop("checked", false);
 				}
-				else {
-					submitButt.hide();
-				}
+				lastCheckedId = $(this).attr('id');
+				checkSearchSubmitBtn();
 			});
 			$('#collectionTitle').bind('input propertychange', function() {
 				if(this.value != ""){
@@ -398,20 +433,8 @@
 							});
 						})
 						//arcs.Search.prototype.unselectAll();
-						var unselect = function(trigger){
-							if(trigger==null){trigger=true}this.$(".result").removeClass("selected");
-							this.$(".select-button").removeClass("de-select");
-							this.$(".select-button, #toggle-select").html("SELECT");
-							this.$("#deselect-all").attr({id:"select-all"});
-							this.$(".checkedboxes").prop("checked", false);
-							this.$("#collectionTitle").val('');
-							this.$(".collectionTabSearch").trigger("click");
-							collectionList();
-							collectionsSearch();
-							if(trigger){
-								return arcs.bus.trigger("selection")
-							}
-						};
+
+						
 						var retunselect = unselect(null);
 						console.log("unselect here:");
 						console.log(retunselect);
