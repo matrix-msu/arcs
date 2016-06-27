@@ -162,7 +162,11 @@ class ResourcesController extends AppController {
         // get the first entry in $pages
         $firstPage = array_values($pages)[0]['kid'];
         $pages[$firstPage]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$firstPage]['Image Upload']['localName'];
-        $pages[$firstPage]['thumbnail'] = $this->largeThumb($pages[$firstPage]['Image Upload']['localName']);
+        //$pages[$firstPage]['thumbnail'] = $this->largeThumb($pages[$firstPage]['Image Upload']['localName']);
+        // Shifting to create thumbnails for every page
+        foreach($pages as $page) {
+            $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
+        }
 		
 		//resource
 		$query = "kid,=,".$id;
