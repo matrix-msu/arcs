@@ -267,13 +267,25 @@ class SearchController extends AppController {
         ///capture results and display
         $response['results'] = json_decode(curl_exec($ch), true);
         $returnResults = array();
+        $count = 0;
         foreach($response['results'] as $item) {
+            //check for show all button stuffs
+            $count++;
+            if($count > $limit && $limit != -1){
+                $returnResults[0]['more_results'] = 1;
+                break;
+            }
             if ($imageResults[$item['Resource Identifier']] != null) {
                 $item['thumb'] = $imageResults[$item['Resource Identifier']];
             } else {
                 $item['thumb'] = DEFAULT_THUMB;
             }
+            $item['title'] = $item['Title'];
             array_push($returnResults, $item);
+        }
+        //Test if there are more results for the show all button
+        if($returnResults[0]['more_resutlts'] != null ){
+            $returnResults[0]['more_results'] = 0;
         }
         $response['results'] = $returnResults;
         $response['total'] = count($response['results']);

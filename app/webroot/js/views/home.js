@@ -25,26 +25,44 @@
     };
 
     Home.prototype.events = {
-      'click summary': 'onClick'
+      'click summary': 'onClick',
+      'click .btn-show-all': 'onClick'
     };
 
     Home.prototype.onClick = function(e) {
-      var $el;
-      $el = $(e.currentTarget).parent();
-      $el.toggleAttr('open');
-      this.renderDetails($el);
+      var $el, limit;
+      console.log(e.currentTarget.tagName);
+      if (e.currentTarget.tagName === 'SUMMARY') {
+        $el = $(e.currentTarget).parent();
+        $el.toggleAttr('open');
+        limit = 1;
+      } else if (e.currentTarget.className === 'btn-show-all') {
+        $el = $(e.currentTarget).parent().parent().parent().parent();
+        $(e.currentTarget).parent().hide();
+        limit = 0;
+      } else {
+        $el = $(e.currentTarget).parent();
+        $el.toggleAttr('open');
+        limit = 0;
+      }
+      this.renderDetails($el, limit);
       e.preventDefault();
       return false;
     };
 
-    Home.prototype.renderDetails = function($el) {
-      var query, type;
+    Home.prototype.renderDetails = function($el, limit) {
+      var query, query2, type;
       type = $el.data('type');
       query = encodeURIComponent("Type,=," + type);
-      return $.getJSON(arcs.baseURL + ("resources/search?n=12&q=" + query), function(response) {
+      query2 = arcs.baseURL + "resources/search?";
+      if (limit !== 0) {
+        query2 += "n=15&";
+      }
+      return $.getJSON(query2 + ("q=" + query), function(response) {
         var html;
         html = arcs.tmpl('home/details', {
-          resources: response.results
+          resources: response.results,
+          searchURL: arcs.baseURL + "collection/"
         });
         return $el.children('div').html(html);
       });
