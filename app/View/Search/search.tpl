@@ -24,6 +24,16 @@
 						<button class="collectionNewSubmit">ADD TO NEW COLLECTION</button>
 					</div>
 				</div>
+
+			</div>
+			<div id="addedCollectionModal" style="width:35em;display:none;">
+				<div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../arcs/app/webroot/assets/img/Close.svg"
+																			 class="modalClose"/></div>
+				<hr>
+				<div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
+				<br>
+				<button class="viewCollection" type="submit">VIEW COLLECTION</button>
+				<button class="backToSearch" type="submit">BACK TO SEARCH</button>
 			</div>
 		</div>
 	</div>
@@ -296,6 +306,8 @@
 
 		$(".modalClose").click(function () {
 			$(".collectionModalBackground").hide();
+			$("#collectionModal").show();
+			$("#addedCollectionModal").hide();
 			var retunselect = unselect(null);
 			collectionList();
 		});
@@ -374,6 +386,15 @@
 			});
 		}
 
+		$(".viewCollection").click(function () {
+			console.log("lastcheckedid");
+			console.log(lastCheckedId);
+			window.location.href = arcs.baseURL + "collections?"+lastCheckedId.substr(5);
+		});
+		$(".backToSearch").click(function () {
+			$(".modalClose").trigger("click");
+		});
+
 		$(".collectionNewSubmit").click(function () {
 			// creates a single, new collection entry based on the resource it is viewing
 			var selected_resources = [];
@@ -435,10 +456,18 @@
 						//arcs.Search.prototype.unselectAll();
 
 						
+
+						//$(".collectionModalBackground").hide();
+						//console.log("last checked id: "+ $('#collectionTitle').val());
+						//var text = $("label[for="+$('#collectionTitle').val()+"]").children(":first").text();
+						$("#collectionName").text($('#collectionTitle').val());
+						$("#collectionModal").hide();
+						$("#addedCollectionModal").show();
+						console.log('added collection show here');
+
 						var retunselect = unselect(null);
 						console.log("unselect here:");
 						console.log(retunselect);
-						$(".collectionModalBackground").hide();
 						//arcs.selected = 0;
 					},
 					400: function () {
@@ -510,8 +539,14 @@
 					return arcs.bus.trigger("selection")
 				}
 			};
+
+			var text = $("label[for="+lastCheckedId+"]").children(":first").text();
+			$("#collectionName").text(text);
+			$("#collectionModal").hide();
+			$("#addedCollectionModal").show();
+			console.log('show added here');
 			var retunselect = unselect(null);
-			$(".collectionModalBackground").hide();
+			//$(".collectionModalBackground").hide();
 		});
 
 		// collection tabs

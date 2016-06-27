@@ -1109,8 +1109,8 @@
                 201: function () {
                     console.log("Add to Collection Success");
                     //window.location.reload();
-                    var text = $("label[for="+lastCheckedId+"]").children(":first").text();
-                    $("#collectionName").text(text);
+                    //var text = $("label[for="+lastCheckedId+"]").children(":first").text();
+                    $("#collectionName").text($('#collectionTitle').val());
                     $("#collectionModal").hide();
                     $("#addedCollectionModal").show();
                     getCollections();
