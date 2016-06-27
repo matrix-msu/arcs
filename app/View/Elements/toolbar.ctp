@@ -72,9 +72,9 @@
 			 
 			 </div>
 			<div id="projectsMenu" class="projects-menu">
-				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
-				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
-				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
+			    <?php foreach($projects as $p): ?>
+				<a href="<?php echo$this->Html->url('/projects/single_project/' . $p['Persistent Name'])?>"><?php echo $p['Persistent Name'] ?></a>
+			    <?php endforeach ?>
 			</div>
 			
 		</div>
@@ -123,9 +123,9 @@
 			 
 			 </div>
 			<div id="projectsMenu" class="projects-menu homeProject">
-				<a href="<?php echo$this->Html->url('/projects/single_project/Isthmia')?>">Isthmia</a>
-				<a href="<?php echo$this->Html->url('/projects/single_project/Polis')?>">Polis</a>
-				<a href="<?php echo$this->Html->url('/projects/single_project/Chersonesos')?>">Chersonesos</a>
+				<?php foreach($projects as $p): ?>
+                <a href="<?php echo$this->Html->url('/projects/single_project/' . $p['Persistent Name'])?>"><?php echo $p['Persistent Name'] ?></a>
+                <?php endforeach ?>
 			</div>
 		</div>
 		<div id='helpSearch'>
@@ -229,3 +229,4 @@
     </div>
 </div>
 
+<?php //echo print_r($projects); ?>

@@ -12,8 +12,8 @@
                 <th class="user-tabs-header">Title</th>
                 <th class="user-tabs-header">Description</th>
                 <th class="user-tabs-header">Date</th>
-            </tr> -->
-        </thead>
+            </tr>
+        </thead> -->
         <tbody>
         <!-- ?php if ($collection['temporary'] == 1) continue ?>
                     <tr>

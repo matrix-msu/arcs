@@ -52,6 +52,20 @@ class AppController extends Controller {
 //
 //    }
 //To here.
+
+        // code to pull the projects from kora for the header - here because every page needs it
+        $user = "";
+        $pass = "";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        $out = json_decode(curl_exec($ch), true);
+        $projects = array();
+        foreach($out as $item) {
+            array_push($projects, $item);
+        }
+
         if (substr($this->request->url, 0, 3) == 'api')
             $this->Auth->authenticate = array('Basic');
         $this->set(array(
@@ -71,7 +85,8 @@ class AppController extends Controller {
             ),
             'body_class' => 'default',
             'footer' => true,
-            'debug' => Configure::read('debug')
+            'debug' => Configure::read('debug'),
+            'projects' => $projects
         ));
         $this->RequestHandler->addInputType('json', array('json_decode', true));
     }

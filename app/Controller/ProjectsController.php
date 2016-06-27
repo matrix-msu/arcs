@@ -78,7 +78,34 @@ class ProjectsController extends AppController {
 		$user = "";
 		$pass = "";
 
-		$display = "json";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=json&sort=kid&order=SORT_DESC&count=8";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+		$server_output = json_decode(curl_exec($ch), true);
+		// Now we go through the list, get any more needed information, and compile results
+		$resources = [];
+		foreach($server_output as $result) {
+			$query = "Resource Identifier,=,".$result['Resource Identifier'];
+			$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=json&query=".urlencode($query)."&count=1";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+			$page = json_decode(curl_exec($ch), true);
+			$picture_url = array_values($page)[0]['Image Upload']['localName'];
+			//Decide if there is a picture..
+			if( !empty($picture_url) ){
+				$thumb = $this->largeThumb($picture_url);
+			}else{
+				$thumb = Router::url('/', true)."img/DefaultResourceImage.svg";
+			}
+			$temp_array = ['kid' => $result['kid'], 'type' => $result['Type'], 'title' => $result['Title'], 'thumb' => $thumb];
+			$resources[] = $temp_array;
+		}
+		$this->set('resources', $resources);
+
+		// Need collections, but those may not be in kora...
+
 		$query = "Persistent Name,=,".$this->request->params['pass'][0];
 		
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json&query=".urlencode($query);

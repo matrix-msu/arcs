@@ -194,7 +194,7 @@ class SearchController extends AppController {
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){
                     $temp_array['pic_url'] = $picture_url;
-                    $kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
+                    //$kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
                     //$temp_array['thumb'] = $kora_pic_url.$picture_url;
                     $temp_array['thumb'] = $this->smallThumb($temp_array['pic_url']);
                 }else{

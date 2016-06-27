@@ -24,87 +24,18 @@
 
 		<div class="pic-display">
 			<ul class="recent-resource">
-				<li class="resource-pic">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic" id="extra">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				<li class="resource-pic" id="extra">
-			      <span style="cursor:pointer">
-			      <a>
-				  <img class="resource_imginfo_1" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
-				  </a>
-				  </span>
-				  <br><br>
-				  <h class="resource-title">Resource Title</h><br>
-				  <p class="resource-type">Resource Type</p>
-				</li>
-				
+			    <?php foreach($resources as $r): ?>
+                <li class="resource-pic">
+                  <span style="cursor:pointer">
+                  <a href="<?php echo $this->Html->url('/resource/').$r['kid'] ?>">
+                  <img class="resource_imginfo_1" src="<?php echo $r['thumb'] ?>">
+                  </a>
+                  </span>
+                  <br><br>
+                  <h class="resource-title"><?php echo $r['title'] ?></h><br>
+                  <p class="resource-type"><?php echo $r['type'] ?></p>
+                </li>
+			    <?php endforeach ?>
 			</ul>
 		</div>
 		<div class="proper-width">
@@ -126,7 +57,7 @@
 				
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -176,7 +107,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -226,7 +157,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -276,7 +207,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -326,7 +257,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -376,7 +307,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -426,7 +357,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>
@@ -476,7 +407,7 @@
 				</details>
 				<details class="back-color">
 					<summary>
-						<h3>Collection Tittle</h3>
+						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
 						<h5>A week ago</h5>
 						<a class="view-colc">VIEW COLLECTION</a>

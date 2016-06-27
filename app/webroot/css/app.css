@@ -10760,7 +10760,7 @@ th.user-tabs-header {
   width: 125px;
   display: inline;
   float: left;
-  margin-left: -125px;
+  margin-left: -145px;
 }
 #user-actions .tab-content #annotations-tab .img img,
 #user-actions .tab-content #transcriptions-tab .img img,
@@ -10769,12 +10769,17 @@ th.user-tabs-header {
   max-width: 100%;
   box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.3);
 }
+#user-actions .tab-content #annotations-tab .img a,
+#user-actions .tab-content #transcriptions-tab .img a,
+#user-actions .tab-content #discussion-tab .img a {
+  margin-left: 0;
+}
 #user-actions .tab-content #annotations-tab .cont,
 #user-actions .tab-content #transcriptions-tab .cont,
 #user-actions .tab-content #discussion-tab .cont {
   border-bottom: 1px solid #ccc;
   padding-bottom: 40px;
-  padding-left: 125px;
+  padding-left: 145px;
   margin-top: 30px;
   min-height: 123px;
 }
@@ -10782,7 +10787,11 @@ th.user-tabs-header {
 #user-actions .tab-content #transcriptions-tab p,
 #user-actions .tab-content #discussion-tab p {
   font-size: 16px;
-  margin-left: 20px;
+}
+#user-actions .tab-content #annotations-tab p .name,
+#user-actions .tab-content #transcriptions-tab p .name,
+#user-actions .tab-content #discussion-tab p .name {
+  color: grey;
 }
 #user-actions .tab-content #annotations-tab .type,
 #user-actions .tab-content #transcriptions-tab .type,
@@ -10807,7 +10816,6 @@ th.user-tabs-header {
 #user-actions .tab-content #transcriptions-tab a,
 #user-actions .tab-content #discussion-tab a {
   color: #1C95BA;
-  margin-left: 20px;
 }
 #user-actions .tab-content #annotations-tab .transcript,
 #user-actions .tab-content #transcriptions-tab .transcript,

@@ -124,11 +124,8 @@ var annoReady = $.ajax({
         id: "<?php echo $user_info['id']; ?>"
     },
     success: function (data) {
-        //console.log(data);
+        console.log(data);
         // Add entries to annotations tab - split by annotations and transcriptions
-        // Format - image, paragraph with span for type and span for date? Then annotation type paragraph and link?
-        // Grabbing the image may take another round of ajax - save for last to put that together?
-        // Oh, resource type is like that too...
         if (!data.length) {
             // currently the no annotations by this user is displayed before we do js stuff. If I change that,
             // we'll actually use this to set it up. And probably may as well, but it won't be first.
@@ -190,8 +187,10 @@ var annoReady = $.ajax({
                         linkText = a['url'];
                     }
                     // And then add it all on to the end
-                    contents += "<div class='cont'><div class='img'><img></div><p><span class='name'>" + a['resource_name']
-                      + "</span><span class='type'>Resource Type</span><span class='date'>" + date
+                    contents += "<div class='cont'><div class='img'><a href='" + arcs.baseURL + "resource/"
+                      + a['resource_kid'] + "'><img></a></div><p>" + "<a href='" + arcs.baseURL
+                      + "resource/" + a['resource_kid'] + "'><span class='name'>" + a['resource_name'] + "</span></a>"
+                      + "<span class='type'>Resource Type</span><span class='date'>" + date
                       + "</span></p><p class='annotationType'>" + type + "</p><a href=" + url + ">" + linkText + "</a></div>";
                     count++;
                 }
@@ -230,8 +229,10 @@ var annoReady = $.ajax({
                       "July", "August", "September", "October", "November", "December"]; // silly nonsense to get month name
                     var date = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
                     // And then add it all on to the end
-                    tcontents += "<div class='cont'><div class='img'><img></div><p><span class='name'>"
-                      + a['resource_name'] + "</span><span class='type'>Resource Type</span><span class='date'>"
+                    tcontents += "<div class='cont'><div class='img'><a href='" + arcs.baseURL + "resource/"
+                      + a['resource_kid'] + "'><img></a></div>" + "<p><a href='" + arcs.baseURL
+                      + "resource/" + a['resource_kid'] + "'><span class='name'>" + a['resource_name']
+                      + "</span></a><span class='type'>Resource Type</span><span class='date'>"
                       + date + "</span></p><p class='transcript'>" + a['transcript'] + "</p></div>";
                     tcount++;
                 }
@@ -291,7 +292,9 @@ $.ajax({
                   "July", "August", "September", "October", "November", "December"]; // silly nonsense to get month name
                 var date = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
                 // And add it all on
-                contents += "<div class='cont'><div class='img'><img></div><p><span class='name'>Resource Name</span>" +
+                contents += "<div class='cont'><div class='img'><a href='" + arcs.baseURL + "resource/"
+                  + a['resource_kid'] + "'><img></a></div><p><a href='" + arcs.baseURL
+                  + "resource/" + a['resource_kid'] + "'><span class='name'>Resource Name</span></a>" +
                   "<span class='type'>Resource Type</span><span class='date'>" + date + "</span></p><p class='transcript'>"
                   + a['content'] + "</p></div>";
                 count++;
@@ -337,6 +340,7 @@ $.ajax({
         id: "<?php echo $user_info['id']; ?>"
     },
     success: function(data) {
+        //console.log(data);
     }
 });
 
