@@ -245,7 +245,7 @@ class UsersController extends AppController
         // notify admins of the new user
         $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
         foreach ($admins as $admin) {
-            $this->pendingUserEmail($admin, $user['name']);
+            $this->pendingUserEmail($admin, $user);
         }
 
         $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
@@ -723,11 +723,11 @@ class UsersController extends AppController
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array('user' => $user['User']['name'], 'link' => $this->baseURL() . "/user/" . $user['User']['username']))
+        $Email->viewVars(array('user' => $user['name'], 'link' => $this->baseURL() . "/user/" . $user['username']))
               ->emailFormat('html')
               ->template('pending_user', 'default')
               ->subject('ARCS New User Has Registered')
-              ->to($data['User']['email'])
+              ->to($data['email'])
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }

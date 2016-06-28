@@ -353,5 +353,8 @@ $.when(usersReady, flagsReady, annoReady).then(function() {
     });
     console.log(activity);
     // pagination might happen here, or after, but build the html for the tab and get the images and such as needed
+    activity.forEach(function(a) {
+
+    });
 });
 </script>

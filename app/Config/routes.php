@@ -83,6 +83,9 @@
     Router::connect('/user/edit/*',
         array('controller' => 'users', 'action' => 'edit')
     );
+    Router::connect('/users/confirm_user/*',
+        array('controller' => 'users', 'action' => 'confirm_user')
+    );
 
 
 # Search

@@ -224,7 +224,7 @@
 					<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
 					<div id='fDots'><li class='fDots' style="display:none"> ... </li></div> 
 					<li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
-					<li ><a class='pageNumber' id='2'style="display:none" ></a></li>
+					<li><a class='pageNumber' id='2'style="display:none" ></a></li>
 					<li><a class='pageNumber' id='3' style="display:none"></a></li>
 					<li><a class='pageNumber' id='4' style="display:none"></a></li>
 					<li><a class='pageNumber' id='5' style="display:none"></a></li>
