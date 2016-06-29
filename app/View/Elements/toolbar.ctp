@@ -228,5 +228,3 @@
 
     </div>
 </div>
-
-<?php //echo print_r($projects); ?>
