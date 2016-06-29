@@ -106,7 +106,7 @@
     );
 
 
-    Router::connect('/api/simple_search/**',
+    Router::connect('/api/simple_search/***',
         array('controller' => 'search', 'action' => 'simple_search')
         // array('controller' => 'search', 'action' => 'sm')
     );

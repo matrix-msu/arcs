@@ -8819,7 +8819,8 @@ input[type=range]:focus::-ms-fill-upper {
 #viewer-tools .tools .icon-collection {
   width: 15px;
   height: 15px;
-  background-image: url("../img/addToCollection-FullResource.svg");
+  background-image: url("../img/BelongsToCollectionTooltip.svg");
+  /*addToCollection-FullResource.svg*/
   background-position: center;
   background-size: contain;
   cursor: pointer;
@@ -9295,6 +9296,9 @@ input[type=range]:focus::-ms-fill-upper {
 }
 #resources-nav #other-resources-container img {
   object-fit: cover;
+}
+#resources-nav #button-left {
+  transform: rotate(180deg);
 }
 #resources-nav #button-left,
 #resources-nav #button-right {

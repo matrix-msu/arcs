@@ -167,43 +167,45 @@
 		    
 		</div>
 	</div>
-	
-	<div id="search-results">
-	
-		<div class='toolbar-fixed'>
-			<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
-			<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/BelongsToCollectionTooltip.svg' class='collectionIcon'/></a>
-			<div id="selected-resource-ids" style="display: none;"></div>
+	<div class='search-pagination'>
+		<div id="search-results">
+
+			<div class='toolbar-fixed'>
+				<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
+				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/BelongsToCollectionTooltip.svg' class='collectionIcon'/></a>
+				<div id="selected-resource-ids" style="display: none;"></div>
+			</div>
+
+			<ul class="flex-container">
+				<!--
+				<div class="resource-item-container">
+					<li class="flex-item">1</li>
+					<div class="resource-title">Resource Title</div>
+					<div class="resource-type">Resource Type</div>
+					<div class="icon-annotate"></div>
+				</div>
+				<div class="resource-item-container">
+					<li class="flex-item">2</li>
+					<div class="resource-title">Resource Title</div>
+					<div class="resource-type">Resource Type</div>
+					<div class="icon-annotate"></div>
+					<div class="icon-flag"></div>
+				</div>
+				<div class="resource-item-container">
+					<li class="flex-item">3</li>
+					<div class="resource-title">Resource Title</div>
+					<div class="resource-type">Resource Type</div>
+					<div class="icon-flag"></div>
+					<div class="search-icon-edit"></div>
+					<div class="icon-in-collection"></div>
+					<div class="icon-discussed"></div>
+					<div class="icon-tagged"></div>
+				</div>
+				-->
+			</ul>
 		</div>
-		
-		<ul class="flex-container">
-			<!--
-			<div class="resource-item-container">
-				<li class="flex-item">1</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-				<div class="icon-annotate"></div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">2</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-				<div class="icon-annotate"></div>
-				<div class="icon-flag"></div>
-			</div>
-			<div class="resource-item-container">
-				<li class="flex-item">3</li>
-				<div class="resource-title">Resource Title</div>
-				<div class="resource-type">Resource Type</div>
-				<div class="icon-flag"></div>
-				<div class="search-icon-edit"></div>
-				<div class="icon-in-collection"></div>
-				<div class="icon-discussed"></div>
-				<div class="icon-tagged"></div>
-			</div>
-			-->
-		</ul>
 	</div>
+	
 
 	<div id='search-bottom-bar'>
 		<div id="search-actions" class="search-toolbar">

@@ -1,8 +1,12 @@
 # search.coffee
 # -------------
 # Search View. Select and perform bulk actions on search results.
-selectedMap={}
+selectedMap={"unselected": [],"selected": [] } #key value pairs {'page #', array of selected elements on that page}
 selectedCount = 0
+selected = []
+display = []
+totalResults = []
+waiting = false
 arcs.views.search ?= {}
 class arcs.views.search.Search extends Backbone.View
 
@@ -66,11 +70,11 @@ class arcs.views.search.Search extends Backbone.View
     'click .search-page-btn'   : 'setPage'
     'click .search-type'       : 'addFacet'
     'click .pageNumber'        : 'scrollTop'
-    'click #leftArrowBox'        : 'scrollTop'
-    'click #rightArrowBox'        : 'scrollTop'
-    'click .sort-btn'        : 'scrollTop'
-    'click .fDots'        : 'scrollTop'
-    'click .dots'        : 'scrollTop'
+    'click #leftArrowBox'      : 'scrollTop'
+    'click #rightArrowBox'     : 'scrollTop'
+    'click .sort-btn'          : 'scrollTop'
+    'click .fDots'             : 'scrollTop'
+    'click .dots'              : 'scrollTop'
 
   ### More involved setups run by the initialize method ###
 
@@ -238,30 +242,30 @@ class arcs.views.search.Search extends Backbone.View
 # represent them. Uses Underscore's defer to wait for the call stack to
 # clear.
 
-  afterSelection: ->
-    _.defer =>
-      selected = $('.result.selected').map( -> $(@).data('id')).get()
-      console.log("coffee selected")
-      console.log(selected)
-      arcs.selected = selected
-      console.log(arcs.selected)
-      $('#selected-resource-ids').html(selected)
-      # get the count of the selected items, change the style accordingly
-      num = $('.result.selected').length
-      $('#selected-count').html(num)
-      if (num != 0)
-        $('#selected-all').css({color:'black'})
-      else
-        $('#selected-all').css({color:'#C1C1C1'})
-
+#  afterSelection: ->
+#    _.defer =>
+#      selected = $('.result.selected').map( -> $(@).data('id')).get()
+#      console.log("coffee selected")
+#      console.log(selected)
+#      arcs.selected = selected
+#      console.log(arcs.selected)
+#      $('#selected-resource-ids').html(selected)
+#      # get the count of the selected items, change the style accordingly
+#      num = $('.result.selected').length
+#      $('#selected-count').html(num)
+#      if (num != 0)
+#        $('#selected-all').css({color:'black'})
+#      else
+#        $('#selected-all').css({color:'#C1C1C1'})
+#
 #      @search.results.unselectAll()
-      @search.results.select selected if selected.length
-      if @search.results.anySelected()
-        $('.btn.needs-resource').removeClass 'disabled'
-        # Blur the search input(s), so that hotkeys work as expected.
-        $('#search input').blur()
-      else
-        $('.btn.needs-resource').addClass 'disabled'
+#      @search.results.select selected if selected.length
+#      if @search.results.anySelected()
+#        $('.btn.needs-resource').removeClass 'disabled'
+#        # Blur the search input(s), so that hotkeys work as expected.
+#        $('#search input').blur()
+#      else
+#        $('.btn.needs-resource').addClass 'disabled'
 
   $('.dropdown-menu').change (event) ->
     console.log(("Dropdown select"))
@@ -278,7 +282,8 @@ class arcs.views.search.Search extends Backbone.View
     e.preventDefault()
     @search.vs.searchBox.addFacet(e.target.text,'',10)
 
-
+#  toggleSearchVisibility = () ->
+#    $('#search-results-wrapper').css('visibility', 'visibile')
 #Create an array of the page numbers. 
   fillArray = (page,lastPage) ->
     if page < 3
@@ -296,6 +301,7 @@ class arcs.views.search.Search extends Backbone.View
         0
 
   pagination = (pageArray, currentPage, lastPage) ->
+    console.log(pageArray)
     if 1 in pageArray
       $('#firstPage').css('display', 'none')
       $('.fDots').css('display', 'none')
@@ -324,7 +330,7 @@ class arcs.views.search.Search extends Backbone.View
       $('.dots').css('display', 'none')
     for i in [1..5]
 #      console.log("Array contents: "+pageArray[i-1]+" i: "+ i)
-      if pageArray[i-1] is 0
+      if pageArray[i-1] <= 0
 #        console.log("undifined")
         $('#'+i).css('display', 'none')
       else
@@ -342,44 +348,121 @@ class arcs.views.search.Search extends Backbone.View
     $('#rightArrow').css('display', 'none')
     for i in [1..5]
       $('#'+i).css('display', 'none')
-	
-  #MULTIPROJECT SEARCH
-  search = () ->
-    $('.flex-img').removeClass('selected')
-    val = $(".searchBoxInput").val()
-    pageNum = $('.currentPage').html()
-    perPage = $('#items-per-page-btn').html().substring(0,2)
-#    console.log(val)
+  showSelected = () ->
+    $( '.result' ).each ->
+      if $(this).data('id') in selectedMap['selected']
+        $(this).addClass('selected')
+        $(this).find('.select-button').addClass 'de-select'
+        $(this).find('.select-button').html 'DE-SELECT'
+  adjustPage = (results,currentPage) ->
+    if waiting
+      return
     $('.pageNumber').removeClass('currentPage')
     $('.pageNumber').removeClass('selected')
-    resources = new Promise((resolve, reject) ->
-      resourcequery = encodeURIComponent("#{val}")
-      pageNumber= encodeURIComponent("#{pageNum}")
-      perPageUrl = encodeURIComponent("#{perPage}")
-      req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery + "/" +pageNumber + "/" + perPageUrl, (response) ->
-#        console.log(response)
-#        console.log("Current page: "+pageNum+", "+"Number of total pages: "+response['pages'])
-        $('#lastPage').html(response['pages'])
-        temp = fillArray(parseInt(pageNum),parseInt(response['pages']))
-#        console.log(temp)
-        if response['display'] isnt 0
-#          console.log('pagination was called')
-          pagination(temp,parseInt(pageNum), parseInt(response['pages']) )
-        else
-          noResults()
-        $('#results-count').html(response['results'])
-#        console.log(response['results'].length)
-        resolve(response['display'])
-    )
-    totalResults = []
-    Promise.all([resources]).then((values) ->
-      for key,value of values[0]
-        totalResults.push value
-      $('#results-count').html(totalResults.length)
-      $('#search-pagination').html(arcs.tmpl('search/paginate', results: totalResults))
-      Search.prototype._render results: totalResults
+    console.log("CALLED")
+    console.log(results)
+    pageNum = currentPage
+    console.log(pageNum)
+    numberPerPage = parseInt($('#items-per-page-btn').html().substring(0,2))
+    lastPage = Math.ceil(results.length/numberPerPage)
+    console.log(lastPage)
+    temp = fillArray(pageNum,lastPage)
+    console.log(temp)
+    pagination(temp,pageNum,lastPage)
+    skip = (pageNum-1)*numberPerPage
+    console.log("skip: "+skip+" (skip+numberPerPage: )"+ (skip+numberPerPage))
+    $('#lastPage').html(lastPage)
+#    perPage = parseInt(perPage = $('#items-per-page-btn').html().substring(0,2))
+    console.log(totalResults[skip..(skip+numberPerPage)])
+    Search.prototype._render results: totalResults[skip...(skip+numberPerPage)]
+    if selectedMap['selected'].length > 0
+      showSelected()
+
+  #MULTIPROJECT SEARCH
+  search = () ->
+    wiating = true
+#    $('.flex-img').removeClass('selected')
+    val = $(".searchBoxInput").val()
+    pageNum = $('.currentPage').html()
+    console.log("page num in search: "+ pageNum)
+    perPage = $('#items-per-page-btn').html().substring(0,2)
+    if val is ""
       return
-    )
+    resourcequery = encodeURIComponent("#{val}")
+    pageNumber= encodeURIComponent("#{pageNum}")
+    perPageUrl = encodeURIComponent("#{perPage}")
+#    console.log(val)
+#    toggleSearchVisibility()
+    $('.pageNumber').removeClass('currentPage')
+    $('.pageNumber').removeClass('selected')
+    totalResults = []
+    $.ajax({
+#      'async':false,
+      'dataType': 'json'
+      'url': arcs.baseURL + 'simple_search/' + resourcequery + "/" +pageNumber + "/" + perPageUrl,
+      'success': (data)->
+        console.log(data['total'])
+        if data['total'] is 0
+          noResults()
+          $('#results-count').html(0)
+          $('#selected-count').html(0)
+          $('#selected-all').css({color:'#C1C1C1'})
+          $('#firstPage').css('display', 'none')
+          $('.fDots').css('display', 'none')
+          $('#lastPage').css('display', 'none')
+          $('.dots').css('display', 'none')
+          $('#leftArrow').css('display', 'none')
+          $('#rightArrow').css('display', 'none')
+          for i in [1..5]
+            $('#'+i).css('display', 'none')
+          adjustPage([],0)
+        else
+#          console.log("IN AJAX ELSE")
+          $('#results-count').html(data['total'])
+          for key, value of data['results']
+            totalResults.push value
+#            console.log(value)
+            selectedMap['unselected'].push value['kid']
+          selectedMap['unselected'] = totalResults
+#          console.log(data['results'])
+#          console.log(totalResults)
+          waiting = false
+          adjustPage(totalResults,1)
+#        Search.prototype._render results: data['display']
+    })
+#    resources = new Promise((resolve, reject) ->
+#      resourcequery = encodeURIComponent("#{val}")
+#      pageNumber= encodeURIComponent("#{pageNum}")
+#      perPageUrl = encodeURIComponent("#{perPage}")
+#      req = $.getJSON arcs.baseURL + 'simple_search/' + resourcequery + "/" +pageNumber + "/" + perPageUrl, (response) ->
+#        console.log(response)
+##        console.log("Current page: "+pageNum+", "+"Number of total pages: "+response['pages'])
+#        $('#lastPage').html(response['pages'])
+#        temp = fillArray(parseInt(pageNum),parseInt(response['pages']))
+##        console.log(temp)
+#        if response['total'] isnt 0
+##          console.log('pagination was called')
+#          pagination(temp,parseInt(pageNum), parseInt(response['pages']) )
+#        else
+#          noResults()
+#        $('#results-count').html(response['results'])
+##        console.log(response['results'].length)
+#        totalResults = response['results']
+#        console.log("In the search function: "+totalResults)
+#        resolve(response['results'])
+#    )
+#    totalResults = []
+#    Promise.all([resources]).then((values) ->
+#      for key,value of values[0]
+#        totalResults.push value
+#      $('#results-count').html(totalResults.length)
+#      $('#search-pagination').html arcs.tmpl('search/paginate', results: totalResults)
+##      adjustPage(totalResults)
+#      Search.prototype._render results: totalResults
+#      return
+#    )
+#    console.log(display)
+#    return totalResults
 
 #  search = () ->
 #    val = $(".searchBoxInput").val()
@@ -426,6 +509,7 @@ class arcs.views.search.Search extends Backbone.View
     $(".searchBoxInput").keyup (e) ->
 #      console.log("Ran")
       if e.keyCode == 13
+        selectedMap = {"unselected": [],"selected": [] }
         $('.pageNumber').removeClass('selected');
         $('.pageNumber').removeClass('currentPage');
         $("#1").addClass('selected');
@@ -450,13 +534,13 @@ class arcs.views.search.Search extends Backbone.View
         $('.pageNumber').removeClass('currentPage')
         $(this).addClass('selected')
         $(this).addClass('currentPage')
-        search()
+        adjustPage(totalResults,parseInt($('.currentPage').html()))
         return
 
     $('#leftArrowBox').unbind().click (e) ->
       temp = $('.currentPage').html()
       $('.currentPage').html(parseInt(temp)+1)
-      search()
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
 
     $('#rightArrowBox').unbind().click (e) ->
       temp = $('.currentPage').html()
@@ -465,7 +549,7 @@ class arcs.views.search.Search extends Backbone.View
         return
       else
         $('.currentPage').html(parseInt(temp)-1)
-        search()
+        adjustPage(totalResults,parseInt($('.currentPage').html()))
     $('#dots').unbind().click ->
       temp = parseInt($('.currentPage').html())+5
 #      console.log(temp)
@@ -474,7 +558,7 @@ class arcs.views.search.Search extends Backbone.View
         temp = parseInt($("#lastPage").html())
 #        console.log(temp)
       $('.currentPage').html(temp)
-      search()
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
     $('#fDots').unbind().click ->
       temp = parseInt($('.currentPage').html())-5
 #      console.log(temp)
@@ -483,7 +567,7 @@ class arcs.views.search.Search extends Backbone.View
         temp = 1
 #        console.log(temp)
       $('.currentPage').html(temp)
-      search()
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
     # add hover effects (select button, border) for the displayed images
     $('div.result').hover (->
       $(this).find('.select-button').show()
@@ -500,15 +584,27 @@ class arcs.views.search.Search extends Backbone.View
         $(this).html 'DE-SELECT'
         $(this).addClass 'de-select'
         $(this).parents('.result').addClass 'selected'
-        selectedCount++
+        $('#selected-all').css({color:'black'})
+        selectedMap['selected'].push $(this).parents('.result').data("id")
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
+        console.log(selectedMap)
         arcs.bus.trigger 'selection'
       else
         $(this).html 'SELECT'
         $(this).removeClass 'de-select'
         $(this).parents('.result').removeClass 'selected'
-        selectedCount--
+        index = selectedMap['selected'].indexOf($(this).parents('.result').data("id"))
+        if index > -1
+          selectedMap['selected'].splice(index,1)
+        if selectedMap['selected'].length < 1
+          $('#selected-all').css({color:'#C1C1C1'})
+        console.log(index)
+        console.log(selectedMap)
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
         arcs.bus.trigger 'selection'
-      console.log(selectedCount)
+      
       return
     $('.sort-btn').unbind().click ->
       $('#items-per-page-btn').html($(this).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
@@ -517,18 +613,32 @@ class arcs.views.search.Search extends Backbone.View
       $("#1").addClass('selected');
       $("#1").addClass('currentPage');
       $("#1").html(1)
-      search()
-#    $('#select-all, #deselect-all').click ->
-#      if this.id is 'select-all'
-#        console.log("in the if statement")
-#        this.id = 'deselect-all'
-#        arcs.searchView.selectAll();
-#        $('#toggle-select').html('DE-SELECT')
-#      else
-#        console.log("in the else statement")
-#        this.id = 'select-all'
-#        arcs.searchView.unselectAll();
-#        $('#toggle-select').html('SELECT')
-		
-    if not results.length > 0
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
+
+    $('#select-all, #deselect-all').unbind().click ->
+      if this.id is 'select-all'
+        $('#selected-all').css({color:'black'})
+        selectedMap['selected']=[]
+        i = 0
+        for i of totalResults
+          selectedMap['selected'].push totalResults[i]['kid']
+          ++i
+        console.log(selected['unselected'])
+#        selectedMap['selected'] = totalResults[0]['kid']
+        arcs.searchView.selectAll();
+        $('#toggle-select').html('DE-SELECT')
+        console.log(selectedMap['selected'])
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
+      else
+        $('#selected-all').css({color:'#C1C1C1'})
+        console.log("in the else statement")
+        selectedMap['selected'] = []
+        this.id = 'select-all'
+        arcs.searchView.unselectAll();
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
+      
+#   
+    if results.length is 0
       $results.html "<div id='no-results'>No Results</div>"

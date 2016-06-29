@@ -807,7 +807,7 @@
 <div id="resources-nav">
     <div id="button-left">
         <a href="#" id="left-button">
-            <img src="../img/arrowLeft-White.svg" height="220px" width="10px"/>
+            <img src="../img/Arrow-White.svg" height="220px" width="10px" />
         </a>
     </div>
     <div id="other-resources-container">
@@ -822,7 +822,7 @@
 </div>
 <div id="button-right">
     <a href="#" id="right-button">
-        <img src="../img/arrowRight-White.svg" height="220px" width="10px"/>
+        <img src="../img/Arrow-White.svg" height="220px" width="10px" />
     </a>
 </div>
 </div>
