@@ -240,7 +240,7 @@ class SearchController extends AppController {
         $imageResults = array();
         foreach($response['results'] as $image) {
             //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-
+            $imageResults[$image['Resource Identifier']] = $image['Image Upload']['localName'];
         }
 
 
@@ -275,9 +275,8 @@ class SearchController extends AppController {
                 $returnResults[0]['more_results'] = 1;
                 break;
             }
-            $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
             if ($imageResults[$item['Resource Identifier']] != null) {
-                $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
             } else {
                 $item['thumb'] = DEFAULT_THUMB;
             }
@@ -542,7 +541,8 @@ class SearchController extends AppController {
             $imageResults = array();
             foreach($response['results'] as $image) {
                 //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-
+                //$imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
+                $imageResults[$image['Resource Identifier']] = $image['Image Upload']['localName'];
             }
 
             // Lets get the data from KORA multiple schemes
@@ -565,9 +565,10 @@ class SearchController extends AppController {
 
             $returnResults = array();
             foreach($response['results'] as $key => $item) {
-                $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
+                //$imageResults[$item['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
                 if ($imageResults[$item['Resource Identifier']] != null) {
-                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                    //$item['thumb'] = $imageResults[$item['Resource Identifier']];
+                    $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
                 } else {
                     $item['thumb'] = DEFAULT_THUMB;
                 }
