@@ -104,7 +104,26 @@ class ProjectsController extends AppController {
 		}
 		$this->set('resources', $resources);
 
-		// Need collections, but those may not be in kora...
+		// Need collections, but those are not in kora, so SQL time:
+		/*$db = new DATABASE_CONFIG;
+		$db_object =  (object) $db;
+		$db_array = $db_object->{'default'};
+		$response['db_info'] = $db_array['host'];
+		$mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+		if ($mysqli->connect_error) {
+			die('Connect Error (' . $mysqli->connect_errno . ') '
+				. $mysqli->connect_error);
+		}
+
+		$sql = "select * from arcs_dev.collections group by collection_id order by created DESC limit 8;";
+		$result = $mysqli->query($sql);
+		$collections = [];
+		while($row = mysqli_fetch_assoc($result))
+			$collections[] = $row;
+		// At this point collections only gives us so much. We either load the collection items separately like other places
+		// or we load them here and set them up entirely that way, I think.
+		$this->set('collections', $collections);*/
 
 		$query = "Persistent Name,=,".$this->request->params['pass'][0];
 		
