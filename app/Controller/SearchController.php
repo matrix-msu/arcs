@@ -51,7 +51,7 @@ class SearchController extends AppController {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
-        $this -> render('advancedsearch');
+        $this -> render('/AdvancedSearch/advancedsearch');
     }
 
 
@@ -597,6 +597,123 @@ class SearchController extends AppController {
 
 
 
+
+
+
+
+
+
+    public function advanced_search($query1="",$page,$perPage) {
+        if($query1 == ""){
+            return 0;
+        }
+        $options = $this->parseParams();
+
+        // This array will be used to get results from multiple schemes. i.e search mutiple schemes
+        $schemes = array(RESOURCE_SID,PROJECT_SID,SEASON_SID,SURVEY_SID,SUBJECT_SID);
+
+        if ($query1 == ''){
+            return $this->emptySearch($options);
+        }else {
+            if (isset($this->request->query['n'])) {
+                $limit = $this->request->query['n'];
+                $response['limit'] = $limit;
+            }
+
+
+            if ($response['order'] == 'relevance') {
+                $response['results'] = $this->Resource->findAllFromIds($response['results']);
+            } else {
+                $response['results'] = $this->Resource->find('all', array(
+                    'conditions' => array('Resource.id' => $response['results']),
+                    'order' => "Resource.{$options['order']} {$options['direction']}"
+                ));
+            }
+
+
+            // The searcher will return debug information that should be hidden for
+            // most account types.
+            if (!$this->Access->isAdmin()) {
+                unset($response['raw_query']);
+                unset($response['mode']);
+            }
+
+            //Get the Images
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $sid = PAGES_SID;
+            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
+            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
+            // I do not think this is very efficient but will modify with time.
+            $query2 = 'kid,!=,1';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+            $imageResults = array();
+            foreach($response['results'] as $image) {
+                //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+                $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
+            }
+
+            // Lets get the data from KORA multiple schemes
+            $kora_data = array();
+            $total= array();
+            foreach ($schemes as $scheme) {
+                $kora_data =  $this->search_single_scheme($scheme, $query1);
+
+                foreach($kora_data as $key => $result){
+                    $total[$key] = $result;
+                }
+                /*
+                foreach($kora_data as $data){
+                    array_push($total,$data);
+                }
+                */
+            }
+            $response['results'] = $total;
+            // $response['results'] = $this->search_single_scheme(RESOURCE_SID, $query1);
+
+            $returnResults = array();
+            foreach($response['results'] as $key => $item) {
+                if ($imageResults[$item['Resource Identifier']] != null) {
+                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                } else {
+                    $item['thumb'] = DEFAULT_THUMB;
+                }
+                $returnResults[$key] = $item;
+                //array_push($returnResults, $item);
+            }
+
+            $response['results'] = $returnResults;
+            $response['total'] = count($response['results']);
+            $numberOfPages = ceil($response['total']/$perPage);
+            $skip = ($page-1)*$perPage;
+            $response['display'] = array_slice($response['results'],$skip,$perPage);
+            $response['pages'] = $numberOfPages;
+            $response['pageNumber'] = $page;
+            $response['numberPerPage'] = $perPage;  //pass this variable in eventually
+            $response['skip'] = $skip;
+//			$this->layout = false;
+//				$this->Post->recursive = 0;
+//				$this-paginate = array(
+//				'limit' => 20;
+//				);
+            //$this->paginate($response['results']);
+            $this->json(200, $response);
+
+            //$this->json(200, $this->paginate($response['results']));
+
+
+            //$this->paginate($response);
+            //$paginate($this->json(200, $response));
+        }
+
+
+    }
 
 
 
