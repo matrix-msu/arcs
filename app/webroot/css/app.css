@@ -9050,6 +9050,22 @@ input[type=range]:focus::-ms-fill-upper {
 .metadata .metadata-content .metadata-accordion .soo {
   border-left: none;
 }
+.icon-meta-lock {
+  width: 8px;
+  height: 11px;
+  background-image: url("../img/Locked.svg");
+  opacity: 1;
+  background-position: top right;
+  background-size: contain;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  float: right;
+  margin-right: -14px;
+  top: 0;
+}
+.metadataEditOpaque {
+  opacity: 0.2;
+}
 .level-content::-webkit-scrollbar-thumb {
   border-radius: 0;
 }

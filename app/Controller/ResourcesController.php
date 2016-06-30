@@ -11,7 +11,7 @@
  */
 class ResourcesController extends AppController {
     public $name = 'Resources';
-    public $uses = array('Resource', 'Collection');
+    public $uses = array('Resource', 'Collection', 'MetadataEdit');
 
     public function beforeFilter() {
         # The App Controller will set some common view variables (namely a 
@@ -300,6 +300,23 @@ class ResourcesController extends AppController {
             'recursive' => -1
         )));
 
+
+        $db = new DATABASE_CONFIG;
+        $db_object =  (object) $db;
+        $db_array = $db_object->{'default'};
+        $response['db_info'] = $db_array['host'];
+        $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+        if ($mysqli->connect_error) {
+            die('Connect Error (' . $mysqli->connect_errno . ') '
+                . $mysqli->connect_error);
+        }
+        //Get a collection_id from the id
+        $sql = "SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = '".decbin(0)."'";
+        $result = $mysqli->query($sql);
+        while($row = mysqli_fetch_assoc($result))
+            $metadataedits[] = array('field_name' => $row['field_name'], 'metadata_kid' => $row['metadata_kid']);
+
         $this->set(array(
             'kid' =>$pages[$firstPage]['kid'],
             'pages' => $pages,
@@ -309,6 +326,7 @@ class ResourcesController extends AppController {
 			'season' => $season,
             'project' => $project,
             'collections' => $collections,
+            'metadataEdits' => $metadataedits,
             'toolbar' => array('actions' => true),
             'footer' => false,
             'body_class' => 'viewer standalone',
