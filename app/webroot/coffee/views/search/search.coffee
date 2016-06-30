@@ -403,19 +403,8 @@ class arcs.views.search.Search extends Backbone.View
       'success': (data)->
         console.log(data['total'])
         if data['total'] is 0
-          noResults()
-          $('#results-count').html(0)
-          $('#selected-count').html(0)
-          $('#selected-all').css({color:'#C1C1C1'})
-          $('#firstPage').css('display', 'none')
-          $('.fDots').css('display', 'none')
-          $('#lastPage').css('display', 'none')
-          $('.dots').css('display', 'none')
-          $('#leftArrow').css('display', 'none')
-          $('#rightArrow').css('display', 'none')
-          for i in [1..5]
-            $('#'+i).css('display', 'none')
           adjustPage([],0)
+          noResults()
         else
 #          console.log("IN AJAX ELSE")
           $('#results-count').html(data['total'])
@@ -505,6 +494,9 @@ class arcs.views.search.Search extends Backbone.View
 #    )
 
   #Activates on enter press: search
+	
+#  toggle_search_visibility = () -> 
+#    $('#search-results-wrapper').toggle()
   $ ->
     $(".searchBoxInput").keyup (e) ->
 #      console.log("Ran")
@@ -516,6 +508,8 @@ class arcs.views.search.Search extends Backbone.View
         $("#1").addClass('currentPage');
         $("#1").html(1)
         e.preventDefault()
+#        toggle_search_visibility()
+        $('#search-results-wrapper').css('visibility','visible')
         search()
 
   _render: (results, append=false) ->

@@ -453,25 +453,11 @@
         'dataType': 'json',
         'url': arcs.baseURL + 'simple_search/' + resourcequery + "/" + pageNumber + "/" + perPageUrl,
         'success': function(data) {
-          var i, j, key, ref, value;
+          var key, ref, value;
           console.log(data['total']);
           if (data['total'] === 0) {
-            noResults();
-            $('#results-count').html(0);
-            $('#selected-count').html(0);
-            $('#selected-all').css({
-              color: '#C1C1C1'
-            });
-            $('#firstPage').css('display', 'none');
-            $('.fDots').css('display', 'none');
-            $('#lastPage').css('display', 'none');
-            $('.dots').css('display', 'none');
-            $('#leftArrow').css('display', 'none');
-            $('#rightArrow').css('display', 'none');
-            for (i = j = 1; j <= 5; i = ++j) {
-              $('#' + i).css('display', 'none');
-            }
-            return adjustPage([], 0);
+            adjustPage([], 0);
+            return noResults();
           } else {
             $('#results-count').html(data['total']);
             ref = data['results'];
@@ -501,6 +487,7 @@
           $("#1").addClass('currentPage');
           $("#1").html(1);
           e.preventDefault();
+          $('#search-results-wrapper').css('visibility', 'visible');
           return search();
         }
       });

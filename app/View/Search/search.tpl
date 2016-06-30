@@ -244,19 +244,19 @@
 
 	</div>
 </div>
-
+<!--All this has been moved to search.coffee from here-->
 <script>
   arcs.searchView = new arcs.views.search.Search({
     el: $('.wrap')
   });
    
-   function toggle_search_visibility() {
-       var e = document.getElementById("search-results-wrapper");
-       if(e.style.visibility == 'hidden')
-       		console.log("hi");
-	   		e.style.visibility = 'visible';
-	   		
-    }
+//   function toggle_search_visibility() {
+//       var e = document.getElementById("search-results-wrapper");
+//       if(e.style.visibility == 'hidden')
+//       		console.log("hi");
+//	   		e.style.visibility = 'visible';
+//	   		
+//    }
     /* Replaced with search.js' scrollTop */
 //    function movePage() {
 //	    console.log("HI");
@@ -272,28 +272,28 @@
     });
 	});*/
 	
-	$(".searchBoxInput").keyup(function (e) {
-		if (e.keyCode === 13) {
-			console.log("Hi");
-			toggle_search_visibility();
-		}
-	});
+//	$(".searchBoxInput").keyup(function (e) {
+//		if (e.keyCode === 13) {
+//			console.log("Hi");
+//			toggle_search_visibility();
+//		}
+//	});
 	//moved this over to views/search/search.coffee
-	$('#select-all, #deselect-all').click(function(){
-		if (this.id === 'select-all') {
-			this.id = 'deselect-all';
-			arcs.searchView.selectAll();
-			$('#toggle-select').html('DE-SELECT');
-		} else {
-			this.id = 'select-all';
-			arcs.searchView.unselectAll();
-			$('#toggle-select').html('SELECT');
-		}
-		
-	});
-	
+//	$('#select-all, #deselect-all').click(function(){
+//		if (this.id === 'select-all') {
+//			this.id = 'deselect-all';
+//			arcs.searchView.selectAll();
+//			$('#toggle-select').html('DE-SELECT');
+//		} else {
+//			this.id = 'select-all';
+//			arcs.searchView.unselectAll();
+//			$('#toggle-select').html('SELECT');
+//		}
+//		
+//	});
+//	
 </script>
-
+<!--TO HERE-->
 
 	<script>
 		// collection
