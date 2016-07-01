@@ -21,7 +21,7 @@
           };
         })(this)
       });
-      return this.renderDetails($('details:first'));
+      return $('details:first').children().eq(0).trigger("click");
     };
 
     Home.prototype.events = {

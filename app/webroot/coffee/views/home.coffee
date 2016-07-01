@@ -9,7 +9,7 @@ class arcs.views.Home extends Backbone.View
       run: false
       onSearch: =>
         location.href = arcs.url 'search', @search.query
-    @renderDetails $('details:first')
+    $('details:first').children().eq(0).trigger("click");
 
   events:
     'click summary': 'onClick'
