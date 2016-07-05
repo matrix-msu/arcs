@@ -157,7 +157,7 @@
                     </a>
                 </div>
                 <div class="annotate-fullscreen-div">
-                    <img class="resources-annotate-icon" src="../img/AnnotationsOff.svg">
+                    <img class="resources-annotate-icon" src="../img/annotationsProfile.svg" class='annotationsThumb' >
                     <img class="resources-fullscreen-icon" src="../img/Fullscreen.svg">
                 </div>
                 <div id="zoom-out" class="zoom-out-div">
@@ -1286,10 +1286,16 @@
     <div id="other-resources-container">
         <div id="other-resources" style="min-width: <?php $length = 220*count($pages); echo " $length
         ";?>px">
+		<?php $cnt = 0;?>
         <?php foreach($pages as $r): ?>
-        <a href="#">
+		<?php $cnt++;?>
+        <a  class='other-resources' href="#">
             <img class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
+			<div class='numberOverResources selectedResource'>
+				<?php echo $cnt ?>
+			</div>
         </a>
+		
         <?php endforeach ?>
     </div>
 </div>
@@ -1684,6 +1690,13 @@
     var mouseOn = false;
 
     $(".resources-annotate-icon").click(function () {
+		if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg"){
+			$('.resources-annotate-icon').attr('src', "../img/annotationsProfile.svg")
+		}
+		else{
+			$('.resources-annotate-icon').attr('src',"../img/AnnotationsOff.svg")
+		}
+		
         if (showAnnotations) {
             $(".canvas").hide();
             showAnnotations = false;
@@ -2869,4 +2882,32 @@
             });
         }
     });
+	
+//	$('.resources-annotate-icon').click(function(){
+//		if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg"){
+//			$('.resources-annotate-icon').attr('src') = "../img/annotationsProfile.svg"
+//		}
+//		else{
+//			$('.resources-annotate-icon').attr('src') = "../img/AnnotationsOff.svg"
+//		}
+//	});
+</script>
+<script>
+//resource nav
+	$('.other-resources').click(function(){
+		console.log("Other resource clicked");
+		$('.numberOverResources').removeClass('selectedResource');
+		$(this).find('.numberOverResources').addClass('selectedResource');
+	});
+
+	var angle = 0
+	var className;
+	$('.resources-rotate-icon').click(function(){
+		console.log('rotator clicked');
+		angle=(angle+90)%360;
+		console.log(angle);
+		className = 'rotate('+angle+'deg'+')';
+		console.log(className);
+		$('#PageImage').css('transform',className)
+	});
 </script>

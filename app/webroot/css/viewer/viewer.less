@@ -515,6 +515,7 @@ input[type=range]:focus::-ms-fill-upper {
 		margin-right: auto;
 		margin-left: auto;
         transform: scale(1.0);
+		transform-origin: center;
 	}
     
     .canvas {
@@ -1487,4 +1488,29 @@ input[type=range]:focus::-ms-fill-upper {
     top: 0;
     right: 10px;
     padding-top: 15px;
+}
+.numberOverResources {
+    position: absolute;
+    margin: auto;
+    background: black;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    opacity: .7;
+}
+.selectedResource{
+	background: rgb(0, 148, 188) !important;
+}
+
+#PageImage {
+    transform-origin: top left; /* IE 10+, Firefox, etc. */
+    -webkit-transform-origin: top left; /* Chrome */
+    -ms-transform-origin: top left; /* IE 9 */
 }
