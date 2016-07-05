@@ -1,4 +1,4 @@
-<!-- pre><?php var_dump($metadataEdits); ?></pre -->
+<!-- pre><?php var_dump($surveys); ?></pre -->
 <div class="viewers-container">
 
     <div class="modalBackground">
@@ -220,220 +220,220 @@
                         <table id="Project">
                             <tr>
                                 <td>Name</td>
-                                <td class="metadataEdit"><?php $name = "Name"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Name"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Country</td>
-                                <td class="metadataEdit"><?php $name = "Country"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Country"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Region</td>
-                                <td class="metadataEdit"><?php $name = "Region"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Region"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Geolocation</td>
-                                <td class="metadataEdit"><?php $name = "Geolocation"; $text = ''; foreach($project['Geolocation'] as $geolocation) {$text = $text.$geolocation."<br>";}
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Geolocation"; $text = ''; foreach($project['Geolocation'] as $geolocation) {$text = $text.$geolocation."<br>";}
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Modern Name</td>
-                                <td class="metadataEdit"><?php $name = "Modern Name"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Modern Name"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Location Identifier</td>
-                                <td class="metadataEdit"><?php $name = "Location Identifier"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Location Identifier"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="metadataEdit">Location Identifier Scheme</td>
-                                <td><?php $name = "Location Identifier Scheme"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td>Location Identifier Scheme</td>
+                                <td<?php $name = "Location Identifier Scheme"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Elevation</td>
-                                <td class="metadataEdit"><?php $name = "Elevation"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Elevation"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Earliest Date</td>
-                                <td class="metadataEdit"><?php $name = "Earliest Date"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Earliest Date"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Latest Date</td>
-                                <td class="metadataEdit"><?php $name = "Latest Date"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Latest Date"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Records Archive</td>
-                                <td class="metadataEdit"><?php $name = "Records Archive"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Records Archive"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Persistent Name</td>
-                                <td class="metadataEdit"><?php $name = "Persistent Name"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Persistent Name"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Complex Title</td>
-                                <td class="metadataEdit"><?php $name = "Complex Title"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Complex Title"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Terminus Ante Quem</td>
-                                <td class="metadataEdit"><?php $name = "Terminus Ante Quem"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Terminus Ante Quem"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Terminus Post Quem</td>
-                                <td class="metadataEdit"><?php $name = "Terminus Post Quem"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Terminus Post Quem"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Period</td>
-                                <td class="metadataEdit"><?php $name = "Period"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Period"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Archaeological Culture</td>
-                                <td class="metadataEdit"><?php $name = "Archaeological Culture"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Archaeological Culture"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Description</td>
-                                <td class="metadataEdit"><?php $name = "Description"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Description"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Brief Description</td>
-                                <td class="metadataEdit"><?php $name = "Brief Description"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Brief Description"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Permitting Heritage Body</td>
-                                <td class="metadataEdit"><?php $name = "Permitting Heritage Body"; $text = $project[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Permitting Heritage Body"; $text = $project[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
@@ -452,261 +452,261 @@
                         <table id="Season">
                             <tr>
                                 <td>Title</td>
-                                <td class="metadataEdit"><?php $name = "Title"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Title"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Type</td>
-                                <td class="metadataEdit"><?php $name = "Type"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Type"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Director</td>
-                                <td class="metadataEdit"><?php $name = "Director"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Director"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Registrar</td>
-                                <td class="metadataEdit"><?php $name = "Registrar"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Registrar"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Sponsor</td>
-                                <td class="metadataEdit"><?php $name = "Sponsor"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Sponsor"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Earliest Date</td>
-                                <td class="metadataEdit"><?php $name = "Earliest Date"; $text = ''; if ($season['Earliest Date']['year']) {$text = $season['Earliest Date']['year'] . "/" . $season['Earliest Date']['month'] . "/" . $season['Earliest Date']['day'];}
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Earliest Date"; $text = ''; if ($season['Earliest Date']['year']) {$text = $season['Earliest Date']['year'] . "/" . $season['Earliest Date']['month'] . "/" . $season['Earliest Date']['day'];}
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Latest Date</td>
-                                <td class="metadataEdit"><?php $name = "Earliest Date"; $text = ''; if ($season['Latest Date']['year']) {$text = $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];}
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Earliest Date"; $text = ''; if ($season['Latest Date']['year']) {$text = $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];}
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Terminus Ante Quem</td>
-                                <td class="metadataEdit"><?php $name = "Terminus Ante Quem"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Terminus Ante Quem"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Terminus Post Quem</td>
-                                <td class="metadataEdit"><?php $name = "Terminus Post Quem"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Terminus Post Quem"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
-                                <td class="metadataEdit"><?php $name = "Description"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Description"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor 2"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor 2"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role 2"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role 2"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor 3"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor 3"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role 3"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role 3"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor 4"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor 4"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role 4"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role 4"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor 5"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor 5"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role 5"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role 5"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor 6"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor 6"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role 6"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role 6"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="metadataEdit">Contributor</td>
+                                <tdContributor</td>
                                 <td><?php $name = "Contributor 7"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="metadataEdit">Contributor Role</td>
+                                <tdContributor Role</td>
                                 <td><?php $name = "Contributor Role 7"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor</td>
-                                <td class="metadataEdit"><?php $name = "Contributor 8"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor 8"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Contributor Role</td>
-                                <td class="metadataEdit"><?php $name = "Contributor Role 8"; $text = $season[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Contributor Role 8"; $text = $season[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
@@ -728,7 +728,8 @@
 
                         <div id="tabs-1" class="metadata-content">
 
-                            <div class="accordion metadata-accordion">
+                            <!-- div class="accordion metadata-accordion" -->
+                            <div class="survey-accordion">
 
                                 <?php if(count($surveys) > 0) { ?>
                                 <?php $count=0; ?>
@@ -737,116 +738,116 @@
                                 <h3 class="level-tab smaller">Excavation/Survey Level Metadata
                                     Section <?php echo $count ?></h3>
 
-                                <div class="level-content auto-height">
+                                <div class="level-content auto-height" data-kid="<?php echo $survey['kid']; ?>">
 
                                     <table id="Excavation/Survey">
                                         <tr>
                                             <td>Name</td>
-                                            <td class="metadataEdit"><?php $name = "Name"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Name"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Type</td>
-                                            <td class="metadataEdit"><?php $name = "Type"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Type"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Supervisor</td>
-                                            <td class="metadataEdit"><?php $name = "Supervisor"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Supervisor"; $text = ''; foreach($survey[$name] as $survey_sup) {$text = $text.$survey_sup."<br>";}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Earliest Date</td>
-                                            <td class="metadataEdit"><?php $name = "Name"; $text = ''; if ($survey['Earliest Date']['year']) {$text = $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Earliest Date"; $text = ''; if ($survey['Earliest Date']['year']) {$text = $survey['Earliest Date']['year'] . "/" . $survey['Earliest Date']['month'] . "/" . $survey['Earliest Date']['day'];}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Latest Date</td>
-                                            <td class="metadataEdit"><?php $name = "Name"; $text = ''; if ($survey['Latest Date']['year']) {$text = $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Latest Date"; $text = ''; if ($survey['Latest Date']['year']) {$text = $survey['Latest Date']['year'] . "/" . $survey['Latest Date']['month'] . "/" . $survey['Latest Date']['day'];}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Terminus Ante Quem</td>
-                                            <td class="metadataEdit"><?php $name = "Terminus Ante Quem"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Terminus Ante Quem"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Terminus Post Quem</td>
-                                            <td class="metadataEdit"><?php $name = "Terminus Post Quem"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Terminus Post Quem"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Excavation Stratigraphy</td>
-                                            <td class="metadataEdit"><?php $name = "Excavation Stratigraphy"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Excavation Stratigraphy"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Survey Conditions</td>
-                                            <td class="metadataEdit"><?php $name = "Survey Conditions"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Survey Conditions"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Post Dispositional Transformation</td>
-                                            <td class="metadataEdit"><?php $name = "Post Dispositional Transformation"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Post Dispositional Transformation"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Legacy</td>
-                                            <td class="metadataEdit"><?php $name = "Legacy"; $text = $survey[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Legacy"; $text = $survey[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
@@ -876,33 +877,33 @@
                         <table id="Archival_Object">
                             <tr>
                                 <td>Resource Identifier</td>
-                                <td class="metadataEdit"><?php $name = "Resource Identifier"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Resource Identifier"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Type</td>
-                                <td class="metadataEdit"><?php $name = "Type"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Type"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Title</td>
-                                <td class="metadataEdit"><?php $name = "Title"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Title"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
@@ -910,11 +911,11 @@
                             <?php if ($resource['Sub-title'] != null) {?>
                             <tr>
                                 <td>Sub-Title</td>
-                                <td class="metadataEdit"><?php $name = "Sub-title"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Sub-title"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
@@ -922,99 +923,99 @@
 
                             <tr>
                                 <td>Creator</td>
-                                <td class="metadataEdit"><?php $name = "Creator"; $text = ''; foreach($resource['Creator'] as $creator) {$text = $text.$creator.'<br>'; }
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Creator"; $text = ''; foreach($resource['Creator'] as $creator) {$text = $text.$creator.'<br>'; }
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Role</td>
-                                <td class="metadataEdit"><?php $name = "Role"; $text = ''; foreach($resource['Role'] as $role) {$text = $text.$role.'<br>'; }
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Role"; $text = ''; foreach($resource['Role'] as $role) {$text = $text.$role.'<br>'; }
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Earliest Date</td>
-                                <td class="metadataEdit"><?php $name = "Earliest Date"; $text = ''; if ($resource['Earliest Date']['year']) {$text = $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'];}
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Earliest Date"; $text = ''; if ($resource['Earliest Date']['year']) {$text = $resource['Earliest Date']['year'] . "/" . $resource['Earliest Date']['month'] . "/" . $resource['Earliest Date']['day'];}
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Date Range</td>
-                                <td class="metadataEdit"><?php $name = "Date Range"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Date Range"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Description</td>
-                                <td class="metadataEdit"><?php $name = "Description"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Description"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Pages</td>
-                                <td class="metadataEdit"><?php $name = "Pages"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Pages"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Condition</td>
-                                <td class="metadataEdit"><?php $name = "Condition"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Condition"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Access Level</td>
-                                <td class="metadataEdit"><?php $name = "Access Level"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Access Level"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Accession Number</td>
-                                <td class="metadataEdit"><?php $name = "Accession Number"; $text = $resource[$name];
-                                $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                <td<?php $name = "Accession Number"; $text = $resource[$name];
+                                $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                        $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
@@ -1037,137 +1038,137 @@
                                 <ul>
                                 <?php $count=0; ?>
                                 <?php foreach($subject as $subjects) { $count++; ?>
-                                <li><a href="#soo-<?php echo $count; ?>"><?php echo $count; ?></a></li>
+                                <li><a href="#soo-<?php echo $count; ?>" class="soo-click"><?php echo $count; ?></a></li>
                                 <?php } ?>
                                 </ul>
 
                                 <?php $count=0; ?>
                                 <?php foreach($subject as $subjects) { $count++; ?>
 
-                                <div class="level-content soo auto-height" id="soo-<?php echo $count; ?>">
+                                <div class="level-content soo auto-height" id="soo-<?php echo $count; ?>" data-kid="<?php echo $subjects['kid']; ?>">
 
                                     <table id="Subject_Of_Observation">
                                         <tr>
                                             <td>Pages Associator</td>
-                                            <td class="metadataEdit"><?php $name = "Pages Associator"; $text = ''; foreach($subjects['Pages Associator'] as $page_associator) { $text = $text.$page_associator."<br>";}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Pages Associator"; $text = ''; foreach($subjects['Pages Associator'] as $page_associator) { $text = $text.$page_associator."<br>";}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Resource Identifier</td>
-                                            <td class="metadataEdit"><?php $name = "Resource Identifier"; $text = $subjects[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Resource Identifier"; $text = $subjects[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Subject of Observation Associator</td>
-                                            <td class="metadataEdit"><?php $name = "Subject of Observation Associator"; $text = ''; foreach($subjects['Subject of Observation Associator'] as $subject_associator) {$text = $text.$subject_associator."<br>";}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Subject of Observation Associator"; $text = ''; foreach($subjects['Subject of Observation Associator'] as $subject_associator) {$text = $text.$subject_associator."<br>";}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Classification</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Classification"; $text = $subjects[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Classification"; $text = $subjects[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Type</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Type"; $text = ''; foreach($subjects['Artifact - Structure Type'] as $structure_type) {$text = $text.$structure_type."<br>";}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Type"; $text = ''; foreach($subjects['Artifact - Structure Type'] as $structure_type) {$text = $text.$structure_type."<br>";}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Ante Quem</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Terminus Ante Quem"; $text = '';
+                                            <td<?php $name = "Artifact - Structure Terminus Ante Quem"; $text = '';
                                             foreach( $subjects['Artifact - Structure Terminus Ante Quem'] as $ante_quem) {if($ante_quem != ''){$text = $text.$ante_quem."/";}}
                                             $text = substr($text, 0, -1);
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Terminus Post Quem</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Terminus Post Quem"; $text = '';
+                                            <td<?php $name = "Artifact - Structure Terminus Post Quem"; $text = '';
                                             foreach( $subjects['Artifact - Structure Terminus Post Quem'] as $post_quem) {if($post_quem != ''){ $text = $text.$post_quem."/"; }}
                                             $text = substr($text, 0, -1);
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Title</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Title"; $text = $subjects[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Title"; $text = $subjects[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Geolocation</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Geolocation"; $text = $subjects[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Geolocation"; $text = $subjects[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Excavation Unit</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Excavation Unit"; $text = ''; foreach( $subjects['Artifact - Structure Excavation Unit'] as $excavation_unit) { $text = $text.$excavation_unit."<br>";}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Excavation Unit"; $text = ''; foreach( $subjects['Artifact - Structure Excavation Unit'] as $excavation_unit) { $text = $text.$excavation_unit."<br>";}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Description</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Description"; $text = $subjects[$name];
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Description"; $text = $subjects[$name];
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Artifact - Structure Location</td>
-                                            <td class="metadataEdit"><?php $name = "Artifact - Structure Description"; $text = ''; foreach($subjects['Artifact - Structure Location'] as $structure_location) { $text = $text.$structure_location."<br>";}
-                                            $string ='<div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
+                                            <td<?php $name = "Artifact - Structure Description"; $text = ''; foreach($subjects['Artifact - Structure Location'] as $structure_location) { $text = $text.$structure_location."<br>";}
+                                            $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                             foreach($metadataEdits as $value) {
                                                 if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                    $string = '<div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                 }} echo $string; ?>
                                             </td>
                                         </tr>
@@ -1318,8 +1319,14 @@
     });
 
     $(function () {
-            $("#soo").tabs();
+        $("#soo").tabs();
+    });
+    $(function () {
+        $(".survey-accordion").accordion({
+            heightStyle: "content"
         });
+    });
+
 </script>
 
 <script>
@@ -1519,8 +1526,8 @@
         // only put collections in between the div if they include the query.
         // I.E. "" is in every collection title and user_name
         var populateCheckboxes = "<hr>";
-        console.log("new search here");
-        console.log(collections);
+        //console.log("new search here");
+        //console.log(collections);
         var populateCheckboxes = "<hr>";
         for (var i = 0; i < collectionArray.length; i++) {
             if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
@@ -2349,7 +2356,7 @@
                 break;
             case "Excavation/Survey":
                 meta_scheme_id = "<?php echo SURVEY_SID; ?>";
-                meta_resource_kid = "<?php echo $survey['kid']; ?>";
+                //meta_resource_kid = "<?php echo $surveys[0]['kid']; ?>";
                 break;
             case "Archival_Object":
                 meta_scheme_id = "<?php echo RESOURCE_SID; ?>";
@@ -2357,7 +2364,14 @@
                 break;
             case "Subject_Of_Observation":
                 meta_scheme_id = "<?php echo SUBJECT_SID; ?>";
-                meta_resource_kid = "<?php echo $subjects['kid']; ?>";
+                //meta_resource_kid = meta_resource_kid.substring(4);
+                //meta_resource_kid = parseInt(meta_resource_kid) - 1;
+                //tempint = 0;
+                //java_subjects = "<?php echo array_values($subject)[".tempint."]['kid']; ?>";
+                //console.log("java here");
+                //console.log(typeof java_subjects);
+                //meta_resource_kid = "<?php echo array_values($subject)[meta_resource_kid]['kid']; ?>";
+                //meta_resource_kid = "<?php echo array_values($subject)[meta_resource_kid]['kid']; ?>";
                 break;
         }
         $.ajax({
@@ -2406,6 +2420,7 @@
                     // removes the text, appends an input and sets the value to the text-value
                     meta_field_name = $(this).children('div').eq(1).attr('id');
                     meta_scheme_name = $(this).parent().parent().parent().attr('id');
+                    meta_resource_kid = $(this).parent().parent().parent().parent().attr('data-kid');
                     var t = $(this).children('div').eq(1).text();
                     meta_value_before = t;
                     $(this).children('div').eq(1).html($('<textarea />',{'value' : t, 'id' : 'meta_textarea'}).val(t));
@@ -2434,6 +2449,17 @@
         console.log("level tab save btn click");
     });
 
+    $(".soo-click").click(function() {
+        //console.log("sso click change");
+        $(".save-btn").removeClass("save-btn").text("EDIT").addClass("edit-btn").css("color", '');
+        var id = $("#meta_textarea").parent().children("div").eq(0).text();
+        var text = $("#meta_textarea").text();
+        var fill = '<div id="'+meta_field_name+'">'+meta_value_before+"</div>";
+        $("#meta_textarea").parent().replaceWith(fill);
+        metadataIsSelected = 0;
+        editBtnClick = 0;
+    });
+
     $(".level-tab").click(function(e) {
         //console.log("clicked thingy");
         //console.log(e);
@@ -2442,7 +2468,8 @@
              e.stopPropagation();
             if (metadataIsSelected == 1) {
                 $(".save-btn").removeClass("save-btn");
-                //console.log("save is selected and save click");
+                console.log("save is selected and save click");
+                console.log(e);
                 meta_new_value = $("#meta_textarea").val();
                 addMetadataEdits();
             }
