@@ -413,7 +413,7 @@ input[type=range]:focus::-ms-fill-upper {
 				border-bottom: 1px solid #ccc !important;
 				border-left: 2px solid @ArcsBlue;
 				top: 0;
-				
+				background: #F4F4F4;
 				table {
 					width: 100%;
 					font-size: 10px;
@@ -465,6 +465,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 			.soo {
 				border-left: none;
+				background: #f9f9f9;
 			}
 		}
 	}
@@ -1204,10 +1205,21 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .transcript_display {
-	padding: 5px 0px 5px 0px !important;
-	margin: 0 15px 15px 15px; //15px;
-	border-bottom: 1px solid rgb(185, 185, 185);
-	font-size: 10px;
+//	padding-right: 80px !important;
+//	padding-bottom: 15px;
+////	padding: 5px 0px 5px 0px !important;
+//	margin: 0 15px 15px 0px; //15px;
+//	border-bottom: 1px solid rgb(185, 185, 185);
+//	font-size: 10px;
+//	position: relative;
+	padding-right: 80px!important;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    padding-left: 20px;
+    margin: 0 0px 0px 15px;
+    border-bottom: 1px solid #b9b9b9;
+    font-size: 10px;
+    position: relative;
 }
 
 .annotation_display {
@@ -1243,6 +1255,15 @@ input[type=range]:focus::-ms-fill-upper {
 	cursor: pointer;
 }
 
+.trashTranscript {
+	height: 15px;
+	position: relative;
+	float: right;
+	opacity: .3;
+	cursor: pointer;
+	left:-15px;
+}
+
 .annotateLabel {
 	position: relative;
 	float: right;
@@ -1275,6 +1296,8 @@ input[type=range]:focus::-ms-fill-upper {
 	position: relative;
 	float: right;
 	display: inline-block;
+	color:gray;
+	font-size: 90%;
 }
 
 .editOptions {
@@ -1286,10 +1309,13 @@ input[type=range]:focus::-ms-fill-upper {
 
 .newTranscription {
 	display: inline-block;
+	color: #555;
+	font-size: 90%;
 }
 
 .saveTranscription {
 	display: inline-block;
+	font-size: 90%;
 	margin-left: 25px;
 }
 
@@ -1299,8 +1325,12 @@ input[type=range]:focus::-ms-fill-upper {
 
 .editInstructions {
 	display: none;
-	padding: 15px;
+//	padding: 15px;
 	text-transform: none;
+	color:#555;
+	font-size: 10px;
+	padding-left: 70px;
+	padding-top: 30px;
 }
 
 .newTranscriptionForm {
@@ -1329,7 +1359,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .commentContainer {
-	height:778px;
+	height:588px;
 	overflow: overlay;
 	text-transform: none;
 	border-bottom: 1px solid #cdcdcd !important;
@@ -1444,4 +1474,17 @@ input[type=range]:focus::-ms-fill-upper {
 
 .commentBody {
 	font-size: 12px;
+}
+.no-data{
+	padding: 18px;
+	font-size: 10px;
+	color: #555;
+}
+
+.thumbResource{
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding-top: 15px;
 }

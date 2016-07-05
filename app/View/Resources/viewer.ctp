@@ -1213,8 +1213,8 @@
                     </h3>
 
                     <div class="level-content">
-                        <div class="editInstructions">Drag and drop transcriptions to reorder them.</div>
                         <div class="content_transcripts"></div>
+						<div class="editInstructions">			Drag and drop transcriptions to reorder them.</div>
                         <form class="newTranscriptionForm">
                             <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>
                             <button type="submit">SUBMIT NEW TRANSCRIPTION</button>
@@ -2223,7 +2223,7 @@
                 $.each(data, function (key, value) {
                     var trashButton = isAdmin == 1 ? "<img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
                     if (value.page_kid == kid && value.transcript != "") {
-                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>"+ value.transcript +"<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"</div>");
+                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>"+ value.transcript +"<div class='thumbResource'> <img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"</div></div>");
                     }
                     else {
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
@@ -2268,12 +2268,14 @@
                     $('#flagAnnotation_id').val($(this).parent().attr("id"));
                 });
 
-                $(".deleteTranscript").click(function () {
+                $(".trashTranscript").click(function () {
+					console.log("Delete clicked")
                     $.ajax({
                         url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
                         type: "DELETE",
                         statusCode: {
                             204: function () {
+								console.log("In the 204 status")
                                 GetDetails();
                                 DrawBoxes(kid);
                             },
