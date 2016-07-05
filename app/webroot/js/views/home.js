@@ -30,7 +30,7 @@
     };
 
     Home.prototype.onClick = function(e) {
-      var $el, limit;
+      var $el, limit, src;
       console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'SUMMARY') {
         $el = $(e.currentTarget).parent();
@@ -38,7 +38,9 @@
         limit = 1;
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
-        $(e.currentTarget).parent().hide();
+        $(e.currentTarget).removeClass('btn-show-all');
+        src = arcs.baseURL + 'img/arcs-preloader.gif';
+        $(e.currentTarget).find("img:first").attr('src', src);
         limit = 0;
       } else {
         $el = $(e.currentTarget).parent();

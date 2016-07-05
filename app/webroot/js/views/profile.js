@@ -81,7 +81,7 @@
     };
 
     Profile.prototype.onClick = function(e) {
-      var $el, limit, ref;
+      var $el, limit, ref, src;
       console.log("Clicked here.");
       console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'DETAILS') {
@@ -91,7 +91,9 @@
         $el.toggleClass('closed').toggleClass('open');
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
-        $(e.currentTarget).parent().hide();
+        $(e.currentTarget).removeClass('btn-show-all');
+        src = arcs.baseURL + 'img/arcs-preloader.gif';
+        $(e.currentTarget).find("img:first").attr('src', src);
         limit = 0;
       } else {
         $el = $(e.currentTarget).parent();

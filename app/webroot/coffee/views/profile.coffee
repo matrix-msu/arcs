@@ -63,7 +63,10 @@ class arcs.views.Profile extends Backbone.View
       $el.toggleClass('closed').toggleClass('open')
     else if e.currentTarget.className == 'btn-show-all'
       $el = $(e.currentTarget).parent().parent().parent().parent()
-      $(e.currentTarget).parent().hide()
+      $(e.currentTarget).removeClass('btn-show-all')
+      #$(e.currentTarget).parent().hide()
+      src = arcs.baseURL + 'img/arcs-preloader.gif'
+      $(e.currentTarget).find("img:first").attr('src', src);
       limit = 0
     else
       $el = $(e.currentTarget).parent()
