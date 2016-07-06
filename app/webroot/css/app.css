@@ -9101,6 +9101,7 @@ input[type=range]:focus::-ms-fill-upper {
   display: block;
   margin-right: auto;
   margin-left: auto;
+  cursor: move;
 }
 #resource-tools {
   float: left;
@@ -9176,6 +9177,7 @@ input[type=range]:focus::-ms-fill-upper {
   margin-left: 19%;
   height: 20px;
   width: 20px;
+  cursor: pointer;
 }
 .resource-tools-container {
   width: 90%;
@@ -9381,11 +9383,26 @@ input[type=range]:focus::-ms-fill-upper {
   margin: 0px;
   margin-bottom: 15px;
 }
+#deleteModal {
+  background-color: #565656 ;
+  margin-top: 60px;
+  margin: auto;
+  width: 300px;
+  text-align: left;
+  color: #fff;
+}
 .modalClose {
   float: right;
   cursor: pointer;
   height: 16px;
   margin-top: 2px;
+}
+.deleteModalClose {
+  float: right;
+  cursor: pointer;
+  height: 16px;
+  margin-top: 5px;
+  margin-right: 10px;
 }
 .formError {
   display: none;
@@ -9958,6 +9975,7 @@ input[type=range]:focus::-ms-fill-upper {
   padding: 18px;
   font-size: 10px;
   color: #555;
+  background: #f4f4f4;
 }
 .thumbResource {
   float: right;
@@ -9976,7 +9994,7 @@ input[type=range]:focus::-ms-fill-upper {
   left: 0;
   right: 0;
   bottom: 0;
-  top: 0;
+  top: 15px;
   color: white;
   text-align: center;
   font-size: 40px;
@@ -9992,6 +10010,60 @@ input[type=range]:focus::-ms-fill-upper {
   /* Chrome */
   -ms-transform-origin: top left;
   /* IE 9 */
+}
+.other-resources.img {
+  padding: 15px;
+}
+.deleteWrap {
+  display: none;
+}
+#deleteModel {
+  width: 370px;
+  height: 155px;
+  position: absolute;
+  background: #333;
+  top: 42%;
+  bottom: 0;
+  right: 0;
+  left: 35%;
+  z-index: 1;
+  border: 1px solid #888;
+}
+.deleteModelHeader {
+  position: absolute;
+  top: 7px;
+  right: 12px;
+}
+.deleteBody {
+  color: white;
+  position: absolute;
+  top: 49px;
+  bottom: 0;
+  font-size: 90%;
+  left: 0;
+  text-align: center;
+  right: 0;
+}
+.deleteCancel {
+  color: white;
+  position: absolute;
+  bottom: 35px;
+  left: 107px;
+  cursor: pointer;
+}
+.deleteButton {
+  color: #FF3939;
+  position: absolute;
+  right: 112px;
+  bottom: 35px;
+  cursor: pointer;
+}
+img.other-resource {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 12px;
+  width: 250px;
+  height: 175px;
 }
 #viewer-controls {
   background: #ddd;

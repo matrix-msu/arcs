@@ -32,8 +32,20 @@
                 </form>
             </div>
         </div>
-    </div>
 
+    </div>
+	
+	<div class="deleteWrap">
+		<div id="deleteModel">
+			<div class="deleteModalHeader"><img src="../app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
+			<div class="deleteBody"> Are you sure you want to delete this annotation?</div>
+			<div class="deleteFooter">
+				<div class='deleteCancel'>cancel</div>
+				<div class='deleteButton'>Delete</div>
+			</div>
+		</div>
+	</div>
+	
     <div class="annotateModalBackground">
         <div class="annotateWrap">
             <div id="annotateModal">
@@ -1289,16 +1301,24 @@
 		<?php $cnt = 0;?>
         <?php foreach($pages as $r): ?>
 		<?php $cnt++;?>
+
         <a  class='other-resources' href="#">
             <img class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
-			<div class='numberOverResources selectedResource'>
-				<?php echo $cnt ?>
-			</div>
+			<?php if ($cnt ==1) :?>
+				<div class='numberOverResources selectedResource'>
+					<?php echo $cnt; ?>
+				</div>
+			<?php endif ?>
+			<?php if ($cnt !=1) :?>
+				<div class='numberOverResources'>
+					<?php echo $cnt; ?>
+				</div>
+			<?php endif ?>
         </a>
 		
         <?php endforeach ?>
-    </div>
-</div>
+    </div> <!--#other-resources-contain -->
+</div> <!--#other-resources-container -->
 <div id="button-right">
     <a href="#" id="right-button">
         <img src="../img/Arrow-White.svg" height="220px" width="10px" />
@@ -2247,15 +2267,15 @@
                     }
                     else {
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"</div>");
+                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"</div>");
                         }
                         else if (value.relation_page_kid != "" && value.incoming == "true") {
                             var text = value.x1 ? "Revert to whole resource" : "Define space";
-                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"<img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
+                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"<img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
                         }
                     }
                     if (value.url != "") {
-                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/>"+trashButton+"</div>");
+                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"</div>");
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
@@ -2290,22 +2310,64 @@
 
                 $(".trashTranscript").click(function () {
 					console.log("Delete clicked")
-                    $.ajax({
-                        url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
-                        type: "DELETE",
-                        statusCode: {
-                            204: function () {
-								console.log("In the 204 status")
-                                GetDetails();
-                                DrawBoxes(kid);
-                            },
-                            403: function () {
-                                alert("You don't have permission to delete this annotation");
-                            }
-                        }
-                    })
+					console.log("delete menu should pop up")
+					$('.deleteWrap').css('display','block');
+					console.log($(this).parent().attr("id"))
+					var paramater = $(this).parent().attr("id");
+					$('.deleteButton').click(function(){
+						console.log('delete annotations')
+						console.log($(this).parent().attr("id"))
+						$('.deleteWrap').css('display','none');
+						$.ajax({
+							url: "<?php echo Router::url('/', true); ?>api/annotations/" + paramater + ".json",
+							type: "DELETE",
+							statusCode: {
+								204: function () {
+									console.log("In the 204 status")
+									GetDetails();
+									DrawBoxes(kid);
+									
+								},
+								403: function () {
+									alert("You don't have permission to delete this annotation");
+								}
+							}
+						})
+						
+					});
+//                    $.ajax({
+//                        url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+//                        type: "DELETE",
+//                        statusCode: {
+//                            204: function () {
+//								console.log("In the 204 status")
+//                                GetDetails();
+//                                DrawBoxes(kid);
+//                            },
+//                            403: function () {
+//                                alert("You don't have permission to delete this annotation");
+//                            }
+//                        }
+//                    })
                 });
-
+				$('.deleteButton').click(function(){
+					console.log('delete annotations')
+					console.log($(this).parent().attr("id"))
+					$.ajax({
+						url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+						type: "DELETE",
+						statusCode: {
+							204: function () {
+								console.log("In the 204 status")
+								GetDetails();
+								DrawBoxes(kid);
+							},
+							403: function () {
+								alert("You don't have permission to delete this annotation");
+							}
+						}
+					})
+				});
                 //Mouse over annotation
                 $(".relationName").mouseenter(function () {
                     mouseOn = true;
@@ -2580,8 +2642,9 @@
                 $pics = $('#other-resources a img'),
                 index = 0, //Starting index
                 current = 0,
+				$selected = $('#other-resources a .numberOverResources'),
                 keys = <?php echo json_encode(array_keys($pages)); ?>,
-        visible = 3,
+        visible = 2,
         shift = visible * 220,
         anim = {},
         value = "",
@@ -2611,13 +2674,14 @@
 
         $('#button-right').click(function(event){
             event.preventDefault();
+			console.log(index);
             if(index < endIndex ){
                 if(index == 0){
                     //$('#button-left').css('display', 'block');
                     //$('#other-resources-container').css('width', '90%');
                 }
                 index++;
-                visible = 3;
+                visible = 2;
                 shift = visible * 220;
                 value = "-=" + shift + "px";
                 anim['left'] = value;
@@ -2627,13 +2691,14 @@
         
         $('#button-left').click(function(event){
             event.preventDefault();
+			console.log(index)
             if(index > 0){
                 index--;
                 if(index == 0){
                     //$('#button-left').css('display', 'none');
                     //$('#other-resources-container').css('width', '95%');
                 }
-                visible = 3;
+                visible = 2;
                 shift = (visible) * 220;
                 value = "+=" + shift + "px";
                 anim['left'] = value;
@@ -2644,10 +2709,15 @@
         $('#prev-resource').click(function(event){
             event.preventDefault();
             if(current > 0){
+				$('.numberOverResources').removeClass('selectedResource');
                 $pics[current].style.borderWidth = "0px";
+				$selected[current].style.background =""
                 current--;
                 $pics[current].style.borderWidth = "5px";
+				$selected[current].style.background ="#0094bc"
                 var kid = keys[current];
+				console.log("KID: " + kid);
+				console.log("current: "+current);
                 GetNewResource(kid);
             }
         });
@@ -2655,9 +2725,12 @@
         $('#next-resource').click(function(event){
             event.preventDefault();
             if(current < keys.length-1){
+				$('.numberOverResources').removeClass('selectedResource');
                 $pics[current].style.borderWidth = "0px";
+				$selected[current].style.background =""
                 current++; 
                 $pics[current].style.borderWidth = "5px";
+				$selected[current].style.background ="#0094bc"
                 var kid = keys[current];
                 GetNewResource(kid);
             }
@@ -2895,7 +2968,7 @@
 <script>
 //resource nav
 	$('.other-resources').click(function(){
-		console.log("Other resource clicked");
+		$('.numberOverResources').css("background", '');
 		$('.numberOverResources').removeClass('selectedResource');
 		$(this).find('.numberOverResources').addClass('selectedResource');
 	});
@@ -2908,6 +2981,19 @@
 		console.log(angle);
 		className = 'rotate('+angle+'deg'+')';
 		console.log(className);
-		$('#PageImage').css('transform',className)
+		$('#ImageWrap').css('transform',className)
 	});
+	
+	$('img.deleteModalClose').click(function(){
+		console.log("Close delete box");
+		$('.deleteWrap').css('display','none');
+	});
+	$('.deleteCancel').click(function(){
+		console.log("Close delete box");
+		$('.deleteWrap').css('display','none');
+	});
+//	$('trashTranscript').click(function(){
+//		console.log("delete menu should pop up")
+//		$('.deleteWrap').css('display','block');
+//	});
 </script>
