@@ -671,8 +671,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <tdContributor</td>
-                                <td><?php $name = "Contributor 7"; $text = $season[$name];
+                                <td>Contributor</td>
+                                <td<?php $name = "Contributor 7"; $text = $season[$name];
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
@@ -681,8 +681,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <tdContributor Role</td>
-                                <td><?php $name = "Contributor Role 7"; $text = $season[$name];
+                                <td>Contributor Role</td>
+                                <td<?php $name = "Contributor Role 7"; $text = $season[$name];
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
