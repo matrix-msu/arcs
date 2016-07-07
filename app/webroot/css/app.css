@@ -12983,11 +12983,15 @@ footer#standard-MSU-footer {
   z-index: 1;
   outline: none;
 }
-.collection-list-wrapper .dropdown .dropdown-menu {
+.collection-list-wrapper .dropdown .dropdown-menu,
+.collection-list-wrapper .dropdown .dropdown-submenu {
   width: 12em;
   border-radius: 0;
   background: #fff;
   border: 0;
+}
+.collection-list-wrapper .dropdown .dropdown-submenu {
+  position: relative;
 }
 .collection-list-wrapper .dropdown .pointerDown {
   position: absolute;

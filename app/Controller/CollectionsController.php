@@ -208,6 +208,18 @@ class CollectionsController extends AppController {
     }
 
     /**
+     * Return an array of (user_id, user_name) pairs.
+     */
+    public function distinctUsers() {
+        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
+        return $this->json(200, $this->Collection->find('all', array(
+            'fields' => array('Collection.user_id', 'Collection.user_name'),
+            'group' => 'Collection.user_id',
+            'order' => 'Collection.user_name'
+        )));
+    }
+
+    /**
      * Complete collection titles.
      */
     public function complete() {
