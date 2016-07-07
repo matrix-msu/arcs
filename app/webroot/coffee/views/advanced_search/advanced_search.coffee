@@ -366,9 +366,10 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
 
 
   #MULTIPROJECT SEARCH
-  advancedSearch = () ->
+  advancedSearch = (val) ->
     $('.flex-img').removeClass('selected')
-    val = getInput
+    console.log(val)
+    val = JSON.stringify(val)
     pageNum = $('.currentPage').html()
     perPage = $('#items-per-page-btn').html().substring(0,2)
     $('.pageNumber').removeClass('currentPage')
@@ -400,6 +401,30 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
     )
 
 
+
+
+  $ ->
+    if !$.support.placeholder
+      active = document.activeElement
+      $(':text').focus(->
+        if $(this).attr('placeholder') != '' and $(this).val() == $(this).attr('placeholder')
+          $(this).val('').removeClass 'hasPlaceholder'
+          $(this).val ''
+        return
+      ).blur ->
+        if $(this).attr('placeholder') != '' and ($(this).val() == '' or $(this).val() == $(this).attr('placeholder'))
+          $(this).val($(this).attr('placeholder')).addClass 'hasPlaceholder'
+          $(this).val ''
+        return
+      $(':text').blur()
+      $(active).focus()
+      $(this).find('.searchBoxAdvanced').each ->
+        $(this).val ''
+        return
+        return
+    return
+
+
   #Activates on enter press: search
   $ ->
     $("#advanced_search_button").click (e) ->
@@ -409,8 +434,33 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
       $("#1").addClass('selected');
       $("#1").addClass('currentPage');
       $("#1").html(1)
+
+      # Getting the input from the user. Will do find a shorter method later!!
+      medium          = $("#Medium").val()
+      language        = $("#Language").val()
+      format          = $("#Format").val()
+      date_modified   = $("#DateModified").val()
+      creator         = $("#Creator").val()
+      subject         = $("#Subject").val()
+      location        = $("#Location").val()
+      identifier      = $("#Identifier").val()
+      description     = $("#Description").val()
+      date            = $("#Date").val()
+      coverage        = $("#Coverage").val()
+
+      # An array of the inpiuts so that we can work on them in the contorller
+      val = [coverage,date,description,identifier,location,subject,creator,date_modified,format,language,medium]
+      console.log(val.length)
+      console.log(val)
+      val2 = []
+      x = 0
+      while x < val.length
+        if val[x] != ''
+          val2.push val[x]
+        x++
+      val = val2
       e.preventDefault()
-      advancedSearch()
+      advancedSearch(val)
 
   _render: (results, append=false) ->
     $results = $('.flex-container')

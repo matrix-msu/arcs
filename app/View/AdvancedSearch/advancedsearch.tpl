@@ -8,19 +8,19 @@
 
 <div id="searchBoxAdvanced">
 	<div class='searchBoxColumn'>
-		<input type="text" class="searchBoxAdvanced" name="Coverage" placeholder="Coverage">
-		<input type="text" class="searchBoxAdvanced" name="Date" placeholder="Date">
-		<input type="text" class="searchBoxAdvanced" name="Description" placeholder="Description">
-		<input type="text" class="searchBoxAdvanced" name="Identifier" placeholder="Identifier">
-		<input type="text" class="searchBoxAdvanced" name="Location" placeholder="Location">
-		<input type="text" class="searchBoxAdvanced" name="Subject" placeholder="Subject">
+		<input type="text" class="searchBoxAdvanced" name="Coverage" 		id="Coverage"		placeholder="Coverage">
+		<input type="text" class="searchBoxAdvanced" name="Date" 			id="Date"			placeholder="Date">
+		<input type="text" class="searchBoxAdvanced" name="Description" 	id="Description"	placeholder="Description">
+		<input type="text" class="searchBoxAdvanced" name="Identifier" 		id="Identifier"		placeholder="Identifier">
+		<input type="text" class="searchBoxAdvanced" name="Location" 		id="Location"		placeholder="Location">
+		<input type="text" class="searchBoxAdvanced" name="Subject" 		id="Subject"		placeholder="Subject">
 	</div>
 	<div class='searchBoxColumn'>
-		<input type="text" class="searchBoxAdvanced" name="Creator" placeholder="Creator">
-		<input type="text" class="searchBoxAdvanced" name="DateModified" placeholder="Date - Modified">
-		<input type="text" class="searchBoxAdvanced" name="Format" placeholder="Format">
-		<input type="text" class="searchBoxAdvanced" name="Language" placeholder="Language">
-		<input type="text" class="searchBoxAdvanced" name="Medium" placeholder="Medium">
+		<input type="text" class="searchBoxAdvanced" name="Creator" 		id="Creator"		placeholder="Creator">
+		<input type="text" class="searchBoxAdvanced" name="DateModified" 	id="DateModified"	placeholder="Date - Modified">
+		<input type="text" class="searchBoxAdvanced" name="Format" 			id="Format" 		placeholder="Format">
+		<input type="text" class="searchBoxAdvanced" name="Language" 		id="Language" 		placeholder="Language">
+		<input type="text" class="searchBoxAdvanced" name="Medium" 			id="Medium" 		placeholder="Medium">
 		<input type='submit' class='user-reg-btn btn btn-success searchButton' id="advanced_search_button" value='Search'></input>
 	</div>	
 </div>

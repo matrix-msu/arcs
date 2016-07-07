@@ -435,10 +435,11 @@
       return inputs_array;
     };
 
-    advancedSearch = function() {
-      var pageNum, perPage, resources, totalResults, val;
+    advancedSearch = function(val) {
+      var pageNum, perPage, resources, totalResults;
       $('.flex-img').removeClass('selected');
-      val = getInput;
+      console.log(val);
+      val = JSON.stringify(val);
       pageNum = $('.currentPage').html();
       perPage = $('#items-per-page-btn').html().substring(0, 2);
       $('.pageNumber').removeClass('currentPage');
@@ -482,15 +483,63 @@
     };
 
     $(function() {
+      var active;
+      if (!$.support.placeholder) {
+        active = document.activeElement;
+        $(':text').focus(function() {
+          if ($(this).attr('placeholder') !== '' && $(this).val() === $(this).attr('placeholder')) {
+            $(this).val('').removeClass('hasPlaceholder');
+            $(this).val('');
+          }
+        }).blur(function() {
+          if ($(this).attr('placeholder') !== '' && ($(this).val() === '' || $(this).val() === $(this).attr('placeholder'))) {
+            $(this).val($(this).attr('placeholder')).addClass('hasPlaceholder');
+            $(this).val('');
+          }
+        });
+        $(':text').blur();
+        $(active).focus();
+        $(this).find('.searchBoxAdvanced').each(function() {
+          $(this).val('');
+          return;
+        });
+      }
+    });
+
+    $(function() {
       return $("#advanced_search_button").click(function(e) {
+        var coverage, creator, date, date_modified, description, format, identifier, language, location, medium, subject, val, val2, x;
         console.log("Ran ad");
         $('.pageNumber').removeClass('selected');
         $('.pageNumber').removeClass('currentPage');
         $("#1").addClass('selected');
         $("#1").addClass('currentPage');
         $("#1").html(1);
+        medium = $("#Medium").val();
+        language = $("#Language").val();
+        format = $("#Format").val();
+        date_modified = $("#DateModified").val();
+        creator = $("#Creator").val();
+        subject = $("#Subject").val();
+        location = $("#Location").val();
+        identifier = $("#Identifier").val();
+        description = $("#Description").val();
+        date = $("#Date").val();
+        coverage = $("#Coverage").val();
+        val = [coverage, date, description, identifier, location, subject, creator, date_modified, format, language, medium];
+        console.log(val.length);
+        console.log(val);
+        val2 = [];
+        x = 0;
+        while (x < val.length) {
+          if (val[x] !== '') {
+            val2.push(val[x]);
+          }
+          x++;
+        }
+        val = val2;
         e.preventDefault();
-        return advancedSearch();
+        return advancedSearch(val);
       });
     });
 

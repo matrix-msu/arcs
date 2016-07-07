@@ -51,6 +51,12 @@ class AdvancedSearchController extends AppController {
 
 
 
+
+
+
+
+
+
     // This funtion takes in a scheme id(sid) and users input which will be made
     // to AN APPROPIATE QUERY. Then a kora restful call will be made to get the
     // we need to search for and thus will be the return.
@@ -60,6 +66,188 @@ class AdvancedSearchController extends AppController {
         $user = "";
         $pass = "";
         $display = "json";
+
+        $query = json_decode($query,true);
+
+        if($sid == RESOURCE_SID){
+            // making the query we want by specfic fields!!
+            $q = "";
+            foreach ($query as $value) {
+                if ( ($value != "") && (count($query) > 1) ) {
+                    if ($query[0] === $value) {
+                        $q .= '( (Type,like,'. $value.'),||,(Resource Identifier,like,'. $value.'),||,(Accession Number,like,'. $value.') )';
+                    }else {
+                        $q .= ',&&,( (Type,like,'. $value.'),||,(Resource Identifier,like,'. $value.'),||,(Accession Number,like,'. $value.') )';
+                    }
+                    $q = '(Type,like,'. $value.'),||,(Resource Identifier,like,'. $value.'),||,(Accession Number,like,'. $value.')';
+                }elseif ($query != "") {
+                    $q = '(Type,like,'. $value.'),||,(Resource Identifier,like,'. $value.'),||,(Accession Number,like,'. $value.')';
+                }else{
+                    // Do nothing, just pass
+                }
+            }
+            // $q = '(Type,like,'. $query.'),||,(Resource Identifier,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == PROJECT_SID) {
+            // making the query we want by specfic fields!!
+            $q = "";
+            foreach ($query as $value) {
+                if ( ($value != "") && (count($query) > 1) ) {
+                    if ($query[0] === $value) {
+                        $q .= '( (Name,like,'. $value.'),||,(Period,like,'. $value.') )';
+                    }else {
+                        $q .= ',&&,( (Name,like,' . $value . '),||,(Period,like,' . $value . ') )';
+                    }
+                }elseif ($query != ""){
+                    $q = '(Name,like,'. $value.'),||,(Period,like,'. $value.')';
+                }else {
+                    // DO nothing
+                }
+            }
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == SEASON_SID) {
+            // making the query we want by specfic fields!!
+            $q = "";
+            foreach ($query as $value) {
+                if ( ($value != "") && (count($query) > 1) ) {
+                    if ($query[0] === $value) {
+                        $q .= '( (Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.') )';
+                    }else {
+                        $q .= ',&&,( (Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.') )';
+                    }
+                }elseif ($query != ""){
+                    $q = '(Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.')';
+                }else {
+                    // DO nothing
+                }
+            }
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == SURVEY_SID) {
+            // making the query we want by specfic fields!!
+            // $q = '(Name,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
+            $q = "";
+            foreach ($query as $value) {
+                if ( ($value != "") && (count($query) > 1) ) {
+                    if ($query[0] === $value) {
+                        $q .= '( (Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.') )';
+                    }else {
+                        $q .= ',&&,( (Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.') )';
+                    }
+                }elseif ($query != ""){
+                    $q = '(Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.')';
+                }else {
+                    // do nothing
+                }
+            }
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == SUBJECT_SID) {
+            // making the query we want by specfic fields!!
+            $q = "";
+            foreach ($query as $value) {
+                if ( ($value != "") && (count($query) > 1) ) {
+                    if ($query[0] === $value) {
+                        // $q .= '( (Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.') )';
+                        $q = '( (Artifact - Structure Classification,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Type,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Material,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Technique,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Period,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Terminus Ante Quem,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Terminus Post Quem,like,'. $value.') )';
+                    }else {
+                        // $q .= ',&&,( (Earliest Date,like,'. $value.'),||,(Latest Date,like,'. $value.') )';
+                        $q = ',&&,( (Artifact - Structure Classification,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Type,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Material,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Technique,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Period,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Terminus Ante Quem,like,'. $value.'),||,';
+                        $q .= '(Artifact - Structure Terminus Post Quem,like,'. $value.') )';
+                    }
+                }elseif ($query != "") {
+                    $q = '(Artifact - Structure Classification,like,'. $value.'),||,';
+                    $q .= '(Artifact - Structure Type,like,'. $value.'),||,';
+                    $q .= '(Artifact - Structure Material,like,'. $value.'),||,';
+                    $q .= '(Artifact - Structure Technique,like,'. $value.'),||,';
+                    $q .= '(Artifact - Structure Period,like,'. $value.'),||,';
+                    $q .= '(Artifact - Structure Terminus Ante Quem,like,'. $value.'),||,';
+                    $q .= '(Artifact - Structure Terminus Post Quem,like,'. $value.')';
+                }else {
+                    // DO nothing
+                }
+            }
+            /*
+            $q = '(Artifact - Structure Classification,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Type,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Material,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Technique,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Period,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Terminus Ante Quem,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Terminus Post Quem,like,'. $query.')';
+            */
+
+            // Make the Url
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else {
+            return array();
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    protected function search_single_scheme1($sid, $query) {
+        // Let us check and decide which sid we need to search, plus make the appropiate
+        // query to be used pull data out of KORA.
+        $user = "";
+        $pass = "";
+        $display = "json";
+
+        $qu = json_decode($query,true);
+        $query = $qu[0];
 
         if($sid == RESOURCE_SID){
             // making the query we want by specfic fields!!
@@ -133,6 +321,13 @@ class AdvancedSearchController extends AppController {
 
 
 
+
+
+
+
+
+
+
     public function advanced_search($query1="",$page,$perPage) {
         if($query1 == ""){
             return 0;
@@ -193,7 +388,7 @@ class AdvancedSearchController extends AppController {
             $kora_data = array();
             $total= array();
             foreach ($schemes as $scheme) {
-                $kora_data =  $this->search_single_scheme($scheme, 'photo');
+                $kora_data =  $this->search_single_scheme($scheme, $query1);
 
                 foreach($kora_data as $key => $result){
                     $total[$key] = $result;
@@ -211,7 +406,8 @@ class AdvancedSearchController extends AppController {
             foreach($response['results'] as $key => $item) {
                 $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
                 if ($imageResults[$item['Resource Identifier']] != null) {
-                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                    // $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                    $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
                 } else {
                     $item['thumb'] = DEFAULT_THUMB;
                 }
