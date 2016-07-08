@@ -1292,7 +1292,7 @@
 <div id="resources-nav">
     <div id="button-left">
         <a href="#" id="left-button">
-            <img src="../img/Arrow-White.svg" height="220px" width="10px" />
+            <img src="../img/arrowLeft-White.svg" height="220px" width="10px" />
         </a>
     </div>
     <div id="other-resources-container">
@@ -1321,7 +1321,7 @@
 </div> <!--#other-resources-container -->
 <div id="button-right">
     <a href="#" id="right-button">
-        <img src="../img/Arrow-White.svg" height="220px" width="10px" />
+        <img src="../img/arrowRight-White.svg" height="220px" width="10px" />
     </a>
 </div>
 </div>
@@ -2015,6 +2015,7 @@
 
     //Annotation search
     $(".annotateSearchForm").submit(function (event) {
+    //$(".annotateSearchForm").keyup(function (event) {
         $(".resultsContainer").empty();
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
@@ -2040,24 +2041,25 @@
             //Iterate search results
             $.each(data.results, function (key, value) {
                 $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value.kid + "'></div>");
-//                if (value.thumb == "img/DefaultResourceImage.svg") {
-//                    $("#" + value.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/" + value.thumb + "'/></div>");
-//                }
-//                else {
-//                    $("#" + value.kid).append("<div class='imageWrap'><img class='resultImage' src='" + value.thumb + "'/></div>");
-//                }
-//
-//                $("#" + value.kid).append(
-//                        "<div class='resultInfo'>" +
-//                        "<p>" + value['Accession Number'] + "</p>" +
-//                        "<p>" + value['Type'] + "</p>" +
-//                        "</div>"
-//                );
-                //$("#" + value.kid).append("<hr class='resultDivider'>");
+                /*if (value.thumb == "img/DefaultResourceImage.svg") {
+                    $("#" + value.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/" + value.thumb + "'/></div>");
+                }
+                else {
+                    $("#" + value.kid).append("<div class='imageWrap'><img class='resultImage' src='" + value.thumb + "'/></div>");
+                }
+
+                $("#" + value.kid).append(
+                        "<div class='resultInfo'>" +
+                        "<p>" + value['Accession Number'] + "</p>" +
+                        "<p>" + value['Type'] + "</p>" +
+                        "</div>"
+                );
+                $("#" + value.kid).append("<hr class='resultDivider'>");*/
 
                 //Get related pages
                 $.ajax({
-                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    //url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
                     type: "POST",
                     success: function (pages) {
                         $.each(pages.results, function (k, v) {

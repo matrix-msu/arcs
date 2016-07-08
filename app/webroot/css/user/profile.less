@@ -246,6 +246,64 @@ th.user-tabs-header {
                     padding: 3px 10px;
                 }
             }
+
+            .cont {
+                border-bottom: 1px solid #ccc;
+                min-height: 90px;
+
+                p {
+                    position: relative;
+                    top: 10px;
+                    height: 70px;
+                }
+
+                span {
+                    position: relative;
+                    top: 30px;
+                    display: inline-block;
+                    width: 22%;
+                }
+
+                img {
+                    height: 70px;
+                    width: 84px;
+                    float: right;
+                    margin-right: 20px;
+                    object-fit: cover;
+                }
+
+                .text {
+                    left: 12%;
+                }
+
+                .name {
+                    left: 22%;
+                }
+
+                //icons for different types: annotation/transcription, login, flag, edit
+                .log {
+                    height: 18px;
+                    width: 18px;
+                    //left: 15%;
+                    //background-image: url(../img/Locked.svg); need key icon
+                    background-size: contain;
+                }
+                .flag {
+                    height: 20px;
+                    width: 13px;
+                    //left: 15%;
+                    background-image: url(../img/FlagTooltip.svg);
+                    background-size: contain;
+                    margin-right: 5px;
+                }
+                .transcription, .annotation {
+                    height: 18px;
+                    width: 18px;
+                    //left: 15%;
+                    background-image: url(../img/AnnotationsOff.svg);
+                    background-size: contain;
+                }
+            }
         }
 
         #uploads-tab i {
@@ -279,6 +337,7 @@ th.user-tabs-header {
                     max-height: 100%;
                     max-width: 100%;
                     box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, .3);
+                    //object-fit: cover; set height and width to that of div to make this work?
                 }
 
                 a {
@@ -329,6 +388,15 @@ th.user-tabs-header {
                 font-size: 14px;
                 padding-top: 10px;
             }
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        #paginate {
+            margin-top: 10px;
+            display: inline-block;
         }
     }
 }

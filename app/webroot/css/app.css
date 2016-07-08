@@ -9318,9 +9318,6 @@ input[type=range]:focus::-ms-fill-upper {
 #resources-nav #other-resources-container img {
   object-fit: cover;
 }
-#resources-nav #button-left {
-  transform: rotate(180deg);
-}
 #resources-nav #button-left,
 #resources-nav #button-right {
   width: 54px;
@@ -10895,6 +10892,53 @@ th.user-tabs-header {
   margin: 3px 0;
   padding: 3px 10px;
 }
+#user-actions .tab-content #activity-tab .cont {
+  border-bottom: 1px solid #ccc;
+  min-height: 90px;
+}
+#user-actions .tab-content #activity-tab .cont p {
+  position: relative;
+  top: 10px;
+  height: 70px;
+}
+#user-actions .tab-content #activity-tab .cont span {
+  position: relative;
+  top: 30px;
+  display: inline-block;
+  width: 22%;
+}
+#user-actions .tab-content #activity-tab .cont img {
+  height: 70px;
+  width: 84px;
+  float: right;
+  margin-right: 20px;
+  object-fit: cover;
+}
+#user-actions .tab-content #activity-tab .cont .text {
+  left: 12%;
+}
+#user-actions .tab-content #activity-tab .cont .name {
+  left: 22%;
+}
+#user-actions .tab-content #activity-tab .cont .log {
+  height: 18px;
+  width: 18px;
+  background-size: contain;
+}
+#user-actions .tab-content #activity-tab .cont .flag {
+  height: 20px;
+  width: 13px;
+  background-image: url(../img/FlagTooltip.svg);
+  background-size: contain;
+  margin-right: 5px;
+}
+#user-actions .tab-content #activity-tab .cont .transcription,
+#user-actions .tab-content #activity-tab .cont .annotation {
+  height: 18px;
+  width: 18px;
+  background-image: url(../img/AnnotationsOff.svg);
+  background-size: contain;
+}
 #user-actions .tab-content #uploads-tab i {
   max-width: 20px;
   max-height: 20px;
@@ -10976,6 +11020,13 @@ th.user-tabs-header {
 #user-actions .tab-content #discussion-tab .transcript {
   font-size: 14px;
   padding-top: 10px;
+}
+#user-actions .tab-content .container {
+  text-align: center;
+}
+#user-actions .tab-content #paginate {
+  margin-top: 10px;
+  display: inline-block;
 }
 summary.collections-details-summary {
   height: 40px;
