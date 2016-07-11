@@ -46,7 +46,11 @@ class arcs.views.CollectionList extends Backbone.View
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
       src = arcs.baseURL + 'img/arcs-preloader.gif'
-      $(e.currentTarget).next().next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
+      if $(e.currentTarget).next().next().children().eq(0).prop("tagName") isnt 'IMG'
+        #console.log("no image there")
+        #console.log($(e.currentTarget).next().next().children().eq(0))
+        #console.log($(e.currentTarget).next().next().children().eq(0).prop("tagName"))
+        $(e.currentTarget).next().next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
 
     console.log($el)
     @renderDetails $el, limit

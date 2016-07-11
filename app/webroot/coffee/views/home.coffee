@@ -22,7 +22,8 @@ class arcs.views.Home extends Backbone.View
       $el.toggleAttr('open')
       limit = 1
       src = arcs.baseURL + 'img/arcs-preloader.gif'
-      $(e.currentTarget).next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
+      if $(e.currentTarget).next().children().eq(0).prop("tagName") isnt 'IMG'
+        $(e.currentTarget).next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
     else if e.currentTarget.className == 'btn-show-all'
       $el = $(e.currentTarget).parent().parent().parent().parent()
       $(e.currentTarget).removeClass('btn-show-all')

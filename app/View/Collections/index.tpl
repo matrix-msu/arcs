@@ -30,9 +30,7 @@
     <li class="dropdown-submenu"><a id="author" class="author-arrow-toggle" href="#">Author
 			<span class="pointerDown author-arrow" style="position:static"></span></a>
 		<ul class="dropdown-menu" id="author-dropdown" style="left:100%;margin-top:-25px;">
-			<li><a class="author-filter" href="#">Author 1</a></li>
-			<li><a class="author-filter" href="#">Author 2</a></li>
-			<li><a class="author-filter" href="#">Author 3</a></li>
+			<li><a class="author-filter" href="#">No Authors Available</a></li>
 		</ul>
 	</li>
     <li><a id="a-z" href="#">A-Z</a></li>
