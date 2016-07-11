@@ -1,8 +1,12 @@
 # search.coffee
 # -------------
 # Search View. Select and perform bulk actions on search results.
-selectedMap={}
+selectedMap={"unselected": [],"selected": [] } #key value pairs {'page #', array of selected elements on that page}
 selectedCount = 0
+selected = []
+display = []
+totalResults = []
+waiting = false
 arcs.views.advanced_search ?= {}
 class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
 
@@ -296,6 +300,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         0
 
   pagination = (pageArray, currentPage, lastPage) ->
+    console.log(pageArray)
     if 1 in pageArray
       $('#firstPage').css('display', 'none')
       $('.fDots').css('display', 'none')
@@ -324,7 +329,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
       $('.dots').css('display', 'none')
     for i in [1..5]
 #      console.log("Array contents: "+pageArray[i-1]+" i: "+ i)
-      if pageArray[i-1] is 0
+      if pageArray[i-1] <= 0
 #        console.log("undifined")
         $('#'+i).css('display', 'none')
       else
@@ -333,6 +338,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         if parseInt($('#'+i).html()) is currentPage
           $('#'+i).addClass('selected')
           $('#'+i).addClass('currentPage')
+
   noResults = () ->
     $('#firstPage').css('display', 'none')
     $('.fDots').css('display', 'none')
@@ -343,24 +349,56 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
     for i in [1..5]
       $('#'+i).css('display', 'none')
 
+  showSelected = () ->
+    $( '.result' ).each ->
+      if $(this).data('id') in selectedMap['selected']
+        $(this).addClass('selected')
+        $(this).find('.select-button').addClass 'de-select'
+        $(this).find('.select-button').html 'DE-SELECT'
+
+  adjustPage = (results,currentPage) ->
+    if waiting
+      return
+    $('.pageNumber').removeClass('currentPage')
+    $('.pageNumber').removeClass('selected')
+    console.log("CALLED")
+    console.log(results)
+    pageNum = currentPage
+    console.log(pageNum)
+    numberPerPage = parseInt($('#items-per-page-btn').html().substring(0,2))
+    console.log(numberPerPage)
+    lastPage = Math.ceil(results.length/numberPerPage)
+    console.log(lastPage)
+    temp = fillArray(pageNum,lastPage)
+    console.log(temp)
+    pagination(temp,pageNum,lastPage)
+    skip = (pageNum-1)*numberPerPage
+    console.log("skip: "+skip+" (skip+numberPerPage: )"+ (skip+numberPerPage))
+    $('#lastPage').html(lastPage)
+    #    perPage = parseInt(perPage = $('#items-per-page-btn').html().substring(0,2))
+    console.log(totalResults[skip..(skip+numberPerPage)])
+    AdvancedSearch.prototype._render results: totalResults[skip...(skip+numberPerPage)]
+    if selectedMap['selected'].length > 0
+      showSelected()
+
 
 
 
   # Lets get the inputs from the form in the advanced tpl
-  getInput = ->
-    inputs_array =
-      coverage: document.getElementByName('coverage')
-      date: document.getElementsByName('date')
-      description: document.getElementsByName('description')
-      identifier: document.getElementsByName('#identifier')
-      location: document.getElementsByName('location')
-      subject: document.getElementsByName('subject')
-      creator: document.getElementsByName('creator')
-      date_modifier: document.getElementsByName('date-modifier')
-      format: document.getElementsByName('format')
-      language: document.getElementsByName('language')
-      medium: document.getElementsByName('medium')
-    inputs_array
+#  getInput = ->
+#    inputs_array =
+#      coverage: document.getElementByName('coverage')
+#      date: document.getElementsByName('date')
+#      description: document.getElementsByName('description')
+#      identifier: document.getElementsByName('#identifier')
+#      location: document.getElementsByName('location')
+#      subject: document.getElementsByName('subject')
+#      creator: document.getElementsByName('creator')
+#      date_modifier: document.getElementsByName('date-modifier')
+#      format: document.getElementsByName('format')
+#      language: document.getElementsByName('language')
+#      medium: document.getElementsByName('medium')
+#    inputs_array
 
 
 
@@ -395,8 +433,9 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
       for key,value of values[0]
         totalResults.push value
       $('#results-count').html(totalResults.length)
-      $('#search-pagination').html(arcs.tmpl('search/paginate', results: totalResults))
-      AdvancedSearch.prototype._render results: totalResults
+#      $('#search-pagination').html(arcs.tmpl('search/paginate', results: totalResults))
+#      AdvancedSearch.prototype._render results: totalResults
+      adjustPage(totalResults,1)
       return
     )
 
@@ -470,6 +509,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
 
     $(".pageNumber").unbind().click (e) ->
       if($(this).hasClass('selected'))
+#        console.log("times this was called")
         e.stopPropagation()
         return
       else
@@ -477,13 +517,13 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         $('.pageNumber').removeClass('currentPage')
         $(this).addClass('selected')
         $(this).addClass('currentPage')
-        search()
+        adjustPage(totalResults,parseInt($('.currentPage').html()))
         return
 
     $('#leftArrowBox').unbind().click (e) ->
       temp = $('.currentPage').html()
       $('.currentPage').html(parseInt(temp)+1)
-      search()
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
 
     $('#rightArrowBox').unbind().click (e) ->
       temp = $('.currentPage').html()
@@ -492,7 +532,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         return
       else
         $('.currentPage').html(parseInt(temp)-1)
-        search()
+        adjustPage(totalResults,parseInt($('.currentPage').html()))
     $('#dots').unbind().click ->
       temp = parseInt($('.currentPage').html())+5
       #      console.log(temp)
@@ -501,7 +541,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         temp = parseInt($("#lastPage").html())
       #        console.log(temp)
       $('.currentPage').html(temp)
-      search()
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
     $('#fDots').unbind().click ->
       temp = parseInt($('.currentPage').html())-5
       #      console.log(temp)
@@ -510,7 +550,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         temp = 1
       #        console.log(temp)
       $('.currentPage').html(temp)
-      search()
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
     # add hover effects (select button, border) for the displayed images
     $('div.result').hover (->
       $(this).find('.select-button').show()
@@ -527,15 +567,27 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         $(this).html 'DE-SELECT'
         $(this).addClass 'de-select'
         $(this).parents('.result').addClass 'selected'
-        selectedCount++
+        $('#selected-all').css({color:'black'})
+        selectedMap['selected'].push $(this).parents('.result').data("id")
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
+        console.log(selectedMap)
         arcs.bus.trigger 'selection'
       else
         $(this).html 'SELECT'
         $(this).removeClass 'de-select'
         $(this).parents('.result').removeClass 'selected'
-        selectedCount--
+        index = selectedMap['selected'].indexOf($(this).parents('.result').data("id"))
+        if index > -1
+          selectedMap['selected'].splice(index,1)
+        if selectedMap['selected'].length < 1
+          $('#selected-all').css({color:'#C1C1C1'})
+        console.log(index)
+        console.log(selectedMap)
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
         arcs.bus.trigger 'selection'
-      console.log(selectedCount)
+
       return
     $('.sort-btn').unbind().click ->
       $('#items-per-page-btn').html($(this).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
@@ -544,18 +596,32 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
       $("#1").addClass('selected');
       $("#1").addClass('currentPage');
       $("#1").html(1)
-      search()
-    #    $('#select-all, #deselect-all').click ->
-    #      if this.id is 'select-all'
-    #        console.log("in the if statement")
-    #        this.id = 'deselect-all'
-    #        arcs.searchView.selectAll();
-    #        $('#toggle-select').html('DE-SELECT')
-    #      else
-    #        console.log("in the else statement")
-    #        this.id = 'select-all'
-    #        arcs.searchView.unselectAll();
-    #        $('#toggle-select').html('SELECT')
+      adjustPage(totalResults,parseInt($('.currentPage').html()))
 
-    if not results.length > 0
+    $('#select-all, #deselect-all').unbind().click ->
+      if this.id is 'select-all'
+        $('#selected-all').css({color:'black'})
+        selectedMap['selected']=[]
+        i = 0
+        for i of totalResults
+          selectedMap['selected'].push totalResults[i]['kid']
+          ++i
+        console.log(selected['unselected'])
+        #        selectedMap['selected'] = totalResults[0]['kid']
+        arcs.searchView.selectAll();
+        $('#toggle-select').html('DE-SELECT')
+        console.log(selectedMap['selected'])
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
+      else
+        $('#selected-all').css({color:'#C1C1C1'})
+        console.log("in the else statement")
+        selectedMap['selected'] = []
+        this.id = 'select-all'
+        arcs.searchView.unselectAll();
+        $('#selected-resource-ids').html(selectedMap["selected"])
+        $('#selected-count').html(selectedMap["selected"].length)
+
+    #
+    if results.length is 0
       $results.html "<div id='no-results'>No Results</div>"

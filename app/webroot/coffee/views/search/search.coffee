@@ -339,6 +339,7 @@ class arcs.views.search.Search extends Backbone.View
         if parseInt($('#'+i).html()) is currentPage
           $('#'+i).addClass('selected')
           $('#'+i).addClass('currentPage')
+
   noResults = () ->
     $('#firstPage').css('display', 'none')
     $('.fDots').css('display', 'none')
@@ -348,12 +349,14 @@ class arcs.views.search.Search extends Backbone.View
     $('#rightArrow').css('display', 'none')
     for i in [1..5]
       $('#'+i).css('display', 'none')
+
   showSelected = () ->
     $( '.result' ).each ->
       if $(this).data('id') in selectedMap['selected']
         $(this).addClass('selected')
         $(this).find('.select-button').addClass 'de-select'
         $(this).find('.select-button').html 'DE-SELECT'
+
   adjustPage = (results,currentPage) ->
     if waiting
       return

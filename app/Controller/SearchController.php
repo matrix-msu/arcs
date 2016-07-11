@@ -478,7 +478,15 @@ class SearchController extends AppController {
         }
 
     }
-	
+
+
+
+
+
+
+
+
+
     public function simple_search($query1="",$page,$perPage) {
 //		if($query1 == ""){
 //			$query1 = "NoRESults";

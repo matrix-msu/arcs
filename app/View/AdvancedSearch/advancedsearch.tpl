@@ -214,29 +214,37 @@
   <div id='search-bottom-bar'>
 	  <div id="search-actions" class="search-toolbar">
 		  <div id="items-per-pages-buttons" class="btn-group actions-left">
-			      <button id="items-per-page-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-			      	20 Items per Page
-			      	<span class="pointerDown sort-arrow"></span>
-			      </button>
-			      <ul class="dropdown-menu">
-			        <li><a class="sort-btn" id="open-btn">20 Items&nbsp;</a></li>
-			        <li><a class="sort-btn" id="open-colview-btn">40 Items&nbsp;</a></li>
-			        <li><a class="sort-btn" id="open-btn">60 Items&nbsp;</a></li>
-			      </ul>
-			</div>
-			<ul class="pagination">
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-			</ul>
+			  <button id='items-per-page-btn' class='btn dropdown-toggle' data-toggle='dropdown'>20 Items per Page
+				  <span class='pointerDown sort-arrow pointerSearch'></span>
+			  </button>
+			  <ul class="dropdown-menu">
+				  <li><a class="sort-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
+				  <li><a class="sort-btn" id="open-colview-btn">40 Items per Page&nbsp;</a></li>
+				  <li><a class="sort-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
+			  </ul>
+		  </div>
+		  <div id="pagination">
+			  <ul class="pagination">
+				  <div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+
+				  <li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
+				  <div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
+				  <li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
+				  <li><a class='pageNumber' id='2'style="display:none" ></a></li>
+				  <li><a class='pageNumber' id='3' style="display:none"></a></li>
+				  <li><a class='pageNumber' id='4' style="display:none"></a></li>
+				  <li><a class='pageNumber' id='5' style="display:none"></a></li>
+				  <div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
+				  <li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
+				  <div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+			  </ul>
+		  </div>
 			<div id="search-again">
 				<a class="search-again-link" href="#" onclick="movePage()">Search again</a>
 			</div>
 	  </div>
     <div id="search-pagination"></div>
-    
+
   </div>
 </div>
 
