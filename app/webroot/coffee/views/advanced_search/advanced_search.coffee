@@ -464,7 +464,7 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
     return
 
 
-  #Activates on enter press: search
+  #Activates on submit button click: advancedsearch
   $ ->
     $("#advanced_search_button").click (e) ->
       console.log("Ran ad")
