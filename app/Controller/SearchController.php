@@ -276,7 +276,13 @@ class SearchController extends AppController {
                 break;
             }
             if ($imageResults[$item['Resource Identifier']] != null) {
-                $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
+                if ($sid != PAGES_SID) {
+                    $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
+                }
+                else {
+                    $item['thumb'] = $this->smallThumb($item['Image Upload']['localName']);
+                }
+                //$item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
             } else {
                 $item['thumb'] = DEFAULT_THUMB;
             }

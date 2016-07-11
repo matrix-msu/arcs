@@ -2057,8 +2057,8 @@
 
                 //Get related pages
                 $.ajax({
-                    //url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
-                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,=," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    //url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
                     type: "POST",
                     success: function (pages) {
                         $.each(pages.results, function (k, v) {
