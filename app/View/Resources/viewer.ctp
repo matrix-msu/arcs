@@ -2015,7 +2015,6 @@
 
     //Annotation search
     $(".annotateSearchForm").submit(function (event) {
-    //$(".annotateSearchForm").keyup(function (event) {
         $(".resultsContainer").empty();
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
@@ -2836,14 +2835,14 @@
 
     function getComments() {
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
+            url: "<?php echo Router::url('/', true); ?>comments/findall",
             type: "POST",
             data: {
                 id: "<?php echo $resource['kid']; ?>"
             },
             success: function (data) {
                 $(".commentContainer").empty();
-
+                console.log(data);
                 $.each(data, function (index, comment) {
                     if (!comment.parent_id) {
                         $(".commentContainer").append(
