@@ -46,6 +46,35 @@
 		</div>
 	</div>
 	
+	<div class='fullscreenWrap'>
+		<div class='fullscreenOverlay'>
+			<div class='fullscreenOuter'>
+				<div class='fullscreenInner'>
+					<img class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
+				    <div class='leftHalf'>
+						<div class='expandedArrowBoxLeft'>
+							<img class='leftExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
+						</div>
+						
+					</div>
+					<div class="rightHalf">
+						<div class='expandedArrowBoxRight'>
+							<img class='rightExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class='fullscreenTitle' style="display:none;">
+				<span class='titleText'>Test.jpg</span>
+			</div>
+				
+			<div class='fullscreenClose'>
+				<img src="../app/webroot/assets/img/Close.svg"class="closeExpand"/>
+			</div>
+		</div>
+	</div>
+	
     <div class="annotateModalBackground">
         <div class="annotateWrap">
             <div id="annotateModal">
@@ -2315,7 +2344,7 @@
 					$('.deleteWrap').css('display','block');
 					console.log($(this).parent().attr("id"))
 					var paramater = $(this).parent().attr("id");
-					$('.deleteButton').click(function(){
+					$('.deleteButton').unbind().click(function(){
 						console.log('delete annotations')
 						console.log($(this).parent().attr("id"))
 						$('.deleteWrap').css('display','none');
@@ -2351,24 +2380,24 @@
 //                        }
 //                    })
                 });
-				$('.deleteButton').click(function(){
-					console.log('delete annotations')
-					console.log($(this).parent().attr("id"))
-					$.ajax({
-						url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
-						type: "DELETE",
-						statusCode: {
-							204: function () {
-								console.log("In the 204 status")
-								GetDetails();
-								DrawBoxes(kid);
-							},
-							403: function () {
-								alert("You don't have permission to delete this annotation");
-							}
-						}
-					})
-				});
+//				$('.deleteButton').click(function(){
+//					console.log('delete annotations')
+//					console.log($(this).parent().attr("id"))
+//					$.ajax({
+//						url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+//						type: "DELETE",
+//						statusCode: {
+//							204: function () {
+//								console.log("In the 204 status")
+//								GetDetails();
+//								DrawBoxes(kid);
+//							},
+//							403: function () {
+//								alert("You don't have permission to delete this annotation");
+//							}
+//						}
+//					})
+//				});
                 //Mouse over annotation
                 $(".relationName").mouseenter(function () {
                     mouseOn = true;
@@ -2736,7 +2765,65 @@
                 GetNewResource(kid);
             }
         });
-        
+        	$('.expandedArrowBoxLeft').click(previousImage);
+			$('.expandedArrowBoxRight').click(nextImage);
+			$('.fullscreenInner').mouseover(hoverExpand);
+			$('.fullscreenInner').mouseout(hoverExpandClose);
+
+
+			function hoverExpandClose(){
+				$('.expandedArrowBoxLeft').css('display','none');
+				$('.expandedArrowBoxRight').css('display','none');
+			}
+			function hoverExpand(){
+				if ($('.leftHalf').is(':hover')){
+					if (current > 0){
+						$('.expandedArrowBoxLeft').css('display','block');
+					}
+					
+					$('.expandedArrowBoxRight').css('display','none');
+				}
+				else{
+					 if(current < keys.length-1){
+						 $('.expandedArrowBoxRight').css('display','block');
+					 }
+					
+					$('.expandedArrowBoxLeft').css('display','none');
+				}
+			}
+			function previousImage(){
+				event.preventDefault();
+				if(current > 0){
+					$('.numberOverResources').removeClass('selectedResource');
+					$pics[current].style.borderWidth = "0px";
+					$selected[current].style.background =""
+					current--;
+					$pics[current].style.borderWidth = "5px";
+					$selected[current].style.background ="#0094bc"
+					var kid = keys[current];
+					console.log("KID: " + kid);
+					console.log("current: "+current);
+					GetNewResource(kid);
+					$(".fullscreenImage").attr('src',$pics[current].src);
+				}
+
+			}
+
+			function nextImage(){
+				
+				event.preventDefault();
+				if(current < keys.length-1){
+					$('.numberOverResources').removeClass('selectedResource');
+					$pics[current].style.borderWidth = "0px";
+					$selected[current].style.background =""
+					current++; 
+					$pics[current].style.borderWidth = "5px";
+					$selected[current].style.background ="#0094bc"
+					var kid = keys[current];
+					GetNewResource(kid);
+				    $(".fullscreenImage").attr('src',$pics[current].src);
+				}
+			}
         $('#zoom-out').click(function(event){
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
@@ -2815,8 +2902,15 @@
     function GetNewResource(id) {
         image = document.getElementById('PageImage')
         image.src = '../img/arcs-preloader.gif';
-        image.style.height = '100%';
-        image.style.width = '100%';
+		image.style.margin = 'auto';
+		image.style.left = '0';
+		image.style.right = '0';
+		image.style.top = '0';
+		image.style.bottom = '0';
+		image.style.position= 'absolute';
+		
+//        image.style.height = '100%';
+//        image.style.width = '100%';
         setTimeout(function () {
         }, 10000);
         return $.ajax({
@@ -2968,6 +3062,8 @@
 </script>
 <script>
 //resource nav
+	var zoomOption = 1;
+	
 	$('.other-resources').click(function(){
 		$('.numberOverResources').css("background", '');
 		$('.numberOverResources').removeClass('selectedResource');
@@ -2993,8 +3089,56 @@
 		console.log("Close delete box");
 		$('.deleteWrap').css('display','none');
 	});
-//	$('trashTranscript').click(function(){
-//		console.log("delete menu should pop up")
-//		$('.deleteWrap').css('display','block');
-//	});
+	$('.fullscreenOverlay').click(function(e){
+		if (e.target !== this && e.target !== $('.fullscreenOuter'))
+			return
+		$('.fullscreenWrap').css('display','none');
+		$('html, body').css({
+			'overflow': 'auto',
+			'height': 'auto'
+		});
+	});
+	$('.fullscreenClose').click(function(){
+		$('.fullscreenWrap').css('display','none');
+		//reset scrolling
+		$('html, body').css({
+			'overflow': 'auto',
+			'height': 'auto'
+		});
+	})
+	$('.resources-fullscreen-icon').click(setExpand);
+	$('.fullscreenInner').draggable();
+	$('.fullscreenInner').bind('wheel',function(e){
+		
+		if (zoomOption < 1.25 || zoomOption >.7 )
+			if(e.originalEvent.wheelDelta /120 > 0) {
+				if(zoomOption >1.2)
+					return
+				console.log('zoom in');
+				zoomOption+=.05
+				$('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
+			}
+			else{
+				if(zoomOption < .75)
+					return
+				console.log('zoom out');
+				zoomOption-=.05
+				$('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
+			}
+	})
+	
+	function setExpand(){
+		 var imageSrc = $("#PageImage").attr('src');
+		 console.log(imageSrc);
+		 $(".fullscreenImage").attr('src',imageSrc);
+		 $('.fullscreenWrap').css('display','block');
+		zoomOption=1;
+		$('.fullscreenInner, .fullscreenOuter').css('transform','scale(1)');
+		$('html, body').css({
+			'overflow': 'hidden',
+			'height': '100%'
+		});
+	 }
+
+	
 </script>

@@ -9164,6 +9164,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 20px;
   width: 20px;
   float: right;
+  cursor: pointer;
 }
 #resource-tools img.resources-zoom-out-icon {
   height: 20px;
@@ -10061,6 +10062,144 @@ img.other-resource {
   margin-top: 12px;
   width: 250px;
   height: 175px;
+}
+.fullscreenWrap {
+  display: none;
+}
+.fullscreenOuter {
+  width: 1050px;
+  height: 883px;
+  /* border: 5px solid #555; */
+  border-radius: 1%;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: transparent;
+  z-index: 1;
+}
+.fullscreenOverlay {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.fullscreenInner {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0px;
+  bottom: 0;
+  margin: auto;
+}
+.fullscreenImage {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+.fullscreenTitle {
+  position: absolute;
+  top: 89%;
+  bottom: 0;
+  left: 25%;
+  right: 0;
+  z-index: 1;
+}
+.fullscreenClose {
+  position: absolute;
+}
+.expanded-tools {
+  position: absolute;
+  bottom: inherit;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  margin: auto;
+  z-index: 1;
+  border: none !important;
+}
+.zoomContainer-expanded {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.leftHalf {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 95%;
+  top: 0;
+}
+.leftExpandedArrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0px;
+  right: 0;
+  margin: auto;
+  transform: rotate(180deg);
+}
+.rightHalf {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 95%;
+  top: 0;
+}
+.rightExpandedArrow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+}
+.expandedArrowBoxLeft {
+  display: none;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 22px;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.expandedArrowBoxRight {
+  display: none;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 22px;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.expandedArrowBoxRight:hover {
+  display: block;
+}
+.fullscreenClose {
+  position: absolute;
+  right: 25px;
+  top: 15px;
+  cursor: pointer;
+}
+.closeExpand {
+  width: 25px;
 }
 #viewer-controls {
   background: #ddd;
