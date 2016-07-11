@@ -116,4 +116,21 @@
 
 <script type='text/javascript'>
 arcs.profileView = new arcs.views.users.Profile({id: '<?php echo $user_info['id']; ?>'});
+
+$(".edit-btn").click(function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log("clicked edit collection");
+    var el_details = $(e.target).parent().parent();
+    var summary = $(e.target).parent();
+    if( $(el_details).hasClass("closed") ) {
+        console.log("details is closed");
+        summary[0].click();
+    }
+    //var el_results = $(e.target).parent().nextAll('.results');
+    //console.log( el_results );
+    //el_results.prepend("hello testing prepend");
+    summary.after("testing after summary");
+    $(e.target).text("SAVE EDITS MADE");
+});
 </script>

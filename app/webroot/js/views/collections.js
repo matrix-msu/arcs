@@ -12,7 +12,7 @@
 
     CollectionList.prototype.initialize = function(options) {
       _.extend(this.options, _.pick(options, 'model', 'collection', 'el'));
-      this.search = new arcs.utils.Search({
+      return this.search = new arcs.utils.Search({
         container: $('.search-wrapper'),
         run: false,
         onSearch: (function(_this) {
@@ -21,12 +21,6 @@
           };
         })(this)
       });
-      this.render();
-      return this.$('details.open').each((function(_this) {
-        return function(i, el) {
-          return _this.renderDetails($(el));
-        };
-      })(this));
     };
 
     CollectionList.prototype.events = {
@@ -45,6 +39,8 @@
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
+        src = arcs.baseURL + 'img/arcs-preloader.gif';
+        $(e.currentTarget).children().eq(2).prepend('<img src="' + src + '" alt="SeeAll.svg">');
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
         $(e.currentTarget).removeClass('btn-show-all');
@@ -56,6 +52,8 @@
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
+        src = arcs.baseURL + 'img/arcs-preloader.gif';
+        $(e.currentTarget).next().next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
       }
       console.log($el);
       this.renderDetails($el, limit);

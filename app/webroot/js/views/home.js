@@ -36,6 +36,8 @@
         $el = $(e.currentTarget).parent();
         $el.toggleAttr('open');
         limit = 1;
+        src = arcs.baseURL + 'img/arcs-preloader.gif';
+        $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
         $(e.currentTarget).removeClass('btn-show-all');

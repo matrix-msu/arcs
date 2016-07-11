@@ -21,6 +21,7 @@ class arcs.views.Profile extends Backbone.View
     'click #delete-btn': 'deleteCollection'
     'click .btn-show-all': 'onClick'
 
+
   editAccount: ->
     new arcs.views.Modal
       title: 'Edit Your Account'
@@ -73,14 +74,17 @@ class arcs.views.Profile extends Backbone.View
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
+      src = arcs.baseURL + 'img/arcs-preloader.gif'
+      $(e.currentTarget).next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
     console.log($el)
     @renderDetails $el, limit
     # Recent versions of webkit will toggle <details> automatically.
     # Instead of checking for support, we'll just stop it from bubbling up,
     # since we've just toggled it ourselves.
-    if (e.srcElement.tagName not in ['SPAN', 'BUTTON', 'I', 'A'])
-      e.preventDefault()
-      false
+    if (e.srcElement?)
+      if (e.srcElement.tagName not in ['SPAN', 'BUTTON', 'I', 'A'])
+        e.preventDefault()
+        false
 
   deleteCollection: (e) ->
     e.preventDefault()

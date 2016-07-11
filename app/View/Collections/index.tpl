@@ -28,7 +28,7 @@
     <li><a id="old-new" href="#">Oldest to Newest</a></li>
     <li><a id="popular" href="#">Most Popular</a></li>
     <li class="dropdown-submenu"><a id="author" class="author-arrow-toggle" href="#">Author
-			<span class="pointerDown author-arrow"></span></a>
+			<span class="pointerDown author-arrow" style="position:static"></span></a>
 		<ul class="dropdown-menu" id="author-dropdown" style="left:100%;margin-top:-25px;">
 			<li><a class="author-filter" href="#">Author 1</a></li>
 			<li><a class="author-filter" href="#">Author 2</a></li>

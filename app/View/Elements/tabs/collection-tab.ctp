@@ -47,7 +47,7 @@
                         <h4></h4>
                         <h5><?php echo $collection['date']; ?></h5>
 
-                        <h4 style="float:right;padding-right:10px">EDIT COLLECTION</h3>
+                        <h4 class="edit-btn" style="float:right;padding-right:10px">EDIT COLLECTION</h3>
                     </summary>
 
                     <div class="results">

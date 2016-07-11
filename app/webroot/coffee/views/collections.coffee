@@ -12,9 +12,9 @@ class arcs.views.CollectionList extends Backbone.View
       run: false
       onSearch: =>
         location.href = arcs.url 'search', @search.query
-    @render()
-    @$('details.open').each (i, el) =>
-      @renderDetails $(el)
+    #@render()
+    #@$('details.open').each (i, el) =>
+     # @renderDetails $(el)
 
   events:
     'click summary': 'onClick'
@@ -31,6 +31,8 @@ class arcs.views.CollectionList extends Backbone.View
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
+      src = arcs.baseURL + 'img/arcs-preloader.gif'
+      $(e.currentTarget).children().eq(2).prepend('<img src="'+src+'" alt="SeeAll.svg">')
     else if e.currentTarget.className == 'btn-show-all'
       $el = $(e.currentTarget).parent().parent().parent().parent()
       $(e.currentTarget).removeClass('btn-show-all')
@@ -43,6 +45,9 @@ class arcs.views.CollectionList extends Backbone.View
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
+      src = arcs.baseURL + 'img/arcs-preloader.gif'
+      $(e.currentTarget).next().next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
+
     console.log($el)
     @renderDetails $el, limit
     # Recent versions of webkit will toggle <details> automatically. 
