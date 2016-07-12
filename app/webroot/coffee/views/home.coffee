@@ -45,7 +45,9 @@ class arcs.views.Home extends Backbone.View
   renderDetails: ($el, limit) ->
     type = $el.data('type')
     query = encodeURIComponent("Type,=,"+type)
-    query2 = arcs.baseURL + "resources/search?"
+    if type == 'Orphaned'
+      query = encodeURIComponent('Orphan,=,true') + '&sid=' + arcs.pagesSid
+    query2 = arcs.baseURL + 'resources/search?'
     if (limit != 0)
       query2 += "n=15&"
     #console.log('found the coffee render')

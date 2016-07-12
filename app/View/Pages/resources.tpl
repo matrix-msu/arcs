@@ -171,6 +171,13 @@
             </summary>
             <div></div>
         </details>
+
+        <details class="back-color" data-type="Orphaned">
+            <summary class="rsc-sum">
+                <p class="rsc-name">ORPHANED</p>
+            </summary>
+            <div></div>
+        </details>
     </div>
     <script>arcs.homeView = new arcs.views.Home({el: $('.page')});</script>
 </div>

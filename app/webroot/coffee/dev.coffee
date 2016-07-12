@@ -32,3 +32,5 @@ if arcs.mode > 0
   # Run the stylesheet reloader on an interval, if requested.
   if arcs.dev.reload 
     setInterval arcs.dev.reloadStylesheets, arcs.dev.reloadAt
+
+arcs.pagesSid = '738'

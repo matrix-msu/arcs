@@ -282,6 +282,23 @@ class arcs.views.users.Profile extends Backbone.View
         return
     )
 
+    metaReady = $.ajax(
+      url: info.url + 'MetadataEdits/findallbyuser'
+      type: 'POST'
+      data: id: info.id
+      success: (mdata) ->
+        console.log(mdata)
+        mdata.forEach (edit) ->
+          activity.push
+            time: edit['modified']
+            type: 'edit'
+            kid: edit['resource_kid']
+            name: edit['resource_name']
+            text: 'Edited Metadata'
+          return
+        return
+    )
+
     usersReady = $.ajax(
       url: info.url + 'users/findbyid'
       type: 'POST'
@@ -295,7 +312,7 @@ class arcs.views.users.Profile extends Backbone.View
         return
     )
     # once the activity array is loaded, sort by most recent first and process
-    $.when(usersReady, flagsReady, annoReady).then ->
+    $.when(usersReady, flagsReady, annoReady, metaReady).then ->
       activity.sort (a, b) ->
         dateA = new Date(a.time)
         dateB = new Date(b.time)
@@ -305,8 +322,13 @@ class arcs.views.users.Profile extends Backbone.View
       content = ''
       count = 0
       activity.forEach (a) ->
-        # Process date
-        date = relativeDate(new Date(a['time']))
+        # Process date - we get it in eastern time, need to convert to local in case of timezone differences
+        # There may still be some oddities with any places that have nonstandard DST behavior
+        # Basically, I ignore dst by using January of this year for local time, then convert to EST
+        # If local time uses different DST behavior than eastern timezone, it will be off by an hour at times
+        date = new Date(a['time'])
+        date.setMinutes(-new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset() + 300) # 300 is EST minutes from UTC
+        date = relativeDate(date)
         # set name, link, and image stuff for all non-login entries, ajax query as needed
         extra = ''
         if a['type'] != 'log'

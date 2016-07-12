@@ -11069,8 +11069,10 @@ th.user-tabs-header {
 }
 #user-actions .tab-content #activity-tab .cont .log {
   height: 18px;
-  width: 18px;
+  width: 16px;
+  background-image: url(../img/key.svg);
   background-size: contain;
+  margin-right: 2px;
 }
 #user-actions .tab-content #activity-tab .cont .flag {
   height: 20px;
@@ -11084,6 +11086,12 @@ th.user-tabs-header {
   height: 18px;
   width: 18px;
   background-image: url(../img/AnnotationsOff.svg);
+  background-size: contain;
+}
+#user-actions .tab-content #activity-tab .cont .edit {
+  height: 18px;
+  width: 18px;
+  background-image: url(../img/pencil.svg);
   background-size: contain;
 }
 #user-actions .tab-content #uploads-tab i {

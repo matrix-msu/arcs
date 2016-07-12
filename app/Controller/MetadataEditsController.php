@@ -99,4 +99,16 @@ class MetadataEditsController extends MetaResourcesController {
         else
             return $this->json(400);
     }
+
+    /**
+     * Find all metadata edits associated with user id
+     */
+    public function findAllByUser()
+    {
+        $model = $this->modelClass;
+        $results = $this->$model->find('all', array(
+            'conditions' => array('user_id' => $this->request->data['id'])
+        ));
+        $this->json(200, $results);
+    }
 }

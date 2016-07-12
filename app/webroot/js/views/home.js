@@ -60,7 +60,10 @@
       var query, query2, type;
       type = $el.data('type');
       query = encodeURIComponent("Type,=," + type);
-      query2 = arcs.baseURL + "resources/search?";
+      if (type === 'Orphaned') {
+        query = encodeURIComponent('Orphan,=,true') + '&sid=' + arcs.pagesSid;
+      }
+      query2 = arcs.baseURL + 'resources/search?';
       if (limit !== 0) {
         query2 += "n=15&";
       }

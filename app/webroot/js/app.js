@@ -28,6 +28,8 @@
 
   arcs.baseURL = '';
 
+  arcs.pagesSid = '';
+
   arcs.url = function() {
     var components;
     components = 1 <= arguments.length ? slice.call(arguments, 0) : [];
