@@ -390,6 +390,9 @@ class arcs.views.search.Search extends Backbone.View
     console.log("page num in search: "+ pageNum)
     perPage = $('#items-per-page-btn').html().substring(0,2)
     if val is ""
+      noResults()
+      totalResults = []
+      Search.prototype._render results: totalResults
       return
     resourcequery = encodeURIComponent("#{val}")
     pageNumber= encodeURIComponent("#{pageNum}")

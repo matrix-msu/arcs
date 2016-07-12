@@ -441,6 +441,11 @@
       console.log("page num in search: " + pageNum);
       perPage = $('#items-per-page-btn').html().substring(0, 2);
       if (val === "") {
+        noResults();
+        totalResults = [];
+        Search.prototype._render({
+          results: totalResults
+        });
         return;
       }
       resourcequery = encodeURIComponent("" + val);
