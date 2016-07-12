@@ -516,7 +516,7 @@ class arcs.views.search.Search extends Backbone.View
         e.preventDefault()
 #        toggle_search_visibility()
         $('.flex-container').empty()
-        $('.flex-container').append('<img src="/img/arcs-preloader.gif">');
+        $('.flex-container').append('<img src="/~arnold.mutayoba/arcs/img/arcs-preloader.gif">');
         $('#search-results-wrapper').css('visibility','visible')
         search()
 
