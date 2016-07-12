@@ -2044,6 +2044,7 @@
 
     //Annotation search
     $(".annotateSearchForm").submit(function (event) {
+    //$(".annotateSearchForm").keyup(function (event) {
         $(".resultsContainer").empty();
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
@@ -2086,8 +2087,8 @@
 
                 //Get related pages
                 $.ajax({
-                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,=," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
-                    //url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    //url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
                     type: "POST",
                     success: function (pages) {
                         $.each(pages.results, function (k, v) {
@@ -2297,15 +2298,15 @@
                     }
                     else {
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"</div>");
+                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>"+trashButton+"</div>");
                         }
                         else if (value.relation_page_kid != "" && value.incoming == "true") {
                             var text = value.x1 ? "Revert to whole resource" : "Define space";
-                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"<img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
+                            $(".incoming_relations").append("<div class='annotation_display "+value.id+"' id='" + value.id + "'><div class='relationName'>"+ value.relation_resource_name +"</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>"+trashButton+"<img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>"+text+"</div></div>");
                         }
                     }
                     if (value.url != "") {
-                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>"+trashButton+"</div>");
+                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>"+ value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>"+trashButton+"</div>");
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
@@ -2337,16 +2338,47 @@
                     $("#flagTarget").val("Transcript");
                     $('#flagAnnotation_id').val($(this).parent().attr("id"));
                 });
-
-                $(".trashTranscript").click(function () {
+                $(".trashAnnotation").click(function () {
 					console.log("Delete clicked")
 					console.log("delete menu should pop up")
+					$('.deleteBody').html('Are you sure you want to delete this annotation?')
 					$('.deleteWrap').css('display','block');
 					console.log($(this).parent().attr("id"))
 					var paramater = $(this).parent().attr("id");
 					$('.deleteButton').unbind().click(function(){
 						console.log('delete annotations')
-						console.log($(this).parent().attr("id"))
+						console.log(paramater)
+						$('.deleteWrap').css('display','none');
+						$.ajax({
+							url: "<?php echo Router::url('/', true); ?>api/annotations/" + paramater + ".json",
+							type: "DELETE",
+							statusCode: {
+								204: function () {
+									console.log("In the 204 status")
+									GetDetails();
+									DrawBoxes(kid);
+									
+								},
+								403: function () {
+									alert("You don't have permission to delete this annotation");
+								}
+							}
+						})
+						
+					});
+
+                });
+				
+                $(".trashTranscript").click(function () {
+					console.log("Delete clicked")
+					console.log("delete menu should pop up")
+					$('.deleteBody').html('Are you sure you want to delete this transcription?')
+					$('.deleteWrap').css('display','block');
+					console.log($(this).parent().attr("id"))
+					var paramater = $(this).closest('.transcript_display').attr("id");
+					$('.deleteButton').unbind().click(function(){
+						console.log('delete annotations')
+						console.log(paramater)
 						$('.deleteWrap').css('display','none');
 						$.ajax({
 							url: "<?php echo Router::url('/', true); ?>api/annotations/" + paramater + ".json",
@@ -2681,7 +2713,13 @@
         oldzoom = 1,
         endIndex =
         <?php $length = count($pages); echo "$length";?> / visible -1;
-
+//		if(index == 0){
+//			$('#button-left').css('display', 'none');
+//			$('#other-resources-container').css('width', '90%');
+//		}
+//		else{
+//			$('#button-left').css('display', 'block');
+//		}
         for(var i=0; i
         <$pics.length; i++){
             $pics[i].style.borderColor = "#0094BC";
@@ -2706,10 +2744,10 @@
             event.preventDefault();
 			console.log(index);
             if(index < endIndex ){
-                if(index == 0){
-                    //$('#button-left').css('display', 'block');
-                    //$('#other-resources-container').css('width', '90%');
-                }
+//                if(index == 0){
+//                    $('#button-left').css('display', 'none');
+//                    $('#other-resources-container').css('width', '90%');
+//                }
                 index++;
                 visible = 2;
                 shift = visible * 220;
@@ -2929,14 +2967,14 @@
 
     function getComments() {
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>comments/findall",
+            url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
             type: "POST",
             data: {
                 id: "<?php echo $resource['kid']; ?>"
             },
             success: function (data) {
                 $(".commentContainer").empty();
-                console.log(data);
+
                 $.each(data, function (index, comment) {
                     if (!comment.parent_id) {
                         $(".commentContainer").append(
@@ -3108,6 +3146,7 @@
 	})
 	$('.resources-fullscreen-icon').click(setExpand);
 	$('.fullscreenInner').draggable();
+	
 	$('.fullscreenInner').bind('wheel',function(e){
 		
 		if (zoomOption < 1.25 || zoomOption >.7 )
