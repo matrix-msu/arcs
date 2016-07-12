@@ -70,7 +70,7 @@
 		    
 		    <div id="author-buttons" class="btn-group actions-left">
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Author
+		      	Creator
 		      	<span class="pointerDown sort-arrow"></span>
 		      </button>
 		      <ul class="dropdown-menu">
@@ -79,7 +79,8 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
+			<!--
 		    <div id="data-buttons" class="btn-group actions-left">
 		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Data
@@ -91,6 +92,7 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
+		    -->
 
 			<div id="options-buttons" class="btn-group actions-right">
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -253,38 +255,38 @@
 		el: $('.wrap')
 	});
 
-	function toggle_search_visibility() {
-	  if(e.style.visibility == 'hidden') {
-		  e.style.visibility = 'visible';
-	  }
-	}
-
-
-
-	$("#advanced_search_button").click(function (e) {
-		console.log("Hi ad but clicked");
-		var e = document.getElementById("search-results-wrapper");
-		e.style.visibility = 'visible';
-
-	});
-
-	function movePage() {
-		window.location.hash = "searchJump";
-	}
-
-	/*$(document).ready(function () {
-	$("li").click(function () {
-		$('li > ul').not($(this).children("ul")).hide();
-		$(this).children("ul").toggle();
-	});
-	});*/
-
-	/* function for page numbers */
-	$('.pageNumber').click(function(){
-	  /* console.log(this.id); */
-	  $('.pageNumber').removeClass('selected');
-	  $(this).addClass('selected');
-	  /* add functions here, use this.id to identify page number. */
-	});
+//	function toggle_search_visibility() {
+//	  if(e.style.visibility == 'hidden') {
+//		  e.style.visibility = 'visible';
+//	  }
+//	}
+//
+//
+//
+//	$("#advanced_search_button").click(function (e) {
+//		console.log("Hi ad but clicked");
+//		var e = document.getElementById("search-results-wrapper");
+//		e.style.visibility = 'visible';
+//
+//	});
+//
+//	function movePage() {
+//		window.location.hash = "searchJump";
+//	}
+//
+//	/*$(document).ready(function () {
+//	$("li").click(function () {
+//		$('li > ul').not($(this).children("ul")).hide();
+//		$(this).children("ul").toggle();
+//	});
+//	});*/
+//
+//	/* function for page numbers */
+//	$('.pageNumber').click(function(){
+//	  /* console.log(this.id); */
+//	  $('.pageNumber').removeClass('selected');
+//	  $(this).addClass('selected');
+//	  /* add functions here, use this.id to identify page number. */
+//	});
 
 </script>

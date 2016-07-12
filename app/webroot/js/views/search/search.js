@@ -487,6 +487,8 @@
           $("#1").addClass('currentPage');
           $("#1").html(1);
           e.preventDefault();
+          $('.flex-container').empty();
+          $('.flex-container').append('<img src="/~arnold.mutayoba/arcs/img/arcs-preloader.gif">');
           $('#search-results-wrapper').css('visibility', 'visible');
           return search();
         }

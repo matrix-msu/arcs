@@ -569,6 +569,9 @@
         }
         val = val2;
         e.preventDefault();
+        $('.flex-container').empty();
+        $('.flex-container').append('<img src="/~arnold.mutayoba/arcs/img/arcs-preloader.gif">');
+        $('#search-results-wrapper').css('visibility', 'visible');
         return advancedSearch(val);
       });
     });

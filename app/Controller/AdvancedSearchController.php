@@ -418,13 +418,13 @@ class AdvancedSearchController extends AppController {
 
             $response['results'] = $returnResults;
             $response['total'] = count($response['results']);
-            $numberOfPages = ceil($response['total']/$perPage);
-            $skip = ($page-1)*$perPage;
-            $response['display'] = array_slice($response['results'],$skip,$perPage);
-            $response['pages'] = $numberOfPages;
-            $response['pageNumber'] = $page;
-            $response['numberPerPage'] = $perPage;  //pass this variable in eventually
-            $response['skip'] = $skip;
+//            $numberOfPages = ceil($response['total']/$perPage);
+//            $skip = ($page-1)*$perPage;
+//            $response['display'] = array_slice($response['results'],$skip,$perPage);
+//            $response['pages'] = $numberOfPages;
+//            $response['pageNumber'] = $page;
+//            $response['numberPerPage'] = $perPage;  //pass this variable in eventually
+//            $response['skip'] = $skip;
 //			$this->layout = false;
 //				$this->Post->recursive = 0;
 //				$this-paginate = array(

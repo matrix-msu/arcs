@@ -499,6 +499,9 @@ class arcs.views.advanced_search.AdvancedSearch extends Backbone.View
         x++
       val = val2
       e.preventDefault()
+      $('.flex-container').empty()
+      $('.flex-container').append('<img src="/~arnold.mutayoba/arcs/img/arcs-preloader.gif">');
+      $('#search-results-wrapper').css('visibility','visible')
       advancedSearch(val)
 
   _render: (results, append=false) ->

@@ -100,7 +100,7 @@
 		    
 		    <div id="author-buttons" class="btn-group actions-left">
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Author
+		      	Creator
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
@@ -109,8 +109,9 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
-		    <div id="data-buttons" class="btn-group actions-left">
+
+		    <!--
+			<div id="data-buttons" class="btn-group actions-left">
 		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Data
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -121,6 +122,7 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
+		    -->
 
 			<div id="options-buttons" class="btn-group actions-right">
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
