@@ -812,5 +812,19 @@ class UsersController extends AppController
         ));
         $this->json(200, $results);
     }
+
+    /**
+     * Return all user names for the collections permissions on user profile page.
+     */
+    public function getAllUsers()
+    {
+        $model = $this->modelClass;
+        $results = $this->$model->find('all', array(
+            'conditions' => array('not' => array('name' => null)),
+            'fields' => array('name', 'id'),
+            'order' => 'name'
+        ));
+        $this->json(200, $results);
+    }
 }
 ?>

@@ -75,8 +75,12 @@ class arcs.views.Profile extends Backbone.View
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
       src = arcs.baseURL + 'img/arcs-preloader.gif'
-      if $(e.currentTarget).next().children().eq(0).prop("tagName") isnt 'IMG'
-        $(e.currentTarget).next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
+      console.log("open click here")
+      console.log($(e.currentTarget).nextAll('.results:first').children().eq(0))
+      console.log($(e.currentTarget).nextAll('.results:first'))
+      #console.log($(e.currentTarget).next('.results'))
+      if $(e.currentTarget).nextAll('.results:first').children().eq(0).prop("tagName") isnt 'IMG'
+        $(e.currentTarget).nextAll('.results:first').prepend('<img src="'+src+'" alt="SeeAll.svg">')
     console.log($el)
     @renderDetails $el, limit
     # Recent versions of webkit will toggle <details> automatically.

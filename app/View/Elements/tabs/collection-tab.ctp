@@ -1,6 +1,6 @@
 <div class="tab-pane" id="collections-tab">
 <!-- pre>
-<?php //print_r($user_info);//var_dump($user_info); ?>
+<?php print_r($user_info);//var_dump($user_info); ?>
 </pre -->
 <?php if (empty($user_info['Collection'])): ?>
     <h3>No collections</h3>
@@ -47,7 +47,7 @@
                         <h4></h4>
                         <h5><?php echo $collection['date']; ?></h5>
 
-                        <h4 class="edit-btn" style="float:right;padding-right:10px">EDIT COLLECTION</h3>
+                        <h4 class="edit-btn" data-permission="<?php echo $collection['public']; ?>" style="float:right;padding-right:10px">EDIT COLLECTION</h3>
                     </summary>
 
                     <div class="results">

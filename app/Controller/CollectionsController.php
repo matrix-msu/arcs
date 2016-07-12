@@ -242,4 +242,47 @@ class CollectionsController extends AppController {
         ));
         $this->json(200, $results);
     }
+
+    public function editCollection()
+    {
+        //// Start SQL Area
+        ///////////////////
+        include_once("../Config/database.php");
+        $db = new DATABASE_CONFIG();
+        $db_object =  (object) $db;
+        $db_array = $db_object->{'default'};
+        $response['db_info'] = $db_array['host'];
+        $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+        if ($mysqli->connect_error) {
+            die('Connect Error (' . $mysqli->connect_errno . ') '
+                . $mysqli->connect_error);
+        }
+        //get the collection id from the id
+        $sql = "SELECT collections.collection_id
+                    FROM arcs_dev.collections
+                    WHERE collections.id ='".$_POST['id']."';";
+        $result = $mysqli->query($sql);
+        $row = mysqli_fetch_assoc($result);
+        //$collection_id2[] = $row;
+        //$results['colid1'] = $row;
+        //$results['colid2'] = $row[0];
+        $collection_id = $row{collection_id};
+        //$collection_id = $collection_id->collection_id;
+        //$results['colid2'] = $collection_id;
+
+
+        //Update the collections permissions by collection_id
+        $sql = "UPDATE collections
+                    SET collections.public = '".$_POST['permission']."'
+                    WHERE collections.collection_id ='".$collection_id."';";
+        $result = $mysqli->query($sql);
+        //while($row = mysqli_fetch_assoc($result))
+            //$collections[] = $row;
+        $results['id'] = $_POST['id'];
+        $results['permission'] = $_POST['permission'];
+        $results['sql'] = $sql;
+        $results['result'] = $result;
+        $this->json(200, $results);
+    }
 }

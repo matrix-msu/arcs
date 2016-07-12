@@ -96,7 +96,7 @@ class User extends AppModel {
                 //Get a collection_id from the id
                 //Get the title
                 //Get the newest date
-                $sql = "SELECT DISTINCT collection_id, id, title, max(modified) AS DATE
+                $sql = "SELECT DISTINCT collection_id, id, title, max(modified) AS DATE, public
                         FROM arcs_dev.collections 
                         WHERE collections.user_id ='" . $r['id'] . "'
                         GROUP BY title
@@ -117,7 +117,8 @@ class User extends AppModel {
 
                     $temp_array = array('id' => $row['id'],
                         'title' => $row['title'],
-                        'date' => $return_date);
+                        'date' => $return_date,
+                        'public' => $row['public']);
                     $test[] = $temp_array;
                 }
                 //$response['collection_table_id'] = $collection_table_id;

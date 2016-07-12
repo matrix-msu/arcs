@@ -2455,8 +2455,8 @@
                 id: "<?php echo $resource['kid']; ?>"
             },
             success: function (data) {
-                console.log("memberships here");
-                console.log(data);
+                //console.log("memberships here");
+                //console.log(data);
                 //console.log(data.collections);
                 //console.log(data.collections.length);
                 numCollections = data.collections.length;
