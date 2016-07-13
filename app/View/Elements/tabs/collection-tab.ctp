@@ -47,14 +47,14 @@
                         <h4></h4>
                         <h5><?php echo $collection['date']; ?></h5>
 
-                        <h4 class="edit-btn" data-permission="<?php echo $collection['public']; ?>" style="float:right;padding-right:10px">EDIT COLLECTION</h3>
+                        <h4 class="edit-btn" data-permission="<?php echo $collection['public']; ?>" data-members="<?php echo $collection['members']; ?>" data-delete-resources="" style="float:right;padding-right:10px">EDIT COLLECTION</h3>
                     </summary>
 
                     <div class="results">
                         <!-- ul class="resource-thumbs">
                             <?php foreach( $collection as $resource ): ?>
 
-                                    <li class="resource-thumb">
+                                    <li class="resource-thumb" >
                                         <a href="<?php echo $url.$resource['id'] ?>">
                                             <img src="<?php echo $resource['thumb'] ?>" alt="resource" >
                                         </a>

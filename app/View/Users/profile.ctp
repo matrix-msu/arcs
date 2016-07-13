@@ -119,7 +119,11 @@
 <script type='text/javascript'>
 arcs.profileView = new arcs.views.users.Profile({id: '<?php echo $user_info['id']; ?>'});
 
+//Start Edit Collections area
+
 var allUsers = new Array;
+var membersArray = new Array;
+
 $(document).ready(function() {
     $.ajax({
         url: "<?php echo Router::url('/', true); ?>users/getAllUsers",
@@ -148,22 +152,28 @@ $(document).ready(function() {
 $(".edit-btn").click(function (e) {
     e.stopPropagation();
     e.preventDefault();
+
+    //edit collection button click
     if( $(e.target).hasClass('edit-btn')){
         console.log("clicked edit collection");
         var el_details = $(e.target).parent().parent();
         var summary = $(e.target).parent();
+
+        //drawer is closed. open it and end.
         if( $(el_details).hasClass("closed") ) {
             console.log("details is closed");
             summary[0].click();
+
+        //drawer is open. Add in the edit collections stuffs
         }else{
             //var el_results = $(e.target).parent().nextAll('.results');
             //console.log( el_results );
             //el_results.prepend("hello testing prepend");
             var id = $(e.target).parent().parent().data('id');
-            var string = '<div class="editRadio"><input type="radio" name="'+id+'" value="1"> Display Publicly on Site</div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="2"> Login Necessary to View</div>';
+            var string = '<div class="editRadio"><input type="radio" name="'+id+'" value="1" class="not-users-radio"> Display Publicly on Site</div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="2" class="not-users-radio"> Login Necessary to View</div>';
             string += '<div class="editRadio"><input type="radio" name="'+id+'" value="3" class="users-radio"> Only Selected Users can View</div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="4"> Only I can View</div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="4" class="not-users-radio"> Only I can View</div>';
             string += '<form class="uploadForm" id="urlform" method="post" enctype="multipart/form-data">';
             string += '<fieldset class="users-fieldset"></fieldset>';
             string += '</form>';
@@ -181,66 +191,149 @@ $(".edit-btn").click(function (e) {
                 console.log("selected users click");
                 //e.stopPropagation();
                 //e.preventDefault();
-                var html = '<div id="collections-filter" class="dropdown">'+
-                              '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter By'+
-                              '<span class="pointerDown filter-arrow"></span></button>'+
-                              '<ul class="dropdown-menu">'+
-                                '<li><a id="new-old" href="#">Newest to Oldest</a></li>'+
-                                '<li><a id="old-new" href="#">Oldest to Newest</a></li>'+
-                                '<li><a id="popular" href="#">Most Popular</a></li>'+
-                                '<li class="dropdown-submenu"><a id="author" class="author-arrow-toggle" href="#">Author'+
-                            			'<span class="pointerDown author-arrow" style="position:static"></span></a>'+
-                            		'<ul class="dropdown-menu" id="author-dropdown" style="left:100%;margin-top:-25px;">'+
-                            			'<li><a class="author-filter" href="#">No Authors Available</a></li>'+
-                            		'</ul>'+
-                            	'</li>'+
-                                '<li><a id="a-z" href="#">A-Z</a></li>'+
-                                '<li><a id="z-a" href="#">Z-A</a></li>'+
-                              '</ul>'+
-                            '</div>';
-                var html2 = '<div id="collections-filter" class="dropdown">'+
-                              '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter By'+
-                              '<span class="pointerDown filter-arrow"></span></button>'+
-                              '<ul class="dropdown-menu">';
-                var html3 = '<div class="chosen-container chosen-container-multi" style="width: 178px;" title="" id="urlAuthor_chosen">'+
-                             		'<ul class="chosen-choices ui-sortable">'+
-                             		'<li class="search-field ui-sortable-handle">'+
-                             		    '<input type="text" value="SEARCH / SELECT AUTHORS" class="" autocomplete="off" style="width: 258px;margin-left:auto;">'+
-                             		'</li>'+
-                             		'</ul>'+
-                                    '<div class="chosen-drop">'+
-                                        '<ul class="chosen-results">';
+
+                var members = "";
+                members = $(e.target).parent().parent().children().eq(0).children().eq(3).attr("data-members");
+                console.log("members: " + members);
+                membersArray = members.split(';');
+                console.log(membersArray);
+
                 var html4 = '<select id ="urlAuthor" data-placeholder="Search and Select Users Who Can View this Collection" multiple class="chosen-select" style="width:90%;">';
                 allUsers.forEach( function(user){
-                    html3 += '<li class="active-result">'+user['name']+'</li>';
-                    html4 += '<option>'+user['name']+'</option>';
+                    var check = 0;
+                    membersArray.forEach( function(member) {
+                        if(user['id'] == member ){
+                            check = 1;
+                        }
+                    })
+                    if(check==0) {
+                        html4 += '<option data-id="'+user['id']+'">'+user['name']+'</option>';
+                    }
+                    if(check == 1) {
+                    html4 += '<option selected="selected" data-id="'+user['id']+'">'+user['name']+'</option>';
+                    }
                 })
-                html3 +=        '</ul>'+
-                            '</div>'+
-                          '</div>';
                 html4 += '</select>';
-                console.log("insert selected html stuff here");
-                console.log( $(e.target).parent().parent().children().next(".uploadForm").children().eq(0) );
+                //console.log("insert selected html stuff here");
+                //console.log( $(e.target).parent().parent().children().next(".uploadForm").children().eq(0) );
+
                 //fill in the select
                 $(e.target).parent().parent().children().next(".uploadForm").children().eq(0).html(html4);
 
-                /////uses the choses.js to turn the select into a fancy thingy
+                /////uses the chosen.js to turn the select into a fancy thingy
                 $(".chosen-select").chosen();
 
+            });
+            $(".not-users-radio").click(function (e) {
+                $(e.target).parent().parent().children().next(".uploadForm").children().eq(0).html("");
             });
             if( permission == 3 ){
                 console.log("selected users onload");
                 //trigger a click on the selected users radio button to display the search bar
                 $(e.target).parent().parent().children().eq(permission).children().eq(0).trigger("click");
             }
+
+            //do stuff for the delete resource thumb buttons
+            console.log("delete resource thumbs setup");
+            console.log( $(e.target).parent().nextAll(".results").children().eq(0).children() );
+            $(e.target).parent().nextAll(".results").children().eq(0).children().each(function(index, element) {
+                console.log("kid:"+ $(element).attr("data-resource-kid") );
+                console.log("colid:"+ $(element).attr("data-colid") );
+                stringspan = '<span class="delete-resource" style="background-color:rgb(0,147,190);position:relative;float:right;top:50%;transform:translateY(-800%);width:20px;height:20px">'+
+                                '<img src= "../../img/Close.svg"/></span>';
+                $(element).append(stringspan);
+            });
+            $(".delete-resource").click(function (e) {
+                console.log("clicked delete resource span");
+                console.log( $(e.target).prop("tagName") );
+                var deleteString = "";
+                var currentDeleteString = "";
+
+                if( $(e.target).prop("tagName") == 'IMG' ){
+                    deleteString += $(e.target).parent().parent().attr("data-colid") + ";";
+                    currentDeleteString = $(e.target).parent().parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources");
+                    $(e.target).parent().parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
+                    $(e.target).parent().parent().remove();
+
+                }else if( $(e.target).prop("tagName") == 'SPAN' ){
+                    deleteString += $(e.target).parent().attr("data-colid") + ";";
+                    currentDeleteString = $(e.target).parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources");
+                    $(e.target).parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
+                    $(e.target).parent().remove();
+                }
+            });
         }
+    //save collection button click
     }else if( $(e.target).hasClass('save-btn') ){
         console.log("clicked save collection btn");
+
+        //////delete and resources that should be deleted
+        console.log("delete resources");
+        console.log( $(e.target).attr("data-delete-resources") );
+        var deleteResourceArray = new Array;
+        var deleteString = "";
+        deleteString = $(e.target).attr("data-delete-resources");
+        deleteResourceArray = deleteString.split(';');
+        if( deleteResourceArray[deleteResourceArray.length - 1] == "" ){
+            deleteResourceArray.pop();
+        }
+        console.log("delete resources array:");
+        console.log(deleteResourceArray);
+
+        ///delete each resource from the collection
+        deleteResourceArray.forEach(function(index) {
+            console.log(index);
+            var formdata = {
+                id: index
+            }
+            $.ajax({
+                url: "<?php echo Router::url('/', true); ?>collections/deleteResource",
+                type: "POST",
+                data: formdata,
+                statusCode: {
+                    200: function (data) {
+                        console.log("Success");
+                        console.log(data);
+                    },
+                    400: function () {
+                        console.log("Bad Request");
+                    },
+                    405: function () {
+                        console.log("Method Not Allowed");
+                    }
+                }
+            });
+        });
+
+        //////update the permission and members for the collection
         var col_permission = $('input[name='+$(e.target).parent().parent().data('id')+']:checked').val()
         console.log(col_permission);
+
+        //get the chosen user indexs
+        var selectedUsers = [];
+        $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(1).children().eq(0).children(".search-choice").each(function(index, element) {
+            selectedUsers.push($(element).children().eq(1).attr("data-option-array-index") );
+        });
+        var selectedUserIds = [];
+        var stringUserIds = "";
+        var count = 0;
+
+        //get the actual id of each chosen user and put it into the string
+        selectedUsers.forEach(function(index) {
+            console.log(index);
+            selectedUserIds.push($(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id") );
+            count++;
+            stringUserIds += $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id");
+            stringUserIds += ";";
+        });
+        console.log(selectedUserIds);
+        $(e.target).attr("data-members", stringUserIds); //update the attr data-members for next time.
+
+        //submit collection edits
         var formdata = {
             id: $(e.target).parent().parent().data('id'),
-            permission: col_permission
+            permission: col_permission,
+            viewUsers: stringUserIds
         }
         $.ajax({
             url: "<?php echo Router::url('/', true); ?>collections/editCollection",
@@ -255,6 +348,16 @@ $(".edit-btn").click(function (e) {
                     $(e.target).removeClass("save-btn");
                     $(e.target).addClass("edit-btn");
                     $(e.target).parent().parent().children().remove(".editRadio");
+                    $(e.target).parent().parent().children().remove(".uploadForm");
+
+                    console.log("got to save edit end");
+                    //update the drawer's collection id
+                    var newCollectionId = "";
+                    newCollectionId = $(e.target).parent().next().children().eq(0).children().eq(0).attr("data-colid");
+                    $(e.target).parent().parent().attr("data-id", newCollectionId);
+                    //close the drawer now that save edits is done
+                    $(e.target).parent().trigger("click");
+                    console.log("got to save edit finished");
 
                 },
                 400: function () {
@@ -265,6 +368,7 @@ $(".edit-btn").click(function (e) {
                 }
             }
         });
+
     }
 });
 </script>
