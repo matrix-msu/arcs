@@ -126,20 +126,17 @@ var membersArray = new Array;
 
 $(document).on('click', ".save-btn", function(e) {
     console.log("got to save btn function thing");
-     e.stopPropagation();
-        e.preventDefault();
+    e.stopPropagation();
+    e.preventDefault();
 });
 
 $(document).ready(function() {
-$('body').on('click', ".save-btn", function(e) {
-    console.log("got to save btn function thing");
-     e.stopPropagation();
+
+    $('body').on('click', ".save-btn", function(e) {
+        console.log("got to save btn function thing");
+        e.stopPropagation();
         e.preventDefault();
-});
-/*$(".save-btn").click(function (e) {
-    e.stopPropagation();
-    e.preventDefault();
-});*/
+    });
 
     $.ajax({
         url: "<?php echo Router::url('/', true); ?>users/getAllUsers",
@@ -336,6 +333,10 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
                     });
                 });
 
+                //if there are no more resources in the drawer, then remove the collection from the page
+                if( $(e.target).parent().nextAll('.results').children().eq(0).children().length == 0 ) {
+                    $(e.target).parent().parent().remove();
+                }
 
                 //////update the permission and members for the collection
                 var col_permission = $('input[name='+$(e.target).parent().parent().data('id')+']:checked').val()
