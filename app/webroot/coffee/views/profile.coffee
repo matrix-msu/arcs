@@ -65,11 +65,15 @@ class arcs.views.Profile extends Backbone.View
     else if e.currentTarget.className == 'btn-show-all'
       $el = $(e.currentTarget).parent().parent().parent().parent()
       $(e.currentTarget).removeClass('btn-show-all')
+      $(e.currentTarget).addClass('show-all-loading-icon')
       #$(e.currentTarget).parent().hide()
       src = arcs.baseURL + 'img/arcs-preloader.gif'
       $(e.currentTarget).find("img:first").attr('src', src);
       limit = 0
     else
+      if $(e.currentTarget).children().last().hasClass('save-btn')
+        console.log("open drawer and save btn")
+        return
       $el = $(e.currentTarget).parent()
       limit = 1
       $el.toggleAttr('open')

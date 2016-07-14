@@ -184,6 +184,15 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
             console.log("details is closed");
             summary[0].click();
 
+        //drawer is open but there is a show all button. Click that and end.
+        }else if( $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0).hasClass("btn-show-all") ) {
+            //console.log("edit btn click: there is a show all button");
+            $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0)[0].click();
+
+        //drawer is open with loading icon
+        }else if( $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0).hasClass("show-all-loading-icon") ) {
+            //do nothing
+
         //drawer is open. Add in the edit collections stuffs
         }else{
             //var el_results = $(e.target).parent().nextAll('.results');
@@ -379,8 +388,9 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
                             newCollectionId = $(e.target).parent().next().children().eq(0).children().eq(0).attr("data-colid");
                             $(e.target).parent().parent().attr("data-id", newCollectionId);
                             //close the drawer now that save edits is done
-                            $(e.target).parent()[0].click();
+
                             $(e.target).parent().nextAll(".results").children().eq(0).children().remove(".resource-thumb");
+                            $(e.target).parent()[0].click();
                             console.log("got to save edit finished");
 
                         },
