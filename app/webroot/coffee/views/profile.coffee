@@ -120,7 +120,7 @@ class arcs.views.Profile extends Backbone.View
 
   #Josh- collections fills in the template here!!
   renderDetails: ($el, limit) ->
-    id = $el.data 'id'
+    id = $el.attr 'data-id'
     query = encodeURIComponent('collection_id:"' + id + '"')
     query2 = arcs.baseURL + "resources/search?"
     if (limit == 1)

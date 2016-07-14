@@ -124,7 +124,23 @@ arcs.profileView = new arcs.views.users.Profile({id: '<?php echo $user_info['id'
 var allUsers = new Array;
 var membersArray = new Array;
 
+$(document).on('click', ".save-btn", function(e) {
+    console.log("got to save btn function thing");
+     e.stopPropagation();
+        e.preventDefault();
+});
+
 $(document).ready(function() {
+$('body').on('click', ".save-btn", function(e) {
+    console.log("got to save btn function thing");
+     e.stopPropagation();
+        e.preventDefault();
+});
+/*$(".save-btn").click(function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+});*/
+
     $.ajax({
         url: "<?php echo Router::url('/', true); ?>users/getAllUsers",
         type: "POST",
@@ -149,7 +165,11 @@ $(document).ready(function() {
     });
 });
 
-$(".edit-btn").click(function (e) {
+
+
+
+
+$(".edit-btn").parent().on('click', ".edit-btn", function (e) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -262,113 +282,118 @@ $(".edit-btn").click(function (e) {
                     $(e.target).parent().remove();
                 }
             });
-        }
-    //save collection button click
-    }else if( $(e.target).hasClass('save-btn') ){
-        console.log("clicked save collection btn");
+            //attach the save button listener now that the edit btn is finished.
+            $(".save-btn").one('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                console.log("clicked save collection btn");
 
-        //////delete and resources that should be deleted
-        console.log("delete resources");
-        console.log( $(e.target).attr("data-delete-resources") );
-        var deleteResourceArray = new Array;
-        var deleteString = "";
-        deleteString = $(e.target).attr("data-delete-resources");
-        deleteResourceArray = deleteString.split(';');
-        if( deleteResourceArray[deleteResourceArray.length - 1] == "" ){
-            deleteResourceArray.pop();
-        }
-        console.log("delete resources array:");
-        console.log(deleteResourceArray);
+                //////delete and resources that should be deleted
+                console.log("delete resources");
+                console.log( $(e.target).attr("data-delete-resources") );
+                var deleteResourceArray = new Array;
+                var deleteString = "";
+                deleteString = $(e.target).attr("data-delete-resources");
+                $(e.target).attr("data-delete-resources", "");
+                deleteResourceArray = deleteString.split(';');
+                if( deleteResourceArray[deleteResourceArray.length - 1] == "" ){
+                    deleteResourceArray.pop();
+                }
+                console.log("delete resources array:");
+                console.log(deleteResourceArray);
 
-        ///delete each resource from the collection
-        deleteResourceArray.forEach(function(index) {
-            console.log(index);
-            var formdata = {
-                id: index
-            }
-            $.ajax({
-                url: "<?php echo Router::url('/', true); ?>collections/deleteResource",
-                type: "POST",
-                data: formdata,
-                statusCode: {
-                    200: function (data) {
-                        console.log("Success");
-                        console.log(data);
-                    },
-                    400: function () {
-                        console.log("Bad Request");
-                    },
-                    405: function () {
-                        console.log("Method Not Allowed");
+                ///delete each resource from the collection
+                deleteResourceArray.forEach(function(index) {
+                    console.log(index);
+                    var formdata = {
+                        id: index
                     }
+                    $.ajax({
+                        url: "<?php echo Router::url('/', true); ?>collections/deleteResource",
+                        type: "POST",
+                        data: formdata,
+                        statusCode: {
+                            200: function (data) {
+                                console.log("Success");
+                                console.log(data);
+                            },
+                            400: function () {
+                                console.log("Bad Request");
+                            },
+                            405: function () {
+                                console.log("Method Not Allowed");
+                            }
+                        }
+                    });
+                });
+
+
+                //////update the permission and members for the collection
+                var col_permission = $('input[name='+$(e.target).parent().parent().data('id')+']:checked').val()
+                console.log(col_permission);
+
+                //get the chosen user indexs
+                var selectedUsers = [];
+                $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(1).children().eq(0).children(".search-choice").each(function(index, element) {
+                    selectedUsers.push($(element).children().eq(1).attr("data-option-array-index") );
+                });
+                var selectedUserIds = [];
+                var stringUserIds = "";
+                var count = 0;
+
+                //get the actual id of each chosen user and put it into the string
+                selectedUsers.forEach(function(index) {
+                    console.log(index);
+                    selectedUserIds.push($(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id") );
+                    count++;
+                    stringUserIds += $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id");
+                    stringUserIds += ";";
+                });
+                console.log(selectedUserIds);
+                $(e.target).attr("data-members", stringUserIds); //update the attr data-members for next time.
+
+                //submit collection edits
+                var formdata = {
+                    id: $(e.target).parent().parent().data('id'),
+                    permission: col_permission,
+                    viewUsers: stringUserIds
                 }
+                $.ajax({
+                    url: "<?php echo Router::url('/', true); ?>collections/editCollection",
+                    type: "POST",
+                    data: formdata,
+                    statusCode: {
+                        200: function (data) {
+                            //console.log("Success");
+                            //console.log(data);
+                            $(e.target).attr("data-permission", col_permission);
+                            $(e.target).text("EDIT COLLECTION");
+                            $(e.target).removeClass("save-btn");
+                            $(e.target).addClass("edit-btn");
+                            $(e.target).parent().parent().children().remove(".editRadio");
+                            $(e.target).parent().parent().children().remove(".uploadForm");
+
+                            console.log("got to save edit end");
+                            //update the drawer's collection id
+                            var newCollectionId = "";
+                            newCollectionId = $(e.target).parent().next().children().eq(0).children().eq(0).attr("data-colid");
+                            $(e.target).parent().parent().attr("data-id", newCollectionId);
+                            //close the drawer now that save edits is done
+                            $(e.target).parent()[0].click();
+                            $(e.target).parent().nextAll(".results").children().eq(0).children().remove(".resource-thumb");
+                            console.log("got to save edit finished");
+
+                        },
+                        400: function () {
+                            console.log("Bad Request");
+                        },
+                        405: function () {
+                            console.log("Method Not Allowed");
+                        }
+                    }
+                });
             });
-        });
-
-        //////update the permission and members for the collection
-        var col_permission = $('input[name='+$(e.target).parent().parent().data('id')+']:checked').val()
-        console.log(col_permission);
-
-        //get the chosen user indexs
-        var selectedUsers = [];
-        $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(1).children().eq(0).children(".search-choice").each(function(index, element) {
-            selectedUsers.push($(element).children().eq(1).attr("data-option-array-index") );
-        });
-        var selectedUserIds = [];
-        var stringUserIds = "";
-        var count = 0;
-
-        //get the actual id of each chosen user and put it into the string
-        selectedUsers.forEach(function(index) {
-            console.log(index);
-            selectedUserIds.push($(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id") );
-            count++;
-            stringUserIds += $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id");
-            stringUserIds += ";";
-        });
-        console.log(selectedUserIds);
-        $(e.target).attr("data-members", stringUserIds); //update the attr data-members for next time.
-
-        //submit collection edits
-        var formdata = {
-            id: $(e.target).parent().parent().data('id'),
-            permission: col_permission,
-            viewUsers: stringUserIds
         }
-        $.ajax({
-            url: "<?php echo Router::url('/', true); ?>collections/editCollection",
-            type: "POST",
-            data: formdata,
-            statusCode: {
-                200: function (data) {
-                    //console.log("Success");
-                    //console.log(data);
-                    $(e.target).attr("data-permission", col_permission);
-                    $(e.target).text("EDIT COLLECTION");
-                    $(e.target).removeClass("save-btn");
-                    $(e.target).addClass("edit-btn");
-                    $(e.target).parent().parent().children().remove(".editRadio");
-                    $(e.target).parent().parent().children().remove(".uploadForm");
-
-                    console.log("got to save edit end");
-                    //update the drawer's collection id
-                    var newCollectionId = "";
-                    newCollectionId = $(e.target).parent().next().children().eq(0).children().eq(0).attr("data-colid");
-                    $(e.target).parent().parent().attr("data-id", newCollectionId);
-                    //close the drawer now that save edits is done
-                    $(e.target).parent().trigger("click");
-                    console.log("got to save edit finished");
-
-                },
-                400: function () {
-                    console.log("Bad Request");
-                },
-                405: function () {
-                    console.log("Method Not Allowed");
-                }
-            }
-        });
-
     }
 });
 </script>

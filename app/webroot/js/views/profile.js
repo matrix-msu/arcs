@@ -143,7 +143,7 @@
 
     Profile.prototype.renderDetails = function($el, limit) {
       var id, query, query2;
-      id = $el.data('id');
+      id = $el.attr('data-id');
       query = encodeURIComponent('collection_id:"' + id + '"');
       query2 = arcs.baseURL + "resources/search?";
       if (limit === 1) {
