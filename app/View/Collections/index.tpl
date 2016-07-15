@@ -16,7 +16,6 @@
     </script>
   </div>
 {% endif %}
-
 <div class="collection-list-wrapper">
     <h1>Collections</h1><br>
 

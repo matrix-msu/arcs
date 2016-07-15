@@ -16,21 +16,52 @@ class CollectionsController extends AppController {
     }
 
     /**
-     * Display all collections.
+     * Display all collections. Main collection page, initial collection list.
      */
     public function index() {
         $this->Collection->recursive = -1;
 
-        $collections = $this->Collection->find('all', array(
-            'order' => 'Collection.modified DESC'
-        ));
-        
-        $this->set('collections', $this->Collection->find('all', array(
-            'order' => 'Collection.modified DESC',
+        $user_id =  $this->Session->read('Auth.User.id');
 
-            //Josh- added this line to group by collection
-            'group' => 'collection_id'
-        )));
+        if( $user_id !== null ) { //signed in
+            $collections = $this->Collection->find('all', array(
+                'order' => 'Collection.modified DESC',
+                'conditions' => array('OR' => array(
+                    array( 'Collection.public' => '1'),
+                    array( 'Collection.public' => '2'),
+                    array( 'Collection.public' => '3'),
+                    array( 'Collection.user_id' => $user_id)
+                )),
+                'group' => 'collection_id'
+            ));
+            $count = 0;
+            foreach( $collections as $collection ){
+                $bool_delete = 1;
+                if( array_values($collection)[0]['public'] == '3'){
+                    $members =  explode(';', array_values($collection)[0]['members'] );
+                    foreach( $members as $member ){
+                        if( $member == $user_id){
+                            $bool_delete = 0;
+                        }
+                    }
+                    if( $bool_delete == 1 ){
+                        //unset( $collections[$count] );
+                        array_splice($collections, $count, 1);
+                    }
+                }
+                $count++;
+            }
+            $this->set('collections', $collections);
+
+        }else { //not signed in
+            $collections = $this->Collection->find('all', array(
+                'order' => 'Collection.modified DESC',
+                'conditions' => array('Collection.public' => '1'), //only get public collections
+                'group' => 'collection_id'
+            ));
+            $this->set('collections', $collections);
+        }
+
     }
 
     /**

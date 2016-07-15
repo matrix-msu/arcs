@@ -266,7 +266,7 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
                 console.log("kid:"+ $(element).attr("data-resource-kid") );
                 console.log("colid:"+ $(element).attr("data-colid") );
                 stringspan = '<span class="delete-resource" style="background-color:rgb(0,147,190);position:relative;float:right;top:50%;transform:translateY(-800%);width:20px;height:20px">'+
-                                '<img src= "../../img/Close.svg"/></span>';
+                                '<img src= "<?php echo Router::url('/', true); ?>img/Close.svg"/></span>';
                 $(element).append(stringspan);
             });
             $(".delete-resource").click(function (e) {
