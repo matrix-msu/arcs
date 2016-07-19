@@ -11292,6 +11292,9 @@ span.view-collection {
   height: 17px;
   width: 17px;
   border: solid grey 1px;
+  cursor: pointer;
+  cursor: hand;
+  outline: none;
 }
 .profile-collection-list-wrapper .collection-list details .editRadio input:checked {
   background-color: #0093be;
@@ -11299,6 +11302,8 @@ span.view-collection {
 }
 .profile-collection-list-wrapper .collection-list details .editRadio p {
   display: inline !important;
+  cursor: pointer;
+  cursor: hand;
 }
 .profile-collection-list-wrapper .collection-list details div {
   visibility: hidden;

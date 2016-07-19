@@ -196,10 +196,10 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
             //console.log( el_results );
             //el_results.prepend("hello testing prepend");
             var id = $(e.target).parent().parent().data('id');
-            var string = '<div class="editRadio" style="margin-left:20px"><input type="radio" name="'+id+'" value="1" class="not-users-radio"><p> Display Publicly on Site</p></div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="2" class="not-users-radio"><p> Login Necessary to View</p></div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="3" class="users-radio"><p> Only Selected Users can View</p></div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="4" class="not-users-radio"><p> Only I can View</p></div>';
+            var string = '<div class="editRadio" style="margin-left:20px"><input type="radio" name="'+id+'" value="1" class="not-users-radio"><p class="radioLabel"> Display Publicly on Site</p></div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="2" class="not-users-radio"><p class="radioLabel"> Login Necessary to View</p></div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="3" class="users-radio"><p class="radioLabel"> Only Selected Users can View</p></div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="4" class="not-users-radio"><p class="radioLabel"> Only I can View</p></div>';
             string += '<form class="uploadForm" id="urlform" method="post" enctype="multipart/form-data">';
             string += '<fieldset class="users-fieldset"></fieldset>';
             string += '</form>';
@@ -250,6 +250,10 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
                 $(".chosen-select").chosen();
 
             });
+            $(".radioLabel").click(function (e) {
+                $(e.target).prev().trigger("click");
+            });
+
             $(".not-users-radio").click(function (e) {
                 $(e.target).parent().parent().children().next(".uploadForm").children().eq(0).html("");
             });
