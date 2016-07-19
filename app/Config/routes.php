@@ -112,6 +112,15 @@
     );
 
 
+    Router::connect('/simple_search/user_verify',
+        array('controller' => 'search', 'action' => 'verify')
+    );
+
+    Router::connect('/api/simple_search/user_verify',
+        array('controller' => 'search', 'action' => 'verify')
+    );
+
+
     Router::connect('/advanced_search',
         array('controller' => 'search', 'action' => 'advance_search')
     // array('controller' => 'search', 'action' => 'sm')
@@ -198,12 +207,6 @@
     Router::connect('/api/collections/memberships',
         array('controller' => 'collections', 'action' => 'memberships')
     );
-Router::connect('/api/collections/editCollection',
-    array('controller' => 'collections', 'action' => 'editCollection')
-);
-Router::connect('/users/getAllUsers',
-    array('controller' => 'users', 'action' => 'getAllUsers')
-);
 
     Router::connect('/metadataedits/add',
         array('controller' => 'MetadataEdits', 'action' => 'add')

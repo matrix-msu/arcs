@@ -9,7 +9,7 @@
  */
 class SearchController extends AppController {
     public $name = 'Search';
-    public $uses = array('Resource');
+    public $uses = array('Resource','Users');
 
 	public $paginate = [
 		'limit' => 20,
@@ -22,10 +22,11 @@ class SearchController extends AppController {
         parent::initialize();
         $this->loadComponent('Paginator');
     }
-	
+
+
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('search', 'resources');
+        $this->Auth->allow('search', 'resources','simple_search');
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
             $this->Resource->flatten = true;
@@ -107,9 +108,9 @@ class SearchController extends AppController {
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
-                $sql = "SELECT resource_kid, id FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
+                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
             }else {
-                $sql = "SELECT resource_kid, id FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
+                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
             }
             $result = $mysqli->query($sql);
             while($row = mysqli_fetch_assoc($result))
@@ -132,7 +133,6 @@ class SearchController extends AppController {
                 $temp_array['more_results'] = $more_results;
                 $temp_kid = $row['resource_kid'];
                 $temp_array['kid'] = $temp_kid;
-                $temp_array['collection_id'] = $row['id'];
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
                 $temp_array['resource_query'] = $query;

@@ -500,7 +500,7 @@ class arcs.views.search.Search extends Backbone.View
 #    )
 
   #Activates on enter press: search
-	
+
 #  toggle_search_visibility = () -> 
 #    $('#search-results-wrapper').toggle()
   $ ->
