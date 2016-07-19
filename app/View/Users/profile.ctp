@@ -196,10 +196,10 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
             //console.log( el_results );
             //el_results.prepend("hello testing prepend");
             var id = $(e.target).parent().parent().data('id');
-            var string = '<div class="editRadio"><input type="radio" name="'+id+'" value="1" class="not-users-radio"> Display Publicly on Site</div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="2" class="not-users-radio"> Login Necessary to View</div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="3" class="users-radio"> Only Selected Users can View</div>';
-            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="4" class="not-users-radio"> Only I can View</div>';
+            var string = '<div class="editRadio" style="margin-left:20px"><input type="radio" name="'+id+'" value="1" class="not-users-radio"><p> Display Publicly on Site</p></div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="2" class="not-users-radio"><p> Login Necessary to View</p></div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="3" class="users-radio"><p> Only Selected Users can View</p></div>';
+            string += '<div class="editRadio"><input type="radio" name="'+id+'" value="4" class="not-users-radio"><p> Only I can View</p></div>';
             string += '<form class="uploadForm" id="urlform" method="post" enctype="multipart/form-data">';
             string += '<fieldset class="users-fieldset"></fieldset>';
             string += '</form>';
@@ -265,7 +265,7 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
             $(e.target).parent().nextAll(".results").children().eq(0).children().each(function(index, element) {
                 console.log("kid:"+ $(element).attr("data-resource-kid") );
                 console.log("colid:"+ $(element).attr("data-colid") );
-                stringspan = '<span class="delete-resource" style="background-color:rgb(0,147,190);position:relative;float:right;top:50%;transform:translateY(-800%);width:20px;height:20px">'+
+                stringspan = '<span class="delete-resource">'+
                                 '<img src= "<?php echo Router::url('/', true); ?>img/Close.svg"/></span>';
                 $(element).append(stringspan);
             });
