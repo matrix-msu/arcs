@@ -34,6 +34,8 @@ class CollectionsController extends AppController {
                 )),
                 'group' => 'collection_id'
             ));
+
+            //remove all the public 3 collections that the user isn't a part of
             $count = 0;
             foreach( $collections as $collection ){
                 $bool_delete = 1;
@@ -45,7 +47,6 @@ class CollectionsController extends AppController {
                         }
                     }
                     if( $bool_delete == 1 ){
-                        //unset( $collections[$count] );
                         array_splice($collections, $count, 1);
                     }
                 }

@@ -16,28 +16,29 @@
     </script>
   </div>
 {% endif %}
-<div class="collection-list-wrapper">
+<div class="collection-list-wrapper" >
     <h1>Collections</h1><br>
 
-  <div id='collections-filter' class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter By
-  <span class="pointerDown filter-arrow"></span></button>
-  <ul class="dropdown-menu">
-    <li><a id="new-old" href="#">Newest to Oldest</a></li>
-    <li><a id="old-new" href="#">Oldest to Newest</a></li>
-    <li><a id="popular" href="#">Most Popular</a></li>
-    <li class="dropdown-submenu"><a id="author" class="author-arrow-toggle" href="#">Author
-			<span class="pointerDown author-arrow" style="position:static"></span></a>
-		<ul class="dropdown-menu" id="author-dropdown" style="left:100%;margin-top:-25px;">
-			<li><a class="author-filter" href="#">No Authors Available</a></li>
+	<div id='collections-filter' class="dropdown">
+		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter By
+		<span class="pointerDown filter-arrow"></span></button>
+		<ul class="dropdown-menu">
+		<li><a id="new-old" href="#">Newest to Oldest</a></li>
+		<li><a id="old-new" href="#">Oldest to Newest</a></li>
+		<li><a id="popular" href="#">Most Popular</a></li>
+		<li class="dropdown-submenu"><a id="author" class="author-arrow-toggle" href="#">Author
+				<span class="pointerDown author-arrow" style="position:static"></span></a>
+			<ul class="dropdown-menu" id="author-dropdown" style="left:100%;margin-top:-25px;">
+				<li><a class="author-filter" href="#">No Authors Available</a></li>
+			</ul>
+		</li>
+		<li><a id="a-z" href="#">A-Z</a></li>
+		<li><a id="z-a" href="#">Z-A</a></li>
 		</ul>
-	</li>
-    <li><a id="a-z" href="#">A-Z</a></li>
-    <li><a id="z-a" href="#">Z-A</a></li>
-  </ul>
-</div>
+	</div>
 
-  <div class="collection-list" id="all-collections"><div class="search-wrapper" id ="search-wrapper"></div></div>
+		<div class="collection-list" id="all-collections"></div>
+	</div>
   <script>
     arcs.user_viewer = new arcs.views.CollectionList({
       model: arcs.models.Collection,
@@ -49,7 +50,40 @@
 		//console.log(model);
 	});
   </script>
-<div class="collection-list-wrapper">
+
+		<div id='collection-bottom-bar'>
+			<div id="collection-actions" class="search-toolbar">
+				<div id="items-per-pages-buttons" class="btn-group actions-left">
+					<button id='items-per-page-btn' class='btn dropdown-toggle' data-toggle='dropdown'>20 Items per Page
+						<span class='pointerDown sort-arrow pointerSearch'></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a class="sort-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
+						<li><a class="sort-btn" id="open-colview-btn">40 Items per Page&nbsp;</a></li>
+						<li><a class="sort-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
+					</ul>
+				</div>
+				<div id="collection-pagination">
+					<ul class="pagination">
+						<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+
+						<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
+						<div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
+						<li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
+						<li><a class='pageNumber' id='2'style="display:none" ></a></li>
+						<li><a class='pageNumber' id='3' style="display:none"></a></li>
+						<li><a class='pageNumber' id='4' style="display:none"></a></li>
+						<li><a class='pageNumber' id='5' style="display:none"></a></li>
+						<div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
+						<li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
+						<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+					</ul>
+				</div>
+
+				
+			</div>
+		</div>
+	
 
 <script>
 	//handles filter button click to display filter options

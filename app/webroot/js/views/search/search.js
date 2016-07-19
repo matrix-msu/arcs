@@ -598,6 +598,7 @@
         }
       });
       $('.sort-btn').unbind().click(function() {
+        console.log("sort-btn clicked");
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
         $('.pageNumber').removeClass('selected');
         $('.pageNumber').removeClass('currentPage');

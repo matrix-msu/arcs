@@ -284,7 +284,7 @@ class arcs.views.search.Search extends Backbone.View
 
 #  toggleSearchVisibility = () ->
 #    $('#search-results-wrapper').css('visibility', 'visibile')
-#Create an array of the page numbers. 
+#Create an array of the page numbers.  ---Josh
   fillArray = (page,lastPage) ->
     if page < 3
       page = 3
@@ -552,7 +552,7 @@ class arcs.views.search.Search extends Backbone.View
       else
         $('.currentPage').html(parseInt(temp)-1)
         adjustPage(totalResults,parseInt($('.currentPage').html()))
-    $('#dots').unbind().click ->
+    $('#dots').unbind().click -> #---Josh
       temp = parseInt($('.currentPage').html())+5
 #      console.log(temp)
 #      console.log($("#lastPage").html())
@@ -609,6 +609,7 @@ class arcs.views.search.Search extends Backbone.View
       
       return
     $('.sort-btn').unbind().click ->
+      console.log("sort-btn clicked")
       $('#items-per-page-btn').html($(this).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
       $('.pageNumber').removeClass('selected');
       $('.pageNumber').removeClass('currentPage');
