@@ -230,7 +230,7 @@ class arcs.views.CollectionList extends Backbone.View
     $('#lastPage').html(lastPage)
     #    perPage = parseInt(perPage = $('#items-per-page-btn').html().substring(0,2))
     #fullCollectionList = @collection.toJSON()
-    console.log(results[skip..(skip+numberPerPage)])
+    #console.log(results[skip..(skip+numberPerPage)])
     #$('#all-collections')[0].html arcs.tmpl 'collections/list',
      # collections: results[skip..(skip+numberPerPage)]
     #collectionsDiv = ('#all-collections')
@@ -240,8 +240,14 @@ class arcs.views.CollectionList extends Backbone.View
     #@$el.html arcs.tmpl 'collections/list',
     #  collections: currentCollectionList
     #@
+    currentCollectionList = []
+    i = skip
+    while i < (skip+numberPerPage) && i < results.length
+      currentCollectionList.push(results[i])
+      i++
+
     $('#all-collections').html arcs.tmpl 'collections/list',
-      collections: results[skip..(skip+numberPerPage)]
+      collections: currentCollectionList
 
 
     #Search.prototype._render results: totalResults[skip...(skip+numberPerPage)]

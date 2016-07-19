@@ -240,7 +240,7 @@
     };
 
     adjustPage = function(results, currentPage) {
-      var lastPage, numberPerPage, pageNum, skip, temp;
+      var currentCollectionList, i, lastPage, numberPerPage, pageNum, skip, temp;
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
       console.log("CALLED");
@@ -256,9 +256,14 @@
       skip = (pageNum - 1) * numberPerPage;
       console.log("skip: " + skip + " (skip+numberPerPage: )" + (skip + numberPerPage));
       $('#lastPage').html(lastPage);
-      console.log(results.slice(skip, +(skip + numberPerPage) + 1 || 9e9));
+      currentCollectionList = [];
+      i = skip;
+      while (i < (skip + numberPerPage) && i < results.length) {
+        currentCollectionList.push(results[i]);
+        i++;
+      }
       return $('#all-collections').html(arcs.tmpl('collections/list', {
-        collections: results.slice(skip, +(skip + numberPerPage) + 1 || 9e9)
+        collections: currentCollectionList
       }));
     };
 
