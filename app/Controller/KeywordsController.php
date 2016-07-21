@@ -133,8 +133,8 @@ class KeywordsController extends MetaResourcesController {
         $sql = "SELECT DISTINCT keywords.keyword
                     FROM arcs_dev.keywords
                     WHERE keywords.project_kid ='".$this->request->data['project_kid']."'
-                    ORDER BY keywords.count DESC
-                    LIMIT 20;";
+                    ORDER BY keywords.count DESC, keywords.created
+                    LIMIT 10;";
         $result = $mysqli->query($sql);
         while($row = mysqli_fetch_assoc($result))
             $keywords[] = $row{keyword};
