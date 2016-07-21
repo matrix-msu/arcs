@@ -211,6 +211,9 @@
     Router::connect('/metadataedits/add',
         array('controller' => 'MetadataEdits', 'action' => 'add')
     );
+    Router::connect('/keywords/add',
+        array('controller' => 'keywords', 'action' => 'add')
+    );
 
     $restful = array(
         'resources',
