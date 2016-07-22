@@ -14836,6 +14836,7 @@ footer#standard-MSU-footer {
 }
 .collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb {
   display: inline-block;
+  vertical-align: top;
 }
 .collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb a img {
   height: 100px;

@@ -113,7 +113,7 @@
                 <p class="collectionTab collectionTabNew">Add to a new collection</p>
                 <div class="collectionSearchContainer">
                     <form id="collectionSearchBarForm" onsubmit="collectionsSearch(); return false;">
-                        <input type="text" class="collectionSearchBar" placeholder="Search for collections">
+                        <input type="text" class="collectionSearchBar first" placeholder="Search for collections">
                     </form>
                     <div id="collectionSearchForm">
                         <div id="collectionSearchObjects">
@@ -1505,38 +1505,25 @@
     });
     var collectionArray = [];
     function collectionList() {
+        //console.log("collectionList");
         collectionArray = [];
         $.ajax({
             url: arcs.baseURL + "collections/titlesAndIds",
             type: "get",
             //data: "",
             success: function (data) {
-                //console.log("ajax success");
+                //console.log("collectionlist ajax success");
                 //console.log(data);
-                var arr = Object.keys(data).map(function (k) {
-                    return data[k]
-                });
-                //console.log('array below here');
-                //console.log(arr);
+
                 data.forEach(function (tempdata) {
-                    var arr = Object.keys(tempdata).map(function (k) {
-                        return tempdata[k]
+                    var temparray = $.map(tempdata, function(value, index) {
+                        return [value];
                     });
-                    //console.log(tempdata);
-                    //console.log("array below");
-                    //console.log(arr);
-                    arr.forEach(function (temparrdata) {
-                        var arr2 = Object.keys(temparrdata).map(function (k) {
-                            return temparrdata[k]
-                        });
-                        //console.log(arr2);
-                        if (arr2.length > 0)
-                            collectionArray.push(arr2);
-                    })
-
-
+                    collectionArray.push(temparray);
                 })
+
                 collectionsSearch();
+
                 //console.log("finished the ajax");
                 //console.log(collectionArray);
             }
@@ -1584,7 +1571,13 @@
     }
 
     function collectionsSearch() {
-        var query = $(".collectionSearchBar").val();
+        var query = "";
+        if( $(".collectionSearchBar").hasClass("first") ){
+            query = "";
+            $(".collectionSearchBar").removeClass("first");
+        }else {
+            query = $(".collectionSearchBar").val();
+        }
 
         // only put collections in between the div if they include the query.
         // I.E. "" is in every collection title and user_name
@@ -1592,6 +1585,9 @@
         //console.log("new search here");
         //console.log(collections);
         var populateCheckboxes = "<hr>";
+        console.log("collectionssearch");
+        console.log(query);
+        //console.log(collectionArray);
         for (var i = 0; i < collectionArray.length; i++) {
             if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
                     (collectionArray[i][2].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
@@ -1600,6 +1596,7 @@
                         + "<label for='item-" + i + "'><div style='float:left'>" + collectionArray[i][0] + " </div><div style='float:right'>" + collectionArray[i][2]+ "</div></label><br />";
             }
         }
+        //console.log(populateCheckboxes);
         $("#collectionSearchObjects").html(populateCheckboxes);
 
         var checkboxes = $("#collectionSearchObjects > input");
@@ -1725,6 +1722,7 @@
 
     // run on page load
     $(".collectionNewContainer").hide();
+    collectionList();
 
     //<?php echo "var collectionArray = ".$collections.";";?>
     //console.log("collections-here");
@@ -1735,8 +1733,6 @@
     //collectionArray.forEach(function (element) {
       //  collections.push(element['Collection']);
     //});
-    collectionList();
-    collectionsSearch();
 </script>
 
 <script>

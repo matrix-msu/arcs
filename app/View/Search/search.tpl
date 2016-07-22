@@ -9,7 +9,7 @@
 				<p class="collectionTab collectionTabNew">Add to a new collection</p>
 				<div class="collectionSearchContainer">
 					<form id="collectionSearchBarForm" onsubmit="collectionsSearch(); return false;">
-						<input type="text" class="collectionSearchBar" placeholder="Search for collections">
+						<input type="text" class="collectionSearchBar first" placeholder="Search for collections">
 					</form>
 					<div id="collectionSearchForm" >
 						<div id="collectionSearchObjects">
@@ -352,8 +352,13 @@
 		}
 
 		function collectionsSearch() {
-			var query = $(".collectionSearchBar").val();
-			console.log("search here");
+			var query = "";
+			if( $(".collectionSearchBar").hasClass("first") ){
+				query = "";
+				$(".collectionSearchBar").removeClass("first");
+			}else {
+				query = $(".collectionSearchBar").val();
+			}
 
 			// only put collections in between the div if they include the query.
 			// I.E. "" is in every collection title and user_name
@@ -595,32 +600,18 @@
 				type: "get",
 				//data: "",
 				success: function (data) {
-					//console.log("ajax success");
+					//console.log("collectionlist ajax success");
 					//console.log(data);
-					var arr = Object.keys(data).map(function (k) {
-						return data[k]
-					});
-					//console.log('array below here');
-					//console.log(arr);
+
 					data.forEach(function (tempdata) {
-						var arr = Object.keys(tempdata).map(function (k) {
-							return tempdata[k]
+						var temparray = $.map(tempdata, function(value, index) {
+							return [value];
 						});
-						//console.log(tempdata);
-						//console.log("array below");
-						//console.log(arr);
-						arr.forEach(function (temparrdata) {
-							var arr2 = Object.keys(temparrdata).map(function (k) {
-								return temparrdata[k]
-							});
-							//console.log(arr2);
-							if (arr2.length > 0)
-								collectionArray.push(arr2);
-						})
-
-
+						collectionArray.push(temparray);
 					})
+
 					collectionsSearch();
+
 					//console.log("finished the ajax");
 					//console.log(collectionArray);
 				}
