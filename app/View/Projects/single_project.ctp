@@ -36,7 +36,6 @@
                   <p class="resource-type"><?php echo $r['type'] ?></p>
                 </li>
 			    <?php endforeach ?>
-			    <pre><?php var_dump( $collections); ?></pre>
 			</ul>
 		</div>
 		<div class="proper-width">
@@ -494,10 +493,9 @@
 </html>
 
 <script>
-console.log('project script here');
-//console.log(<?php echo $collections; ?>);
-var obj = <?php echo json_encode($collections); ?>;
-console.log(obj);
+if( $('#menu').html() != 'Login / Register' ){  //remove the login message if logged in
+    $('.login_msg').remove();
+}
 arcs.user_viewer = new arcs.views.SingleProject({
   model: arcs.models.Collection,
   collection: new arcs.collections.CollectionList(<?php echo json_encode($collections); ?>),
