@@ -36,6 +36,7 @@
                   <p class="resource-type"><?php echo $r['type'] ?></p>
                 </li>
 			    <?php endforeach ?>
+			    <pre><?php var_dump( $collections); ?></pre>
 			</ul>
 		</div>
 		<div class="proper-width">
@@ -466,6 +467,8 @@
 			
         </div>
 
+
+
         <div class="greybg">
           <div class = "projectIntro">
             <h1 class="title">Search</h1>
@@ -487,11 +490,18 @@
 		</div>
 		<br><br>
 		</div>
-
-
-
-
-
-		
     </body>
 </html>
+
+<script>
+console.log('project script here');
+//console.log(<?php echo $collections; ?>);
+var obj = <?php echo json_encode($collections); ?>;
+console.log(obj);
+arcs.user_viewer = new arcs.views.SingleProject({
+  model: arcs.models.Collection,
+  collection: new arcs.collections.CollectionList(<?php echo json_encode($collections); ?>),
+  el: $('#all-collections')
+});
+arcs.user_viewer.render();
+</script>

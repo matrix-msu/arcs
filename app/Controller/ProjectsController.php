@@ -7,6 +7,7 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
+
 class ProjectsController extends AppController {
     public $name = 'Projects';
 	
@@ -124,6 +125,57 @@ class ProjectsController extends AppController {
 		// At this point collections only gives us so much. We either load the collection items separately like other places
 		// or we load them here and set them up entirely that way, I think.
 		$this->set('collections', $collections);*/
+
+
+		$this->loadModel('Collection');
+		$user_id =  $this->Session->read('Auth.User.id');
+		//$this->set('user_id', $userId);
+
+		//$collection_controller = new CollectionsController;
+
+		//$collection_controller->index();
+
+		if( $user_id !== null ) { //signed in
+			$collections = $this->Collection->find('all', array(
+				'order' => 'Collection.modified DESC',
+				'conditions' => array('OR' => array(
+					array( 'Collection.public' => '1'),
+					array( 'Collection.public' => '2'),
+					array( 'Collection.public' => '3'),
+					array( 'Collection.user_id' => $user_id)
+				)),
+				'group' => 'collection_id',
+				'limit' => 10
+			));
+
+			//remove all the public 3 collections that the user isn't a part of
+			$count = 0;
+			foreach( $collections as $collection ){
+				$bool_delete = 1;
+				if( array_values($collection)[0]['public'] == '3'){
+					$members =  explode(';', array_values($collection)[0]['members'] );
+					foreach( $members as $member ){
+						if( $member == $user_id){
+							$bool_delete = 0;
+						}
+					}
+					if( $bool_delete == 1 ){
+						array_splice($collections, $count, 1);
+					}
+				}
+				$count++;
+			}
+			$this->set('collections', $collections);
+
+		}else { //not signed in
+			$collections = $this->Collection->find('all', array(
+				'order' => 'Collection.modified DESC',
+				'conditions' => array('Collection.public' => '1'), //only get public collections
+				'group' => 'collection_id',
+				'limit' => 10
+			));
+			$this->set('collections', $collections);
+		}
 
 		$query = "Persistent Name,=,".$this->request->params['pass'][0];
 		
