@@ -1,4 +1,3 @@
-<!-- <script>console.log(checkMobile());</script> -->
 <meta id="viewport" name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"/>
 
 <div id="toolbar" class="row">
@@ -53,6 +52,7 @@
 			<div class="indexSearchIcon"></div>
 		</div>
 	<?php endif ?>
+	<?php echo $this->Html->script('searchBox.js');?>
 
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 	<!--Display regular buttons for other pages-->
