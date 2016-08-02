@@ -13,7 +13,7 @@ function checkMobile(){
 // toggles menu button
 $(document).ready(function(){
 
-	
+	console.log($('#projectMenu').height());
 	//mobile display drop down
 	$( '#hamburger' ).click(function(){
 			
@@ -71,8 +71,8 @@ $(document).ready(function(){
 		if(checkMobile()) {
 				if(($( '#log' ).css('top') === '245px') ){
 					$('#dropArrow').addClass( 'pointerUp' );
-					$( '#log' ).css('top','396px');
-					$( '#belowProjects' ).css('top','115px');
+					$( '#log' ).css('top','313px');
+					$( '#belowProjects' ).css('top','23px');
 					$( '.projects-menu' ).css('display', 'block');
 			}
 				else{
@@ -99,7 +99,7 @@ $(document).ready(function(){
 		if(checkMobile()){
 			if(($('#helpSearch').css('top') == '22px')){
 				$('#dropArrow').addClass( 'pointerUp' );
-				$( '#helpSearch' ).css('top', '175px');
+				$( '#helpSearch' ).css('top', '87px');
 				$( '.projects-menu' ).css('display', 'block');
 			}
 			else{

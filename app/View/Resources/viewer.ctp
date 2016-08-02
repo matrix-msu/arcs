@@ -2903,7 +2903,7 @@
                 current = 0,
 				$selected = $('#other-resources a .numberOverResources'),
                 keys = <?php echo json_encode(array_keys($pages)); ?>,
-        visible = 2,
+        visible = 2.96969696969696, //worked better than 3
         shift = visible * 220,
         anim = {},
         value = "",
@@ -2946,8 +2946,8 @@
 //                    $('#other-resources-container').css('width', '90%');
 //                }
                 index++;
-                visible = 2;
-                shift = visible * 220;
+                visible = 2.969696969696;
+                shift = visible * 265; //was 220px
                 value = "-=" + shift + "px";
                 anim['left'] = value;
                 $item.animate(anim, "fast");
@@ -2963,8 +2963,8 @@
                     //$('#button-left').css('display', 'none');
                     //$('#other-resources-container').css('width', '95%');
                 }
-                visible = 2;
-                shift = (visible) * 220;
+                visible = 2.969696969696;
+                shift = (visible) * 265;
                 value = "+=" + shift + "px";
                 anim['left'] = value;
                 $item.animate(anim, "fast");
