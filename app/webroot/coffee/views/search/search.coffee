@@ -505,7 +505,7 @@ class arcs.views.search.Search extends Backbone.View
 #    $('#search-results-wrapper').toggle()
   $ ->
     $(".searchBoxInput").keyup (e) ->
-#      console.log("Ran simple")
+      console.log("Ran simple")
       if e.keyCode == 13
         selectedMap = {"unselected": [],"selected": [] }
         $('.pageNumber').removeClass('selected');

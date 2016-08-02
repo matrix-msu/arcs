@@ -48,7 +48,7 @@
 	<?php else: ?>
 		<!--Display search bar for index page. Placeholder, require backend programming.-->
 		<div class="search-bar">
-			<input type="text" class="search-bar indexSearchBox" placeholder="|&nbsp;&nbsp;Search">
+			<input type="text" id="searchBar" class="search-bar indexSearchBox" placeholder="|&nbsp;&nbsp;Search">
 			<div class="indexSearchIcon"></div>
 		</div>
 	<?php endif ?>

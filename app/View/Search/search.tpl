@@ -242,22 +242,37 @@
 				<a class="search-again-link" id='top-btn'>Search again</a>
 			</div>
 		</div>
-	
+
 
 	</div>
 </div>
 <!--All this has been moved to search.coffee from here-->
+	<script>
+		$(document).ready(function(){
+			var url = window.location.href;
+			var split = url.split("/").reverse()[0];
+			console.log(split);
+			if(split != "search"){
+				$(".searchBoxInput").val(split);
+				var e = $.Event("keyup");
+				e.keyCode = 13; // # Some key code value
+				$(".searchBoxInput").trigger(e);
+			}
+		});
+
+	</script>
+
 <script>
   arcs.searchView = new arcs.views.search.Search({
     el: $('.wrap')
   });
-   
+
 //   function toggle_search_visibility() {
 //       var e = document.getElementById("search-results-wrapper");
 //       if(e.style.visibility == 'hidden')
 //       		console.log("hi");
 //	   		e.style.visibility = 'visible';
-//	   		
+//
 //    }
     /* Replaced with search.js' scrollTop */
 //    function movePage() {
@@ -265,15 +280,15 @@
 //		$('.open').removeClass('.open');
 //	    window.location.hash = "searchJump";
 //	}
-    
-	
+
+
     /*$(document).ready(function () {
     $("li").click(function () {
         $('li > ul').not($(this).children("ul")).hide();
         $(this).children("ul").toggle();
     });
 	});*/
-	
+
 //	$(".searchBoxInput").keyup(function (e) {
 //		if (e.keyCode === 13) {
 //			console.log("Hi");
@@ -291,9 +306,9 @@
 //			arcs.searchView.unselectAll();
 //			$('#toggle-select').html('SELECT');
 //		}
-//		
+//
 //	});
-//	
+//
 </script>
 <!--TO HERE-->
 

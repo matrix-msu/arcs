@@ -480,6 +480,7 @@
           	<div class="searchIcon"></div>
           	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
           </div><br>
+          <?php echo $this->Html->script('searchBox.js');?>
          <div class="proper-width">
 			<div class="asearch"><span style="cursor:pointer"><a>ADVANCED SEARCH</a></span></div>
 		</div>

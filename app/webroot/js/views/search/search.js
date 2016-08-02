@@ -481,6 +481,7 @@
 
     $(function() {
       return $(".searchBoxInput").keyup(function(e) {
+        console.log("Ran simple");
         if (e.keyCode === 13) {
           selectedMap = {
             "unselected": [],
