@@ -501,7 +501,7 @@ class SearchController extends AppController {
         $options = $this->parseParams();
 
         // This array will be used to get results from multiple schemes. i.e search mutiple schemes
-        $schemes = array(RESOURCE_SID,PROJECT_SID,SEASON_SID,SURVEY_SID,SUBJECT_SID);
+        $schemes = array(RESOURCE_SID,SUBJECT_SID);
 
         if ($query1 == ''){
             return $this->emptySearch($options);
@@ -584,26 +584,7 @@ class SearchController extends AppController {
 
             $response['results'] = $returnResults;
             $response['total'] = count($response['results']);
-//		    $numberOfPages = ceil($response['total']/$perPage);
-//			$skip = ($page-1)*$perPage;
-//			$response['display'] = array_slice($response['results'],$skip,$perPage);
-//			$response['pages'] = $numberOfPages;
-//			$response['pageNumber'] = $page;
-//			$response['numberPerPage'] = $perPage;  //pass this variable in eventually
-//			$response['skip'] = $skip;
-////			$this->layout = false;
-//				$this->Post->recursive = 0;
-//				$this-paginate = array(
-//				'limit' => 20;
-//				);
-			//$this->paginate($response['results']);
 			$this->json(200, $response);
-			
-            //$this->json(200, $this->paginate($response['results']));
-			
-			
-			 //$this->paginate($response);
-			//$paginate($this->json(200, $response));
         }
 
 
@@ -816,6 +797,10 @@ class SearchController extends AppController {
         }
         return $options;
     }
+    
+
+
+
 
     /**
      * Return an instance of a search class. SolrSearch if available, otherwise

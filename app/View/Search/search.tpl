@@ -260,6 +260,10 @@
 					$(".searchBoxInput").trigger(e);
 				}
 			}
+			if(split == "advanced_search"){
+				url= arcs.baseURL + 'advanced_search';
+				window.location.replace(url);
+			}
 		});
 
 	</script>
