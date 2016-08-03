@@ -8,7 +8,7 @@
 
 class AdvancedSearchController extends AppController {
     public $name = 'Advanced Search';
-    public $uses = array('Resource');
+    public $uses = array('advance_search');
 
     public $paginate = [
         'limit' => 20,
@@ -45,7 +45,7 @@ class AdvancedSearchController extends AppController {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
-        $this->render('advancedsearch');
+        $this->render('/AdvancedSearch/advancedsearch');
     }
 
 

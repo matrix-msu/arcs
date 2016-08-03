@@ -253,10 +253,12 @@
 			var split = url.split("/").reverse()[0];
 			console.log(split);
 			if(split != "search"){
-				$(".searchBoxInput").val(split);
-				var e = $.Event("keyup");
-				e.keyCode = 13; // # Some key code value
-				$(".searchBoxInput").trigger(e);
+				if (split != "advanced_search") {
+					$(".searchBoxInput").val(split);
+					var e = $.Event("keyup");
+					e.keyCode = 13; // # Some key code value
+					$(".searchBoxInput").trigger(e);
+				}
 			}
 		});
 

@@ -480,9 +480,14 @@
           	<div class="searchIcon"></div>
           	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
           </div><br>
-          <?php echo $this->Html->script('searchBox.js');?>
          <div class="proper-width">
-			<div class="asearch"><span style="cursor:pointer"><a>ADVANCED SEARCH</a></span></div>
+			<div class="asearch">
+			    <span style="cursor:pointer">
+			        <?php echo $this->Html->link(
+			            'ADVANCED SEARCH',
+			            ['controller' => 'AdvancedSearch', 'action' => 'advance_search']);
+			        ?>
+			    </span></div>
 		</div>
 		<div class="proper-width" id="show-min">
 			<div class="more-info">

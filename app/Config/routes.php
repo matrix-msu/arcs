@@ -122,19 +122,16 @@
 
 
     Router::connect('/advanced_search',
-        array('controller' => 'search', 'action' => 'advance_search')
-    // array('controller' => 'search', 'action' => 'sm')
+        array('controller' => 'AdvancedSearch', 'action' => 'advance_search')
     );
 
     Router::connect('/advanced_search/*',
         array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
-    // array('controller' => 'search', 'action' => 'sm')
     );
 
 
     Router::connect('/api/advanced_search/*',
         array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
-    // array('controller' => 'search', 'action' => 'sm')
     );
 
 
