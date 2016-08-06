@@ -246,6 +246,8 @@ class ResourcesController extends AppController {
 		// get the sponsor from the array (even though there is only one object, an array is returned by Kora) 
 		$sponsor = $season['Sponsor'];
 		$season['Sponsor'] = $sponsor[0];
+
+        $season['url'] = $url;
 		
 
 		if ($projectKid == '') {

@@ -1,4 +1,4 @@
-<!-- pre><?php var_dump($pages); ?></pre -->
+<pre><?php var_dump($season); ?></pre>
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="viewers-container">
 
@@ -554,7 +554,7 @@
                             </tr>
                             <tr>
                                 <td>Latest Date</td>
-                                <td<?php $name = "Earliest Date"; $text = ''; if ($season['Latest Date']['year']) {$text = $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];}
+                                <td<?php $name = "Latest Date"; $text = ''; if ($season['Latest Date']['year']) {$text = $season['Latest Date']['year'] . "/" . $season['Latest Date']['month'] . "/" . $season['Latest Date']['day'];}
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
@@ -564,7 +564,12 @@
                             </tr>
                             <tr>
                                 <td>Terminus Ante Quem</td>
-                                <td<?php $name = "Terminus Ante Quem"; $text = $season[$name];
+                                <td<?php $name = "Terminus Ante Quem"; $text = ''; if ($season[$name]['year']) {
+                                if($season[$name]['prefix']){
+                                    $text = $season[$name]['prefix'] . " ";
+                                }
+                                $text = $text . $season[$name]['year'] . "/" . $season[$name]['month'] . "/" . $season[$name]['day'];
+                                }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
@@ -574,7 +579,12 @@
                             </tr>
                             <tr>
                                 <td>Terminus Post Quem</td>
-                                <td<?php $name = "Terminus Post Quem"; $text = $season[$name];
+                                <td<?php $name = "Terminus Post Quem"; $text = ''; if ($season[$name]['year']) {
+                                if($season[$name]['prefix']){
+                                   $text = $season[$name]['prefix'] . " ";
+                                }
+                                $text = $text . $season[$name]['year'] . "/" . $season[$name]['month'] . "/" . $season[$name]['day'];
+                                }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
                                     if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
