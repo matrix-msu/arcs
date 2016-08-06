@@ -1,4 +1,4 @@
-<pre><?php var_dump($season); ?></pre>
+<!-- pre><?php var_dump($season); ?></pre -->
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="viewers-container">
 
