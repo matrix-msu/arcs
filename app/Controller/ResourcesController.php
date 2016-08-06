@@ -247,7 +247,6 @@ class ResourcesController extends AppController {
 		$sponsor = $season['Sponsor'];
 		$season['Sponsor'] = $sponsor[0];
 
-        $season['url'] = $url;
 		
 
 		if ($projectKid == '') {
@@ -266,6 +265,7 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$project = json_decode(curl_exec($ch), true);
 		$project = $project[$projectKid];
+        $project['url'] = $url;
 		
 		$resource['thumb'] = $pages[$firstPage]['thumb'];		
 		

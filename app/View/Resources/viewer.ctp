@@ -1,4 +1,4 @@
-<!-- pre><?php var_dump($season); ?></pre -->
+<!-- pre><?php var_dump($project); ?></pre -->
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="viewers-container">
 
@@ -405,21 +405,30 @@
 
                             <tr>
                                 <td>Terminus Ante Quem</td>
-                                <td<?php $name = "Terminus Ante Quem"; $text = $project[$name];
+                                <td<?php $name = "Terminus Ante Quem"; $text = ''; if ($project[$name]['year']) {
+                                if($project[$name]['prefix']){
+                                    $text = $project[$name]['prefix'] . " ";
+                                }
+                                $text = $text . $project[$name]['year'] . "/" . $project[$name]['month'] . "/" . $project[$name]['day'];
+                                }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
-                                    if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
+                                    if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
                                         $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td>Terminus Post Quem</td>
-                                <td<?php $name = "Terminus Post Quem"; $text = $project[$name];
+                                <td<?php $name = "Terminus Post Quem"; $text = ''; if ($project[$name]['year']) {
+                                if($project[$name]['prefix']){
+                                   $text = $project[$name]['prefix'] . " ";
+                                }
+                                $text = $text . $project[$name]['year'] . "/" . $project[$name]['month'] . "/" . $project[$name]['day'];
+                                }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
-                                    if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
+                                    if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
                                         $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                     }} echo $string; ?>
                                 </td>
