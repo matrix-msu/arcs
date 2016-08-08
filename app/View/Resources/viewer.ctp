@@ -3057,7 +3057,7 @@
 					var kid = keys[current];
 					console.log("KID: " + kid);
 					console.log("current: "+current);
-					GetNewResource(kid);
+//					GetNewResource(kid);
 					$(".fullscreenImage").attr('src',$pics[current].src);
 				}
 
@@ -3074,7 +3074,7 @@
 					$pics[current].style.borderWidth = "5px";
 					$selected[current].style.background ="#0094bc"
 					var kid = keys[current];
-					GetNewResource(kid);
+//					GetNewResource(kid);
 				    $(".fullscreenImage").attr('src',$pics[current].src);
 				}
 			}
