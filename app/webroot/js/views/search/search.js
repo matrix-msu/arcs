@@ -127,7 +127,6 @@
         loader: true,
         success: (function(_this) {
           return function() {
-            console.log((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             _this.router.navigate((encodeURIComponent(_this.search.query)) + "/p" + _this.search.page);
             if (!_this.scrollReady) {
               _this.setupScroll() && (_this.scrollReady = true);
@@ -181,7 +180,6 @@
         "class": 'icon-ok'
       }));
       this.$('#sort-btn span#sort-by').html(this.options.sort);
-      console.log("SEARCHING");
       return this.search.run(null, {
         order: this.options.sort,
         direction: this.options.sortDir
@@ -211,7 +209,6 @@
       if (trigger == null) {
         trigger = true;
       }
-      console.log("unselectAll called");
       this.$('.result').removeClass('selected');
       this.$('.select-button').removeClass('de-select');
       this.$('.select-button, #toggle-select').html('SELECT');
@@ -227,7 +224,6 @@
       if (trigger == null) {
         trigger = true;
       }
-      console.log("selectAll called");
       this.$('.result').addClass('selected');
       this.$('.select-button').addClass('de-select');
       this.$('.select-button, #toggle-select').html('DE-SELECT');
@@ -248,7 +244,6 @@
     };
 
     Search.prototype.maybeUnselectAll = function(e) {
-      console.log("maybeunselectAll called");
       if (!(e instanceof jQuery.Event)) {
         return this.unselectAll();
       }
@@ -281,9 +276,7 @@
 
     /* Render the search results */
 
-    $('.dropdown-menu').change(function(event) {
-      return console.log("Dropdown select");
-    });
+    $('.dropdown-menu').change(function(event) {});
 
     Search.prototype.append = function() {
       var results;
@@ -327,7 +320,6 @@
 
     pagination = function(pageArray, currentPage, lastPage) {
       var i, j, results1;
-      console.log(pageArray);
       if (indexOf.call(pageArray, 1) >= 0) {
         $('#firstPage').css('display', 'none');
         $('.fDots').css('display', 'none');
@@ -411,20 +403,13 @@
       }
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
-      console.log("CALLED");
-      console.log(results);
       pageNum = currentPage;
-      console.log(pageNum);
       numberPerPage = parseInt($('#items-per-page-btn').html().substring(0, 2));
       lastPage = Math.ceil(results.length / numberPerPage);
-      console.log(lastPage);
       temp = fillArray(pageNum, lastPage);
-      console.log(temp);
       pagination(temp, pageNum, lastPage);
       skip = (pageNum - 1) * numberPerPage;
-      console.log("skip: " + skip + " (skip+numberPerPage: )" + (skip + numberPerPage));
       $('#lastPage').html(lastPage);
-      console.log(totalResults.slice(skip, +(skip + numberPerPage) + 1 || 9e9));
       Search.prototype._render({
         results: totalResults.slice(skip, skip + numberPerPage)
       });
@@ -438,7 +423,6 @@
       wiating = true;
       val = $(".searchBoxInput").val();
       pageNum = $('.currentPage').html();
-      console.log("page num in search: " + pageNum);
       perPage = $('#items-per-page-btn').html().substring(0, 2);
       if (val === "") {
         noResults();
@@ -459,7 +443,6 @@
         'url': arcs.baseURL + 'simple_search/' + resourcequery + "/" + pageNumber + "/" + perPageUrl,
         'success': function(data) {
           var key, ref, value;
-          console.log(data['total']);
           if (data['total'] === 0) {
             adjustPage([], 0);
             return noResults();
@@ -480,8 +463,11 @@
     };
 
     $(function() {
+      return console.log('nini');
+    });
+
+    $(function() {
       return $(".searchBoxInput").keyup(function(e) {
-        console.log("Ran simple");
         if (e.keyCode === 13) {
           selectedMap = {
             "unselected": [],
@@ -576,7 +562,6 @@
           selectedMap['selected'].push($(this).parents('.result').data("id"));
           $('#selected-resource-ids').html(selectedMap["selected"]);
           $('#selected-count').html(selectedMap["selected"].length);
-          console.log(selectedMap);
           arcs.bus.trigger('selection');
         } else {
           $(this).html('SELECT');
@@ -591,15 +576,12 @@
               color: '#C1C1C1'
             });
           }
-          console.log(index);
-          console.log(selectedMap);
           $('#selected-resource-ids').html(selectedMap["selected"]);
           $('#selected-count').html(selectedMap["selected"].length);
           arcs.bus.trigger('selection');
         }
       });
       $('.sort-btn').unbind().click(function() {
-        console.log("sort-btn clicked");
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
         $('.pageNumber').removeClass('selected');
         $('.pageNumber').removeClass('currentPage');
@@ -620,17 +602,14 @@
             selectedMap['selected'].push(totalResults[i]['kid']);
             ++i;
           }
-          console.log(selected['unselected']);
           arcs.searchView.selectAll();
           $('#toggle-select').html('DE-SELECT');
-          console.log(selectedMap['selected']);
           $('#selected-resource-ids').html(selectedMap["selected"]);
           return $('#selected-count').html(selectedMap["selected"].length);
         } else {
           $('#selected-all').css({
             color: '#C1C1C1'
           });
-          console.log("in the else statement");
           selectedMap['selected'] = [];
           this.id = 'select-all';
           arcs.searchView.unselectAll();

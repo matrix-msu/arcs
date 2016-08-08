@@ -97,6 +97,19 @@
 		        <li><a class="sort-btn" id="open-btn">Report&nbsp;</a></li>
 		      </ul>
 		    </div>
+
+
+			<div id="excavation-buttons" class="btn-group actions-left">
+				<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+					Exacavation
+					<span class="pointerDown sort-arrow pointerSearch"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a class="sort-site-btn active" id="open-btn">Isthmia&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-colview-btn">Polis&nbsp;</a></li>
+					<li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
+				</ul>
+			</div>
 		    
 		    <div id="author-buttons" class="btn-group actions-left">
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -251,7 +264,6 @@
 		$(document).ready(function(){
 			var url = window.location.href;
 			var split = url.split("/").reverse()[0];
-			console.log(split);
 			if(split != "search"){
 				if (split != "advanced_search") {
 					$(".searchBoxInput").val(split);

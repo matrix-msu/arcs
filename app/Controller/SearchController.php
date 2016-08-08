@@ -26,7 +26,7 @@ class SearchController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('search', 'resources','simple_search','advance_search');
+        $this->Auth->allow('search', 'resources','simple_search','advance_search','getProjects');
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
             $this->Resource->flatten = true;
@@ -591,6 +591,26 @@ class SearchController extends AppController {
     }
 
 
+    /**
+     * @return mixed
+     */
+    public function getProjects(){
+        $user = "";
+        $pass = "";
+        $display = "json";
+        $sid = PROJECT_SID;
+        $query2 = 'kid,!=,1';
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2)."&fields=Persistent Name";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        //capture results and map to array
+        $results = json_decode(curl_exec($ch), true);
+        return $results;
+    }
+
+
+
 
 
 
@@ -797,7 +817,7 @@ class SearchController extends AppController {
         }
         return $options;
     }
-    
+
 
 
 

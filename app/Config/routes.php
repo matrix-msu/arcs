@@ -135,6 +135,10 @@
     );
 
 
+    Router::connect('/sites',
+        array('controller' => 'search', 'action' => 'getProjects')
+    );
+
     Router::connect('/search/**', 
         array('controller' => 'search', 'action' => 'search')
     );
