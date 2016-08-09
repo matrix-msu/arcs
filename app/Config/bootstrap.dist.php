@@ -2,7 +2,7 @@
 /**
  * This file is loaded automatically by the app/webroot/index.php file after core.php
  *
- * This file should load/create any application wide configuration settings, such as
+ * This file should load/create any application wide configuration settings, such as 
  * Caching, Logging, loading additional configuration files.
  *
  * You should also use this file to include any files that provide global functions/constants
@@ -22,10 +22,6 @@
  * @since         CakePHP(tm) v 0.10.8.2117
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
-# Kora search include
-
-
 
 # Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
@@ -59,5 +55,5 @@ define("THUMBS", "/matrix/dev/public_html/arcs/app/webroot/thumbs/");
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
-
 //used for help toolbar
+
