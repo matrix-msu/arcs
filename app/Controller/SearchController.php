@@ -405,8 +405,11 @@ class SearchController extends AppController {
 
 
 
-
-
+    // For now this function only does the resource and subject search by ketword
+    // but can do more and the queing can be doen by an extra fucntion on in the same fuction using the continue
+    // coommand, or an equivalen to continue as in c++
+    // int his fucntion make an array of fields in the resoiurces and subject of observqtion
+    // which will be returned. this will make a huge difference in the load time
 
     // This funtion takes in a scheme id(sid) and users input which will be made
     // to AN APPROPIATE QUERY. Then a kora restful call will be made to get the
@@ -495,12 +498,9 @@ class SearchController extends AppController {
 
 
     public function simple_search($query1="",$page,$perPage) {
-//		if($query1 == ""){
-//			$query1 = "NoRESults";
-//		}
         $options = $this->parseParams();
 
-        // This array will be used to get results from multiple schemes. i.e search mutiple schemes
+        // This array will be used to get results from multiple schemes.
         $schemes = array(RESOURCE_SID,SUBJECT_SID);
 
         if ($query1 == ''){
@@ -560,14 +560,9 @@ class SearchController extends AppController {
                 foreach($kora_data as $key => $result){
                     $total[$key] = $result;
                 }
-                /*
-                foreach($kora_data as $data){
-                    array_push($total,$data);
-                }
-                */
+
             }
             $response['results'] = $total;
-            // $response['results'] = $this->search_single_scheme(RESOURCE_SID, $query1);
 
             $returnResults = array();
             foreach($response['results'] as $key => $item) {

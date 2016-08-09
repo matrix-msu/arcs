@@ -390,6 +390,8 @@ class arcs.views.search.Search extends Backbone.View
           adjustPage([],0)
           noResults()
         else
+          console.log(data)
+          get_filter_fields(data['resutls'])
           $('#results-count').html(data['total'])
           for key, value of data['results']
             totalResults.push value
@@ -400,11 +402,28 @@ class arcs.views.search.Search extends Backbone.View
     })
 
 
+# This function will take in an array of data from the KORA search made and
+# filter it to get the names of the filters fields we will need for filters!
+  get_filter_fields = (arr) ->
+    sites = new array()
+    seasons = new array()
+    excavations = new array()
+    creators = new array()
+    while i<arr.length
+      #let us get the sites
+
+      # let us get the seasons
+      seasons[arr['Season Title']] = arr['Season Title']
+      #let us get the excavations
+      excavations[arr['Excavation - Survey Name']] = arr['Excavation - Survey Name']
+      # let us get the creator
+      creators[arr['Creator']] = arr['Creator']
+      i++
+
+
+
 
    #Activates on enter press: search
-
-#  toggle_search_visibility = () -> 
-#    $('#search-results-wrapper').toggle()
   $ ->
     $(".searchBoxInput").keyup (e) ->
       if e.keyCode == 13
