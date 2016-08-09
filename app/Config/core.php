@@ -50,7 +50,7 @@
  */
 	Configure::write('Error', array(
 		'handler' => 'ErrorHandler::handleError',
-		'level' => 1,
+		'level' => E_ALL ,
 		'trace' => true
 	));
 
