@@ -237,7 +237,7 @@ class ResourcesController extends AppController {
 
 		// get the director from the array (even though there is only one object, an array is returned by Kora)
 		$director = $season['Director'];
-		$season['Director'] = $director[0];
+		$season['Director'] = isset($director[0]) ? $director[0] : '';
 
 		// get the registrar from the array (even though there is only one object, an array is returned by Kora)
 		$registrar = $season['Registrar'];

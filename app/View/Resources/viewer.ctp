@@ -55,7 +55,7 @@
 		<div class='fullscreenOverlay'>
 			<div class='fullscreenOuter'>
 				<div class='fullscreenInner'>
-					<img class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
+					<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
 				    <div class='leftHalf'>
 						<div class='expandedArrowBoxLeft'>
 							<img class='leftExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
@@ -1773,7 +1773,11 @@
                 res = JSON.parse(res);
                 kid = res['kid'];
                 document.getElementById('PageImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
+				console.log(document.getElementById('PageImage').src )
+				document.getElementById('fullscreenImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
+				
             }
+			
         });
     }
 </script>
@@ -2636,9 +2640,12 @@
                             $("#" + value.kid).after("<div class='annotateSearchResult resultPage' id='" + v.kid + "'></div>");
                             if (v.thumb == "img/DefaultResourceImage.svg") {
                                 $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php echo Router::url('/', true); ?>app/webroot/" + v.thumb + "'/></div>");
+//								$('.fullscreenImage').attr('src','<?php echo Router::url('/', true); ?>app/webroot/" + v.thumb + "' );
+//								console.log('<?php echo Router::url('/', true); ?>app/webroot/" + v.thumb + "')
                             }
                             else {
                                 $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='" + v.thumb + "'/></div>");
+								console.log(v.thumb);
                             }
 
                             $("#" + v.kid).append(
@@ -3510,10 +3517,23 @@
                 current--;
                 $pics[current].style.borderWidth = "5px";
 				$selected[current].style.background ="#0094bc"
+				$selected[current].className += ' selectedResource';
                 var kid = keys[current];
 				console.log("KID: " + kid);
 				console.log("current: "+current);
-                GetNewResource(kid);
+				console.log(kid);
+				$('.other-resources').each( function () {
+//					console.log(parseInt($(this).find('.numberOverResources').html()));
+					console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
+					if($(this).find('.numberOverResources').hasClass('selectedResource')){
+						console.log('found the boarder');
+						console.log(parseInt($(this).find('.numberOverResources').html()));
+						$(this).trigger('click');
+					}
+				});
+//                GetNewResource(kid);
+//				$("#PageImage").attr('src',$pics[current].src);
+//				console.log('previous image should appear');
             }
         });
         
@@ -3525,9 +3545,25 @@
 				$selected[current].style.background =""
                 current++; 
                 $pics[current].style.borderWidth = "5px";
-				$selected[current].style.background ="#0094bc"
+//				$selected[current].style.background ="#0094bc"
+				$selected[current].className += ' selectedResource';
                 var kid = keys[current];
-                GetNewResource(kid);
+				console.log(kid);
+				var nextImg = parseInt($('.other-resources').find('.numberOverResources').html())+1
+				console.log(nextImg);
+				$('.other-resources').each( function () {
+//					console.log(parseInt($(this).find('.numberOverResources').html()));
+					console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
+					if($(this).find('.numberOverResources').hasClass('selectedResource')){
+						console.log('found the boarder');
+						console.log(parseInt($(this).find('.numberOverResources').html()));
+						$(this).trigger('click');
+					}
+				});
+//				console.log($('.other-resources').find('.numberOverResources').html());
+//                GetNewResource(kid);
+//				$("#PageImage").attr('src',$pics[current].src);
+//				console.log('next image should appear');
             }
         });
         	$('.expandedArrowBoxLeft').click(previousImage);
@@ -3565,11 +3601,18 @@
 					current--;
 					$pics[current].style.borderWidth = "5px";
 					$selected[current].style.background ="#0094bc"
+					$selected[current].className += ' selectedResource';
 					var kid = keys[current];
 					console.log("KID: " + kid);
 					console.log("current: "+current);
-//					GetNewResource(kid);
-					$(".fullscreenImage").attr('src',$pics[current].src);
+					$('.other-resources').each( function () {
+						if($(this).find('.numberOverResources').hasClass('selectedResource')){
+							$(this).trigger('click');
+							
+						}
+						
+					});
+					$(".fullscreenImage").attr('src',"<?php echo $kora_url; ?>" + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
 				}
 
 			}
@@ -3584,9 +3627,17 @@
 					current++; 
 					$pics[current].style.borderWidth = "5px";
 					$selected[current].style.background ="#0094bc"
+					$selected[current].className += ' selectedResource';
 					var kid = keys[current];
-//					GetNewResource(kid);
-				    $(".fullscreenImage").attr('src',$pics[current].src);
+					$('.other-resources').each( function () {
+						if($(this).find('.numberOverResources').hasClass('selectedResource')){
+							$(this).trigger('click');
+						}
+						
+					});
+//
+					$(".fullscreenImage").attr('src',"<?php echo $kora_url; ?>" + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
+
 				}
 			}
         $('#zoom-out').click(function(event){
@@ -3866,7 +3917,6 @@
 	});
 	$('.fullscreenClose').click(function(){
 		$('.fullscreenWrap').css('display','none');
-		//reset scrolling
 		$('html, body').css({
 			'overflow': 'auto',
 			'height': 'auto'

@@ -9,8 +9,6 @@ function checkMobile(){
     return false;
     
 }
-
-// toggles menu button
 $(document).ready(function(){
 
 	console.log($('#projectMenu').height());
@@ -32,30 +30,13 @@ $(document).ready(function(){
 			}
 	});
 	var mouseoverHandler = function(){
-		//$( '#projects' ).addClass( 'btn-blue' );
-		//$('#dropArrow').addClass('dropArrow-whiteFull');
-		
-		//removeHighlight();
-//		$('#dropArrow').css('transform', 'rotate(180deg)');
-//		$('.dropArrowFull').css('top', '-11px');
-//		$('.dropArrowFull').css('right', '12px');
 		$('#dropArrow').addClass( 'pointerUp' );
 		$( '.projects-menu' ).css('display', 'block');
 		
 	}
 	var mouseoutHandler = function(){
-//		if (!window.location.pathname.includes( 'arcs/projects/single_project' )){
-//			$( '#projects' ).removeClass( 'btn-blue' );
-//			$('#dropArrow').removeClass('dropArrow-whiteFull');
-//		}
-//		$('#dropArrow').css('transform',' rotate(0deg)');
-//		$('.dropArrowFull').css('top', '7px');
-//		$('.dropArrowFull').css('right', '6px');
 		$('#dropArrow').removeClass( 'pointerUp' );
 		$( '.projects-menu' ).css('display', 'none');
-		
-		//addHighlght();
-		
 	}
 	var logMouseover = function(){
 		$( '#logDrop' ).addClass( 'pointerUp' ),
@@ -68,11 +49,16 @@ $(document).ready(function(){
 	
 
 	$('#projects').on('click',function(event){
+		console.log($('#projectsMenu').css('height'));
+		var belowProjectsMove = parseInt($( '#belowProjects' ).css('top')) + parseInt($('#projectsMenu').css('height'));
+		var logMove =  parseInt($( '#log' ).css('top')) + parseInt($('#projectsMenu').css('height'));
+		console.log(logMove);
+//		console.log(belowProjectsMove);
 		if(checkMobile()) {
 				if(($( '#log' ).css('top') === '245px') ){
 					$('#dropArrow').addClass( 'pointerUp' );
-					$( '#log' ).css('top','313px');
-					$( '#belowProjects' ).css('top','23px');
+					$( '#log' ).css('top',logMove+'px');
+					$( '#belowProjects' ).css('top',belowProjectsMove+'px');
 					$( '.projects-menu' ).css('display', 'block');
 			}
 				else{
@@ -96,10 +82,11 @@ $(document).ready(function(){
 		}
 	});
 	$('#projectsHeader').on('click',function(event){
+		var helpSearchMove = parseInt($( '#helpSearch' ).css('top')) + parseInt($('#projectsMenu').css('height'));
 		if(checkMobile()){
 			if(($('#helpSearch').css('top') == '22px')){
 				$('#dropArrow').addClass( 'pointerUp' );
-				$( '#helpSearch' ).css('top', '87px');
+				$( '#helpSearch' ).css('top', helpSearchMove+'px');
 				$( '.projects-menu' ).css('display', 'block');
 			}
 			else{
@@ -170,8 +157,6 @@ $(document).ready(function(){
 			$( '#droppedMenu' ).hide();
 		}
 		else{
-			
-			//console.log($( '.toolbar-btn' ).css('display') === 'block');
 			if($( '.toolbar-btn' ).css('display') === 'block'){
 				$('#hamburger').removeClass('hamburgerActive');
 				$('#hamburger').addClass('hamburger');
@@ -198,24 +183,17 @@ $(document).ready(function(){
 	});
 	
 	var pathname = window.location.pathname;
-	//console.log(pathname);
 	if (pathname.includes( 'arcs/upload' )) {
-		//console.log("in uploads");
 		$( '#upload' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( '/resource' )) {
-		//console.log("in resources");
 		$( '#resources' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/about' )) {
-		//console.log('in about');
 		$( '#about' ).addClass( 'btn-blue' ); 
 	} else if (pathname.includes( 'arcs/collections' )) {
-		//console.log("collections")
 		$( '#collections' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/search' )) {
-		//console.log('search')
 		$( '#search' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/help/' )) {
-		//console.log("Got to the help tab");
 		$( '#help' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
 		console.log("admin/user");
@@ -225,15 +203,9 @@ $(document).ready(function(){
 		$('#logDrop').addClass( 'whiteArrow' );
 		$('#logDrop').addClass( 'whiteArrow' );
 	} else if (pathname.includes( 'arcs/projects/single_project' )){
-		//console.log("Projects");
 		$( '#projects' ).addClass( 'btn-blue' );
-		//$('#dropArrow').addClass('dropArrow-whiteFull');
 		$('#dropArrow').addClass( 'whiteArrow' );
 		$('#dropArrow').addClass( 'whiteArrow' );
-		
-		
-		
-		//console.log(imgPath);
 	} 
 	
 	

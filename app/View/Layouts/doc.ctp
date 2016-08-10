@@ -1,7 +1,10 @@
 <!doctype html>
 <?php
-	echo $this->Session->flash();
-    $this->set('index_toolbar', true);
+	$url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    if(strpos($url, 'help/') != false){
+         echo $this->Session->flash();
+         $this->set('index_toolbar', true);
+    }
 ?>
 
 <html>
