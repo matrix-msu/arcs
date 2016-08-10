@@ -161,10 +161,11 @@ class ResourcesController extends AppController {
 
         // get the first entry in $pages
         $firstPage = array_values($pages)[0]['kid'];
-        $pages[$firstPage]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$firstPage]['Image Upload']['localName'];
+        //$pages[$firstPage]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$firstPage]['Image Upload']['localName'];
         // Shifting to create thumbnails for every page
         foreach($pages as $page) {
             $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
+            $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
         }
 		
 		//resource
@@ -231,7 +232,7 @@ class ResourcesController extends AppController {
 		$season = json_decode(curl_exec($ch), true);
 		$season = $season[$seasonKID];
 		
-		// get the season type from the array (even though there is only one object, an array is returned by Kora) 
+		// get the season type from the array (even though there is only one object, an array is returned by Kora)
 		$type = $season['Type'];
 		$season['Type'] = $type[0];
 		
@@ -624,4 +625,33 @@ class ResourcesController extends AppController {
         $this->json(200, $response);
         return $response;
     }
+
+    public function export(){
+        # create new zip opbject
+        $zip = new ZipArchive();
+
+        # create a temp file & open it
+        $tmp_file = tempnam('.','Resouce_Data.zip');
+        $zip->open($tmp_file, ZipArchive::CREATE);
+
+        $count = 0;
+        $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
+            'Subject_Of_Observation_data.xml', 'Pages_data.xml'];
+        foreach ($this->request->data['xmls'] as $xml) {
+            $zip->addFromString($xmlNames[$count], $xml);
+            $count++;
+        }
+        
+        foreach($this->request->data['picUrls'] as $url){
+            # download file
+            $string = KORA_FILES_URI.PID.'/'.PAGES_SID.'/'.$url;
+            $download_file = file_get_contents( $string );
+            $zip->addFromString('images/'.basename($url),$download_file);
+        }
+        $zip->close();
+        //send back base64 format of a zip file
+        $data = file_get_contents($tmp_file);
+        $this->json(200, base64_encode($data) );
+    }
+
 }

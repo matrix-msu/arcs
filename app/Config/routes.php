@@ -197,6 +197,10 @@
         array('controller' => 'resources', 'action' => 'keywords')
     );
 
+    Router::connect('/api/resources/export',
+        array('controller' => 'resources', 'action' => 'export')
+    );
+
     Router::connect('/api/users/invite',
         array('controller' => 'users', 'action' => 'ajaxInvite')
     );

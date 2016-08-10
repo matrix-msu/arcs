@@ -1,4 +1,4 @@
-<!-- pre><?php var_dump($project); ?></pre -->
+<!-- pre><?php var_dump($surveys); ?></pre -->
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="viewers-container">
 
@@ -168,7 +168,7 @@
                     <!--<div class="icon-flag"></div>-->
                     <!--</a>-->
 
-                    <a href="#">
+                    <a id="export-btn" href="#">
                                         <span class="content">
                                                 Export
                                         </span>
@@ -409,7 +409,7 @@
                                 if($project[$name]['prefix']){
                                     $text = $project[$name]['prefix'] . " ";
                                 }
-                                $text = $text . $project[$name]['year'] . "/" . $project[$name]['month'] . "/" . $project[$name]['day'];
+                                $text = $text . $project[$name]['year'] . "/" . $project[$name]['month'] . "/" . $project[$name]['day'] . " ". $project[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
@@ -424,7 +424,7 @@
                                 if($project[$name]['prefix']){
                                    $text = $project[$name]['prefix'] . " ";
                                 }
-                                $text = $text . $project[$name]['year'] . "/" . $project[$name]['month'] . "/" . $project[$name]['day'];
+                                $text = $text . $project[$name]['year'] . "/" . $project[$name]['month'] . "/" . $project[$name]['day']. " ". $project[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
@@ -577,7 +577,7 @@
                                 if($season[$name]['prefix']){
                                     $text = $season[$name]['prefix'] . " ";
                                 }
-                                $text = $text . $season[$name]['year'] . "/" . $season[$name]['month'] . "/" . $season[$name]['day'];
+                                $text = $text . $season[$name]['year'] . "/" . $season[$name]['month'] . "/" . $season[$name]['day']. " ". $season[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
@@ -592,7 +592,7 @@
                                 if($season[$name]['prefix']){
                                    $text = $season[$name]['prefix'] . " ";
                                 }
-                                $text = $text . $season[$name]['year'] . "/" . $season[$name]['month'] . "/" . $season[$name]['day'];
+                                $text = $text . $season[$name]['year'] . "/" . $season[$name]['month'] . "/" . $season[$name]['day']. " ". $season[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'">'.$text.'</div>';
                                 foreach($metadataEdits as $value) {
@@ -1507,6 +1507,180 @@
         });
     });
 </script>
+
+<script>
+    //export all schemes and jpgs
+    $("#export-btn").click(function () {
+        //load data in variables
+        var schemes = ['<?php $project2 = $project; unset($project2['url']); echo  json_encode($project2)?>',
+                        '<?php echo json_encode($season)?>',
+                        '<?php echo json_encode($surveys)?>',
+                        '<?php echo json_encode($resource)?>'];
+        var subjects = [ <?php $text=''; foreach($subject as $subjects){ $text=$text."'". json_encode($subjects)."',";} rtrim($text,','); echo $text;?> ];
+        var pages = [ <?php $text=''; foreach($pages as $page){ $text=$text."'". json_encode($page)."',";} rtrim($text,','); echo $text;?> ];
+
+        //build xmls for all the single records
+        var xmlArray = [];
+        schemes.forEach(function (tempdata) {
+            var jsonObject = JSON.parse(tempdata);
+            var recordObject = {Record: jsonObject};
+            var dataObject = {Data: recordObject};
+            var xmlString = json2xml(dataObject, '');
+            xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
+            xmlArray.push(xmlString);
+        })
+
+        //treat subject of observation differently since you can have multiple
+       var xmlString = '';
+        subjects.forEach(function (tempdata) {
+            var jsonObject = JSON.parse(tempdata);
+            var recordObject = {Record: jsonObject};
+            var dataObject = {Data: recordObject};
+            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
+            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
+            xmlString += trim;
+        })
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
+            xmlString + '</Data>';
+        xmlArray.push(xmlString);
+
+        //take care of the multiple pages
+        xmlString = '';
+        var pageUrls = [];
+        pages.forEach(function (tempdata) {
+            var jsonObject = JSON.parse(tempdata);
+            pageUrls.push(jsonObject['Image Upload']['localName']); //collect image url stuff for later
+            var uploadObject = {originalName:jsonObject['Image Upload']['originalName'],text:jsonObject['Image Upload']['localName']};
+            jsonObject['Image Upload'] = uploadObject;
+            delete jsonObject.thumb;
+            delete jsonObject.thumbnail;
+            var recordObject = {Record: jsonObject};
+            var dataObject = {Data: recordObject};
+            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
+            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
+            xmlString += trim;
+        })
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
+                    xmlString + '</Data>';
+        xmlArray.push(xmlString);
+
+        //go to php for the pictures and zipping
+        $.ajax({
+            url: "<?php echo Router::url('/', true); ?>resources/export",
+            type: "POST",
+            data: {'xmls': xmlArray, 'picUrls': pageUrls},
+            statusCode: {
+                200: function (data) {
+                    var blob = b64toBlob(data, 'application/zip'); //convert base64 to blob
+                    var blobUrl = URL.createObjectURL(blob);    //create url
+
+                    //add the blob url to and an a tag and click it
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.style = "display: none";
+                    a.href = blobUrl;
+                    a.download = 'Resource_data.zip'; //set file name
+                    a.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                    document.body.removeChild(a);   //remove the a tag
+                },
+                400: function () {
+                    console.log("Bad Request");
+                },
+                405: function () {
+                    console.log("Method Not Allowed");
+                }
+            }
+        });
+
+        function b64toBlob(b64Data, contentType, sliceSize) {
+          contentType = contentType || '';
+          sliceSize = sliceSize || 512;
+
+          var byteCharacters = atob(b64Data);
+          var byteArrays = [];
+
+          for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+              byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+          }
+
+          var blob = new Blob(byteArrays, {type: contentType});
+          return blob;
+        }
+    });
+
+    function json2xml(o, tab) {
+        var firstObject = true;
+        var toXml = function(v, name, ind) {
+            var xml = "";
+            name = name.replace(/ /g, '_');
+            if (v instanceof Array) {
+                for (var i=0, n=v.length; i<n; i++)
+                    xml += ind + toXml(v[i], name, ind+"\t") + "\n";
+            }
+            //look for objects that are not the Data or Record tag
+            else if ( typeof(v) == "object" && name != 'Record' && name != 'Data' ) {
+                xml +=  "<" + name;
+                if( 'prefix' in v && v.prefix != '' ){
+                    xml +=' prefix="'+ v.prefix + '"';
+                }
+                if( 'originalName' in v && v.originalName != '' ){
+                    xml +=' originalName="'+ v.originalName + '"';
+                }
+                xml += '>';
+                if ( 'text' in v ) {
+                    xml += v.text;
+                }
+                xml += '</' + name + '>';
+            }
+            else if (typeof(v) == "object") { //only record, data and prefixes are objects
+                firstObject = false;
+                var hasChild = false;
+                xml += ind + "<" + name;
+                for (var m in v) {
+                    if (m.charAt(0) == "@")
+                        xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
+                    else
+                        hasChild = true;
+                }
+                xml += hasChild ? ">" : "/>";
+                if( name == 'Data'){
+                    xml += '<ConsistentData/>';
+                }
+                if (hasChild) {
+                    for (var m in v) {
+                        if (m == "#text")
+                            xml += v[m];
+                        else if (m == "#cdata")
+                            xml += "<![CDATA[" + v[m] + "]]>";
+                        else if (m.charAt(0) != "@")
+                            xml += toXml(v[m], m, ind+"\t");
+                    }
+                    xml += (xml.charAt(xml.length-1)=="\n"?ind:"") + "</" + name + ">";
+                }
+            }
+            else if( v.toString() != '') {
+                //console.log(name);
+                xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">";
+            }
+            return xml;
+        }, xml="";
+        for (var m in o)
+            xml += toXml(o[m], m, "");
+        return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
+    }
+
+</script>
+<pre id="preview"></pre>
 
 <script>
     // collection
@@ -2709,7 +2883,7 @@
                 break;
             case "Excavation/Survey":
                 meta_scheme_id = "<?php echo SURVEY_SID; ?>";
-                //meta_resource_kid = "<?php echo $surveys[0]['kid']; ?>";
+                //finds the kid somewhere else.
                 break;
             case "Archival_Object":
                 meta_scheme_id = "<?php echo RESOURCE_SID; ?>";
@@ -2717,14 +2891,7 @@
                 break;
             case "Subject_Of_Observation":
                 meta_scheme_id = "<?php echo SUBJECT_SID; ?>";
-                //meta_resource_kid = meta_resource_kid.substring(4);
-                //meta_resource_kid = parseInt(meta_resource_kid) - 1;
-                //tempint = 0;
-                //java_subjects = "<?php echo array_values($subject)[".tempint."]['kid']; ?>";
-                //console.log("java here");
-                //console.log(typeof java_subjects);
-                //meta_resource_kid = "<?php echo array_values($subject)[meta_resource_kid]['kid']; ?>";
-                //meta_resource_kid = "<?php echo array_values($subject)[meta_resource_kid]['kid']; ?>";
+                //finds the kid somewhere else
                 break;
         }
         $.ajax({
