@@ -39,7 +39,7 @@ class AppModel extends Model {
      *
      * ...if you want to keep the flatten functionality.
      */
-    public function afterFind($results, $primary) {
+    public function afterFind($results, $primary = false) {
         if ($this->flatten) {
             if (isset($results[$this->name]))
                 return $results[$this->name];
@@ -90,12 +90,12 @@ class AppModel extends Model {
         $this->set($fields);
         $this->save();
     }
-    
+
     /**
      * Convenience method for generating autocompletion arrays.
      *
      * @param string $field      e.g. Resource.title
-     * @param array $conditions  an array of conditions that will be passed 
+     * @param array $conditions  an array of conditions that will be passed
      *                           along to the find method.
      * @param bool $date         group by a date field's day.
      */
@@ -129,9 +129,9 @@ class AppModel extends Model {
     }
 
     /**
-     * Returns results where Model.id is in $ids. The important bit is that it 
-     * will also return the results in the order of the given ids, by using 
-     * MySQL's FIELD() function. We use this to maintain SOLR's relevance 
+     * Returns results where Model.id is in $ids. The important bit is that it
+     * will also return the results in the order of the given ids, by using
+     * MySQL's FIELD() function. We use this to maintain SOLR's relevance
      * sorting.
      *
      * @param array $ids
@@ -153,18 +153,18 @@ class AppModel extends Model {
      * formats. This method will normalize the results and provide them in a
      * consistent format to a callback function.
      *
-     * @param array $results   the results parameter of the afterFind method. 
+     * @param array $results   the results parameter of the afterFind method.
      *                         Should be an array, of one of three formats:
      *
      *                           array(...)
      *                           array('Model' => ...)
      *                           array(0 => 'Model' => ...)
-     *                  
-     * @param function $func   an anonymous function or other callable. We'll 
-     *                         pass it the normalized result and use the return 
+     *
+     * @param function $func   an anonymous function or other callable. We'll
+     *                         pass it the normalized result and use the return
      *                         value to reset the result.
-     * @param object $context  pass an object (such as $this) in, and you can 
-     *                         use it within the function, given as the second 
+     * @param object $context  pass an object (such as $this) in, and you can
+     *                         use it within the function, given as the second
      *                         parameter to your callable.
      */
     public function resultsMap($results, $func, $context=null) {
@@ -183,5 +183,5 @@ class AppModel extends Model {
         }
         return $results;
     }
-	
+
 }

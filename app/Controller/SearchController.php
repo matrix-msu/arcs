@@ -11,13 +11,6 @@ class SearchController extends AppController {
     public $name = 'Search';
     public $uses = array('Resource','Users');
 
-	public $paginate = [
-		'limit' => 20,
-		'order' => [
-			'Search.response.Title' => 'asc'
-		]
-	];
-	
 	public function initialize(){
         parent::initialize();
         $this->loadComponent('Paginator');
@@ -47,7 +40,7 @@ class SearchController extends AppController {
      * Display the advanced search page
      * @param string $query
      */
-    
+
     public function advance_search($query='') {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
@@ -506,28 +499,6 @@ class SearchController extends AppController {
         if ($query1 == ''){
             return $this->emptySearch($options);
         }else {
-            if (isset($this->request->query['n'])) {
-                $limit = $this->request->query['n'];
-                $response['limit'] = $limit;
-            }
-
-
-            if ($response['order'] == 'relevance') {
-                $response['results'] = $this->Resource->findAllFromIds($response['results']);
-            } else {
-                $response['results'] = $this->Resource->find('all', array(
-                    'conditions' => array('Resource.id' => $response['results']),
-                    'order' => "Resource.{$options['order']} {$options['direction']}"
-                ));
-            }
-
-
-            // The searcher will return debug information that should be hidden for
-            // most account types.
-            if (!$this->Access->isAdmin()) {
-                unset($response['raw_query']);
-                unset($response['mode']);
-            }
 
             //Get the Images
             $user = "";
@@ -567,7 +538,8 @@ class SearchController extends AppController {
             $returnResults = array();
             foreach($response['results'] as $key => $item) {
                 //$imageResults[$item['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
-                if ($imageResults[$item['Resource Identifier']] != null) {
+                $thisImage = isset($imageResults[$item['Resource Identifier']])? $imageResults[$item['Resource Identifier']] : null ;
+                if ($thisImage != null) {
                     //$item['thumb'] = $imageResults[$item['Resource Identifier']];
                     $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
                 } else {
@@ -782,10 +754,6 @@ class SearchController extends AppController {
             )
         ));
     }
-	
-	public function paginate(){
-		
-	}
 
     /**
      * Parse the search options from the request parameters.

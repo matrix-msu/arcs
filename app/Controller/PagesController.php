@@ -1,7 +1,7 @@
 <?php
 /**
  * Pages Controller
- * 
+ *
  * @package    ARCS
  * @link       http://github.com/calmsu/arcs
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
@@ -26,7 +26,7 @@ class PagesController extends AppController {
      */
 	public function display() {
 		$path = func_get_args();
-		
+
 		$count = count($path);
 		if (!$count) {
 			$this->redirect('/');

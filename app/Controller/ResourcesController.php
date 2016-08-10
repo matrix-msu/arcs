@@ -3,7 +3,7 @@
  * Resources Controller
  *
  * Logic for retrieving and presenting resources.
- * 
+ *
  * @package    ARCS
  * @link       http://github.com/calmsu/arcs
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
@@ -14,7 +14,7 @@ class ResourcesController extends AppController {
     public $uses = array('Resource', 'Collection', 'MetadataEdit');
 
     public function beforeFilter() {
-        # The App Controller will set some common view variables (namely a 
+        # The App Controller will set some common view variables (namely a
         # user array), so the parent's beforeFilter is run in this and most
         # other controllers.
         parent::beforeFilter();
@@ -22,7 +22,7 @@ class ResourcesController extends AppController {
         # Read-only actions, such as viewing resources and associated comments
         # are allowed by default.
         $this->Auth->allow(
-            'view', 'viewer', 'search', 'comments', 'annotations', 
+            'view', 'viewer', 'search', 'comments', 'annotations',
             'keywords', 'complete', 'zipped', 'download'
         );
         if (!isset($this->request->query['related'])) {
@@ -63,11 +63,11 @@ class ResourcesController extends AppController {
      * @param string $id    resource id
      */
     public function edit($id=null) {
-        if (!($this->request->is('post') || $this->request->is('put'))) 
+        if (!($this->request->is('post') || $this->request->is('put')))
             throw new MethodNotAllowedException();
         $resource = $this->Resource->findById($id);
         if (!$resource) throw new NotFoundException();
-        if (!$this->Resource->add($this->request->data)) 
+        if (!$this->Resource->add($this->request->data))
             throw new InternalErrorException();
         $this->json(200, $this->Resource->findById($id));
     }
@@ -103,15 +103,15 @@ class ResourcesController extends AppController {
     /**
      * Creates a task to split a PDF into individual resources. Note it doesn't
      * actually do any splitting within the Request-Response loop.
-     * 
+     *
      * @param string $id    resource id
      */
     public function split_pdf($id=null) {
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
-        if (!$id) throw new BadRequestException(); 
+        if (!$id) throw new BadRequestException();
         $resource = $this->Resource->findById($id);
         if (!$resource) throw new NotFoundException();
-        if (!$resource['mime_type'] == 'application/pdf') 
+        if (!$resource['mime_type'] == 'application/pdf')
             throw new BadRequestException();
         # Create a new collection for the split.
         $this->Collection->permit('user_id');
@@ -124,7 +124,7 @@ class ResourcesController extends AppController {
         ));
         # Make a new task to split the PDF.
         $this->Job->enqueue('split_pdf', array(
-            'resource_id' => $id, 
+            'resource_id' => $id,
             'collection_id' => $this->Collection->id,
             'type' => 'Notebook Page'
         ));
@@ -136,15 +136,13 @@ class ResourcesController extends AppController {
      *
      * @param string $id            resource id
      * @param bool   $ignore_ctx    if true, the action will not redirect to the
-     *                              collection view when the resource has a 
-     *                              non-null context attribute. 
+     *                              collection view when the resource has a
+     *                              non-null context attribute.
      */
     public function viewer($id, $page=0, $ignore_ctx=false) {
         $this->Resource->recursive = 1;
         $this->Resource->flatten = false;
-		
-		
-		
+
 		//Get the Images
 		$query = "Resource Associator,=,".$id;
 		$user = "";
@@ -157,7 +155,7 @@ class ResourcesController extends AppController {
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 		//capture results and map to array
 		$pages = json_decode(curl_exec($ch), true);
-		$first = true;
+  	$first = true;
 
         // get the first entry in $pages
         $firstPage = array_values($pages)[0]['kid'];
@@ -167,7 +165,7 @@ class ResourcesController extends AppController {
             $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
             $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
         }
-		
+
 		//resource
 		$query = "kid,=,".$id;
 		$display = "json";
@@ -181,35 +179,36 @@ class ResourcesController extends AppController {
 		$resource = $resource[$id];
 
 		$resource_id = $resource['Resource Identifier'];
-		
-		
+
+
         //survey
         $surveys = array();
         $seasonKID = '';
-        foreach ($resource['Excavation - Survey Associator'] as $kid) {
-            $query = "kid,=,".$kid;
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SURVEY_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-            ///initialize post request to KORA API using curl
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and display
-            $survey = json_decode(curl_exec($ch), true);
-            $survey = $survey[$kid];
-            array_push($surveys, $survey);
-            if (s)
-            //If no seasons for a resource, use resource season associator
-			if ($seasonKID == '') {
-            	$seasonKID = $survey['Season Associator'][0];	// does nothing?
-        	}
-        }
+        if(is_array($resource['Excavation - Survey Associator'])){
+          foreach ($resource['Excavation - Survey Associator'] as $kid) {
+              $query = "kid,=,".$kid;
+              $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SURVEY_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+              ///initialize post request to KORA API using curl
+              $ch = curl_init($url);
+              curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+              curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+              //capture results and display
+              $survey = json_decode(curl_exec($ch), true);
+              $survey = $survey[$kid];
+              array_push($surveys, $survey);
+              //If no seasons for a resource, use resource season associator
+  			      if ($seasonKID == '') {
+              	 $seasonKID = $survey['Season Associator'][0];	// does nothing?
+          	  }
+            }
+          }
 
         //If no seasons for a resource, use resource season associator
         if ($seasonKID == '') {
             $seasonKID = $resource['Season Associator'][0];
         }
-        
-        
+
+
         // SOO - Subject of Observation
         $query = "Resource Identifier,=,".$resource_id; // use this particular resource identifier
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SUBJECT_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
@@ -218,7 +217,7 @@ class ResourcesController extends AppController {
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 		//capture results and display
 		$subject = json_decode(curl_exec($ch), true); // this is actually an array
-		
+
 		//season
 		$seasons = array();
 		$projectKid = '';
@@ -231,31 +230,31 @@ class ResourcesController extends AppController {
 		//capture results and display
 		$season = json_decode(curl_exec($ch), true);
 		$season = $season[$seasonKID];
-		
+
 		// get the season type from the array (even though there is only one object, an array is returned by Kora)
 		$type = $season['Type'];
-		$season['Type'] = $type[0];
-		
-		// get the director from the array (even though there is only one object, an array is returned by Kora) 
+		$season['Type'] = isset($type[0])?$type[0]:"";
+
+		// get the director from the array (even though there is only one object, an array is returned by Kora)
 		$director = $season['Director'];
 		$season['Director'] = $director[0];
-		
-		// get the registrar from the array (even though there is only one object, an array is returned by Kora) 
-		$registrar = $season['Registrar'];
-		$season['Registrar'] = $registrar[0];
-		
-		// get the sponsor from the array (even though there is only one object, an array is returned by Kora) 
-		$sponsor = $season['Sponsor'];
-		$season['Sponsor'] = $sponsor[0];
 
-		
+		// get the registrar from the array (even though there is only one object, an array is returned by Kora)
+		$registrar = $season['Registrar'];
+		$season['Registrar'] = isset($registrar[0]) ? $registrar[0] : "";
+
+		// get the sponsor from the array (even though there is only one object, an array is returned by Kora)
+		$sponsor = $season['Sponsor'];
+		$season['Sponsor'] = isset($sponsor[0]) ? $sponsor[0] : "";
+
+
 
 		if ($projectKid == '') {
 			$projectKid = $season['Project Associator'][0];
 		}
-		
+
 		//array_push($seasons, $season);
-		
+
 		//project
 		$query = "kid,=,".$projectKid;
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
@@ -267,27 +266,28 @@ class ResourcesController extends AppController {
 		$project = json_decode(curl_exec($ch), true);
 		$project = $project[$projectKid];
         $project['url'] = $url;
-		
-		$resource['thumb'] = $pages[$firstPage]['thumb'];		
-		
-        $public = $resource['Resource']['public'];
-        $allowed = $public || $this->Auth->loggedIn();
+
+		$resource['thumb'] = $pages[$firstPage]['thumb'];
+
+        $public = isset($resource['Resource']['public']) ? $resource['Resource']['public'] : false;
+        $allowed = true; // $public || $this->Auth->loggedIn();
 
         if (!$resource) return $this->redirect('/404');
         if (!$allowed) {
-            $this->Session->setFlash("Oops. You'll need to login to view that.", 
+            $this->Session->setFlash("Oops. You'll need to login to view that.",
                 'flash_error');
             $this->Session->write('redirect', '/resource/' . $id);
             return $this->redirect($this->Auth->redirect('#loginModal'));
         }
-        
+
         # Redirect if the resource's context is non-null.
-        if ($resource['Resource']['context'] && !$ignore_ctx) {
-            return $this->redirect('/collection/' . 
+        $resourceContext = isset($resource['Resource']['context']) ?$resource['Resource']['context'] : "";
+        if ($resourceContext && !$ignore_ctx) {
+            return $this->redirect('/collection/' .
                 $resource['Resource']['context'] . '/' . $id
             );
         }
-		
+
 		//Set kid for viewer
         //moved to line 260
 		/*if (isset($pages[$firstPage]['kid'])) {
@@ -336,12 +336,13 @@ class ResourcesController extends AppController {
             'admin' => $this->Auth->user('isAdmin') == 1
         ));
 
-        # On the first request of a particular resource (usually directly 
-        # after upload), we might prompt the user for additional 
-        # actions/information. Here we're turning that off for future 
-        # requests. (Note that the first_req will still be true within the 
+        # On the first request of a particular resource (usually directly
+        # after upload), we might prompt the user for additional
+        # actions/information. Here we're turning that off for future
+        # requests. (Note that the first_req will still be true within the
         # $resource var.)
-        if ($resource['Resource']['first_req']) 
+        $resourceFirstReq = isset($resource['Resource']['first_req']) ?$resource['Resource']['first_req'] : false ;
+        if ($resourceFirstReq)
             $this->Resource->firstRequest($resource['Resource']['id']);
     }
 
@@ -384,7 +385,7 @@ class ResourcesController extends AppController {
             $files[$r['file_name']] = $r['sha'];
         }
         $title = str_replace(' ', '-', $resources[0]['title']);
-        $name = $title . '-and-' . 
+        $name = $title . '-and-' .
             (count($files) - 1) . '-' .
             (count($files) > 2 ? 'others' : 'other');
         $sha = $this->Resource->makeZipfile($files, $name);
@@ -442,8 +443,8 @@ class ResourcesController extends AppController {
      */
     public function metadata($id) {
         if (!$this->Resource->findById($id)) throw new NotFoundException();
-        if (($this->request->is('post') || $this->request->is('put')) && 
-            $this->request->data) 
+        if (($this->request->is('post') || $this->request->is('put')) &&
+            $this->request->data)
         {
             foreach ($this->request->data as $k => $v)
                 $this->Resource->Metadatum->store($id, $k, $v);
@@ -530,7 +531,7 @@ class ResourcesController extends AppController {
     /**
      * Lightweight version of what viewer() does.
      * Instead of returning the entire page content though
-     * 
+     *
      * return only the image for viewer-window and content for right sidebar
      */
     public function loadNewResource($id) {
@@ -641,7 +642,7 @@ class ResourcesController extends AppController {
             $zip->addFromString($xmlNames[$count], $xml);
             $count++;
         }
-        
+
         foreach($this->request->data['picUrls'] as $url){
             # download file
             $string = KORA_FILES_URI.PID.'/'.PAGES_SID.'/'.$url;

@@ -344,6 +344,7 @@ class View extends Object {
  *   `Plugin.element_name` instead.
  */
 	public function element($name, $data = array(), $options = array()) {
+		
 		$file = $plugin = $key = null;
 		$callbacks = false;
 
@@ -380,7 +381,7 @@ class View extends Object {
 		}
 
 		$file = $this->_getElementFilename($name);
-
+		
 		if ($file) {
 			if (!$this->_helpersLoaded) {
 				$this->loadHelpers();

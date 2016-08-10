@@ -39,7 +39,7 @@ class arcs.views.search.Search extends Backbone.View
       root: @options.url
 
     # Search unless the Router already delegated it.
-    #unless @router.searched 
+    #unless @router.searched
     #  @search.run null,
     #    order: @options.sort
     #    direction: @options.sortDir
@@ -137,7 +137,7 @@ class arcs.views.search.Search extends Backbone.View
     ##      else
     ##        $actions.removeClass('toolbar-fixed').width 'auto'
 
-    # Fix the toolbar width on resizes. 
+    # Fix the toolbar width on resizes.
     $window.resize ->
       $actions.width($results.width() + 23) if $window.scrollTop() > pos
 
@@ -310,7 +310,7 @@ class arcs.views.search.Search extends Backbone.View
       $('#leftArrow').css('display', 'none')
     else
       $('#lastPage').css('display', 'block')
-      $('.dots').css('display', 'block') 
+      $('.dots').css('display', 'block')
       $('#leftArrow').css('display', 'block')
     if currentPage is lastPage
       $('#lefttArrow').css('display', 'none')
@@ -391,7 +391,7 @@ class arcs.views.search.Search extends Backbone.View
           noResults()
         else
           console.log(data)
-          get_filter_fields(data['resutls'])
+#          get_filter_fields(data['resutls'])
           $('#results-count').html(data['total'])
           for key, value of data['results']
             totalResults.push value
@@ -404,21 +404,21 @@ class arcs.views.search.Search extends Backbone.View
 
 # This function will take in an array of data from the KORA search made and
 # filter it to get the names of the filters fields we will need for filters!
-  get_filter_fields = (arr) ->
-    sites = new array()
-    seasons = new array()
-    excavations = new array()
-    creators = new array()
-    while i<arr.length
-      #let us get the sites
-
-      # let us get the seasons
-      seasons[arr['Season Title']] = arr['Season Title']
-      #let us get the excavations
-      excavations[arr['Excavation - Survey Name']] = arr['Excavation - Survey Name']
-      # let us get the creator
-      creators[arr['Creator']] = arr['Creator']
-      i++
+  # get_filter_fields = (arr) ->
+  #   sites = new Array()
+  #   seasons = new Array()
+  #   excavations = new Array()
+  #   creators = new Array()
+  #   while i<arr.length
+  #     #let us get the sites
+  #
+  #     # let us get the seasons
+  #     seasons[arr['Season Title']] = arr['Season Title']
+  #     #let us get the excavations
+  #     excavations[arr['Excavation - Survey Name']] = arr['Excavation - Survey Name']
+  #     # let us get the creator
+  #     creators[arr['Creator']] = arr['Creator']
+  #     i++
 
 
 
@@ -514,7 +514,7 @@ class arcs.views.search.Search extends Backbone.View
         $('#selected-resource-ids').html(selectedMap["selected"])
         $('#selected-count').html(selectedMap["selected"].length)
         arcs.bus.trigger 'selection'
-      
+
       return
     $('.sort-btn').unbind().click ->
       $('#items-per-page-btn').html($(this).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
@@ -545,7 +545,7 @@ class arcs.views.search.Search extends Backbone.View
         arcs.searchView.unselectAll();
         $('#selected-resource-ids').html(selectedMap["selected"])
         $('#selected-count').html(selectedMap["selected"].length)
-      
-#   
+
+#
     if results.length is 0
       $results.html "<div id='no-results'>No Results</div>"

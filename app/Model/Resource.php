@@ -40,11 +40,11 @@ class Resource extends AppModel {
      * Adds the URLs to the Resource's file and thumbnail to the return array.
      * Note that we don't store those, so we must dynamically generate them.
      */
-    public function afterFind($results, $primary) {
+    public function afterFind($results, $primary=false) {
         $results = parent::afterFind($results, $primary);
         # Add the thumbnail and resource urls to the results array.
         # We're using our resultsMap method, passing in $this and using it
-        # internally as $ctx, as a way of accessing our methods within the 
+        # internally as $ctx, as a way of accessing our methods within the
         # callback.
         $results = $this->resultsMap($results, function($r, $ctx) {
             if (isset($r['sha']) && isset($r['file_name'])) {
@@ -110,15 +110,15 @@ class Resource extends AppModel {
      * @param string $src      Path to a readable file.
      * @param array  $options  Array of options, specified below:
      *
-     *      filename: Provide the desired filename, if different than src path 
+     *      filename: Provide the desired filename, if different than src path
      *                basename.
-     *      move:     If false, copy the file rather than move it. Will move by 
+     *      move:     If false, copy the file rather than move it. Will move by
      *                default.
      *      thumb:    Make a thumbnail.
      *      preview:  Make a preview (if it seems prudent). When False a preview
      *                will not be made.
      *
-     * @return string  a SHA1 hexdigest that can be used to get the resource's 
+     * @return string  a SHA1 hexdigest that can be used to get the resource's
      *                 path.
      */
     public function createFile($src, $options=array()) {
@@ -163,9 +163,9 @@ class Resource extends AppModel {
         if (!is_file($dst . DS . $fname))
             # Return false if we can't make the link.
             if (!link($dst . DS . $sha, $dst . DS . $fname)) return false;
-        
+
         # Make a preview image, if we need one.
-        if ($this->_needsPreview($sha) && $options['preview']) 
+        if ($this->_needsPreview($sha) && $options['preview'])
             $this->makePreview($sha);
 
         # Return the hexdigest.
@@ -262,7 +262,7 @@ class Resource extends AppModel {
     }
 
     /**
-     * Unset the first request state. This is often called when the `first_req` 
+     * Unset the first request state. This is often called when the `first_req`
      * of a resource is true, after some special logic has been done.
      *
      * @param string $id
@@ -290,10 +290,10 @@ class Resource extends AppModel {
     protected function _path($sha, $root='', $sep='/') {
         # Trim any trailing sep
         $root = rtrim($root, $sep);
-        return $root . $sep . 
-            substr($sha, 0, 1) . $sep . 
-            substr($sha, 1, 1) . $sep . 
-            substr($sha, 2, 1) . $sep . 
+        return $root . $sep .
+            substr($sha, 0, 1) . $sep .
+            substr($sha, 1, 1) . $sep .
+            substr($sha, 2, 1) . $sep .
             substr($sha, 3);
     }
 
@@ -327,7 +327,7 @@ class Resource extends AppModel {
     /**
      * Puts a default thumbnail within the path, given a MIME type.
      *
-     * We don't create thumbnails during the Request-Response loop, but 
+     * We don't create thumbnails during the Request-Response loop, but
      * we'll copy over a placeholder.
      *
      * @param string $sha
@@ -343,7 +343,7 @@ class Resource extends AppModel {
             }
         }
         copy(
-            IMAGES . 'default_thumbs' . DS . $image . '.png', 
+            IMAGES . 'default_thumbs' . DS . $image . '.png',
             $this->path($sha, 'thumb.png')
         );
     }

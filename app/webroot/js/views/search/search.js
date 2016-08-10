@@ -25,7 +25,7 @@
   }
 
   arcs.views.search.Search = (function(superClass) {
-    var adjustPage, fillArray, get_filter_fields, noResults, pagination, search, showSelected;
+    var adjustPage, fillArray, noResults, pagination, search, showSelected;
 
     extend(Search, superClass);
 
@@ -448,7 +448,6 @@
             return noResults();
           } else {
             console.log(data);
-            get_filter_fields(data['resutls']);
             $('#results-count').html(data['total']);
             ref = data['results'];
             for (key in ref) {
@@ -462,22 +461,6 @@
           }
         }
       });
-    };
-
-    get_filter_fields = function(arr) {
-      var creators, excavations, results1, seasons, sites;
-      sites = new array();
-      seasons = new array();
-      excavations = new array();
-      creators = new array();
-      results1 = [];
-      while (i < arr.length) {
-        seasons[arr['Season Title']] = arr['Season Title'];
-        excavations[arr['Excavation - Survey Name']] = arr['Excavation - Survey Name'];
-        creators[arr['Creator']] = arr['Creator'];
-        results1.push(i++);
-      }
-      return results1;
     };
 
     $(function() {

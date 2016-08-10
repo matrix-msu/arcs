@@ -44,7 +44,8 @@
             <div class="page fluid-container">
 				
             <?php
-                echo $this->element('toolbar', $toolbar);
+				
+                echo $this->element('toolbar');
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
                 echo $this->fetch('content'); 

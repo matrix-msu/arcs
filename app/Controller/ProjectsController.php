@@ -1,25 +1,26 @@
 <?php
 /**
  * Projects Controller
- * 
+ *
  * @package    ARCS
  * @link       http://github.com/calmsu/arcs
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-
+ //App::import("/matrix/www/kora/public_html/includes/koraSearch.php");
+//include("KoraController.php");
 class ProjectsController extends AppController {
     public $name = 'Projects';
-	
+
 	public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('display', 'search', 'single_project');
 		$this->set(array(
 		'toolbar' => false,
-        'footer' => false 
+        'footer' => false
 		));
     }
-	
+
 	public function getProjects() {
 		$user = "";
 		$pass = "";
@@ -41,7 +42,7 @@ class ProjectsController extends AppController {
 		}
 		$this->set('projects', $projects);
 	}
-	
+
 	/**
      * Displays a view
      *
@@ -50,7 +51,6 @@ class ProjectsController extends AppController {
      */
 	public function display() {
 		$path = func_get_args();
-		
 		$this->getProjects();
 
 		$count = count($path);
@@ -72,14 +72,14 @@ class ProjectsController extends AppController {
             $this->set('toolbar', false);
         }
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
+
 		$this->render(implode('/', $path));
 	}
-	
+
 	public function single_project() {
 		$user = "";
 		$pass = "";
-
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=json&sort=kid&order=SORT_DESC&count=8";
+		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=json&sort=kid&order=SORT_DESC&count=8&fields=Resource+Identifier,Type,Title";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
@@ -88,12 +88,14 @@ class ProjectsController extends AppController {
 		$resources = [];
 		foreach($server_output as $result) {
 			$query = "Resource Identifier,=,".$result['Resource Identifier'];
-			$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=json&query=".urlencode($query)."&count=1";
+			$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=json&query=".urlencode($query)."&count=1&fields=Image+Upload";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
 			$page = json_decode(curl_exec($ch), true);
-			$picture_url = array_values($page)[0]['Image Upload']['localName'];
+			$picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
+                     array_values($page)[0]['Image Upload']['localName'] : null;
+
 			//Decide if there is a picture..
 			if( !empty($picture_url) ){
 				$thumb = $this->largeThumb($picture_url);
@@ -178,12 +180,12 @@ class ProjectsController extends AppController {
 		}
 
 		$query = "Persistent Name,=,".$this->request->params['pass'][0];
-		
+
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json&query=".urlencode($query);
 
 		// Debug string w/o query.
 		//$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
-		
+
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -198,7 +200,7 @@ class ProjectsController extends AppController {
 		}
 		$this->set('project', $projects[0]);
 	}
-	
-	
+
+
 
 }

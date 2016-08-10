@@ -1,7 +1,7 @@
 <?php
 /**
  * Help Controller
- * 
+ *
  * @package    ARCS
  * @link       http://github.com/calmsu/arcs
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
@@ -18,7 +18,6 @@ class HelpController extends AppController {
         $this->set('sidebar', json_decode($sidebar, true));
         $this->layout = 'doc';
     }
-
     /**
      * Displays a help document
      *
@@ -26,14 +25,12 @@ class HelpController extends AppController {
      * @return void
      */
 	public function display($doc) {
-		
-        $this->set(array(
-            'title_for_layout' => $doc == 'index' ? 
-                'Getting Started' : Inflector::humanize($doc),
-            'active' => $doc == 'index' ? '' : $doc
-        ));
+
+  	$this->set(array(
+    	'title_for_layout' => $doc == 'index' ?
+    	'Getting Started' : Inflector::humanize($doc),
+    	'active' => $doc == 'index' ? '' : $doc
+    ));
 		$this->render($doc);
-		
 	}
 }
-

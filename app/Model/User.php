@@ -97,7 +97,7 @@ class User extends AppModel {
                 //Get the title
                 //Get the newest date
                 $sql = "SELECT DISTINCT collection_id, id, title, max(modified) AS DATE, public, members
-                        FROM arcs_dev.collections 
+                        FROM arcs_dev.collections
                         WHERE collections.user_id ='" . $r['id'] . "'
                         GROUP BY title
                         ORDER BY max(modified) DESC;";
@@ -159,7 +159,7 @@ class User extends AppModel {
     /**
      * On create, we need to hash the user's password.
      */
-    function beforeSave($created) {
+    function beforeSave($created = array()) {
         App::uses('AuthComponent', 'Controller/Component');
         if (isset($this->data['User']['password'])) {
             $this->data['User']['password'] = AuthComponent::password(

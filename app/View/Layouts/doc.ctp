@@ -1,24 +1,24 @@
 <!doctype html>
-<?php 
+<?php
 	echo $this->Session->flash();
     $this->set('index_toolbar', true);
 ?>
 
 <html>
     <head>
-		
+
         <title><?php echo $title_for_layout; ?> - ARCS</title>
-        <link rel="shortcut icon" 
-            href="<?php echo $this->Html->url('/favicon.ico') ?>" 
+        <link rel="shortcut icon"
+            href="<?php echo $this->Html->url('/favicon.ico') ?>"
             type="image/x-icon" />
         <meta name="language" http-equiv="language" content="english" />
         <!-- ios devices go full screen! -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
-        <?php 
+        <?php
         echo $this->Assets->stylesheets();
-        echo $this->Html->less('webroot/css/docs/docs');
+        echo $this->Html->css('webroot/css/docs/docs');
         echo $this->Assets->scripts();
         ?>
     </head>
@@ -30,7 +30,7 @@
                 <?php echo $this->Session->flash('auth') ?>
                 <div class="row">
                     <div class="span3">
-                        <?php echo $this->element('doc_sidebar', 
+                        <?php echo $this->element('doc_sidebar',
                             compact($sidebar, $active)) ?>
                     </div>
                     <div class="span9 doc">
