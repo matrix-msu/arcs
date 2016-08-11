@@ -162,7 +162,7 @@
       this.options.grid = !this.options.grid;
       this.$('#grid-btn').toggleClass('active');
       this.$('#list-btn').toggleClass('active');
-      return this.render();
+      return adjustPage(totalResults, 1);
     };
 
     Search.prototype.scrollTop = function() {
@@ -424,6 +424,8 @@
       val = $(".searchBoxInput").val();
       pageNum = $('.currentPage').html();
       perPage = $('#items-per-page-btn').html().substring(0, 2);
+      val = val.replace(/[^A-Za-z0-9-]/g, '');
+      console.log(val);
       if (val === "") {
         noResults();
         totalResults = [];
@@ -491,10 +493,12 @@
       }
       $results = $('.flex-container');
       template = this.options.grid ? 'search/grid' : 'search/list';
+      console.log(template);
       results = results.results;
       $results[append ? 'append' : 'html'](arcs.tmpl(template, {
         results: results
       }));
+      console.log($results);
       $(".pageNumber").unbind().click(function(e) {
         if ($(this).hasClass('selected')) {
           e.stopPropagation();
@@ -578,7 +582,7 @@
           arcs.bus.trigger('selection');
         }
       });
-      $('.sort-btn').unbind().click(function() {
+      $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
         $('.pageNumber').removeClass('selected');
         $('.pageNumber').removeClass('currentPage');

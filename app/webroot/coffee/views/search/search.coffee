@@ -152,7 +152,8 @@ class arcs.views.search.Search extends Backbone.View
     @options.grid = !@options.grid
     @$('#grid-btn').toggleClass 'active'
     @$('#list-btn').toggleClass 'active'
-    @render()
+    adjustPage(totalResults, 1)
+#    @render()
 
 # Scroll to the top of the page.
   scrollTop: ->
@@ -370,6 +371,8 @@ class arcs.views.search.Search extends Backbone.View
     val = $(".searchBoxInput").val()
     pageNum = $('.currentPage').html()
     perPage = $('#items-per-page-btn').html().substring(0,2)
+    val = val.replace(/[^A-Za-z0-9-]/g,'')
+    console.log(val);
     if val is ""
       noResults()
       totalResults = []
@@ -442,8 +445,10 @@ class arcs.views.search.Search extends Backbone.View
   _render: (results, append=false) ->
     $results = $('.flex-container')
     template = if @options.grid then 'search/grid' else 'search/list'
+    console.log(template)
     results = results.results
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results: results)
+    console.log($results)
 
     $(".pageNumber").unbind().click (e) ->
       if($(this).hasClass('selected'))
@@ -516,7 +521,7 @@ class arcs.views.search.Search extends Backbone.View
         arcs.bus.trigger 'selection'
 
       return
-    $('.sort-btn').unbind().click ->
+    $('.perpage-btn').unbind().click ->
       $('#items-per-page-btn').html($(this).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
       $('.pageNumber').removeClass('selected');
       $('.pageNumber').removeClass('currentPage');

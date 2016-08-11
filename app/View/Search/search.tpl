@@ -157,9 +157,9 @@
 		        <span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="sort-title-btn">simple&nbsp;
+		        <li><a class="sort-btn active" id="grid-btn">simple&nbsp;
 		          <i class="icon-ok"></i></a></li>
-		        <li><a class="sort-btn" id="sort-modified-btn">detailed&nbsp;</a></li>
+		        <li><a class="sort-btn" id="list-btn">detailed&nbsp;</a></li>
 		      </ul>
 		    </div>
 		    
@@ -229,9 +229,9 @@
 					<span class='pointerDown sort-arrow pointerSearch'></span>
 				  </button>
 				  <ul class="dropdown-menu">
-					<li><a class="sort-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
-					<li><a class="sort-btn" id="open-colview-btn">40 Items per Page&nbsp;</a></li>
-					<li><a class="sort-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
+					<li><a class="sort-btn perpage-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
+					<li><a class="sort-btn perpage-btn" id="open-colview-btn">40 Items per Page&nbsp;</a></li>
+					<li><a class="sort-btn perpage-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
 				  </ul>
 			</div>
 			<div id="pagination">
