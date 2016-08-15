@@ -13,7 +13,7 @@ class Keyword_Search extends Kora{
 
   function __construct($query,$start=1,$end=10000){
       $time_start = microtime(true);
-
+      $mem_start =  memory_get_usage();
       //call parent constructor 'kora'
       parent::__construct();
 
@@ -33,19 +33,24 @@ class Keyword_Search extends Kora{
       //adjust the results to the requested section
       $this->adjust_requested_limits($start,$end);
 
+
       $time_end = microtime(true);
+      $mem_end = memory_get_usage();
+
       $time = $time_end - $time_start;
+      $total_mem = ($mem_end - $mem_start) / pow(10,9);
 
       //format and prepare for a json response
-      $this->format_results($time,$filters);
+      $this->format_results($time,$total_mem,$filters);
   }
 
-  private function format_results($time,$filters){
+  private function format_results($time,$total_mem,$filters){
 
     $this->formulatedResult = array(
 
       "total"=>$this->total,
       "time"=>$time,
+      "Memory"=>$total_mem . " GB",
       "filters" => $filters,
       "results"=>$this->formulatedResult
 
@@ -100,7 +105,8 @@ class Keyword_Search extends Kora{
       "Type",
       "Resource Identifier",
       "Accession Number",
-      "Creator"
+      "Creator",
+      "Creator2"
     );
 
   }
