@@ -79,6 +79,9 @@ class ProjectsController extends AppController {
 	public function single_project() {
 		$user = "";
 		$pass = "";
+    echo "hello";
+    echo  class_exists ( "KORA_Clause" ) ? "true" : "false";
+    echo "here";
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=json&sort=kid&order=SORT_DESC&count=8&fields=Resource+Identifier,Type,Title";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

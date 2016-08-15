@@ -32,7 +32,6 @@ Cache::config('default', array('engine' => 'File'));
 App::uses('IniReader', 'Configure', 'Security');
 App::uses('CakeLog', 'Log');
 Configure::config('default', new IniReader(APP . 'Config' . DS));
-
 # Load additional config files.
 Configure::load('arcs');
 Configure::load('assets');
@@ -40,6 +39,8 @@ Configure::load('assets');
 # Basic Kora Information
 define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
 define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
+define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
+define("KORA_LIB", CORE_PATH . "Kora/Local/");
 define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
 define ("LOCAL_URI", "~arnold.mutayoba/arcs/webroot/");

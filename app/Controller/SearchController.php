@@ -7,6 +7,9 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
+
+require_once(KORA_LIB . "Keyword_Search.php");
+
 class SearchController extends AppController {
     public $name = 'Search';
     public $uses = array('Resource','Users');
@@ -15,8 +18,6 @@ class SearchController extends AppController {
         parent::initialize();
         $this->loadComponent('Paginator');
     }
-
-
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('search', 'resources','simple_search','advance_search','getProjects');
@@ -24,6 +25,7 @@ class SearchController extends AppController {
             $this->Resource->recursive = -1;
             $this->Resource->flatten = true;
         }
+
     }
 
     /**
@@ -33,14 +35,38 @@ class SearchController extends AppController {
         $title = 'Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
+        $this -> render('/Search/search');
+    }
+
+    public function simple_search($query="",$page,$perPage) {
+        $options = $this->parseParams();
+        $this->autoRender = false;
+        // This array will be used to get results from multiple schemes.
+        $schemes = array(RESOURCE_SID,SUBJECT_SID);
+
+        if ($query == ''){
+            return $this->emptySearch($options);
+        }else {
+          $kora = new Keyword_Search($query);
+          $kora->print_json();
+
+        }
+
+
     }
 
 
+
+
+
+
+
     /**
+     *
      * Display the advanced search page
      * @param string $query
+     *
      */
-
     public function advance_search($query='') {
         $title = 'Advanced Search';
         if ($query) $title .= ' - ' . urldecode($query);
@@ -48,9 +74,399 @@ class SearchController extends AppController {
         $this -> render('/AdvancedSearch/advancedsearch');
     }
 
+    // For now this function only does the resource and subject search by ketword
+    // but can do more and the queing can be doen by an extra fucntion on in the same fuction using the continue
+    // coommand, or an equivalen to continue as in c++
+    // int his fucntion make an array of fields in the resoiurces and subject of observqtion
+    // which will be returned. this will make a huge difference in the load time
+
+    // This funtion takes in a scheme id(sid) and users input which will be made
+    // to AN APPROPIATE QUERY. Then a kora restful call will be made to get the
+    // we need to search for and thus will be the return.
+    protected function search_single_scheme($sid, $query) {
+        // Let us check and decide which sid we need to search, plus make the appropiate
+        // query to be used pull data out of KORA.
+        $user = "";
+        $pass = "";
+        $display = "json";
+
+        if($sid == RESOURCE_SID){
+            // making the query we want by specfic fields!!
+            $q = '(Type,like,'. $query.'),||,(Resource Identifier,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == PROJECT_SID) {
+            // making the query we want by specfic fields!!
+            $q = 'Country,like,'. $query ;
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == SEASON_SID) {
+            // making the query we want by specfic fields!!
+            $q = '(Title,like,'. $query.'),||,(Description,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == SURVEY_SID) {
+            // making the query we want by specfic fields!!
+            $q = '(Name,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else if ($sid == SUBJECT_SID) {
+            // making the query we want by specfic fields!!
+            $q = '(Artifact - Structure Classification,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Type,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Material,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Technique,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Period,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Terminus Ante Quem,like,'. $query.'),||,';
+            $q .= '(Artifact - Structure Terminus Post Quem,like,'. $query.')';
+            // Make the Url
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $results = array();
+            $results = json_decode(curl_exec($ch), true);
+            return $results;
+        }else {
+            return array();
+        }
+
+    }
 
 
 
+
+    /**
+     * @return mixed
+     */
+    public function getProjects(){
+        $user = "";
+        $pass = "";
+        $display = "json";
+        $sid = PROJECT_SID;
+        $query2 = 'kid,!=,1';
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2)."&fields=Persistent Name";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+        //capture results and map to array
+        $results = json_decode(curl_exec($ch), true);
+        return $results;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public function advanced_search($query1="",$page,$perPage) {
+        if($query1 == ""){
+            return 0;
+        }
+        $options = $this->parseParams();
+
+        // This array will be used to get results from multiple schemes. i.e search mutiple schemes
+        $schemes = array(RESOURCE_SID,PROJECT_SID,SEASON_SID,SURVEY_SID,SUBJECT_SID);
+
+        if ($query1 == ''){
+            return $this->emptySearch($options);
+        }else {
+            if (isset($this->request->query['n'])) {
+                $limit = $this->request->query['n'];
+                $response['limit'] = $limit;
+            }
+
+
+            if ($response['order'] == 'relevance') {
+                $response['results'] = $this->Resource->findAllFromIds($response['results']);
+            } else {
+                $response['results'] = $this->Resource->find('all', array(
+                    'conditions' => array('Resource.id' => $response['results']),
+                    'order' => "Resource.{$options['order']} {$options['direction']}"
+                ));
+            }
+
+
+            // The searcher will return debug information that should be hidden for
+            // most account types.
+            if (!$this->Access->isAdmin()) {
+                unset($response['raw_query']);
+                unset($response['mode']);
+            }
+
+            //Get the Images
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $sid = PAGES_SID;
+            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
+            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
+            // I do not think this is very efficient but will modify with time.
+            $query2 = 'kid,!=,1';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+            $imageResults = array();
+            foreach($response['results'] as $image) {
+                //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+                $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
+            }
+
+            // Lets get the data from KORA multiple schemes
+            $kora_data = array();
+            $total= array();
+            foreach ($schemes as $scheme) {
+                $kora_data =  $this->search_single_scheme($scheme, $query1);
+
+                foreach($kora_data as $key => $result){
+                    $total[$key] = $result;
+                }
+                /*
+                foreach($kora_data as $data){
+                    array_push($total,$data);
+                }
+                */
+            }
+            $response['results'] = $total;
+            // $response['results'] = $this->search_single_scheme(RESOURCE_SID, $query1);
+
+            $returnResults = array();
+            foreach($response['results'] as $key => $item) {
+                if ($imageResults[$item['Resource Identifier']] != null) {
+                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                } else {
+                    $item['thumb'] = DEFAULT_THUMB;
+                }
+                $returnResults[$key] = $item;
+                //array_push($returnResults, $item);
+            }
+
+            $response['results'] = $returnResults;
+            $response['total'] = count($response['results']);
+            $numberOfPages = ceil($response['total']/$perPage);
+            $skip = ($page-1)*$perPage;
+            $response['display'] = array_slice($response['results'],$skip,$perPage);
+            $response['pages'] = $numberOfPages;
+            $response['pageNumber'] = $page;
+            $response['numberPerPage'] = $perPage;  //pass this variable in eventually
+            $response['skip'] = $skip;
+//			$this->layout = false;
+//				$this->Post->recursive = 0;
+//				$this-paginate = array(
+//				'limit' => 20;
+//				);
+            //$this->paginate($response['results']);
+            $this->json(200, $response);
+
+            //$this->json(200, $this->paginate($response['results']));
+
+
+            //$this->paginate($response);
+            //$paginate($this->json(200, $response));
+        }
+
+
+    }
+    public function sm($query1) {
+
+        $options = $this->parseParams();
+
+        if ($query1 == ''){
+            return $this->emptySearch($options);
+        }else {
+            if (isset($this->request->query['n'])) {
+                $limit = $this->request->query['n'];
+                $response['limit'] = $limit;
+            }
+
+
+            if ($response['order'] == 'relevance') {
+                $response['results'] = $this->Resource->findAllFromIds($response['results']);
+            } else {
+                $response['results'] = $this->Resource->find('all', array(
+                    'conditions' => array('Resource.id' => $response['results']),
+                    'order' => "Resource.{$options['order']} {$options['direction']}"
+                ));
+            }
+
+
+            // The searcher will return debug information that should be hidden for
+            // most account types.
+            if (!$this->Access->isAdmin()) {
+                unset($response['raw_query']);
+                unset($response['mode']);
+            }
+
+            //Get the Images
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $sid = PAGES_SID;
+            $query2 = '(Type,=,'. $query1.'),||,(Resource Identifier,=,'. $query1.'),||,(Earliest Date,=,'. $query1.'),||,(Latest Date,=,'. $query1.')';
+            $query2 = 'kid,!=,1';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+            $imageResults = array();
+            foreach($response['results'] as $image) {
+                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
+            }
+
+
+
+
+            // Getting the data!!
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $sid = RESOURCE_SID;
+            $query2 = '(Type,=,'. $query1.'),||,(Resource Identifier,=,'. $query1.'),||,(Earliest Date,=,'. $query1.'),||,(Latest Date,=,'. $query1.')';
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+
+
+            $returnResults = array();
+            foreach($response['results'] as $item) {
+                if ($imageResults[$item['Resource Identifier']] != null) {
+                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
+                } else {
+                    $item['thumb'] = DEFAULT_THUMB;
+                }
+                array_push($returnResults, $item);
+
+            }
+
+            $response['results'] = $returnResults;
+            $response['total'] = count($response['results']);
+            $this->json(200, $response);
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * Complete a category given a query.
+     */
+    public function complete() {
+        $searcher = $this->getSearcher();
+        if ($this->Auth->loggedIn())
+            $searcher->publicFilter = false;
+
+        $category = $this->request->query['cat'];
+        $query = $searcher->parseQuery($this->request->query['q']);
+        $options = array('limit' => 100);
+        $results = $searcher->complete($category, $query, $options);
+
+        $this->json(200, $results);
+    }
+
+    /**
+     * Return recently modified resources if no search query was givem.
+     */
+    public function emptySearch($options) {
+        # No facets provided. Give them back some recent resources.
+        $user = "";
+        $pass = "";
+
+        $display = "json";
+        $query = "";
+        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".urlencode($display);//."query=".urlencode($query);
+        ///initialize post request to KORA API using curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+
+        ///capture results and display
+        $resources = curl_exec($ch);
+        $this->json(200, array(
+            'results' => $resources,
+            'num_results' => count($resources),
+            'limit' => $options['limit'],
+            'mode' => 'no_search',
+            'offset' => $options['offset'],
+            'direction' => $options['direction'],
+            'total' => $this->Resource->find('count', array(
+                    'conditions' => $this->Auth->loggedIn() ?
+                        null: array('Resource.public' => 1)
+                )
+            )
+        ));
+    }
+
+    /**
+     * Parse the search options from the request parameters.
+     *
+     * @return array
+     */
+    protected function parseParams() {
+        $params = $this->request->query;
+        $options = array(
+            'limit' => isset($params['n']) ? $params['n'] : 30,
+            'page' => 1,
+            'direction' => 'DESC',
+            'order' => 'modified'
+        );
+        if (isset($params['order'])) {
+            $orderables = array('modified', 'created', 'title');
+            if (in_array($params['order'], $orderables))
+                $options['order'] = $params['order'];
+        }
+        if (isset($params['page'])) $options['page'] = $params['page'];
+        $options['offset'] = ($options['page'] - 1) * $options['limit'];
+        if (isset($params['direction']) && $params['direction'] == 'asc') {
+            $options['direction'] = 'ASC';
+        }
+        return $options;
+    }
 
     /**
      * Search resources.
@@ -203,9 +619,11 @@ class SearchController extends AppController {
         //End of collections
         ///////////////////////////////////////
 
-        if ($response['order'] == 'relevance') {
+        if (isset($response['order']) && $response['order'] == 'relevance') {
             $response['results'] = $this->Resource->findAllFromIds($response['results']);
         } else {
+            //check if it is set
+            $response['results'] = isset($response['results']) ? $response['results'] : "";
             $response['results'] = $this->Resource->find('all', array(
                 'conditions' => array('Resource.id' => $response['results']),
                 'order' => "Resource.{$options['order']} {$options['direction']}"
@@ -269,7 +687,7 @@ class SearchController extends AppController {
                 $returnResults[0]['more_results'] = 1;
                 break;
             }
-            if ($imageResults[$item['Resource Identifier']] != null) {
+            if (isset($imageResults[$item['Resource Identifier']]) && $imageResults[$item['Resource Identifier']] != null) {
                 if ($sid != PAGES_SID) {
                     $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
                 }
@@ -284,7 +702,7 @@ class SearchController extends AppController {
             array_push($returnResults, $item);
         }
         //Test if there are more results for the show all button
-        if($returnResults[0]['more_resutlts'] != null ){
+        if(isset($returnResults[0]['more_resutlts']) && $returnResults[0]['more_resutlts'] != null ){
             $returnResults[0]['more_results'] = 0;
         }
         $response['results'] = $returnResults;
@@ -293,493 +711,6 @@ class SearchController extends AppController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function sm($query1) {
-
-        $options = $this->parseParams();
-
-        if ($query1 == ''){
-            return $this->emptySearch($options);
-        }else {
-            if (isset($this->request->query['n'])) {
-                $limit = $this->request->query['n'];
-                $response['limit'] = $limit;
-            }
-
-
-            if ($response['order'] == 'relevance') {
-                $response['results'] = $this->Resource->findAllFromIds($response['results']);
-            } else {
-                $response['results'] = $this->Resource->find('all', array(
-                    'conditions' => array('Resource.id' => $response['results']),
-                    'order' => "Resource.{$options['order']} {$options['direction']}"
-                ));
-            }
-
-
-            // The searcher will return debug information that should be hidden for
-            // most account types.
-            if (!$this->Access->isAdmin()) {
-                unset($response['raw_query']);
-                unset($response['mode']);
-            }
-
-            //Get the Images
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $sid = PAGES_SID;
-            $query2 = '(Type,=,'. $query1.'),||,(Resource Identifier,=,'. $query1.'),||,(Earliest Date,=,'. $query1.'),||,(Latest Date,=,'. $query1.')';
-            $query2 = 'kid,!=,1';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-            $imageResults = array();
-            foreach($response['results'] as $image) {
-                $imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-            }
-
-
-
-
-            // Getting the data!!
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $sid = RESOURCE_SID;
-            $query2 = '(Type,=,'. $query1.'),||,(Resource Identifier,=,'. $query1.'),||,(Earliest Date,=,'. $query1.'),||,(Latest Date,=,'. $query1.')';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-
-
-            $returnResults = array();
-            foreach($response['results'] as $item) {
-                if ($imageResults[$item['Resource Identifier']] != null) {
-                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
-                } else {
-                    $item['thumb'] = DEFAULT_THUMB;
-                }
-                array_push($returnResults, $item);
-
-            }
-
-            $response['results'] = $returnResults;
-            $response['total'] = count($response['results']);
-            $this->json(200, $response);
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-    // For now this function only does the resource and subject search by ketword
-    // but can do more and the queing can be doen by an extra fucntion on in the same fuction using the continue
-    // coommand, or an equivalen to continue as in c++
-    // int his fucntion make an array of fields in the resoiurces and subject of observqtion
-    // which will be returned. this will make a huge difference in the load time
-
-    // This funtion takes in a scheme id(sid) and users input which will be made
-    // to AN APPROPIATE QUERY. Then a kora restful call will be made to get the
-    // we need to search for and thus will be the return.
-    protected function search_single_scheme($sid, $query) {
-        // Let us check and decide which sid we need to search, plus make the appropiate
-        // query to be used pull data out of KORA.
-        $user = "";
-        $pass = "";
-        $display = "json";
-
-        if($sid == RESOURCE_SID){
-            // making the query we want by specfic fields!!
-            $q = '(Type,like,'. $query.'),||,(Resource Identifier,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $results = array();
-            $results = json_decode(curl_exec($ch), true);
-            return $results;
-        }else if ($sid == PROJECT_SID) {
-            // making the query we want by specfic fields!!
-            $q = 'Country,like,'. $query ;
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $results = array();
-            $results = json_decode(curl_exec($ch), true);
-            return $results;
-        }else if ($sid == SEASON_SID) {
-            // making the query we want by specfic fields!!
-            $q = '(Title,like,'. $query.'),||,(Description,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $results = array();
-            $results = json_decode(curl_exec($ch), true);
-            return $results;
-        }else if ($sid == SURVEY_SID) {
-            // making the query we want by specfic fields!!
-            $q = '(Name,like,'. $query.'),||,(Earliest Date,like,'. $query.'),||,(Latest Date,like,'. $query.')';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $results = array();
-            $results = json_decode(curl_exec($ch), true);
-            return $results;
-        }else if ($sid == SUBJECT_SID) {
-            // making the query we want by specfic fields!!
-            $q = '(Artifact - Structure Classification,like,'. $query.'),||,';
-            $q .= '(Artifact - Structure Type,like,'. $query.'),||,';
-            $q .= '(Artifact - Structure Material,like,'. $query.'),||,';
-            $q .= '(Artifact - Structure Technique,like,'. $query.'),||,';
-            $q .= '(Artifact - Structure Period,like,'. $query.'),||,';
-            $q .= '(Artifact - Structure Terminus Ante Quem,like,'. $query.'),||,';
-            $q .= '(Artifact - Structure Terminus Post Quem,like,'. $query.')';
-            // Make the Url
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($q);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $results = array();
-            $results = json_decode(curl_exec($ch), true);
-            return $results;
-        }else {
-            return array();
-        }
-
-    }
-
-
-
-
-
-
-
-
-
-    public function simple_search($query1="",$page,$perPage) {
-        $options = $this->parseParams();
-
-        // This array will be used to get results from multiple schemes.
-        $schemes = array(RESOURCE_SID,SUBJECT_SID);
-
-        if ($query1 == ''){
-            return $this->emptySearch($options);
-        }else {
-
-            //Get the Images
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $sid = PAGES_SID;
-            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
-            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
-            // I do not think this is very efficient but will modify with time.
-            $query2 = 'kid,!=,1';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-            $imageResults = array();
-            foreach($response['results'] as $image) {
-                //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-                //$imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
-                $imageResults[$image['Resource Identifier']] = $image['Image Upload']['localName'];
-            }
-
-            // Lets get the data from KORA multiple schemes
-            $kora_data = array();
-            $total= array();
-            foreach ($schemes as $scheme) {
-                $kora_data =  $this->search_single_scheme($scheme, $query1);
-
-                foreach($kora_data as $key => $result){
-                    $total[$key] = $result;
-                }
-
-            }
-            $response['results'] = $total;
-
-            $returnResults = array();
-            foreach($response['results'] as $key => $item) {
-                //$imageResults[$item['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
-                $thisImage = isset($imageResults[$item['Resource Identifier']])? $imageResults[$item['Resource Identifier']] : null ;
-                if ($thisImage != null) {
-                    //$item['thumb'] = $imageResults[$item['Resource Identifier']];
-                    $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
-                } else {
-                    $item['thumb'] = DEFAULT_THUMB;
-                }
-                $returnResults[$key] = $item;
-                //array_push($returnResults, $item);
-            }
-
-            $response['results'] = $returnResults;
-            $response['total'] = count($response['results']);
-			$this->json(200, $response);
-        }
-
-
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getProjects(){
-        $user = "";
-        $pass = "";
-        $display = "json";
-        $sid = PROJECT_SID;
-        $query2 = 'kid,!=,1';
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2)."&fields=Persistent Name";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        //capture results and map to array
-        $results = json_decode(curl_exec($ch), true);
-        return $results;
-    }
-
-
-
-
-
-
-
-
-
-
-
-    public function advanced_search($query1="",$page,$perPage) {
-        if($query1 == ""){
-            return 0;
-        }
-        $options = $this->parseParams();
-
-        // This array will be used to get results from multiple schemes. i.e search mutiple schemes
-        $schemes = array(RESOURCE_SID,PROJECT_SID,SEASON_SID,SURVEY_SID,SUBJECT_SID);
-
-        if ($query1 == ''){
-            return $this->emptySearch($options);
-        }else {
-            if (isset($this->request->query['n'])) {
-                $limit = $this->request->query['n'];
-                $response['limit'] = $limit;
-            }
-
-
-            if ($response['order'] == 'relevance') {
-                $response['results'] = $this->Resource->findAllFromIds($response['results']);
-            } else {
-                $response['results'] = $this->Resource->find('all', array(
-                    'conditions' => array('Resource.id' => $response['results']),
-                    'order' => "Resource.{$options['order']} {$options['direction']}"
-                ));
-            }
-
-
-            // The searcher will return debug information that should be hidden for
-            // most account types.
-            if (!$this->Access->isAdmin()) {
-                unset($response['raw_query']);
-                unset($response['mode']);
-            }
-
-            //Get the Images
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $sid = PAGES_SID;
-            // $query2 = '(Type,=,%'. $query1.'%),||,(Resource Identifier,=,%'. $query1.'%),||,(Earliest Date,=,%'. $query1.'%),||,(Latest Date,=,%'. $query1.'%)';
-            // Use kid=1 to grub all the results from Kora so that we can compare them later with those of the data.
-            // I do not think this is very efficient but will modify with time.
-            $query2 = 'kid,!=,1';
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query2);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-            $imageResults = array();
-            foreach($response['results'] as $image) {
-                //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-                $imageResults[$image['Resource Identifier']] = $this->smallThumb($image['Image Upload']['localName']);
-            }
-
-            // Lets get the data from KORA multiple schemes
-            $kora_data = array();
-            $total= array();
-            foreach ($schemes as $scheme) {
-                $kora_data =  $this->search_single_scheme($scheme, $query1);
-
-                foreach($kora_data as $key => $result){
-                    $total[$key] = $result;
-                }
-                /*
-                foreach($kora_data as $data){
-                    array_push($total,$data);
-                }
-                */
-            }
-            $response['results'] = $total;
-            // $response['results'] = $this->search_single_scheme(RESOURCE_SID, $query1);
-
-            $returnResults = array();
-            foreach($response['results'] as $key => $item) {
-                if ($imageResults[$item['Resource Identifier']] != null) {
-                    $item['thumb'] = $imageResults[$item['Resource Identifier']];
-                } else {
-                    $item['thumb'] = DEFAULT_THUMB;
-                }
-                $returnResults[$key] = $item;
-                //array_push($returnResults, $item);
-            }
-
-            $response['results'] = $returnResults;
-            $response['total'] = count($response['results']);
-            $numberOfPages = ceil($response['total']/$perPage);
-            $skip = ($page-1)*$perPage;
-            $response['display'] = array_slice($response['results'],$skip,$perPage);
-            $response['pages'] = $numberOfPages;
-            $response['pageNumber'] = $page;
-            $response['numberPerPage'] = $perPage;  //pass this variable in eventually
-            $response['skip'] = $skip;
-//			$this->layout = false;
-//				$this->Post->recursive = 0;
-//				$this-paginate = array(
-//				'limit' => 20;
-//				);
-            //$this->paginate($response['results']);
-            $this->json(200, $response);
-
-            //$this->json(200, $this->paginate($response['results']));
-
-
-            //$this->paginate($response);
-            //$paginate($this->json(200, $response));
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
-    /**
-     * Complete a category given a query.
-     */
-    public function complete() {
-        $searcher = $this->getSearcher();
-        if ($this->Auth->loggedIn())
-            $searcher->publicFilter = false;
-
-        $category = $this->request->query['cat'];
-        $query = $searcher->parseQuery($this->request->query['q']);
-        $options = array('limit' => 100);
-        $results = $searcher->complete($category, $query, $options);
-
-        $this->json(200, $results);
-    }
-
-    /**
-     * Return recently modified resources if no search query was givem.
-     */
-    public function emptySearch($options) {
-        # No facets provided. Give them back some recent resources.
-        $user = "";
-        $pass = "";
-
-        $display = "json";
-        $query = "";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".urlencode($display);//."query=".urlencode($query);
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-
-        ///capture results and display
-        $resources = curl_exec($ch);
-        $this->json(200, array(
-            'results' => $resources,
-            'num_results' => count($resources),
-            'limit' => $options['limit'],
-            'mode' => 'no_search',
-            'offset' => $options['offset'],
-            'direction' => $options['direction'],
-            'total' => $this->Resource->find('count', array(
-                    'conditions' => $this->Auth->loggedIn() ?
-                        null: array('Resource.public' => 1)
-                )
-            )
-        ));
-    }
-
-    /**
-     * Parse the search options from the request parameters.
-     *
-     * @return array
-     */
-    protected function parseParams() {
-        $params = $this->request->query;
-        $options = array(
-            'limit' => isset($params['n']) ? $params['n'] : 30,
-            'page' => 1,
-            'direction' => 'DESC',
-            'order' => 'modified'
-        );
-        if (isset($params['order'])) {
-            $orderables = array('modified', 'created', 'title');
-            if (in_array($params['order'], $orderables))
-                $options['order'] = $params['order'];
-        }
-        if (isset($params['page'])) $options['page'] = $params['page'];
-        $options['offset'] = ($options['page'] - 1) * $options['limit'];
-        if (isset($params['direction']) && $params['direction'] == 'asc') {
-            $options['direction'] = 'ASC';
-        }
-        return $options;
-    }
 
 
 
