@@ -32,10 +32,11 @@ class SearchController extends AppController {
      * Display the search page
      */
     public function search($query='') {
+
         $title = 'Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
-        $this -> render('/Search/search');
+
     }
 
     public function simple_search($query="",$page,$perPage) {
