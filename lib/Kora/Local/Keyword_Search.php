@@ -223,21 +223,19 @@ class Keyword_Search extends Kora{
       $this->fields = array("Image Upload");
 
       foreach($this->formulatedResult as $obj){
-
-          if(!empty($obj['kid'])){
-            $this->The_Clause = new KORA_Clause("Resource Associator", "=" , $obj['kid']);
-            $image = self::search();
-            if(isset(array_values($image)[0])){
-              $image = array_values($image)[0];
-            }
-            if(isset($image["Image Upload"])){
-              $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($image["Image Upload"]['localName']);
-            }
-            else{
-              $this->formulatedResult[$obj['kid']]["thumb"] = DEFAULT_THUMB;
-            }
+        if(!empty($obj['kid'])){
+          $this->The_Clause = new KORA_Clause("Resource Associator", "=" , $obj['kid']);
+          $image = self::search();
+          if(isset(array_values($image)[0])){
+             $image = array_values($image)[0];
           }
-
+          if(isset($image["Image Upload"])){
+              $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($image["Image Upload"]['localName']);
+          }
+          else{
+            $this->formulatedResult[$obj['kid']]["thumb"] = DEFAULT_THUMB;
+          }
+        }
       }
 
   }

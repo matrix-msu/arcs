@@ -37,6 +37,7 @@ class SearchController extends AppController {
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
 
+
     }
 
     public function simple_search($query="",$page,$perPage) {
