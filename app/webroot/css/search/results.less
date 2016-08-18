@@ -74,7 +74,7 @@ div#search-results-wrapper {
             padding: 5px;
 			width: 90%;
 			margin: auto;
-        
+
         .btn {
             background: transparent;
             border: 0;
@@ -83,22 +83,22 @@ div#search-results-wrapper {
             text-transform: uppercase;
 			padding-left: 35px;
         }
-        
+
         .notactive {
             color: rgba(68, 68, 68, .25);
         }
-        
+
         .active {
             z-index: 0;
             color: @ArcsBlue !important;
             box-shadow: none;
         }
-        
+
         .icon-grid {
             width: 17px;
             height: 16px;
         }
-        
+
         .icon-grid:before {
             content:''; height:19px; width:19px; background:#333; border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px; display:block; position:absolute; top:0; left:0px; box-shadow:21px 0 0 #333, 0 21px 0 #333, 21px 21px 0 #333;-webkit-box-shadow:21px 0 0 #333, 0 21px 0 #333, 21px 21px 0 #333;-moz-box-shadow:21px 0 0 #333, 0 21px 0 #333, 21px 21px 0 #333;
         }
@@ -107,26 +107,26 @@ div#search-results-wrapper {
             float: right;
             position: relative;
         }
-        
+
         .actions-left {
             float: left;
             position: relative;
         }
-        
+
         #open-buttons {
             right: 18px;
         }
-		
+
         #sort-buttons {
             z-index: 1;
-            
+
 			#sort-btn {
                 span#sort-by {
                     font-size: 95%;
                     font-weight: bold;
                 }
             }
-			
+
 			.pointerDown {
 				width: 8px;
 				height: 8px;
@@ -140,7 +140,7 @@ div#search-results-wrapper {
 //				margin: 5px 0 0 30px;
 //				margin-left: 10px;
 			}
-			
+
 			.pointerUp {
 				width: 8px;
 				height: 8px;
@@ -154,31 +154,33 @@ div#search-results-wrapper {
 //				margin: 5px 0 0 30px;
 //				margin-left: 10px;
 			}
-			
+
 			.dropdown-menu {
 				z-index: 0;
 				border: 0;
 				border-radius: 0;
 				background: #cecece;
 				top: -14%;
-				padding-top: 5em;            
+				padding-top: 5em;
 				box-shadow: none !important;
-				
+
 			}
-            
+
         }
-		
-		
+
+
 		ul.dropdown-menu {
 			-webkit-box-shadow: none !important;
 			-moz-box-shadow: none !important;
 			box-shadow: none !important;
 			border-radius: 0 !important;
 			width: auto !important;
-			min-width: 0;
+// 			min-width: 0;
 			left: 15px;
+			max-height: 400px;
+			overflow: auto;
 		}
-		
+
         ul.dropdown-menu li a {
             cursor: pointer;
             display: block;
@@ -199,7 +201,7 @@ div#search-results-wrapper {
         top: 0px;
         width: 100%;
 		height: 35px;
-		
+
 		a#select-all,
 		a#deselect-all {
 			text-transform: uppercase;
@@ -210,7 +212,7 @@ div#search-results-wrapper {
 			float: left;
 			color: #888;
 		}
-		
+
 		a#selected-all {
 			text-transform: uppercase;
 			text-decoration: none;
@@ -220,13 +222,13 @@ div#search-results-wrapper {
 			float: right;
 			color: #C1C1C1;
 		}
-		
+
 		a:hover {
 			cursor: pointer;
 			color: @ArcsBlue !important;
 			text-decoration: none !important;
 		}
-		
+
 		img.collectionIcon {
 			float: right;
 			padding: 0 5px;
@@ -322,7 +324,7 @@ ul.pagination {
     vertical-align: middle;
     margin: 0;
     display: flex;
-	
+
 	.selected {
 		border: 1px solid #0093be !important;
 		border-radius: 100% !important;
@@ -370,7 +372,7 @@ ul.pagination {
     padding-left: 5px;
     background-repeat: no-repeat;
 }
-    
+
 .icon-flag {
     width: 15px;
     height: 19px;

@@ -1774,8 +1774,7 @@
                 kid = res['kid'];
                 document.getElementById('PageImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
 				console.log(document.getElementById('PageImage').src )
-				document.getElementById('fullscreenImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
-				
+				document.getElementById('fullscreenImage').src ="<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
             }
 			
         });
@@ -3885,6 +3884,7 @@
 		$('.numberOverResources').css("background", '');
 		$('.numberOverResources').removeClass('selectedResource');
 		$(this).find('.numberOverResources').addClass('selectedResource');
+//		$('#fullscreenImage').attr('src', $('#PageImage').attr('src'));
 	});
 
 	var angle = 0

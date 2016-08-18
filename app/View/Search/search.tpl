@@ -40,7 +40,7 @@
 
 <div class='searchIntro'>
     <h1>Search</h1>
-    
+
     <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
 </div>
 
@@ -63,38 +63,26 @@
 		      	Sites
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-site-btn active" id="open-btn">Isthmia&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Polis&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
+		      <ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
 		      </ul>
 		    </div>
-		    
-		    <div id="seasons-buttons" class="btn-group actions-left">
+
+		    <div id="seasons-buttons" class="btn-group actions-left" >
 		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Season
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
+		      <ul class="dropdown-menu seasonsMenu" data-id="Season Name">
 		      </ul>
 		    </div>
-		    
+
 		    <div id="resources-buttons" class="btn-group actions-left">
 		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Resource Type
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Drawing&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Inventory Card&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">Map&nbsp;</a></li>
-		         <li><a class="sort-btn" id="open-btn">Notebook&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Notebook Page&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">Photograph&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">Report&nbsp;</a></li>
+		      <ul class="dropdown-menu resourcesMenu" data-id="Type">
+
 		      </ul>
 		    </div>
 
@@ -104,22 +92,19 @@
 					Exacavation
 					<span class="pointerDown sort-arrow pointerSearch"></span>
 				</button>
-				<ul class="dropdown-menu">
-					<li><a class="sort-site-btn active" id="open-btn">Isthmia&nbsp;</a></li>
-					<li><a class="sort-btn" id="open-colview-btn">Polis&nbsp;</a></li>
-					<li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
+				<ul class="dropdown-menu excavationMenu" data-id="Excavation Type">
+
 				</ul>
 			</div>
-		    
+
 		    <div id="author-buttons" class="btn-group actions-left">
+<!--				need to adjust these on search -->
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Creator
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
+		      <ul class="dropdown-menu creatorMenu" data-id="Creator">
+
 		      </ul>
 		    </div>
 
@@ -150,7 +135,7 @@
 		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="view-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        <span id="sort-by">view</span>
@@ -162,7 +147,7 @@
 		        <li><a class="sort-btn" id="list-btn">detailed&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="sorting-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        Sort by
@@ -179,7 +164,7 @@
 		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		</div>
 	</div>
 	<div class='search-pagination'>
@@ -220,7 +205,7 @@
 			</ul>
 		</div>
 	</div>
-	
+
 
 	<div id='search-bottom-bar'>
 		<div id="search-actions" class="search-toolbar">
@@ -237,9 +222,9 @@
 			<div id="pagination">
 				<ul class="pagination">
 					<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
-					
+
 					<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
-					<div id='fDots'><li class='fDots' style="display:none"> ... </li></div> 
+					<div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
 					<li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
 					<li><a class='pageNumber' id='2'style="display:none" ></a></li>
 					<li><a class='pageNumber' id='3' style="display:none"></a></li>
@@ -250,7 +235,7 @@
 					<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
 				</ul>
 			</div>
-			
+
 			<div id="search-again">
 				<a class="search-again-link" id='top-btn'>Search again</a>
 			</div>
@@ -497,7 +482,7 @@
 						})
 						//arcs.Search.prototype.unselectAll();
 
-						
+
 
 						//$(".collectionModalBackground").hide();
 						//console.log("last checked id: "+ $('#collectionTitle').val());
@@ -661,4 +646,3 @@
 
 		//collectionsSearch();
 	</script>
-

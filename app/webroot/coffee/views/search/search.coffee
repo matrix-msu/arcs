@@ -7,6 +7,10 @@ selected = []
 display = []
 totalResults = []
 waiting = false
+filters = []
+filteredFilters = []
+filtersApplied = 'Excavation Name': '', 'Season Name': '', 'Type': '', 'Excavation Type': '', 'Creator': ''
+unfilteredResults = []
 arcs.views.search ?= {}
 class arcs.views.search.Search extends Backbone.View
 
@@ -360,10 +364,84 @@ class arcs.views.search.Search extends Backbone.View
     pagination(temp,pageNum,lastPage)
     skip = (pageNum-1)*numberPerPage
     $('#lastPage').html(lastPage)
-#    perPage = parseInt(perPage = $('#items-per-page-btn').html().substring(0,2))
     Search.prototype._render results: totalResults[skip...(skip+numberPerPage)]
+#    perPage = parseInt(perPage = $('#items-per-page-btn').html().substring(0,2))
+    # if filteredResults.length is 0
+    #   Search.prototype._render results: totalResults[skip...(skip+numberPerPage)]
+    # else
+    #   Search.prototype._render results: filteredResults[skip...(skip+numberPerPage)]
     if selectedMap['selected'].length > 0
       showSelected()
+
+
+
+  setCreators = () ->
+    $('.creatorMenu').empty()
+    $('.creatorMenu').append(createAllFilter())
+    for key, val of filters['creators']
+      li = document.createElement('li')
+      a = document.createElement('a')
+      $(a).addClass('sort-btn filter')
+      $(a).html(val)
+      li.appendChild(a)
+      $('.creatorMenu').append(li)
+
+  setExcavations = () ->
+    $('.excavationMenu').empty()
+    $('.excavationMenu').append(createAllFilter())
+    for key, val of filters['excavations']
+      li = document.createElement('li')
+      a = document.createElement('a')
+      $(a).addClass('sort-btn filter')
+      $(a).html(val)
+      li.appendChild(a)
+      $('.excavationMenu').append(li)
+  setResources = () ->
+    $('.resourcesMenu').empty()
+    $('.resourcesMenu').append(createAllFilter())
+    for key, val of filters['types']
+      li = document.createElement('li')
+      a = document.createElement('a')
+      $(a).addClass('sort-btn filter')
+      $(a).html(val)
+      li.appendChild(a)
+      $('.resourcesMenu').append(li)
+
+  setSeasons = () ->
+    $('.seasonsMenu').empty()
+    $('.seasonsMenu').append(createAllFilter())
+    for key, val of filters['seasons']
+      li = document.createElement('li')
+      a = document.createElement('a')
+      $(a).addClass('sort-btn filter')
+      $(a).html(val)
+      li.appendChild(a)
+      $('.seasonsMenu').append(li)
+
+  setSites = () ->
+    $('.sitesMenu').empty()
+    $('.sitesMenu').append(createAllFilter())
+    for key, val of filters['sites']
+      li = document.createElement('li')
+      a = document.createElement('a')
+      $(a).addClass('sort-btn filter')
+      $(a).html(val)
+      li.appendChild(a)
+      $('.sitesMenu').append(li)
+  createAllFilter = () ->
+    li = document.createElement('li')
+    a = document.createElement('a')
+    $(a).addClass('sort-btn filter active')
+    $(a).html("all")
+    li.appendChild(a)
+    return li
+
+  setFilters = () ->
+    setCreators()
+    setExcavations()
+    setResources()
+    setSeasons()
+    setSites()
 
   #MULTIPROJECT SEARCH
   search = () ->
@@ -372,7 +450,6 @@ class arcs.views.search.Search extends Backbone.View
     pageNum = $('.currentPage').html()
     perPage = $('#items-per-page-btn').html().substring(0,2)
     val = val.replace(/[^A-Za-z0-9-]/g,'')
-    console.log(val);
     if val is ""
       noResults()
       totalResults = []
@@ -393,15 +470,20 @@ class arcs.views.search.Search extends Backbone.View
           adjustPage([],0)
           noResults()
         else
-          console.log(data)
 #          get_filter_fields(data['resutls'])
           $('#results-count').html(data['total'])
+          filters = data['filters']
+          filteredFilters = filters
           for key, value of data['results']
+#            console.log(value)
             totalResults.push value
+            unfilteredResults.push value
             selectedMap['unselected'].push value['kid']
           selectedMap['unselected'] = totalResults
           waiting = false
+          setFilters()
           adjustPage(totalResults,1)
+
     })
 
 
@@ -445,10 +527,8 @@ class arcs.views.search.Search extends Backbone.View
   _render: (results, append=false) ->
     $results = $('.flex-container')
     template = if @options.grid then 'search/grid' else 'search/list'
-    console.log(template)
     results = results.results
     $results[if append then 'append' else 'html'] arcs.tmpl(template, results: results)
-    console.log($results)
 
     $(".pageNumber").unbind().click (e) ->
       if($(this).hasClass('selected'))
@@ -487,13 +567,15 @@ class arcs.views.search.Search extends Backbone.View
       $('.currentPage').html(temp)
       adjustPage(totalResults,parseInt($('.currentPage').html()))
     # add hover effects (select button, border) for the displayed images
-    $('div.result').hover (->
+    $('.result').hover (->
       $(this).find('.select-button').show()
       $(this).find('img').addClass 'img-hover'
+      $(this).find('.select-button').css('visibility','visible')
       return
     ), ->
       $(this).find('.select-button').hide()
       $(this).find('img').removeClass 'img-hover'
+      $(this).find('.select-button').css('visibility','hidden')
       return
 
     # add click effect for the select-button
@@ -550,6 +632,99 @@ class arcs.views.search.Search extends Backbone.View
         arcs.searchView.unselectAll();
         $('#selected-resource-ids').html(selectedMap["selected"])
         $('#selected-count').html(selectedMap["selected"].length)
+
+    getCnt = () ->
+      cnt = 0
+      for key, val of filtersApplied
+        if val
+          cnt++
+      return cnt
+    adjustFilters = () ->
+      $('.filter').css('display','none')
+      $('.filter').each ->
+        # console.log $(this)
+        if $(this).html() is 'all'
+          $('.filter').css('display','')
+        if $(this).html() in filters['creators']
+          $('.filter').css('display','')
+        if $(this).html() in filters['excavations']
+          $('.filter').css('display','')
+        if $(this).html() in filters['seasons']
+          $('.filter').css('display','')
+        if $(this).html() in filters['sites']
+          $('.filter').css('display','')
+        if $(this).html() in filters['types']
+          $('.filter').css('display','')
+
+    filterResults = () ->
+      totalResults = []
+      filters = 'creators': [], 'excavations': [], 'seasons': [], 'sites': [], 'types': []
+      sites = filtersApplied['Excavation Name']
+      seasonName = filtersApplied['Season Name']
+      type = filtersApplied['Type']
+      excavationType = filtersApplied['Excavation Type']
+      creator = filtersApplied['Creator']
+
+      for key, val of unfilteredResults
+        if sites isnt ''
+          if val['Excavation Name'] isnt sites
+            continue
+        if seasonName isnt ''
+          if val['Season Name'] isnt seasonName
+            continue
+        if type isnt ''
+          if val['Type'] isnt type
+            continue
+        if excavationType isnt ''
+          if val['Excavation Type'] isnt excavationType
+            continue
+        if creator isnt ''
+          if creator not in val['Creator']
+            continue
+
+        totalResults.push val
+        # console.log filters
+        if val['Excavation Name'] not in  filters['sites'] and val['Excavation Name'] isnt ''
+          filters['sites'].push val['Excavation Name']
+        if val['Season Name'] not in filters['seasons'] and val['Season Name'] isnt ''
+          filters['seasons'].push val['Season Name']
+        if val['Type'] not in filters['types'] and val['Type'] isnt ''
+          filters['types'].push val['Type']
+        if val['Excavation Type'] not in filters['excavations'] and val['Excavation Type'] isnt ''
+          filters['excavations'].push val['Excavation Type']
+
+        for item in val["Creator"]
+          if item not in filters['creators']
+            filters['creators'].push item
+      adjustFilters()
+      adjustPage(totalResults,1)
+      # setFilters()
+
+      return
+
+    $('.filter').unbind().on "click", ->
+      if $(this).hasClass('active')
+        return
+      else
+        parentUl = $(this).parent().parent()
+        filterKey = parentUl.data('id')
+        currentFilter = $(this).html()
+        if currentFilter is 'all'
+          currentFilter = ''
+        parentUl.find($('.active')).removeClass('active')
+        $(this).addClass('active')
+        filtersApplied[filterKey] = currentFilter
+        filterCnt = getCnt()
+        if filterCnt
+          # console.log 'Adjust results'
+          filterResults()
+        else
+          # console.log 'display unflitered'
+          totalResults = unfilteredResults
+          adjustPage(totalResults,1)
+        # console.log filtersApplied
+
+        return
 
 #
     if results.length is 0
