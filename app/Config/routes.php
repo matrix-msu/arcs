@@ -216,6 +216,9 @@
     Router::connect('/metadataedits/add',
         array('controller' => 'MetadataEdits', 'action' => 'add')
     );
+Router::connect('/metadataedits/getAllKidsByScheme',
+    array('controller' => 'MetadataEdits', 'action' => 'getAllKidsByScheme')
+);
     Router::connect('/keywords/add',
         array('controller' => 'keywords', 'action' => 'add')
     );

@@ -473,11 +473,11 @@ input[type=range]:focus::-ms-fill-upper {
 .icon-meta-lock {
 	width: 8px;
 	height: 11px;
-	background-image: url("../img/Locked.svg");
+	background-image: url("../img/locked-dark.svg");
 	opacity: 1;
 	background-position: top right;
 	background-size: contain;
-	cursor: pointer;
+	cursor: default;
 	background-repeat: no-repeat;
 	float: right;
 	margin-right: -14px;
@@ -485,6 +485,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .metadataEditOpaque {
 	opacity: 0.2;
+  	cursor: default;
 }
 
 .level-content::-webkit-scrollbar-thumb {
@@ -646,6 +647,16 @@ input[type=range]:focus::-ms-fill-upper {
 	position:   fixed; 
 	z-index: 999;
 }
+.associatorModalBackground {
+  display: none;
+  width:      100%;
+  height:     100%;
+  top:        0;
+  left:       0;
+  position:   fixed;
+  z-index: 999;
+}
+
 .collectionAddedModalBackground {
   display: none;
   width:      100%;
@@ -707,6 +718,28 @@ input[type=range]:focus::-ms-fill-upper {
 	font-size: 14px;
 	font-weight: 500;
 	color: #FFFFFF;
+}
+#associatorSearchObjects {
+  height:28em;
+  overflow-y:scroll;
+}
+#associatorSearchBarForm {
+  input {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 15px;
+	width: 90%;
+	height: 2.5em;
+
+  }
+}
+.associatorSearchSubmit, .associatorNewSubmit{
+  height: 3em;
+  background-color: #4899CF;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
 }
 .viewCollection, .backToSearch{
 	height: 3em;
@@ -861,6 +894,12 @@ input[type=range]:focus::-ms-fill-upper {
 	cursor: pointer;
 	height: 16px;
     margin-top: 2px;
+}
+.modalCloseAssociator {
+  float: right;
+  cursor: pointer;
+  height: 16px;
+  margin-top: 2px;
 }
 .deleteModalClose {
 	float: right;

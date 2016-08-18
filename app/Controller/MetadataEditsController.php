@@ -10,6 +10,7 @@ App::uses('MetaResourcesController', 'Controller');
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
+
 class MetadataEditsController extends MetaResourcesController {
     public $name = 'MetadataEdits';
 
@@ -22,63 +23,8 @@ class MetadataEditsController extends MetaResourcesController {
 
     //I'm calling this from addMetadataEdits() on the single resource page- on page load.
     public function add() {
-        //$response['hello'] = 'testing';
-        //return $this->json(200, $response);
-        //if($this->_modelExists('MetadataEdit')){
-        //do model exists logic
-            //$response['type'] = '1';
-        //} else {
-        //do other logic
-          //  $response['type'] = '0';
-        //}
-        //var_dump($this->MetadataEdit);
-        //$response['models'] = App::objects('model');
-        //$response['controller_name'] = $this->name;
-        //$response['get_name'] = $this->MetadataEdit->getName();
-        //$response['name'] = $this->MetadataEdit->name;
-        //$response['MetadataEdits'] = $this->MetadataEdit;
-        //return $this->json(200, $response);
         if (!$this->request->is('post')) return $this->json(400);
         $this->request->data['user_id'] = $this->Session->read('Auth.User.id');
-        //$response['request']  = $this->request->data;
-        //$response['request_type']  = gettype($this->request->data);
-        //$UsersController = new UsersController;
-
-        //$response['user']  = $UsersController;
-        //$response['user_session']  = $UsersController->session;
-        //$response['user_session_2']  = $this->Session->read('Auth.User.id');
-        //$response['meta_session']  = $this->Session;
-        //$retval['datatype']  = gettype($this->request->data);
-        /*
-        $savedata_array['resource_kid'] = $this->request->data['resource_kid'];
-        $savedata_array['scheme_name'] = $this->request->data['scheme_name'];
-        $savedata_array['field_name'] = $this->request->data['field_name'];
-        $savedata_array['user_id'] = $this->request->data['user_id'];
-        $savedata_array['resource_name'] = $this->request->data['resource_name'];
-        $savedata_array['value_before'] = $this->request->data['value_before'];
-        $savedata_array['new_value'] = 'testing.new_value';
-        $savedata_array['approved'] = decbin(1);
-        $savedata_array['rejected'] = decbin(0);
-        $savedata_array['reason_rejected'] = 'who knows testing';
-
-        $savedata_array['scheme_id'] = 5;
-        //$save_array['MetadataEdit'] = $savedata_array;
-        $response['save_data'] = $savedata_array;
-        //$retval['debug'] = $this->MetadataEdits->validationErrors;
-        */
-
-        //$retval['name']  = $this->MetadataEdits->name;
-        //return $this->json(200, $response);
-        // add resource_name, user_id, user_name, user_email, user_username
-        /*
-        return $this->json(200, $this->MetadataEdits->find('list', array(
-            'fields' => array('Metadata_edits.id', 'Metadata_edits.resource_kid', 'Metadata_edits.user_id')
-        )));
-        */
-        //if ($this->MetadataEdits->add($save_array))
-        //if ($this->MetadataEdits->save(array($this->MetadataEdits->name => $save_array)))
-            //return $this->json(200, $save_array);
-        //debug($this->MetadataEdits->validationErrors);
         if ($this->MetadataEdit->save($this->request->data)){
             $response['aftersave'] = 'true';
             return $this->json(201);
@@ -110,5 +56,60 @@ class MetadataEditsController extends MetaResourcesController {
             'conditions' => array('user_id' => $this->request->data['id'])
         ));
         $this->json(200, $results);
+    }
+
+    //single resource frontend edit associators
+    public function getAllKidsByScheme()
+    {
+        //require_once(KORA_LIB . "Metadata_Associator_Search.php");
+        if( $this->request->data['scheme_name'] ) {
+            $sid = '';
+            $fields = '';
+            if( $this->request->data['scheme_name'] == 'Project Associator' ){
+                $sid = PROJECT_SID;
+                $fields = 'Name,Country,Persistent Name,Modern Name';
+            }elseif( $this->request->data['scheme_name'] == 'Season Associator' ){
+                $sid = SEASON_SID;
+                $fields = 'Title,Type,Director,Registrar';
+            }elseif( $this->request->data['scheme_name'] == 'Excavation - Survey Associator' ){
+                $sid = SURVEY_SID;
+                $fields = 'Name,Type';
+            }elseif( $this->request->data['scheme_name'] == 'Resource Associator' ){
+                $sid = RESOURCE_SID;
+                $fields = 'Resource Identifier,Type,Title';
+            }elseif( $this->request->data['scheme_name'] == 'Pages Associator' ){
+                $sid = PAGES_SID;
+                $fields = 'Format,Type,Image Upload';
+            }elseif( $this->request->data['scheme_name'] == 'Subject of Observation Associator' ){
+                $sid = SUBJECT_SID;
+                $fields = 'Resource Identifier,Artifact - Structure Location,Artifact - Structure Description';
+            }
+
+            //Get the Resources from Kora
+            $query = "kid,!=,1";
+            
+            //$temp_array['resource_query'] = $query;
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".
+                urlencode($query)."&fields=".urlencode($fields);
+            //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
+            //$temp_array['resource_url'] = $url;
+            ///initialize post request to KORA API using curl
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+            //capture results and map to array
+            $scheme = json_decode(curl_exec($ch), true);
+
+            //TODO get the search working.
+            //$kora = new Metadata_Associator_Search($sid);
+            //$results['kora'] = $kora;
+            //$kora->print_json();
+
+            //$this->json(200);
+            $this->json(200, $scheme);
+        }
     }
 }
