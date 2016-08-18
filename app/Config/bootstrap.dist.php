@@ -2,7 +2,7 @@
 /**
  * This file is loaded automatically by the app/webroot/index.php file after core.php
  *
- * This file should load/create any application wide configuration settings, such as 
+ * This file should load/create any application wide configuration settings, such as
  * Caching, Logging, loading additional configuration files.
  *
  * You should also use this file to include any files that provide global functions/constants
@@ -23,12 +23,15 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+# Kora search include
+
+
+
 # Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
 App::uses('IniReader', 'Configure', 'Security');
 App::uses('CakeLog', 'Log');
 Configure::config('default', new IniReader(APP . 'Config' . DS));
-
 # Load additional config files.
 Configure::load('arcs');
 Configure::load('assets');
@@ -36,9 +39,11 @@ Configure::load('assets');
 # Basic Kora Information
 define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
 define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
+define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
+define("KORA_LIB", CORE_PATH . "Kora/Local/");
 define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
-define ("LOCAL_URI", "arcs/webroot/");
+define ("LOCAL_URI", "~arnold.mutayoba/arcs/webroot/");
 define ("PID", "123");
 define ("PROJECT_SID", "734");
 define ("SEASON_SID", "735");
@@ -55,5 +60,5 @@ define("THUMBS", "/matrix/dev/public_html/arcs/app/webroot/thumbs/");
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
-//used for help toolbar
 
+//used for help toolbar
