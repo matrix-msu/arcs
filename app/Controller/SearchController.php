@@ -499,7 +499,6 @@ class SearchController extends AppController {
             $db = new DATABASE_CONFIG;
             $db_object =  (object) $db;
             $db_array = $db_object->{'default'};
-            $response['db_info'] = $db_array['host'];
             $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
 
             if ($mysqli->connect_error) {
@@ -524,34 +523,39 @@ class SearchController extends AppController {
                 $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
             }
             $result = $mysqli->query($sql);
-            while($row = mysqli_fetch_assoc($result))
+            $count = 0;
+            while($row = mysqli_fetch_assoc($result)) {
                 $test[] = $row;
-            //Test if there are more results--
-            if($limit == -1){
-                $more_results = 0;
-            }else if (count($test) > $limit){
-                $more_results = 1;
-                $pop_last = array_pop($test);
+                $count++;
             }
-            $response['col_id'] = $collection_id;
-            $response['query'] = $sql;
-            $response['col_result'] = $test;
+            //Test if there are more results--
+
+            $more_results = 0;
+            if ( $count > $limit && $limit != -1 ){
+                $more_results = 1;
+                array_pop($test);
+            }
 
             //fix the returned array's format from 'resource_kid' to 'kid'
             $response['results'] = array();
+            $first = 1;
             foreach( $test as $row){
                 $temp_array = array();
-                $temp_array['more_results'] = $more_results;
+                if( $first == 1 ) {
+                    $temp_array['more_results'] = $more_results;
+                    $first = 0;
+                }
                 $temp_kid = $row['resource_kid'];
-                $temp_array['kid'] = $temp_kid;
+
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
-                $temp_array['resource_query'] = $query;
                 $user = "";
                 $pass = "";
                 $display = "json";
-                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-                $temp_array['resource_url'] = $url;
+                $fields = 'Title,Type,Resource Identifier';
+                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display.
+                    "&query=".urlencode($query). "&fields=" . urlencode($fields). "&count=1";
+
                 ///initialize post request to KORA API using curl
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -576,21 +580,16 @@ class SearchController extends AppController {
                     $temp_array['type'] = 'Unknown Type';
                 }
 
-                $temp_array['Resource'] = $r;
                 $resource_identifier = $r['Resource Identifier'];
 
                 //Get the Pages from Kora
-                //$new_temp = array('7B-2E0-1');
                 $query = "Resource Identifier,=,".$resource_identifier;
-                //$response['query'] = $query;
                 $user = "";
                 $pass = "";
                 $display = "json";
-                //no query
-                //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display;
-                //query
-                //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".$query;
-                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&count=1";
+                $fields = 'Image Upload';
+                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display.
+                    "&query=".urlencode($query). "&fields=" . urlencode($fields) . "&count=1";
 
                 ///initialize post request to KORA API using curl
                 $ch = curl_init($url);
@@ -600,15 +599,14 @@ class SearchController extends AppController {
                 $page2 = json_decode(curl_exec($ch), true);
 
                 //Get the picture URL from the page results
-                $temp_array['page_search'] = $page2;
-                $picture_url = array_values($page2)[0]['Image Upload']['localName'];
+                $picture_url = '';
+                if (isset(array_values($page2)[0])) {
+                    $picture_url = array_values($page2)[0]['Image Upload']['localName'];
+                }
 
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){
-                    $temp_array['pic_url'] = $picture_url;
-                    //$kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
-                    //$temp_array['thumb'] = $kora_pic_url.$picture_url;
-                    $temp_array['thumb'] = $this->smallThumb($temp_array['pic_url']);
+                    $temp_array['thumb'] = $this->smallThumb($picture_url);
                 }else{
                     $temp_array['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
                 }
@@ -621,6 +619,10 @@ class SearchController extends AppController {
         //End of collections
         ///////////////////////////////////////
 
+        //Josh- This code makes no sense to me
+        //It brakes the resources page but only when the require_once(KORA_LIB . "Keyword_Search.php"); is there.
+        //
+        /*
         if (isset($response['order']) && $response['order'] == 'relevance') {
             $response['results'] = $this->Resource->findAllFromIds($response['results']);
         } else {
@@ -631,6 +633,8 @@ class SearchController extends AppController {
                 'order' => "Resource.{$options['order']} {$options['direction']}"
             ));
         }
+        */
+
         // The searcher will return debug information that should be hidden for
         // most account types.
         if (!$this->Access->isAdmin()) {
@@ -639,72 +643,134 @@ class SearchController extends AppController {
         }
 
 
-
-        //Get the Images
-        $user = "";
-        $pass = "";
-        $display = "json";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        //capture results and map to array
-        $response['results'] = json_decode(curl_exec($ch), true);
-        $imageResults = array();
-        foreach($response['results'] as $image) {
-            //$imageResults[$image['Resource Identifier']] = KORA_FILES_URI.PID."/".PAGES_SID."/".$image['Image Upload']['localName'];
-            $imageResults[$image['Resource Identifier']] = $image['Image Upload']['localName'];
-        }
-
-
-        //Get the Data
-        $user = "";
-        $pass = "";
-        $query = $this->request->query['q'];
-
-        if (isset($this->request->query['sid'])) {
-            $sid = $this->request->query['sid'];
-        }
-        else {
-            $sid = RESOURCE_SID;
-        }
-
-        $display = "json";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&fields=ALL&showsystimestamp=YES&showrecordowner=YES&showpid=YES";
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-
-
-        ///capture results and display
-        $response['results'] = json_decode(curl_exec($ch), true);
-        $returnResults = array();
-        $count = 0;
-        foreach($response['results'] as $item) {
+        if ( $this->request->query['q'] == 'Orphan,=,true' ){  //search only for pages that are orphans
             //check for show all button stuffs
-            $count++;
-            if($count > $limit && $limit != -1){
-                $returnResults[0]['more_results'] = 1;
-                break;
+
+
+            //Get the Images
+            $user = "";
+            $pass = "";
+            $display = "json";
+            $fields = 'Image Upload';
+            $query = $this->request->query['q'];
+
+            $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . PAGES_SID . "&token=" . TOKEN . "&display=" . $display .
+                "&query=" . urlencode($query) . "&fields=" . urlencode($fields);
+            if( $limit > 0 ){
+                $url .= "&count=".strval($limit+1);
             }
-            if (isset($imageResults[$item['Resource Identifier']]) && $imageResults[$item['Resource Identifier']] != null) {
-                if ($sid != PAGES_SID) {
-                    $item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
+            //return $this->json(200, $url);
+            ///initialize post request to KORA API using curl
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
+            //capture results and map to array
+            $response['results'] = json_decode(curl_exec($ch), true);
+            
+            $returnResults = array();
+            $count = 0;
+            foreach ($response['results'] as $page){
+                $count++;
+                if ($count > $limit && $limit != -1) {
+                    $returnResults[0]['more_results'] = 1;
+                    break;
                 }
-                else {
-                    $item['thumb'] = $this->smallThumb($item['Image Upload']['localName']);
+
+                $temp['title'] = 'Unknown Title';
+                if (array_key_exists('Image Upload', $page) && array_key_exists('originalName', $page['Image Upload']) ) {
+                    $temp['title'] = $page['Image Upload']['originalName'];
                 }
-                //$item['thumb'] = $this->smallThumb($imageResults[$item['Resource Identifier']]);
+
+                $temp['thumb'] = '';
+                if (array_key_exists('Image Upload', $page) && array_key_exists('localName', $page['Image Upload']) ) {
+                    $temp['thumb'] = $page['Image Upload']['localName'];
+                }
+
+                //Decide if there is a picture..
+                if ($temp['thumb'] != '') {
+                    $temp['thumb'] = $this->smallThumb($temp['thumb']);
+                } else {
+                    $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
+                }
+                
+                array_push($returnResults, $temp);
+            }
+
+
+        }else {     //search resources first by type, then get the page by resource
+
+            //Get the Resources
+            $user = "";
+            $pass = "";
+            $query = $this->request->query['q'];
+
+            if (isset($this->request->query['sid'])) {
+                $sid = $this->request->query['sid'];
             } else {
-                $item['thumb'] = DEFAULT_THUMB;
+                $sid = RESOURCE_SID;
             }
-            $item['title'] = $item['Title'];
-            array_push($returnResults, $item);
+
+            $display = "json";
+            $fields = 'Title,Resource Identifier';
+            $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . $sid . "&token=" . TOKEN . "&display=" . $display .
+                "&query=" . urlencode($query) . "&fields=" . urlencode($fields);
+            if( $limit > 0 ){
+                $url .= "&count=".strval($limit+1);
+            }
+            ///initialize post request to KORA API using curl
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
+
+
+            ///capture results and display
+            $response['results'] = json_decode(curl_exec($ch), true);
+            $returnResults = array();
+            $count = 0;
+            foreach ($response['results'] as $item) {
+                //check for show all button stuffs
+                $count++;
+                if ($count > $limit && $limit != -1) {
+                    $returnResults[0]['more_results'] = 1;
+                    break;
+                }
+                //Get the Images
+                $user = "";
+                $pass = "";
+                $display = "json";
+                $fields = 'Image Upload';
+                $query = "Resource Identifier,=," . $item['Resource Identifier'];
+
+                $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . PAGES_SID . "&token=" . TOKEN . "&display=" . $display .
+                    "&query=" . urlencode($query) . "&fields=" . urlencode($fields) . "&count=1";
+                ///initialize post request to KORA API using curl
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
+                //capture results and map to array
+                $page = json_decode(curl_exec($ch), true);
+
+                $temp['title'] = 'Unknown Title';
+                if (array_key_exists('Title', $item) ) {
+                    $temp['title'] = $item['Title'];
+                }
+                $temp['thumb'] = '';
+                if (isset(array_values($page)[0])) {
+                    $temp['thumb'] = array_values($page)[0]['Image Upload']['localName'];
+                }
+
+                //Decide if there is a picture..
+                if ($temp['thumb'] != '') {
+                    $temp['thumb'] = $this->smallThumb($temp['thumb']);
+                } else {
+                    $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
+                }
+                array_push($returnResults, $temp);
+            }
         }
+
         //Test if there are more results for the show all button
-        if(isset($returnResults[0]['more_resutlts']) && $returnResults[0]['more_resutlts'] != null ){
+        if( $limit == -1 ){
             $returnResults[0]['more_results'] = 0;
         }
         $response['results'] = $returnResults;
