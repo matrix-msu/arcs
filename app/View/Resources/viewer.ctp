@@ -1,8 +1,8 @@
-<!-- pre><?php var_dump($resource); ?></pre>
+<pre><?php var_dump($resource); ?></pre>
 <pre><?php var_dump($project); ?></pre>
 <pre><?php var_dump($season); ?></pre>
 <pre><?php var_dump($subject); ?></pre>
-<pre><?php var_dump($surveys); ?></pre -->
+<pre><?php var_dump($surveys); ?></pre>
 
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="viewers-container">
@@ -2116,6 +2116,9 @@
         var xmlArray = [];
         schemes.forEach(function (tempdata) {
             var jsonObject = JSON.parse(tempdata);
+            if( 'thumb' in jsonObject ){
+                delete jsonObject.thumb;
+            }
             var recordObject = {Record: jsonObject};
             var dataObject = {Data: recordObject};
             var xmlString = json2xml(dataObject, '');
@@ -2212,6 +2215,8 @@
     });
 
     function json2xml(o, tab) {
+        console.log('json object:');
+        console.log(o);
         var firstObject = true;
         var toXml = function(v, name, ind) {
             var xml = "";
@@ -2233,9 +2238,27 @@
                 if ( 'text' in v ) {
                     xml += v.text;
                 }
+                if( 'month' in v ){
+                    if( v.month != '' ){
+                        xml += v.month;
+                    }
+                    xml += '/';
+                }
+                if( 'day' in v ){
+                    if( v.day != '' ){
+                        xml += v.day;
+                    }
+                    xml += '/';
+                }
+                if( 'year' in v && v.year != '' ){
+                    xml += v.year;
+                }
+                if( 'era' in v && v.era != '' ){
+                    xml += ' ' + v.era;
+                }
                 xml += '</' + name + '>';
             }
-            else if (typeof(v) == "object") { //only record, data and prefixes are objects
+            else if (typeof(v) == "object") { //only record, data and terminus are objects
                 firstObject = false;
                 var hasChild = false;
                 xml += ind + "<" + name;
