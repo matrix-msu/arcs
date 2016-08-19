@@ -1,8 +1,8 @@
-<pre><?php var_dump($resource); ?></pre>
+<!-- pre><?php var_dump($resource); ?></pre>
 <pre><?php var_dump($project); ?></pre>
 <pre><?php var_dump($season); ?></pre>
 <pre><?php var_dump($subject); ?></pre>
-<pre><?php var_dump($surveys); ?></pre>
+<pre><?php var_dump($surveys); ?></pre -->
 
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="viewers-container">
@@ -566,7 +566,10 @@
                                 <td>Archaeological Culture</td>
                                 <td<?php $name = "Archaeological Culture";
                                 if( array_key_exists( $name, $project )){
-                                    $text = ''; foreach( $project[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($project[$name]) ){
+                                        foreach( $project[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -676,7 +679,10 @@
                                 <td>Type</td>
                                 <td<?php $name = "Type"; 
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Excavation&quot;>Excavation</option><option value=&quot;Study&quot;>Study</option><option value=&quot;Survey&quot;>Survey</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -692,7 +698,10 @@
                                 <td>Director</td>
                                 <td<?php $name = "Director"; 
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Broneer, Oscar&quot;>Broneer, Oscar</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -708,7 +717,10 @@
                                 <td>Registrar</td>
                                 <td<?php $name = "Registrar"; 
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;&quot;></option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -724,7 +736,10 @@
                                 <td>Sponsor</td>
                                 <td<?php $name = "Sponsor";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;University of California, Los Angeles&quot;>University of California, Los Angeles</option><option value=&quot;Ohio State University&quot; selected=&quot;selected&quot;>Ohio State University</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -844,7 +859,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -876,7 +894,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 2";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -908,7 +929,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 3";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -940,7 +964,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 4";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -972,7 +999,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 5";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -1004,7 +1034,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 6";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -1036,7 +1069,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 7";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -1068,7 +1104,10 @@
                                 <td>Contributor Role</td>
                                 <td<?php $name = "Contributor Role 8";
                                 if( array_key_exists( $name, $season )){
-                                    $text = ''; foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
@@ -1224,7 +1263,7 @@
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                                 foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
+                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
                                                         $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                     }} echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
@@ -1244,7 +1283,7 @@
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                                 foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
+                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
                                                         $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
                                                     }} echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
