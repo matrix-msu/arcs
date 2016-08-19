@@ -487,6 +487,7 @@ class SearchController extends AppController {
             $limit = -1;
         }
 
+        //todo- the pictures don't link to the resource page anymore for collections and resources.
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
         $catchcollections = 1;
@@ -579,6 +580,7 @@ class SearchController extends AppController {
                 }else{
                     $temp_array['type'] = 'Unknown Type';
                 }
+                $temp_array['kid'] = $temp_kid;
 
                 $resource_identifier = $r['Resource Identifier'];
 
@@ -635,13 +637,14 @@ class SearchController extends AppController {
         }
         */
 
+        /* todo - this code breaks if the user is not logged in
         // The searcher will return debug information that should be hidden for
         // most account types.
         if (!$this->Access->isAdmin()) {
             unset($response['raw_query']);
             unset($response['mode']);
         }
-
+        */
 
         if ( $this->request->query['q'] == 'Orphan,=,true' ){  //search only for pages that are orphans
             //check for show all button stuffs
@@ -727,7 +730,7 @@ class SearchController extends AppController {
             $response['results'] = json_decode(curl_exec($ch), true);
             $returnResults = array();
             $count = 0;
-            foreach ($response['results'] as $item) {
+            foreach ($response['results'] as $key => $item) {
                 //check for show all button stuffs
                 $count++;
                 if ($count > $limit && $limit != -1) {
@@ -749,6 +752,8 @@ class SearchController extends AppController {
                 curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
                 //capture results and map to array
                 $page = json_decode(curl_exec($ch), true);
+
+                $temp['kid'] = $key;
 
                 $temp['title'] = 'Unknown Title';
                 if (array_key_exists('Title', $item) ) {
