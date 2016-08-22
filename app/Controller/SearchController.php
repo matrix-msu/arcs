@@ -9,6 +9,7 @@
  */
 
 require_once(KORA_LIB . "Keyword_Search.php");
+require_once(KORA_LIB . "General_Search.php");
 
 class SearchController extends AppController {
     public $name = 'Search';
@@ -487,7 +488,6 @@ class SearchController extends AppController {
             $limit = -1;
         }
 
-        //todo- the pictures don't link to the resource page anymore for collections and resources.
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
         $catchcollections = 1;
@@ -550,6 +550,7 @@ class SearchController extends AppController {
 
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
+                /*
                 $user = "";
                 $pass = "";
                 $display = "json";
@@ -563,6 +564,12 @@ class SearchController extends AppController {
                 curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
                 //capture results and map to array
                 $page = json_decode(curl_exec($ch), true);
+                */
+                $fields = array('Title','Type','Resource Identifier');
+                $query_array = explode(",", $query);
+                $kora = new General_Search(RESOURCE_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $page = json_decode($kora->return_json(), true);
+
                 $r = $page[$temp_kid];
 
                 //Handle resource title
@@ -586,7 +593,8 @@ class SearchController extends AppController {
 
                 //Get the Pages from Kora
                 $query = "Resource Identifier,=,".$resource_identifier;
-                $user = "";
+                /*
+                 $user = "";
                 $pass = "";
                 $display = "json";
                 $fields = 'Image Upload';
@@ -599,6 +607,11 @@ class SearchController extends AppController {
                 curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
                 //capture results and map to array
                 $page2 = json_decode(curl_exec($ch), true);
+                */
+                $fields = array('Image Upload');
+                $query_array = explode(",", $query);
+                $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $page2 = json_decode($kora->return_json(), true);
 
                 //Get the picture URL from the page results
                 $picture_url = '';
@@ -645,12 +658,24 @@ class SearchController extends AppController {
             unset($response['mode']);
         }
         */
+/*
+        $fields = array('Resource Identifier', 'Type', 'Title');
+        $kora = new General_Search(RESOURCE_SID, 'kid', '!=', '1', $fields);
+        $results['return'] = $kora->return_json();
+        return $this->json(200, $results);
+        //$json = $kora->return_json();
+*/
+
+        //return $this->json(200, 'hi' );
+        //return;
+
 
         if ( $this->request->query['q'] == 'Orphan,=,true' ){  //search only for pages that are orphans
             //check for show all button stuffs
 
 
             //Get the Images
+            /*
             $user = "";
             $pass = "";
             $display = "json";
@@ -669,7 +694,13 @@ class SearchController extends AppController {
             curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
             //capture results and map to array
             $response['results'] = json_decode(curl_exec($ch), true);
-            
+            */
+            $fields = array('Image Upload');
+            $query_array = explode(",", $this->request->query['q']);
+            $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+            $response['results'] = json_decode($kora->return_json(), true);
+            //return $this->json(200, $response['results']);
+
             $returnResults = array();
             $count = 0;
             foreach ($response['results'] as $page){
@@ -712,7 +743,7 @@ class SearchController extends AppController {
             } else {
                 $sid = RESOURCE_SID;
             }
-
+            /*
             $display = "json";
             $fields = 'Title,Resource Identifier';
             $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . $sid . "&token=" . TOKEN . "&display=" . $display .
@@ -728,6 +759,12 @@ class SearchController extends AppController {
 
             ///capture results and display
             $response['results'] = json_decode(curl_exec($ch), true);
+            */
+            $fields = array('Title','Resource Identifier');
+            $query_array = explode(",", $query);
+            $kora = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+            $response['results'] = json_decode($kora->return_json(), true);
+
             $returnResults = array();
             $count = 0;
             foreach ($response['results'] as $key => $item) {
@@ -738,6 +775,7 @@ class SearchController extends AppController {
                     break;
                 }
                 //Get the Images
+                /*
                 $user = "";
                 $pass = "";
                 $display = "json";
@@ -752,6 +790,13 @@ class SearchController extends AppController {
                 curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
                 //capture results and map to array
                 $page = json_decode(curl_exec($ch), true);
+            */
+                $query = "Resource Identifier,=," . $item['Resource Identifier'];
+
+                $fields = array('Image Upload');
+                $query_array = explode(",", $query);
+                $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $page = json_decode($kora->return_json(), true);
 
                 $temp['kid'] = $key;
 

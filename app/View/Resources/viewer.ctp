@@ -3812,6 +3812,7 @@
                                 associator_full_array = new Array();
                                 for (var key in data) {
                                     if (data.hasOwnProperty(key)) {
+
                                         var obj = data[key];
                                         obj.kid = key;
                                         associator_full_array.push(obj);
@@ -3871,7 +3872,7 @@
             var kid = '';
             var text = '';
             for (var field in obj) {
-                if (obj.hasOwnProperty(field)) {
+                if (obj.hasOwnProperty(field) && field != 'pid' && field != 'schemeID' && field != 'linkers' ) {
                     if( field == 'kid' ){
                         kid = obj[field];
                     }else if( field == 'Image Upload' ){

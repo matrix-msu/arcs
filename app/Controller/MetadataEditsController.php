@@ -11,6 +11,8 @@ App::uses('MetaResourcesController', 'Controller');
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
+require_once(KORA_LIB . "General_Search.php");
+
 class MetadataEditsController extends MetaResourcesController {
     public $name = 'MetadataEdits';
 
@@ -67,28 +69,34 @@ class MetadataEditsController extends MetaResourcesController {
             $fields = '';
             if( $this->request->data['scheme_name'] == 'Project Associator' ){
                 $sid = PROJECT_SID;
-                $fields = 'Name,Country,Persistent Name,Modern Name';
+                $fields = array('Name','Country','Persistent Name','Modern Name');
+
             }elseif( $this->request->data['scheme_name'] == 'Season Associator' ){
                 $sid = SEASON_SID;
-                $fields = 'Title,Type,Director,Registrar';
+                $fields = array('Title','Type','Director','Registrar');
+
             }elseif( $this->request->data['scheme_name'] == 'Excavation - Survey Associator' ){
                 $sid = SURVEY_SID;
-                $fields = 'Name,Type';
+                $fields = array('Name','Type');
+
             }elseif( $this->request->data['scheme_name'] == 'Resource Associator' ){
                 $sid = RESOURCE_SID;
-                $fields = 'Resource Identifier,Type,Title';
+                $fields = array('Resource Identifier','Type','Title');
+
             }elseif( $this->request->data['scheme_name'] == 'Pages Associator' ){
                 $sid = PAGES_SID;
-                $fields = 'Format,Type,Image Upload';
+                $fields = array('Format','Type','Image Upload');
+
             }elseif( $this->request->data['scheme_name'] == 'Subject of Observation Associator' ){
                 $sid = SUBJECT_SID;
-                $fields = 'Resource Identifier,Artifact - Structure Location,Artifact - Structure Description';
+                $fields = array('Resource Identifier','Artifact - Structure Location','Artifact - Structure Description');
             }
 
             //Get the Resources from Kora
             $query = "kid,!=,1";
             
             //$temp_array['resource_query'] = $query;
+            /*
             $user = "";
             $pass = "";
             $display = "json";
@@ -102,6 +110,11 @@ class MetadataEditsController extends MetaResourcesController {
             curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
             //capture results and map to array
             $scheme = json_decode(curl_exec($ch), true);
+            */
+
+            $query_array = explode(",", $query);
+            $kora = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+            $scheme = json_decode($kora->return_json(), true);
 
             //TODO get the search working.
             //$kora = new Metadata_Associator_Search($sid);
