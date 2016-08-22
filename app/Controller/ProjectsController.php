@@ -7,12 +7,17 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
- //App::import("/matrix/www/kora/public_html/includes/koraSearch.php");
-//include("KoraController.php");
+
+
+require_once(KORA_LIB . "Kora.php");
+
+use Lib\Kora;
+
 class ProjectsController extends AppController {
     public $name = 'Projects';
 
 	public function beforeFilter() {
+
         parent::beforeFilter();
         $this->Auth->allow('display', 'search', 'single_project');
 		$this->set(array(
@@ -79,7 +84,8 @@ class ProjectsController extends AppController {
 	public function single_project() {
 		$user = "";
 		$pass = "";
-    //echo "hello";
+    $kora = new Kora();
+
     //echo  class_exists ( "KORA_Clause" ) ? "true" : "false";
     //echo "here";
 		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=json&sort=kid&order=SORT_DESC&count=8&fields=Resource+Identifier,Type,Title";

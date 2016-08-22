@@ -7,42 +7,42 @@
                 <?php echo isset($logo) && is_string($logo) ? $logo : "ARCS" ?>
             </h1>
         </a>
-	
-	
+
+
 	<h1 id= "hamburger" class='hamburger'></h1>
-	
+
     <?php endif ?>
-		
+
 	<!--Check if it is index page or not, display accordingly-->
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 		<!--Display login button for other pages-->
 	<div id='log' >
 		<?php if ($user['loggedIn']): ?>
-			<div id="menu" class="btn btn-grey toolbar-btn"> 
+			<div id="menu" class="btn btn-grey toolbar-btn">
 				<div id="cage">
-				<?php echo $user['name'] ?> 
+				<?php echo $user['name'] ?>
 				<div id="dropBox">
 					<span id='logDrop' class="pointerDown pointerTool"></span>
 				</div>
 				</div>
 				<div id="droppedMenu" class="dropped-menu">
-					<?php echo $this->Html->link('Profile', 
+					<?php echo $this->Html->link('Profile',
 						'/user/' . $user['username'] . '/') ?>
 					<?php if ($user['role'] == "Admin"): ?>
-					<?php echo $this->Html->link('Admin', 
+					<?php echo $this->Html->link('Admin',
 						'/admin') ?>
 					<?php endif ?>
-					<div id='signOut'> <?php echo $this->Html->link('Sign Out', 
+					<div id='signOut'> <?php echo $this->Html->link('Sign Out',
 						'/logout') ?></div>
 				</div>
-				
-				
+
+
 			</div>
 		<?php else: ?>
-		
-			<a id='menu' class="btn btn-grey toolbar-btn" 
+
+			<a id='menu' class="btn btn-grey toolbar-btn"
 				href="#loginModal">Login / Register</a>
-		
+
 		<?php endif ?>
 	</div>
 	<?php else: ?>
@@ -57,31 +57,31 @@
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 	<!--Display regular buttons for other pages-->
 
-   
+
 	<div class="btn-group toolbar-btn">
 		 <!-- Arrow won't work-->
 		 <div  id= "projects" class="btn btn-grey">
 			 <div id='projCage'>
-			 <i class="icon-white icon-folder-open"></i> 
-			 <div id="toolbarHead" > 
+			 <i class="icon-white icon-folder-open"></i>
+			 <div id="toolbarHead" >
 				 	<div id="dropArrow" class='pointerDown pointerTool'>
-				 
-				    </div> 
-				 
-				 </div> 
-			 
+
+				    </div>
+
+				 </div>
+
 			 </div>
 			<div id="projectsMenu" class="projects-menu">
 			    <?php foreach($projects as $p): ?>
 				<a href="<?php echo$this->Html->url('/projects/single_project/' . $p['Persistent Name'])?>"><?php echo $p['Persistent Name'] ?></a>
 			    <?php endforeach ?>
 			</div>
-			
+
 		</div>
 		<div id= 'belowProjects'>
 			 <a id="resources" class="btn btn-grey"
 				href="<?php echo $this->Html->url('/resources')?>">
-				<i class="icon-white icon-folder-open"></i> Resources 
+				<i class="icon-white icon-folder-open"></i> Resources
 
 			</a>
 			<a id="collections" class="btn btn-grey"
@@ -96,8 +96,8 @@
 				href="<?php echo $this->Html->url('/help/')?>">
 				<i class="icon-white icon-book"></i> Help
 			</a>
-        
-			
+
+
         </div>
          <?php echo $this->Html->script('toolbarAssist.js');?>
 	</div>
@@ -108,19 +108,19 @@
 			href="<?php echo $this->Html->url('/about')?>">
 			<i class="icon-white icon-folder-open"></i> About ARCS
 		</a>
-		 
+
 		 <!-- Arrow won't work-->
-        
+
 		 <div id="projectsHeader" class="btn btn-grey">
 			<div id='projCageHome'>
-			 <i class="icon-white icon-folder-open"></i> 
+			 <i class="icon-white icon-folder-open"></i>
 			 <div id="toolbarHead" > Projects
 				 	<div id="dropArrow" class='pointerDown pointerTool'>
-				 
-				    </div> 
-				 
-				 </div> 
-			 
+
+				    </div>
+
+				 </div>
+
 			 </div>
 			<div id="projectsMenu" class="projects-menu homeProject">
 				<?php foreach($projects as $p): ?>
@@ -139,7 +139,7 @@
 			</a>
 		</div>
 		</div>
-				
+
 	<?php endif ?>
 
 </div>
@@ -155,17 +155,17 @@
                 <h1 id="loginHeader">Login</h1>
 
                 <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'special_login')); ?>
-				
+
 				<p id="loginInfo"></p>
-				
+
                 <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username')); ?>
 
                 <?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'Password')); ?>
-                
+
                 <p class="login-link" id="forgot-password">Forgot your password?</p>
 
                 <?php echo $this->Form->input('forgot_password', array('type' => 'hidden')) ?>
-				
+
                 <?php echo $this->Form->submit('Login', array('class' => 'btn')); ?>
 
                 <?php echo $this->Form->end() ?>
@@ -207,7 +207,7 @@
                 <?php echo $this->Form->input('passwd', array('label' => false, 'placeholder' => 'Password *'));?>
 
                 <span class="requiredfield">* Required Field</span>
-                
+
             </div>
         </div>
 

@@ -1,5 +1,6 @@
 <?php
 
+namespace Lib;
 
 class Resource {
   function __construct(){

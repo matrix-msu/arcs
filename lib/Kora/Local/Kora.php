@@ -21,6 +21,11 @@ Author: Austin RIx
 */
 
 
+namespace Lib;
+
+
+use \AppController;
+
 
 class Kora extends AppController{
 
@@ -41,7 +46,7 @@ class Kora extends AppController{
           //Create Symbolic link to local kora_search
           symlink(KORA_SEARCH,LIB . "Kora/search");
       }
-      require_once(LIB . "Kora/search");
+
 
       $this->token = TOKEN;
       $this->projectMapping = PID;
@@ -51,7 +56,7 @@ class Kora extends AppController{
 
     }
     protected function search(){
-
+        require_once(LIB . "Kora/search");
         $this->comprehensive_results = KORA_Search(
 
             $this->token,
@@ -64,6 +69,7 @@ class Kora extends AppController{
 
     }
     protected function search_limited(){
+        require_once(LIB . "Kora/search");
         $this->comprehensive_results = KORA_Search(
 
             $this->token,
@@ -78,7 +84,7 @@ class Kora extends AppController{
         return $this->comprehensive_results;
     }
     protected function MPF(){
-
+        require_once(LIB . "Kora/search");
         $this->comprehensive_results = MPF_Search(
             $this->token,
             $this->projectMapping,

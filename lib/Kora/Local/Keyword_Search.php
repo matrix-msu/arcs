@@ -2,6 +2,10 @@
 require_once("Kora.php");
 require_once("Resource.php");
 
+use Lib\Kora;
+use Lib\Resource;
+
+
 class Keyword_Search extends Kora{
 
   protected $formulatedResult;
