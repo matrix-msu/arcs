@@ -24,7 +24,6 @@ namespace Lib;
 use \AppController;
 
 
-
 class Kora extends AppController{
 
     protected $token;
@@ -46,7 +45,8 @@ class Kora extends AppController{
         }
         require_once(LIB . "Kora/search");
 
-      
+      require_once(LIB . "Kora/search");
+
     }
     protected function search(){
 
@@ -63,6 +63,7 @@ class Kora extends AppController{
     }
 
     protected function search_limited(){
+
         $this->comprehensive_results = KORA_Search(
 
             $this->token,
@@ -128,6 +129,10 @@ class Kora extends AppController{
         return json_encode($array);
     }
 }
+
+
+
+
 class KORA_Clause
 {
 	function __construct($argument1, $op, $argument2)

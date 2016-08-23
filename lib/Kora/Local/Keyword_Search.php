@@ -1,4 +1,7 @@
 <?php
+
+namespace Lib\Kora;
+
 require_once("Kora.php");
 require_once("Resource.php");
 
@@ -110,7 +113,8 @@ class Keyword_Search extends Kora{
       "Resource Identifier",
       "Accession Number",
       "Creator",
-      "Creator2"
+      "Creator2",
+      "systimestamp"
     );
 
   }

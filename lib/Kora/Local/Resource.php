@@ -35,16 +35,6 @@ class Resource {
       }
 
     }
-    // print_r($sites);
-    // echo "</br>";
-    // print_r($seasons);
-    // echo "</br>";
-    // print_r($type);
-    // echo "</br>";
-    // print_r($excavation);
-    // echo "</br>";
-    // print_r($creator);
-    // echo "</br>";
 
     return array(
       "sites"=> $sites,
