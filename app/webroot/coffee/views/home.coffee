@@ -16,11 +16,13 @@ class arcs.views.Home extends Backbone.View
     'click .btn-show-all': 'onClick'
 
   onClick: (e) ->
-    console.log(e.currentTarget.tagName);
     if e.currentTarget.tagName == 'SUMMARY'
       $el = $(e.currentTarget).parent()
+      if $el[0].hasAttribute("open")
+        $el.children('div').html ''
+        return
       $el.toggleAttr('open')
-      limit = 1
+      limit = 15
       src = arcs.baseURL + 'img/arcs-preloader.gif'
       if $(e.currentTarget).next().children().eq(0).prop("tagName") isnt 'IMG'
         $(e.currentTarget).next().prepend('<img src="'+src+'" alt="SeeAll.svg">')
@@ -30,7 +32,7 @@ class arcs.views.Home extends Backbone.View
       #$(e.currentTarget).parent().hide()
       src = arcs.baseURL + 'img/arcs-preloader.gif'
       $(e.currentTarget).find("img:first").attr('src', src);
-      limit = 0
+      limit = $el.find('.resource-thumb').length + 14
     else
       $el = $(e.currentTarget).parent()
       $el.toggleAttr('open')
@@ -49,10 +51,12 @@ class arcs.views.Home extends Backbone.View
       query = encodeURIComponent('Orphan,=,true') + '&sid=' + arcs.pagesSid
     query2 = arcs.baseURL + 'resources/search?'
     if (limit != 0)
-      query2 += "n=15&"
+      query2 += "n=#{limit}&"
     #console.log('found the coffee render')
     $.getJSON query2 + "q=#{query}", (response) ->
       html = arcs.tmpl 'home/details', 
         resources: response.results
         searchURL: arcs.baseURL + "collection/"
       $el.children('div').html html
+      #$el.first('.btn-show-all').first('.btn-show-all-text').html('SHOW MORE')
+      $el.find('.show-all-btn-text').html 'SHOW MORE'

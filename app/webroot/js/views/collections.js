@@ -39,6 +39,10 @@
       console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
+        if ($el[0].hasAttribute("open")) {
+          $el.children('div').html('');
+          return;
+        }
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
@@ -52,6 +56,10 @@
         limit = 0;
       } else {
         $el = $(e.currentTarget).parent();
+        if ($el[0].hasAttribute("open")) {
+          $el.children('div').html('');
+          return;
+        }
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
@@ -96,18 +104,14 @@
 
     CollectionList.prototype.render = function() {
       var currentCollectionList, fullCollectionList, i, lastPage, numPerPage, temp;
-      console.log(this.$el);
-      console.log("Fill in collection template here:");
       fullCollectionList = this.collection.toJSON();
       currentCollectionList = [];
       numPerPage = parseInt($('#items-per-page-btn').html().substring(0, 2));
-      console.log(numPerPage);
       i = 0;
       while (i < numPerPage && i < fullCollectionList.length) {
         currentCollectionList.push(fullCollectionList[i]);
         i++;
       }
-      console.log("page length: " + currentCollectionList.length);
       this.$el.html(arcs.tmpl('collections/list', {
         collections: currentCollectionList
       }));
@@ -117,7 +121,6 @@
       pagination(temp, 1, lastPage);
       $('.sort-btn').unbind().click((function(_this) {
         return function(e) {
-          console.log("sort-btn clicked");
           $('#items-per-page-btn').html($(e.target).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
           $('.pageNumber').removeClass('selected');
           $('.pageNumber').removeClass('currentPage');
@@ -188,7 +191,6 @@
 
     pagination = function(pageArray, currentPage, lastPage) {
       var i, j, results1;
-      console.log(pageArray);
       if (indexOf.call(pageArray, 1) >= 0) {
         $('#firstPage').css('display', 'none');
         $('.fDots').css('display', 'none');
@@ -243,18 +245,12 @@
       var currentCollectionList, i, lastPage, numberPerPage, pageNum, skip, temp;
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
-      console.log("CALLED");
-      console.log(results);
       pageNum = currentPage;
-      console.log(pageNum);
       numberPerPage = parseInt($('#items-per-page-btn').html().substring(0, 2));
       lastPage = Math.ceil(results.length / numberPerPage);
-      console.log(lastPage);
       temp = fillArray(pageNum, lastPage);
-      console.log(temp);
       pagination(temp, pageNum, lastPage);
       skip = (pageNum - 1) * numberPerPage;
-      console.log("skip: " + skip + " (skip+numberPerPage: )" + (skip + numberPerPage));
       $('#lastPage').html(lastPage);
       currentCollectionList = [];
       i = skip;

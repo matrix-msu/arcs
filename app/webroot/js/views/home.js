@@ -31,11 +31,14 @@
 
     Home.prototype.onClick = function(e) {
       var $el, limit, src;
-      console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'SUMMARY') {
         $el = $(e.currentTarget).parent();
+        if ($el[0].hasAttribute("open")) {
+          $el.children('div').html('');
+          return;
+        }
         $el.toggleAttr('open');
-        limit = 1;
+        limit = 15;
         src = arcs.baseURL + 'img/arcs-preloader.gif';
         if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
           $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
@@ -45,7 +48,7 @@
         $(e.currentTarget).removeClass('btn-show-all');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
         $(e.currentTarget).find("img:first").attr('src', src);
-        limit = 0;
+        limit = $el.find('.resource-thumb').length + 14;
       } else {
         $el = $(e.currentTarget).parent();
         $el.toggleAttr('open');
@@ -65,7 +68,7 @@
       }
       query2 = arcs.baseURL + 'resources/search?';
       if (limit !== 0) {
-        query2 += "n=15&";
+        query2 += "n=" + limit + "&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
         var html;
@@ -73,7 +76,8 @@
           resources: response.results,
           searchURL: arcs.baseURL + "collection/"
         });
-        return $el.children('div').html(html);
+        $el.children('div').html(html);
+        return $el.find('.show-all-btn-text').html('SHOW MORE');
       });
     };
 

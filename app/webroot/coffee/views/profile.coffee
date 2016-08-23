@@ -55,13 +55,16 @@ class arcs.views.Profile extends Backbone.View
 
   onClick: (e) ->
     #Loads individual collections here----Josh
-    console.log("Clicked here.");
-    console.log(e.currentTarget.tagName);
     if e.currentTarget.tagName == 'DETAILS'
       $el = $(e.currentTarget)
+      $el.toggleClass('closed').toggleClass('open')
+      #if $el[0].hasAttribute("open")
+       # $el.children('div').html ''
+        #$el[0].removeAttribute('open')
+        #return
       limit = 1
       $el.toggleAttr('open')
-      $el.toggleClass('closed').toggleClass('open')
+
     else if e.currentTarget.className == 'btn-show-all'
       $el = $(e.currentTarget).parent().parent().parent().parent()
       $(e.currentTarget).removeClass('btn-show-all')
@@ -72,21 +75,23 @@ class arcs.views.Profile extends Backbone.View
       limit = 0
     else
       if $(e.currentTarget).children().last().hasClass('save-btn')
-        console.log("open drawer and save btn")
+        e.preventDefault()
         return
       $el = $(e.currentTarget).parent()
+      $el.toggleClass('closed').toggleClass('open')
+      #if $el[0].hasAttribute("open")
+       # $el.children('div').html ''
+       # $el[0].removeAttribute('open')
+       # return
       limit = 1
       $el.toggleAttr('open')
-      $el.toggleClass('closed').toggleClass('open')
       src = arcs.baseURL + 'img/arcs-preloader.gif'
-      console.log("open click here")
-      console.log($(e.currentTarget).nextAll('.results:first').children().eq(0))
-      console.log($(e.currentTarget).nextAll('.results:first'))
-      #console.log($(e.currentTarget).next('.results'))
       if $(e.currentTarget).nextAll('.results:first').children().eq(0).prop("tagName") isnt 'IMG'
         $(e.currentTarget).nextAll('.results:first').prepend('<img src="'+src+'" alt="SeeAll.svg">')
-    console.log($el)
-    @renderDetails $el, limit
+    if $el[0].hasAttribute("open")
+      @renderDetails $el, limit
+    else
+      $el.children('div').html ''
     # Recent versions of webkit will toggle <details> automatically.
     # Instead of checking for support, we'll just stop it from bubbling up,
     # since we've just toggled it ourselves.
@@ -129,9 +134,6 @@ class arcs.views.Profile extends Backbone.View
     query2 = arcs.baseURL + "resources/search?"
     if (limit == 1)
       query2 += "n=15&"
-    console.log('url testing here')
-    console.log(arcs.baseURL)
-    console.log(query2 + "q=#{query}")
     $.getJSON query2 + "q=#{query}", (response) ->
       $el.children('.results').html arcs.tmpl 'home/details',
         resources: response.results

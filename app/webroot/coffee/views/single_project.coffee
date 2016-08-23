@@ -16,6 +16,9 @@ class arcs.views.SingleProject extends Backbone.View
 #Loads individual collections here----Josh
     if e.currentTarget.tagName == 'DETAILS'
       $el = $(e.currentTarget)
+      if $el[0].hasAttribute("open")
+        $el.children('div').html ''
+        return
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
@@ -30,6 +33,9 @@ class arcs.views.SingleProject extends Backbone.View
       limit = 0
     else
       $el = $(e.currentTarget).parent()
+      if $el[0].hasAttribute("open")
+        $el.children('div').html ''
+        return
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')

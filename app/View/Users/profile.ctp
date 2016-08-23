@@ -389,6 +389,11 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
 
                             console.log("got to save edit end");
                             //update the drawer's collection id
+
+                            //todo - this isn't working correctly --  :(
+                            //it is necessary for when the first resource is deleted
+                            //delete resource isn't working.
+
                             var newCollectionId = "";
                             newCollectionId = $(e.target).parent().next().children().eq(0).children().eq(0).attr("data-colid");
                             $(e.target).parent().parent().attr("data-id", newCollectionId);

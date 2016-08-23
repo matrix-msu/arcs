@@ -82,13 +82,11 @@
 
     Profile.prototype.onClick = function(e) {
       var $el, limit, ref, src;
-      console.log("Clicked here.");
-      console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
+        $el.toggleClass('closed').toggleClass('open');
         limit = 1;
         $el.toggleAttr('open');
-        $el.toggleClass('closed').toggleClass('open');
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
         $(e.currentTarget).removeClass('btn-show-all');
@@ -98,23 +96,23 @@
         limit = 0;
       } else {
         if ($(e.currentTarget).children().last().hasClass('save-btn')) {
-          console.log("open drawer and save btn");
+          e.preventDefault();
           return;
         }
         $el = $(e.currentTarget).parent();
+        $el.toggleClass('closed').toggleClass('open');
         limit = 1;
         $el.toggleAttr('open');
-        $el.toggleClass('closed').toggleClass('open');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
-        console.log("open click here");
-        console.log($(e.currentTarget).nextAll('.results:first').children().eq(0));
-        console.log($(e.currentTarget).nextAll('.results:first'));
         if ($(e.currentTarget).nextAll('.results:first').children().eq(0).prop("tagName") !== 'IMG') {
           $(e.currentTarget).nextAll('.results:first').prepend('<img src="' + src + '" alt="SeeAll.svg">');
         }
       }
-      console.log($el);
-      this.renderDetails($el, limit);
+      if ($el[0].hasAttribute("open")) {
+        this.renderDetails($el, limit);
+      } else {
+        $el.children('div').html('');
+      }
       if ((e.srcElement != null)) {
         if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
           e.preventDefault();
@@ -154,9 +152,6 @@
       if (limit === 1) {
         query2 += "n=15&";
       }
-      console.log('url testing here');
-      console.log(arcs.baseURL);
-      console.log(query2 + ("q=" + query));
       return $.getJSON(query2 + ("q=" + query), function(response) {
         return $el.children('.results').html(arcs.tmpl('home/details', {
           resources: response.results,

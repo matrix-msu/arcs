@@ -28,6 +28,9 @@ class arcs.views.CollectionList extends Backbone.View
     console.log(e.currentTarget.tagName);
     if e.currentTarget.tagName == 'DETAILS'
       $el = $(e.currentTarget)
+      if $el[0].hasAttribute("open")
+        $el.children('div').html ''
+        return
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
@@ -42,6 +45,9 @@ class arcs.views.CollectionList extends Backbone.View
       limit = 0
     else
       $el = $(e.currentTarget).parent()
+      if $el[0].hasAttribute("open")
+        $el.children('div').html ''
+        return
       limit = 1
       $el.toggleAttr('open')
       $el.toggleClass('closed').toggleClass('open')
@@ -83,17 +89,13 @@ class arcs.views.CollectionList extends Backbone.View
             arcs.loader.hide()
 
   render: () ->
-    console.log @$el
-    console.log "Fill in collection template here:"
     fullCollectionList = @collection.toJSON()
     currentCollectionList = []
     numPerPage = parseInt($('#items-per-page-btn').html().substring(0,2))
-    console.log(numPerPage)
     i = 0
     while i < numPerPage && i < fullCollectionList.length
       currentCollectionList.push(fullCollectionList[i])
       i++
-    console.log "page length: " +currentCollectionList.length
     @$el.html arcs.tmpl 'collections/list',
       collections: currentCollectionList
     @
@@ -101,8 +103,6 @@ class arcs.views.CollectionList extends Backbone.View
     temp = fillArray(1, lastPage)
     pagination(temp,1,lastPage)
     $('.sort-btn').unbind().click (e) =>
-      console.log("sort-btn clicked")
-      #console.log(e)
       $('#items-per-page-btn').html($(e.target).html()+"<span class='pointerDown sort-arrow pointerSearch'></span>")
       $('.pageNumber').removeClass('selected');
       $('.pageNumber').removeClass('currentPage');
@@ -114,7 +114,6 @@ class arcs.views.CollectionList extends Backbone.View
 
     $(".pageNumber").unbind().click (e) ->
       if($(this).hasClass('selected'))
-#        console.log("times this was called")
         e.stopPropagation()
         return
       else
@@ -133,27 +132,20 @@ class arcs.views.CollectionList extends Backbone.View
     $('#rightArrowBox').unbind().click (e) ->
       temp = $('.currentPage').html()
       if temp is '1'
-#        console.log("on page 1")
         return
       else
         $('.currentPage').html(parseInt(temp)-1)
         adjustPage(fullCollectionList,parseInt($('.currentPage').html()))
     $('#dots').unbind().click -> #---Josh
       temp = parseInt($('.currentPage').html())+5
-      #      console.log(temp)
-      #      console.log($("#lastPage").html())
       if temp > parseInt($("#lastPage").html())
         temp = parseInt($("#lastPage").html())
-      #        console.log(temp)
       $('.currentPage').html(temp)
       adjustPage(fullCollectionList,parseInt($('.currentPage').html()))
     $('#fDots').unbind().click ->
       temp = parseInt($('.currentPage').html())-5
-      #      console.log(temp)
-      #      console.log($("#firstPage").html())
       if temp < 1
         temp = 1
-      #        console.log(temp)
       $('.currentPage').html(temp)
       adjustPage(fullCollectionList,parseInt($('.currentPage').html()))
 
@@ -172,7 +164,6 @@ class arcs.views.CollectionList extends Backbone.View
 
 
   pagination = (pageArray, currentPage, lastPage) ->
-    console.log(pageArray)
     if 1 in pageArray
       $('#firstPage').css('display', 'none')
       $('.fDots').css('display', 'none')
@@ -200,9 +191,7 @@ class arcs.views.CollectionList extends Backbone.View
     if lastPage-1 is pageArray[4]
       $('.dots').css('display', 'none')
     for i in [1..5]
-  #      console.log("Array contents: "+pageArray[i-1]+" i: "+ i)
       if pageArray[i-1] <= 0
-  #        console.log("undifined")
         $('#'+i).css('display', 'none')
       else
         $('#'+i).css('display', 'block')
@@ -215,22 +204,15 @@ class arcs.views.CollectionList extends Backbone.View
   adjustPage = (results,currentPage) =>
     $('.pageNumber').removeClass('currentPage')
     $('.pageNumber').removeClass('selected')
-    console.log("CALLED")
-    console.log(results)
     pageNum = currentPage
-    console.log(pageNum)
     numberPerPage = parseInt($('#items-per-page-btn').html().substring(0,2))
     lastPage = Math.ceil(results.length/numberPerPage)
-    console.log(lastPage)
     temp = fillArray(pageNum,lastPage)
-    console.log(temp)
     pagination(temp,pageNum,lastPage)
     skip = (pageNum-1)*numberPerPage
-    console.log("skip: "+skip+" (skip+numberPerPage: )"+ (skip+numberPerPage))
     $('#lastPage').html(lastPage)
     #    perPage = parseInt(perPage = $('#items-per-page-btn').html().substring(0,2))
     #fullCollectionList = @collection.toJSON()
-    #console.log(results[skip..(skip+numberPerPage)])
     #$('#all-collections')[0].html arcs.tmpl 'collections/list',
      # collections: results[skip..(skip+numberPerPage)]
     #collectionsDiv = ('#all-collections')

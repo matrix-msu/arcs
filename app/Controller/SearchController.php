@@ -519,9 +519,9 @@ class SearchController extends AppController {
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
+                $sql = "SELECT resource_kid, id FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
             }else {
-                $sql = "SELECT resource_kid FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
+                $sql = "SELECT resource_kid, id FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
             }
             $result = $mysqli->query($sql);
             $count = 0;
@@ -588,6 +588,8 @@ class SearchController extends AppController {
                     $temp_array['type'] = 'Unknown Type';
                 }
                 $temp_array['kid'] = $temp_kid;
+
+                $temp_array['collection_id'] = $row['id'];
 
                 $resource_identifier = $r['Resource Identifier'];
 
