@@ -6,14 +6,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>ARCS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
-   
+
     </head>
     <body>
 
 		<div class="intro">
-           <h1><?php echo $project["Name"]; ?></h1>
+           <h1><?php echo $name; ?></h1>
            <br>
-           <p class="intro_text"><?php echo $project["Description"]; ?></p>
+           <p class="intro_text"><?php echo $description; ?></p>
 		</div>
 
 
@@ -51,11 +51,11 @@
         <div class="collection-list-wrapper">
 
             <h1 class="title">Recent Collections</h1>
-			<p class="login_msg">You're viewing publicly available resources. 
+			<p class="login_msg">You're viewing publicly available resources.
 			You'll need to <a href=#loginModal>log in</a> to see the rest.
 			</p>
 			<div class="collection-list" id="all-collections">
-				
+
 				<details class="back-color">
 					<summary>
 						<h3>Collection Title</h3>
@@ -103,7 +103,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>  
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -153,7 +153,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -203,7 +203,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -253,7 +253,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -303,7 +303,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -353,7 +353,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -403,7 +403,7 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
 				<details class="back-color">
@@ -453,17 +453,17 @@
 						<div class="proper-width" id="show-min">
 							<div class="more-info">
 							<span style="cursor:pointer"><a>VIEW COLLECTION</a></span></div>
-						</div>    
+						</div>
 					</ul>
 				</details>
-				
+
 				<div class="more-info"><span style="cursor:pointer"><a>VIEW  ALL COLLECTIOPNS</a></span></div>
 				<div class="proper-width" id="show-min">
 					<div class="more-info">
 					<span style="cursor:pointer"><a>VIEW ALL COLLECTION</a></span></div>
-				</div>    
+				</div>
 			</div>
-			
+
         </div>
 
 

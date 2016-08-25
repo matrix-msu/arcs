@@ -11,6 +11,8 @@
 require_once(KORA_LIB . "Keyword_Search.php");
 require_once(KORA_LIB . "General_Search.php");
 
+use Lib\Kora\Keyword_Search;
+
 class SearchController extends AppController {
     public $name = 'Search';
     public $uses = array('Resource','Users');
@@ -728,7 +730,7 @@ class SearchController extends AppController {
                 } else {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
                 }
-                
+
                 array_push($returnResults, $temp);
             }
 

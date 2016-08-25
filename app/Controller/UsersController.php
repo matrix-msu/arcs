@@ -77,7 +77,7 @@ class UsersController extends AppController
     public function edit($id = null)
     {
         $this->Session->setFlash($this->data['User']['id']);
-        // Change to return json error! Otherwise it is nearly impossible to diagnois why ajax isn't working. 
+        // Change to return json error! Otherwise it is nearly impossible to diagnois why ajax isn't working.
         if (!($this->request->is('put') || $this->request->is('post')))
             // throw new MethodNotAllowedException();
             return $this->json(405);
@@ -154,7 +154,7 @@ class UsersController extends AppController
                         "link to reset your password.", 'flash_success');
                     $this->redirect('/');
                 }
-            } else {                            
+            } else {
                 /* Logs user in */
                 $user = $this->User->findByRef($this->request->data['User']['username']);
                 if($user['User']['status'] == 'active'){
@@ -173,7 +173,7 @@ class UsersController extends AppController
                         return $this->redirect('/');
                 }
                 else if($user['User']['status'] == 'unconfirmed') {
-           
+
                     // change status of user
                     $this->User->id = $user['User']['id'];
                     $this->User->saveField('status', "pending");
@@ -304,7 +304,7 @@ class UsersController extends AppController
         $token = $this->User->getToken();
         $this->User->permit('activation');
         $this->User->permit('isAdmin');
-                
+
                 $name = $data['firstName'] . " " . $data['lastName'];
 
         $response["message"] = [];
@@ -396,7 +396,7 @@ class UsersController extends AppController
                                 $conditions = array('User.activation' => $this->data['User']['activation']);
                                 $user = $this->User->find('first', array('conditions' => $conditions));
                                 $this->User->id = $user['id'];
-                                
+
                                 //Check if user was found
                                 if ($this->User->id) {
                                         //Try to save data
@@ -417,7 +417,7 @@ class UsersController extends AppController
                                         } else {
                                                 //Remove activation token from user
                                                 $this->User->saveField('activation', null);
-                                                
+
                                                 //Login and redirect
                                                 $user = $this->User->findById($user['id']);
                                                 $this->Auth->login($user);
@@ -537,12 +537,12 @@ class UsersController extends AppController
                     // check if php finds any errors
                     $error    = $_FILES['user_image']['error'];
                     $errorOut = "Unknown upload error.";
-                    if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini"; 
-                    elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"; 
-                    elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded"; 
-                    elseif ($error == 4) $errorOut = "No file was uploaded"; 
-                    elseif ($error == 6) $errorOut = "Missing a temporary folder"; 
-                    elseif ($error == 7) $errorOut = "Failed to write file to disk"; 
+                    if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                    elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                    elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
+                    elseif ($error == 4) $errorOut = "No file was uploaded";
+                    elseif ($error == 6) $errorOut = "Missing a temporary folder";
+                    elseif ($error == 7) $errorOut = "Failed to write file to disk";
                     elseif ($error == 8) $errorOut = "File upload stopped by extension";
 
                     $this->Session->setFlash("Error: " . $errorOut, 'flash_error');
@@ -609,7 +609,7 @@ class UsersController extends AppController
      */
     public function crop($ref)
     {
-		
+
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
@@ -664,7 +664,7 @@ class UsersController extends AppController
         $baseURL = $this->baseURL() . "/user/" . $user['username'] . "/";
         $this->set("baseURL", $baseURL);
     }
-	
+
 
     /**
      * Return an array containing values from the users.name column, for
@@ -731,7 +731,7 @@ class UsersController extends AppController
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
     }
-        
+
         /**
      * Send pending user email
      * @param array data

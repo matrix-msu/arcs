@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Projects Controller
@@ -8,31 +9,32 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
-
-require_once(KORA_LIB . "Kora.php");
-
-use Lib\Kora;
+require_once(KORA_LIB . "Project.php");
+use Lib\Kora\Project;
 
 class ProjectsController extends AppController {
     public $name = 'Projects';
 
+
 	public function beforeFilter() {
 
-        parent::beforeFilter();
-        $this->Auth->allow('display', 'search', 'single_project');
-		$this->set(array(
-		'toolbar' => false,
-        'footer' => false
-		));
-    }
+      parent::beforeFilter();
+          $this->Auth->allow('display', 'search', 'single_project');
+  		$this->set(array(
+  		'toolbar' => true,
+          'footer' => true
+  		));
 
+    }
 	public function getProjects() {
 		$user = "";
 		$pass = "";
 
 		$display = "json";
 		$query = "";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
+
+    $url =
+    KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -81,27 +83,27 @@ class ProjectsController extends AppController {
 		$this->render(implode('/', $path));
 	}
 
-	public function single_project() {
-		$user = "";
-		$pass = "";
-    $kora = new Kora();
+	public function single_project($proj) {
 
-    //echo  class_exists ( "KORA_Clause" ) ? "true" : "false";
-    //echo "here";
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=json&sort=kid&order=SORT_DESC&count=8&fields=Resource+Identifier,Type,Title";
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-		$server_output = json_decode(curl_exec($ch), true);
-		// Now we go through the list, get any more needed information, and compile results
+    $user = "";
+		$pass = "";
+    
+    $project = new Project($proj);
+
+    $server_output = $project->get_recent();
+
+    $this->set("name",$project->get_name());
+    $this->set("description",$project->get_description());
+    $this->set("recently_added", $project->get_recent());
+
+    // print_r($server_output);
+
+    // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
 		foreach($server_output as $result) {
-			$query = "Resource Identifier,=,".$result['Resource Identifier'];
-			$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=json&query=".urlencode($query)."&count=1&fields=Image+Upload";
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-			$page = json_decode(curl_exec($ch), true);
+
+      $page = $project->get_page($result['Resource Identifier']);
+
 			$picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
                      array_values($page)[0]['Image Upload']['localName'] : null;
 
@@ -116,35 +118,10 @@ class ProjectsController extends AppController {
 		}
 		$this->set('resources', $resources);
 
-		// Need collections, but those are not in kora, so SQL time:
-		/*$db = new DATABASE_CONFIG;
-		$db_object =  (object) $db;
-		$db_array = $db_object->{'default'};
-		$response['db_info'] = $db_array['host'];
-		$mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
-
-		if ($mysqli->connect_error) {
-			die('Connect Error (' . $mysqli->connect_errno . ') '
-				. $mysqli->connect_error);
-		}
-
-		$sql = "select * from arcs_dev.collections group by collection_id order by created DESC limit 8;";
-		$result = $mysqli->query($sql);
-		$collections = [];
-		while($row = mysqli_fetch_assoc($result))
-			$collections[] = $row;
-		// At this point collections only gives us so much. We either load the collection items separately like other places
-		// or we load them here and set them up entirely that way, I think.
-		$this->set('collections', $collections);*/
-
 
 		$this->loadModel('Collection');
 		$user_id =  $this->Session->read('Auth.User.id');
-		//$this->set('user_id', $userId);
 
-		//$collection_controller = new CollectionsController;
-
-		//$collection_controller->index();
 
 		if( $user_id !== null ) { //signed in
 			$collections = $this->Collection->find('all', array(
@@ -164,7 +141,7 @@ class ProjectsController extends AppController {
 			foreach( $collections as $collection ){
 				$bool_delete = 1;
 				if( array_values($collection)[0]['public'] == '3'){
-					$members =  explode(';', array_values($collection)[0]['members'] );
+					$members =  explode(';', array_values( $collection)[0]['members'] );
 					foreach( $members as $member ){
 						if( $member == $user_id){
 							$bool_delete = 0;
@@ -188,28 +165,8 @@ class ProjectsController extends AppController {
 			$this->set('collections', $collections);
 		}
 
-		$query = "Persistent Name,=,".$this->request->params['pass'][0];
+    $this->render("single_project");
 
-		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json&query=".urlencode($query);
-
-		// Debug string w/o query.
-		//$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
-
-		///initialize post request to KORA API using curl
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-
-		///capture results and display
-		$server_output = json_decode(curl_exec($ch), true);
-		//var_dump($server_output);
-		$projects = array();
-		foreach($server_output as $item) {
-			array_push($projects, $item);
-		}
-		$this->set('project', $projects[0]);
 	}
-
-
 
 }

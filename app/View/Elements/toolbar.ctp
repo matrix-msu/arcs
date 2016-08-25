@@ -154,7 +154,7 @@
 
                 <h1 id="loginHeader">Login</h1>
 
-                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'special_login')); ?>
+                <?php echo $this->Form->create('TESTUser', array('controller' => 'users', 'action' => 'special_login')); ?>
 
 				<p id="loginInfo"></p>
 
@@ -189,7 +189,7 @@
 
         <a id="#close" href="#"><img class="exit" src="http://cdn.flaticon.com/png/256/59254.png" alt="Exit"></a>
 
-        <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register')); ?>
+        <?php echo $this->Form->create('TESTUser', array('controller' => 'users', 'action' => 'register')); ?>
 
         <div class="left">
             <div class="registerContainer">

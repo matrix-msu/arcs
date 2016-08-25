@@ -23,35 +23,39 @@
  */
 
     # Home page
-    Router::connect('/', 
+    Router::connect('/',
         array('controller' => 'projects', 'action' => 'display', 'index')
     );
-    
-    Router::connect('/projects', 
+
+
+    Router::connect("/projects/single_project/*",
+        array('controller' => 'projects', 'action' => 'single_project')
+    );
+    Router::connect('/projects',
         array('controller' => 'projects', 'action' => 'single_project', 'single_project')
     );
-	
+
 	# Resource page
-    Router::connect('/resources', 
+    Router::connect('/resources',
         array('controller' => 'pages', 'action' => 'display', 'resources')
     );
 
     # Error pages
-    Router::connect('/404', 
+    Router::connect('/404',
         array('controller' => 'pages', 'action' => 'display', '404')
     );
-    Router::connect('/500', 
+    Router::connect('/500',
         array('controller' => 'pages', 'action' => 'display', '500')
     );
 
 
     # About
-    Router::connect('/about', 
+    Router::connect('/about',
         array('controller' => 'pages', 'action' => 'display', 'about')
     );
 
     # Signup
-    Router::connect('/register/*', 
+    Router::connect('/register/*',
         array('controller' => 'users', 'action' => 'register')
     );
 
@@ -71,13 +75,13 @@
     );
 
     # Resource, collection and user singular aliases
-    Router::connect('/resource/*', 
+    Router::connect('/resource/*',
         array('controller' => 'resources', 'action' => 'viewer')
     );
-    Router::connect('/collection/*', 
+    Router::connect('/collection/*',
         array('controller' => 'collections', 'action' => 'viewer')
     );
-    Router::connect('/user/*', 
+    Router::connect('/user/*',
         array('controller' => 'users', 'action' => 'profile')
     );
     Router::connect('/user/edit/*',
@@ -89,7 +93,7 @@
 
 
 # Search
-    # (we're using the greedy pattern so that we can match urls with slashes, 
+    # (we're using the greedy pattern so that we can match urls with slashes,
     # e.g. 'search/filetype:application/pdf')
 
 
@@ -139,28 +143,28 @@
         array('controller' => 'search', 'action' => 'getProjects')
     );
 
-    Router::connect('/search/**', 
+    Router::connect('/search/**',
         array('controller' => 'search', 'action' => 'search')
     );
-	Router::connect('/search/paginate', 
+	Router::connect('/search/paginate',
         array('controller' => 'search', 'action' => 'paginate')
     );
 
 
     # We can access the JSON search through either /api/search or this:
-    Router::connect('/resources/search', 
+    Router::connect('/resources/search',
         array('controller' => 'search', 'action' => 'resources')
     );
-    Router::connect('/resources/complete', 
+    Router::connect('/resources/complete',
         array('controller' => 'search', 'action' => 'complete')
     );
-	
-	Router::connect('/resources/flags/add', 
+
+	Router::connect('/resources/flags/add',
         array('controller' => 'flags', 'action' => 'add')
     );
 
 
-    # Search must have a trailing slash, for the client-side code's sanity. 
+    # Search must have a trailing slash, for the client-side code's sanity.
     Router::redirect('/search', 'search/');
     Router::redirect('/simple_search', 'simple_search/');
     Router::redirect('/advanced_search', 'advanced_search/');
@@ -171,7 +175,7 @@
     );
 
     # Pages routes
-    Router::connect('/pages/*', 
+    Router::connect('/pages/*',
         array('controller' => 'pages', 'action' => 'display')
     );
 
@@ -179,11 +183,11 @@
     Router::connect('/help',
         array('controller' => 'help', 'action' => 'display', 'index')
     );
-    Router::connect('/help/*', 
+    Router::connect('/help/*',
         array('controller' => 'help', 'action' => 'display')
     );
 
-    # Non-RESTful API routes 
+    # Non-RESTful API routes
     Router::connect('/api/search',
         array('controller' => 'search', 'action' => 'resources')
     );
@@ -204,7 +208,7 @@
     Router::connect('/api/users/invite',
         array('controller' => 'users', 'action' => 'ajaxInvite')
     );
-	
+
 	Router::connect('/api/annotations/findall',
         array('controller' => 'annotations', 'action' => 'findAll')
     );

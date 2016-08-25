@@ -43,6 +43,7 @@
     });
 	<?php
 		//$projects_array = json_decode($projects, true);
+
 		foreach($projects as $item) {
 			$link = $this->Html->link(
 				'VIEW PROJECT',
@@ -57,22 +58,19 @@
 			$geo = $item['Geolocation'];
 
 			//commented out markers in case we choose to reuse them later. Not using them as of 11/5/15
-
-      if(is_array($geo)){
-  			foreach($geo as $marker) {
-  				$coords = explode(",", $marker);
-  				//markers
-  				$html = "";
-  				$html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
-  				$html .= ".addTo(map);";
-  				$html .= "marker_array.push(marker);";
-  				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
-  				$brief = str_replace("'", "\'", $item['Description']);
-  				$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
-  				print $html; //print markers and set coords_array
-  				//print "console.log('".$coords[0]."', '".$coords[1]."');";
-  			}
-      }
+			foreach($geo as $marker) {
+				$coords = explode(",", $marker);
+				//markers
+				$html = "";
+				$html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
+				$html .= ".addTo(map);";
+				$html .= "marker_array.push(marker);";
+				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
+				$brief = str_replace("'", "\'", $item['Description']);
+				$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+				print $html; //print markers and set coords_array
+				//print "console.log('".$coords[0]."', '".$coords[1]."');";
+			}
 
 			//print polygon
 			$html = "";

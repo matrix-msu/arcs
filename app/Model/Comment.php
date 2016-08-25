@@ -8,7 +8,9 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 class Comment extends AppModel {
+
     public $name = 'Comment';
     public $belongsTo = array('User', 'Resource');
     public $whitelist = array('resource_kid', 'content', 'parent_id', 'name');
+
 }

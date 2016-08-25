@@ -64,7 +64,7 @@ class User extends AppModel {
     /**
      * Don't give out the user's hashed password to non-primary finds.
      */
-    function afterFind($results, $primary) {
+    function afterFind($results, $primary=false) {
         $results = parent::afterFind($results, $primary);
         if (!$primary) {
             $results = $this->resultsMap($results, function($r) {
