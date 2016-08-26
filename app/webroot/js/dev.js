@@ -4,7 +4,7 @@
 
   if (document.location.href.match(/\/~[a-z.]+\//)) {
     arcs.baseURL += document.location.href.match(/\/~[a-z.]+\//);
-    arcs.baseURL += 'arcs2/';
+    arcs.baseURL += BASE_URL;
   }
 
   if (arcs.mode > 0) {

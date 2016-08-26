@@ -43,7 +43,13 @@ define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
 define("KORA_LIB", CORE_PATH . "Kora/Local/");
 define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
-define ("LOCAL_URI", "~arnold.mutayoba/arcs/webroot/");
+
+// EDIT
+//////////////////////////////////////////////////////////////
+define("BASE_URL",  "arcs2/" );
+define ("LOCAL_URI", "~austin.rix/arcs2/webroot/");
+/////////////////////////////////////////////////////////////
+
 define ("PID", "123");
 define ("PROJECT_SID", "734");
 define ("SEASON_SID", "735");
@@ -61,4 +67,9 @@ define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
 
-//used for help toolbar
+
+
+define("globaljsvars",
+		"<script type='text/javascript'>" .
+	"var BASE_URL ='".BASE_URL."';" .
+	"</script>");

@@ -1,7 +1,7 @@
 <!doctype html>
 
 <?php
-	
+
     $url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     if(strpos($url, 'arcs/about') != false){
          echo $this->Session->flash();
@@ -15,8 +15,8 @@
 
       <meta charset="utf-8">
         <title><?php echo $title_for_layout; ?> - ARCS</title>
-        <link rel="shortcut icon" 
-            href="<?php echo $this->Html->url('/favicon.ico') ?>" 
+        <link rel="shortcut icon"
+            href="<?php echo $this->Html->url('/favicon.ico') ?>"
             type="image/x-icon" />
         <meta name="language" http-equiv="language" content="english" />
         <!-- ios devices go full screen! -->
@@ -31,9 +31,11 @@
 
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
 
-        <?php 
-        // Add the filename to app/Config/assets.ini to automatically call the css/js files here.
+        <?php
+        // Add the filename to app/Config/assets.ini to automatically call the css/js files her
+				echo globaljsvars;
         echo $this->Assets->stylesheets();
+
         echo $this->Assets->scripts();
         ?>
 
@@ -42,21 +44,21 @@
     <body class="<?php echo $body_class ?>">
         <div class="wrap">
             <div class="page fluid-container">
-				
+
             <?php
-				
+
                 echo $this->element('toolbar');
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
-                echo $this->fetch('content'); 
+                echo $this->fetch('content');
             ?>
             </div>
-            <?php if ($footer): ?> 
+            <?php if ($footer): ?>
                 <div class="push"></div>
             <?php endif ?>
         </div>
         <?php echo $this->element('footer') ?>
-        <?php if ($user['role'] == "Admin" && Configure::read('debug') == 2) echo $this->element('sql') ?> 
+        <?php if ($user['role'] == "Admin" && Configure::read('debug') == 2) echo $this->element('sql') ?>
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
