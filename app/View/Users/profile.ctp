@@ -17,9 +17,9 @@
                 </dd>
                 <dd>
                 	<?php echo $user_info['username'];?></dd>
-                <dd><span class="bolded">Role:</span> 
-                <?php 
-                    $role = $user_info['role'];
+                <dd><span class="bolded">Role:</span>
+                <?php
+                    $role = $user_info['isAdmin'];
                     if ($role == 0) echo "Admin";
                     elseif ($role == 1) echo "Moderator";
                     elseif ($role == 2) echo "Researcher";
@@ -35,7 +35,7 @@
                     </form>
                 <?php endif ?>
                 <?php if ($role == 0): ?>
-                    <?php 
+                    <?php
                         $User = new User();
                         $User->id = $user_info['id'];
                         if($user_info['status'] == 'pending'){
@@ -44,8 +44,8 @@
                         }
                         ?>
                 <?php endif ?>
-            </dl> 
-            
+            </dl>
+
             <dl class="score-description-list">
             	<dd>
             		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px')); echo $user_info['annotationsCount']; ?> <span class="description-text">Annotations Made</span>

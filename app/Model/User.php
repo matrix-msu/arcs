@@ -66,12 +66,17 @@ class User extends AppModel {
      */
     function afterFind($results, $primary=false) {
         $results = parent::afterFind($results, $primary);
+        if(empty($results))
+          return;
         if (!$primary) {
             $results = $this->resultsMap($results, function($r) {
                 $r['password'] = '****';
                 return $r;
             });
         }
+
+
+
         $results = $this->resultsMap($results, function($r) {
             if (isset($r['email']))
                 $r['gravatar'] = md5(strtolower($r['email']));
@@ -93,6 +98,7 @@ class User extends AppModel {
                     die('Connect Error (' . $mysqli->connect_errno . ') '
                         . $mysqli->connect_error);
                 }
+
                 //Get a collection_id from the id
                 //Get the title
                 //Get the newest date
@@ -127,11 +133,13 @@ class User extends AppModel {
                 //$collections = mysqli_fetch_assoc($result);
                 //$collection_id = $collection_id['collection_id'];
                 //$r['query'] = $sql;
-                $r['Collection'] = $test;
+                if(isset($test))
+                  $r['Collection'] = $test;
 
                 return $r;
             }
         });
+
         return $results;
     }
 

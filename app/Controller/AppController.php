@@ -26,6 +26,7 @@ class AppController extends Controller {
 
 
         // code to pull the projects from kora for the header - here because every page needs it
+
         $user = "";
         $pass = "";
         $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
@@ -37,7 +38,6 @@ class AppController extends Controller {
         foreach($out as $item) {
             array_push($projects, $item);
         }
-
         if (substr($this->request->url, 0, 3) == 'api')
             $this->Auth->authenticate = array('Basic');
         $this->set(array(
@@ -60,6 +60,7 @@ class AppController extends Controller {
             'debug' => Configure::read('debug'),
             'projects' => $projects
         ));
+
         $this->RequestHandler->addInputType('json', array('json_decode', true));
 
 

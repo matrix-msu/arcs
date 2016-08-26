@@ -130,7 +130,7 @@ class UsersController extends AppController
     public function special_login()
     {
         $this->User->flatten = false;
-        if ($this->request->is('post')) {
+          if ($this->request->is('post')) {
             if ($this->request->data['User']['forgot_password']) {
                 /* Reset user's password */
                 $email = $this->request->data['User']['username']; // actually is email because the reset form overrides the login form
@@ -586,9 +586,9 @@ class UsersController extends AppController
 
         // user has no profile image on the site so check gravatar
         // might not be a good idea because the image will be incredibly blurry due to how gravatar saves images
-        if ($user['profileImage'] == NULL && getimagesize("http://gravatar.com/avatar/" . $user["gravatar"] . "/?s=500&d=404")) {
-            $user['profileImage'] = "http://gravatar.com/avatar/" . $user["gravatar"] . "/?d=404";
-        }
+        // if ($user['profileImage'] == NULL && getimagesize("http://gravatar.com/avatar/" . $user["gravatar"] . "/?s=500&d=404")) {
+        //     $user['profileImage'] = "http://gravatar.com/avatar/" . $user["gravatar"] . "/?d=404";
+        // }
 
         // user has no profile image on the site nor an image on gravatar so give default image
         if ($user['profileImage'] == NULL) {

@@ -26,10 +26,10 @@ class AdvancedSearchController extends AppController {
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow('advanced_search', 'resources');
+        //$this->Auth->allow('advanced_search', 'resources');
         if (!isset($this->request->query['related'])) {
-            $this->Resource->recursive = -1;
-            $this->Resource->flatten = true;
+            //$this->Resource->recursive = -1;
+            //$this->Resource->flatten = true;
         }
     }
 
@@ -500,7 +500,7 @@ class AdvancedSearchController extends AppController {
         ));
     }
 
-    public function paginate(){
+    public function paginate($object = NULL, $scope = array(), $whiteList = array()){
 
     }
 

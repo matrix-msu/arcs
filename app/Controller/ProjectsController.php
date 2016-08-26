@@ -19,10 +19,10 @@ class ProjectsController extends AppController {
 	public function beforeFilter() {
 
       parent::beforeFilter();
-          $this->Auth->allow('display', 'search', 'single_project');
+          $this->Auth->allow('display', 'search',"single_project");
   		$this->set(array(
   		'toolbar' => true,
-          'footer' => true
+          'footer' => false
   		));
 
     }
@@ -87,7 +87,7 @@ class ProjectsController extends AppController {
 
     $user = "";
 		$pass = "";
-    
+
     $project = new Project($proj);
 
     $server_output = $project->get_recent();

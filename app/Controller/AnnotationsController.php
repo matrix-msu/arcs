@@ -10,12 +10,12 @@ App::uses('MetaResourcesController', 'Controller');
  */
 class AnnotationsController extends MetaResourcesController {
     public $name = 'Annotations';
-	
+
 	public function beforeFilter() {
         parent::beforeFilter();
 
 		$user = $this->Auth->User();
-		
+
 		$this->request->data['user_id'] = $user['id'];
 		$this->request->data['user_name'] = $user['name'];
 		$this->request->data['user_username'] = $user['username'];
