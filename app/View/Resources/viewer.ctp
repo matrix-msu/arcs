@@ -40,7 +40,7 @@
         </div>
 
     </div>
-	
+
 	<div class="deleteWrap">
 		<div id="deleteModel">
 			<div class="deleteModalHeader"><img src="../app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class='fullscreenWrap'>
 		<div class='fullscreenOverlay'>
 			<div class='fullscreenOuter'>
@@ -61,7 +61,7 @@
 						<div class='expandedArrowBoxLeft'>
 							<img class='leftExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
-						
+
 					</div>
 					<div class="rightHalf">
 						<div class='expandedArrowBoxRight'>
@@ -74,13 +74,13 @@
 			<div class='fullscreenTitle' style="display:none;">
 				<span class='titleText'>Test.jpg</span>
 			</div>
-				
+
 			<div class='fullscreenClose'>
 				<img src="../app/webroot/assets/img/Close.svg"class="closeExpand"/>
 			</div>
 		</div>
 	</div>
-	
+
     <div class="annotateModalBackground">
         <div class="annotateWrap">
             <div id="annotateModal">
@@ -663,7 +663,7 @@
                             </tr>
                             <tr>
                                 <td>Title</td>
-                                <td<?php $name = "Title"; 
+                                <td<?php $name = "Title";
                                 if( array_key_exists( $name, $season )){
                                     $text = $season[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
@@ -677,7 +677,7 @@
                             </tr>
                             <tr>
                                 <td>Type</td>
-                                <td<?php $name = "Type"; 
+                                <td<?php $name = "Type";
                                 if( array_key_exists( $name, $season )){
                                     $text = '';
                                     if( !is_string($season[$name]) ){
@@ -696,7 +696,7 @@
                             </tr>
                             <tr>
                                 <td>Director</td>
-                                <td<?php $name = "Director"; 
+                                <td<?php $name = "Director";
                                 if( array_key_exists( $name, $season )){
                                     $text = '';
                                     if( !is_string($season[$name]) ){
@@ -715,7 +715,7 @@
                             </tr>
                             <tr>
                                 <td>Registrar</td>
-                                <td<?php $name = "Registrar"; 
+                                <td<?php $name = "Registrar";
                                 if( array_key_exists( $name, $season )){
                                     $text = '';
                                     if( !is_string($season[$name]) ){
@@ -827,7 +827,7 @@
                             </tr>
                             <tr>
                                 <td>Description</td>
-                                <td<?php $name = "Description";                                  
+                                <td<?php $name = "Description";
                                 if( array_key_exists( $name, $season )){
                                     $text = $season[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
@@ -1638,16 +1638,18 @@
                         <div id="soo" class="metadata-content">
 
                             <!--<div class="metadata-accordion">-->
-                                
+
                                 <?php if(count($subject) > 0) { ?>
                                 <ul>
                                 <?php $count=0; ?>
                                 <?php foreach($subject as $subjects) { $count++; ?>
-                                <li class="soo-li"><a href="#soo-<?php echo $count; ?>" class="soo-click"><?php echo $count; ?></a></li>
+                                <li class="soo-li"><a href="#soo-<?php echo $count; ?>" class="soo-click<?= $count ?>  soo-click"><?php echo $count; ?></a></li>
                                 <?php } ?>
                                 </ul>
 
-                                <?php $count=0; ?>
+                                <?php $count=0;
+
+                                ?>
                                 <?php foreach($subject as $subjects) { $count++; ?>
 
                                 <div class="level-content soo auto-height" id="soo-<?php echo $count; ?>" data-kid="<?php echo $subjects['kid']; ?>">
@@ -1988,7 +1990,7 @@
 		<?php $cnt++;?>
 
         <a  class='other-resources' href="#">
-            <img class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
+            <img id="identifier-<?= $r["kid"]; ?>" class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
 			<?php if ($cnt ==1) :?>
 				<div class='numberOverResources selectedResource'>
 					<?php echo $cnt; ?>
@@ -2000,7 +2002,7 @@
 				</div>
 			<?php endif ?>
         </a>
-		
+
         <?php endforeach ?>
     </div> <!--#other-resources-contain -->
 </div> <!--#other-resources-container -->
@@ -2015,6 +2017,19 @@
 <script>
     $(function () {
         $("#tabs").tabs();
+        $(document).ready(function(){
+          var cnt = 1;
+          $(".soo").each(function(){
+            var display = $(this).css("display");
+            if(display == "none"){
+              $(".soo-click"+cnt).parent().css({display:"none"});
+            }
+
+            cnt++;
+          });
+
+        });
+
     });
 
     $(function () {
@@ -2042,6 +2057,9 @@
 
 <script>
     // preloader image and images
+
+
+
     var kid = "<?php echo $kid; ?>";
     function GetNewResource(id) {
         image = document.getElementById('PageImage')
@@ -2054,16 +2072,59 @@
             url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/" + id,
             type: 'GET',
             success: function (res) {
-                //document.getElementById('PageImage').src = res;
+
                 res = JSON.parse(res);
+                console.log(res);
                 kid = res['kid'];
+                kids = [];
+
+
+                // display obervatoins that apply to the selected page
+                var cnt=0;
+                var pageNum=1;
+                $(".level-content #Subject_Of_Observation tbody").each(function(){
+                  var page = $(this).find(".metadataEdit").first();
+                  page = page.find('*[data-control="associator"]').html();
+                  page = page.replace(/<(?:.|\n)*?>/gm, '');
+                  cnt++;
+                  if(page == kid){
+
+                    $(".soo-click"+cnt).html(pageNum);
+                    pageNum++;
+                    $(".soo-click"+cnt).parent().css({display:"block"});
+                    $(".soo-click"+cnt).trigger("click");
+
+                  }
+                  else
+                    $(".soo-click"+cnt).parent().css({display:"none"});
+
+
+                });
+                if(pageNum == 1){
+                  $(".level-content #Subject_Of_Observation tbody .metadataEdit").each(function(){
+                    page = $(this).css("display","none");
+                  });
+                }
+                else {
+                  $(".level-content #Subject_Of_Observation tbody .metadataEdit").each(function(){
+                    page = $(this).attr("style","");
+                  });
+                }
+
+                // for(var val in kids){
+                //   if(kids[val] == kid){
+                //     $("#soo-"+val).trigger("click");
+                //   }
+                // }
+
                 document.getElementById('PageImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
 				console.log(document.getElementById('PageImage').src )
 				document.getElementById('fullscreenImage').src ="<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
             }
-			
+
         });
     }
+
 </script>
 
 <script>
@@ -2588,7 +2649,7 @@
 		else{
 			$('.resources-annotate-icon').attr('src',"../img/AnnotationsOff.svg")
 		}
-		
+
         if (showAnnotations) {
             $(".canvas").hide();
             showAnnotations = false;
@@ -3203,18 +3264,18 @@
 									console.log("In the 204 status")
 									GetDetails();
 									DrawBoxes(kid);
-									
+
 								},
 								403: function () {
 									alert("You don't have permission to delete this annotation");
 								}
 							}
 						})
-						
+
 					});
 
                 });
-				
+
                 $(".trashTranscript").click(function () {
 					console.log("Delete clicked")
 					console.log("delete menu should pop up")
@@ -3234,14 +3295,14 @@
 									console.log("In the 204 status")
 									GetDetails();
 									DrawBoxes(kid);
-									
+
 								},
 								403: function () {
 									alert("You don't have permission to delete this annotation");
 								}
 							}
 						})
-						
+
 					});
 //                    $.ajax({
 //                        url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
@@ -3720,7 +3781,7 @@
                                                     '<select id="p123c135" class="kcmtc_curritems fullsizemultitext" name="p123c135[]" multiple="multiple" size="5">';
                                                         if( meta_value_before != '' ){
                                                             var valueArray = meta_value_before.split("\n");
-                                                            valueArray.pop(); //remove the trailing '' 
+                                                            valueArray.pop(); //remove the trailing ''
                                                             valueArray.forEach(function (tempdata) {
                                                                 html += '<option class="multi_input_option" value="'+ tempdata +'" selected>'+ tempdata +'</option>';
                                                             });
@@ -3960,7 +4021,7 @@
         //console.log("clicked thingy");
         //console.log(e);
         $('.metadataEdit').css('cursor', 'default');
-        if( e.toElement.getAttribute("class") == 'save-btn' ){
+        if( e.target.getAttribute("class") == 'save-btn' ){
             //console.log("level tab save btn click");
              e.stopPropagation();
             if (metadataIsSelected == 1) {
@@ -4018,7 +4079,7 @@
             }
             return;
         }
-        if( e.toElement.getAttribute("aria-expanded") == 'true' ){
+        if( e.target.getAttribute("aria-expanded") == 'true' ){
             //console.log("already expanded");
             return;
         }
@@ -4174,7 +4235,7 @@
                 $item.animate(anim, "fast");
             }
         });
-        
+
         $('#button-left').click(function(event){
             event.preventDefault();
 			console.log(index)
@@ -4191,7 +4252,7 @@
                 $item.animate(anim, "fast");
             }
         });
-        
+
         $('#prev-resource').click(function(event){
             event.preventDefault();
             if(current > 0){
@@ -4220,14 +4281,14 @@
 //				console.log('previous image should appear');
             }
         });
-        
+
         $('#next-resource').click(function(event){
             event.preventDefault();
             if(current < keys.length-1){
 				$('.numberOverResources').removeClass('selectedResource');
                 $pics[current].style.borderWidth = "0px";
 				$selected[current].style.background =""
-                current++; 
+                current++;
                 $pics[current].style.borderWidth = "5px";
 //				$selected[current].style.background ="#0094bc"
 				$selected[current].className += ' selectedResource';
@@ -4265,14 +4326,14 @@
 					if (current > 0){
 						$('.expandedArrowBoxLeft').css('display','block');
 					}
-					
+
 					$('.expandedArrowBoxRight').css('display','none');
 				}
 				else{
 					 if(current < keys.length-1){
 						 $('.expandedArrowBoxRight').css('display','block');
 					 }
-					
+
 					$('.expandedArrowBoxLeft').css('display','none');
 				}
 			}
@@ -4292,9 +4353,9 @@
 					$('.other-resources').each( function () {
 						if($(this).find('.numberOverResources').hasClass('selectedResource')){
 							$(this).trigger('click');
-							
+
 						}
-						
+
 					});
 					$(".fullscreenImage").attr('src',"<?php echo $kora_url; ?>" + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
 				}
@@ -4302,13 +4363,13 @@
 			}
 
 			function nextImage(){
-				
+
 				event.preventDefault();
 				if(current < keys.length-1){
 					$('.numberOverResources').removeClass('selectedResource');
 					$pics[current].style.borderWidth = "0px";
 					$selected[current].style.background =""
-					current++; 
+					current++;
 					$pics[current].style.borderWidth = "5px";
 					$selected[current].style.background ="#0094bc"
 					$selected[current].className += ' selectedResource';
@@ -4317,7 +4378,7 @@
 						if($(this).find('.numberOverResources').hasClass('selectedResource')){
 							$(this).trigger('click');
 						}
-						
+
 					});
 //
 					$(".fullscreenImage").attr('src',"<?php echo $kora_url; ?>" + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
@@ -4351,65 +4412,71 @@
             var zoom;
             if(zoomrange.value < 10){
                 zoom = zoomrange.value;
-                zoom = Number(zoom) + Number(1); 
+                zoom = Number(zoom) + Number(1);
                 zoomrange.value = zoom;
                 zoomratio = 10/(11-zoom);
                 canvas.style.transform = "scale(" + zoomratio + ")";
                 image.style.transform = "scale(" + zoomratio + ")";
             }
-            
+
         });
-        
+
         $('#zoom-range').click(function(event){
             event.preventDefault();
             var zoomrange = document.getElementById("zoom-range");
             var canvas = $('.canvas');
             var image = document.getElementById("PageImage");
             var zoom;
-            
+
             zoom = zoomrange.value;
-            
+
             if(oldzoom > zoom){
                 image.style.left = "0px";
                 image.style.top = "0px";
             }
-            
+
             oldzoom = zoom;
             zoomratio = 10/(11-zoom);
             canvas.css("transform" , "scale(" + zoomratio + ")");
             image.style.transform = "scale(" + zoomratio + ")";
-            
+
         });
-        
+
         var jq = document.createElement('script');
         jq.src = "//code.jquery.com/ui/1.11.4/jquery-ui.js";
         document.querySelector('head').appendChild(jq);
-        
+
         jq.onload = drag;
-        
+
         function drag(){
             $("#ImageWrap").draggable();
             //$("#canvas").draggable({
             //handle: $('#ImageWrap')
             //});
         }
-        
+
     });
 </script>
 
 <script>
+function setMeta(var kid){
+  console.log("hello");
+}
+
+
     var kid = "<?php echo $kid; ?>";
     function GetNewResource(id) { //called when it gets a new page
+
         getKeywords();
         image = document.getElementById('PageImage')
         image.src = '../img/arcs-preloader.gif';
-		image.style.margin = 'auto';
-		image.style.left = '0';
-		image.style.right = '0';
-		image.style.top = '0';
-		image.style.bottom = '0';
-		image.style.position= 'absolute';
-		
+    		image.style.margin = 'auto';
+    		image.style.left = '0';
+    		image.style.right = '0';
+    		image.style.top = '0';
+    		image.style.bottom = '0';
+    		image.style.position= 'absolute';
+
 //        image.style.height = '100%';
 //        image.style.width = '100%';
         setTimeout(function () {
@@ -4421,6 +4488,7 @@
                 //document.getElementById('PageImage').src = res;
                 res = JSON.parse(res);
                 kid = res['kid'];
+                setMeta(res['kid']);
                 document.getElementById('PageImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
             }
         });
@@ -4551,7 +4619,7 @@
             });
         }
     });
-	
+
 //	$('.resources-annotate-icon').click(function(){
 //		if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg"){
 //			$('.resources-annotate-icon').attr('src') = "../img/annotationsProfile.svg"
@@ -4564,14 +4632,21 @@
 <script>
 //resource nav
 	var zoomOption = 1;
-	
+
 	$('.other-resources').click(function(){
+    console.log("dlkajflkadf");
 		$('.numberOverResources').css("background", '');
 		$('.numberOverResources').removeClass('selectedResource');
 		$(this).find('.numberOverResources').addClass('selectedResource');
-//		$('#fullscreenImage').attr('src', $('#PageImage').attr('src'));
-	});
+    console.log($(this).id);
+    console.log("hello");
 
+///$('#fullscreenImage').attr('src', $('#PageImage').attr('src'));
+	});
+  function swapMeta(var kid){
+
+
+  }
 	var angle = 0
 	var className;
 	$('.resources-rotate-icon').click(function(){
@@ -4582,7 +4657,7 @@
 		console.log(className);
 		$('#ImageWrap').css('transform',className)
 	});
-	
+
 	$('img.deleteModalClose').click(function(){
 		console.log("Close delete box");
 		$('.deleteWrap').css('display','none');
@@ -4609,9 +4684,9 @@
 	})
 	$('.resources-fullscreen-icon').click(setExpand);
 	$('.fullscreenInner').draggable();
-	
+
 	$('.fullscreenInner').bind('wheel',function(e){
-		
+
 		if (zoomOption < 1.25 || zoomOption >.7 )
 			if(e.originalEvent.wheelDelta /120 > 0) {
 				if(zoomOption >1.2)
@@ -4628,7 +4703,7 @@
 				$('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
 			}
 	})
-	
+
 	function setExpand(){
 		 var imageSrc = $("#PageImage").attr('src');
 		 console.log(imageSrc);
@@ -4642,5 +4717,5 @@
 		});
 	 }
 
-	
+
 </script>
