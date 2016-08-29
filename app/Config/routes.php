@@ -31,6 +31,8 @@
     Router::connect("/projects/single_project/*",
         array('controller' => 'projects', 'action' => 'single_project')
     );
+
+
     Router::connect('/projects',
         array('controller' => 'projects', 'action' => 'single_project', 'single_project')
     );
