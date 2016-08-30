@@ -17,6 +17,14 @@ var JSON_KEYS = <?php echo json_encode(array_keys($pages)); ?>;
 var LEN = "<?php $length = count($pages); echo "$length";?>";
 </script>
 
+<?= $this->Html->script("views/viewer/Metadata/flag.js")?>
+<?= $this->Html->script("views/viewer/Metadata/accordion.js")?>
+<?= $this->Html->script("views/viewer/Metadata/collection.js")?>
+<?= $this->Html->script("views/viewer/Metadata/details.js")?>
+<?= $this->Html->script("views/viewer/Metadata/resources.js")?>
+<?= $this->Html->script("views/viewer/Metadata/newResource.js")?>
+
+
 <div class="viewers-container">
 
     <div class="modalBackground">
