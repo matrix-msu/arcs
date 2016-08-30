@@ -5,6 +5,18 @@
 <pre><?php var_dump($surveys); ?></pre -->
 
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+<script>
+//PAGE GLOBALS
+var resourceKid = "<?php echo $resource['kid']; ?>";
+var ADMIN = "<?php echo $admin ?>";
+var kora_url = "<?php echo $kora_url ?>";
+// preloader image and images
+var kid = "<?php echo $kid; ?>"; // needs to stay
+var resourceName = "<?php echo $resource['Resource Identifier']; ?>";
+var JSON_KEYS = <?php echo json_encode(array_keys($pages)); ?>;
+var LEN = "<?php $length = count($pages); echo "$length";?>";
+</script>
+
 <div class="viewers-container">
 
     <div class="modalBackground">
@@ -2013,193 +2025,11 @@
 </div>
 </div>
 
-<!-- Give the resource array to the client-side code -->
-<script>
-    $(function () {
-        $("#tabs").tabs();
-        $(document).ready(function(){
-          var cnt = 1;
-          $(".soo").each(function(){
-            var display = $(this).css("display");
-            if(display == "none"){
-              $(".soo-click"+cnt).parent().css({display:"none"});
-            }
-
-            cnt++;
-          });
-
-        });
-
-    });
-
-    $(function () {
-        $(".accordion").accordion({
-            heightStyle: "fill"
-        });
-    });
-
-    $('.metadata-accordion').height($('#viewer-window').height() + 40);
-
-    $(window).resize(function () {
-        $('.metadata-accordion').height($('#viewer-window').height());
-    });
-
-    $(function () {
-        $("#soo").tabs();
-    });
-    $(function () {
-        $(".survey-accordion").accordion({
-            heightStyle: "content"
-        });
-    });
-
-</script>
-
-<script>
-    // preloader image and images
 
 
 
-    var kid = "<?php echo $kid; ?>";
-    function GetNewResource(id) {
-        image = document.getElementById('PageImage')
-        image.src = '../img/arcs-preloader.gif';
-        //image.style.height = '100%';
-        //image.style.width = '100%';
-        setTimeout(function () {
-        }, 10000);
-        return $.ajax({
-            url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/" + id,
-            type: 'GET',
-            success: function (res) {
-
-                res = JSON.parse(res);
-                console.log(res);
-                kid = res['kid'];
-                kids = [];
 
 
-                // display obervatoins that apply to the selected page
-                var cnt=0;
-                var pageNum=1;
-                $(".level-content #Subject_Of_Observation tbody").each(function(){
-                  var page = $(this).find(".metadataEdit").first();
-                  page = page.find('*[data-control="associator"]').html();
-                  page = page.replace(/<(?:.|\n)*?>/gm, '');
-                  cnt++;
-                  if(page == kid){
-
-                    $(".soo-click"+cnt).html(pageNum);
-                    pageNum++;
-                    $(".soo-click"+cnt).parent().css({display:"block"});
-                    $(".soo-click"+cnt).trigger("click");
-
-                  }
-                  else
-                    $(".soo-click"+cnt).parent().css({display:"none"});
-
-
-                });
-                if(pageNum == 1){
-                  $(".level-content #Subject_Of_Observation tbody .metadataEdit").each(function(){
-                    page = $(this).css("display","none");
-                  });
-                }
-                else {
-                  $(".level-content #Subject_Of_Observation tbody .metadataEdit").each(function(){
-                    page = $(this).attr("style","");
-                  });
-                }
-
-                // for(var val in kids){
-                //   if(kids[val] == kid){
-                //     $("#soo-"+val).trigger("click");
-                //   }
-                // }
-
-                document.getElementById('PageImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
-				console.log(document.getElementById('PageImage').src )
-				document.getElementById('fullscreenImage').src ="<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
-            }
-
-        });
-    }
-
-</script>
-
-<script>
-    // flag
-    $(function () {
-        $("#flag").click(function () {
-            $(".modalBackground").show();
-        });
-
-        $(".modalClose").click(function () {
-            $(".modalBackground").hide();
-            $(".flagSuccess").hide();
-            $("#flagTarget").hide();
-            $("#flagReason").val('');
-            $("#flagExplanation").val('');
-            $("#flagTarget").val('');
-            $("#flagAnnotation_id").val('');
-        });
-
-        $("#flagForm").submit(function (event) {
-
-            // Stop form from submitting normally
-            event.preventDefault();
-
-            $(".flagSuccess").hide();
-
-            if ($("#flagReason").val() == '') {
-                $(".reasonError").show();
-            } else {
-                $(".reasonError").hide();
-            }
-
-            if ($("#flagExplanation").val() == '') {
-                $(".explanationError").show();
-            } else {
-                $(".explanationError").hide();
-            }
-
-            if ($("#flagTarget").val() == '' && $("#flagTarget").is(":visible")) {
-                $(".targetError").show();
-            } else {
-                $(".targetError").hide();
-            }
-
-            if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && (($("#flagTarget").val() != '' && $("#flagTarget").is(":visible")) || !$("#flagTarget").is(":visible"))) {
-                var formdata = {
-                    page_kid: kid,
-                    resource_kid: "<?php echo $resource['kid']; ?>",
-                    resource_name: "<?php echo $resource['Resource Identifier']; ?>",
-                    reason: $("#flagReason").val(),
-                    annotation_target: $("#flagTarget").val(),
-                    annotation_id: $("#flagAnnotation_id").val(),
-                    explanation: $("#flagExplanation").val(),
-                    status: "pending"
-                };
-
-                $.ajax({
-                    url: "<?php echo Router::url('/', true); ?>resources/flags/add",
-                    type: "POST",
-                    data: formdata,
-                    statusCode: {
-                        201: function () {
-                            $("#flagReason").val('');
-                            $("#flagExplanation").val('');
-                            $("#flagTarget").val('');
-                            $(".flagSuccess").show();
-                            $("#flagAnnotation_id").val('');
-                        }
-                    }
-
-                });
-            }
-        });
-    });
-</script>
 
 <script>
     //export all schemes and jpgs
@@ -2262,7 +2092,7 @@
 
         //go to php for the pictures and zipping
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>resources/export",
+            url: arcs.baseURL + "resources/export",
             type: "POST",
             data: {'xmls': xmlArray, 'picUrls': pageUrls},
             statusCode: {
@@ -2398,245 +2228,10 @@
 </script>
 <pre id="preview"></pre>
 
-<script>
-    // collection
-    $("#collection-modal-btn").click(function () {
-        $(".collectionModalBackground").show();
-    });
 
-    $(".modalClose").click(function () {
-        $(".collectionModalBackground").hide();
-        $("#collectionModal").show();
-        $("#addedCollectionModal").hide();
-        var retunselect = unselect(null);
-        collectionList();
-    });
-    var collectionArray = [];
-    function collectionList() {
-        //console.log("collectionList");
-        collectionArray = [];
-        $.ajax({
-            url: arcs.baseURL + "collections/titlesAndIds",
-            type: "get",
-            //data: "",
-            success: function (data) {
-                //console.log("collectionlist ajax success");
-                //console.log(data);
-
-                data.forEach(function (tempdata) {
-                    var temparray = $.map(tempdata, function(value, index) {
-                        return [value];
-                    });
-                    collectionArray.push(temparray);
-                })
-
-                collectionsSearch();
-
-                //console.log("finished the ajax");
-                //console.log(collectionArray);
-            }
-        });
-    }
-
-    var unselect = function(trigger){
-        console.log("unselect");
-        if(trigger==null){
-            trigger=true
-        }
-        this.$(".result").removeClass("selected");
-        this.$(".select-button").removeClass("de-select");
-        this.$(".select-button, #toggle-select").html("SELECT");
-        this.$("#deselect-all").attr({id:"select-all"});
-        this.$(".checkedboxes").prop("checked", false);
-        this.$("#collectionTitle").val('');
-        this.$(".collectionTabSearch").trigger("click");
-        collectionList();
-        checkSearchSubmitBtn();
-        //collectionsSearch();
-        //if(trigger){
-          //  return arcs.bus.trigger("selection")
-        //}
-    }
-
-    var isAnyChecked = 0;
-    var lastCheckedId = '';
-    function checkSearchSubmitBtn() {
-        // Hide add to collection button in collection modal when no collections are selected
-        var checkboxes = $("#collectionSearchObjects > input");
-        var submitButt = $(".collectionSearchSubmit");
-        //console.log(checkboxes);
-        //console.log("here");
-        //console.log(this);
-
-        if(checkboxes.is(":checked")) {
-            submitButt.show();
-            isAnyChecked = 1;
-        }
-        else {
-            submitButt.hide();
-            isAnyChecked = 0;
-        }
-    }
-
-    function collectionsSearch() {
-        var query = "";
-        if( $(".collectionSearchBar").hasClass("first") ){
-            query = "";
-            $(".collectionSearchBar").removeClass("first");
-        }else {
-            query = $(".collectionSearchBar").val();
-        }
-
-        // only put collections in between the div if they include the query.
-        // I.E. "" is in every collection title and user_name
-        var populateCheckboxes = "<hr>";
-        for (var i = 0; i < collectionArray.length; i++) {
-            if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
-                    (collectionArray[i][2].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
-
-                populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='item-" + i + "' id='item-" + i + "' value='" + collectionArray[i][1] + "' />"
-                        + "<label for='item-" + i + "'><div style='float:left'>" + collectionArray[i][0] + " </div><div style='float:right'>" + collectionArray[i][2]+ "</div></label><br />";
-            }
-        }
-        //console.log(populateCheckboxes);
-        $("#collectionSearchObjects").html(populateCheckboxes);
-
-        var checkboxes = $("#collectionSearchObjects > input");
-        checkboxes.click(function() {
-            //console.log('clicked check here');
-            //console.log(this);
-            if(isAnyChecked == 1){
-               $('#'+lastCheckedId).prop("checked", false);
-            }
-            lastCheckedId = $(this).attr('id');
-            checkSearchSubmitBtn();
-        });
-        $('#collectionTitle').bind('input propertychange', function() {
-              if(this.value != ""){
-                $(".collectionNewSubmit").show();
-                //console.log('text value not null');
-              }else{
-                $(".collectionNewSubmit").hide();
-              }
-        });
-    }
-
-    $(".viewCollection").click(function () {
-        console.log("lastcheckedid");
-        console.log(lastCheckedId);
-        window.location.href = "<?php echo Router::url('/', true); ?>collections?"+lastCheckedId.substr(5);
-    });
-    $(".backToSearch").click(function () {
-        $(".modalClose").trigger("click");
-    });
-
-    $(".collectionNewSubmit").click(function () {
-        // creates a single, new collection entry based on the resource it is viewing
-        console.log("collectionNewSubmit");
-        var formdata = {
-            title: $('#collectionTitle').val(),
-            resource_kid: "<?php echo $resource['kid']; ?>",
-            description: "",
-            public: 1
-        };
-
-        $.ajax({
-            url: "<?php echo Router::url('/', true); ?>collections/add",
-            type: "POST",
-            data: formdata,
-            statusCode: {
-                201: function () {
-                    console.log("Add to Collection Success");
-                    //window.location.reload();
-                    //var text = $("label[for="+lastCheckedId+"]").children(":first").text();
-                    $("#collectionName").text($('#collectionTitle').val());
-                    $("#collectionModal").hide();
-                    $("#addedCollectionModal").show();
-                    getCollections();
-                },
-                400: function () {
-                    console.log("Bad Request");
-                    $(".collectionModalBackground").hide();
-                },
-                405: function () {
-                    console.log("Method Not Allowed");
-                    $(".collectionModalBackground").hide();
-                }
-            }
-        });
-
-    });
-
-    $(".collectionSearchSubmit").click(function () {
-        // creates 1+ collection entries based on the resource (IE adds the resource to old collections)
-
-        var resource_kid = "<?php echo $resource['kid']; ?>";
-
-        $('#collectionSearchObjects input:checked').each(function () {
-            var formdata = {
-                collection: $(this).val(),
-                resource_kid: resource_kid
-            }
-
-            // TODO: sometimes returns an error but it will always upload to the sql database
-            $.ajax({
-                url: "<?php echo Router::url('/', true); ?>collections/addToExisting",
-                type: "POST",
-                data: formdata,
-                statusCode: {
-                    201: function (data) {
-                        //console.log("Success");
-                        //console.log(data);
-                        var text = $("label[for="+lastCheckedId+"]").children(":first").text();
-                        $("#collectionName").text(text);
-                        $("#collectionModal").hide();
-                        $("#addedCollectionModal").show();
-                        getCollections();
-                    },
-                    400: function () {
-                        console.log("Bad Request");
-                    },
-                    405: function () {
-                        console.log("Method Not Allowed");
-                    }
-                }
-            });
-        });
-        //$(".collectionModalBackground").hide();
-    });
-
-    // collection tabs
-    $(".collectionTabSearch").click(function () {
-        $(".collectionSearchContainer").show();
-        $(".collectionNewContainer").hide();
-        $(".collectionTabSearch").addClass("activeTab");
-        $(".collectionTabNew").removeClass("activeTab");
-    });
-
-    $(".collectionTabNew").click(function () {
-        $(".collectionNewContainer").show();
-        $(".collectionSearchContainer").hide();
-        $(".collectionTabNew").addClass("activeTab");
-        $(".collectionTabSearch").removeClass("activeTab");
-    });
-
-    // run on page load
-    $(".collectionNewContainer").hide();
-    collectionList();
-
-    //<?php echo "var collectionArray = ".$collections.";";?>
-    //console.log("collections-here");
-    //console.log(collectionArray);
-
-    //var collection_members = [];
-    //var collections = [];
-    //collectionArray.forEach(function (element) {
-      //  collections.push(element['Collection']);
-    //});
-</script>
 
 <script>
-    var isAdmin = "<?php echo $admin; ?>";
+    var isAdmin = ADMIN;
 
     // Annotations
     var showAnnotations = true;
@@ -2771,7 +2366,7 @@
                     if (showForm) $(".annotateModalBackground").show();
                     else {
                         $.ajax({
-                            url: "<?php echo Router::url('/', true); ?>api/annotations/"+id+".json",
+                            url: arcs.baseURL + "api/annotations/"+id+".json",
                             type: "POST",
                             data: {
                                 x1: annotateData.x1,
@@ -2797,15 +2392,18 @@
 
     //Load boxes
     function DrawBoxes(pageKid) {
+        console.log("draw");
         $(gen_box).remove();
         $(".gen_box").remove();
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/annotations/findall.json",
+            url: arcs.baseURL + "api/annotations/findall.json",
             type: "POST",
             data: {
                 id: pageKid
             },
             success: function (data) {
+                console.log(data);
+
                 $.each(data, function (k, v) {
                     if (v.x1) {
                         $(".canvas").append('<div class="gen_box" id="' + v.id + '"></div>');
@@ -2830,7 +2428,7 @@
                         $("#deleteAnnotation_" + v.id).click(function () {
                             var box = $(this).parent();
                             $.ajax({
-                                url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+                                url: arcs.baseURL + "api/annotations/" + $(this).parent().attr("id") + ".json",
                                 type: "DELETE",
                                 statusCode: {
                                     204: function () {
@@ -2870,7 +2468,7 @@
     // Annotation popup on the canvas
     function ShowAnnotation(id) {
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/annotations/" + id + ".json",
+            url: arcs.baseURL + "api/annotations/" + id + ".json",
             type: "GET",
             success: function (data) {
                 $(".annotationPopup").remove();
@@ -2881,7 +2479,7 @@
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
                         var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
                         $.ajax({
-                            url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
+                            url: arcs.baseURL + "resources/search?q=" + encodeURIComponent(
                                     "kid,=," + paramKid) + "&sid=" + paramSid,
                             type: "POST",
                             success: function (page) {
@@ -2910,7 +2508,7 @@
     function ShowDetailsAnnotation(t) {
         var id  = t.parent().attr('id');
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/annotations/" + id + ".json",
+            url: arcs.baseURL + "api/annotations/" + id + ".json",
             type: "GET",
             success: function (data) {
                 $(".annotationPopup").remove();
@@ -2921,7 +2519,7 @@
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
                         var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php echo RESOURCE_SID;?>" : "<?php echo PAGES_SID;?>";
                         $.ajax({
-                            url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
+                            url: arcs.baseURL + "resources/search?q=" + encodeURIComponent(
                                     "kid,=," + paramKid) + "&sid=" + paramSid,
                             type: "POST",
                             success: function (page) {
@@ -2951,7 +2549,7 @@
     //$(".annotateSearchForm").keyup(function (event) {
         $(".resultsContainer").empty();
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent(
+            url: arcs.baseURL + "resources/search?q=" + encodeURIComponent(
                     "(Type,like," + $(".annotateSearch").val()
                     + "),or,(Title,like," + $(".annotateSearch").val()
                     + "),or,(Resource Identifier,like," + $(".annotateSearch").val()
@@ -2991,8 +2589,8 @@
 
                 //Get related pages
                 $.ajax({
-                    //url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
-                    url: "<?php echo Router::url('/', true); ?>resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    //url: arcs.baseURL + "resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
+                    url: arcs.baseURL + "resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php echo PAGES_SID;?>",
                     type: "POST",
                     success: function (pages) {
                         $.each(pages.results, function (k, v) {
@@ -3032,7 +2630,7 @@
                                     $(this).addClass("selectedRelation");
                                     selected = true;
                                     annotateData.page_kid = kid;
-                                    annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
+                                    annotateData.resource_kid = resourceKid;
                                     annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
                                     annotateData.relation_resource_name = v['Resource Identifier'];
                                     annotateData.relation_resource_kid = v['Resource Associator'][0];
@@ -3071,12 +2669,12 @@
 
     $(".annotateSubmit").click(function () {
         annotateData.page_kid = kid;
-        annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
+        annotateData.resource_kid = resourceKid;
         annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
 
         //First relation
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+            url: arcs.baseURL + "api/annotations.json",
             type: "POST",
             data: annotateData,
             success: function (data) {
@@ -3092,7 +2690,7 @@
         if (annotateData.relation_resource_kid != "") {
             //Backwards relation
             $.ajax({
-                url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+                url: arcs.baseURL + "api/annotations.json",
                 type: "POST",
                 data: {
                     incoming: 'true',
@@ -3187,7 +2785,7 @@
         $(".transcript_display").remove();
         $(".annotation_display").remove();
         $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/annotations/findall.json",
+            url: arcs.baseURL + "api/annotations/findall.json",
             type: "POST",
             data: {
                 id: kid
@@ -3223,7 +2821,7 @@
                         }
                         else {
                             $.ajax({
-                                url: "<?php echo Router::url('/', true); ?>api/annotations/" + value.id + ".json",
+                                url: arcs.baseURL + "api/annotations/" + value.id + ".json",
                                 type: "POST",
                                 data: {
                                     x1: null,
@@ -3257,7 +2855,7 @@
 						console.log(paramater)
 						$('.deleteWrap').css('display','none');
 						$.ajax({
-							url: "<?php echo Router::url('/', true); ?>api/annotations/" + paramater + ".json",
+							url: arcs.baseURL + "api/annotations/" + paramater + ".json",
 							type: "DELETE",
 							statusCode: {
 								204: function () {
@@ -3288,7 +2886,7 @@
 						console.log(paramater)
 						$('.deleteWrap').css('display','none');
 						$.ajax({
-							url: "<?php echo Router::url('/', true); ?>api/annotations/" + paramater + ".json",
+							url: arcs.baseURL + "api/annotations/" + paramater + ".json",
 							type: "DELETE",
 							statusCode: {
 								204: function () {
@@ -3305,7 +2903,7 @@
 
 					});
 //                    $.ajax({
-//                        url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+//                        url: arcs.baseURL + "api/annotations/" + $(this).parent().attr("id") + ".json",
 //                        type: "DELETE",
 //                        statusCode: {
 //                            204: function () {
@@ -3323,7 +2921,7 @@
 //					console.log('delete annotations')
 //					console.log($(this).parent().attr("id"))
 //					$.ajax({
-//						url: "<?php echo Router::url('/', true); ?>api/annotations/" + $(this).parent().attr("id") + ".json",
+//						url: arcs.baseURL + "api/annotations/" + $(this).parent().attr("id") + ".json",
 //						type: "DELETE",
 //						statusCode: {
 //							204: function () {
@@ -3359,7 +2957,7 @@
             url: arcs.baseURL + "collections/memberships",
             type: "get",
             data: {
-                id: "<?php echo $resource['kid']; ?>"
+                id: resourceKid
             },
             success: function (data) {
                 //console.log("memberships here");
@@ -3473,7 +3071,7 @@
                             url: arcs.baseURL + "keywords/add",
                             type: "POST",
                             data: {
-                                //resource_id: "<?php echo $resource['kid']; ?>",
+                                //resource_id: resourceKid,
                                 page_kid: pagesArray[parseInt(pageIndex)].kid,
                                 project_kid: "<?php echo $project['kid']; ?>",
                                 keyword: id
@@ -3561,7 +3159,7 @@
                         url: arcs.baseURL + "keywords/add",
                         type: "POST",
                         data: {
-                            //resource_id: "<?php echo $resource['kid']; ?>",
+                            //resource_id: resourceKid,
                             page_kid: pagesArray[parseInt(pageIndex)].kid,
                             project_kid: "<?php echo $project['kid']; ?>",
                             keyword: id
@@ -3597,7 +3195,7 @@
                 break;
             case "Archival_Object":
                 meta_scheme_id = "<?php echo RESOURCE_SID; ?>";
-                meta_resource_kid = "<?php echo $resource['kid']; ?>";
+                meta_resource_kid = resourceKid;
                 break;
             case "Subject_Of_Observation":
                 meta_scheme_id = "<?php echo SUBJECT_SID; ?>";
@@ -3608,7 +3206,7 @@
             url: arcs.baseURL + "metadataedits/add",
             type: "post",
             data: {
-                resource_kid: "<?php echo $resource['kid']; ?>",
+                resource_kid: resourceKid,
                 resource_name: "<?php echo $resource['Title']; ?>",
                 scheme_id: meta_scheme_id,
                 //scheme_name: meta_scheme_name, //no longer used
@@ -4139,7 +3737,7 @@
         var sortedIDs = $(".content_transcripts").sortable("toArray");
         $.each(sortedIDs, function(k, v) {
             $.ajax({
-                url: "<?php echo Router::url('/', true); ?>api/annotations/"+ v +".json",
+                url: arcs.baseURL + "api/annotations/"+ v +".json",
                 type: "POST",
                 data: {
                     order_transcript: k
@@ -4155,14 +3753,14 @@
     $(".newTranscriptionForm").submit(function(e) {
         e.preventDefault();
         annotateData.page_kid = kid;
-        annotateData.resource_kid = "<?php echo $resource['kid']; ?>";
+        annotateData.resource_kid = resourceKid;
         annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
         annotateData.transcript = $(".transcriptionTextarea").val();
         annotateData.order_transcript = 1000000;
 
         if (annotateData.transcript.length > 0)
             $.ajax({
-                url: "<?php echo Router::url('/', true); ?>api/annotations.json",
+                url: arcs.baseURL + "api/annotations.json",
                 type: "POST",
                 data: annotateData,
                 success: function () {
@@ -4173,549 +3771,5 @@
                 }
             });
     });
-
-</script>
-
-<script>
-    // other resources
-    $(document).ready(function () {
-        var $item = $('#other-resources a'),
-                $pics = $('#other-resources a img'),
-                index = 0, //Starting index
-                current = 0,
-				$selected = $('#other-resources a .numberOverResources'),
-                keys = <?php echo json_encode(array_keys($pages)); ?>,
-        visible = 2.96969696969696, //worked better than 3
-        shift = visible * 220,
-        anim = {},
-        value = "",
-        oldzoom = 1,
-        endIndex =
-        <?php $length = count($pages); echo "$length";?> / visible -1;
-//		if(index == 0){
-//			$('#button-left').css('display', 'none');
-//			$('#other-resources-container').css('width', '90%');
-//		}
-//		else{
-//			$('#button-left').css('display', 'block');
-//		}
-        for(var i=0; i
-        <$pics.length; i++){
-            $pics[i].style.borderColor = "#0094BC";
-            $pics[i].style.borderStyle = "solid";
-            $item[i].onclick = createFunc(i);
-        }
-
-        $pics[0].style.borderWidth = "5px";
-
-        function createFunc(i){
-            return function(event){
-            event.preventDefault();
-            $pics[current].style.borderWidth = "0px";
-            current = i;
-            $pics[current].style.borderWidth = "5px";
-            var kid = keys[current];
-            GetNewResource(kid);
-        }
-        }
-
-        $('#button-right').click(function(event){
-            event.preventDefault();
-			console.log(index);
-            if(index < endIndex ){
-//                if(index == 0){
-//                    $('#button-left').css('display', 'none');
-//                    $('#other-resources-container').css('width', '90%');
-//                }
-                index++;
-                visible = 2.969696969696;
-                shift = visible * 265; //was 220px
-                value = "-=" + shift + "px";
-                anim['left'] = value;
-                $item.animate(anim, "fast");
-            }
-        });
-
-        $('#button-left').click(function(event){
-            event.preventDefault();
-			console.log(index)
-            if(index > 0){
-                index--;
-                if(index == 0){
-                    //$('#button-left').css('display', 'none');
-                    //$('#other-resources-container').css('width', '95%');
-                }
-                visible = 2.969696969696;
-                shift = (visible) * 265;
-                value = "+=" + shift + "px";
-                anim['left'] = value;
-                $item.animate(anim, "fast");
-            }
-        });
-
-        $('#prev-resource').click(function(event){
-            event.preventDefault();
-            if(current > 0){
-				$('.numberOverResources').removeClass('selectedResource');
-                $pics[current].style.borderWidth = "0px";
-				$selected[current].style.background =""
-                current--;
-                $pics[current].style.borderWidth = "5px";
-				$selected[current].style.background ="#0094bc"
-				$selected[current].className += ' selectedResource';
-                var kid = keys[current];
-				console.log("KID: " + kid);
-				console.log("current: "+current);
-				console.log(kid);
-				$('.other-resources').each( function () {
-//					console.log(parseInt($(this).find('.numberOverResources').html()));
-					console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
-					if($(this).find('.numberOverResources').hasClass('selectedResource')){
-						console.log('found the boarder');
-						console.log(parseInt($(this).find('.numberOverResources').html()));
-						$(this).trigger('click');
-					}
-				});
-//                GetNewResource(kid);
-//				$("#PageImage").attr('src',$pics[current].src);
-//				console.log('previous image should appear');
-            }
-        });
-
-        $('#next-resource').click(function(event){
-            event.preventDefault();
-            if(current < keys.length-1){
-				$('.numberOverResources').removeClass('selectedResource');
-                $pics[current].style.borderWidth = "0px";
-				$selected[current].style.background =""
-                current++;
-                $pics[current].style.borderWidth = "5px";
-//				$selected[current].style.background ="#0094bc"
-				$selected[current].className += ' selectedResource';
-                var kid = keys[current];
-				console.log(kid);
-				var nextImg = parseInt($('.other-resources').find('.numberOverResources').html())+1
-				console.log(nextImg);
-				$('.other-resources').each( function () {
-//					console.log(parseInt($(this).find('.numberOverResources').html()));
-					console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
-					if($(this).find('.numberOverResources').hasClass('selectedResource')){
-						console.log('found the boarder');
-						console.log(parseInt($(this).find('.numberOverResources').html()));
-						$(this).trigger('click');
-					}
-				});
-//				console.log($('.other-resources').find('.numberOverResources').html());
-//                GetNewResource(kid);
-//				$("#PageImage").attr('src',$pics[current].src);
-//				console.log('next image should appear');
-            }
-        });
-        	$('.expandedArrowBoxLeft').click(previousImage);
-			$('.expandedArrowBoxRight').click(nextImage);
-			$('.fullscreenInner').mouseover(hoverExpand);
-			$('.fullscreenInner').mouseout(hoverExpandClose);
-
-
-			function hoverExpandClose(){
-				$('.expandedArrowBoxLeft').css('display','none');
-				$('.expandedArrowBoxRight').css('display','none');
-			}
-			function hoverExpand(){
-				if ($('.leftHalf').is(':hover')){
-					if (current > 0){
-						$('.expandedArrowBoxLeft').css('display','block');
-					}
-
-					$('.expandedArrowBoxRight').css('display','none');
-				}
-				else{
-					 if(current < keys.length-1){
-						 $('.expandedArrowBoxRight').css('display','block');
-					 }
-
-					$('.expandedArrowBoxLeft').css('display','none');
-				}
-			}
-			function previousImage(){
-				event.preventDefault();
-				if(current > 0){
-					$('.numberOverResources').removeClass('selectedResource');
-					$pics[current].style.borderWidth = "0px";
-					$selected[current].style.background =""
-					current--;
-					$pics[current].style.borderWidth = "5px";
-					$selected[current].style.background ="#0094bc"
-					$selected[current].className += ' selectedResource';
-					var kid = keys[current];
-					console.log("KID: " + kid);
-					console.log("current: "+current);
-					$('.other-resources').each( function () {
-						if($(this).find('.numberOverResources').hasClass('selectedResource')){
-							$(this).trigger('click');
-
-						}
-
-					});
-					$(".fullscreenImage").attr('src',"<?php echo $kora_url; ?>" + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
-				}
-
-			}
-
-			function nextImage(){
-
-				event.preventDefault();
-				if(current < keys.length-1){
-					$('.numberOverResources').removeClass('selectedResource');
-					$pics[current].style.borderWidth = "0px";
-					$selected[current].style.background =""
-					current++;
-					$pics[current].style.borderWidth = "5px";
-					$selected[current].style.background ="#0094bc"
-					$selected[current].className += ' selectedResource';
-					var kid = keys[current];
-					$('.other-resources').each( function () {
-						if($(this).find('.numberOverResources').hasClass('selectedResource')){
-							$(this).trigger('click');
-						}
-
-					});
-//
-					$(".fullscreenImage").attr('src',"<?php echo $kora_url; ?>" + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
-
-				}
-			}
-        $('#zoom-out').click(function(event){
-            event.preventDefault();
-            var zoomrange = document.getElementById("zoom-range");
-            var image = document.getElementById("PageImage");
-            var canvas = $('.canvas');
-            var wrapper = document.getElementById("ImageWrapper");
-            var zoom, ratio;
-            if(zoomrange.value > 1){
-                zoomrange.value -= 1;
-                zoom = zoomrange.value;
-                zoomratio = 10/(11-zoom);
-                canvas.css("transform" , "scale(" + zoomratio + ")");
-        image.style.transform = "scale(" + zoomratio + ")";
-        image.style.left = "0px";
-        image.style.top = "0px";
-        }
-
-        });
-
-        $('#zoom-in').click(function(event){
-            event.preventDefault();
-            var zoomrange = document.getElementById("zoom-range");
-            var canvas = document.getElementById("canvas");
-            var image = document.getElementById("PageImage");
-            var zoom;
-            if(zoomrange.value < 10){
-                zoom = zoomrange.value;
-                zoom = Number(zoom) + Number(1);
-                zoomrange.value = zoom;
-                zoomratio = 10/(11-zoom);
-                canvas.style.transform = "scale(" + zoomratio + ")";
-                image.style.transform = "scale(" + zoomratio + ")";
-            }
-
-        });
-
-        $('#zoom-range').click(function(event){
-            event.preventDefault();
-            var zoomrange = document.getElementById("zoom-range");
-            var canvas = $('.canvas');
-            var image = document.getElementById("PageImage");
-            var zoom;
-
-            zoom = zoomrange.value;
-
-            if(oldzoom > zoom){
-                image.style.left = "0px";
-                image.style.top = "0px";
-            }
-
-            oldzoom = zoom;
-            zoomratio = 10/(11-zoom);
-            canvas.css("transform" , "scale(" + zoomratio + ")");
-            image.style.transform = "scale(" + zoomratio + ")";
-
-        });
-
-        var jq = document.createElement('script');
-        jq.src = "//code.jquery.com/ui/1.11.4/jquery-ui.js";
-        document.querySelector('head').appendChild(jq);
-
-        jq.onload = drag;
-
-        function drag(){
-            $("#ImageWrap").draggable();
-            //$("#canvas").draggable({
-            //handle: $('#ImageWrap')
-            //});
-        }
-
-    });
-</script>
-
-<script>
-function setMeta(var kid){
-  console.log("hello");
-}
-
-
-    var kid = "<?php echo $kid; ?>";
-    function GetNewResource(id) { //called when it gets a new page
-
-        getKeywords();
-        image = document.getElementById('PageImage')
-        image.src = '../img/arcs-preloader.gif';
-    		image.style.margin = 'auto';
-    		image.style.left = '0';
-    		image.style.right = '0';
-    		image.style.top = '0';
-    		image.style.bottom = '0';
-    		image.style.position= 'absolute';
-
-//        image.style.height = '100%';
-//        image.style.width = '100%';
-        setTimeout(function () {
-        }, 10000);
-        return $.ajax({
-            url: "<?php echo Router::url('/', true); ?>resources/loadNewResource/" + id,
-            type: 'GET',
-            success: function (res) {
-                //document.getElementById('PageImage').src = res;
-                res = JSON.parse(res);
-                kid = res['kid'];
-                setMeta(res['kid']);
-                document.getElementById('PageImage').src = "<?php echo $kora_url; ?>" + res['Image Upload']['localName'];
-            }
-        });
-    }
-
-    var parent;
-
-    function getComments() {
-        $.ajax({
-            url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
-            type: "POST",
-            data: {
-                id: "<?php echo $resource['kid']; ?>"
-            },
-            success: function (data) {
-                $(".commentContainer").empty();
-
-                $.each(data, function (index, comment) {
-                    if (!comment.parent_id) {
-                        $(".commentContainer").append(
-                                "<div class='discussionComment' id='" + comment.id + "'>" +
-                                "<span class='commentName'>" + comment.name + "</span>" +
-                                "<span class='commentDate'>" +
-                                formatDate(comment.created) +
-                                "</span><br><span class='commentBody'>" +
-                                comment.content +
-                                "</span><div class='reply'>Reply</div>" +
-                                "</div>"
-                        );
-                    }
-                });
-
-                $.each(data, function (index, comment) {
-                    if (comment.parent_id) {
-                        $("#" + comment.parent_id).append(
-                                "<div class='discussionReply' id='" + comment.id + "'><span class='replyTo'>" +
-                                "In reply to " + $("#" + comment.parent_id + " > .commentName").html() +
-                                "</span><br><span class='commentName'>" +
-                                comment.name +
-                                "</span><span class='commentDate'>" +
-                                formatDate(comment.created) +
-                                "</span><br><span class='commentBody'>" +
-                                comment.content +
-                                "</span></div>");
-                    }
-                });
-
-                $(".reply").click(function () {
-                    $("#tabs-3").append($(".newReplyForm"));
-                    $(".replyTextArea").val("");
-                    // $(this).parent().append($(".newReplyForm"));
-                    $(".newReplyForm").show();
-                    $(".newReplyForm").removeAttr('style');
-                    $(".newReplyForm").css("display", "inline");
-                    $(".newComment").show();
-                    parent = $(this).parent().attr("id");
-                    $('html, body').animate({
-                        scrollTop: $(".newReplyForm").offset().top - 600
-                    }, 1000);
-                });
-            }
-        });
-    }
-
-    function formatDate(input) {
-        var d = new Date(Date.parse(input.replace(/-/g, "/")));
-        var month = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-        var date = month[d.getMonth()] + "." + d.getDate() + "." + d.getFullYear();
-        return (date);
-    }
-
-    $(".discussion").click(function () {
-        getComments();
-    });
-
-    $(".newComment").click(function () {
-        $("#tabs-3").append($(".newCommentForm"));
-        $(".commentTextArea").val("");
-        $(".newCommentForm").show();
-        $(".newCommentForm").removeAttr('style');
-        $(".newCommentForm").css("display", "inline");
-        $(this).hide();
-        parent = null;
-    });
-
-    $(".closeComment").click(function () {
-        $(".commentTextArea,.replyTextArea").val("");
-        $(".newCommentForm,.newReplyForm").hide();
-        $(".newComment").show();
-    });
-
-    $(".newCommentForm,.newReplyForm").submit(function (e) {
-        e.preventDefault();
-        if ($(".commentTextArea").val() != "") {
-            $.ajax({
-                url: "<?php echo Router::url('/', true); ?>api/comments.json",
-                type: "POST",
-                data: {
-                    resource_kid: "<?php echo $resource['kid']; ?>",
-                    content: $(".commentTextArea").val(),
-                    parent_id: parent
-                },
-                success: function (data) {
-                    $(".commentTextArea").val("");
-                    $("#tabs-3").append($(".newCommentForm,.newReplyForm"));
-                    $(".newCommentForm,.newReplyForm").hide();
-                    $(".newComment").show();
-                    getComments();
-                }
-            });
-        }
-        else if ($(".replyTextArea").val() != "") {
-            $.ajax({
-                url: "<?php echo Router::url('/', true); ?>api/comments.json",
-                type: "POST",
-                data: {
-                    resource_kid: "<?php echo $resource['kid']; ?>",
-                    content: $(".replyTextArea").val(),
-                    parent_id: parent
-                },
-                success: function (data) {
-                    $(".replyTextArea").val("");
-                    $("#tabs-3").append($(".newCommentForm,.newReplyForm"));
-                    $(".newCommentForm,.newReplyForm").hide();
-                    $(".newComment").show();
-                    getComments();
-                }
-            });
-        }
-    });
-
-//	$('.resources-annotate-icon').click(function(){
-//		if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg"){
-//			$('.resources-annotate-icon').attr('src') = "../img/annotationsProfile.svg"
-//		}
-//		else{
-//			$('.resources-annotate-icon').attr('src') = "../img/AnnotationsOff.svg"
-//		}
-//	});
-</script>
-<script>
-//resource nav
-	var zoomOption = 1;
-
-	$('.other-resources').click(function(){
-    console.log("dlkajflkadf");
-		$('.numberOverResources').css("background", '');
-		$('.numberOverResources').removeClass('selectedResource');
-		$(this).find('.numberOverResources').addClass('selectedResource');
-    console.log($(this).id);
-    console.log("hello");
-
-///$('#fullscreenImage').attr('src', $('#PageImage').attr('src'));
-	});
-  function swapMeta(var kid){
-
-
-  }
-	var angle = 0
-	var className;
-	$('.resources-rotate-icon').click(function(){
-		console.log('rotator clicked');
-		angle=(angle+90)%360;
-		console.log(angle);
-		className = 'rotate('+angle+'deg'+')';
-		console.log(className);
-		$('#ImageWrap').css('transform',className)
-	});
-
-	$('img.deleteModalClose').click(function(){
-		console.log("Close delete box");
-		$('.deleteWrap').css('display','none');
-	});
-	$('.deleteCancel').click(function(){
-		console.log("Close delete box");
-		$('.deleteWrap').css('display','none');
-	});
-	$('.fullscreenOverlay').click(function(e){
-		if (e.target !== this && e.target !== $('.fullscreenOuter'))
-			return
-		$('.fullscreenWrap').css('display','none');
-		$('html, body').css({
-			'overflow': 'auto',
-			'height': 'auto'
-		});
-	});
-	$('.fullscreenClose').click(function(){
-		$('.fullscreenWrap').css('display','none');
-		$('html, body').css({
-			'overflow': 'auto',
-			'height': 'auto'
-		});
-	})
-	$('.resources-fullscreen-icon').click(setExpand);
-	$('.fullscreenInner').draggable();
-
-	$('.fullscreenInner').bind('wheel',function(e){
-
-		if (zoomOption < 1.25 || zoomOption >.7 )
-			if(e.originalEvent.wheelDelta /120 > 0) {
-				if(zoomOption >1.2)
-					return
-				console.log('zoom in');
-				zoomOption+=.05
-				$('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
-			}
-			else{
-				if(zoomOption < .75)
-					return
-				console.log('zoom out');
-				zoomOption-=.05
-				$('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
-			}
-	})
-
-	function setExpand(){
-		 var imageSrc = $("#PageImage").attr('src');
-		 console.log(imageSrc);
-		 $(".fullscreenImage").attr('src',imageSrc);
-		 $('.fullscreenWrap').css('display','block');
-		zoomOption=1;
-		$('.fullscreenInner, .fullscreenOuter').css('transform','scale(1)');
-		$('html, body').css({
-			'overflow': 'hidden',
-			'height': '100%'
-		});
-	 }
-
 
 </script>

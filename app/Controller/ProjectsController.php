@@ -8,9 +8,8 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-
-require_once(KORA_LIB . "Project.php");
-use Lib\Kora\Project;
+ require_once(KORA_LIB . "Project.php");
+ use Lib\Kora\Project;
 
 class ProjectsController extends AppController {
     public $name = 'Projects';

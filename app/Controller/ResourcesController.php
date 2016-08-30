@@ -10,6 +10,8 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
+
+
 class ResourcesController extends AppController {
 
     public $name = 'Resources';
@@ -330,6 +332,7 @@ class ResourcesController extends AppController {
                 'admin' => $this->Auth->user('isAdmin') == 1
             ));
 
+
             # On the first request of a particular resource (usually directly
             # after upload), we might prompt the user for additional
             # actions/information. Here we're turning that off for future
@@ -544,6 +547,7 @@ class ResourcesController extends AppController {
         //capture results and map to array
         $page = json_decode(curl_exec($ch), true);
         $p = $page[$id];
+        $p['kora_url'] = KORA_FILES_URI.PID."/".PAGES_SID."/";
 
         //$this->_View->viewVars['kid'] = $p['kid'];
 
