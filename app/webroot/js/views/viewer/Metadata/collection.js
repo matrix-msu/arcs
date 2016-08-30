@@ -231,3 +231,38 @@ collectionList();
 //collectionArray.forEach(function (element) {
   //  collections.push(element['Collection']);
 //});
+getCollections();
+var numCollections = 0;
+
+function getCollections() {
+    $.ajax({
+        url: arcs.baseURL + "collections/memberships",
+        type: "get",
+        data: {
+            id: resourceKid
+        },
+        success: function (data) {
+
+            //console.log("memberships here");
+            //console.log(data);
+            //console.log(data.collections);
+            //console.log(data.collections.length);
+            numCollections = data.collections.length;
+            if (data.collections.length > 0){
+                //document.getElementById("ui-id-50").style.color = "blue";
+                var ctab = document.getElementById("collections_tab");
+                ctab.innerHTML = "COLLECTIONS (" + numCollections + ")";
+                var populateCollections = "<table><tbody>"+
+                    "<tr><td colspan='2'>This resource is a part of the following "+numCollections+" collections...</td></tr>";
+                for (var i = numCollections-1; i >= 0; i--) {
+                    //console.log("got-here1");
+                    var collection = data.collections[i];
+                    populateCollections += "<tr><td style='width:50%'>"+ collection.title +"</td><td>"+ collection.user_name +"</td></tr>";
+                }
+                populateCollections += "</tbody></table>";
+                //console.log(populateCollections);
+                $("#collections_table").html(populateCollections);
+            }
+        }
+    })
+}
