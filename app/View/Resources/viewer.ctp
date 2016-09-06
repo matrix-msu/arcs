@@ -1665,8 +1665,8 @@ var PROJECT_KID = "<?php echo $project['kid']; ?>"
 
                             <!--<div class="metadata-accordion">-->
 
-                                <?php if(count($subject) > 0) { ?>
                                 <ul>
+                                <?php if(count($subject) > 0) { ?>
                                 <?php $count=0; ?>
                                 <?php foreach($subject as $subjects) { $count++; ?>
                                 <li class="soo-li"><a href="#soo-<?php echo $count; ?>" class="soo-click<?= $count ?>  soo-click"><?php echo $count; ?></a></li>
