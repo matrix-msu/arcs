@@ -27,7 +27,7 @@ class ResourcesController extends AppController {
         # are allowed by default.
         $this->Auth->allow(
             'view', 'viewer', 'search', 'comments', 'annotations',
-            'keywords', 'complete', 'zipped', 'download'
+            'keywords', 'complete', 'zipped', 'download', "loadNewResource"
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
