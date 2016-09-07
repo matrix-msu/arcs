@@ -103,7 +103,7 @@ class KeywordsController extends MetaResourcesController {
                     ORDER BY keywords.created;";
         $result = $mysqli->query($sql);
         while($row = mysqli_fetch_assoc($result))
-            $keywords[] = $row{keyword};
+            $keywords[] = $row{'keyword'};
 
         $this->json(201, $keywords);
     }
@@ -137,7 +137,7 @@ class KeywordsController extends MetaResourcesController {
                     LIMIT 10;";
         $result = $mysqli->query($sql);
         while($row = mysqli_fetch_assoc($result))
-            $keywords[] = $row{keyword};
+            $keywords[] = $row{'keyword'};
 
         $this->json(201, $keywords);
     }
@@ -145,7 +145,7 @@ class KeywordsController extends MetaResourcesController {
     /**
      * Get all keywords for a page_kid
      */
-    public function delete() {
+    public function deleteKeyword() {
         if (!$this->request->is('post')) {$this->json(405); throw new MethodNotAllowedException();}
         if (!$this->request->data) {$this->json(400); throw new BadRequestException();}
 

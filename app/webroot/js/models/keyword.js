@@ -14,6 +14,7 @@
       if (this.isNew()) {
         return arcs.baseURL + 'keywords';
       }
+      console.log('get keywords here');
       return arcs.baseURL + ("keywords/" + this.id);
     };
 

@@ -68,7 +68,7 @@ class CollectionsController extends AppController {
     /**
      * Get all collections a resource is a part of
      */
-    public function memberships($id) {
+    public function memberships() {
 
         //handle collections info on the single resource page
         if (isset($this->request->query['id'])){

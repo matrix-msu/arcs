@@ -32,9 +32,9 @@
                         <td><?php echo "hello" ?></td>
                     </tr> -->
 
-        <?php $url = $this->Html->url(array('action' => 'view', $r['Resource']['id']));
+        <!-- ?php $url = $this->Html->url(array('action' => 'view', $r['Resource']['id']));
                               $url = substr($url,1,-10);
-                              $url = KORA_BASE.$url."resource/"?>
+                              $url = KORA_BASE.$url."resource/" ? -->
 
         <div class="profile-collection-list-wrapper">
         <div class="collection-list" id="all-collections">

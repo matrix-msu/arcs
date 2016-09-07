@@ -45,7 +45,7 @@ $(document).ready(function(){
                     var id = $(this).val();
                     if( (id == "" || id == ',') && e.key == 'Backspace' ) { //get the newest keyword and delete it
                         $.ajax({
-                            url: arcs.baseURL + "keywords/delete",
+                            url: arcs.baseURL + "keywords/deleteKeyword",
                             type: "POST",
                             data: {
                                 page_kid: pagesArray[parseInt(pageIndex)].kid,
@@ -108,7 +108,7 @@ $(document).ready(function(){
                     //console.log( $(e.target).prev().html() );
                     pageIndex = $(".selectedResource").text().replace(/^\s+|\s+$/g, '') - 1;
                     $.ajax({
-                        url: arcs.baseURL + "keywords/delete",
+                        url: arcs.baseURL + "keywords/deleteKeyword",
                         type: "POST",
                         data: {
                             page_kid: pagesArray[parseInt(pageIndex)].kid,
