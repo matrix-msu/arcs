@@ -29,10 +29,12 @@ $(document).ready(function(){
 
                 keywordArray = data;
 
-                keywordArray.forEach( function(keyword){
-                    //html4 += '<option data-id="'+keyword+'">'+keyword+'</option>';
-                    html4 += '<option selected="selected" data-id="'+keyword+'">'+keyword+'</option>';
-                })
+                if( keywordArray instanceof Array ) {
+                    keywordArray.forEach(function (keyword) {
+                        //html4 += '<option data-id="'+keyword+'">'+keyword+'</option>';
+                        html4 += '<option selected="selected" data-id="' + keyword + '">' + keyword + '</option>';
+                    })
+                }
                 html4 += '</select></fieldset>';
 
                 //fill in the select
@@ -144,10 +146,12 @@ $(document).ready(function(){
 
                 var commonKeywordArray = data;
 
-                commonKeywordArray.forEach( function(keyword){
-                    //html5 += '<option data-id="'+keyword+'">'+keyword+'</option>';
-                    html5 += '<option selected="selected" data-id="'+keyword+'">'+keyword+'</option>';
-                })
+                if( commonKeywordArray instanceof Array ) {
+                    commonKeywordArray.forEach(function (keyword) {
+                        //html5 += '<option data-id="'+keyword+'">'+keyword+'</option>';
+                        html5 += '<option selected="selected" data-id="' + keyword + '">' + keyword + '</option>';
+                    })
+                }
                 html5 += '</select></fieldset>';
 
                 //fill in the select
@@ -191,4 +195,9 @@ $(document).ready(function(){
             }
         })
     }
+
+    $('.other-resources').on('click', function(e) {
+        //console.log('keywords click other resources');
+        getKeywords();
+    });
 });

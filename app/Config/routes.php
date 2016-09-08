@@ -95,8 +95,11 @@
     Router::connect('/collections',
         array('controller' => 'collections', 'action' => 'index')
     );
-    Router::connect('/api/collections/memberships',
+    Router::connect('/collections/memberships',
         array('controller' => 'collections', 'action' => 'memberships')
+    );
+    Router::connect('/collections/titlesAndIds',
+        array('controller' => 'collections', 'action' => 'titlesAndIds')
     );
 ////////////////////////////////////////////////////////////////////////
 # users controller
@@ -218,8 +221,14 @@
 ////////////////////////////////////////////////////////////////////////
 # keywords Controller
 ////////////////////////////////////////////////////////////////////////
+    Router::connect('/keywords/get',
+        array('controller' => 'keywords', 'action' => 'get')
+    );
     Router::connect('/keywords/add',
         array('controller' => 'keywords', 'action' => 'add')
+    );
+    Router::connect('/keywords/common',
+        array('controller' => 'keywords', 'action' => 'common')
     );
 ////////////////////////////////////////////////////////////////////////
 ##################
