@@ -162,6 +162,9 @@
     Router::connect('/resources/search',
         array('controller' => 'search', 'action' => 'resources')
     );
+    Router::connect('/resources/advanced_search',
+        array('controller' => 'search', 'action' => 'advanced_resources')
+    );
     Router::connect('/resources/complete',
         array('controller' => 'search', 'action' => 'complete')
     );

@@ -10,6 +10,7 @@
 
 require_once(KORA_LIB . "Keyword_Search.php");
 require_once(KORA_LIB . "General_Search.php");
+require_once(KORA_LIB . "Advanced_Search.php");
 
 use Lib\Kora\Keyword_Search;
 
@@ -23,7 +24,7 @@ class SearchController extends AppController {
     }
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('search', 'resources','simple_search','advance_search','getProjects');
+        $this->Auth->allow('search', 'resources', 'advanced_resources', 'simple_search','advance_search','getProjects');
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
             $this->Resource->flatten = true;
@@ -736,7 +737,6 @@ class SearchController extends AppController {
 
 
         }else {     //search resources first by type, then get the page by resource
-
             //Get the Resources
             $user = "";
             $pass = "";
@@ -834,7 +834,25 @@ class SearchController extends AppController {
 
 
 
+    /**
+     * Search resources with advanced search.
+     */
+    public function advanced_resources() {
+        $options = $this->parseParams();
+        $this->autoRender = false;
 
+        if (!isset($this->request->data['q']))
+            return $this->emptySearch($options);
+
+        $kora = new Advanced_Search($this->request->data['sid']);
+
+        foreach ($this->request->data['q'] as $q) {
+            $kora->add_clause($q[0], $q[1], $q[2]);
+        }
+
+        $results = $kora->search();
+        echo ($results);
+    }
 
 
 
