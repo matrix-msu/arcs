@@ -17,7 +17,7 @@
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 		<!--Display login button for other pages-->
 	<div id='log' >
-		<?php if ($user['loggedIn']): ?>
+		<?php if (isset($user['loggedIn'])): ?>
 			<div id="menu" class="btn btn-grey toolbar-btn">
 				<div id="cage">
 				<?php echo $user['name'] ?>

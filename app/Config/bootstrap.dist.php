@@ -49,6 +49,9 @@ define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
 define("BASE_URL",  "arcs2/" );
 define ("LOCAL_URI", "~austin.rix/arcs2/webroot/");
 /////////////////////////////////////////////////////////////
+// EDIT 2
+define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
+//////////////////////////////////////////////////////////////
 
 define ("PID", "123");
 define ("PROJECT_SID", "734");

@@ -723,7 +723,7 @@ class UsersController extends AppController
     {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array('user' => $user['name'], 'link' => $this->baseURL() . "/user/" . $user['username']))
+        $Email->viewVars(array('user' => $user['name'], 'link' => KORA_PLUGIN_USERS ))
               ->emailFormat('html')
               ->template('pending_user', 'default')
               ->subject('ARCS New User Has Registered')

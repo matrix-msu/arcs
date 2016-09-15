@@ -83,8 +83,8 @@ class User extends AppModel {
 
             //Josh- Find and return collections data also
             /////////////////////////////////////////////
-            $catchcollections = 1;
-            if ( $catchcollections == 1 ) {
+
+            if ( isset($r['id']) ) {
 
                 //// Start SQL Area
                 ///////////////////
