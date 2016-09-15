@@ -1,5 +1,8 @@
 
 <?php echo $this->Session->flash(); ?>
+<!-- ?php var_dump( $this->Session ); ? -->
+<?php debug($this->Session->read('Message')); ?>
+<?php echo 'this is testing'; ?>
 <?php $this->set('index_toolbar', true); ?>
 
 <div class="intro">

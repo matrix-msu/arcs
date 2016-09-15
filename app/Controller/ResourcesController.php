@@ -312,6 +312,7 @@ class ResourcesController extends AppController {
             //Get a collection_id from the id
             $sql = "SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = '".decbin(0)."'";
             $result = $mysqli->query($sql);
+            $metadataedits = [];
             while($row = mysqli_fetch_assoc($result))
                 $metadataedits[] = array('field_name' => $row['field_name'], 'metadata_kid' => $row['metadata_kid']);
 

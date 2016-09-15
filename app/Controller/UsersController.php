@@ -235,8 +235,22 @@ class UsersController extends AppController
      */
     public function confirm_user($username = null)
     {
+        //var_dump('got hereeeeeeeeeeeeeeeeeeeeeeeeeee');
+        //var_dump($username);
         $user = $this->User->findByRef($username);
+        //var_dump($user);
+
+        if($user['status'] == 'pending' ){
+            //echo 'pending';
+            $this->Session->setFlash("hello blach blacklaccount is confirmed, the admins will be notified of your request.", 'flash_success');
+
+            $this->redirect('/');
+            return;
+        }
+
         if ($username == null || !$user || $user['status'] != 'unconfirmed') throw new BadRequestException();
+
+
 
         // change status of user
         $this->User->id = $user['id'];

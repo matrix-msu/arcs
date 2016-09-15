@@ -113,9 +113,6 @@
     Router::connect('/users/confirm_user/*',
         array('controller' => 'users', 'action' => 'confirm_user')
     );
-    Router::connect('/users/confirm_user/*',
-        array('controller' => 'users', 'action' => 'confirm_user')
-    );
     Router::connect('/users/special_login',
         array('controller' => 'users', 'action' => 'special_login')
     );
