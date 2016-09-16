@@ -1,8 +1,7 @@
 
-<?php echo $this->Session->flash(); ?>
-<!-- ?php var_dump( $this->Session ); ? -->
-<?php debug($this->Session->read('Message')); ?>
-<?php echo 'this is testing'; ?>
+<?php echo $this->Session->flash();
+echo $this->Session->flash('flash_success'); ?>
+<!--?php print_r( $this->Session ); ? -->
 <?php $this->set('index_toolbar', true); ?>
 
 <div class="intro">
@@ -53,7 +52,7 @@
 				array(
 					'controller' => 'projects',
 					'action' => 'single_project',
-					$item["Name"]
+					$item["Persistent Name"]
 				)
 			);
 
