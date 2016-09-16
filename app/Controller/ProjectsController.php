@@ -56,6 +56,10 @@ class ProjectsController extends AppController {
      * @return void
      */
 	public function display() {
+
+    // intialize kora session
+    $kora = new \Lib\Kora();
+
 		$path = func_get_args();
 		$this->getProjects();
 
