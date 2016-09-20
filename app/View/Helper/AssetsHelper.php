@@ -14,7 +14,9 @@ class AssetsHelper extends AppHelper {
      * Return true if the global debug configuration is 0, false otherwise.
      */
     private function _isProd() {
-        return Configure::read('debug') == 0;
+        //Josh- Production mode now always loads assests like dev mode.
+        //return Configure::read('debug') == 0;
+        return false;
     }
 
     /**

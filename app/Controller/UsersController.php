@@ -238,7 +238,7 @@ class UsersController extends AppController
         $user = $this->User->findByRef($username);
 
         if($user['status'] == 'pending' ){  //user clicked the confirm link a second time.
-            //$this->Session->setFlash("hello blach blacklaccount is confirmed, the admins will be notified of your request.", 'flash_success');
+            $this->Session->setFlash("hello blach blacklaccount is confirmed, the admins will be notified of your request.", 'flash_success');
             //TODO - this session message won't work on the main page.
             $this->redirect('/');
             return;

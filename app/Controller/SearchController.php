@@ -528,6 +528,7 @@ class SearchController extends AppController {
             }
             $result = $mysqli->query($sql);
             $count = 0;
+            $test = [];
             while($row = mysqli_fetch_assoc($result)) {
                 $test[] = $row;
                 $count++;
@@ -540,7 +541,6 @@ class SearchController extends AppController {
                 array_pop($test);
             }
 
-            //fix the returned array's format from 'resource_kid' to 'kid'
             $response['results'] = array();
             $first = 1;
             foreach( $test as $row){
@@ -553,27 +553,13 @@ class SearchController extends AppController {
 
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
-                /*
-                $user = "";
-                $pass = "";
-                $display = "json";
-                $fields = 'Title,Type,Resource Identifier';
-                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display.
-                    "&query=".urlencode($query). "&fields=" . urlencode($fields). "&count=1";
 
-                ///initialize post request to KORA API using curl
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-                //capture results and map to array
-                $page = json_decode(curl_exec($ch), true);
-                */
                 $fields = array('Title','Type','Resource Identifier');
                 $query_array = explode(",", $query);
                 $kora = new General_Search(RESOURCE_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
-                $page = json_decode($kora->return_json(), true);
+                $resource = json_decode($kora->return_json(), true);
 
-                $r = $page[$temp_kid];
+                $r = $resource[$temp_kid];
 
                 //Handle resource title
                 $resource_title = $r['Title'];
@@ -598,21 +584,7 @@ class SearchController extends AppController {
 
                 //Get the Pages from Kora
                 $query = "Resource Identifier,=,".$resource_identifier;
-                /*
-                 $user = "";
-                $pass = "";
-                $display = "json";
-                $fields = 'Image Upload';
-                $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display.
-                    "&query=".urlencode($query). "&fields=" . urlencode($fields) . "&count=1";
 
-                ///initialize post request to KORA API using curl
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-                //capture results and map to array
-                $page2 = json_decode(curl_exec($ch), true);
-                */
                 $fields = array('Image Upload');
                 $query_array = explode(",", $query);
                 $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
@@ -676,35 +648,11 @@ class SearchController extends AppController {
 
 
         if ( $this->request->query['q'] == 'Orphan,=,true' ){  //search only for pages that are orphans
-            //check for show all button stuffs
 
-
-            //Get the Images
-            /*
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $fields = 'Image Upload';
-            $query = $this->request->query['q'];
-
-            $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . PAGES_SID . "&token=" . TOKEN . "&display=" . $display .
-                "&query=" . urlencode($query) . "&fields=" . urlencode($fields);
-            if( $limit > 0 ){
-                $url .= "&count=".strval($limit+1);
-            }
-            //return $this->json(200, $url);
-            ///initialize post request to KORA API using curl
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
-            //capture results and map to array
-            $response['results'] = json_decode(curl_exec($ch), true);
-            */
             $fields = array('Image Upload');
             $query_array = explode(",", $this->request->query['q']);
             $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
             $response['results'] = json_decode($kora->return_json(), true);
-            //return $this->json(200, $response['results']);
 
             $returnResults = array();
             $count = 0;
@@ -747,23 +695,7 @@ class SearchController extends AppController {
             } else {
                 $sid = RESOURCE_SID;
             }
-            /*
-            $display = "json";
-            $fields = 'Title,Resource Identifier';
-            $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . $sid . "&token=" . TOKEN . "&display=" . $display .
-                "&query=" . urlencode($query) . "&fields=" . urlencode($fields);
-            if( $limit > 0 ){
-                $url .= "&count=".strval($limit+1);
-            }
-            ///initialize post request to KORA API using curl
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
 
-
-            ///capture results and display
-            $response['results'] = json_decode(curl_exec($ch), true);
-            */
             $fields = array('Title','Resource Identifier');
             $query_array = explode(",", $query);
             $kora = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
@@ -779,22 +711,6 @@ class SearchController extends AppController {
                     break;
                 }
                 //Get the Images
-                /*
-                $user = "";
-                $pass = "";
-                $display = "json";
-                $fields = 'Image Upload';
-                $query = "Resource Identifier,=," . $item['Resource Identifier'];
-
-                $url = KORA_RESTFUL_URL . "?request=GET&pid=" . PID . "&sid=" . PAGES_SID . "&token=" . TOKEN . "&display=" . $display .
-                    "&query=" . urlencode($query) . "&fields=" . urlencode($fields) . "&count=1";
-                ///initialize post request to KORA API using curl
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
-                //capture results and map to array
-                $page = json_decode(curl_exec($ch), true);
-            */
                 $query = "Resource Identifier,=," . $item['Resource Identifier'];
 
                 $fields = array('Image Upload');
