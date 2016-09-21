@@ -121,10 +121,24 @@ class ProjectsController extends AppController {
 		}
 		$this->set('resources', $resources);
 
+		//create a temporary user since the toolbar was broken on the single_project page.
+		//not sure why the actual user isn't being sent to the toolbar on this one page though...
+		$tempUser = [];
+		$tempUser["loggedIn"] = $this->Session->read('Auth.User.name');
+		$tempUser["name"] = $this->Session->read('Auth.User.name');
+		$tempUser["username"] = $this->Session->read('Auth.User.username');
+		if( $this->Session->read('Auth.User.isAdmin') == 1 ){
+			$tempUser["role"] = 'Admin';
+		}else{
+			$tempUser["role"] = 'Not';
+		}
+
+		$this->set('user', $tempUser);
+
 
 		$this->loadModel('Collection');
 		$user_id =  $this->Session->read('Auth.User.id');
-
+		//echo json_encode($this->Session->read('Auth.User'));
 
 		if( $user_id !== null ) { //signed in
 			$collections = $this->Collection->find('all', array(
