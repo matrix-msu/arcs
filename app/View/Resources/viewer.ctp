@@ -104,23 +104,33 @@ var annotateData = {
 			<div class='fullscreenOuter'>
 				<div class='fullscreenInner'>
 					<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
-				    <div class='leftHalf'>
+				    <!-- <div class='leftHalf'>
 						<div class='expandedArrowBoxLeft'>
 							<img class='leftExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
-					</div>
-					<div class="rightHalf">
+					</div> -->
+					<!-- <div class="rightHalf">
 						<div class='expandedArrowBoxRight'>
 							<img class='rightExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
-					</div>
+					</div> -->
+
 				</div>
 			</div>
-			<div class='fullscreenTitle' style="display:none;">
-				<span class='titleText'>Test.jpg</span>
-			</div>
+      <ul class="fullscreen-toolbar">
+        <li class="full-tool-btns">
+          <img  class="fullscreen-prev" src="../img/ArrowLeft.svg">
+        </li>
+        <li class="full-tool-btns">
+          <img class="resources-rotate-icon rotate-overlay" src="../img/Rotate.svg">
+        </li>
+        <li class="full-tool-btns">
+          <img class="fullscreen-next" src="../img/ArrowRight.svg">
+        </li>
+      </ul>
+
 
 			<div class='fullscreenClose'>
 				<img src="../app/webroot/assets/img/Close.svg"class="closeExpand"/>
@@ -263,46 +273,21 @@ var annotateData = {
                 <div id="canvas" class='canvas'></div>
             </div>
         </div>
-
-        <div id="resource-tools">
-            <div class="resource-tools-container">
-                <!-- TO DO: Add onClick events here for each icon -->
-
-
-                <div id="prev-resource">
-                    <a href="#">
-                        <img class="arrow-left-icon" src="../img/ArrowLeft.svg">
-                    </a>
-                </div>
-                <div class="annotate-fullscreen-div">
-                    <img class="resources-annotate-icon" src="../img/annotationsProfile.svg" class='annotationsThumb' >
-                    <img class="resources-fullscreen-icon" src="../img/Fullscreen.svg">
-                </div>
-                <div id="zoom-out" class="zoom-out-div">
-                    <a href="#">
-                        <img class="resources-zoom-out-icon" src="../img/zoomOut.svg">
-                    </a>
-                </div>
-                <div id="zoom-range-div" class="zoom-range-div">
-                    <a href="#">
-                        <input type="range" min="1" max="10" value="1" step="0.1" class="zoom-bar" id="zoom-range">
-                    </a>
-                </div>
-                <div id="zoom-in" class="zoom-in-div">
-                    <a href="#">
-                        <img class="resources-zoom-in-icon" src="../img/ZoomIn.svg">
-                    </a>
-                </div>
-                <div class="rotate-div">
-                    <img class="resources-rotate-icon" src="../img/Rotate.svg">
-                </div>
-                <div id="next-resource">
-                    <a href="#">
-                        <img class="arrow-right-icon" src="../img/ArrowRight.svg">
-                    </a>
-                </div>
+        <ul id="resource-tools">
+          <img  id="prev-resource" class="arrow-left-icon" src="../img/ArrowLeft.svg">
+          <li class="resource-icons"> <img class="resources-annotate-icon" src="../img/annotationsProfile.svg" class='annotationsThumb' > </li>
+          <li class="resource-icons"> <img class="resource-reset-icon" src="../img/refreshView.svg"> </li>
+          <li class="resource-icons"> <img class="resources-fullscreen-icon" src="../img/Fullscreen.svg"> </li>
+          <li class="resource-icons">
+            <div class="zoom-div">
+              <img id="zoom-out" class="resources-zoom-out-icon" src="../img/zoomOut.svg">
+              <input type="range" min="1" max="10" value="1" step="0.1" class="zoom-bar" id="zoom-range">
+              <img id="zoom-in" class="resources-zoom-in-icon" src="../img/ZoomIn.svg">
             </div>
-        </div>
+          </li>
+          <li class="resource-icons"> <img class="resources-rotate-icon" src="../img/Rotate.svg"> </li>
+          <li class="resource-icons"><img id="next-resource"class="arrow-right-icon" src="../img/ArrowRight.svg"></li>
+        </ul>
     </div>
 
     <div id="viewer-right" style="position:relative;">
@@ -2061,7 +2046,7 @@ var annotateData = {
 </div>
 
 
-<pre id="preview"></pre>
+<!-- <pre id="preview"></pre> -->
 
 
 <script>

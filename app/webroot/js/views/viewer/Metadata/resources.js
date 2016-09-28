@@ -15,16 +15,25 @@ $(document).ready(function()
   ///$('#fullscreenImage').attr('src', $('#PageImage').attr('src'));
     });
     var angle = 0
-    var className;
+    var degree;
     $('.resources-rotate-icon').click(function(){
       console.log('rotator clicked');
       angle=(angle+90)%360;
       console.log(angle);
-      className = 'rotate('+angle+'deg'+')';
-      console.log(className);
-      $('#ImageWrap').css('transform',className)
+      degree = 'rotate('+angle+'deg'+')';
+      console.log(degree);
+      $('#ImageWrap').css('transform',degree);
+      $('#fullscreenImage').css('transform',degree);
     });
-
+    $(".resource-reset-icon").click( function () {
+      angle = 0;
+      $('#ImageWrap').css('transform','');
+      $("#canvas").css('transform', 'scale(1)');
+      $("#PageImage").css('transform', 'scale(1)');
+      $('.zoom-bar').val(1);
+      $('#ImageWrap').css('top','');
+      $('#ImageWrap').css('left','');
+    });
     $('img.deleteModalClose').click(function(){
       console.log("Close delete box");
       $('.deleteWrap').css('display','none');
@@ -75,6 +84,7 @@ $(document).ready(function()
        var imageSrc = $("#PageImage").attr('src');
        console.log(imageSrc);
        $(".fullscreenImage").attr('src',imageSrc);
+       $(".fullscreenImage").css('transform',$('#ImageWrap').css('transform'));
        $('.fullscreenWrap').css('display','block');
       zoomOption=1;
       $('.fullscreenInner, .fullscreenOuter').css('transform','scale(1)');

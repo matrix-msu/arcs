@@ -3,7 +3,6 @@
 # Builds assets and documentation for ARCS.
 #
 # To use it, you'll need NodeJS and the following NPM packages:
-#   - coffee-script
 #   - uglify-js
 #   - clean-css
 #   - less
@@ -13,8 +12,6 @@
 # converter that supports tables.
 
 # Asset dirs
-COFFEE=app/webroot/coffee
-JS=app/webroot/js
 CSS=app/webroot/css
 ASSETS=app/webroot/assets
 
@@ -38,17 +35,8 @@ HEADER="/**\n\
 
 .PHONY: docs
 
-default: coffee less
+default:all
 
-# Compile coffee in webroot/coffee to webroot/js
-coffee:
-	coffee --compile --output $(JS) $(COFFEE)
-
-# Concatenate and minify javascript.
-js: coffee
-	echo $(HEADER) > $(ASSETS)/arcs.js
-	$(foreach script, $(SCRIPTS), uglifyjs $(JS)/$(script) >> $(ASSETS)/arcs.js;)
-	cat $(ASSETS)/templates.js >> $(ASSETS)/arcs.js
 
 # Compile less in (and included in) css/app.less to css/app.css
 less:
@@ -60,13 +48,12 @@ css: less
 	$(foreach style, $(STYLESHEETS), cleancss $(CSS)/$(style) >> $(ASSETS)/arcs.css;)
 
 # Convert user documentation from Markdown and put it in the View directory.
-docs: 
+docs:
 	$(foreach doc, $(DOCS), python -m markdown -x tables -x headerid $(doc) > \
 		app/View/Help/$(notdir $(basename $(doc))).ctp;)
 
 # Install the packages we use.
 install:
-	npm install -g coffee-script
 	npm install -g uglify-js
 	npm install -g clean-css
 	npm install -g less
@@ -80,4 +67,4 @@ clear_tmp:
 	rm -f app/tmp/tests/*
 
 # Make everything.
-all: js css docs
+all: css docs

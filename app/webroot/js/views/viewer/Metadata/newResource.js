@@ -6,6 +6,7 @@
 function GetNewResource(id) {
     image = document.getElementById('PageImage')
     image.src = '../img/arcs-preloader.gif';
+    image.style = "position:absolute;bottom:0;right:0;left:0;top:0;margin:auto;";
     //image.style.height = '100%';
     //image.style.width = '100%';
     setTimeout(function () {
@@ -159,6 +160,7 @@ $(document).ready(function () {
     console.log("KID: " + kid);
     console.log("current: "+current);
     console.log(kid);
+    $('#zoom-range').val(1);
     $('.other-resources').each( function () {
 //					console.log(parseInt($(this).find('.numberOverResources').html()));
       console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
@@ -186,6 +188,7 @@ $(document).ready(function () {
     $selected[current].className += ' selectedResource';
             var kid = keys[current];
     console.log(kid);
+    $('#zoom-range').val(1);
     var nextImg = parseInt($('.other-resources').find('.numberOverResources').html())+1
     console.log(nextImg);
     $('.other-resources').each( function () {
@@ -203,34 +206,11 @@ $(document).ready(function () {
 //				console.log('next image should appear');
         }
     });
-      $('.expandedArrowBoxLeft').click(previousImage);
-  $('.expandedArrowBoxRight').click(nextImage);
-  $('.fullscreenInner').mouseover(hoverExpand);
-  $('.fullscreenInner').mouseout(hoverExpandClose);
+      $('.fullscreen-prev').click(previousImage);
+  $('.fullscreen-next').click(nextImage);
 
-
-  function hoverExpandClose(){
-    $('.expandedArrowBoxLeft').css('display','none');
-    $('.expandedArrowBoxRight').css('display','none');
-  }
-  function hoverExpand(){
-    if ($('.leftHalf').is(':hover')){
-      if (current > 0){
-        $('.expandedArrowBoxLeft').css('display','block');
-      }
-
-      $('.expandedArrowBoxRight').css('display','none');
-    }
-    else{
-       if(current < keys.length-1){
-         $('.expandedArrowBoxRight').css('display','block');
-       }
-
-      $('.expandedArrowBoxLeft').css('display','none');
-    }
-  }
   function previousImage(){
-    event.preventDefault();
+    // event.preventDefault();
     if(current > 0){
       $('.numberOverResources').removeClass('selectedResource');
       $pics[current].style.borderWidth = "0px";
@@ -256,7 +236,7 @@ $(document).ready(function () {
 
   function nextImage(){
 
-    event.preventDefault();
+    // event.preventDefault();
     if(current < keys.length-1){
       $('.numberOverResources').removeClass('selectedResource');
       $pics[current].style.borderWidth = "0px";
