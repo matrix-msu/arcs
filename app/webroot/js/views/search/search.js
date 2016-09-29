@@ -49,6 +49,8 @@
       return Search.__super__.constructor.apply(this, arguments);
     }
 
+    Search.selected = [];
+
     Search.prototype.options = {
       sort: 'title',
       sortDir: 'asc',
@@ -89,18 +91,21 @@
       'click #rightArrowBox': 'scrollTop',
       'click .sort-btn': 'scrollTop',
       'click .fDots': 'scrollTop',
-      'click .dots': 'scrollTop'
+      'click .dots': 'scrollTop',
+      'click #open-colview-form': 'openCollection'
     };
 
 
     /* More involved setups run by the initialize method */
 
     Search.prototype.setupSelect = function() {
+
       return this.$el.find('#search-results').selectable({
         distance: 20,
         filter: '.img-wrapper img',
         selecting: (function(_this) {
           return function(e, ui) {
+
             $(ui.selecting).parents('.result').addClass('selected');
             $(ui.selecting).parents('.result').children('.select-button').html('DE-SELECT');
             $(ui.selecting).parents('.result').children('.select-button').addClass('de-select');
@@ -109,6 +114,7 @@
         })(this),
         selected: (function(_this) {
           return function(e, ui) {
+
             $(ui.selected).parents('.result').addClass('selected');
             $(ui.selected).parents('.result').children('.select-button').html('DE-SELECT');
             $(ui.selected).parents('.result').children('.select-button').addClass('de-select');
@@ -187,6 +193,14 @@
       return $('html, body').animate({
         scrollTop: 0
       }, time);
+    };
+
+    Search.prototype.openCollection = function(e) {
+      var form = $(e.target).parent();
+      form.find("input").attr({value: JSON.stringify(Search.selected) });
+      form.attr({action: arcs.baseURL + "view/"});
+      form.submit();
+
     };
 
     Search.prototype.setSort = function(e) {
@@ -597,6 +611,7 @@
     };
 
     $(function() {
+
       return $(".searchBoxInput").keyup(function(e) {
         if (e.keyCode === 13) {
           selectedMap = {
@@ -610,7 +625,7 @@
           $("#1").html(1);
           e.preventDefault();
           $('.flex-container').empty();
-          $('.flex-container').append('<img src="/~arnold.mutayoba/arcs/img/arcs-preloader.gif">');
+          $('.flex-container').append('<img src=' +arcs.baseURL+'img/arcs-preloader.gif>');
           $('#search-results-wrapper').css('visibility', 'visible');
           return search();
         }
@@ -622,6 +637,7 @@
       if (append == null) {
         append = false;
       }
+
       $results = $('.flex-container');
       template = this.options.grid ? 'search/grid' : 'search/list';
       results = results.results;
@@ -684,7 +700,15 @@
       });
       $('.select-button').click(function() {
         var index;
+        var data_id = $(this).parent().attr("data-id");
+
+
+
         if ($(this).html() === 'SELECT') {
+          if(data_id != ""){
+            if(Search.selected.indexOf(data_id) == -1)
+              Search.selected.push(data_id);
+          }
           $(this).html('DE-SELECT');
           $(this).addClass('de-select');
           $(this).parents('.result').addClass('selected');
@@ -696,6 +720,11 @@
           $('#selected-count').html(selectedMap["selected"].length);
           arcs.bus.trigger('selection');
         } else {
+          if(data_id != ""){
+            index = Search.selected.indexOf(data_id);
+            if(index != -1)
+              Search.selected.splice(index, 1);
+          }
           $(this).html('SELECT');
           $(this).removeClass('de-select');
           $(this).parents('.result').removeClass('selected');
@@ -712,6 +741,7 @@
           $('#selected-count').html(selectedMap["selected"].length);
           arcs.bus.trigger('selection');
         }
+        console.log(Search.selected);
       });
       $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
