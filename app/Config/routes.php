@@ -131,6 +131,12 @@
     Router::connect('/logout',
         array('controller' => 'users', 'action' => 'logout')
     );
+///////
+//toolbar
+//////
+    Router::connect('/users/getAllUsers',
+        array('controller' => 'users', 'action' => 'getAllUsers')
+    );
 ////////////////////////////////////////////////////////////////////////
 # search controller
 ////////////////////////////////////////////////////////////////////////
@@ -217,6 +223,24 @@
     );
     Router::connect('/metadataedits/getAllKidsByScheme',
       array('controller' => 'MetadataEdits', 'action' => 'getAllKidsByScheme')
+    );
+////////////////////////////////////////////////////////////////////////
+# profile routes
+////////////////////////////////////////////////////////////////////////
+    Router::connect('/metadataedits/findallbyuser',
+        array('controller' => 'MetadataEdits', 'action' => 'findAllByUser')
+    );
+    Router::connect('/annotations/findallbyuser',
+        array('controller' => 'annotations', 'action' => 'findallbyuser')
+    );
+    Router::connect('/comments/findallbyuser',
+        array('controller' => 'annotations', 'action' => 'findallbyuser')
+    );
+    Router::connect('/flags/findallbyuser',
+        array('controller' => 'flags', 'action' => 'findallbyuser')
+    );
+    Router::connect('/users/findbyid',
+        array('controller' => 'users', 'action' => 'findbyid')
     );
 ////////////////////////////////////////////////////////////////////////
 # keywords Controller
