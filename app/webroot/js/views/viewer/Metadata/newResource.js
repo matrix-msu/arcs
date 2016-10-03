@@ -57,7 +57,7 @@ function GetNewResource(id) {
 
 
             document.getElementById('PageImage').src = res["kora_url"] + res['Image Upload']['localName'];
-
+            document.getElementById('PageImage').style = '';
             document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
         }
 

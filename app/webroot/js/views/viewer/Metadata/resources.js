@@ -67,14 +67,12 @@ $(document).ready(function()
         if(e.originalEvent.wheelDelta /120 > 0) {
           if(zoomOption >1.2)
             return
-          console.log('zoom in');
           zoomOption+=.05
           $('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
         }
         else{
           if(zoomOption < .75)
             return
-          console.log('zoom out');
           zoomOption-=.05
           $('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
         }
