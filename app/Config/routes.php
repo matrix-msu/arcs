@@ -237,7 +237,7 @@
         array('controller' => 'annotations', 'action' => 'findallbyuser')
     );
     Router::connect('/flags/findallbyuser',
-        array('controller' => 'flags', 'action' => 'findallbyuser')
+        array('controller' => 'flags', 'action' => 'findAllByUser')
     );
     Router::connect('/users/findbyid',
         array('controller' => 'users', 'action' => 'findbyid')
