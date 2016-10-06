@@ -1,3 +1,18 @@
+var defaultExpand = {
+  "page" : "#PageImage",
+  "popup" : ".fullscreenImage",
+  "wrap" : ".fullscreenWrap",
+  "inner": ".fullscreenInner",
+  "outer" : ".fullscreenOuter",
+  "fullClose" : ".fullscreenClose",
+  "overlay" : ".fullscreenOverlay"
+};
+
+var scale = {};
+
+scale.max = 2;
+scale.min = .5;
+scale.inc = .05;
 
 $(document).ready(function()
 {
@@ -5,7 +20,6 @@ $(document).ready(function()
   //resource nav
     var zoomOption = 1;
     $('.other-resources').click(function(){
-      console.log("dlkajflkadf");
       $('.numberOverResources').css("background", '');
       $('.numberOverResources').removeClass('selectedResource');
       $(this).find('.numberOverResources').addClass('selectedResource');
@@ -17,11 +31,8 @@ $(document).ready(function()
     var angle = 0
     var degree;
     $('.resources-rotate-icon').click(function(){
-      console.log('rotator clicked');
       angle=(angle+90)%360;
-      console.log(angle);
       degree = 'rotate('+angle+'deg'+')';
-      console.log(degree);
       $('#ImageWrap').css('transform',degree);
       $('#fullscreenImage').css('transform',degree);
     });
@@ -42,57 +53,56 @@ $(document).ready(function()
       console.log("Close delete box");
       $('.deleteWrap').css('display','none');
     });
-    $('.fullscreenOverlay').click(function(e){
-      if (e.target !== this && e.target !== $('.fullscreenOuter'))
+    $(defaultExpand.overlay).click(function(e){
+      if (e.target !== this && e.target !== $(defaultExpand.outer))
         return
-      $('.fullscreenWrap').css('display','none');
+      $(defaultExpand.wrap).css('display','none');
       $('html, body').css({
         'overflow': 'auto',
         'height': 'auto'
       });
     });
-    $('.fullscreenClose').click(function(){
-      $('.fullscreenWrap').css('display','none');
+    $(defaultExpand.fullClose).click(function(){
+      $(defaultExpand.wrap).css('display','none');
       $('html, body').css({
         'overflow': 'auto',
         'height': 'auto'
       });
     })
     $('.resources-fullscreen-icon').click(setExpand);
-    $('.fullscreenInner').draggable();
+    $(defaultExpand.inner).draggable();
 
-    $('.fullscreenInner').bind('wheel',function(e){
-
-      if (zoomOption < 1.25 || zoomOption >.7 )
-        if(e.originalEvent.wheelDelta /120 > 0) {
-          if(zoomOption >1.2)
+    $(defaultExpand.inner).bind('wheel',function(e){
+      if (zoomOption < scale.max|| zoomOption >scale.min )
+        if(e.originalEvent.deltaY > 0) {
+          if(zoomOption >scale.max)
             return
-          zoomOption+=.05
-          $('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
+          zoomOption+=scale.inc;
+          $(defaultExpand.inner, defaultExpand.outer).css('transform','scale('+zoomOption+')');
         }
         else{
-          if(zoomOption < .75)
+          if(zoomOption < scale.min)
             return
-          zoomOption-=.05
-          $('.fullscreenInner , .fullscreenOuter').css('transform','scale('+zoomOption+')');
+          zoomOption-=scale.inc;
+          $(defaultExpand.inner, defaultExpand.outer).css('transform','scale('+zoomOption+')');
         }
     })
 
-    function setExpand(){
-       var imageSrc = $("#PageImage").attr('src');
-       console.log(imageSrc);
-       $(".fullscreenImage").attr('src',imageSrc);
-       $(".fullscreenImage").css('transform',$('#ImageWrap').css('transform'));
-       $('.fullscreenWrap').css('display','block');
-      zoomOption=1;
-      $('.fullscreenInner, .fullscreenOuter').css('transform','scale(1)');
-      $('html, body').css({
-        'overflow': 'hidden',
-        'height': '100%'
-      });
-     }
-
-
-
-
 });
+
+function Expand(obj) {
+  var imageSrc = $(obj.page).attr('src');
+  $(obj.popup).attr('src',imageSrc);
+  $(obj.popup).css('transform',$('#ImageWrap').css('transform'));
+  $(obj.wrap).css('display','block');
+ zoomOption=1;
+ $(obj.inner, obj.outer).css('transform','scale(1)');
+ $('html, body').css({
+   'overflow': 'hidden',
+   'height': '100%'
+ });
+}
+
+  function setExpand(){
+    Expand(defaultExpand);
+   }

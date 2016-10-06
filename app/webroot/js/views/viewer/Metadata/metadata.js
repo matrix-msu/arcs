@@ -406,7 +406,7 @@ $(document).ready(function () {
                         }
                     }
                     if (value.url != "") {
-                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>" + value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "</div>");
+                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>" + value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + "</div>");
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
@@ -571,10 +571,10 @@ $(document).ready(function () {
 
                         if (isAdmin == 1) {
                             $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
-                            $(gen_box).append("<div class='flagAnnotation'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                            $(gen_box).append("<div class='flagAnnotation'><img src='../app/webroot/assets/img/FlagTooltip-White.svg'/></div>");
                         }
                         else {
-                            $(gen_box).append("<div class='flagAnnotation notAdmin'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                            $(gen_box).append("<div class='flagAnnotation notAdmin'><img src='../app/webroot/assets/img/FlagTooltip-White.svg'/></div>");
                         }
 
                         $("#deleteAnnotation_" + v.id).click(function () {

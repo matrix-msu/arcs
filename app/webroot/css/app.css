@@ -9733,14 +9733,17 @@ input[type=range]:focus::-ms-fill-upper {
   display: inline-block;
   height: 27px;
   width: 27px;
-  top: -36px;
-  left: -3px;
+  top: -38px;
+  left: -1px;
   text-align: center;
   position: relative;
-  background: rgba(42, 159, 216, 0.5);
-  border: 3px solid rgba(42, 159, 216, 0.7);
+  background: rgba(42, 159, 216, 0.3);
+  border: 1px solid rgba(42, 159, 216, 0.7);
   border-bottom: 0px;
   cursor: pointer;
+}
+.deleteAnnotation:hover {
+  background: rgba(42, 159, 216, 0.5);
 }
 .deleteAnnotation img {
   display: inline-block !important;
@@ -9750,6 +9753,7 @@ input[type=range]:focus::-ms-fill-upper {
   display: inline-block !important;
   height: 27px;
   width: 27px;
+  left: -1px;
   top: -27px;
   text-align: center;
   position: relative;
@@ -9758,6 +9762,9 @@ input[type=range]:focus::-ms-fill-upper {
   border-bottom: 0px;
   border-left: 0px;
   cursor: pointer;
+}
+.flagAnnotation:hover {
+  background: rgba(42, 159, 216, 0.5);
 }
 .flagAnnotation img {
   height: 15px;
@@ -9895,7 +9902,7 @@ input[type=range]:focus::-ms-fill-upper {
   /*height: 743px;*/
 }
 .commentContainer {
-  height: 588px;
+  height: 729px;
   overflow: overlay;
   text-transform: none;
   border-bottom: 1px solid #cdcdcd !important;
@@ -10213,8 +10220,9 @@ img.rotate-overlay {
 }
 .fullscreenClose {
   position: absolute;
-  right: 25px;
-  top: 15px;
+  right: 0;
+  top: 0;
+  padding: 30px;
   cursor: pointer;
   z-index: 2;
   background: rgba(0, 0, 0, 0.5);
