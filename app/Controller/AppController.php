@@ -40,6 +40,10 @@ class AppController extends Controller {
         }
         if (substr($this->request->url, 0, 3) == 'api')
             $this->Auth->authenticate = array('Basic');
+
+
+
+
         $this->set(array(
             'user' => array(
                 'loggedIn' => $this->Auth->loggedIn(),
@@ -118,7 +122,7 @@ class AppController extends Controller {
      *
      * @return string the url to the thumb
      */
-    public function smallThumb($name) {
+    public static function smallThumb($name) {
         $path = THUMBS . "smallThumbs/";
         $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
@@ -126,7 +130,7 @@ class AppController extends Controller {
         if(!file_exists($path)) {
             $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
             $image = imagecreatefromstring(file_get_contents($imgpath));
-            $result = $this->resize($image, 240, 200);
+            $result = AppController::resize($image, 240, 200);
             imagedestroy($image);
             imagejpeg($result, $path);
             imagedestroy($result);
@@ -166,7 +170,7 @@ class AppController extends Controller {
      * @param string $method
      * @return resource
      */
-    private function resize($image, $min_width, $min_height, $method = 'scale')
+    private static function resize($image, $min_width, $min_height, $method = 'scale')
     {
         // get the current dimensions of the image
         $src_width = imagesx($image);
