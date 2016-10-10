@@ -129,7 +129,12 @@
 		      </button>
 		      <ul class="dropdown-menu leftMost">
 		        <li><a class="sort-btn active" id="open-btn">open In separate windows&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">open In a collection view&nbsp;</a></li>
+		        <li>
+							<form id = "open-colview-form" method = "POST">
+								<a class="sort-btn" id="open-colview-btn">open In a collection view&nbsp;</a>
+								<input type="hidden" name="resources" value="">
+							</form>
+						</li>
 		        <li class="divider"></li>
 		        <li><a class="sort-btn" id="open-btn">Download&nbsp;</a></li>
 		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
