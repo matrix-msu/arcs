@@ -10,6 +10,8 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
+ require_once(KORA_LIB . "General_Search.php");
+
 
 
 class ResourcesController extends AppController {
@@ -654,4 +656,119 @@ class ResourcesController extends AppController {
         $this->json(200, base64_encode($data) );
     }
 
+    //view muitiple resources in a viewer
+    public function multi_viewer(){
+
+        $resources = array();
+        $projects = array();
+        $seasons = array();
+        $excavations = array();
+        $subjects = array();
+        $resources_array = array();
+
+        if($this->request->method() === "POST"){
+            $post_data = $this->request->data;
+            $resources_array = json_decode($post_data["resources"]);
+        }
+        else{
+            //Not a post method
+            throw new NotFoundException();
+        }
+        foreach($resources_array as $resource){
+
+            //get resource information
+            $info_array = $this->getResource($resource);
+            $identifier = $info_array[$resource]['Resource Identifier'];
+
+            $exc_kid = $this->getFromKey($info_array, "Excavation - Survey Associator");
+
+            //get Season data
+            $excavation_array = $this->getExcavation($exc_kid);
+            $this->pushToArray($excavation_array, $excavations);
+
+            $season_kid = $this->getFromKey($excavation_array,"Season Associator");
+
+            //get Season data
+            $season_array = $this->getSeason($season_kid);
+            $this->pushToArray($season_array, $seasons);
+
+            $project_kid = $this->getFromKey($season_array,"Project Associator");
+
+            //get project array
+            $project_array = $this->getProject($project_kid);
+            $this->pushToArray($project_array, $projects);
+
+            //get pages and add to resource array
+            $page = $this->getPages($resource);
+
+            $info_array[$resource]["page"] =  $page;
+
+            //get SOO
+            $soo = $this->getSubjectOfObservation($identifier);
+            $this->pushToArray($soo, $subjects);
+
+            //push to array
+            $this->pushToArray($info_array, $resources);
+
+        }
+        $this->set("resources", $resources);
+        $this->set("projects", $projects);
+        $this->set("seasons", $seasons);
+        $this->set("excavations", $excavations);
+        $this->set("subjects", $subjects);
+
+    
+
+    }
+    protected function pushToArray($value, &$array){
+      $key = key($value);
+      if(!isset($array[$key]) && !empty($key)){
+        $array[$key] = $value[$key];
+      }
+    }
+    protected function getFromKey($array, $key){
+      return array_values($array)[0][$key][0];
+    }
+    protected function getProject($kid){
+      $sid = PROJECT_SID;
+      $query_array = array("kid","=",$kid);
+      $fields = "ALL";
+      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      return $result->return_array();
+    }
+    protected function getSeason($kid){
+      $sid = SEASON_SID;
+      $query_array = array("kid","=",$kid);
+      $fields = "ALL";
+      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      return $result->return_array();
+    }
+    protected function getExcavation($kid){
+      $sid = SURVEY_SID;
+      $query_array = array("kid","=",$kid);
+      $fields = "ALL";
+      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      return $result->return_array();
+    }
+    protected function getResource($kid){
+      $sid = RESOURCE_SID;
+      $query_array = array("kid","=",$kid);
+      $fields = "ALL";
+      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      return $result->return_array();
+    }
+    protected function getPages($resource_kid){
+      $sid = PAGES_SID;
+      $query_array = array("Resource Associator","=", $resource_kid);
+      $fields = "ALL";
+      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      return $result->return_array();
+    }
+    protected function getSubjectOfObservation($resource_kid){
+      $sid = SUBJECT_SID;
+      $query_array = array("Resource Identifier","=", $resource_kid);
+      $fields = "ALL";
+      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      return $result->return_array();
+    }
 }

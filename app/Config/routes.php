@@ -63,7 +63,9 @@
 /////////////////////////////////////////////////////////////////////////
 # resources controller
 ////////////////////////////////////////////////////////////////////////
-
+    Router::connect('/view',
+        array('controller' => 'resources', 'action' => 'multi_viewer')
+    );
     # Resource, collection and user singular aliases
     Router::connect('/resource/*',
         array('controller' => 'resources', 'action' => 'viewer')
