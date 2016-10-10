@@ -104,19 +104,6 @@ var annotateData = {
 			<div class='fullscreenOuter'>
 				<div class='fullscreenInner'>
 					<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
-				    <!-- <div class='leftHalf'>
-						<div class='expandedArrowBoxLeft'>
-							<img class='leftExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
-						</div>
-
-					</div> -->
-					<!-- <div class="rightHalf">
-						<div class='expandedArrowBoxRight'>
-							<img class='rightExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
-						</div>
-
-					</div> -->
-
 				</div>
 			</div>
       <ul class="fullscreen-toolbar">
@@ -273,21 +260,8 @@ var annotateData = {
                 <div id="canvas" class='canvas'></div>
             </div>
         </div>
-        <ul id="resource-tools">
-          <img  id="prev-resource" class="arrow-left-icon" src="../img/ArrowLeft.svg">
-          <li class="resource-icons"> <img class="resources-annotate-icon" src="../img/annotationsProfile.svg" class='annotationsThumb' > </li>
-          <li class="resource-icons"> <img class="resource-reset-icon" src="../img/refreshView.svg"> </li>
-          <li class="resource-icons"> <img class="resources-fullscreen-icon" src="../img/Fullscreen.svg"> </li>
-          <li class="resource-icons">
-            <div class="zoom-div">
-              <img id="zoom-out" class="resources-zoom-out-icon" src="../img/zoomOut.svg">
-              <input type="range" min="1" max="10" value="1" step="0.1" class="zoom-bar" id="zoom-range">
-              <img id="zoom-in" class="resources-zoom-in-icon" src="../img/ZoomIn.svg">
-            </div>
-          </li>
-          <li class="resource-icons"> <img class="resources-rotate-icon" src="../img/Rotate.svg"> </li>
-          <li class="resource-icons"><img id="next-resource"class="arrow-right-icon" src="../img/ArrowRight.svg"></li>
-        </ul>
+
+        <?= $this->element("resourceTool") ?>
     </div>
 
     <div id="viewer-right" style="position:relative;">
@@ -300,14 +274,6 @@ var annotateData = {
                 <li class="metadata-tab details"><a href="#tabs-2">Details</a></li>
                 <li class="metadata-tab discussion"><a href="#tabs-3">Discussions</a></li>
             </ul>
-
-            <!--<div id="search">-->
-            <!--<span class="title">-->
-            <!--<p>Collection Title</p>-->
-            <!--</span>-->
-            <!---->
-            <!--<input type="text" placeholder="SEARCH COLLECTION">-->
-            <!--</div>-->
 
             <div id="tabs-1" class="metadata-content">
 
