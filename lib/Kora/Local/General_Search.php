@@ -39,5 +39,9 @@ class General_Search extends Kora{
 
         return json_encode($this->formulatedResult);
     }
+    public function return_array(){
+        return $this->formulatedResult;
+    }
+
 
 }
