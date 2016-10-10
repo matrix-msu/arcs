@@ -317,10 +317,10 @@ var resourceKid = "";//"<?php  ?> ";
                   <div class="accordion metadata-accordion">
                 <?= $this->element("Metadata/generate"); ?>
                 <?php
-                    Generate_Metadata("project",$projects);
-                    Generate_Metadata("Seasons",$seasons);
-                    Generate_Metadata("excavations",$excavations);
-                    Generate_Metadata("subjects",$subjects);
+                    Generate_Metadata("project",$projects, $metadataEdits);
+                    Generate_Metadata("Seasons",$seasons, $metadataEdits);
+                    Generate_Metadata("excavations",$excavations, $metadataEdits);
+                    Generate_Metadata("subjects",$subjects, $metadataEdits);
                 ?>
                 </div>
               </div>

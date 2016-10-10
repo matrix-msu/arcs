@@ -12,7 +12,9 @@ function print_element($element){
     else
         echo $element;
 }
-function Generate_Metadata($name, $data, $counter = 0){
+function Generate_Metadata($name, $data, $metadataEdits, $counter = 0){
+print_r( $metadataEdits);
+exit();
 ?>
 
     <h3 class="level-tab" ><?= $name ?>

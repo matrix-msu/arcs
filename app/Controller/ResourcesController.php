@@ -301,22 +301,8 @@ class ResourcesController extends AppController {
             )));
 
 
-            $db = new DATABASE_CONFIG;
-            $db_object =  (object) $db;
-            $db_array = $db_object->{'default'};
-            $response['db_info'] = $db_array['host'];
-            $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
-
-            if ($mysqli->connect_error) {
-                die('Connect Error (' . $mysqli->connect_errno . ') '
-                    . $mysqli->connect_error);
-            }
-            //Get a collection_id from the id
-            $sql = "SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = '".decbin(0)."'";
-            $result = $mysqli->query($sql);
-            $metadataedits = [];
-            while($row = mysqli_fetch_assoc($result))
-                $metadataedits[] = array('field_name' => $row['field_name'], 'metadata_kid' => $row['metadata_kid']);
+            //edit metadata stuffs
+            $metadataedits = $this->getEditMetadata();
 
             $this->set(array(
                 'kid' =>$pages[$firstPage]['kid'],
@@ -344,6 +330,27 @@ class ResourcesController extends AppController {
             $resourceFirstReq = isset($resource['Resource']['first_req']) ?$resource['Resource']['first_req'] : false ;
             if ($resourceFirstReq)
                 $this->Resource->firstRequest($resource['Resource']['id']);
+    }
+
+    //get all the edit metadata in the table.
+    protected function getEditMetadata(){
+        $db = new DATABASE_CONFIG;
+        $db_object =  (object) $db;
+        $db_array = $db_object->{'default'};
+        $response['db_info'] = $db_array['host'];
+        $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+        if ($mysqli->connect_error) {
+            die('Connect Error (' . $mysqli->connect_errno . ') '
+                . $mysqli->connect_error);
+        }
+        //Get a collection_id from the id
+        $sql = "SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = '".decbin(0)."'";
+        $result = $mysqli->query($sql);
+        $metadataedits = [];
+        while($row = mysqli_fetch_assoc($result))
+            $metadataedits[] = array('field_name' => $row['field_name'], 'metadata_kid' => $row['metadata_kid']);
+        return $metadataedits;
     }
 
     /**
@@ -711,11 +718,15 @@ class ResourcesController extends AppController {
             $this->pushToArray($info_array, $resources);
 
         }
+
+        $metadataedits = $this->getEditMetadata();
+
         $this->set("resources", $resources);
         $this->set("projects", $projects);
         $this->set("seasons", $seasons);
         $this->set("excavations", $excavations);
         $this->set("subjects", $subjects);
+        $this->set("metadataEdits", $metadataedits);
 
     
 
