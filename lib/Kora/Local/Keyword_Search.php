@@ -233,25 +233,45 @@ class Keyword_Search extends Kora{
 
   public function insertPages(){
 
+      $pageArray = array();
       $this->schemeMapping = PAGES_SID;
-      $this->fields = array("Image Upload");
+      $this->fields = array("Image Upload", "Resource Associator");
+      $this->The_Clause = new KORA_Clause("kid", "!=" , "");
 
-      foreach($this->formulatedResult as $obj){
-        if(!empty($obj['kid'])){
-          $this->The_Clause = new KORA_Clause("Resource Associator", "=" , $obj['kid']);
-          $image = self::search();
-          if(isset(array_values($image)[0])){
-             $image = array_values($image)[0];
-          }
-          if(isset($image["Image Upload"])){
-              $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($image["Image Upload"]['localName']);
-          }
-          else{
-            $this->formulatedResult[$obj['kid']]["thumb"] = DEFAULT_THUMB;
+      // //debug
+      // $time_start = microtime(true);
+      // $mem_start =  memory_get_usage();
+       $images = self::search();
+
+      foreach($images as $img){
+        $pKid = $img['kid'];
+        if(isset($img["Resource Associator"]) && is_array($img["Resource Associator"])){
+          foreach($img["Resource Associator"] as $rKid){
+            if(!isset($pageArray[$rKid]))
+             $pageArray[$rKid] = isset($img["Image Upload"]['localName'])?
+             $img["Image Upload"]['localName'] : "none" ;
           }
         }
       }
+      // $time_e = microtime(true);
+      // $mem_e =  memory_get_usage();
+      //
+      // echo "<p>time: </p>" . ($time_e - $time_start);
+      // echo "<p>mem: " . ($mem_e - $mem_start);
+      // echo "</p><br>";
+      // echo "count: " . count($image);
+      // exit();
 
+
+
+      foreach($this->formulatedResult as $obj){
+        if(isset($pageArray[$obj['kid']])){
+          $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($pageArray[$obj['kid']]);
+        }
+        else{
+          $this->formulatedResult[$obj['kid']]["thumb"] = DEFAULT_THUMB;
+        }
+      }
   }
 
   private function insertExcavations(){
