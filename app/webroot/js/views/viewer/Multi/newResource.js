@@ -24,34 +24,6 @@ function GetNewResource(id) {
             // display obervatoins that apply to the selected page
             var cnt=0;
             var pageNum=1;
-            // $(".level-content #Subject_Of_Observation tbody").each(function(){
-            //   var page = $(this).find(".metadataEdit").first();
-            //   page = page.find('*[data-control="associator"]').html();
-            //   page = page.replace(/<(?:.|\n)*?>/gm, '');
-            //   cnt++;
-            //   if(page == kid){
-            //
-            //     $(".soo-click"+cnt).html(pageNum);
-            //     pageNum++;
-            //     $(".soo-click"+cnt).parent().css({display:"block"});
-            //     $(".soo-click"+cnt).trigger("click");
-            //
-            //   }
-            //   else
-            //     $(".soo-click"+cnt).parent().css({display:"none"});
-            //
-            //
-            // });
-            // if(pageNum == 1){
-            //   $(".level-content #Subject_Of_Observation tbody .metadataEdit").each(function(){
-            //     page = $(this).css("display","none");
-            //   });
-            // }
-            // else {
-            //   $(".level-content #Subject_Of_Observation tbody .metadataEdit").each(function(){
-            //     page = $(this).attr("style","");
-            //   });
-            // }
 
 
 
@@ -110,27 +82,6 @@ $(document).ready(function () {
         GetNewResource(kid);
     }
     }
-
-    $('.button-right').click(function(event){
-        event.preventDefault();
-        console.log(index);
-        if(index < endIndex ){
-//                if(index == 0){
-//                    $('#button-left').css('display', 'none');
-//                    $('#other-resources-container').css('width', '90%');
-//                }
-            index++;
-            visible = 2.969696969696;
-            shift = visible * 265; //was 220px
-            value = "-=" + shift + "px";
-            anim['left'] = value;
-            $item.animate(anim, "fast");
-        }
-    });
-
-    $('.button-left').click(function(event){
-        
-    });
 
     $('#prev-resource').click(function(event){
         event.preventDefault();
