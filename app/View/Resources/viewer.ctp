@@ -293,10 +293,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -310,10 +309,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Greece&quot;>Greece</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -327,10 +325,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Corinthia&quot;>Corinthia</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -345,10 +342,9 @@ var annotateData = {
                                         foreach($project['Geolocation'] as $geolocation) {$text = $text.$geolocation."<br>";}
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_input">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_input"></div>';}
                                 ?>
                                 </td>
@@ -362,10 +358,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Kyras Vrisi&quot;>Kyras Vrisi</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -377,10 +372,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -392,10 +386,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -407,10 +400,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -424,10 +416,9 @@ var annotateData = {
                                         $text = $text . $project[$name]['month'] . "/" . $project[$name]['day'] . "/" . $project[$name]['year'] . " ". $project[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                 ?>
                                 </td>
@@ -441,10 +432,9 @@ var annotateData = {
                                         $text = $text . $project[$name]['month'] . "/" . $project[$name]['day'] . "/" . $project[$name]['year'] . " ". $project[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                 ?>
                                 </td>
@@ -460,10 +450,9 @@ var annotateData = {
                                     $options = '<option value=&quot;The Ohio State University Excavations at Isthmia Archives&quot;>The Ohio State University Excavations at Isthmia Archives</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -475,10 +464,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -490,10 +478,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -511,10 +498,9 @@ var annotateData = {
                                         $text = $text . $project[$name]['month'] . "/" . $project[$name]['day'] . "/" . $project[$name]['year'] . " ". $project[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                 ?>
                                 </td>
@@ -531,10 +517,9 @@ var annotateData = {
                                         $text = $text . $project[$name]['month'] . "/" . $project[$name]['day'] . "/" . $project[$name]['year'] . " ". $project[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                 ?>
                                 </td>
@@ -551,10 +536,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Bronze Age&quot;>Bronze Age</option><option value=&quot;Geometric&quot;>Geometric</option><option value=&quot;Archaic&quot;>Archaic</option><option value=&quot;Classical&quot;>Classical</option><option value=&quot;Hellenistic&quot;>Hellenistic</option><option value=&quot;Roman&quot;>Roman</option><option value=&quot;Late Roman/Byzantine&quot;>Late Roman/Byzantine</option><option value=&quot;Frankish&quot;>Frankish</option><option value=&quot;Ottoman&quot;>Ottoman</option><option value=&quot;Modern&quot;>Modern</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -571,10 +555,9 @@ var annotateData = {
                                     $options = '';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -586,10 +569,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -601,10 +583,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $project )){
                                     $text = $project[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -621,10 +602,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Greek Ministry of Culture&quot;>Greek Ministry of Culture</option><option value=&quot;American School of Classical Studies, Athens&quot;>American School of Classical Studies, Athens</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $project['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($project['kid'], $metadataEdits) && in_array($name, $metadataEdits[$project['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -651,10 +631,9 @@ var annotateData = {
                                         foreach($season[$name] as $associator) { $text = $text.$associator."<br>";}
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
                                 ?>
                                 </td>
@@ -665,10 +644,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $season )){
                                     $text = $season[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -684,10 +662,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Excavation&quot;>Excavation</option><option value=&quot;Study&quot;>Study</option><option value=&quot;Survey&quot;>Survey</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -703,10 +680,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Broneer, Oscar&quot;>Broneer, Oscar</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -722,10 +698,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;&quot;></option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -741,10 +716,9 @@ var annotateData = {
                                     $options = '<option value=&quot;University of California, Los Angeles&quot;>University of California, Los Angeles</option><option value=&quot;Ohio State University&quot; selected=&quot;selected&quot;>Ohio State University</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -758,10 +732,9 @@ var annotateData = {
                                         $text = $text . $season[$name]['month'] . "/" . $season[$name]['day'] . "/" . $season[$name]['year'] . " ". $season[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                 ?>
                                 </td>
@@ -775,10 +748,9 @@ var annotateData = {
                                         $text = $text . $season[$name]['month'] . "/" . $season[$name]['day'] . "/" . $season[$name]['year'] . " ". $season[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                 ?>
                                 </td>
@@ -795,10 +767,9 @@ var annotateData = {
                                         $text = $text . $season[$name]['month'] . "/" . $season[$name]['day'] . "/" . $season[$name]['year'] . " ". $season[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                 ?>
                                 </td>
@@ -815,10 +786,9 @@ var annotateData = {
                                         $text = $text . $season[$name]['month'] . "/" . $season[$name]['day'] . "/" . $season[$name]['year'] . " ". $season[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                 ?>
                                 </td>
@@ -829,10 +799,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $season )){
                                     $text = $season[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -845,10 +814,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -864,10 +832,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -880,10 +847,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -899,10 +865,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -915,10 +880,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -934,10 +898,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -950,10 +913,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -969,10 +931,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -985,10 +946,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1004,10 +964,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -1020,10 +979,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1039,10 +997,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -1055,10 +1012,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1074,10 +1030,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -1090,10 +1045,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1109,10 +1063,42 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $season['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Contributor</td>
+                                <td<?php $name = "Contributor 9";
+                                if( array_key_exists( $name, $season )){
+                                    $text = $season[$name];
+                                    $options = '<option value=&quot;Berry, Rachel&quot;>Berry, Rachel</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M&quot;>Frey, Jon M</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Bauslaugh, R.&quot;>Bauslaugh, R.</option><option value=&quot;Bleistein, C.&quot;>Bleistein, C.</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;Gais, R.&quot;>Gais, R.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                        '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Contributor Role</td>
+                                <td<?php $name = "Contributor Role 9";
+                                if( array_key_exists( $name, $season )){
+                                    $text = '';
+                                    if( !is_string($season[$name]) ){
+                                        foreach( $season[$name] as $value) { $text = $text.$value."<br>";}
+                                    }
+                                    $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Database Manager&quot;>Database Manager</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavation Unit Supervisor&quot;>Excavation Unit Supervisor</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Mapping Technician&quot;>Mapping Technician</option><option value=&quot;Materials Analyst&quot;>Materials Analyst</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Remote Sensing Technician&quot;>Remote Sensing Technician</option><option value=&quot;Student&quot;>Student</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Surveyor&quot;>Surveyor</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                        '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($season['kid'], $metadataEdits) && in_array($name, $metadataEdits[$season['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -1157,10 +1143,9 @@ var annotateData = {
                                                     foreach($survey[$name] as $associator) { $text = $text.$associator."<br>";}
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
                                             ?>
                                             </td>
@@ -1171,10 +1156,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $survey )){
                                                 $text = $survey[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1187,10 +1171,9 @@ var annotateData = {
                                                 $options = '<option value=&quot;Trench&quot;>Trench</option><option value=&quot;Survey&quot;>Survey</option><option value=&quot;Study/Lab&quot;>Study/Lab</option>';
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                             '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                             ?>
                                             </td>
@@ -1206,10 +1189,9 @@ var annotateData = {
                                                 $options = '<option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Frey, Jon M.&quot;>Frey, Jon M.</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Wilson, David&quot;>Wilson, David</option>';
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                             '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                             ?>
                                             </td>
@@ -1223,10 +1205,9 @@ var annotateData = {
                                                     $text = $text . $survey[$name]['month'] . "/" . $survey[$name]['day'] . "/" . $survey[$name]['year'] . " ". $survey[$name]['era'];
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                             ?>
                                             </td>
@@ -1240,10 +1221,9 @@ var annotateData = {
                                                     $text = $text . $survey[$name]['month'] . "/" . $survey[$name]['day'] . "/" . $survey[$name]['year'] . " ". $survey[$name]['era'];
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                             ?>
                                             </td>
@@ -1260,10 +1240,9 @@ var annotateData = {
                                                     $text = $text . $survey[$name]['month'] . "/" . $survey[$name]['day'] . "/" . $survey[$name]['year'] . " ". $survey[$name]['era'];
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                             ?>
                                             </td>
@@ -1280,10 +1259,9 @@ var annotateData = {
                                                     $text = $text . $survey[$name]['month'] . "/" . $survey[$name]['day'] . "/" . $survey[$name]['year'] . " ". $survey[$name]['era'];
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                             ?>
                                             </td>
@@ -1294,10 +1272,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $survey )){
                                                 $text = $survey[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1308,10 +1285,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $survey )){
                                                 $text = $survey[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1322,10 +1298,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $survey )){
                                                 $text = $survey[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1336,10 +1311,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $survey )){
                                                 $text = $survey[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $survey['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($survey['kid'], $metadataEdits) && in_array($name, $metadataEdits[$survey['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1377,10 +1351,9 @@ var annotateData = {
                                         foreach($resource[$name] as $associator) { $text = $text.$associator."<br>";}
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
                                 ?>
                                 </td>
@@ -1394,10 +1367,9 @@ var annotateData = {
                                         foreach($resource[$name] as $associator) { $text = $text.$associator."<br>";}
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
                                 ?>
                                 </td>
@@ -1408,10 +1380,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1425,10 +1396,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Drawing&quot;>Drawing</option><option value=&quot;Field journal&quot;>Field journal</option><option value=&quot;Inventory card&quot;>Inventory card</option><option value=&quot;Photograph&quot;>Photograph</option><option value=&quot;Photographic negative&quot;>Photographic negative</option><option value=&quot;Plan or elevation&quot;>Plan or elevation</option><option value=&quot;Report&quot;>Report</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1440,10 +1410,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1456,10 +1425,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1482,10 +1450,9 @@ var annotateData = {
                                                     '<option value=&quot;Rudrick, Anna M.&quot;>Rudrick, Anna M.</option><option value=&quot;Sarefield, Daniel&quot;>Sarefield, Daniel</option><option value=&quot;Sasel, Marjeta&quot;>Sasel, Marjeta</option><option value=&quot;Schaar, Kenneth W.&quot;>Schaar, Kenneth W.</option><option value=&quot;Scott, Ruth&quot;>Scott, Ruth</option><option value=&quot;Semeli S.&quot;>Semeli S.</option><option value=&quot;Shaw, Joseph W.&quot;>Shaw, Joseph W.</option><option value=&quot;Silberberg, Susan R.&quot;>Silberberg, Susan R.</option><option value=&quot;Snively, Carolyn&quot;>Snively, Carolyn</option><option value=&quot;Stein, Carol A.&quot;>Stein, Carol A.</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tache, Hannah&quot;>Tache, Hannah</option><option value=&quot;Thorne, Margaret MacVeagh&quot;>Thorne, Margaret MacVeagh</option><option value=&quot;Thorne, Stuart E.&quot;>Thorne, Stuart E.</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Vernon, Catherine&quot;>Vernon, Catherine</option><option value=&quot;von Sternberg, Meri&quot;>von Sternberg, Meri</option><option value=&quot;Walker, B.&quot;>Walker, B.</option><option value=&quot;Walters, Elizabeth J.&quot;>Walters, Elizabeth J.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option><option value=&quot;Wittman, Barbara&quot;>Wittman, Barbara</option><option value=&quot;Wittmann, Barbara K.&quot;>Wittmann, Barbara K.</option><option value=&quot;Wohl, Birgitta&quot;>Wohl, Birgitta</option><option value=&quot;Zidar, Charles M.&quot;>Zidar, Charles M.</option><option value=&quot;Zuckerman, T. B.&quot;>Zuckerman, T. B.</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -1502,10 +1469,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Registrar&quot;>Registrar</option><option value=&quot;Field Coordinator&quot;>Field Coordinator</option><option value=&quot;Draftsman&quot;>Draftsman</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                 ?>
                                 </td>
@@ -1520,10 +1486,9 @@ var annotateData = {
                                         $text = $text . $resource[$name]['month'] . "/" . $resource[$name]['day'] . "/" . $resource[$name]['year'] . " ". $resource[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
                                 ?>
                                 </td>
@@ -1535,10 +1500,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1550,10 +1514,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1565,10 +1528,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1582,10 +1544,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Good&quot;>Good</option><option value=&quot;Fair&quot;>Fair</option><option value=&quot;Poor&quot;>Poor</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1599,10 +1560,9 @@ var annotateData = {
                                     $options = '<option value=&quot;Closed&quot;>Closed</option><option value=&quot;Metadata&quot;>Metadata</option><option value=&quot;Metadata and digital file&quot; selected=&quot;selected&quot;>Metadata and digital file</option>';
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                 '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                 ?>
                                 </td>
@@ -1614,10 +1574,9 @@ var annotateData = {
                                 if( array_key_exists( $name, $resource )){
                                     $text = $resource[$name];
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                    foreach($metadataEdits as $value) {
-                                        if( $value['metadata_kid'] == $resource['kid'] && $value['field_name'] == $name){
-                                            $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                        }} echo $string;
+                                    if( array_key_exists($resource['kid'], $metadataEdits) && in_array($name, $metadataEdits[$resource['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
                                 }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                 ?>
                                 </td>
@@ -1662,10 +1621,9 @@ var annotateData = {
                                                     foreach($subjects['Pages Associator'] as $page_associator) { $text = $text.$page_associator."<br>";}
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
                                             ?>
                                             </td>
@@ -1676,10 +1634,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $subjects )){
                                                 $text = $subjects[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1693,10 +1650,9 @@ var annotateData = {
                                                     foreach($subjects[$name] as $subject_associator) {$text = $text.$subject_associator."<br>";}
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
                                             ?>
                                             </td>
@@ -1709,10 +1665,9 @@ var annotateData = {
                                                 $options = '<option value=&quot;Arrentine&quot;>Arrentine</option><option value=&quot;Black Figure&quot;>Black Figure</option><option value=&quot;Candarli&quot;>Candarli</option><option value=&quot;Coarseware&quot;>Coarseware</option><option value=&quot;Corinthian&quot;>Corinthian</option><option value=&quot;Diamond shaped&quot;>Diamond shaped</option><option value=&quot;Doric&quot;>Doric</option><option value=&quot;Eastern Sigillata A&quot;>Eastern Sigillata A</option><option value=&quot;Eastern Sigillata B&quot;>Eastern Sigillata B</option><option value=&quot;Fineware&quot;>Fineware</option><option value=&quot;Floor tile&quot;>Floor tile</option><option value=&quot;Hydraulic&quot;>Hydraulic</option><option value=&quot;Imitation&quot;>Imitation</option><option value=&quot;Ionic&quot;>Ionic</option><option value=&quot;Kitchen ware&quot;>Kitchen ware</option><option value=&quot;Megarian&quot;>Megarian</option><option value=&quot;Micaceous&quot;>Micaceous</option><option value=&quot;Miniature&quot;>Miniature</option><option value=&quot;Non-rotary&quot;>Non-rotary</option><option value=&quot;Opus Sectile&quot;>Opus Sectile</option><option value=&quot;Plain ware&quot;>Plain ware</option><option value=&quot;Polygonal&quot;>Polygonal</option><option value=&quot;Pompeian Red&quot;>Pompeian Red</option><option value=&quot;Pontic Ware&quot;>Pontic Ware</option><option value=&quot;Red Figure&quot;>Red Figure</option><option value=&quot;Sgraffito&quot;>Sgraffito</option><option value=&quot;Slavic&quot;>Slavic</option><option value=&quot;Unknown&quot;>Unknown</option>';
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                             '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
                                             ?>
                                             </td>
@@ -1729,10 +1684,9 @@ var annotateData = {
                                                                 '<option value=&quot;Plate&quot;>Plate</option><option value=&quot;Polishing stone&quot;>Polishing stone</option><option value=&quot;Pot&quot;>Pot</option><option value=&quot;Pyxis&quot;>Pyxis</option><option value=&quot;Rain spout&quot;>Rain spout</option><option value=&quot;Relief&quot;>Relief</option><option value=&quot;Revetment&quot;>Revetment</option><option value=&quot;Rim&quot;>Rim</option><option value=&quot;Ring&quot;>Ring</option><option value=&quot;Ring foot&quot;>Ring foot</option><option value=&quot;Rooftile&quot;>Rooftile</option><option value=&quot;Rubble&quot;>Rubble</option><option value=&quot;Sample&quot;>Sample</option><option value=&quot;Scotia&quot;>Scotia</option><option value=&quot;Sculpture&quot;>Sculpture</option><option value=&quot;Sima&quot;>Sima</option><option value=&quot;Skyphos&quot;>Skyphos</option><option value=&quot;Spindle whorl&quot;>Spindle whorl</option><option value=&quot;Stewpot&quot;>Stewpot</option><option value=&quot;Stopper&quot;>Stopper</option><option value=&quot;Strap&quot;>Strap</option><option value=&quot;Stucco&quot;>Stucco</option><option value=&quot;Tablewear&quot;>Tablewear</option><option value=&quot;Tegula mammata&quot;>Tegula mammata</option><option value=&quot;Tessera&quot;>Tessera</option><option value=&quot;Tile&quot;>Tile</option><option value=&quot;Toe&quot;>Toe</option><option value=&quot;Top&quot;>Top</option><option value=&quot;Torus&quot;>Torus</option><option value=&quot;Trefoil&quot;>Trefoil</option><option value=&quot;Tube&quot;>Tube</option><option value=&quot;Unguentarium&quot;>Unguentarium</option><option value=&quot;Vessel&quot;>Vessel</option><option value=&quot;Votive&quot;>Votive</option><option value=&quot;Wall&quot;>Wall</option><option value=&quot;Water Jar&quot;>Water Jar</option><option value=&quot;Wire&quot;>Wire</option>';
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                             '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                             ?>
                                             </td>
@@ -1749,10 +1703,9 @@ var annotateData = {
                                                     $text = $text . $subjects[$name]['month'] . "/" . $subjects[$name]['day'] . "/" . $subjects[$name]['year'] . " ". $subjects[$name]['era'];
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                             ?>
                                             </td>
@@ -1769,10 +1722,9 @@ var annotateData = {
                                                     $text = $text . $subjects[$name]['month'] . "/" . $subjects[$name]['day'] . "/" . $subjects[$name]['year'] . " ". $subjects[$name]['era'];
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus"></div>';}
                                             ?>
                                             </td>
@@ -1783,10 +1735,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $subjects )){
                                                 $text = $subjects[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1800,10 +1751,9 @@ var annotateData = {
                                                     foreach( $subjects[$name] as $geolocation) { $text = $text.$geolocation."<br>";}
                                                 }
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_input">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_input"></div>';}
                                             ?>
                                             </td>
@@ -1820,10 +1770,9 @@ var annotateData = {
                                                             '<option value=&quot;Trench 2008-2&quot;>Trench 2008-2</option><option value=&quot;Trench 2008-3&quot;>Trench 2008-3</option><option value=&quot;Trench 2008-4&quot;>Trench 2008-4</option><option value=&quot;Trench 2009-1&quot;>Trench 2009-1</option><option value=&quot;Trench 2009-2&quot;>Trench 2009-2</option><option value=&quot;Trench 2009-3&quot;>Trench 2009-3</option><option value=&quot;Trench 2010-1&quot;>Trench 2010-1</option><option value=&quot;Trench 2010-2&quot;>Trench 2010-2</option><option value=&quot;Trench 2010-3&quot;>Trench 2010-3</option><option value=&quot;Trench 2010-4&quot;>Trench 2010-4</option><option value=&quot;Trench 2010-5&quot;>Trench 2010-5</option><option value=&quot;Trench 2011-1&quot;>Trench 2011-1</option><option value=&quot;Trench 2011-2&quot;>Trench 2011-2</option><option value=&quot;Trench 2011-3&quot;>Trench 2011-3</option><option value=&quot;Trench 2011-4&quot;>Trench 2011-4</option><option value=&quot;Trench 2011-5&quot;>Trench 2011-5</option><option value=&quot;Trench GB-70-1&quot;>Trench GB-70-1</option><option value=&quot;Trench GB-70-2&quot;>Trench GB-70-2</option><option value=&quot;Trench GB-70-3&quot;>Trench GB-70-3</option><option value=&quot;Trench GB-70-4&quot;>Trench GB-70-4</option><option value=&quot;Trench GB-70-5&quot;>Trench GB-70-5</option><option value=&quot;Trench GB-70-6&quot;>Trench GB-70-6</option><option value=&quot;Trench GB-70-7&quot;>Trench GB-70-7</option><option value=&quot;Trench GB-70-8&quot;>Trench GB-70-8</option><option value=&quot;Trench GB-70-9&quot;>Trench GB-70-9</option><option value=&quot;Trench GB-70-10&quot;>Trench GB-70-10</option><option value=&quot;Surface Find&quot;>Surface Find</option>';
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                             '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                             ?>
                                             </td>
@@ -1834,10 +1783,9 @@ var annotateData = {
                                             if( array_key_exists( $name, $subjects )){
                                                 $text = $subjects[$name];
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
                                             ?>
                                             </td>
@@ -1854,10 +1802,9 @@ var annotateData = {
                                                             "<option value=&quot;Loukos&quot;>Loukos</option><option value=&quot;Loukos Dump&quot;>Loukos Dump</option><option value=&quot;Loukos Grave&quot;>Loukos Grave</option><option value=&quot;N of T1 Wall&quot;>N of T1 Wall</option><option value=&quot;National Road&quot;>National Road</option><option value=&quot;North Drain&quot;>North Drain</option><option value=&quot;Northeast Gate&quot;>Northeast Gate</option><option value=&quot;Northwest Gate&quot;>Northwest Gate</option><option value=&quot;Northwest Precinct&quot;>Northwest Precinct</option><option value=&quot;Northwest Reservoir&quot;>Northwest Reservoir</option><option value=&quot;Roman Bath&quot;>Roman Bath</option><option value=&quot;Sanctuary of Poseidon&quot;>Sanctuary of Poseidon</option><option value=&quot;South Gate&quot;>South Gate</option><option value=&quot;Stadium&quot;>Stadium</option><option value=&quot;Stray Find&quot;>Stray Find</option><option value=&quot;Surface Find&quot;>Surface Find</option><option value=&quot;Temple&quot;>Temple</option><option value=&quot;Theater&quot;>Theater</option><option value=&quot;Theater Court&quot;>Theater Court</option><option value=&quot;Theater Court 2&quot;>Theater Court 2</option><option value=&quot;Tower 2&quot;>Tower 2</option><option value=&quot;Tower 5&quot;>Tower 5</option><option value=&quot;Tower 6&quot;>Tower 6</option><option value=&quot;Tower 10&quot;>Tower 10</option><option value=&quot;Tower 14&quot;>Tower 14</option><option value=&quot;Tower 15&quot;>Tower 15</option><option value=&quot;West Cemetery&quot;>West Cemetery</option><option value=&quot;Theatre&quot;>Theatre</option><option value=&quot;Area Southwest of Stadium&quot;>Area Southwest of Stadium</option><option value=&quot;Northwest of Temple&quot;>Northwest of Temple</option><option value=&quot;Unknown&quot;>Unknown</option><option value=&quot;Tower 18&quot;>Tower 18</option><option value=&quot;Dump: 1969-72&quot;>Dump: 1969-72</option><option value=&quot;Justinian's Fortress Tower 14&quot;>Justinian's Fortress Tower 14</option><option value=&quot;Justinian's Fortress&quot;>Justinian's Fortress</option><option value=&quot;Justinian's Wall Tower 14&quot;>Justinian's Wall Tower 14</option><option value=&quot;Surface&quot;>Surface</option><option value=&quot;Ionic Base&quot;>Ionic Base</option><option value=&quot;Fortress Tower 15&quot;>Fortress Tower 15</option><option value=&quot;Fortress Tower 2&quot;>Fortress Tower 2</option><option value=&quot;Agios Vasilios&quot;>Agios Vasilios</option><option value=&quot;Site&quot;>Site</option><option value=&quot;North of Temple&quot;>North of Temple</option><option value=&quot;Area North of Temple&quot;>Area North of Temple</option><option value=&quot;Gate&quot;>Gate</option>";
                                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
                                                             '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
-                                                foreach($metadataEdits as $value) {
-                                                    if( $value['metadata_kid'] == $subjects['kid'] && $value['field_name'] == $name){
-                                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>'; break;
-                                                    }} echo $string;
+                                                if( array_key_exists($subjects['kid'], $metadataEdits) && in_array($name, $metadataEdits[$subjects['kid']], true) ){
+                                                    $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                                } echo $string;
                                             }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
                                             ?>
                                             </td>

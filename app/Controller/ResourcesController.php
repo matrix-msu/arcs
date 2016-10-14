@@ -348,8 +348,19 @@ class ResourcesController extends AppController {
         $sql = "SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = '".decbin(0)."'";
         $result = $mysqli->query($sql);
         $metadataedits = [];
-        while($row = mysqli_fetch_assoc($result))
-            $metadataedits[] = array('field_name' => $row['field_name'], 'metadata_kid' => $row['metadata_kid']);
+        while($row = mysqli_fetch_assoc($result)) {
+
+            //update and existing array.
+            if( array_key_exists($row['metadata_kid'], $metadataedits) ){
+                $valueArray = $metadataedits[$row['metadata_kid']];
+                $valueArray[] = $row['field_name'];
+                $metadataedits[$row['metadata_kid']] = $valueArray;
+
+            }else{//create new array.
+                $metadataedits[$row['metadata_kid']] = array($row['field_name']);
+            }
+
+        }
         return $metadataedits;
     }
 

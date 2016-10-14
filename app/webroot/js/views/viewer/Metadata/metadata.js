@@ -797,11 +797,29 @@ $(document).ready(function () {
         $(this).each(
             function(){
                 // if the td elements contain any input tag
-                if ($(this).find('textarea').length || metadataIsSelected == 1 || editBtnClick == 0){
+                if ($(this).find('textarea').length || $(this).find('select').length || editBtnClick == 0){
                     // sets the text content of the tag equal to the value of the input
                     //$(this).text($(this).find('input').val());
-                }
-                else {
+                }else {
+                    if(metadataIsSelected == 1){
+                        var id = $("#meta_textarea").parent().children("div").eq(0).text();
+                        var text = $("#meta_textarea").text();
+                        if( meta_options == '' ){
+                            if( meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' ) ){
+                                meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
+                            }
+                            var fill = '<div id="'+meta_field_name+'" data-control="'+meta_control_type+'">'+meta_value_before+"</div>";
+                        }else{
+                            meta_options = meta_options.replace(/["]+/g, '&quot;');
+                            //console.log(meta_options);
+                            if( meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' ) ){
+                                meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
+                            }
+                            var fill = '<div id="'+meta_field_name+'" data-control="'+meta_control_type+'" data-options="'+meta_options+'">'+meta_value_before+"</div>";
+                        }
+                        $("#meta_textarea").parent().replaceWith(fill);
+                        metadataIsSelected = 0;
+                    }
                     // removes the text, appends an input and sets the value to the text-value
                     meta_field_name = $(this).children('div').eq(1).attr('id');
                     meta_control_type = $(this).children('div').eq(1).attr('data-control');
