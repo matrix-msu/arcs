@@ -273,6 +273,7 @@ var resourceKid = "";//"<?php  ?> ";
                     Generate_Metadata("project",$projects, $metadataEdits);
                     Generate_Metadata("Seasons",$seasons, $metadataEdits);
                     Generate_Metadata("excavations",$excavations, $metadataEdits);
+                    Generate_Metadata("archival objects",$resources, $metadataEdits);
                     Generate_Metadata("subjects",$subjects, $metadataEdits);
                 ?>
                 </div>
