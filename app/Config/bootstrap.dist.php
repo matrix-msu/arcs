@@ -71,8 +71,14 @@ define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
 
 
-
+//Edit 3
+////////////////////////////////////////////////////
 define("globaljsvars",
-		"<script type='text/javascript'>" .
+	"<script type='text/javascript'>" .
 	"var BASE_URL ='".BASE_URL."';" .
+	"var PROJECT_SID ='".PROJECT_SID."';" .
+	"var SEASON_SID ='".SEASON_SID."';" .
+	"var RESOURCE_SID ='".RESOURCE_SID."';" .
+	"var SUBJECT_SID ='".SUBJECT_SID."';" .
+	"var SURVEY_SID ='".SURVEY_SID."';" .
 	"</script>");
