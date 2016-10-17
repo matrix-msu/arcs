@@ -24,7 +24,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
 
             <div class="level-content smaller">
 
-                <table id="<?=$schemename . $counter?>">
+                <table id="<?=$schemename . $counter?>" data-scheme="<?=$schemename?>" data-kid="<?=$array['kid']?>">
 
                     <?php
                         //-----------------------------------------------------------------------------
@@ -1031,7 +1031,251 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                 </td>
                             </tr>
 
-
+                    <?php
+                        //------------------------------------------------------------------------------------------
+                        }elseif( $schemename == 'archival objects' ) {
+                    ?>
+                    
+                            <tr>
+                                <td>Excavation - Survey Associator</td>
+                                <td<?php $name = "Excavation - Survey Associator";
+                                if( array_key_exists( $name, $array ) ){
+                                    $text = '';
+                                    if( !is_string($array[$name]) ){
+                                        foreach($array[$name] as $associator) { $text = $text.$associator."<br>";}
+                                    }
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Season Associator</td>
+                                <td<?php $name = "Season Associator";
+                                if( array_key_exists( $name, $array ) ){
+                                    $text = '';
+                                    if( !is_string($array[$name]) ){
+                                        foreach($array[$name] as $associator) { $text = $text.$associator."<br>";}
+                                    }
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="associator"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Resource Identifier</td>
+                                <td<?php $name = "Resource Identifier";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Type</td>
+                                <td<?php $name = "Type";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $options = '<option value=&quot;Drawing&quot;>Drawing</option><option value=&quot;Field journal&quot;>Field journal</option><option value=&quot;Inventory card&quot;>Inventory card</option><option value=&quot;Photograph&quot;>Photograph</option><option value=&quot;Photographic negative&quot;>Photographic negative</option><option value=&quot;Plan or elevation&quot;>Plan or elevation</option><option value=&quot;Report&quot;>Report</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                                '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Title</td>
+                                <td<?php $name = "Title";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <?php if ($array['Sub-title'] != null) {?>
+                            <tr>
+                                <td>Sub-Title</td>
+                                <td<?php $name = "Sub-title";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+                            <?php } ?>
+        
+                            <tr>
+                                <td>Creator</td>
+                                <td<?php $name = "Creator";
+                                if( array_key_exists( $name, $array ) ){
+                                    $text = '';
+                                    if( !is_string($array[$name]) ){
+                                        foreach($array['Creator'] as $creator) {$text = $text.$creator.'<br>'; }
+                                    }
+                                    $options = '<option value=&quot;Anderson, Candace E.&quot;>Anderson, Candace E.</option><option value=&quot;Barletta, Barbara&quot;>Barletta, Barbara</option><option value=&quot;Batcheller, James&quot;>Batcheller, James</option><option value=&quot;Bauslaugh, Robert&quot;>Bauslaugh, Robert</option><option value=&quot;Blackmore, Judy&quot;>Blackmore, Judy</option><option value=&quot;Bleistein, Charlene&quot;>Bleistein, Charlene</option><option value=&quot;Bogle, Cynthia&quot;>Bogle, Cynthia</option><option value=&quot;Bolas, B.&quot;>Bolas, B.</option><option value=&quot;Bolas, Barbara&quot;>Bolas, Barbara</option><option value=&quot;Bowman, Michael&quot;>Bowman, Michael</option><option value=&quot;Broneer, Oscar&quot;>Broneer, Oscar</option><option value=&quot;Brunner, Judith&quot;>Brunner, Judith</option><option value=&quot;Camp II, John&quot;>Camp II, John</option><option value=&quot;Camp, Margot&quot;>Camp, Margot</option><option value=&quot;Card, Sandra&quot;>Card, Sandra</option><option value=&quot;Carpenter, J. D.&quot;>Carpenter, J. D.</option><option value=&quot;Cassimatis, Maria&quot;>Cassimatis, Maria</option><option value=&quot;Clement, Paul&quot;>Clement, Paul</option><option value=&quot;Cummer, W. Wilson&quot;>Cummer, W. Wilson</option><option value=&quot;DeForest, Dallas&quot;>DeForest, Dallas</option><option value=&quot;Dinsmoor, Jr., William Bell&quot;>Dinsmoor, Jr., William Bell</option><option value=&quot;Downs, Joanie&quot;>Downs, Joanie</option><option value=&quot;Farnsworth, Marie&quot;>Farnsworth, Marie</option><option value=&quot;Feder, Debbie&quot;>Feder, Debbie</option>'.
+                                                    '<option value=&quot;Frankhauser, Sarah&quot;>Frankhauser, Sarah</option><option value=&quot;Frey, Jon M.&quot;>Frey, Jon M.</option><option value=&quot;Gais, Ruth&quot;>Gais, Ruth</option>'.
+                                                    '<option value=&quot;Giesen, Myra J.&quot;>Giesen, Myra J.</option><option value=&quot;Gill, Alyson A.&quot;>Gill, Alyson A.</option><option value=&quot;Greenberg, Barbara Bolas&quot;>Greenberg, Barbara Bolas</option><option value=&quot;Gregory, Adelia E.&quot;>Gregory, Adelia E.</option><option value=&quot;Gregory, Timothy E.&quot;>Gregory, Timothy E.</option><option value=&quot;Grigoryan, Anait&quot;>Grigoryan, Anait</option><option value=&quot;Guven, Suna&quot;>Guven, Suna</option><option value=&quot;Harris, A.&quot;>Harris, A.</option><option value=&quot;Hartswick, Kim J.&quot;>Hartswick, Kim J.</option><option value=&quot;Howell, Jesse&quot;>Howell, Jesse</option><option value=&quot;Hull, Don&quot;>Hull, Don</option><option value=&quot;Hull, Susan&quot;>Hull, Susan</option><option value=&quot;Jacoby, Tom&quot;>Jacoby, Tom</option><option value=&quot;Jameson, Matthew&quot;>Jameson, Matthew</option><option value=&quot;Johnson, Matthew&quot;>Johnson, Matthew</option>'.
+                                                    '<option value=&quot;Kaljakin, Tania&quot;>Kaljakin, Tania</option><option value=&quot;Kallemeyer, Susan&quot;>Kallemeyer, Susan</option><option value=&quot;Kardulias, P. Nick&quot;>Kardulias, P. Nick</option><option value=&quot;Kaye, Kenneth&quot;>Kaye, Kenneth</option><option value=&quot;Keating, Richard&quot;>Keating, Richard</option><option value=&quot;Kieit, S.&quot;>Kieit, S.</option><option value=&quot;Kouvaris, Michael S.&quot;>Kouvaris, Michael S.</option><option value=&quot;Lanham, Carol&quot;>Lanham, Carol</option><option value=&quot;Leander-Touati, Anne-Marie&quot;>Leander-Touati, Anne-Marie</option><option value=&quot;Lease, L.&quot;>Lease, L.</option><option value=&quot;Liddle, G.&quot;>Liddle, G.</option><option value=&quot;Lindros-Wohl, Birgitta&quot;>Lindros-Wohl, Birgitta</option><option value=&quot;Long, Andrea&quot;>Long, Andrea</option><option value=&quot;Luongo, C.&quot;>Luongo, C.</option><option value=&quot;Marty, Jeanne M.&quot;>Marty, Jeanne M.</option>'.
+                                                    '<option value=&quot;McCaslin, Dan&quot;>McCaslin, Dan</option><option value=&quot;McClure, Robert&quot;>McClure, Robert</option><option value=&quot;McGrew, Ellen&quot;>McGrew, Ellen</option><option value=&quot;Mitchell, Maria&quot;>Mitchell, Maria</option><option value=&quot;Moore, Allen&quot;>Moore, Allen</option><option value=&quot;Moore, Debra W.&quot;>Moore, Debra W.</option><option value=&quot;Mucha, Ashley E.&quot;>Mucha, Ashley E.</option><option value=&quot;Nash, Scott&quot;>Nash, Scott</option><option value=&quot;Nicols, John&quot;>Nicols, John</option><option value=&quot;Okin, Louis&quot;>Okin, Louis</option><option value=&quot;Pallas, Demetrios&quot;>Pallas, Demetrios</option><option value=&quot;Pattengale, Jerry&quot;>Pattengale, Jerry</option><option value=&quot;Peirce, Sarah&quot;>Peirce, Sarah</option><option value=&quot;Peppers, Anne Beaton&quot;>Peppers, Anne Beaton</option><option value=&quot;Peppers, James&quot;>Peppers, James</option><option value=&quot;Peppers, Jeanne Marty&quot;>Peppers, Jeanne Marty</option><option value=&quot;Pettegrew, David&quot;>Pettegrew, David</option><option value=&quot;Pettegrew, Kate&quot;>Pettegrew, Kate</option><option value=&quot;Pierce, Charles&quot;>Pierce, Charles</option><option value=&quot;Platz, Ralph&quot;>Platz, Ralph</option><option value=&quot;Pollak, Barbara A.&quot;>Pollak, Barbara A.</option><option value=&quot;Porter, Alexander&quot;>Porter, Alexander</option><option value=&quot;Rife, Joseph L.&quot;>Rife, Joseph L.</option><option value=&quot;Rothaus, Richard M.&quot;>Rothaus, Richard M.</option>'.
+                                                    '<option value=&quot;Rudrick, Anna M.&quot;>Rudrick, Anna M.</option><option value=&quot;Sarefield, Daniel&quot;>Sarefield, Daniel</option><option value=&quot;Sasel, Marjeta&quot;>Sasel, Marjeta</option><option value=&quot;Schaar, Kenneth W.&quot;>Schaar, Kenneth W.</option><option value=&quot;Scott, Ruth&quot;>Scott, Ruth</option><option value=&quot;Semeli S.&quot;>Semeli S.</option><option value=&quot;Shaw, Joseph W.&quot;>Shaw, Joseph W.</option><option value=&quot;Silberberg, Susan R.&quot;>Silberberg, Susan R.</option><option value=&quot;Snively, Carolyn&quot;>Snively, Carolyn</option><option value=&quot;Stein, Carol A.&quot;>Stein, Carol A.</option><option value=&quot;Swain, Brian&quot;>Swain, Brian</option><option value=&quot;Tache, Hannah&quot;>Tache, Hannah</option><option value=&quot;Thorne, Margaret MacVeagh&quot;>Thorne, Margaret MacVeagh</option><option value=&quot;Thorne, Stuart E.&quot;>Thorne, Stuart E.</option><option value=&quot;Tzortzoupolou-Gregory, Lita&quot;>Tzortzoupolou-Gregory, Lita</option><option value=&quot;Vernon, Catherine&quot;>Vernon, Catherine</option><option value=&quot;von Sternberg, Meri&quot;>von Sternberg, Meri</option><option value=&quot;Walker, B.&quot;>Walker, B.</option><option value=&quot;Walters, Elizabeth J.&quot;>Walters, Elizabeth J.</option><option value=&quot;Wilson, David&quot;>Wilson, David</option><option value=&quot;Wittman, Barbara&quot;>Wittman, Barbara</option><option value=&quot;Wittmann, Barbara K.&quot;>Wittmann, Barbara K.</option><option value=&quot;Wohl, Birgitta&quot;>Wohl, Birgitta</option><option value=&quot;Zidar, Charles M.&quot;>Zidar, Charles M.</option><option value=&quot;Zuckerman, T. B.&quot;>Zuckerman, T. B.</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                                '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Creator Role</td>
+                                <td<?php $name = "Creator Role";
+                                if( array_key_exists( $name, $array ) ){
+                                    $text = '';
+                                    if( !is_string($array[$name]) ){
+                                        foreach($array[$name] as $role) {$text = $text.$role.'<br>'; }
+                                    }
+                                    $options = '<option value=&quot;Architect&quot;>Architect</option><option value=&quot;Archivist&quot;>Archivist</option><option value=&quot;Assistant Director&quot;>Assistant Director</option><option value=&quot;Conservator&quot;>Conservator</option><option value=&quot;Director&quot;>Director</option><option value=&quot;Excavator&quot;>Excavator</option><option value=&quot;Field Director&quot;>Field Director</option><option value=&quot;Photographer&quot;>Photographer</option><option value=&quot;Student Volunteer&quot;>Student Volunteer</option><option value=&quot;Trench Supervisor&quot;>Trench Supervisor</option><option value=&quot;Registrar&quot;>Registrar</option><option value=&quot;Field Coordinator&quot;>Field Coordinator</option><option value=&quot;Draftsman&quot;>Draftsman</option><option value=&quot;Volunteer&quot;>Volunteer</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                                '<div id="'.$name.'" data-control="multi_select" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="multi_select" data-options="'.$options.'"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Earliest Date</td>
+                                <td<?php $name = "Earliest Date";
+                                if( array_key_exists( $name, $array ) ){
+                                    $text = '';
+                                    if( !is_string($array[$name]) ){
+                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                    }
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Date Range</td>
+                                <td<?php $name = "Date Range";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Description</td>
+                                <td<?php $name = "Description";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Pages</td>
+                                <td<?php $name = "Pages";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Condition</td>
+                                <td<?php $name = "Condition";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $options = '<option value=&quot;Good&quot;>Good</option><option value=&quot;Fair&quot;>Fair</option><option value=&quot;Poor&quot;>Poor</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                                '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Access Level</td>
+                                <td<?php $name = "Access Level";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $options = '<option value=&quot;Closed&quot;>Closed</option><option value=&quot;Metadata&quot;>Metadata</option><option value=&quot;Metadata and digital file&quot; selected=&quot;selected&quot;>Metadata and digital file</option>';
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div>'.
+                                                '<div id="'.$name.'" data-control="list" data-options="'.$options.'">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="list"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+        
+                            <tr>
+                                <td>Accession Number</td>
+                                <td<?php $name = "Accession Number";
+                                if( array_key_exists( $name, $array )){
+                                    $text = $array[$name];
+                                    $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text">'.$text.'</div>';
+                                    if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
+                                        $string = '><div class="icon-meta-lock">&nbsp;</div><div class="metadataEditOpaque" >'.$text.'</div>';
+                                    } echo $string;
+                                }else{echo ' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="text"></div>';}
+                                ?>
+                                </td>
+                            </tr>
+                    
                     <?php
                         //------------------------------------------------------------------------------------------
                         }elseif( $schemename == 'subjects' ) {
