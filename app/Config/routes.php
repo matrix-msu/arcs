@@ -103,6 +103,18 @@
     Router::connect('/collections/titlesAndIds',
         array('controller' => 'collections', 'action' => 'titlesAndIds')
     );
+    Router::connect('/collections/add',
+        array('controller' => 'collections', 'action' => 'add')
+    );
+    Router::connect('/collections/addToExisting',
+        array('controller' => 'collections', 'action' => 'addToExisting')
+    );
+    Router::connect('/collections/editCollection',
+        array('controller' => 'collections', 'action' => 'editCollection')
+    );
+    Router::connect('/collections/deleteResource',
+        array('controller' => 'collections', 'action' => 'deleteResource')
+    );
 ////////////////////////////////////////////////////////////////////////
 # users controller
 ////////////////////////////////////////////////////////////////////////

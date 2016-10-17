@@ -94,6 +94,7 @@ class CollectionsController extends AppController {
                     FROM arcs_dev.collections 
                     WHERE collections.resource_kid ='".$resource_id."';";
             $result = $mysqli->query($sql);
+            $collections = array();
             while($row = mysqli_fetch_assoc($result))
               $collections[] = $row;
             //$response['collection_table_id'] = $collection_table_id;
