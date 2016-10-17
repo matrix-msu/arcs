@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    console.log('start metadata');
+    //console.log('start metadata');
     var isAdmin = ADMIN;
 
     // Annotations
@@ -713,8 +713,8 @@ $( document ).ready(function() {
     //addMetadataEdits();
     //console.log($session);
     function addMetadataEdits() {
-        console.log('add metadata');
-        console.log(meta_scheme_name);
+        //console.log('add metadata');
+        //console.log(meta_scheme_name);
         switch (meta_scheme_name) {
             case "project":
                 meta_scheme_id = PROJECT_SID;
@@ -737,7 +737,7 @@ $( document ).ready(function() {
                 //finds the kid somewhere else
                 break;
         }
-        console.log(meta_scheme_id);
+        //console.log(meta_scheme_id);
         $.ajax({
             url: arcs.baseURL + "metadataedits/add",
             type: "post",
@@ -781,7 +781,7 @@ $( document ).ready(function() {
     var associator_selected = new Array();
 
     $(".metadataEdit").click(function () {
-        console.log("metadataEdit click");
+        //console.log("metadataEdit click");
         $(this).each(
             function () {
                 // if the td elements contain any input tag
@@ -1134,7 +1134,7 @@ $( document ).ready(function() {
     }
 
     $(document).on("click", ".edit-btn", function () {
-        console.log("edit-btn clicked");
+        //console.log("edit-btn clicked");
         $('.metadataEdit').css('cursor', 'default');
         if (editBtnClick != 1) {
             $(this).text("SAVE");
