@@ -706,11 +706,13 @@ class ResourcesController extends AppController {
 
             $season_kid = $this->getFromKey($excavation_array,"Season Associator");
 
+
             //get Season data
             $season_array = $this->getSeason($season_kid);
             $this->pushToArray($season_array, $seasons);
 
             $project_kid = $this->getFromKey($season_array,"Project Associator");
+            $info_array[$resource]['project_kid'] = $project_kid;
 
             //get project array
             $project_array = $this->getProject($project_kid);
@@ -739,7 +741,7 @@ class ResourcesController extends AppController {
         $this->set("subjects", $subjects);
         $this->set("metadataEdits", $metadataedits);
 
-    
+
 
     }
     protected function pushToArray($value, &$array){
