@@ -38,8 +38,8 @@ var resourceKid = "";//"<?php  ?> ";
 <!-- <?=  $this->Html->script("views/viewer/Multi/details.js")  ?> -->
 <?=  $this->Html->script("views/viewer/Multi/resources.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/newResource.js")  ?>
-<!-- <?=  $this->Html->script("views/viewer/Multi/export.js")  ?>
-<?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?> -->
+<?=  $this->Html->script("views/viewer/Multi/export.js")  ?>
+<?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?>
 
 <div class="viewers-container">
 
@@ -397,7 +397,32 @@ var resourceKid = "";//"<?php  ?> ";
       </a>
   </div>
 </div>
-<div id="resources-nav" class = "resource-nav-level">
+<div id="resources-nav" class = "resource-nav-level top-border">
+    <style>
+
+        .select-pointer{
+          position: absolute;
+          top: -16px;
+          left: 0px;
+          width: 0;
+          height: 0;
+          border-left: 26px solid transparent;
+          border-right: 26px solid transparent;
+          border-top: 16px solid #efefef;
+        }
+        .pointer-border{
+          top: -15px;
+          border-left: 26px solid transparent;
+          border-right: 26px solid transparent;
+          border-top: 16px solid rgba(0,0,0,.1);
+        }
+        .top-border{
+          border-top: 1px solid rgba(0,0,0,.1);
+        }
+    </style>
+
+
+
     <div class="button-left" id="button-left">
         <a  id="left-button">
             <img src="../img/arrowLeft-White.svg" height="220px" width="10px" />
@@ -405,7 +430,12 @@ var resourceKid = "";//"<?php  ?> ";
     </div>
 
     <div id="other-resources-container" class = "resource-container-level">
-        <div id="other-resources" style="min-width: <?php  ?> px">
+        <div id="other-resources" class="resource-slider" style="position:relative;">
+          <span class="p-select">
+            <div class="select-pointer pointer-border"></div>
+            <div class="select-pointer"></div>
+          </span>
+
 		<?php  $cnt = 0; ?>
         <?php  foreach($resources as $r):  ?>
 		<?php  $cnt++; ?>
@@ -415,7 +445,7 @@ var resourceKid = "";//"<?php  ?> ";
             $p = isset(array_values($p)[0]['Image Upload']['localName'])?
             array_values($p)[0]['Image Upload']['localName'] : "";
          ?>
-        <a  class='other-resources' href="#">
+        <a class='other-resources' href="#" data-projectKid="<?=$r['project_kid']?>" >
 
             <img id="identifier-<?=$r['kid']?>" class="other-resource" src="<?php echo AppController::smallThumb($p); ?> " height="200px" width="200px"/>
 			<?php if ($cnt ==1) :  ?>
@@ -442,11 +472,6 @@ var resourceKid = "";//"<?php  ?> ";
     </a>
 </div>
 </div>
-
-
-
-
-
 
 
 
