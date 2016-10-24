@@ -268,6 +268,9 @@
     Router::connect('/keywords/common',
         array('controller' => 'keywords', 'action' => 'common')
     );
+    Router::connect('/keywords/deleteKeyword',
+        array('controller' => 'keywords', 'action' => 'deleteKeyword')
+    );
 ////////////////////////////////////////////////////////////////////////
 ##################
 ////////////////////////////////////////////////////////////////////////

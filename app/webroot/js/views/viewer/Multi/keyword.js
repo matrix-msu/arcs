@@ -1,5 +1,28 @@
 $(document).ready(function(){
-    getKeywords();
+
+    var currentPagePicture = '';
+
+    //check if the first page image has loaded and get keywords. if not, wait more
+    function waitForPicture() {
+        if ($('#PageImage').attr('src') == '../img/arcs-preloader.gif') {
+            //console.log('more waiting');
+            setTimeout(function () {
+                waitForPicture();
+            }, 150);
+        }else{
+            if( $('#PageImage').attr('src') != currentPagePicture ) {
+                currentPagePicture = $('#PageImage').attr('src');
+                getKeywords();
+            }
+        }
+    }
+    //wait and kick off the picture checking
+    function startKeywords() {
+        setTimeout(function () {
+            waitForPicture();
+        }, 500);
+    }
+    startKeywords();
 
     function getKeywords() {
         //get the keywords for the current page and update the chosen select thing
@@ -7,11 +30,16 @@ $(document).ready(function(){
         var html4 = '<fieldset class="users-fieldset">';
         html4 += '<select id ="urlAuthor" data-placeholder="Keywords" multiple class="chosen-select" style="width:90%;">';
 
-        var pagesObject = PAGESOBJECT;
+        var resource_kid = $('.resource-container-level').find('.selectedResource').prev().attr('id');
+        resource_kid = resource_kid.replace('identifier-', '');
 
-        var pagesArray = $.map(pagesObject, function(value, index) {
-            return [value];
-        });
+        var PROJECT_KID = RESOURCES[resource_kid]['project_kid'];
+
+        var PAGE_KID = $('#PageImage').attr('src');
+        PAGE_KID = PAGE_KID.split('/');
+        PAGE_KID = PAGE_KID.pop();
+        PAGE_KID = PAGE_KID.split('-');
+        PAGE_KID = PAGE_KID[0]+'-'+PAGE_KID[1]+'-'+PAGE_KID[2];
 
         var keywordArray = [];
 
@@ -21,12 +49,9 @@ $(document).ready(function(){
             url: arcs.baseURL + "keywords/get",
             type: "POST",
             data: {
-                page_kid: pagesArray[parseInt(pageIndex)].kid
+                page_kid: PAGE_KID
             },
             success: function (data) {
-                //console.log("get keyword ajax success");
-                //console.log(data);
-
                 keywordArray = data;
 
                 if( keywordArray instanceof Array ) {
@@ -50,46 +75,39 @@ $(document).ready(function(){
                             url: arcs.baseURL + "keywords/deleteKeyword",
                             type: "POST",
                             data: {
-                                page_kid: pagesArray[parseInt(pageIndex)].kid,
+                                page_kid: PAGE_KID,
                                 project_kid: PROJECT_KID,
                                 keyword: $(e.target).parent().prev().children().eq(0).text()
                             },
                             success: function (data) {
-                                //console.log("keyword delete ajax success");
-                                //console.log(data);
                             }
                         })
                     }
                 });
 
-                //delete with backspace
+                //add new keyword with a comma
                 $(".search-field").on('keyup', "input", function(e) {
-                    //console.log("key up");
-                    //console.log(e.key);
-                    //console.log(e);
                     var id = $(this).val();
                     if( (id == "" || id == ',') && e.key == 'Backspace' ) {
                         //$(".chosen-select").trigger("chosen:updated");
 
                     }else if( e.key == ',' ) {
-                        //console.log("comma pressed");
                         id = id.substring(0, id.length - 1);  //remove comma
 
                         var alreadyExists = keywordArray.indexOf( id );
                         if( alreadyExists != -1 ){
-                            //console.log("keyword already exists");
                             $(this).val('')
                             alert("You can only add a keyword once.");
                             return;
                         }
-                        pageIndex = $(".selectedResource").text().replace(/^\s+|\s+$/g, '') - 1;
+                        //pageIndex = $(".selectedResource").text().replace(/^\s+|\s+$/g, '') - 1;
                         keywordArray.push( id );
                         $.ajax({
                             url: arcs.baseURL + "keywords/add",
                             type: "POST",
                             data: {
                                 //resource_id: resourceKid,
-                                page_kid: pagesArray[parseInt(pageIndex)].kid,
+                                page_kid: PAGE_KID,
                                 project_kid: PROJECT_KID,
                                 keyword: id
                             },
@@ -105,21 +123,16 @@ $(document).ready(function(){
 
                 //delete with a click
                 $(".search-choice-close").on('click', function(e) {
-                    //console.log("pressed keyword delete");
-                    //console.log(e);
-                    //console.log( $(e.target).prev().html() );
-                    pageIndex = $(".selectedResource").text().replace(/^\s+|\s+$/g, '') - 1;
                     $.ajax({
                         url: arcs.baseURL + "keywords/deleteKeyword",
                         type: "POST",
                         data: {
-                            page_kid: pagesArray[parseInt(pageIndex)].kid,
+                            page_kid: PAGE_KID,
                             project_kid: PROJECT_KID,
                             keyword: $(e.target).prev().html()
                         },
                         success: function (data) {
                             //console.log("keyword delete ajax success");
-                            //console.log(data);
                         }
                     })
                 });
@@ -162,30 +175,24 @@ $(document).ready(function(){
 
                 //add a common keyword
                 $('.search-choice').on('click', function(e) {
-                    //console.log('clicked add common keyword');
-                    //e.stopPropagation();
                     var id = $(this).text();
                     var alreadyExists = keywordArray.indexOf( id );
                     if( alreadyExists != -1 ){
-                        //console.log("keyword already exists");
                         alert("You can only add a keyword once.");
                         return;
                     }
-
-                    pageIndex = $(".selectedResource").text().replace(/^\s+|\s+$/g, '') - 1;
                     keywordArray.push( id );
                     $.ajax({
                         url: arcs.baseURL + "keywords/add",
                         type: "POST",
                         data: {
                             //resource_id: resourceKid,
-                            page_kid: pagesArray[parseInt(pageIndex)].kid,
+                            page_kid: PAGE_KID,
                             project_kid: PROJECT_KID,
                             keyword: id
                         },
                         success: function (data) {
                             //console.log("keyword add ajax success");
-                            //console.log(data);
                         }
                     })
                     $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
@@ -196,8 +203,9 @@ $(document).ready(function(){
         })
     }
 
-    $('.other-resources').on('click', function(e) {
-        //console.log('keywords click other resources');
-        getKeywords();
+    $('.other-resource').on('click', function(e) {
+        if( $(this).attr('id').indexOf('identifier-') == -1 ) {
+            startKeywords();
+        }
     });
 });

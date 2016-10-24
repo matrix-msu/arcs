@@ -1,58 +1,70 @@
 $(document).ready(function(){
     //export all schemes and jpgs
+    var isExporting = 0;
     $("#export-btn").click(function () {
+        if(isExporting == 1){
+            return;
+        }
+        isExporting = 1;
+        $('.icon-export').css('background-image','url(../img/arcs-preloader.gif)');
         //load data in variables
-        var schemes = SCHEMES;
+        var schemes = [PROJECTS, SEASONS, EXCAVATIONS, RESOURCES];
+        //console.log(schemes);
+        var pages = {};
         var subjects = SUBJECTS;
-        var pages = PAGES;
+        var pageUrls = [];
         //build xmls for all the single records
         var xmlArray = [];
-        schemes.forEach(function (tempdata) {
-            var jsonObject = JSON.parse(tempdata);
-            if( 'thumb' in jsonObject ){
-                delete jsonObject.thumb;
+        //schemes.forEach(function (tempdata) {
+        for( var i=0; i< schemes.length; i++){
+            //build the all the records into a json encoded array.
+            var schemeString = '[';
+            for( var index in schemes[i] ){
+                schemeString += JSON.stringify(schemes[i][index]) +',';
             }
+            schemeString = schemeString.substring(0, schemeString.length -1 ); //remove last comma
+            schemeString += ']';
+
+            var jsonObject = JSON.parse(schemeString);//get array of json objects
+            jsonObject.forEach(function(tempRecordObject){ //remove the extra backend tags.
+                if( 'thumb' in tempRecordObject ){
+                    delete tempRecordObject.thumb;
+                }
+                if( 'linkers' in tempRecordObject ){
+                    delete tempRecordObject.linkers;
+                }
+                if( 'project_kid' in tempRecordObject ){
+                    delete tempRecordObject.project_kid;
+                }
+                if( 'page' in tempRecordObject ){
+                    var page = tempRecordObject.page;
+                    for( var key in page ){
+                        pages[key] = page[key];
+                    }
+                    delete tempRecordObject.page;
+                }
+                //get page urls for the images in php later
+                if( 'Image Upload' in tempRecordObject && 'localName' in tempRecordObject['Image Upload']){
+                    var url = tempRecordObject['Image Upload']['localName'];
+                    if( $.inArray(url, pageUrls) == -1 ) {//make sure not a duplicate
+                        pageUrls.push(url);
+                    }
+                }
+            })
+            if(!$.isEmptyObject(pages)){ // add in the pages and subjects after done with resource
+                schemes.push(subjects);
+                schemes.push(pages);
+                pages = {};
+            }
+            //wrap the data in a record and data tag
             var recordObject = {Record: jsonObject};
             var dataObject = {Data: recordObject};
-            var xmlString = json2xml(dataObject, '');
-            xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
-            xmlArray.push(xmlString);
-        })
-
-        //treat subject of observation differently since you can have multiple
-       var xmlString = '';
-        subjects.forEach(function (tempdata) {
-            var jsonObject = JSON.parse(tempdata);
-            var recordObject = {Record: jsonObject};
-            var dataObject = {Data: recordObject};
-            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
-            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
-            xmlString += trim;
-        })
-        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
-            xmlString + '</Data>';
-        xmlArray.push(xmlString);
-
-        //take care of the multiple pages
-        xmlString = '';
-        var pageUrls = [];
-        pages.forEach(function (tempdata) {
-            var jsonObject = JSON.parse(tempdata);
-            pageUrls.push(jsonObject['Image Upload']['localName']); //collect image url stuff for later
-            var uploadObject = {originalName:jsonObject['Image Upload']['originalName'],text:jsonObject['Image Upload']['localName']};
-            jsonObject['Image Upload'] = uploadObject;
-            delete jsonObject.thumb;
-            delete jsonObject.thumbnail;
-            var recordObject = {Record: jsonObject};
-            var dataObject = {Data: recordObject};
-            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
-            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
-            xmlString += trim;
-        })
-        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
-                    xmlString + '</Data>';
-        xmlArray.push(xmlString);
-
+            var xmlString = json2xml(dataObject, ''); //convert the array into xml tags
+            xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString; //header
+            xmlArray.push(xmlString);  //done
+        }
+        //console.log(xmlArray);
+        //console.log(pageUrls);
         //go to php for the pictures and zipping
         $.ajax({
             url: arcs.baseURL + "resources/export",
@@ -80,7 +92,13 @@ $(document).ready(function(){
                     console.log("Method Not Allowed");
                 }
             }
+        }).done(function(){
+            //done exporting successful or not..
+            console.log('here');
+            $('.icon-export').css('background-image','url(../img/export.svg)');
+            isExporting = 0;
         });
+
 
         function b64toBlob(b64Data, contentType, sliceSize) {
           contentType = contentType || '';
@@ -108,8 +126,8 @@ $(document).ready(function(){
     });
 
     function json2xml(o, tab) {
-        console.log('json object:');
-        console.log(o);
+        //console.log('json object:');
+        //console.log(o);
         var firstObject = true;
         var toXml = function(v, name, ind) {
             var xml = "";

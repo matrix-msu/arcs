@@ -24,11 +24,11 @@ var resourceKid = "";//"<?php  ?> ";
 // var SUBJECTS = [ <?php  ?>  ];
 // var PAGES = [ <?php  ?>  ];
 //
- //var PAGESOBJECT = <?php  //echo json_encode($pages);   ?> ;
+ //var PAGESOBJECT = <?php  ?> ;
 // var PROJECT_KID = "<?php  ?> "
 </script>
 <?php
-
+//var_dump($resources);
 
 ?>
 <!-- <?=  $this->Html->script("views/viewer/Multi/flag.js") ?> -->
@@ -40,6 +40,7 @@ var resourceKid = "";//"<?php  ?> ";
 <?=  $this->Html->script("views/viewer/Multi/newResource.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/export.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?>
+
 
 <div class="viewers-container">
 

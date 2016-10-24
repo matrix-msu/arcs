@@ -648,6 +648,7 @@ class ResourcesController extends AppController {
 
     public function export(){
         # create new zip opbject
+        ini_set('memory_limit', '-1');
         $zip = new ZipArchive();
 
         # create a temp file & open it
@@ -720,6 +721,8 @@ class ResourcesController extends AppController {
 
             //get pages and add to resource array
             $page = $this->getPages($resource);
+            //var_dump($page);
+            //$page[] = $project_kid;
 
             $info_array[$resource]["page"] =  $page;
 

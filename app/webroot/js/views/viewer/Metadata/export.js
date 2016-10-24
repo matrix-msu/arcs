@@ -7,6 +7,9 @@ $(document).ready(function(){
         var pages = PAGES;
         //build xmls for all the single records
         var xmlArray = [];
+
+        console.log('schemes:');
+        console.log(schemes);
         schemes.forEach(function (tempdata) {
             var jsonObject = JSON.parse(tempdata);
             if( 'thumb' in jsonObject ){
@@ -17,6 +20,7 @@ $(document).ready(function(){
             var xmlString = json2xml(dataObject, '');
             xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
             xmlArray.push(xmlString);
+            console.log(xmlArray);
         })
 
         //treat subject of observation differently since you can have multiple
@@ -108,8 +112,8 @@ $(document).ready(function(){
     });
 
     function json2xml(o, tab) {
-        console.log('json object:');
-        console.log(o);
+        //console.log('json object:');
+        //console.log(o);
         var firstObject = true;
         var toXml = function(v, name, ind) {
             var xml = "";

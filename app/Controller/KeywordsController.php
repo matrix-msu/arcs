@@ -102,6 +102,7 @@ class KeywordsController extends MetaResourcesController {
                     WHERE keywords.page_kid ='".$this->request->data['page_kid']."'
                     ORDER BY keywords.created;";
         $result = $mysqli->query($sql);
+        $keywords = array();
         while($row = mysqli_fetch_assoc($result))
             $keywords[] = $row{'keyword'};
 
@@ -136,6 +137,7 @@ class KeywordsController extends MetaResourcesController {
                     ORDER BY keywords.count DESC, keywords.created
                     LIMIT 10;";
         $result = $mysqli->query($sql);
+        $keywords = array();
         while($row = mysqli_fetch_assoc($result))
             $keywords[] = $row{'keyword'};
 
@@ -170,7 +172,7 @@ class KeywordsController extends MetaResourcesController {
                         AND keywords.keyword ='".$this->request->data['keyword']."'
                     LIMIT 1;";
         $result = $mysqli->query($sql);
-        $row = mysqli_fetch_assoc($result);
+        //$row = mysqli_fetch_assoc($result);
 
         ////////update the count for the rest of the project_kid, keyword combos
         //get the current count for the keyword project_kid combo
@@ -181,7 +183,7 @@ class KeywordsController extends MetaResourcesController {
                     LIMIT 1;";
         $result = $mysqli->query($sql);
         $row = mysqli_fetch_assoc($result);
-        $count = intval( $row{count} );
+        $count = intval( $row{'count'} );
         //$retval['first count'] = $count;
 
         //this means there are no more keywords so just return
