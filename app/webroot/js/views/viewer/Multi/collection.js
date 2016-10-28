@@ -25,29 +25,53 @@ $( document ).ready(function() {
     });
 
     $(".collectionNewSubmit").click(function () {
-        // creates a single, new collection entry based on the resource it is viewing
-        console.log("collectionNewSubmit");
-        console.log(resourceKid);
+        // creates a new collection and add the other resources to the new one.
+        var resource_kids = [];
+        $('.resource-container-level').find('.other-resource').each(function (){
+            console.log($(this));
+            var resource_kid = $(this).attr('id');
+            resource_kid = resource_kid.replace('identifier-', '');
+            resource_kids.push( resource_kid );
+        });
         var formdata = {
             title: $('#collectionTitle').val(),
-            resource_kid: resourceKid,
+            resource_kid: resource_kids.shift(),
             description: "",
             public: 1
         };
-
         $.ajax({
             url: arcs.baseURL + "collections/add",
             type: "POST",
             data: formdata,
             statusCode: {
-                201: function () {
-                    console.log("Add to Collection Success");
-                    //window.location.reload();
-                    //var text = $("label[for="+lastCheckedId+"]").children(":first").text();
-                    $("#collectionName").text($('#collectionTitle').val());
-                    $("#collectionModal").hide();
-                    $("#addedCollectionModal").show();
-                    getCollections();
+                201: function (data) {
+                    var collection_id = data['collection_id'];
+                    var intSuccess = 0;
+                    var length = resource_kids.length;
+                    for(var i=0; i <resource_kids.length; i++){
+                        var resource_kid = resource_kids[i];
+                        var formdata = {
+                            collection: collection_id,  //a collection_id
+                            resource_kid: resource_kid
+                        }
+                        $.ajax({
+                            url: arcs.baseURL + "collections/addToExisting",
+                            type: "POST",
+                            data: formdata,
+                            statusCode: {
+                                201: function (data) {
+                                    intSuccess++;
+                                    if( intSuccess == length ) {
+                                        //var text = $("label[for=" + lastCheckedId + "]").children(":first").text();
+                                        $("#collectionName").text($('#collectionTitle').val());
+                                        $("#collectionModal").hide();
+                                        $("#addedCollectionModal").show();
+                                        getCollections();
+                                    }
+                                }
+                            }
+                        });
+                    }
                 },
                 400: function () {
                     console.log("Bad Request");
@@ -59,45 +83,45 @@ $( document ).ready(function() {
                 }
             }
         });
-
     });
 
     $(".collectionSearchSubmit").click(function () {
         // creates 1+ collection entries based on the resource (IE adds the resource to old collections)
 
-        var resource_kid = resourceKid;
-
-        $('#collectionSearchObjects input:checked').each(function () {
+        var resource_kids = [];
+        $('.resource-container-level').find('.other-resource').each(function (){
+            console.log($(this));
+            var resource_kid = $(this).attr('id');
+            resource_kid = resource_kid.replace('identifier-', '');
+            resource_kids.push( resource_kid );
+        });
+        var intSuccess = 0;
+        var length = resource_kids.length;
+        for(var i=0; i <resource_kids.length; i++){
+            var resource_kid = resource_kids[i];
             var formdata = {
-                collection: $(this).val(),
+                collection: $('#collectionSearchObjects input:checked').val(),  //a collection_id
                 resource_kid: resource_kid
             }
-
-            // TODO: sometimes returns an error but it will always upload to the sql database
             $.ajax({
                 url: arcs.baseURL + "collections/addToExisting",
                 type: "POST",
                 data: formdata,
                 statusCode: {
                     201: function (data) {
-                        //console.log("Success");
-                        //console.log(data);
-                        var text = $("label[for=" + lastCheckedId + "]").children(":first").text();
-                        $("#collectionName").text(text);
-                        $("#collectionModal").hide();
-                        $("#addedCollectionModal").show();
-                        getCollections();
-                    },
-                    400: function () {
-                        console.log("Bad Request");
-                    },
-                    405: function () {
-                        console.log("Method Not Allowed");
+                        intSuccess++;
+                        if( intSuccess == length ) {
+                            var text = $("label[for=" + lastCheckedId + "]").children(":first").text();
+                            //$("#collectionName").text($('#collectionTitle').val());
+                            $("#collectionName").text(text);
+                            $("#collectionModal").hide();
+                            $("#addedCollectionModal").show();
+                            getCollections();
+                        }
                     }
                 }
             });
-        });
-        //$(".collectionModalBackground").hide();
+        }
     });
 
     // collection tabs
@@ -124,9 +148,13 @@ $( document ).ready(function() {
        getCollections();
     });
 
+
 });
 
 var collectionArray = [];
+var isAnyChecked = 0;
+var lastCheckedId = '';
+var numCollections = 0;
 
 function collectionList() {
     //console.log("collectionList");
@@ -173,9 +201,6 @@ var unselect = function (trigger) {
     //  return arcs.bus.trigger("selection")
     //}
 }
-
-var isAnyChecked = 0;
-var lastCheckedId = '';
 
 function checkSearchSubmitBtn() {
     // Hide add to collection button in collection modal when no collections are selected
@@ -237,8 +262,6 @@ function collectionsSearch() {
         }
     });
 }
-
-var numCollections = 0;
 
 function getCollections() {
     var resource_kid = $('.resource-container-level').find('.selectedResource').prev().attr('id');

@@ -109,6 +109,9 @@
     Router::connect('/collections/addToExisting',
         array('controller' => 'collections', 'action' => 'addToExisting')
     );
+    Router::connect('/collections/distinctUsers',
+        array('controller' => 'collections', 'action' => 'distinctUsers')
+    );
     Router::connect('/collections/editCollection',
         array('controller' => 'collections', 'action' => 'editCollection')
     );
