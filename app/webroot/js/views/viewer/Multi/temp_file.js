@@ -1334,4 +1334,93 @@ $( document ).ready(function() {
                 }
             });
     });
+
+    //left and right next resource buttons!
+    $('#prev-resource').click(function(){
+        //already being animated. just ignore click.
+        if( $("#other-resources-container").is(':animated') ){
+            return;
+        }
+        //find the current page
+        var currentPage = $('.other-page').find('img').filter(function () { //by border
+            return $(this).css('border-width') == '5px';
+        });
+        if( currentPage.length == 0 ){ //if not border, then first page
+            currentPage = $('.other-page').find('a:visible').first().find('img');
+        }
+        currentPage = $(currentPage).parent();
+        //find the previous page
+        var previous = $(currentPage).prev();
+        if( previous.length > 0 ){
+            var isAnimate = 0; //0 mean normal animate, 1 is resouce change
+            if( $(currentPage).attr('id') != $(previous).attr('id') ){ //its a new resource
+                var id = '#identifier-'+$(previous).attr('id');
+                $(id)[0].click(); // click the new resource
+                setTimeout(function () { //wait for the pages to update
+                    var offset = $(previous).position().left; //update pages bar
+                    var slider = $("#other-resources-container");
+                    $(slider).animate({scrollLeft: offset }, 1);
+                    slider = $(".resource-container-level"); //update resource bar
+                    var offset = $(slider).scrollLeft() -
+                        ( parseInt($(previous).find('img').width()) +
+                            parseInt($(previous).find('img').css('margin-left'))*2
+                        );
+                    $(slider).animate({scrollLeft: offset }, 400);
+                    isAnimate = 1;
+                }, 100);
+            }
+            previous.find('img').click(); //click the new page
+            if( isAnimate == 0 ){ //do a normal page animate if its the same resource
+                var slider = $("#other-resources-container");
+                var offset = $(slider).scrollLeft() -
+                    ( parseInt($(previous).find('img').width()) +
+                      parseInt($(previous).find('img').css('margin-left'))*2 +
+                      parseInt($(previous).find('img').css('border-width'))*2
+                    );
+                $(slider).animate({scrollLeft: offset }, 200);
+            }
+        }
+    });
+    $('#next-resource').click(function(){
+        if( $("#other-resources-container").is(':animated') ){
+            return;
+        }
+        var currentPage = $('.other-page').find('img').filter(function () {
+            return $(this).css('border-width') == '5px';
+        });
+        if( currentPage.length == 0 ){
+            currentPage = $('.other-page').find('a:visible').first().find('img');
+        }
+        currentPage = $(currentPage).parent();
+        var next = $(currentPage).next();
+        if( next.length > 0 ){
+            var isAnimate = 0;
+            if( $(currentPage).attr('id') != $(next).attr('id') ){ //its a new resource
+                var id = '#identifier-'+$(next).attr('id');
+                $(id)[0].click();
+                setTimeout(function () {
+                    var slider = $("#other-resources-container");
+                    $(slider).animate({scrollLeft: 0 }, 1);
+                    slider = $(".resource-container-level");
+                    var offset = $(slider).scrollLeft() +
+                        ( parseInt($(next).find('img').width()) +
+                            parseInt($(next).find('img').css('margin-left'))*2
+                        );
+                    $(slider).animate({scrollLeft: offset }, 400);
+                    isAnimate = 1;
+
+                }, 100);
+            }
+            next.find('img').click();
+            if( isAnimate == 0 ){
+                var slider = $("#other-resources-container");
+                var offset = $(slider).scrollLeft() +
+                    ( parseInt($(next).find('img').width()) +
+                      parseInt($(next).find('img').css('margin-left'))*2 +
+                      parseInt($(next).find('img').css('border-width'))*2
+                    );
+                $(slider).animate({scrollLeft: offset }, 200);
+            }
+        }
+    });
 });

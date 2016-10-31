@@ -83,7 +83,7 @@ $(document).ready(function () {
     }
     }
 
-    $('#prev-resource').click(function(event){
+    /*$('#prev-resource').click(function(event){
         event.preventDefault();
         if(current > 0){
     $('.numberOverResources').removeClass('selectedResource');
@@ -134,13 +134,13 @@ $(document).ready(function () {
         console.log(parseInt($(this).find('.numberOverResources').html()));
         $(this).trigger('click');
       }
-    });
+    }); 
 //				console.log($('.other-resources').find('.numberOverResources').html());
 //                GetNewResource(kid);
 //				$("#PageImage").attr('src',$pics[current].src);
 //				console.log('next image should appear');
         }
-    });
+    });*/
       $('.expandedArrowBoxLeft').click(previousImage);
   $('.expandedArrowBoxRight').click(nextImage);
   $('.fullscreenInner').mouseover(hoverExpand);

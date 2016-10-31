@@ -12,9 +12,39 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
         <div class="accordion metadata-accordion">
     <?php
 
+    if( $schemename == 'subjects' ){
+    ?>
+    <div id="soo">
+        <ul>
+            <?php if(count($data) > 0) { ?>
+            <?php $count=0; $page_associator='';?>
+            <?php foreach($data as $subject) {
+                $count++; ?>
+                <li class="soo-li"
+                    <?php if(array_key_exists('Pages Associator', $subject) && !empty($subject['Pages Associator']) ){echo 'data-pageKid="'.$subject['Pages Associator'][0].'"';}?>
+                >
+                    <a href="#soo-<?php echo $count; ?>" class="soo-click<?= $count ?>  soo-click">
+                        <?php
+                            if( array_key_exists( 'Pages Associator', $subject ) && !empty($subject['Pages Associator'])
+                                && $subject['Pages Associator'][0] != $page_associator ){
+                                    $page_associator = $subject['Pages Associator'][0];
+                                    $count = 1;
+                            }
+
+                            echo $count;
+                        ?>
+                    </a>
+                </li>
+            <?php }} ?>
+        </ul>
+        <div class="level-content soo">
+    <?php
+    }
+
     foreach ($data as $array) {
         $counter++;
 
+        if($schemename != 'subjects'){
     ?>
             <h3 class="level-tab" ><?= $schemename . " Level " . $counter?>
 
@@ -23,6 +53,8 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
             </h3>
 
             <div class="level-content smaller">
+
+        <?php } ?>
 
                 <table id="<?=$schemename . $counter?>" data-scheme="<?=$schemename?>" data-kid="<?=$array['kid']?>">
 
@@ -1483,9 +1515,18 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
 
                 </table>
 
-            </div>
+
+
+
 <?php
+        if($schemename != 'subjects' ){
+            ?></div><?php
+        }
     }
+
+    if($schemename == 'subjects' ){
+            ?></div><?php
+            }
     ?>
     </div>
 </div>
