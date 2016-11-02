@@ -6,10 +6,10 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
 ?>
 
     <h3 class="level-tab" ><?= $schemename ?>
-        <!-- span class="edit-btn">Edit</span -->
+        <span class="edit-btn">Edit</span>
     </h3>
     <div class="level-content">
-        <div class="accordion metadata-accordion">
+        <div class="accordion metadata-accordion excavation-div">
     <?php
 
     if( $schemename == 'subjects' ){
@@ -21,7 +21,9 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
             <?php foreach($data as $subject) {
                 $count++; ?>
                 <li class="soo-li"
-                    <?php if(array_key_exists('Pages Associator', $subject) && !empty($subject['Pages Associator']) ){echo 'data-pageKid="'.$subject['Pages Associator'][0].'"';}?>
+                    <?php if(array_key_exists('Pages Associator', $subject) && !empty($subject['Pages Associator']) ){
+                        echo 'data-pageKid="'.$subject['Pages Associator'][0].'" data-sooKid="'.$subject['kid'].'"';
+                    }?>
                 >
                     <a href="#soo-<?php echo $count; ?>" class="soo-click<?= $count ?>  soo-click">
                         <?php
@@ -39,24 +41,28 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
         </ul>
         <div class="level-content soo">
     <?php
+    }if( $schemename != 'excavations' && $schemename != 'subjects' ){
+    ?>
+        <div class="level-content">
+    <?php
     }
 
     foreach ($data as $array) {
         $counter++;
 
-        if($schemename != 'subjects'){
+        if($schemename == 'excavations'){
     ?>
-            <h3 class="level-tab" ><?= $schemename . " Level " . $counter?>
+            <h3 class="level-tab excavation-tab-head" data-kid="<?=$array['kid']?>"><?= $schemename . " Level " . $counter?>
 
-                <span class="edit-btn">Edit</span>
+                <!-- span class="edit-btn">Edit</span -->
 
             </h3>
 
-            <div class="level-content smaller">
+            <div class="level-content smaller excavation-tab-content" data-kid="<?=$array['kid']?>">
 
         <?php } ?>
 
-                <table id="<?=$schemename . $counter?>" data-scheme="<?=$schemename?>" data-kid="<?=$array['kid']?>">
+                <table id="<?=$schemename . $counter?>" class="<?=$schemename?>-table" data-scheme="<?=$schemename?>" data-kid="<?=$array['kid']?>">
 
                     <?php
                         //-----------------------------------------------------------------------------
@@ -1519,12 +1525,12 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
 
 
 <?php
-        if($schemename != 'subjects' ){
+        if($schemename == 'excavations' ){
             ?></div><?php
         }
     }
 
-    if($schemename == 'subjects' ){
+    if($schemename != 'excavations' ){
             ?></div><?php
             }
     ?>

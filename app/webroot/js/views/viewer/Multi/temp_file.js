@@ -1,5 +1,6 @@
 $( document ).ready(function() {
     //console.log('start metadata');
+    /*
     var isAdmin = ADMIN;
 
     // Annotations
@@ -709,7 +710,7 @@ $( document ).ready(function() {
 
     }
 
-
+*/
     //addMetadataEdits();
     //console.log($session);
     function addMetadataEdits() {
@@ -1144,12 +1145,12 @@ $( document ).ready(function() {
         editBtnClick = 1;
         $(this).parent().next().find('.metadataEdit').css('cursor', 'pointer');
     });
-
+/*
     // Details tab
     $(".details").click(function () {
         GetDetails();
 
-    });
+    });*/
 
     $(".level-tab span .save-btn").click(function () {
         //console.log("level tab save btn click");
@@ -1270,7 +1271,7 @@ $( document ).ready(function() {
             $(".newTranscriptionForm").hide();
         }
     });
-
+/*
     $(".editTranscriptions").click(function () {
         $(".editOptions").show();
         $(".editTranscriptions").hide();
@@ -1334,6 +1335,7 @@ $( document ).ready(function() {
                 }
             });
     });
+    */
 
     //left and right next resource buttons!
     $('#prev-resource').click(function(){
@@ -1356,6 +1358,7 @@ $( document ).ready(function() {
             if( $(currentPage).attr('id') != $(previous).attr('id') ){ //its a new resource
                 var id = '#identifier-'+$(previous).attr('id');
                 $(id)[0].click(); // click the new resource
+                isAnimate = 1;
                 setTimeout(function () { //wait for the pages to update
                     var offset = $(previous).position().left; //update pages bar
                     var slider = $("#other-resources-container");
@@ -1366,7 +1369,7 @@ $( document ).ready(function() {
                             parseInt($(previous).find('img').css('margin-left'))*2
                         );
                     $(slider).animate({scrollLeft: offset }, 400);
-                    isAnimate = 1;
+
                 }, 100);
             }
             previous.find('img').click(); //click the new page
@@ -1398,6 +1401,7 @@ $( document ).ready(function() {
             if( $(currentPage).attr('id') != $(next).attr('id') ){ //its a new resource
                 var id = '#identifier-'+$(next).attr('id');
                 $(id)[0].click();
+                isAnimate = 1;
                 setTimeout(function () {
                     var slider = $("#other-resources-container");
                     $(slider).animate({scrollLeft: 0 }, 1);
@@ -1407,7 +1411,6 @@ $( document ).ready(function() {
                             parseInt($(next).find('img').css('margin-left'))*2
                         );
                     $(slider).animate({scrollLeft: offset }, 400);
-                    isAnimate = 1;
 
                 }, 100);
             }
@@ -1423,4 +1426,113 @@ $( document ).ready(function() {
             }
         }
     });
+    //new page click show/hide the correct metadata
+    $('.other-page').find('img').click(function(){  //page click
+        //subject of observation stuffs.
+        $('.subjects-table').each(function(){  //hide all tables
+            $(this).css('display','none');
+        });
+        $('.soo-li').each(function(){   //hide all radio buttons
+            $(this).css('display','none');
+        });
+        var pageKid = $(this).attr('id');
+        var clickedFirst = 0;
+        $(".soo-li").each(function(){  //show the matching radio buttons
+            if( $(this).attr('data-pageKid').indexOf(pageKid) != -1 ){
+                $(this).css('display','list-item');
+                if( clickedFirst == 0 ){ //click the page's first soo radio button
+                    $(this)[0].click();
+                    clickedFirst = 1;
+                }
+            }
+        })
+    })
+    //soo radio button clicked. change css and show the correct soo table.
+    $('.soo-li').click(function () { //soo radio button click
+        $('.soo-li').each(function(){  //unclick all radio button css
+            $(this).css('background-color','#f9f9f9');
+            $(this).css('color','#555555');
+        })
+        $(this).css('background-color','#0093be'); //click this one button css
+        $(this).css('color','#f9f9f9');
+        $('.subjects-table').each(function(){  //hide all tables
+            $(this).css('display','none');
+        });
+        var sooKid = $(this).attr('data-sooKid');
+        $('.subjects-table[data-kid="'+sooKid+'"]').css('display','table'); //show the correct table
+    })
+    //new resource clicked. show/hide metadata based on the resource.
+    $('.resource-slider').find('a.other-resources').click(function(){
+        //display correct project
+        var projectKid = $(this).attr('data-projectKid');
+        $('.project-table').css('display', 'none');
+        $('.project-table[data-kid="'+projectKid+'"]').css('display', 'table');
+        //display correct resource
+        var resourceKid = $(this).find('img').attr('id');
+        resourceKid = resourceKid.split('-');
+        resourceKid = resourceKid[1]+'-'+resourceKid[2]+'-'+resourceKid[3];
+        $('.archival.objects-table').css('display', 'none');
+        $('.archival.objects-table[data-kid="'+resourceKid+'"]').css('display', 'table');
+        //find the excavations
+        var stringExcavationKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
+            .find("[id='Excavation - Survey Associator']").html();
+        var excavationKids = stringExcavationKids.split('<br>'); //turn into array
+        excavationKids.pop(); //remove an empty index
+        setTimeout(function () {//wasn't hiding all if not in this..
+            $('.excavation-tab-head').css('display', 'none'); //hide all
+            $('.excavation-tab-content').css('display', 'none');
+            var firstDrawer = 0;
+            var firstDrawer2 = 0;
+            for(var i=0;i<excavationKids.length;i++){ //show each excavation
+                var excavationHead = $('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]');
+                $(excavationHead).css('display', 'block');
+                //click the first drawer
+                if( firstDrawer == 0 ){
+                    firstDrawer =1;
+                    if($(excavationHead).attr('aria-selected') == 'false') {
+                        $(excavationHead).click();
+                    }
+                }
+                //rename the drawer.
+                var text = 'EXCAVATIONS LEVEL '+ (i+1);
+                if($('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]').length>0){
+                    $('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]')[0].innerText = text;
+                }
+                //only show the first excavation drawer.
+                if($('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').length>0 && firstDrawer2==0 ){
+                    $('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').eq(0).css('display', 'block');
+                    firstDrawer2 = 1;
+                }
+            }
+        }, 1);
+        //find the season
+        var seasonKid = '';
+        seasonKid = $('.archival.objects-table[data-kid="'+resourceKid+'"]').find("[id='Season Associator']").html();
+        if(seasonKid == '' ){
+            seasonKid = $('.excavation-tab-content[data-kid="'+excavationKids[0]+'"]').find("[id='Season Associator']").html();
+            seasonKid = seasonKid.replace('<br>', '');
+        }
+        $('.Seasons-table').css('display', 'none');
+        $('.Seasons-table[data-kid="'+seasonKid+'"]').css('display', 'table');
+    })
+
+    //javascript to fix the mulit-resource accordion frontend
+    accordionCss();
+    function accordionCss() {
+        $('.excavation-div').height('0px');
+        $(window).resize(function () {
+            $('.excavation-div').height('0px');
+        });
+        $('.details').click(function () {
+            $('#tabs-1').css('display', 'block');
+            $('.metadata-accordion').eq(0).css('display', 'none');
+        });
+        $('.discussion').click(function () {
+            $('#tabs-1').css('display', 'block');
+            $('.metadata-accordion').eq(0).css('display', 'none');
+        });
+        $('.metadata-tab').eq(0).click(function () {
+            $('.metadata-accordion').eq(0).css('display', 'block');
+        });
+    }
 });

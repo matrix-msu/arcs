@@ -8832,6 +8832,9 @@ input[type=range]:focus::-ms-fill-upper {
   text-transform: uppercase;
   font-size: 90%;
 }
+.metadata .subjects-table {
+  display: none;
+}
 .metadata #search {
   float: left;
   width: 100%;
