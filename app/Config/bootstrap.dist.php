@@ -81,4 +81,7 @@ define("globaljsvars",
 	"var RESOURCE_SID ='".RESOURCE_SID."';" .
 	"var SUBJECT_SID ='".SUBJECT_SID."';" .
 	"var SURVEY_SID ='".SURVEY_SID."';" .
+	"var PAGES_SID ='".PAGES_SID."';" .
+	"var KORA_FILES_URI ='".KORA_FILES_URI."';".
+	"var PID ='".PID."';".
 	"</script>");

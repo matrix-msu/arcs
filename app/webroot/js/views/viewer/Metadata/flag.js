@@ -1,7 +1,17 @@
 // flag
 $(function () {
+
     $("#flag").click(function () {
         $(".modalBackground").show();
+    });
+
+    var metadata_info = {};
+    metadata_info.field = '';
+    metadata_info.target = '';
+    $(".icon-meta-flag").click(function () {
+        $(".modalBackground").show();
+        metadata_info.field = $(this).next().html();
+        metadata_info.target = 'Metadata';
     });
 
     $(".modalClose").click(function () {
@@ -50,9 +60,17 @@ $(function () {
                 explanation: $("#flagExplanation").val(),
                 status: "pending"
             };
+            if( metadata_info.field != '' ){
+                formdata.metadata_field = metadata_info.field;
+                metadata_info.field = '';
+            }
+            if( metadata_info.target != '' ){
+                formdata.annotation_target = metadata_info.target;
+                metadata_info.target = '';
+            }
 
             $.ajax({
-                url: arcss.baseURL + "resources/flags/add",
+                url: arcs.baseURL + "resources/flags/add",
                 type: "POST",
                 data: formdata,
                 statusCode: {

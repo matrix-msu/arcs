@@ -6,7 +6,6 @@ $( document ).ready(function() {
     });
 
     $(".modalClose").click(function () {
-        console.log('modal close');
         $(".collectionSearchBar").addClass("first");
         $(".collectionModalBackground").hide();
         $("#collectionModal").show();

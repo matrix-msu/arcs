@@ -26,12 +26,22 @@ $(document).ready(function () {
 
     var selected = false;
 
+    //on document load. wait for page image and trigger drawboxes.
+    waitForElement();
     function waitForElement() {
-        if ($("#PageImage").height() !== 0) {
+        if ($("#PageImage").height() !=0 && $("#PageImage").attr('src') != '../img/arcs-preloader.gif' &&
+            $("#PageImage")[0].complete != false ) {
             $(".canvas").height($("#PageImage").height());
             $(".canvas").width($("#PageImage").width());
             $(".canvas").css({bottom: $("#PageImage").height()});
-            DrawBoxes(kid);
+
+            //get current page kid.
+            var pageKid = $("#PageImage").attr('src');
+            pageKid = pageKid.split('/');
+            pageKid = pageKid.pop();
+            pageKid = pageKid.split('-');
+            pageKid = pageKid[0]+'-'+pageKid[1]+'-'+pageKid[2];
+            DrawBoxes(pageKid);
         }
         else {
             setTimeout(function () {
@@ -39,8 +49,6 @@ $(document).ready(function () {
             }, 250);
         }
     }
-
-    waitForElement();
 
     $(".annotationClose").click(function () {
         $(".annotateModalBackground").hide();

@@ -1,6 +1,9 @@
 $( document ).ready(function() {
-    //console.log('start metadata');
+
     /*
+         Annotation, transcription and details.
+     ********************************************************/
+
     var isAdmin = ADMIN;
 
     // Annotations
@@ -41,12 +44,22 @@ $( document ).ready(function() {
     };
     var selected = false;
 
+    //on document load. wait for page image and trigger drawboxes.
+    waitForElement();
     function waitForElement() {
-        if ($("#PageImage").height() !== 0) {
-            $(".canvas").height($("#PageImage").height());
-            $(".canvas").width($("#PageImage").width());
-            $(".canvas").css({bottom: $("#PageImage").height()});
-            DrawBoxes(kid);
+        if ($("#PageImage").height() !=0 && $("#PageImage").attr('src') != '../img/arcs-preloader.gif' &&
+            $("#PageImage")[0].complete != false ) {
+                $(".canvas").height($("#PageImage").height());
+                $(".canvas").width($("#PageImage").width());
+                $(".canvas").css({bottom: $("#PageImage").height()});
+
+                //get current page kid.
+                var pageKid = $("#PageImage").attr('src');
+                pageKid = pageKid.split('/');
+                pageKid = pageKid.pop();
+                pageKid = pageKid.split('-');
+                pageKid = pageKid[0]+'-'+pageKid[1]+'-'+pageKid[2];
+                DrawBoxes(pageKid);
         }
         else {
             setTimeout(function () {
@@ -54,8 +67,6 @@ $( document ).ready(function() {
             }, 250);
         }
     }
-
-    waitForElement();
 
     $(".annotationClose").click(function () {
         $(".annotateModalBackground").hide();
@@ -251,17 +262,24 @@ $( document ).ready(function() {
                     $(".annotationPopup").css("left", $("#" + id).width() + 10);
                     if (data.relation_page_kid != "") {
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
-                        var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php  ?> " : "<?php  ?> ";
+
                         $.ajax({
-                            url: arcs.baseURL + "resources/search?q=" + encodeURIComponent(
-                                "kid,=," + paramKid) + "&sid=" + paramSid,
+                            url: arcs.baseURL + "resources/advanced_search",
                             type: "POST",
-                            success: function (page) {
-                                $(".annotationImage").attr('src', page.results[0].thumb);
+                            data: {
+                                q: [
+                                    ['kid', '=', paramKid]
+                                ],
+                                sid: PAGES_SID
+                            },
+                            success: function (pageData) {
+                                var page = JSON.parse(pageData)[paramKid];
+                                var image = KORA_FILES_URI + PID + '/' + PAGES_SID + '/' + page['Image Upload'].localName;
+                                $(".annotationImage").attr('src', image);
                                 $(".annotationData").append("<p>Relation</p>");
                                 $(".annotationData").append("<p>Name: " + data.relation_resource_name + "</p>");
-                                $(".annotationData").append("<p>Type: " + page.results[0].Type + "</p>");
-                                $(".annotationData").append("<p>Scan #: " + page.results[0]["Scan Number"] + "</p>");
+                                $(".annotationData").append("<p>Type: " + page.Type + "</p>");
+                                $(".annotationData").append("<p>Scan #: " + page["Scan Number"] + "</p>");
                             }
                         });
                     }
@@ -277,7 +295,6 @@ $( document ).ready(function() {
             }
         });
     }
-
     // Annotation popup in details tab
     function ShowDetailsAnnotation(t) {
         var id = t.parent().attr('id');
@@ -291,17 +308,24 @@ $( document ).ready(function() {
                     $(".annotationPopup").css("left", t.width() + 30);
                     if (data.relation_page_kid != "") {
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
-                        var paramSid = (data.relation_resource_kid == data.relation_page_kid) ? "<?php  ?> " : "<?php  ?> ";
+
                         $.ajax({
-                            url: arcs.baseURL + "resources/search?q=" + encodeURIComponent(
-                                "kid,=," + paramKid) + "&sid=" + paramSid,
+                            url: arcs.baseURL + "resources/advanced_search",
                             type: "POST",
-                            success: function (page) {
-                                $(".annotationImage").attr('src', page.results[0].thumb);
+                            data: {
+                                q: [
+                                    ['kid', '=', paramKid]
+                                ],
+                                sid: PAGES_SID
+                            },
+                            success: function (pageData) {
+                                var page = JSON.parse(pageData)[paramKid];
+                                var image = KORA_FILES_URI + PID + '/' + PAGES_SID + '/' + page['Image Upload'].localName;
+                                $(".annotationImage").attr('src', image);
                                 $(".annotationData").append("<p>Relation</p>");
                                 $(".annotationData").append("<p>Name: " + data.relation_resource_name + "</p>");
-                                $(".annotationData").append("<p>Type: " + page.results[0].Type + "</p>");
-                                $(".annotationData").append("<p>Scan #: " + page.results[0]["Scan Number"] + "</p>");
+                                $(".annotationData").append("<p>Type: " + page.Type + "</p>");
+                                $(".annotationData").append("<p>Scan #: " + page["Scan Number"] + "</p>");
                             }
                         });
                     }
@@ -322,19 +346,24 @@ $( document ).ready(function() {
     $(".annotateSearchForm").submit(function (event) {
         //$(".annotateSearchForm").keyup(function (event) {
         $(".resultsContainer").empty();
+        var annotateSearch = $(".annotateSearch");
         $.ajax({
-            url: arcs.baseURL + "resources/search?q=" + encodeURIComponent(
-                "(Type,like," + $(".annotateSearch").val()
-                + "),or,(Title,like," + $(".annotateSearch").val()
-                + "),or,(Resource Identifier,like," + $(".annotateSearch").val()
-                + "),or,(Description,like," + $(".annotateSearch").val()
-                + "),or,(Accession Number,like," + $(".annotateSearch").val()
-                + "),or,(Earliest Date,like," + $(".annotateSearch").val()
-                + "),or,(Latest Date,like," + $(".annotateSearch").val()
-                + ")") + "&sid=<?php  ?> ",
+            url: arcs.baseURL + "resources/advanced_search",
             type: "POST",
+            data: {
+                q: [
+                    ['Type', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Title', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Resource Identifier', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Description', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Accession Number', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Earliest Date', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Latest Date', 'like', '%' + annotateSearch.val() + '%']
+                ],
+                sid: RESOURCE_SID
+            },
             success: function (data) {
-                BuildResults(data);
+                BuildResults(JSON.parse(data));
             }
         });
 
@@ -342,74 +371,77 @@ $( document ).ready(function() {
     });
 
     function BuildResults(data) {
-        if (data.total > 0) {
-            //Iterate search results
-            $.each(data.results, function (key, value) {
-                $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value.kid + "'></div>");
+        //Iterate search results
+        $.each(data, function (key, value) {
+            console.log(value.kid);
+            $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value.kid + "'></div>");
 
+            //Get related pages
+            $.ajax({
+                url: arcs.baseURL + "resources/advanced_search",
+                type: "POST",
+                data: {
+                    q: [
+                        //['Resource Identifier', 'like', value['Resource Identifier']],
+                        ['Resource Associator', '=', value.kid],
+                    ],
+                    sid: PAGES_SID
+                },
+                success: function (pages) {
+                    pages = JSON.parse(pages);
+                    $.each(pages, function (k, v) {
+                        var image = KORA_FILES_URI + PID + '/' + PAGES_SID + '/' + v['Image Upload'].localName;
+                        $("#" + value.kid).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                        if (v.thumb == "img/DefaultResourceImage.svg") {
+                            $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
+                        }
+                        else {
+                            $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
+                        }
 
-                //Get related pages
-                $.ajax({
-                    //url: arcs.baseURL + "resources/search?q=" + encodeURIComponent("(Resource Associator,like," + value.kid + "),or,(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php  ?> ",
-                    url: arcs.baseURL + "resources/search?q=" + encodeURIComponent("(Resource Identifier,like," + value['Resource Identifier'] + ")") + "&sid=<?php  ?> ",
-                    type: "POST",
-                    success: function (pages) {
-                        $.each(pages.results, function (k, v) {
-                            $("#" + value.kid).after("<div class='annotateSearchResult resultPage' id='" + v.kid + "'></div>");
-                            if (v.thumb == "img/DefaultResourceImage.svg") {
-                                $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='<?php  ?> app/webroot/" + v.thumb + "'/></div>");
-//								$('.fullscreenImage').attr('src','<?php  ?> app/webroot/" + v.thumb + "' );
-//								console.log('<?php  ?> app/webroot/" + v.thumb + "')
+                        $("#" + v.kid).append(
+                            "<div class='pageInfo'>" +
+                            "<p>" + v['Page Identifier'] + "</p>" +
+                            "</div>"
+                        );
+
+                        $("#" + v.kid).append("<hr class='resultDivider'>");
+
+                        //Clicked a page
+                        $("#" + v.kid).click(function () {
+                            if ($(this).hasClass("selectedRelation")) {
+                                $(this).removeClass("selectedRelation");
+                                selected = false;
+                                annotateData.page_kid = "";
+                                annotateData.resource_kid = "";
+                                annotateData.resource_name = "";
+                                annotateData.relation_resource_kid = "";
+                                annotateData.relation_page_kid = "";
+                                annotateData.relation_resource_name = "";
                             }
                             else {
-                                $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='" + v.thumb + "'/></div>");
-                                console.log(v.thumb);
+                                $(".annotateSearchResult").removeClass('selectedRelation');
+                                $(this).addClass("selectedRelation");
+                                selected = true;
+                                annotateData.page_kid = kid;
+                                annotateData.resource_kid = resourceKid;
+                                annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+                                annotateData.relation_resource_name = v['Resource Identifier'];
+                                annotateData.relation_resource_kid = v['Resource Associator'][0];
+                                annotateData.relation_page_kid = v.kid;
                             }
 
-                            $("#" + v.kid).append(
-                                "<div class='pageInfo'>" +
-                                "<p>" + v['Page Identifier'] + "</p>" +
-                                "</div>"
-                            );
-
-                            $("#" + v.kid).append("<hr class='resultDivider'>");
-
-                            //Clicked a page
-                            $("#" + v.kid).click(function () {
-                                if ($(this).hasClass("selectedRelation")) {
-                                    $(this).removeClass("selectedRelation");
-                                    selected = false;
-                                    annotateData.page_kid = "";
-                                    annotateData.resource_kid = "";
-                                    annotateData.resource_name = "";
-                                    annotateData.relation_resource_kid = "";
-                                    annotateData.relation_page_kid = "";
-                                    annotateData.relation_resource_name = "";
-                                }
-                                else {
-                                    $(".annotateSearchResult").removeClass('selectedRelation');
-                                    $(this).addClass("selectedRelation");
-                                    selected = true;
-                                    annotateData.page_kid = kid;
-                                    annotateData.resource_kid = resourceKid;
-                                    annotateData.resource_name = "<?php  ?> ";
-                                    annotateData.relation_resource_name = v['Resource Identifier'];
-                                    annotateData.relation_resource_kid = v['Resource Associator'][0];
-                                    annotateData.relation_page_kid = v.kid;
-                                }
-
-                                if (selected || annotateData.transcript.length > 0 || annotateData.url.length > 0) {
-                                    $(".annotateSubmit").show();
-                                }
-                                else {
-                                    $(".annotateSubmit").hide();
-                                }
-                            })
+                            if (selected || annotateData.url.length > 0) {
+                                $(".annotateSubmit").show();
+                            }
+                            else {
+                                $(".annotateSubmit").hide();
+                            }
                         })
-                    }
-                });
+                    })
+                }
             });
-        }
+        });
     }
 
     //Set transcript and url
@@ -429,9 +461,16 @@ $( document ).ready(function() {
     });
 
     $(".annotateSubmit").click(function () {
-        annotateData.page_kid = kid;
-        annotateData.resource_kid = resourceKid;
-        annotateData.resource_name = "<?php  ?> ";
+        var pageKid = $("#PageImage").attr('src');
+        pageKid = pageKid.split('/');
+        pageKid = pageKid.pop();
+        pageKid = pageKid.split('-');
+        pageKid = pageKid[0]+'-'+pageKid[1]+'-'+pageKid[2];
+        annotateData.page_kid = pageKid;
+        var resource_kid = $('.resource-container-level').find('.selectedResource').prev().attr('id');
+        resource_kid = resource_kid.replace('identifier-', '');
+        annotateData.resource_kid = resource_kid;
+        annotateData.resource_name = RESOURCES[resource_kid]['Resource Identifier'];
 
         //First relation
         $.ajax({
@@ -709,8 +748,87 @@ $( document ).ready(function() {
         })
 
     }
+    $(".editTranscriptions").click(function () {
+        $(".editOptions").show();
+        $(".editTranscriptions").hide();
 
-*/
+        $(".content_transcripts").sortable({
+            disabled: false,
+            sort: function (e) {
+                $(".newTranscriptionForm").hide();
+            }
+        });
+
+        $('.transcript_display').addClass("editable");
+        $(".editInstructions").show();
+    });
+
+    $(".newTranscription").click(function () {
+        $('.content_transcripts').append($(".newTranscriptionForm"));
+        $(".newTranscriptionForm").show();
+    });
+
+    $(".saveTranscription").click(function () {
+        $(".transcriptionTextarea").val('');
+        $(".newTranscriptionForm").hide();
+        $(".editOptions").hide();
+        $(".editTranscriptions").show();
+
+        var sortedIDs = $(".content_transcripts").sortable("toArray");
+        $.each(sortedIDs, function (k, v) {
+            $.ajax({
+                url: arcs.baseURL + "api/annotations/" + v + ".json",
+                type: "POST",
+                data: {
+                    order_transcript: k
+                }
+            });
+        });
+
+        $(".content_transcripts").sortable({disabled: true});
+        $('.transcript_display').removeClass("editable");
+        $(".editInstructions").hide();
+    });
+
+    $(".newTranscriptionForm").submit(function (e) {
+        e.preventDefault();
+        var pageKid = $("#PageImage").attr('src');
+        pageKid = pageKid.split('/');
+        pageKid = pageKid.pop();
+        pageKid = pageKid.split('-');
+        pageKid = pageKid[0]+'-'+pageKid[1]+'-'+pageKid[2];
+        annotateData.page_kid = pageKid;
+        var resource_kid = $('.resource-container-level').find('.selectedResource').prev().attr('id');
+        resource_kid = resource_kid.replace('identifier-', '');
+        annotateData.resource_kid = resource_kid;
+        annotateData.resource_name = RESOURCES[resource_kid]['Resource Identifier'];
+        annotateData.transcript = $(".transcriptionTextarea").val();
+        annotateData.order_transcript = 1000000;
+
+        if (annotateData.transcript.length > 0)
+            $.ajax({
+                url: arcs.baseURL + "api/annotations.json",
+                type: "POST",
+                data: annotateData,
+                success: function () {
+                    $(".transcriptionTextarea").val('');
+                    $(".newTranscriptionForm").hide();
+                    ResetAnnotationModal();
+                    GetDetails();
+                }
+            });
+    });
+
+    // Details tab
+    $(".details").click(function () {
+        GetDetails();
+
+    });
+
+    /*
+            Metadata edits
+     ****************************************************/
+
     //addMetadataEdits();
     //console.log($session);
     function addMetadataEdits() {
@@ -1145,12 +1263,7 @@ $( document ).ready(function() {
         editBtnClick = 1;
         $(this).parent().next().find('.metadataEdit').css('cursor', 'pointer');
     });
-/*
-    // Details tab
-    $(".details").click(function () {
-        GetDetails();
 
-    });*/
 
     $(".level-tab span .save-btn").click(function () {
         //console.log("level tab save btn click");
@@ -1271,73 +1384,12 @@ $( document ).ready(function() {
             $(".newTranscriptionForm").hide();
         }
     });
-/*
-    $(".editTranscriptions").click(function () {
-        $(".editOptions").show();
-        $(".editTranscriptions").hide();
 
-        $(".content_transcripts").sortable({
-            disabled: false,
-            sort: function (e) {
-                $(".newTranscriptionForm").hide();
-            }
-        });
+    /*
+          Left and right resource buttons right under main picture.
+     ****************************************************/
 
-        $('.transcript_display').addClass("editable");
-        $(".editInstructions").show();
-    });
-
-    $(".newTranscription").click(function () {
-        $('.content_transcripts').append($(".newTranscriptionForm"));
-        $(".newTranscriptionForm").show();
-    });
-
-    $(".saveTranscription").click(function () {
-        $(".transcriptionTextarea").val('');
-        $(".newTranscriptionForm").hide();
-        $(".editOptions").hide();
-        $(".editTranscriptions").show();
-
-        var sortedIDs = $(".content_transcripts").sortable("toArray");
-        $.each(sortedIDs, function (k, v) {
-            $.ajax({
-                url: arcs.baseURL + "api/annotations/" + v + ".json",
-                type: "POST",
-                data: {
-                    order_transcript: k
-                }
-            });
-        });
-
-        $(".content_transcripts").sortable({disabled: true});
-        $('.transcript_display').removeClass("editable");
-        $(".editInstructions").hide();
-    });
-
-    $(".newTranscriptionForm").submit(function (e) {
-        e.preventDefault();
-        annotateData.page_kid = kid;
-        annotateData.resource_kid = resourceKid;
-        annotateData.resource_name = "<?php  ?> ";
-        annotateData.transcript = $(".transcriptionTextarea").val();
-        annotateData.order_transcript = 1000000;
-
-        if (annotateData.transcript.length > 0)
-            $.ajax({
-                url: arcs.baseURL + "api/annotations.json",
-                type: "POST",
-                data: annotateData,
-                success: function () {
-                    $(".transcriptionTextarea").val('');
-                    $(".newTranscriptionForm").hide();
-                    ResetAnnotationModal();
-                    GetDetails();
-                }
-            });
-    });
-    */
-
-    //left and right next resource buttons!
+    //left prev resource button
     $('#prev-resource').click(function(){
         //already being animated. just ignore click.
         if( $("#other-resources-container").is(':animated') ){
@@ -1384,6 +1436,7 @@ $( document ).ready(function() {
             }
         }
     });
+    //right next resource button.
     $('#next-resource').click(function(){
         if( $("#other-resources-container").is(':animated') ){
             return;
@@ -1426,6 +1479,11 @@ $( document ).ready(function() {
             }
         }
     });
+
+    /*
+          Multi-resource dynamic accordion. based on new page and resource clicks.
+     *********************************************************************************/
+
     //new page click show/hide the correct metadata
     $('.other-page').find('img').click(function(){  //page click
         //subject of observation stuffs.
@@ -1517,7 +1575,7 @@ $( document ).ready(function() {
     })
 
     //javascript to fix the mulit-resource accordion frontend
-    accordionCss();
+    accordionCss(); //document ready.
     function accordionCss() {
         $('.excavation-div').height('0px');
         $(window).resize(function () {

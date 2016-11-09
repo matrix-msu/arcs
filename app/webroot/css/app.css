@@ -9831,6 +9831,7 @@ input[type=range]:focus::-ms-fill-upper {
   float: right;
   opacity: .6;
   left: -7px;
+  cursor: pointer;
 }
 .annotationLabel {
   margin: 0 15px;
