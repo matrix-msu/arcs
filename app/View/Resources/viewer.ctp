@@ -45,7 +45,6 @@ var annotateData = {
 <?= $this->Html->script("views/viewer/Metadata/flag.js")?>
 <?= $this->Html->script("views/viewer/Metadata/accordion.js")?>
 <?= $this->Html->script("views/viewer/Metadata/collection.js")?>
-<?= $this->Html->script("views/viewer/Metadata/details.js")?>
 <?= $this->Html->script("views/viewer/Metadata/resources.js")?>
 <?= $this->Html->script("views/viewer/Metadata/newResource.js")?>
 <?= $this->Html->script("views/viewer/Metadata/export.js")?>
