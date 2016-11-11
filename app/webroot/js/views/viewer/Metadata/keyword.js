@@ -93,6 +93,17 @@ $(document).ready(function(){
                                 project_kid: PROJECT_KID,
                                 keyword: id
                             },
+                            statusCode: {
+                                403: function() {
+                                    var index = keywordArray.indexOf(id);
+                                    if (index > -1) {
+                                        keywordArray.splice(index, 1);
+                                    }
+                                    $("#urlAuthor").find('option[data-id="'+id+'"]').remove();
+                                    $(".chosen-select").trigger("chosen:updated");
+                                    alert('You have to be logged-in to add a keyword.');
+                                }
+                            },
                             success: function (data) {
                                 //console.log("keyword add ajax success");
                                 //console.log(data);
@@ -182,6 +193,17 @@ $(document).ready(function(){
                             page_kid: pagesArray[parseInt(pageIndex)].kid,
                             project_kid: PROJECT_KID,
                             keyword: id
+                        },
+                        statusCode: {
+                            403: function() {
+                                var index = keywordArray.indexOf(id);
+                                if (index > -1) {
+                                    keywordArray.splice(index, 1);
+                                }
+                                $("#urlAuthor").find('option[data-id="'+id+'"]').remove();
+                                $(".chosen-select").trigger("chosen:updated");
+                                alert('You have to be logged-in to add a keyword.');
+                            }
                         },
                         success: function (data) {
                             //console.log("keyword add ajax success");

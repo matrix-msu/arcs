@@ -1,6 +1,12 @@
 $(document).ready(function(){
     //export all schemes and jpgs
+    var isExporting = 0;
     $("#export-btn").click(function () {
+        if(isExporting == 1){
+            return;
+        }
+        isExporting = 1;
+        $('.icon-export').css('background-image','url(../img/arcs-preloader.gif)');
         //load data in variables
         var schemes = SCHEMES;
         var subjects = SUBJECTS;
@@ -8,8 +14,8 @@ $(document).ready(function(){
         //build xmls for all the single records
         var xmlArray = [];
 
-        console.log('schemes:');
-        console.log(schemes);
+        //console.log('schemes:');
+        //console.log(schemes);
         schemes.forEach(function (tempdata) {
             var jsonObject = JSON.parse(tempdata);
             if( 'thumb' in jsonObject ){
@@ -20,7 +26,7 @@ $(document).ready(function(){
             var xmlString = json2xml(dataObject, '');
             xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
             xmlArray.push(xmlString);
-            console.log(xmlArray);
+            //console.log(xmlArray);
         })
 
         //treat subject of observation differently since you can have multiple
@@ -84,6 +90,11 @@ $(document).ready(function(){
                     console.log("Method Not Allowed");
                 }
             }
+        }).done(function(){
+            //done exporting successful or not..
+            //console.log('here');
+            $('.icon-export').css('background-image','url(../img/export.svg)');
+            isExporting = 0;
         });
 
         function b64toBlob(b64Data, contentType, sliceSize) {

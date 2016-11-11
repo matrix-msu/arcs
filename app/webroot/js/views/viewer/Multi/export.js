@@ -94,7 +94,7 @@ $(document).ready(function(){
             }
         }).done(function(){
             //done exporting successful or not..
-            console.log('here');
+            //console.log('here');
             $('.icon-export').css('background-image','url(../img/export.svg)');
             isExporting = 0;
         });

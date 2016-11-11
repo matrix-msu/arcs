@@ -12,7 +12,7 @@ class CollectionsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('viewer', 'index', 'create', 'complete');
+        $this->Auth->allow('titlesAndIds', 'memberships');
     }
 
     /**

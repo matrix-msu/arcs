@@ -11,6 +11,13 @@ App::uses('MetaResourcesController', 'Controller');
 class KeywordsController extends MetaResourcesController {
     public $name = 'Keywords';
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow(
+            'get', 'common'
+        );
+    }
+
     /**
      * Complete keywords.
      */
