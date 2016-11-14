@@ -1,45 +1,53 @@
-// preloader image and images
-
-
-
-
+var waitingId = 0;
+var waits = [];
+var _NewResource = {};
 function GetNewResource(id) {
+    if(id == null)
+      return;
     image = document.getElementById('PageImage')
     image.src = '../img/arcs-preloader.gif';
     //image.style.height = '100%';
     //image.style.width = '100%';
+    waitingId++;
     setTimeout(function () {
     }, 10000);
-    return $.ajax({
+    $.ajax({
+
         url: arcs.baseURL + "resources/loadNewResource/" + id,
         type: 'GET',
+        beforeSend: function(){
+            waits[this.url] = waitingId;
+        },
         success: function (res) {
+          if(waits[this.url] >= waitingId){
+              res = JSON.parse(res);
 
-            res = JSON.parse(res);
+              kid = res['kid'];
 
-            kid = res['kid'];
-            kids = [];
+              kids = [];
 
+              //display obervatoins that apply to the selected page
+              var cnt=0;
+              var pageNum=1;
 
-            // display obervatoins that apply to the selected page
-            var cnt=0;
-            var pageNum=1;
+              document.getElementById('PageImage').src = res["kora_url"] + res['Image Upload']['localName'];
 
-
-
-            document.getElementById('PageImage').src = res["kora_url"] + res['Image Upload']['localName'];
-
-            document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
+              document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
+            }
         }
-
     });
 }
+_NewResource.DeselectCSS = function(element){
+  $(element).find(".numberOverResources").css({background :"black"});
+  $(element).find("img").css("borderWidth","0px");
+  $(element).css({opacity: ".6"});
+}
 
-
-
-
-
-
+_NewResource.SelectCSS = function(element){
+  $(element).find("img").css("borderWidth","5px");
+  $(element).find(".numberOverResources").css({background :"#0094BC"});
+  $(element).css({opacity: "1"});
+}
 
 // other resources
 $(document).ready(function () {
@@ -56,15 +64,8 @@ $(document).ready(function () {
     oldzoom = 1,
     endIndex =
     LEN / visible -1;
-//		if(index == 0){
-//			$('#button-left').css('display', 'none');
-//			$('#other-resources-container').css('width', '90%');
-//		}
-//		else{
-//			$('#button-left').css('display', 'block');
-//		}
-    for(var i=0; i
-    <$pics.length; i++){
+
+    for(var i=0; i <$pics.length; i++){
         $pics[i].style.borderColor = "#0094BC";
         $pics[i].style.borderStyle = "solid";
         $item[i].onclick = createFunc(i);
@@ -75,73 +76,38 @@ $(document).ready(function () {
     function createFunc(i){
         return function(event){
         event.preventDefault();
-        $pics[current].style.borderWidth = "0px";
+        var container = $(this).parent().parent().attr("class");
+        var selected = $(this).find(".numberOverResources").html();
+        if(container == "page-slider"){
+          $(".other-page").find(".other-resources").each(function(){
+            var page = $(this).find(".numberOverResources").html();
+            if(page ==  selected){
+              _NewResource.SelectCSS(this);
+            }
+            else {
+              _NewResource.DeselectCSS(this);
+            }
+          });
+        }
+        else{
+        $(".resource-container-level").find(".other-resources").each(function(){
+            var resource = $(this).find(".numberOverResources").html();
+              if(resource ==  selected){
+                _NewResource.SelectCSS(this);
+              }
+              else {
+                _NewResource.DeselectCSS(this);
+              }
+          });
+        }
         current = i;
-        $pics[current].style.borderWidth = "5px";
         var kid = keys[current];
         GetNewResource(kid);
-    }
+      }
     }
 
-    /*$('#prev-resource').click(function(event){
-        event.preventDefault();
-        if(current > 0){
-    $('.numberOverResources').removeClass('selectedResource');
-            $pics[current].style.borderWidth = "0px";
-    $selected[current].style.background =""
-            current--;
-            $pics[current].style.borderWidth = "5px";
-    $selected[current].style.background ="#0094bc"
-    $selected[current].className += ' selectedResource';
-            var kid = keys[current];
-    console.log("KID: " + kid);
-    console.log("current: "+current);
-    console.log(kid);
-    $('.other-resources').each( function () {
-//					console.log(parseInt($(this).find('.numberOverResources').html()));
-      console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
-      if($(this).find('.numbderOverResources').hasClass('selectedResource')){
-        console.log('found the boarder');
-        console.log(parseInt($(this).find('.numberOverResources').html()));
-        $(this).trigger('click');
-      }
-    });
-//                GetNewResource(kid);
-//				$("#PageImage").attr('src',$pics[current].src);
-//				console.log('previous image should appear');
-        }
-    });
 
-    $('#next-resource').click(function(event){
-        event.preventDefault();
-        if(current < keys.length-1){
-    $('.numberOverResources').removeClass('selectedResource');
-            $pics[current].style.borderWidth = "0px";
-    $selected[current].style.background =""
-            current++;
-            $pics[current].style.borderWidth = "5px";
-//				$selected[current].style.background ="#0094bc"
-    $selected[current].className += ' selectedResource';
-            var kid = keys[current];
-    console.log(kid);
-    var nextImg = parseInt($('.other-resources').find('.numberOverResources').html())+1
-    console.log(nextImg);
-    $('.other-resources').each( function () {
-//					console.log(parseInt($(this).find('.numberOverResources').html()));
-      console.log($(this).find('.numberOverResources').hasClass('selectedResource'));
-      if($(this).find('.numberOverResources').hasClass('selectedResource')){
-        console.log('found the boarder');
-        console.log(parseInt($(this).find('.numberOverResources').html()));
-        $(this).trigger('click');
-      }
-    }); 
-//				console.log($('.other-resources').find('.numberOverResources').html());
-//                GetNewResource(kid);
-//				$("#PageImage").attr('src',$pics[current].src);
-//				console.log('next image should appear');
-        }
-    });*/
-      $('.expandedArrowBoxLeft').click(previousImage);
+  $('.expandedArrowBoxLeft').click(previousImage);
   $('.expandedArrowBoxRight').click(nextImage);
   $('.fullscreenInner').mouseover(hoverExpand);
   $('.fullscreenInner').mouseout(hoverExpandClose);
@@ -178,8 +144,7 @@ $(document).ready(function () {
       $selected[current].style.background ="#0094bc"
       $selected[current].className += ' selectedResource';
       var kid = keys[current];
-      console.log("KID: " + kid);
-      console.log("current: "+current);
+
       $('.other-resources').each( function () {
         if($(this).find('.numberOverResources').hasClass('selectedResource')){
           $(this).trigger('click');
@@ -284,5 +249,5 @@ $(document).ready(function () {
         //handle: $('#ImageWrap')
         //});
     }
-
+    _resource.selectResource(1);
 });

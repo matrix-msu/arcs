@@ -4,7 +4,25 @@
 
 @ArcsBlue: rgb(0, 147, 190);
 
-
+.select-pointer{
+  position: absolute;
+  top: -16px;
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-left: 26px solid transparent;
+  border-right: 26px solid transparent;
+  border-top: 16px solid #efefef;
+}
+.pointer-border{
+  top: -15px;
+  border-left: 26px solid transparent;
+  border-right: 26px solid transparent;
+  border-top: 16px solid rgba(0,0,0,.1);
+}
+.top-border{
+  border-top: 1px solid rgba(0,0,0,.1);
+}
 
 /* The following is for the scroll-to-zoom feature*/
 input[type=range] {
@@ -599,26 +617,7 @@ input[type=range]:focus::-ms-fill-upper {
     margin-top: 15px;
     margin-left: 1%;
 	}
-//
-// 	.zoom-in-div {
-//     float: left;
-//     margin-top: 10px;
-//     height: 40px;
-//     margin-left: -1%;
-// 	}
-//
-// 	.rotate-div {
-//     float: left;
-//     height: 40px;
-//     margin-left: 14%;
-//     margin-top: 10px;
-// 	}
-//   .reset-div{
-//     float: left;
-//     height: 40px;
-//     margin-left: 12%;
-//     margin-top: 10px;
-// }
+
 img.resource-reset-icon{
     height: 20px;
     width: 20px;
@@ -851,12 +850,10 @@ img.resource-reset-icon{
 }
 
 #resources-nav {
-    //margin-bottom: 345px;
     white-space: nowrap;
     background: #efefef;
     height: 228px;
     width: 100%;
-
 	div {
 		display: inline-block;
 		float: left;
@@ -864,9 +861,10 @@ img.resource-reset-icon{
 
 	#other-resources-container {
 		width: ~"calc(100% - 120px)";
-		overflow: hidden;
-		height: 200px;
-		margin: 14px 6px;
+    height: 200px;
+    margin: -2px 6px;
+    overflow: hidden;
+    padding-top: 16px;
 
 		a {
 			position: relative;
@@ -882,9 +880,10 @@ img.resource-reset-icon{
 	#button-left, #button-right {
 		width: 54px;
 		height: 228px;
-		background-color: #C9C9C9;
+		background-color: rgba(0,0,0,.1);
 		cursor: pointer;
-
+    z-index: 200;
+    position: relative;
 		img {
 			margin-top: 4px;
 			margin-left: 22px;
@@ -1643,9 +1642,10 @@ img.resource-reset-icon{
     text-align: center;
     font-size: 40px;
     opacity: .7;
+    line-height: 57px;
 }
 .selectedResource{
-	background: rgb(0, 148, 188) !important;
+	background: rgb(0, 148, 188) ;
 }
 
 #PageImage {
@@ -1706,9 +1706,10 @@ img.resource-reset-icon{
 img.other-resource{
     margin-left: 15px;
     margin-right: 15px;
-    margin-top: 12px;
+    margin-top: 9px;
     width: 250px;
     height: 175px;
+    border-radius: 2px;
 }
 .fullscreenWrap{
 	display:none;

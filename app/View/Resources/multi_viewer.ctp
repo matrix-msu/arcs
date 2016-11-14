@@ -399,30 +399,6 @@ var resourceKid = "";//"<?php  ?> ";
   </div>
 </div>
 <div id="resources-nav" class = "resource-nav-level top-border">
-    <style>
-
-        .select-pointer{
-          position: absolute;
-          top: -16px;
-          left: 0px;
-          width: 0;
-          height: 0;
-          border-left: 26px solid transparent;
-          border-right: 26px solid transparent;
-          border-top: 16px solid #efefef;
-        }
-        .pointer-border{
-          top: -15px;
-          border-left: 26px solid transparent;
-          border-right: 26px solid transparent;
-          border-top: 16px solid rgba(0,0,0,.1);
-        }
-        .top-border{
-          border-top: 1px solid rgba(0,0,0,.1);
-        }
-    </style>
-
-
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
@@ -464,7 +440,6 @@ var resourceKid = "";//"<?php  ?> ";
         <?php  endforeach   ?>
     </div> <!--#other-resources-contain -->
 </div> <!--#other-resources-container -->
-
 
 
 <div class="button-right" id="button-right">
