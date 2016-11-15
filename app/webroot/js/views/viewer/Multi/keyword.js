@@ -68,6 +68,7 @@ $(document).ready(function(){
                 /////uses the chosen.js to turn the select into a fancy thingy
                 $(".chosen-select").chosen();
 
+                //backspace delete keyword
                 $(".search-field").on('keydown', "input", function(e) {
                     var id = $(this).val();
                     if( (id == "" || id == ',') && e.key == 'Backspace' ) { //get the newest keyword and delete it
@@ -93,7 +94,10 @@ $(document).ready(function(){
 
                     }else if( e.key == ',' ) {
                         id = id.substring(0, id.length - 1);  //remove comma
-
+                        if( id == '' ){ //keyword is empty, so ignore.
+                            $(this).val('');
+                            return;
+                        }
                         var alreadyExists = keywordArray.indexOf( id );
                         if( alreadyExists != -1 ){
                             $(this).val('')
