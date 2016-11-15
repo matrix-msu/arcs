@@ -77,7 +77,6 @@ class CollectionsController extends AppController {
 
             //$collections = array();
             //// Start SQL Area
-            ///////////////////
             include_once("../Config/database.php");
             $db = new DATABASE_CONFIG();
             $db_object =  (object) $db;
@@ -90,21 +89,27 @@ class CollectionsController extends AppController {
                     . $mysqli->connect_error);
             }
             //Get collections info from the resource_kid
-            $sql = "SELECT DISTINCT collections.collection_id, collections.title, collections.user_name
-                    FROM arcs_dev.collections 
-                    WHERE collections.resource_kid ='".$resource_id."';";
+            //where is fancy to get min created of each collection
+            //group by collection_id to only get one of each
+            //order by created
+            $sql = "SELECT collection_id, title, user_name, created
+                    FROM  collections t1
+                    WHERE created = (select min(created) 
+                                      from collections 
+                                      where t1.collection_id =collections.collection_id)
+                          AND resource_kid ='".$resource_id."'
+                    GROUP BY collection_id
+                    ORDER BY created";
+
             $result = $mysqli->query($sql);
             $collections = array();
             while($row = mysqli_fetch_assoc($result))
               $collections[] = $row;
-            //$response['collection_table_id'] = $collection_table_id;
-            //$response['sql'] = $sql;
-            //$collection_id = mysqli_fetch_assoc($result);
-            //$collection_id = $collection_id['collection_id'];
 
             $retval['collections'] = $collections;
             return $this->json(200, $retval);
         }
+        //I don't think this code is used...
         $this->loadModel('Membership');
         $ids = $this->Membership->memberships($id);
         $collections = $this->Collection->find('all', array(
