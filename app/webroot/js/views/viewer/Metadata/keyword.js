@@ -74,7 +74,10 @@ $(document).ready(function(){
                     }else if( e.key == ',' ) {
                         //console.log("comma pressed");
                         id = id.substring(0, id.length - 1);  //remove comma
-
+                        if( id == '' ){ //keyword is empty, so ignore.
+                            $(this).val('');
+                            return;
+                        }
                         var alreadyExists = keywordArray.indexOf( id );
                         if( alreadyExists != -1 ){
                             //console.log("keyword already exists");
