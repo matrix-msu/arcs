@@ -1390,6 +1390,7 @@ $( document ).ready(function() {
      ****************************************************/
 
     //left prev resource button
+    var prev_view_tested = 0; //test inView only once.
     $('#prev-resource').click(function(){
         //already being animated. just ignore click.
         if( $("#other-resources-container").is(':animated') ){
@@ -1403,6 +1404,21 @@ $( document ).ready(function() {
             currentPage = $('.other-page').find('a:visible').first().find('img');
         }
         currentPage = $(currentPage).parent();
+        var inView = isElementInViewport($(currentPage)); //test page is shown
+        if( !inView && prev_view_tested == 0 ){ //not shown and not already tested
+            prev_view_tested = 1;  //tested
+            var slider = $("#other-resources-container");
+            var offset = $(slider).scrollLeft()+$(currentPage).position().left-
+                ( parseInt($(currentPage).find('img').width())/4
+                );
+            //animate the current resource into view.
+            $(slider).animate({scrollLeft: offset }, 1, function(){
+                $(window).trigger('resize');
+                $('#prev-resource')[0].click(); //continue bottom code later
+            });
+            return; //wait until animate is finished to continue
+        }
+        prev_view_tested = 0;  //not tested
         //find the previous page
         var previous = $(currentPage).prev();
         if( previous.length > 0 ){
@@ -1416,11 +1432,13 @@ $( document ).ready(function() {
                     var slider = $("#other-resources-container");
                     $(slider).animate({scrollLeft: offset }, 1);
                     slider = $(".resource-container-level"); //update resource bar
-                    var offset = $(slider).scrollLeft() -
+                    offset = $(slider).scrollLeft() -
                         ( parseInt($(previous).find('img').width()) +
                             parseInt($(previous).find('img').css('margin-left'))*2
                         );
-                    $(slider).animate({scrollLeft: offset }, 400);
+                    $(slider).animate({scrollLeft: offset }, 400, function(){
+                        $(window).trigger('resize');
+                    });
 
                 }, 100);
             }
@@ -1432,11 +1450,14 @@ $( document ).ready(function() {
                       parseInt($(previous).find('img').css('margin-left'))*2 +
                       parseInt($(previous).find('img').css('border-width'))*2
                     );
-                $(slider).animate({scrollLeft: offset }, 200);
+                $(slider).animate({scrollLeft: offset }, 200, function(){
+                    $(window).trigger('resize');
+                });
             }
         }
     });
     //right next resource button.
+    var next_view_tested = 0; //test inView only once.
     $('#next-resource').click(function(){
         if( $("#other-resources-container").is(':animated') ){
             return;
@@ -1448,6 +1469,21 @@ $( document ).ready(function() {
             currentPage = $('.other-page').find('a:visible').first().find('img');
         }
         currentPage = $(currentPage).parent();
+        var inView = isElementInViewport($(currentPage)); //test page is shown
+        if( !inView && next_view_tested == 0 ){ //not shown and not already tested
+            next_view_tested = 1;  //tested
+            var slider = $("#other-resources-container");
+            var offset = $(slider).scrollLeft()+$(currentPage).position().left-
+                ( parseInt($(currentPage).find('img').width())/4
+                );
+            //animate the current resource into view.
+            $(slider).animate({scrollLeft: offset }, 1, function(){
+                $(window).trigger('resize');
+                $('#next-resource')[0].click(); //continue bottom code later
+            });
+            return; //wait until animate is finished to continue
+        }
+        next_view_tested = 0;  //not tested
         var next = $(currentPage).next();
         if( next.length > 0 ){
             var isAnimate = 0;
@@ -1463,7 +1499,9 @@ $( document ).ready(function() {
                         ( parseInt($(next).find('img').width()) +
                             parseInt($(next).find('img').css('margin-left'))*2
                         );
-                    $(slider).animate({scrollLeft: offset }, 400);
+                    $(slider).animate({scrollLeft: offset }, 400, function(){
+                        $(window).trigger('resize');
+                    });
 
                 }, 100);
             }
@@ -1475,10 +1513,28 @@ $( document ).ready(function() {
                       parseInt($(next).find('img').css('margin-left'))*2 +
                       parseInt($(next).find('img').css('border-width'))*2
                     );
-                $(slider).animate({scrollLeft: offset }, 200);
+                $(slider).animate({scrollLeft: offset }, 200, function(){
+                    $(window).trigger('resize');
+                });
             }
         }
     });
+    function isElementInViewport (el) {
+
+        //special bonus for those using jQuery
+        if (typeof jQuery === "function" && el instanceof jQuery) {
+            el = el[0];
+        }
+
+        var rect = el.getBoundingClientRect();
+
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+        );
+    }
 
     /*
           Multi-resource dynamic accordion. based on new page and resource clicks.
