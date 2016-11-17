@@ -1413,7 +1413,6 @@ $( document ).ready(function() {
                 );
             //animate the current resource into view.
             $(slider).animate({scrollLeft: offset }, 1, function(){
-                $(window).trigger('resize');
                 $('#prev-resource')[0].click(); //continue bottom code later
             });
             return; //wait until animate is finished to continue
@@ -1437,6 +1436,7 @@ $( document ).ready(function() {
                             parseInt($(previous).find('img').css('margin-left'))*2
                         );
                     $(slider).animate({scrollLeft: offset }, 400, function(){
+                        //trigger a resize so the drawer arrows get checked.
                         $(window).trigger('resize');
                     });
 
@@ -1451,6 +1451,7 @@ $( document ).ready(function() {
                       parseInt($(previous).find('img').css('border-width'))*2
                     );
                 $(slider).animate({scrollLeft: offset }, 200, function(){
+                    //trigger a resize so the drawer arrows get checked.
                     $(window).trigger('resize');
                 });
             }
@@ -1478,7 +1479,6 @@ $( document ).ready(function() {
                 );
             //animate the current resource into view.
             $(slider).animate({scrollLeft: offset }, 1, function(){
-                $(window).trigger('resize');
                 $('#next-resource')[0].click(); //continue bottom code later
             });
             return; //wait until animate is finished to continue
@@ -1500,6 +1500,7 @@ $( document ).ready(function() {
                             parseInt($(next).find('img').css('margin-left'))*2
                         );
                     $(slider).animate({scrollLeft: offset }, 400, function(){
+                        //trigger a resize so the drawer arrows get checked.
                         $(window).trigger('resize');
                     });
 
@@ -1514,6 +1515,7 @@ $( document ).ready(function() {
                       parseInt($(next).find('img').css('border-width'))*2
                     );
                 $(slider).animate({scrollLeft: offset }, 200, function(){
+                    //trigger a resize so the drawer arrows get checked.
                     $(window).trigger('resize');
                 });
             }
