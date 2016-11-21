@@ -485,7 +485,7 @@ class SearchController extends AppController {
 
         if (isset($this->request->query['n'])) {
             $limit = $this->request->query['n'];
-            $response['limit'] = $limit;
+            //$response['limit'] = $limit;
         }
         else{
             $limit = -1;
@@ -582,13 +582,19 @@ class SearchController extends AppController {
 
                 $resource_identifier = $r['Resource Identifier'];
 
-                //Get the Pages from Kora
-                $query = "Resource Identifier,=,".$resource_identifier;
+                //grab all pages with the resource identifier
+                $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
+                $kora = new Advanced_Search(PAGES_SID, $fields);
 
-                $fields = array('Image Upload');
-                $query_array = explode(",", $query);
-                $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
-                $page2 = json_decode($kora->return_json(), true);
+                if( $resource_type == 'Field journal' ) {
+                    $temp_array['resource-type'] = $resource_type;
+                    $kora->add_double_clause("Resource Identifier", "=", $resource_identifier,
+                        "Scan Number", "=", "1");
+                }else {
+                    $kora->add_clause("Resource Identifier", "=", $resource_identifier);
+                }
+
+                $page2 = json_decode($kora->search(), true);
 
                 //Get the picture URL from the page results
                 $picture_url = '';
@@ -649,10 +655,16 @@ class SearchController extends AppController {
 
         if ( $this->request->query['q'] == 'Orphan,=,true' ){  //search only for pages that are orphans
 
+            //search for the orphaned pages with a limit.
             $fields = array('Image Upload');
             $query_array = explode(",", $this->request->query['q']);
-            $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
-            $response['results'] = json_decode($kora->return_json(), true);
+            if( $limit != -1 ) {
+                $kora = new Advanced_Search(PAGES_SID, $fields, 0, $limit+1);
+            }else{
+                $kora = new Advanced_Search(PAGES_SID, $fields, 0, 0);
+            }
+            $kora->add_clause($query_array[0], $query_array[1], $query_array[2]);
+            $response['results'] = json_decode($kora->search(), true);
 
             $returnResults = array();
             $count = 0;
@@ -696,37 +708,79 @@ class SearchController extends AppController {
                 $sid = RESOURCE_SID;
             }
 
+            //search for the resources by type
             $fields = array('Title','Resource Identifier');
             $query_array = explode(",", $query);
-            $kora = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-            $response['results'] = json_decode($kora->return_json(), true);
+            if( $limit != -1 ) {
+                $kora = new Advanced_Search($sid, $fields, 0, $limit+1);
+            }else{
+                $kora = new Advanced_Search($sid, $fields, 0, 0);
+            }
+            $kora->add_clause($query_array[0], $query_array[1], $query_array[2]);
+            $resources = json_decode($kora->search(), true);
 
+            //grab all pages with the resource identifier
+            $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
+            $kora = new Advanced_Search(PAGES_SID, $fields);
+
+            //only add the clauses for the resources within the limit
+            $count = 0;
+            foreach ($resources as $key => $item) {
+                $count++;
+                //if there are more resources, add more results
+                if ($count > $limit && $limit != -1) {
+                    break;
+                }
+                if( $query_array[2] == 'Field Journal' ) {
+                    $kora->add_double_clause("Resource Identifier", "=", $item['Resource Identifier'],
+                        "Scan Number", "=", "1");
+                }else {
+                    $kora->add_clause("Resource Identifier", "=", $item['Resource Identifier']);
+                }
+            }
+
+            $pages = json_decode($kora->search(), true);
+
+            //get the info from the resources and pages
             $returnResults = array();
             $count = 0;
-            foreach ($response['results'] as $key => $item) {
+            foreach ($resources as $key => $item) {
                 //check for show all button stuffs
                 $count++;
                 if ($count > $limit && $limit != -1) {
                     $returnResults[0]['more_results'] = 1;
                     break;
                 }
-                //Get the Images
-                $query = "Resource Identifier,=," . $item['Resource Identifier'];
-
-                $fields = array('Image Upload');
-                $query_array = explode(",", $query);
-                $kora = new General_Search(PAGES_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
-                $page = json_decode($kora->return_json(), true);
 
                 $temp['kid'] = $key;
 
                 $temp['title'] = 'Unknown Title';
-                if (array_key_exists('Title', $item) ) {
+                if (array_key_exists('Title', $item) && $item['Title'] != '' ) {
                     $temp['title'] = $item['Title'];
                 }
+
+                //Get the Images
                 $temp['thumb'] = '';
-                if (isset(array_values($page)[0])) {
-                    $temp['thumb'] = array_values($page)[0]['Image Upload']['localName'];
+                $resource_identifier = $item['Resource Identifier'];
+
+                //find the page by resource linkers and use the kid as the key.
+                if( !empty($item['linkers']) ){
+                    $minKey = min(array_keys($item['linkers'])); //grab the newest kid.
+                    if(array_key_exists($minKey, $pages)){
+                        $temp['thumb'] = $pages[$minKey]['Image Upload']['localName'];
+                        unset($pages[$minKey]); //delete that page to optimize
+                    }
+                }
+
+                //if the page wasn't found by key, then search through all pages manually.
+                if ($temp['thumb'] == '') {
+                    foreach ($pages as $key2 => $item2) {
+                        if ($resource_identifier == $pages[$key2]['Resource Identifier']) {
+                            $temp['thumb'] = $pages[$key2]['Image Upload']['localName'];
+                            unset($pages[$key2]); //delete that page to optimize
+                            break;
+                        }
+                    }
                 }
 
                 //Decide if there is a picture..
@@ -737,8 +791,13 @@ class SearchController extends AppController {
                 }
                 array_push($returnResults, $temp);
             }
-        }
 
+
+            //$response['pages'] = $pages;
+            //$response['pagestype'] = gettype($pages);
+            //$response['resources'] = $resources;
+            $response['countpages'] = count($pages);
+        }
         //Test if there are more results for the show all button
         if( $limit == -1 ){
             $returnResults[0]['more_results'] = 0;

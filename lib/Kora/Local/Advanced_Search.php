@@ -10,16 +10,29 @@ class Advanced_Search extends Kora{
     private $final_clause;
     private $sid;
 
-    function __construct($sid, $fields = 'ALL'){
+    function __construct($sid, $fields = 'ALL', $start = 0, $limit = 0){
         //call parent constructor 'kora'
         parent::__construct();
-
         $this->sid = $sid;
         $this->fields = $fields;
+        $this->start = $start;
+        $this->end = $limit;
     }
 
     public function add_clause($query1, $query2, $query3) {
         array_push($this->clauses, new KORA_Clause($query1, $query2, $query3));
+    }
+    public function add_double_clause($query1, $query2, $query3, $query4, $query5, $query6) {
+        $koraClause1 = new KORA_Clause($query1, $query2, $query3);
+        $koraClause2 = new KORA_Clause($query4, $query5, $query6);
+        array_push($this->clauses, new KORA_Clause($koraClause1, 'AND', $koraClause2));
+    }
+    public function add_triple_clause($query1, $query2, $query3, $query4, $query5, $query6,$query7) {
+        $koraClause1 = new KORA_Clause($query1, $query2, $query3);
+        $koraClause2 = new KORA_Clause($query4, $query5, $query6);
+        $koraClause3 = new KORA_Clause($query4, $query5, $query7);
+        $koraClause4 = new KORA_Clause($koraClause2, "OR", $koraClause3);
+        array_push($this->clauses, new KORA_Clause($koraClause1, 'AND', $koraClause4));
     }
 
     public function search () {
@@ -33,8 +46,10 @@ class Advanced_Search extends Kora{
         $this->projectMapping = PID;
         $this->schemeMapping = $this->sid;
         $this->The_Clause = $this->final_clause;
+        $this->sortFields = array();
 
-        $this->formulatedResult = parent::search();
+        //$this->formulatedResult = parent::search();
+        $this->formulatedResult = parent::search_limited();
 
         return json_encode($this->formulatedResult);
     }
