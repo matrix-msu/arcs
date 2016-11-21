@@ -812,7 +812,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Find user information by id
+     * Find user information by id - collections uses this to find collections in the model.
      */
     public function findById()
     {

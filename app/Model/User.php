@@ -101,12 +101,12 @@ class User extends AppModel {
 
                 //Get a collection_id from the id
                 //Get the title
-                //Get the newest date
-                $sql = "SELECT DISTINCT collection_id, id, title, max(modified) AS DATE, public, members
+                //Get the oldest created date.
+                $sql = "SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
                         FROM arcs_dev.collections
                         WHERE collections.user_id ='" . $r['id'] . "'
                         GROUP BY title
-                        ORDER BY max(modified) DESC;";
+                        ORDER BY min(created) DESC;";
                 //WHERE title = '".$file_name."'";
                 $result = $mysqli->query($sql);
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -118,7 +118,7 @@ class User extends AppModel {
                         'September', 'October', 'November', 'December');
                     $month = substr($date, 5, 2);
                     $day = substr($date, 8, 2);
-                    $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;;
+                    $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
 
 
                     $temp_array = array('id' => $row['id'],
