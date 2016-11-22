@@ -92,12 +92,9 @@ class CollectionsController extends AppController {
             //where is fancy to get min created of each collection
             //group by collection_id to only get one of each
             //order by created
-            $sql = "SELECT collection_id, title, user_name, created
-                    FROM  collections t1
-                    WHERE created = (select min(created) 
-                                      from collections 
-                                      where t1.collection_id =collections.collection_id)
-                          AND resource_kid ='".$resource_id."'
+            $sql = "SELECT collection_id, title, user_name, min(created) AS DATE
+                    FROM  collections
+                    WHERE resource_kid ='".$resource_id."'
                     GROUP BY collection_id
                     ORDER BY created";
 

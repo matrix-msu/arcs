@@ -103,9 +103,9 @@ class User extends AppModel {
                 //Get the title
                 //Get the oldest created date.
                 $sql = "SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
-                        FROM arcs_dev.collections
-                        WHERE collections.user_id ='" . $r['id'] . "'
-                        GROUP BY title
+                        FROM collections
+                        WHERE user_id ='" . $r['id'] . "'
+                        GROUP BY collection_id
                         ORDER BY min(created) DESC;";
                 //WHERE title = '".$file_name."'";
                 $result = $mysqli->query($sql);
