@@ -39,7 +39,17 @@
 			</ul>
 		</div>
 		<div class="proper-width">
-			<div class="more-info"><span style="cursor:pointer"><a>EXPLORE MORE RESOURCES</a></div></span>
+			<div class="more-info"><span style="cursor:pointer">
+			    <a href="<?php
+			            //grab the current url, take off the end and add resources.
+			            $url=explode('/', "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+			            array_pop($url);
+			            array_pop($url);
+			            array_pop($url);
+			            $url=implode('/', $url);
+			            echo $url.'/resources';
+			      ?>">EXPLORE MORE RESOURCES</a>
+            </div></span>
 		</div>
 		<div class="proper-width" id="show-min">
 			<div class="more-info"><span style="cursor:pointer"><a>EXPLORE MORE RESOURCES</a></div></span>

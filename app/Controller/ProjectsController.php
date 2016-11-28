@@ -32,8 +32,7 @@ class ProjectsController extends AppController {
 		$display = "json";
 		$query = "";
 
-    $url =
-    KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
+        $url=KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -57,8 +56,8 @@ class ProjectsController extends AppController {
      */
 	public function display() {
 
-    // intialize kora session
-    $kora = new \Lib\Kora();
+        // intialize kora session
+        $kora = new \Lib\Kora();
 
 		$path = func_get_args();
 		$this->getProjects();
@@ -88,36 +87,45 @@ class ProjectsController extends AppController {
 
 	public function single_project($proj) {
 
-    $user = "";
+        $user = "";
 		$pass = "";
 
-    $project = new Project($proj);
+        $project = new Project($proj);
+    
+        $server_output = $project->get_recent();
+    
+        $this->set("name",$project->get_name());
+        $this->set("description",$project->get_description());
+        //$this->set("recently_added", $project->get_recent());
 
-    $server_output = $project->get_recent();
-
-    $this->set("name",$project->get_name());
-    $this->set("description",$project->get_description());
-    $this->set("recently_added", $project->get_recent());
-
-    // print_r($server_output);
-
-    // Now we go through the list, get any more needed information, and compile results
+         //print_r($server_output);//exit();
+    
+        // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
 		foreach($server_output as $result) {
 
-      $page = $project->get_page($result['Resource Identifier']);
-
-			$picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
+            $page = $project->get_page($result['Resource Identifier'], $result['Type']);
+    
+            $picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
                      array_values($page)[0]['Image Upload']['localName'] : null;
-
-			//Decide if there is a picture..
-			if( !empty($picture_url) ){
-				$thumb = $this->largeThumb($picture_url);
-			}else{
-				$thumb = Router::url('/', true)."img/DefaultResourceImage.svg";
+    
+            //Decide if there is a picture..
+            if( !empty($picture_url) ){
+                $thumb = $this->largeThumb($picture_url);
+            }else{
+                $thumb = Router::url('/', true)."img/DefaultResourceImage.svg";
+            }
+			$tempType = 'Unknown Type';
+			if($result['Type']!=''){
+				$tempType = $result['Type'];
 			}
-			$temp_array = ['kid' => $result['kid'], 'type' => $result['Type'], 'title' => $result['Title'], 'thumb' => $thumb];
-			$resources[] = $temp_array;
+			$tempTitle = 'Unknown Title';
+			if($result['Title']!=''){
+				$tempTitle = $result['Title'];
+			}
+
+            $temp_array = ['kid' => $result['kid'], 'type' => $tempType, 'title' => $tempTitle, 'thumb' => $thumb];
+            $resources[] = $temp_array;
 		}
 		$this->set('resources', $resources);
 

@@ -54,27 +54,44 @@ class Project extends Kora{
       return "";
     }
 
+    //get recent resources for the single-project page.
+    //this works by sorting by timestamp...
+    //it might need to be changed to kid, but that would need a kora update.
+    //TODO? - I think this is an issue -Josh
+    //todo- this doesn't ensure resources come from the current arcs project....
     public function get_recent(){
       if($this->is_valid){
         $this->schemeMapping = RESOURCE_SID;
-        $this->fields = array("Title","Type","Resource Identifier");
-        $this->The_Clause = new KORA_Clause("kid", "!=", "");
-        $this->sortFields= array( 'kid' => SORT_ASC);
+        $this->fields = array("Title","Type","Resource Identifier", 'systimestamp');
+        $this->The_Clause = new KORA_Clause("kid", "!=", "1");
+        $this->sortFields= array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
         $this->start = 0;
         $this->end = 8;
         return parent::search_limited();
-
       }
       return "";
 
     }
-    public function get_page($resource){
+
+    //project controller to get individual pages.
+    public function get_page($resource, $type){
       if($this->is_valid){
         $this->schemeMapping = PAGES_SID;
         $this->fields = array("Image Upload");
-        $this->The_Clause = new KORA_Clause("Resource Identifier", "=", $resource);
-        return parent::search();
-
+        if($type == 'Field journal'){
+            $clause1 = new KORA_Clause("Resource Identifier", "=", $resource);
+            $clause2 = new KORA_Clause("Scan Number", "=", '1');
+            $this->The_Clause = new KORA_Clause($clause1, "AND", $clause2);
+            $temp = parent::search();
+            if( empty($temp) ){
+                $this->The_Clause = new KORA_Clause("Resource Identifier", "=", $resource);
+                $temp = parent::search();
+            }
+            return $temp;
+        }else{
+            $this->The_Clause = new KORA_Clause("Resource Identifier", "=", $resource);
+            return parent::search();
+        }
       }
       return "";
 
