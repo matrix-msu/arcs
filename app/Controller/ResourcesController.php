@@ -11,6 +11,7 @@
  */
 
  require_once(KORA_LIB . "General_Search.php");
+ require_once(KORA_LIB . "Advanced_Search.php");
 
 
 
@@ -138,198 +139,170 @@ class ResourcesController extends AppController {
     }
 
     /**
-     * The Resource viewer.
+     * The current sinlge-Resource viewer.
      *
-     * @param string $id            resource id
+     * @param string $id            resource kid
      * @param bool   $ignore_ctx    if true, the action will not redirect to the
      *                              collection view when the resource has a
      *                              non-null context attribute.
      */
     public function viewer($id, $page=0, $ignore_ctx=false) {
 
-        $this->Resource->recursive = 1;
-        $this->Resource->flatten = false;
+        //resource
+        $query = "kid,=,".$id;
+        $fields = array('ALL');
+        $query_array = explode(",", $query);
+        $kora = new General_Search(RESOURCE_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $resource = json_decode($kora->return_json(), true);
+        $resource = $resource[$id];
 
-    		//Get the Images
-    		$query = "Resource Associator,=,".$id;
-    		$user = "";
-    		$pass = "";
-    		$display = "json";
-    		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display.
-                "&query=".urlencode($query).'&fields=ALL';
+        $resource_id = $resource['Resource Identifier']; //used for subjects
 
+        //grab all pages with the resource identifier
+        $fields = array('ALL');
+        $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
+        $kora = new Advanced_Search(PAGES_SID, $fields, 0, 0, $sort);
+        $kora->add_clause("Resource Associator", "=", $id);
+        $pages = json_decode($kora->search(), true);
 
-    		///initialize post request to KORA API using curl
-    		$ch = curl_init($url);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-    		//capture results and map to array
-    		$pages = json_decode(curl_exec($ch), true);
-      	$first = true;
+        // get the first entry in $pages
+        $firstPage = array_values($pages)[0]['kid'];
 
-            // get the first entry in $pages
-            $firstPage = array_values($pages)[0]['kid'];
-            //$pages[$firstPage]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$firstPage]['Image Upload']['localName'];
-            // Shifting to create thumbnails for every page
-            foreach($pages as $page) {
-                $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
-                $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
-            }
+        // Shifting to create thumbnails for every page
+        foreach($pages as $page) {
+            $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
+            $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
+        }
+        
+        //survey
+        $surveys = array();
+        $seasonKID = '';
+        if(is_array($resource['Excavation - Survey Associator'])){
+          foreach ($resource['Excavation - Survey Associator'] as $kid) {
+              $query = "kid,=,".$kid;
+              $fields = array('ALL');
+              $query_array = explode(",", $query);
+              $kora = new General_Search(SURVEY_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+              $survey = json_decode($kora->return_json(), true);
 
-    		//resource
-    		$query = "kid,=,".$id;
-    		$display = "json";
-    		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".
-                urlencode($query).'&fields=ALL';
-    		///initialize post request to KORA API using curl
-    		$ch = curl_init($url);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-    		//capture results and display
-    		$resource = json_decode(curl_exec($ch), true);
-    		$resource = $resource[$id];
-
-    		$resource_id = $resource['Resource Identifier'];
-
-
-            //survey
-            $surveys = array();
-            $seasonKID = '';
-            if(is_array($resource['Excavation - Survey Associator'])){
-              foreach ($resource['Excavation - Survey Associator'] as $kid) {
-                  $query = "kid,=,".$kid;
-                  $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SURVEY_SID."&token=".TOKEN."&display=".$display."&query=".
-                      urlencode($query).'&fields=ALL';
-                  ///initialize post request to KORA API using curl
-                  $ch = curl_init($url);
-                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                  curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-                  //capture results and display
-                  $survey = json_decode(curl_exec($ch), true);
-                  $survey = $survey[$kid];
-                  array_push($surveys, $survey);
-                  //If no seasons for a resource, use resource season associator
-      			      if ($seasonKID == '') {
-                  	 $seasonKID = $survey['Season Associator'][0];	// does nothing?
-              	  }
-                }
+              $survey = $survey[$kid];
+              array_push($surveys, $survey);
+              //If no seasons for a resource, use resource season associator
+              if ($seasonKID == '') {
+                 $seasonKID = $survey['Season Associator'][0];
               }
-
-            //If no seasons for a resource, use resource season associator
-            if ($seasonKID == '') {
-                $seasonKID = $resource['Season Associator'][0];
             }
+          }
+
+        //If no seasons for a resource, use resource season associator
+        if ($seasonKID == '') {
+            $seasonKID = $resource['Season Associator'][0];
+        }
+
+        // SOO - Subject of Observation
+        $query = "Resource Identifier,=,".$resource_id; // use this particular resource identifier
+        $fields = array('ALL');
+        $query_array = explode(",", $query);
+        $kora = new General_Search(SUBJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $subject = json_decode($kora->return_json(), true);
+
+        //season
+        $projectKid = '';
+
+        $query = "kid,=,".$seasonKID;
+        $fields = array('ALL');
+        $query_array = explode(",", $query);
+        $kora = new General_Search(SEASON_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $season = json_decode($kora->return_json(), true);
+        $season = $season[$seasonKID];
+
+        if ($projectKid == '') {
+            $projectKid = $season['Project Associator'][0];
+        }
+
+        //project
+        $query = "kid,=,".$projectKid;
+        $fields = array('ALL');
+        $query_array = explode(",", $query);
+        $kora = new General_Search(PROJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $project = json_decode($kora->return_json(), true);
+
+//        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=".$display."&query=".
+//            urlencode($query).'&fields=ALL';
+//        ///initialize post request to KORA API using curl
+//        $ch = curl_init($url);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+//        //capture results and display
+//        $project = json_decode(curl_exec($ch), true);
+        $project = $project[$projectKid];
+        //$project['url'] = $url;
+
+        $resource['thumb'] = $pages[$firstPage]['thumb'];
+
+        $public = isset($resource['Resource']['public']) ? $resource['Resource']['public'] : false;
+        $allowed = true; // $public || $this->Auth->loggedIn();
+
+        if (!$resource) return $this->redirect('/404');
+        if (!$allowed) {
+            $this->Session->setFlash("Oops. You'll need to login to view that.",
+                'flash_error');
+            $this->Session->write('redirect', '/resource/' . $id);
+            return $this->redirect($this->Auth->redirect('#loginModal'));
+        }
+
+        # Redirect if the resource's context is non-null.
+        $resourceContext = isset($resource['Resource']['context']) ?$resource['Resource']['context'] : "";
+        if ($resourceContext && !$ignore_ctx) {
+            return $this->redirect('/collection/' .
+                $resource['Resource']['context'] . '/' . $id
+            );
+        }
+
+        //Set kid for viewer
+        //moved to line 260
+        /*if (isset($pages[$firstPage]['kid'])) {
+            $this->set(array('kid' =>$pages[$firstPage]['kid']));
+        } else {
+            $this->set(array('kid' => $resource['kid']));
+        }*/
+
+        $collections = json_encode($this->Collection->find('all', array(
+            'fields'    => array('DISTINCT collection_id', 'title', 'user_name'),
+            'order'     => 'created DESC',
+            'recursive' => -1
+        )));
 
 
-            // SOO - Subject of Observation
-            $query = "Resource Identifier,=,".$resource_id; // use this particular resource identifier
-    		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SUBJECT_SID."&token=".TOKEN."&display=".$display."&query=".
-                urlencode($query).'&fields=ALL';
-    		$ch = curl_init($url);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-    		//capture results and display
-    		 $subject = json_decode(curl_exec($ch), true); // this is actually an array
-         //print_r(count($subject);
-        //exit(0);
-    		//season
-    		$seasons = array();
-    		$projectKid = '';
-    		$query = "kid,=,".$seasonKID;
-    		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".SEASON_SID."&token=".TOKEN."&display=".$display."&query=".
-                urlencode($query).'&fields=ALL';
-    		///initialize post request to KORA API using curl
-    		$ch = curl_init($url);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-    		//capture results and display
-    		$season = json_decode(curl_exec($ch), true);
-    		$season = $season[$seasonKID];
+        //edit metadata stuffs
+        $metadataedits = $this->getEditMetadata();
 
-    		if ($projectKid == '') {
-    			$projectKid = $season['Project Associator'][0];
-    		}
-
-    		//array_push($seasons, $season);
-
-    		//project
-    		$query = "kid,=,".$projectKid;
-    		$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=".$display."&query=".
-                urlencode($query).'&fields=ALL';
-    		///initialize post request to KORA API using curl
-    		$ch = curl_init($url);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-    		//capture results and display
-    		$project = json_decode(curl_exec($ch), true);
-    		$project = $project[$projectKid];
-            $project['url'] = $url;
-
-    		$resource['thumb'] = $pages[$firstPage]['thumb'];
-
-            $public = isset($resource['Resource']['public']) ? $resource['Resource']['public'] : false;
-            $allowed = true; // $public || $this->Auth->loggedIn();
-
-            if (!$resource) return $this->redirect('/404');
-            if (!$allowed) {
-                $this->Session->setFlash("Oops. You'll need to login to view that.",
-                    'flash_error');
-                $this->Session->write('redirect', '/resource/' . $id);
-                return $this->redirect($this->Auth->redirect('#loginModal'));
-            }
-
-            # Redirect if the resource's context is non-null.
-            $resourceContext = isset($resource['Resource']['context']) ?$resource['Resource']['context'] : "";
-            if ($resourceContext && !$ignore_ctx) {
-                return $this->redirect('/collection/' .
-                    $resource['Resource']['context'] . '/' . $id
-                );
-            }
-
-    		//Set kid for viewer
-            //moved to line 260
-    		/*if (isset($pages[$firstPage]['kid'])) {
-    			$this->set(array('kid' =>$pages[$firstPage]['kid']));
-    		} else {
-    			$this->set(array('kid' => $resource['kid']));
-    		}*/
-
-            $collections = json_encode($this->Collection->find('all', array(
-                'fields'    => array('DISTINCT collection_id', 'title', 'user_name'),
-                'order'     => 'created DESC',
-                'recursive' => -1
-            )));
+        $this->set(array(
+            'kid' =>$pages[$firstPage]['kid'],
+            'pages' => $pages,
+            'resource' => $resource,
+            'subject' => $subject,
+            'surveys' => $surveys,
+            'season' => $season,
+            'project' => $project,
+            'collections' => $collections,
+            'metadataEdits' => $metadataedits,
+            'toolbar' => array('actions' => true),
+            'footer' => false,
+            'body_class' => 'viewer standalone',
+            'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
+            'admin' => $this->Auth->user('isAdmin') == 1
+        ));
 
 
-            //edit metadata stuffs
-            $metadataedits = $this->getEditMetadata();
-
-            $this->set(array(
-                'kid' =>$pages[$firstPage]['kid'],
-                'pages' => $pages,
-                'resource' => $resource,
-                'subject' => $subject,
-                'surveys' => $surveys,
-    			'season' => $season,
-                'project' => $project,
-                'collections' => $collections,
-                'metadataEdits' => $metadataedits,
-                'toolbar' => array('actions' => true),
-                'footer' => false,
-                'body_class' => 'viewer standalone',
-    			'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
-                'admin' => $this->Auth->user('isAdmin') == 1
-            ));
-
-
-            # On the first request of a particular resource (usually directly
-            # after upload), we might prompt the user for additional
-            # actions/information. Here we're turning that off for future
-            # requests. (Note that the first_req will still be true within the
-            # $resource var.)
-            $resourceFirstReq = isset($resource['Resource']['first_req']) ?$resource['Resource']['first_req'] : false ;
-            if ($resourceFirstReq)
-                $this->Resource->firstRequest($resource['Resource']['id']);
+        # On the first request of a particular resource (usually directly
+        # after upload), we might prompt the user for additional
+        # actions/information. Here we're turning that off for future
+        # requests. (Note that the first_req will still be true within the
+        # $resource var.)
+        $resourceFirstReq = isset($resource['Resource']['first_req']) ?$resource['Resource']['first_req'] : false ;
+        if ($resourceFirstReq)
+            $this->Resource->firstRequest($resource['Resource']['id']);
     }
 
     //get all the edit metadata in the table.
@@ -383,12 +356,13 @@ class ResourcesController extends AppController {
         $this->render('/Elements/download');
     }
 
+    //Josh- I don't think this is used. Mine is in export.
     /**
      * Create a zipfile of the POSTed array of resources. Responds with a JSON
      * object containing a url to the zipfile.
      */
-    public function zipped() {
-        # TODO: Look into streaming the zipfile, vs. making it and then providing
+   /* public function zipped() {
+        # TO-DO: Look into streaming the zipfile, vs. making it and then providing
         # the link...
         if (!($this->request->is('post') && $this->request->data))
             throw new BadRequestException();
@@ -408,7 +382,7 @@ class ResourcesController extends AppController {
             (count($files) > 2 ? 'others' : 'other');
         $sha = $this->Resource->makeZipfile($files, $name);
         $this->json(200, array('url' => $this->Resource->url($sha, $name . '.zip')));
-    }
+    }*/
 
     /**
      * Request a re-thumbnail of a resource's thumbnail image. This is handled
@@ -578,6 +552,7 @@ class ResourcesController extends AppController {
 
     /**
      * View a resource
+     * Josh- I'm not really sure what this is for... It isn't single resource.
      *
      * @param string $id
      */
@@ -785,11 +760,12 @@ class ResourcesController extends AppController {
       return $result->return_array();
     }
     protected function getPages($resource_kid){
-      $sid = PAGES_SID;
-      $query_array = array("Resource Associator","=", $resource_kid);
-      $fields = "ALL";
-      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-      return $result->return_array();
+      //grab all pages with the resource identifier
+      $fields = array('ALL');
+      $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
+      $kora = new Advanced_Search(PAGES_SID, $fields, 0, 0, $sort);
+      $kora->add_clause("Resource Associator", "=", $resource_kid);
+      return json_decode($kora->search(), true);
     }
     protected function getSubjectOfObservation($resource_kid){
       $sid = SUBJECT_SID;

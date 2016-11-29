@@ -10,13 +10,14 @@ class Advanced_Search extends Kora{
     private $final_clause;
     private $sid;
 
-    function __construct($sid, $fields = 'ALL', $start = 0, $limit = 0){
+    function __construct($sid, $fields = 'ALL', $start = 0, $limit = 0, $sort = array() ){
         //call parent constructor 'kora'
         parent::__construct();
         $this->sid = $sid;
         $this->fields = $fields;
         $this->start = $start;
         $this->end = $limit;
+        $this->sortFields = $sort;
     }
 
     public function add_clause($query1, $query2, $query3) {
@@ -46,7 +47,7 @@ class Advanced_Search extends Kora{
         $this->projectMapping = PID;
         $this->schemeMapping = $this->sid;
         $this->The_Clause = $this->final_clause;
-        $this->sortFields = array();
+
 
         //$this->formulatedResult = parent::search();
         $this->formulatedResult = parent::search_limited();
