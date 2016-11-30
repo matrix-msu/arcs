@@ -173,7 +173,7 @@ class ResourcesController extends AppController {
             $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
             $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
         }
-        
+
         //survey
         $surveys = array();
         $seasonKID = '';

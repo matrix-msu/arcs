@@ -53,23 +53,59 @@ class Project extends Kora{
       }
       return "";
     }
-
-    //get recent resources for the single-project page.
-    //this works by sorting by timestamp...
-    //it might need to be changed to kid, but that would need a kora update.
-    //TODO? - I think this is an issue -Josh
-    //todo- this doesn't ensure resources come from the current arcs project....
-    public function get_recent(){
+    public function get_kid(){
       if($this->is_valid){
-        $this->schemeMapping = RESOURCE_SID;
-        $this->fields = array("Title","Type","Resource Identifier", 'systimestamp');
-        $this->The_Clause = new KORA_Clause("kid", "!=", "1");
-        $this->sortFields= array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
-        $this->start = 0;
-        $this->end = 8;
-        return parent::search_limited();
+        return $this->info["kid"];
       }
       return "";
+    }
+
+    //Get recent resources associated with a single project, for single-project page
+    //this works by sorting by timestamp...
+    //it might need to be changed to kid, but that would need a kora update.
+    public function get_recent(){
+        if($this->is_valid){
+            $projectKid = $this->get_kid(); //get project kid
+
+            //get all seasons based on project kid
+            $this->schemeMapping = SEASON_SID;
+            $this->fields = array("Project Associator");
+            $this->The_Clause = new KORA_Clause("Project Associator", "=", $projectKid);
+            $seasons = parent::search();
+
+            //get an array of the seasons
+            $seasonArray = array();
+            foreach( $seasons as $key => $item ) {
+                $seasonArray[] = $key;
+            }
+            //get a season clause for excavations
+            $this->The_Clause = new KORA_Clause("Season Associator", "IN", $seasonArray);
+
+            //get all excavations based on the seasons.
+            $this->schemeMapping = SURVEY_SID;
+            $this->fields = array("Season Associator");
+            $surveys = parent::search();
+
+            //get an excavation array.
+            $surveyArray = array();
+            foreach( $surveys as $key => $item ) {
+                $surveyArray[] = $key;
+            }
+            //make clauses for the 2 ways resources can be linked.
+            $tempClause1 = new KORA_Clause("Excavation - Survey Associator", "IN", $surveyArray);
+            $tempClause2 = new KORA_Clause("Season Associator", "IN", $seasonArray);
+
+            //get 8 newest resources based on the excavations and seasons.
+            $this->schemeMapping = RESOURCE_SID;
+            $this->fields = array("Title","Type","Resource Identifier", 'systimestamp');
+            $this->The_Clause = new KORA_Clause($tempClause1, 'OR', $tempClause2);
+            $this->sortFields= array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+            $this->start = 0;
+            $this->end = 8;
+            return parent::search_limited();
+
+        }
+    return "";
 
     }
 
@@ -79,17 +115,17 @@ class Project extends Kora{
         $this->schemeMapping = PAGES_SID;
         $this->fields = array("Image Upload");
         if($type == 'Field journal'){
-            $clause1 = new KORA_Clause("Resource Identifier", "=", $resource);
+            $clause1 = new KORA_Clause("Resource Associator", "=", $resource);
             $clause2 = new KORA_Clause("Scan Number", "=", '1');
             $this->The_Clause = new KORA_Clause($clause1, "AND", $clause2);
             $temp = parent::search();
             if( empty($temp) ){
-                $this->The_Clause = new KORA_Clause("Resource Identifier", "=", $resource);
+                $this->The_Clause = new KORA_Clause("Resource Associator", "=", $resource);
                 $temp = parent::search();
             }
             return $temp;
         }else{
-            $this->The_Clause = new KORA_Clause("Resource Identifier", "=", $resource);
+            $this->The_Clause = new KORA_Clause("Resource Associator", "=", $resource);
             return parent::search();
         }
       }
@@ -102,9 +138,6 @@ class Project extends Kora{
       }
       return "";
     }
-
-
-
 }
 
 

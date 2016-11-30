@@ -93,6 +93,8 @@ class ProjectsController extends AppController {
         $project = new Project($proj);
     
         $server_output = $project->get_recent();
+//		print_r($server_output);
+//		exit();
     
         $this->set("name",$project->get_name());
         $this->set("description",$project->get_description());
@@ -104,13 +106,13 @@ class ProjectsController extends AppController {
 		$resources = [];
 		foreach($server_output as $result) {
 
-            $page = $project->get_page($result['Resource Identifier'], $result['Type']);
+            $page = $project->get_page($result['kid'], $result['Type']);
     
             $picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
                      array_values($page)[0]['Image Upload']['localName'] : null;
-    
+
             //Decide if there is a picture..
-            if( !empty($picture_url) ){
+            if( $picture_url != null ){
                 $thumb = $this->largeThumb($picture_url);
             }else{
                 $thumb = Router::url('/', true)."img/DefaultResourceImage.svg";

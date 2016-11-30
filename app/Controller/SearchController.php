@@ -723,20 +723,25 @@ class SearchController extends AppController {
             $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
             $kora = new Advanced_Search(PAGES_SID, $fields);
 
-            //only add the clauses for the resources within the limit
+            //get a accepted resource_identifier array for kora,
+            //stay within the limit
             $count = 0;
+            $resourceIdArray = array();
             foreach ($resources as $key => $item) {
                 $count++;
                 //if there are more resources, add more results
                 if ($count > $limit && $limit != -1) {
                     break;
                 }
-                if( $query_array[2] == 'Field Journal' ) {
-                    $kora->add_double_clause("Resource Identifier", "=", $item['Resource Identifier'],
-                        "Scan Number", "=", "1");
-                }else {
-                    $kora->add_clause("Resource Identifier", "=", $item['Resource Identifier']);
-                }
+                $resourceIdArray[] = $item['Resource Identifier'];
+            }
+
+            //using the array and 'in' this way because it's much faster.
+            if( $query_array[2] == 'Field Journal' ) {
+                $kora->add_double_clause("Resource Identifier", "IN", $resourceIdArray,
+                    "Scan Number", "=", "1");
+            }else {
+                $kora->add_clause("Resource Identifier", "IN", $resourceIdArray);
             }
 
             $pages = json_decode($kora->search(), true);
@@ -791,11 +796,6 @@ class SearchController extends AppController {
                 }
                 array_push($returnResults, $temp);
             }
-
-
-            //$response['pages'] = $pages;
-            //$response['pagestype'] = gettype($pages);
-            //$response['resources'] = $resources;
             $response['countpages'] = count($pages);
         }
         //Test if there are more results for the show all button
