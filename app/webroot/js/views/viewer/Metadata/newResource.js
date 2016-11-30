@@ -1,12 +1,10 @@
 // preloader image and images
 
-
-
-
 function GetNewResource(id) {
     image = document.getElementById('PageImage')
     image.src = '../img/arcs-preloader.gif';
     image.style = "position:absolute;bottom:0;right:0;left:0;top:0;margin:auto;";
+    $("#PageImage").css("box-shadow","none");
     //image.style.height = '100%';
     //image.style.width = '100%';
     setTimeout(function () {
@@ -55,9 +53,9 @@ function GetNewResource(id) {
             }
 
 
-
+            $("#PageImage").css("box-shadow","none");
             document.getElementById('PageImage').src = res["kora_url"] + res['Image Upload']['localName'];
-            document.getElementById('PageImage').style = '';
+            //document.getElementById('PageImage').style = '';
             document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
         }
 

@@ -1,5 +1,147 @@
 
+<style media="screen">
+.numberOverResources{
+  border: 2px solid white;
+  font-size: 26px;
+}
+#other-resources{
+  display: flex !important;
+}
 
+@media screen and (max-width: 1000px) {
+    .tools{
+      display: none !important;
+    }
+    .container1 h3{
+      display: table !important;
+      margin: auto;
+    }
+    .resource-reset-icon,
+    .resources-fullscreen-icon,
+    .resources-rotate-icon,
+    .zoom-div{
+      display: none !important;
+    }
+    .resource-icons{
+      position: initial !important;
+    }
+    .resources-annotate-icon{
+      position: absolute;
+      right: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    #viewer-left, #viewer-right{
+      float: none;
+      width: 100%;
+      height: auto !important;
+      display: table !important;
+    }
+    .canvas{
+      height: auto !important;
+      width: 100% !important;
+    }
+    #viewer-window{
+      height: auto !important;
+      border: none !important;
+      overflow: visible !important;
+    }
+    #button-left, #button-right{
+      display: none !important;
+    }
+    #resources-nav{
+      white-space: normal;
+      display: table;
+    }
+    #next-resource{
+      margin-right: 6% !important;
+    }
+    #prev-resource{
+      margin-left: 6% !important;
+    }
+    #viewer-tools h3{
+      font-size: 18px;
+    }
+    #resource-tools{
+      border: none !important;
+      height: 65px !important;
+    }
+    #other-resources-container{
+      width: auto !important;
+      height: auto !important;
+      padding-bottom: 16px;
+    }
+    #other-resources{
+      display: block !important;
+    }
+    .viewers-container{
+      height: auto !important;
+    }
+    a:hover{
+      text-decoration: none;
+    }
+    img.other-resource{
+
+      width: 100%;
+      height: 100%;
+      border-radius: 2px;
+      box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.2);
+      display: inline-block;
+
+      margin-left: 0%;
+      margin-right: 0%;
+      margin-bottom: 0%;
+      margin-top: 0%;
+  }
+  .accordion{
+    min-height: 500px;
+  }
+  #ImageWrap img{
+    max-width: 90% !important;
+    position: initial !important;
+    right: initial !important;
+    left: initial !important;
+    top: initial !important;
+    bottom: initial !important;
+    box-shadow: 0px 0px 6px 4px rgba(0,0,0,.2);
+  }
+  #viewer-tools{
+    border-bottom: none !important;
+  }
+
+
+  .img-holder{
+    position: relative;
+    width: 40%;
+    margin-left: 6%;
+    margin-right: 2%;
+    margin-bottom: 3%;
+    margin-top: 3%;
+    float: none !important;
+    height: 250px ;
+  }
+  /*​http://dev2.matrix.msu.edu/~austin.rix/arcs/resource/7B-2E0-1
+  Mobile breakpoints have been set for the resources preview because you can not set a percent height on something unknown. Im sure they will have to be adjusted, but right now they are set for .img-holder at:
+  1000px = height: 250px;
+  700px = height: 190px;
+  500px = height: 140px;
+  Annotation is broken for mobile, but that should go on a different ticket. It is a js issue.*/
+}
+@media screen and (max-width: 700px) {
+  .img-holder{
+    height: 190px ;
+  }
+
+}
+@media screen and (max-width: 500px) {
+  .img-holder{
+    height: 140px ;
+  }
+
+}
+</style>
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <script>
 //PAGE GLOBALS
@@ -43,13 +185,16 @@ var annotateData = {
 </script>
 
 <?= $this->Html->script("views/viewer/Metadata/flag.js")?>
-<?= $this->Html->script("views/viewer/Metadata/accordion.js")?>
+<?= $this->Html->script("views/viewer/Multi/accordion.js")?>
 <?= $this->Html->script("views/viewer/Metadata/collection.js")?>
 <?= $this->Html->script("views/viewer/Metadata/resources.js")?>
 <?= $this->Html->script("views/viewer/Metadata/newResource.js")?>
 <?= $this->Html->script("views/viewer/Metadata/export.js")?>
 <?= $this->Html->script("views/viewer/Metadata/keyword.js")?>
 <?= $this->Html->script("views/viewer/Metadata/metadata.js")?>
+
+
+
 
 <div class="viewers-container">
 
@@ -1932,8 +2077,9 @@ var annotateData = {
 		<?php $cnt = 0;?>
         <?php foreach($pages as $r): ?>
 		<?php $cnt++;?>
+    <div class="img-holder">
+        <a class='other-resources' href="#">
 
-        <a  class='other-resources' href="#">
             <img id="identifier-<?= $r["kid"]; ?>" class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
 			<?php if ($cnt ==1) :?>
 				<div class='numberOverResources selectedResource'>
@@ -1945,7 +2091,9 @@ var annotateData = {
 					<?php echo $cnt; ?>
 				</div>
 			<?php endif ?>
+
         </a>
+        </div>
 
         <?php endforeach ?>
     </div> <!--#other-resources-contain -->

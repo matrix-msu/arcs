@@ -22,10 +22,10 @@ $(document).ready(function(){
         });
         console.log("here");
     });
-    $('.metadata-accordion').height($('#viewer-window').height() + 40);
+    $('.metadata-accordion').height($('#viewer-left').height() + 40);
 
     $(window).resize(function () {
-        $('.metadata-accordion').height($('#viewer-window').height());
+        $('.metadata-accordion').height($('#viewer-left').height()+ 40);
     });
     $(function () {
         $("#soo").tabs();

@@ -24,8 +24,10 @@ $(document).ready(function(){
     });
     $('.metadata-accordion').height($('#viewer-window').height() + 40);
 
+
     $(window).resize(function () {
-        $('.metadata-accordion').height($('#viewer-window').height());
+        $('.metadata-accordion').height($('#viewer-window').height() + 40);
+        $(".accordion").accordion("refresh");
     });
     $(function () {
         $("#soo").tabs();

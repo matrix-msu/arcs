@@ -143,7 +143,14 @@
 	<?php endif ?>
 
 </div>
+<!--Temp Style-->
+<style media="screen">
+@media screen and (max-width: 1000px) {
 
+
+}
+</style>
+<!--Temp Style-->
 <div id="loginModal" class="login">
     <div class="login-content">
 
