@@ -28,6 +28,11 @@ class Advanced_Search extends Kora{
         $koraClause2 = new KORA_Clause($query4, $query5, $query6);
         array_push($this->clauses, new KORA_Clause($koraClause1, 'AND', $koraClause2));
     }
+    public function add_double_clause_or($query1, $query2, $query3, $query4, $query5, $query6) {
+        $koraClause1 = new KORA_Clause($query1, $query2, $query3);
+        $koraClause2 = new KORA_Clause($query4, $query5, $query6);
+        array_push($this->clauses, new KORA_Clause($koraClause1, 'OR', $koraClause2));
+    }
     public function add_triple_clause($query1, $query2, $query3, $query4, $query5, $query6,$query7) {
         $koraClause1 = new KORA_Clause($query1, $query2, $query3);
         $koraClause2 = new KORA_Clause($query4, $query5, $query6);

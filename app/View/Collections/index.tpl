@@ -1,3 +1,6 @@
+<!-- Main Collections page. t -->
+
+<!-- I dont think this is used
 {% if user_collections and user_collections|length > 0 %}
   <div class="collection-list-wrapper">
     <h2>
@@ -15,7 +18,7 @@
       });
     </script>
   </div>
-{% endif %}
+{% endif %} -->
 <div class="collection-list-wrapper" >
     <h1>Collections</h1><br>
 
@@ -40,17 +43,15 @@
 		<div class="collection-list" id="all-collections"></div>
 	</div>
   <script>
+    //fill in the collections list
     arcs.user_viewer = new arcs.views.CollectionList({
       model: arcs.models.Collection,
       collection: new arcs.collections.CollectionList({{ collections|json_encode }}),
       el: $('#all-collections')
     });
-	arcs.user_viewer.collection.each(function(model) {
-		//console.log("something happens here...");
-		//console.log(model);
-	});
   </script>
 
+<!-- Collections Pagination -->
 		<div id='collection-bottom-bar'>
 			<div id="collection-actions" class="search-toolbar">
 				<div id="items-per-pages-buttons" class="btn-group actions-left">
@@ -79,8 +80,6 @@
 						<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
 					</ul>
 				</div>
-
-				
 			</div>
 		</div>
 	
@@ -89,9 +88,7 @@
 	//handles filter button click to display filter options
 	$(document).ready(function() {
 		var filter;
-		$( "#new-old" ).trigger( "click" );
-
-		//console.log( window.location.search );
+		$( "#new-old" ).trigger( "click" ); //default filter
 
 		//Get distinct author names for the author filter
 		$.ajax({
@@ -99,39 +96,25 @@
 			type: "get",
 			//data: "",
 			success: function (data) {
-				//console.log("ajax success");
-				//console.log(data);
 				var populateAuthors = "";
 				data.forEach(function (tempdata) {
-					//console.log(tempdata.Collection.user_name);
 					populateAuthors += '<li><a class="author-filter" href="#">'+ tempdata.Collection.user_name +'</a></li>';
 				})
 				//fill in the html of the authors dropdown menu
-				//console.log(populateAuthors);
 				$("#author-dropdown").html(populateAuthors);
 
 				//attach the sorting script now that the html is there
 				$(".author-filter").click(function(e) {
-					//console.log("author filter click");
-					//console.log(e.target.innerText);
 					var author = e.target.innerText;
 					var authorCollection = [];
 					{{ collections|json_encode }}.forEach(function (collection){
-						//console.log(collection.Collection.user_name);
 						if(author == collection.Collection.user_name){
 							authorCollection.push(collection);
 						}
 					})
-					//authorCollection.reverse();
-					//console.log("author collections here");
-					//console.log(authorCollection);
 					var newList = new arcs.collections.CollectionList(authorCollection);
 					newList.models.reverse();
-					//arcs.author_viewer = new arcs.views.CollectionList({
-					//	model: arcs.models.Collection,
-					//	collection: newList,
-					//	el: $('#all-collections')
-					//});
+
 					arcs.user_viewer.collection = newList;
 					arcs.user_viewer.render();
 					$("#author-dropdown").removeClass("open");
@@ -209,14 +192,14 @@
 	    $(this).css('font-weight','normal');
 	  });
 	  filter.css('font-weight', 'bold');
-	});	
-	$("#author").click(function(e) {
+	});
 
+	$("#author").click(function(e) {
 		$("#author-dropdown").show();
-		//$("#author-dropdown").addClass("open");
 		e.stopPropagation();
 		e.preventDefault();
 	});
+
 	$("#a-z").click(function(e) {
 	  $("#author-dropdown").hide();
 	  $("#author-dropdown").removeClass("second-open").removeClass("open");
@@ -229,7 +212,8 @@
 	    $(this).css('font-weight','normal');
 	  });
 	  filter.css('font-weight', 'bold');
-	});	
+	});
+
 	$("#z-a").click(function(e) {
 	  console.log(arcs.user_viewer.collection.models);
 	  $("#author-dropdown").hide();

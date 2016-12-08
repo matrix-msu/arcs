@@ -79,17 +79,21 @@
 
 		</div>
 		<div id= 'belowProjects'>
+		    <?php $pKid = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		            $pKid = explode('/', $pKid);
+		            $pKid = '/'.array_pop($pKid);
+            ?>
 			 <a id="resources" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/resources')?>">
+				href="<?php echo $this->Html->url('/resources').$pKid ?>">
 				<i class="icon-white icon-folder-open"></i> Resources
 
 			</a>
 			<a id="collections" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/collections')?>">
+				href="<?php echo $this->Html->url('/collections').$pKid ?>">
 				<i class="icon-white icon-folder-open"></i> Collections
 			</a>
 			<a id="search" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/search')?>">
+				href="<?php echo $this->Html->url('/search').$pKid ?>">
 				<i class="icon-white icon-search"></i> Search
 			</a>
 			<a id="help" class="btn btn-grey"

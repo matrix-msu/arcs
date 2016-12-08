@@ -11,10 +11,10 @@ use Lib\Resource;
 use Lib\KORA_Clause;
 
 class Project extends Kora{
-
     private $project;
     protected $info;
     protected $is_valid;
+    public $components = array('Session');
 
     function __construct($project_name){
       parent::__construct();
@@ -103,7 +103,6 @@ class Project extends Kora{
             $this->start = 0;
             $this->end = 8;
             return parent::search_limited();
-
         }
     return "";
 

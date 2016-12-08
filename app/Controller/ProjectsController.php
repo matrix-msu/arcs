@@ -95,9 +95,10 @@ class ProjectsController extends AppController {
         $server_output = $project->get_recent();
 //		print_r($server_output);
 //		exit();
-    
+
         $this->set("name",$project->get_name());
         $this->set("description",$project->get_description());
+        $this->set("kid",$project->get_kid());
         //$this->set("recently_added", $project->get_recent());
 
          //print_r($server_output);//exit();

@@ -7,6 +7,8 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
+require_once(KORA_LIB . "General_Search.php");
+
 class PagesController extends AppController {
 
 	public $name = 'Pages';
@@ -16,6 +18,7 @@ class PagesController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('display', 'search');
+		//todo- set a page not found error if the kid is bad.
     }
 
     /**
@@ -25,7 +28,10 @@ class PagesController extends AppController {
      * @return void
      */
 	public function display() {
+
 		$path = func_get_args();
+		//print_r($path);
+		//exit();
 
 		$count = count($path);
 		if (!$count) {
@@ -35,6 +41,22 @@ class PagesController extends AppController {
 
 		if (!empty($path[0])) {
 			$page = $path[0];
+			//using this as a resources page before filter.
+			if($page == 'resources'){
+				if(empty($path[1])){
+					$this->redirect('/');
+				}
+				$pKid = array_pop($path);
+				$count = count($path);
+				//make sure it is a real project
+				$fields = array('Name');
+				$kora = new General_Search(PROJECT_SID, "kid", "=", $pKid, $fields);
+				$project = json_decode($kora->return_json(), true);
+
+				if(empty($project)){    //not a real project to redirect.
+					$this->redirect('/');
+				}
+			}
 		}
 		if (!empty($path[1])) {
 			$subpage = $path[1];

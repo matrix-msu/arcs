@@ -7,11 +7,32 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
+
+require_once(KORA_LIB . "Advanced_Search.php");
+require_once(KORA_LIB . "General_Search.php");
+
 class CollectionsController extends AppController {
     public $name = 'Collections';
 
     public function beforeFilter() {
         parent::beforeFilter();
+
+        $pKid = explode('/', $this->request->query['url']);
+        //print_r($pKid);
+        //exit();
+        if( isset($pKid[1]) && sizeof( explode('-', $pKid[1]) ) == 3 ){
+            $pKid = $pKid[1];
+
+            //make sure it is a real project
+            $fields = array('Name');
+            $kora = new General_Search(PROJECT_SID, "kid", "=", $pKid, $fields);
+            $project = json_decode($kora->return_json(), true);
+
+            if(empty($project)){    //not a real project to redirect.
+                $this->redirect('/');
+            }
+        }
+
         $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers');
     }
 
@@ -19,6 +40,11 @@ class CollectionsController extends AppController {
      * Display all collections. Main collection page, initial collection list.
      */
     public function index() {
+
+        $path = func_get_args();
+
+        $resources = $this->getProjectResources($path[0]);
+
         $this->Collection->recursive = -1;
 
         $user_id =  $this->Session->read('Auth.User.id');
@@ -31,7 +57,7 @@ class CollectionsController extends AppController {
                     array( 'Collection.public' => '2'),
                     array( 'Collection.public' => '3'),
                     array( 'Collection.user_id' => $user_id)
-                )),
+                ), 'resource_kid' => $resources),
                 'group' => 'collection_id'
             ));
 
@@ -52,17 +78,50 @@ class CollectionsController extends AppController {
                 }
                 $count++;
             }
-            $this->set('collections', $collections);
 
         }else { //not signed in
             $collections = $this->Collection->find('all', array(
                 'order' => 'Collection.modified DESC',
-                'conditions' => array('Collection.public' => '1'), //only get public collections
+                'conditions' => array('Collection.public' => '1',  //only get public collections
+                                      'resource_kid' => $resources),
                 'group' => 'collection_id'
             ));
-            $this->set('collections', $collections);
         }
 
+        //$projectKids = $this->Session->read('allProjectResourceKids');
+        //$this->set('collections', $projectKids);
+        $this->set('collections', $collections);
+    }
+
+    /**
+     *  get all resource kids in a project based on the project kid.
+     */
+    protected function getProjectResources($pKid){
+
+        //get all seasons based on project kid
+        $fields = array('Project Associator');
+        $kora = new General_Search(SEASON_SID, "Project Associator", "=", $pKid, $fields);
+        $seasons = json_decode($kora->return_json(), true);
+
+        //get an array of the seasons
+        $seasonArray = array_keys($seasons);
+
+        //get all excavations based on the seasons.
+        $fields = array('Season Associator');
+        $kora = new General_Search(SURVEY_SID, "Season Associator", "IN", $seasonArray, $fields);
+        $surveys = json_decode($kora->return_json(), true);
+
+        //get an excavation array.
+        $surveyArray = array_keys($surveys);
+
+        //get 8 newest resources based on the excavations and seasons.
+        $fields = array("Title");
+        $kora = new Advanced_Search(RESOURCE_SID, $fields);
+        $kora->add_clause("Excavation - Survey Associator", "IN", $surveyArray);
+        $kora->add_clause("Season Associator", "IN", $seasonArray);
+
+        //array_keys to return only kids.
+        return array_keys(json_decode($kora->search(), true));
     }
 
     /**

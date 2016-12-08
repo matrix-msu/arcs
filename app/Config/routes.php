@@ -30,10 +30,7 @@
     Router::connect('/pages/*',
         array('controller' => 'pages', 'action' => 'display')
     );
-    # Resource page
-    Router::connect('/resources',
-        array('controller' => 'pages', 'action' => 'display', 'resources')
-    );
+
     # Error pages
     Router::connect('/404',
         array('controller' => 'pages', 'action' => 'display', '404')
@@ -83,20 +80,33 @@
     Router::connect('/api/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
+
+    # Accepted resources/ subpaths.
     Router::connect('/resources/loadNewResource/*',
         array('controller' => 'resources', 'action' => 'loadNewResource')
     );
     Router::connect('/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
+    # We can access the JSON search through either /api/search or this:
+    Router::connect('/resources/search',
+        array('controller' => 'search', 'action' => 'resources')
+    );
+    Router::connect('/resources/advanced_search',
+        array('controller' => 'search', 'action' => 'advanced_resources')
+    );
+    Router::connect('/resources/complete',
+        array('controller' => 'search', 'action' => 'complete')
+    );
+    # Resource page with a project-KID parameter.
+    # This needs to be last so the above 3 routes are caught first.
+    Router::connect('/resources/*',
+        array('controller' => 'pages', 'action' => 'display', 'resources')
+    );
 
 ////////////////////////////////////////////////////////////////////////
 # collections controller
 ////////////////////////////////////////////////////////////////////////
-    # Collections page
-    Router::connect('/collections',
-        array('controller' => 'collections', 'action' => 'index')
-    );
     Router::connect('/collections/memberships',
         array('controller' => 'collections', 'action' => 'memberships')
     );
@@ -117,6 +127,10 @@
     );
     Router::connect('/collections/deleteResource',
         array('controller' => 'collections', 'action' => 'deleteResource')
+    );
+    # Collections page
+    Router::connect('/collections/*',
+        array('controller' => 'collections', 'action' => 'index')
     );
 ////////////////////////////////////////////////////////////////////////
 # users controller
@@ -177,16 +191,6 @@
     );
 	   Router::connect('/search/paginate',
         array('controller' => 'search', 'action' => 'paginate')
-    );
-    # We can access the JSON search through either /api/search or this:
-    Router::connect('/resources/search',
-        array('controller' => 'search', 'action' => 'resources')
-    );
-    Router::connect('/resources/advanced_search',
-        array('controller' => 'search', 'action' => 'advanced_resources')
-    );
-    Router::connect('/resources/complete',
-        array('controller' => 'search', 'action' => 'complete')
     );
 ////////////////////////////////////////////////////////////////////////
 # advancedSearch controller

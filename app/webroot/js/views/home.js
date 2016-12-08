@@ -59,6 +59,7 @@
       return false;
     };
 
+    //the resources page. where the ajax for drawers is.
     Home.prototype.renderDetails = function($el, limit) {
       var query, query2, type;
       type = $el.data('type');
@@ -69,6 +70,12 @@
       query2 = arcs.baseURL + 'resources/search?';
       if (limit !== 0) {
         query2 += "n=" + limit + "&";
+      }
+      var url = window.location.href.split('/');
+      var kid = '';
+      kid = url.pop();
+      if(kid != '' && kid != 'resources' ){
+        query2 += "pKid=" + kid + "&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
         var html;

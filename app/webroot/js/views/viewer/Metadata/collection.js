@@ -203,6 +203,7 @@ function collectionsSearch() {
         lastCheckedId = $(this).attr('id');
         checkSearchSubmitBtn();
     });
+    console.log('got here');
     $('#collectionTitle').bind('input propertychange', function () {
         if (this.value != "") {
             $(".collectionNewSubmit").show();

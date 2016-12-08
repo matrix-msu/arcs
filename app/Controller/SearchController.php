@@ -487,6 +487,9 @@ class SearchController extends AppController {
             $limit = $this->request->query['n'];
             //$response['limit'] = $limit;
         }
+        if (isset($this->request->query['pKid'])) {
+            $pKid = $this->request->query['pKid'];
+        }
         else{
             $limit = -1;
         }
@@ -510,7 +513,7 @@ class SearchController extends AppController {
                     . $mysqli->connect_error);
             }
             //Get a collection_id from the id
-            $sql = "SELECT collection_id FROM arcs_dev.collections WHERE collections.id ='".$collection_table_id."' LIMIT 1";
+            $sql = "SELECT collection_id FROM collections WHERE collections.id ='".$collection_table_id."' LIMIT 1";
             //WHERE title = '".$file_name."'";
             $result = $mysqli->query($sql);
             //while($row = mysqli_fetch_assoc($result))
@@ -522,9 +525,9 @@ class SearchController extends AppController {
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
-                $sql = "SELECT resource_kid, id FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
+                $sql = "SELECT resource_kid, id FROM collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
             }else {
-                $sql = "SELECT resource_kid, id FROM arcs_dev.collections WHERE collections.collection_id ='" . $collection_id."'";
+                $sql = "SELECT resource_kid, id FROM collections WHERE collections.collection_id ='" . $collection_id."'";
             }
             $result = $mysqli->query($sql);
             $count = 0;
@@ -708,15 +711,20 @@ class SearchController extends AppController {
                 $sid = RESOURCE_SID;
             }
 
+            //get all the project's resource kids.
+            $projectKids = $this->getProjectResourceKids($pKid);
+
             //search for the resources by type
             $fields = array('Title','Resource Identifier');
             $query_array = explode(",", $query);
             if( $limit != -1 ) {
-                $kora = new Advanced_Search($sid, $fields, 0, $limit+1);
+                $kora = new Advanced_Search($sid, $fields, 0, 0);
             }else{
                 $kora = new Advanced_Search($sid, $fields, 0, 0);
             }
-            $kora->add_clause($query_array[0], $query_array[1], $query_array[2]);
+            //Get resources by type and in the project resource kid array.
+            $kora->add_double_clause($query_array[0], $query_array[1], $query_array[2],
+                                        "kid", "IN", $projectKids);
             $resources = json_decode($kora->search(), true);
 
             //grab all pages with the resource identifier
@@ -805,6 +813,34 @@ class SearchController extends AppController {
         $response['results'] = $returnResults;
         $response['total'] = count($response['results']);
         $this->json(200, $response);
+    }
+
+    //get all resource kids a project has
+    protected function getProjectResourceKids($pKid) {
+
+        //get all seasons based on project kid
+        $fields = array('Project Associator');
+        $kora = new General_Search(SEASON_SID, "Project Associator", "=", $pKid, $fields);
+        $seasons = json_decode($kora->return_json(), true);
+        
+        //get an array of the seasons
+        $seasonArray = array_keys($seasons);
+        
+        //get all excavations based on the seasons.
+        $fields = array('Season Associator');
+        $kora = new General_Search(SURVEY_SID, "Season Associator", "IN", $seasonArray, $fields);
+        $surveys = json_decode($kora->return_json(), true);
+
+        //get an excavation array.
+        $surveyArray = array_keys($surveys);
+
+        //get all resources based on the excavations and seasons.
+        $fields = array("Title");
+        $kora = new Advanced_Search(RESOURCE_SID, $fields);
+        $kora->add_double_clause_or("Excavation - Survey Associator", "IN", $surveyArray,
+            "Season Associator", "IN", $seasonArray);
+
+        return array_keys(json_decode($kora->search(), true));
     }
 
 
