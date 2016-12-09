@@ -120,11 +120,12 @@ var collectionArray = [];
 
 //get collection list for search modal
 function collectionList() {
+    var pKid = $('#Project').attr('data-kid');
     collectionArray = [];
     $.ajax({
         url: arcs.baseURL + "collections/titlesAndIds",
         type: "get",
-        //data: "",
+        data: {pKid: pKid},
         success: function (data) {
             data.forEach(function (tempdata) {
                 var temparray = $.map(tempdata, function (value, index) {

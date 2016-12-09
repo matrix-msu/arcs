@@ -91,10 +91,19 @@ class ProjectsController extends AppController {
 		$pass = "";
 
         $project = new Project($proj);
-    
-        $server_output = $project->get_recent();
-//		print_r($server_output);
-//		exit();
+
+		$projectResourceKids = $project->getProjectResources();
+
+		$recent = array();
+		$size = sizeof($projectResourceKids)-1;
+		for($x=0; $x<8; $x++){
+			$recent[] = $projectResourceKids[$size-$x];
+		}
+		//print_r($recent);
+		//exit();
+		$server_output = $project->getRecent($recent);
+		//print_r($server_output);
+		//exit();
 
         $this->set("name",$project->get_name());
         $this->set("description",$project->get_description());
@@ -159,7 +168,7 @@ class ProjectsController extends AppController {
 					array( 'Collection.public' => '2'),
 					array( 'Collection.public' => '3'),
 					array( 'Collection.user_id' => $user_id)
-				)),
+				), 'resource_kid' => $projectResourceKids),
 				'group' => 'collection_id',
 				'limit' => 10
 			));
@@ -186,7 +195,8 @@ class ProjectsController extends AppController {
 		}else { //not signed in
 			$collections = $this->Collection->find('all', array(
 				'order' => 'Collection.modified DESC',
-				'conditions' => array('Collection.public' => '1'), //only get public collections
+				'conditions' => array('Collection.public' => '1',  //only get public collections
+					'resource_kid' => $projectResourceKids),
 				'group' => 'collection_id',
 				'limit' => 10
 			));

@@ -296,52 +296,61 @@ class CollectionsController extends AppController {
         //if (!$this->request->is('get')) throw new MethodNotAllowedException();
         $user_id =  $this->Session->read('Auth.User.id');
 
-        if( $user_id !== null ) { //signed in
-            $collections = $this->Collection->find('all', array(
-                'order' => 'Collection.modified DESC',
-                'conditions' => array('OR' => array(
-                    array( 'Collection.public' => '1'),
-                    array( 'Collection.public' => '2'),
-                    array( 'Collection.public' => '3'),
-                    array( 'Collection.user_id' => $user_id)
-                )),
-                'group' => 'collection_id'
-            ));
+        if (isset($this->request->query['pKid'])) {
 
-            //remove all the public 3 collections that the user isn't a part of
-            $count = 0;
-            foreach( $collections as $collection ){
-                $bool_delete = 1;
-                if( array_values($collection)[0]['public'] == '3'){
-                    $members =  explode(';', array_values($collection)[0]['members'] );
-                    foreach( $members as $member ){
-                        if( $member == $user_id){
-                            $bool_delete = 0;
+            //return $this->request->query['pKid'];
+            //exit();
+
+            $resources = $this->getProjectResources( $this->request->query['pKid'] );
+
+            if ($user_id !== null) { //signed in
+                $collections = $this->Collection->find('all', array(
+                    'order' => 'Collection.modified DESC',
+                    'conditions' => array('OR' => array(
+                        array('Collection.public' => '1'),
+                        array('Collection.public' => '2'),
+                        array('Collection.public' => '3'),
+                        array('Collection.user_id' => $user_id)
+                    ), 'resource_kid' => $resources),
+                    'group' => 'collection_id'
+                ));
+
+                //remove all the public 3 collections that the user isn't a part of
+                $count = 0;
+                foreach ($collections as $collection) {
+                    $bool_delete = 1;
+                    if (array_values($collection)[0]['public'] == '3') {
+                        $members = explode(';', array_values($collection)[0]['members']);
+                        foreach ($members as $member) {
+                            if ($member == $user_id) {
+                                $bool_delete = 0;
+                            }
+                        }
+                        if ($bool_delete == 1) {
+                            array_splice($collections, $count, 1);
                         }
                     }
-                    if( $bool_delete == 1 ){
-                        array_splice($collections, $count, 1);
-                    }
+                    $count++;
                 }
-                $count++;
-            }
 
-        }else { //not signed in
-            $collections = $this->Collection->find('all', array(
-                'order' => 'Collection.modified DESC',
-                'conditions' => array('Collection.public' => '1'), //only get public collections
-                'group' => 'collection_id'
-            ));
-        }
-        $retval = [];
-        foreach( $collections as $collection ){
-            $temp = [];
-            $temp['title'] = $collection{'Collection'}['title'];
-            $temp['collection_id'] = $collection{'Collection'}{'collection_id'};
-            $temp['user'] = $collection{'Collection'}['user_name'];
-            $retval[] = $temp;
-        }
-        return $this->json(200, $retval);
+            } else { //not signed in
+                $collections = $this->Collection->find('all', array(
+                    'order' => 'Collection.modified DESC',
+                    'conditions' => array('Collection.public' => '1',  //only get public collections
+                        'resource_kid' => $resources),
+                    'group' => 'collection_id'
+                ));
+            }
+            $retval = [];
+            foreach ($collections as $collection) {
+                $temp = [];
+                $temp['title'] = $collection{'Collection'}['title'];
+                $temp['collection_id'] = $collection{'Collection'}{'collection_id'};
+                $temp['user'] = $collection{'Collection'}['user_name'];
+                $retval[] = $temp;
+            }
+            return $this->json(200, $retval);
+        }else return '';
     }
 
     /**

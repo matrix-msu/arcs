@@ -452,3 +452,27 @@ var resourceKid = "";//"<?php  ?> ";
 
 
 <pre id="preview"></pre>
+
+<script>
+
+//update the toolbar page urls with project.
+
+//add the project kid to the resources url.
+var href = $('#resources').attr('href');
+href = href.split('/'); href.pop(); href = href.join('/');
+var href = href+'/'+$('#project1').attr('data-kid');
+$('#resources').attr('href', href);
+
+//add project kid to the collections url.
+var href = $('#collections').attr('href');
+href = href.split('/'); href.pop(); href = href.join('/');
+var href = href+'/'+$('#project1').attr('data-kid');
+$('#collections').attr('href', href);
+
+//add project kid to the search url.
+var href = $('#search').attr('href');
+href = href.split('/'); href.pop(); href = href.join('/');
+var href = href+'/'+$('#project1').attr('data-kid');
+$('#search').attr('href', href);
+
+</script>
