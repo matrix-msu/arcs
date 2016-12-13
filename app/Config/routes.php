@@ -141,6 +141,9 @@
     Router::connect('/user/edit/*',
         array('controller' => 'users', 'action' => 'edit')
     );
+    Router::connect('/users/reset_password/*',
+        array('controller' => 'users', 'action' => 'reset_password')
+    );
     Router::connect('/users/confirm_user/*',
         array('controller' => 'users', 'action' => 'confirm_user')
     );
@@ -217,9 +220,13 @@
     Router::redirect('/simple_search', 'simple_search/');
     Router::redirect('/advanced_search', 'advanced_search/');
     # Configuration status
+    Router::connect('/admin/status',
+        array('controller' => 'admin', 'action' => 'status')
+    );
     Router::redirect('/admin',
         array('controller' => 'admin', 'action' => 'status')
     );
+
 ////////////////////////////////////////////////////////////////////////
 # help Controller
 ////////////////////////////////////////////////////////////////////////
