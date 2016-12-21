@@ -581,7 +581,7 @@
       totalResults = [];
       return $.ajax({
         'dataType': 'json',
-        'url': arcs.baseURL + 'simple_search/' + resourcequery + "/" + pageNumber + "/" + perPageUrl,
+        'url': arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl,
         'success': function(data) {
           var key, ref, value;
           if (data['total'] === 0) {
