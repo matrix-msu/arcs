@@ -5,9 +5,12 @@ namespace Lib\Kora;
 require_once("Kora.php");
 require_once("Resource.php");
 
+require_once("../../app/Controller/SearchController.php");
+
 use Lib\Kora;
 use Lib\Resource;
 use Lib\KORA_Clause;
+use \SearchController;
 
 class Keyword_Search extends Kora{
 
@@ -17,15 +20,19 @@ class Keyword_Search extends Kora{
   protected $excavation_list = array();
   protected $total = 0;
 
+  /**
+  * Constructor
+  */
+  function __construct($query,$project=null,$start=1,$end=10000){
 
-  function __construct($query,$start=1,$end=10000){
       $time_start = microtime(true);
       $mem_start =  memory_get_usage();
+
       //call parent constructor 'kora'
       parent::__construct();
 
       //set up the kora search parameters for keyword search
-      $this->set_search_parameters($query);
+      $this->set_search_parameters($query,$project);
 
       //do the keyword search
       $this->formulatedResult = parent::search();
@@ -49,6 +56,7 @@ class Keyword_Search extends Kora{
 
       //format and prepare for a json response
       $this->format_results($time,$total_mem,$filters);
+
   }
 
   private function format_results($time,$total_mem,$filters){
@@ -84,28 +92,24 @@ class Keyword_Search extends Kora{
     @return VOID
     set up the kora search parameters for keyword search
   */
-  private function set_search_parameters($query){
+  private function set_search_parameters($query,$project){
+
+    $projectResources = SearchController::getProjectResourceKids($project);
+    
+    if(empty($projectResources))
+    	$projectResources = array("none");
 
     $this->token = TOKEN;
     $this->projectMapping = PID;
     $this->schemeMapping = RESOURCE_SID;
 
-    $clause1 = new KORA_Clause("Resouce Identifier","LIKE",$query."%");
-    $clause2 = new KORA_Clause("Type","LIKE","%".$query."%");
-    $clause3 = new KORA_Clause("Earliest Date","LIKE","%".$query."%");
-    $clause4 = new KORA_Clause("Latest Date","LIKE","%".$query."%");
-    $clause5 = new KORA_Clause("Accession Number","LIKE",$query."%");
-    $clause6 = new KORA_Clause("Access Level","LIKE","%".$query."%");
+    $clause = new KORA_Clause("kid","IN", $projectResources);
+   
+    $clause1 = new KORA_Clause("ANY", "LIKE", "%".$query."%");
+  
 
-    $join1and2 = new KORA_Clause($clause1,"OR",$clause2);
-    $join3and4 = new KORA_Clause($clause3,"OR",$clause4);
-    $join5and6 = new KORA_Clause($clause5,"OR",$clause6);
+    $this->The_Clause =new KORA_Clause($clause1,"AND",$clause);
 
-    $join = new KORA_Clause($join1and2,"OR",$join3and4);
-
-    $this->The_Clause =new KORA_Clause($join,"OR",$join5and6);
-
-    $this->The_Clause = new KORA_Clause("ANY", "LIKE", "%".$query."%");
     $this->fields = array(
       "Excavation - Survey Associator",
       "Title",

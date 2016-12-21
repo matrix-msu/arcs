@@ -35,16 +35,19 @@ class SearchController extends AppController {
     /**
      * Display the search page
      */
-    public function search($query='') {
+    public function search($project, $query=null) {
 
         $title = 'Search';
         if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
-
+	if(!empty($query)){
+		echo "<script>var globalquery = '".$query."';</script>";
+	}
+	echo "<script type='text/javascript'>var globalproject = '".$project."';</script>";
 
     }
 
-    public function simple_search($query="",$page,$perPage) {
+    public function simple_search($project,$query="",$page,$perPage) {
         $options = $this->parseParams();
         $this->autoRender = false;
         // This array will be used to get results from multiple schemes.
@@ -53,18 +56,12 @@ class SearchController extends AppController {
         if ($query == ''){
             return $this->emptySearch($options);
         }else {
-          $kora = new Keyword_Search($query);
+          $kora = new Keyword_Search($query,$project);
           $kora->print_json();
-
         }
 
 
     }
-
-
-
-
-
 
 
     /**

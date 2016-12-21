@@ -189,7 +189,7 @@
     Router::connect('/sites',
         array('controller' => 'search', 'action' => 'getProjects')
     );
-    Router::connect('/search/**',
+    Router::connect('/search/*',
         array('controller' => 'search', 'action' => 'search')
     );
 	   Router::connect('/search/paginate',
