@@ -712,13 +712,13 @@ class SearchController extends AppController {
             }
 
             //get all the project's resource kids.
-            $projectKids = $this->getProjectResourceKids($pKid);
+            $projectKids = SearchController::getProjectResourceKids($pKid);
 
             //search for the resources by type
             $fields = array('Title','Resource Identifier');
             $query_array = explode(",", $query);
             if( $limit != -1 ) {
-                $kora = new Advanced_Search($sid, $fields, 0, 0);
+                $kora = new Advanced_Search($sid, $fields, 0, $limit+1);
             }else{
                 $kora = new Advanced_Search($sid, $fields, 0, 0);
             }
@@ -816,7 +816,7 @@ class SearchController extends AppController {
     }
 
     //get all resource kids a project has
-    protected function getProjectResourceKids($pKid) {
+    public static function getProjectResourceKids($pKid) {
 
         //get all seasons based on project kid
         $fields = array('Project Associator');
