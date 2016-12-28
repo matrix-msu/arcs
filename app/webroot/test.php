@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * test comment
  * Web Access Frontend for TestSuite
  *
  * PHP 5
