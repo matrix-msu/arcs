@@ -1,24 +1,5 @@
-<!-- Main Collections page. t -->
+<!-- Main Collections page. -->
 
-<!-- I dont think this is used
-{% if user_collections and user_collections|length > 0 %}
-  <div class="collection-list-wrapper">
-    <h2>
-      <img class="profile-image thumbnail" src="{{ profileSrc }}" width="100" height="100"/>
-      Your Collections
-    </h2>
-	
-    <div class="collection-list" id="user-collections"></div>
-    <script>
-      arcs.user_viewer = new arcs.views.CollectionList({
-        model: arcs.models.Collection,
-        collection: new arcs.collections.CollectionList({{ user_collections|json_encode }}),
-        el: $('#user-collections')
-	  	console.log("Josh- The first collection-list spot - apparently does nothing...");
-      });
-    </script>
-  </div>
-{% endif %} -->
 <div class="collection-list-wrapper" >
     <h1>Collections</h1><br>
 
@@ -32,7 +13,8 @@
 		<li class="dropdown-submenu"><a id="author" class="author-arrow-toggle" href="#">Author
 				<span class="pointerDown author-arrow" style="position:static"></span></a>
 			<ul class="dropdown-menu" id="author-dropdown" style="left:100%;margin-top:-25px;">
-				<li><a class="author-filter" href="#">No Authors Available</a></li>
+				<!-- li><a class="author-filter" href="#">No Authors Available</a></li -->
+				{{ authors }}
 			</ul>
 		</li>
 		<li><a id="a-z" href="#">A-Z</a></li>
@@ -90,64 +72,60 @@
 		var filter;
 		$( "#new-old" ).trigger( "click" ); //default filter
 
-		//Get distinct author names for the author filter
-		$.ajax({
-			url: arcs.baseURL + "collections/distinctUsers",
-			type: "get",
-			//data: "",
-			success: function (data) {
-				var populateAuthors = "";
-				data.forEach(function (tempdata) {
-					populateAuthors += '<li><a class="author-filter" href="#">'+ tempdata.Collection.user_name +'</a></li>';
-				})
-				//fill in the html of the authors dropdown menu
-				$("#author-dropdown").html(populateAuthors);
-
-				//attach the sorting script now that the html is there
-				$(".author-filter").click(function(e) {
-					var author = e.target.innerText;
-					var authorCollection = [];
-					{{ collections|json_encode }}.forEach(function (collection){
-						if(author == collection.Collection.user_name){
-							authorCollection.push(collection);
-						}
-					})
-					var newList = new arcs.collections.CollectionList(authorCollection);
-					newList.models.reverse();
-
-					arcs.user_viewer.collection = newList;
-					arcs.user_viewer.render();
-					$("#author-dropdown").removeClass("open");
-					$("#author-dropdown").addClass("second-open");
-					filter = $("#author");
-					$(".dropdown-menu a").each(function(item) {
-						$(this).css('font-weight','normal');
-					});
-					filter.css('font-weight', 'bold');
-					$(e.currentTarget).css('font-weight', 'bold');
-				});
+		//attach the sorting script now that the html is there
+		$(".author-filter").click(function(e) {
+			var author = e.target.innerText;
+			var authorCollection = [];
+			{{ collections|json_encode }}.forEach(function (collection){
+			if(author == collection.Collection.user_name){
+				authorCollection.push(collection);
 			}
+		})
+		var newList = new arcs.collections.CollectionList(authorCollection);
+		newList.models.reverse();
+
+		arcs.user_viewer.collection = newList;
+		arcs.user_viewer.render();
+		$("#author-dropdown").removeClass("open");
+		$("#author-dropdown").addClass("second-open");
+		filter = $("#author");
+		$(".dropdown-menu a").each(function(item) {
+			$(this).css('font-weight','normal');
 		});
+		filter.css('font-weight', 'bold');
+		$(e.currentTarget).css('font-weight', 'bold');
+	});
 
-		var item = window.location.search.substr(1);
-		if(!isNaN(parseFloat(item)) && isFinite(item) && parseInt(item) <1) {
-			$( "#all-collections" ).children("details:first").trigger("click");
-
-		}else if(!isNaN(parseFloat(item)) && isFinite(item)) {
-			var int_item = parseInt(item);
-			int_item = int_item -1;
-			var openedCollection =  $( "#all-collections" ).children("details").eq(int_item);
-			console.log("openCollection here");
-			console.log(openedCollection);
-			$('html, body').animate({
-				scrollTop: (openedCollection.offset().top)
-			},500);
-			$( "#all-collections" ).children("details").eq(int_item+1).trigger("click");
-
+		//determin if the window needs to scroll to a specific collection
+		//single/mult-resource and search can view a specific collection.
+		//take the collection_id from the url
+		
+		var col_id = '';
+		col_id = window.location.search.substr(1);
+		var openCollection = $('#all-collections').find('details[data-id="'+col_id+'"]');
+		
+		if( col_id != '' ){
+			//find where the collection is
+			function collectionCheck(col){
+				return col.Collection.collection_id == col_id;
+			}
+			var col_index = {{ collections|json_encode }}.findIndex(collectionCheck) + 1;
+			
+			//find the page it's on and go to it
+			var item_per_page = $('#items-per-page-btn').html().substring(0,2);
+			$('#'+Math.ceil(col_index/item_per_page)).trigger('click');
+			openCollection = $('#all-collections').find('details[data-id="'+col_id+'"]');
+			
+			//scroll and click the collection
+			if( openCollection.prev().length == 1 ){
+				$('html, body').animate({
+					scrollTop: (openCollection.prev().offset().top)
+				},500);
+			}
+			$(openCollection).trigger('click');
 		}else {
-			$( "#all-collections" ).children("details:first").trigger("click");
+			$( "#all-collections" ).children("details:first").trigger('click');
 		}
-
 	});
 
 

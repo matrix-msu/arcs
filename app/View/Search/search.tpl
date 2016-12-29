@@ -2,7 +2,7 @@
 	<div class="collectionModalBackground" id="collectionModalBackground">
 		<div class="collectionWrap" style="margin-top:9em;">
 			<div id="collectionModal" style="width:35em;">
-				<div class="collectionModalHeader">Add to collection <img src="../arcs/app/webroot/assets/img/Close.svg"
+				<div class="collectionModalHeader">Add to collection <img src="../app/webroot/assets/img/Close.svg"
 																		  class="modalClose"/></div>
 				<hr>
 				<p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
@@ -27,7 +27,7 @@
 
 			</div>
 			<div id="addedCollectionModal" style="width:35em;display:none;">
-				<div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../arcs/app/webroot/assets/img/Close.svg"
+				<div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../app/webroot/assets/img/Close.svg"
 																			 class="modalClose"/></div>
 				<hr>
 				<div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
@@ -177,7 +177,7 @@
 
 			<div class='toolbar-fixed'>
 				<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
-				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <img src='img/BelongsToCollectionTooltip.svg' class='collectionIcon'/></a>
+				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <div class="icon-collection"></div></a>
 				<div id="selected-resource-ids" style="display: none;"></div>
 			</div>
 
@@ -323,9 +323,7 @@
 	<script>
 		// collection
 		$("#selected-all").click(function () {
-			//console.log("hello-testing-click");
 			var e = document.getElementById("selected-all");
-			//console.log(e.style.color);
 			if(e.style.color == "rgb(0, 0, 0)")
 				$(".collectionModalBackground").show();
 
@@ -335,34 +333,16 @@
 			$(".collectionModalBackground").hide();
 			$("#collectionModal").show();
 			$("#addedCollectionModal").hide();
-			var retunselect = unselect(null);
+			unselect(null);
 			collectionList();
 		});
 
-		var unselect = function(trigger) {
-			if (trigger == null){trigger=true}this.$(".result").removeClass("selected");
-			this.$(".select-button").removeClass("de-select");
-			this.$(".select-button, #toggle-select").html("SELECT");
-			this.$("#deselect-all").attr({id:"select-all"});
-			this.$(".checkedboxes").prop("checked", false);
-			this.$("#collectionTitle").val('');
-			this.$(".collectionTabSearch").trigger("click");
-			collectionList();
-			checkSearchSubmitBtn();
-			//collectionsSearch();
-			if(trigger){
-				return arcs.bus.trigger("selection")
-			}
-		}
 		var isAnyChecked = 0;
 		var lastCheckedId = '';
 		function checkSearchSubmitBtn() {
 			// Hide add to collection button in collection modal when no collections are selected
 			var checkboxes = $("#collectionSearchObjects > input");
 			var submitButt = $(".collectionSearchSubmit");
-			//console.log(checkboxes);
-			//console.log("here");
-			//console.log(this);
 
 			if(checkboxes.is(":checked")) {
 				submitButt.show();
@@ -411,7 +391,6 @@
 			$('#collectionTitle').bind('input propertychange', function() {
 				if(this.value != ""){
 					$(".collectionNewSubmit").show();
-					//console.log('text value not null');
 				}else{
 					$(".collectionNewSubmit").hide();
 				}
@@ -419,9 +398,10 @@
 		}
 
 		$(".viewCollection").click(function () {
-			console.log("lastcheckedid");
-			console.log(lastCheckedId);
-			window.location.href = arcs.baseURL + "collections?"+lastCheckedId.substr(5);
+			var href = $('#resources').attr('href');
+			href = href.split('/');
+			href = href.pop();
+			window.location.href=arcs.baseURL+"collections/"+href+"?"+$('.viewCollection').attr('data-colId');
 		});
 		$(".backToSearch").click(function () {
 			$(".modalClose").trigger("click");
@@ -430,49 +410,37 @@
 		$(".collectionNewSubmit").click(function () {
 			// creates a single, new collection entry based on the resource it is viewing
 			var selected_resources = [];
-			selected_resources = arcs.selected;
-			console.log("selected_resource:");
-			console.log(selected_resources);
-
+			$('.resource-item-container.result.selected').each(function(){
+				selected_resources.push($(this).attr('data-id'));
+			});
 			var formdata = {
 				title: $('#collectionTitle').val(),
 				resource_kid: selected_resources[0],
 				description: ""//,
 				//public: 1
-			}
-			console.log("got here 1");
+			};
 			$.ajax({
 				url: arcs.baseURL + "collections/add",
 				type: "POST",
 				data: formdata,
 				statusCode: {
 					201: function (data) {
-						console.log("Success");
-						console.log(data);
-						//window.location.reload();
 						selected_resources.shift();
-						var new_col_id = data['collection_id']
-						console.log("newcolid:");
-						console.log(new_col_id);
-
+						var new_col_id = data['collection_id'];
+						$('.viewCollection').attr('data-colId', data.collection_id);
+						
 						selected_resources.forEach(function(resource){
 							var resource_kid = resource;
 							var formdata = {
 								collection: new_col_id,
 								resource_kid: resource_kid
 							};
-							console.log("add to existing");
-							console.log(formdata);
-
 							$.ajax({
 								url: arcs.baseURL + "collections/addToExisting",
 								type: "POST",
 								data: formdata,
 								statusCode: {
 									201: function () {
-										//created
-										console.log("Success");
-										//window.location.reload();
 									},
 									400: function () {
 										console.log("Bad Request");
@@ -485,22 +453,10 @@
 								}
 							});
 						})
-						//arcs.Search.prototype.unselectAll();
-
-
-
-						//$(".collectionModalBackground").hide();
-						//console.log("last checked id: "+ $('#collectionTitle').val());
-						//var text = $("label[for="+$('#collectionTitle').val()+"]").children(":first").text();
 						$("#collectionName").text($('#collectionTitle').val());
 						$("#collectionModal").hide();
 						$("#addedCollectionModal").show();
-						console.log('added collection show here');
-
-						var retunselect = unselect(null);
-						console.log("unselect here:");
-						console.log(retunselect);
-						//arcs.selected = 0;
+						unselect(null);
 					},
 					400: function () {
 						console.log("Bad Request");
@@ -518,13 +474,10 @@
 
 		$(".collectionSearchSubmit").click(function () {
 			// creates 1+ collection entries based on the resource (IE adds the resource to old collections)
-			//console.log("got to search click");
-			//var selected_resources_string  = document.getElementById("selected-resource-ids").innerHTML;
 			var selected_resources = [];
-			selected_resources = arcs.selected;
-			//console.log(selected_resources);
-			//console.log("type below");
-			//console.log(typeof(selected_resources));
+			$('.resource-item-container.result.selected').each(function(){
+				selected_resources.push($(this).attr('data-id'));
+			});
 			selected_resources.forEach(function(resource){
 				var resource_kid = resource;
 
@@ -541,8 +494,7 @@
 						data: formdata,
 						statusCode: {
 							201: function (data) {
-								console.log("Success");
-								console.log(data);
+								$('.viewCollection').attr('data-colId', data.collection_id);
 							},
 							400: function () {
 								console.log("Bad Request");
@@ -554,31 +506,12 @@
 					});
 				});
 			})
-			var unselect = function(trigger){
-				if(trigger==null){
-					trigger=true
-				}
-				this.$(".result").removeClass("selected");
-				this.$(".select-button").removeClass("de-select");
-				this.$(".select-button, #toggle-select").html("SELECT");
-				this.$("#deselect-all").attr({id:"select-all"});
-				this.$(".checkedboxes").prop("checked", false);
-				this.$("#collectionTitle").val('');
-				this.$(".collectionTabSearch").trigger("click");
-				collectionList();
-				collectionsSearch();
-				if(trigger){
-					return arcs.bus.trigger("selection")
-				}
-			};
-
+			
 			var text = $("label[for="+lastCheckedId+"]").children(":first").text();
 			$("#collectionName").text(text);
 			$("#collectionModal").hide();
 			$("#addedCollectionModal").show();
-			console.log('show added here');
-			var retunselect = unselect(null);
-			//$(".collectionModalBackground").hide();
+			unselect(null);
 		});
 
 		// collection tabs
@@ -599,55 +532,47 @@
 		// run on page load
 		$(".collectionNewContainer").hide();
 
-		//<?php echo "var collectionArray = ".$collections.";" ?>
-		//console.log("got here");
-		//arcs.user_viewer = new arcs.views.CollectionList({
-		//	model: arcs.models.Collection,
-		//	collection: new arcs.collections.CollectionList({ collections|json_encode }}),
-		//		el: $('#collectionSearchObjects')
-		//});
-		//arcs.user_viewer.collection.each(function(model) {
-		//	console.log("something happens here...");
-		//	console.log(model);
-		//});
-		//console.log("got here");
-		//console.log(arcs.baseURL+ "collections/index");
-		//var temp = getJSON arcs.baseURL + "collections/search?n=12&q=#{query}", (response) ->
-		//resources2: response.results
-		//console.log(arcs.josh_collection);
+		function unselect(trigger){
+			if(trigger==null){
+				trigger=true
+			}
+			this.$(".result").removeClass("selected");
+			this.$(".select-button").removeClass("de-select");
+			this.$(".select-button, #toggle-select").html("SELECT");
+			this.$("#deselect-all").attr({id:"select-all"});
+			this.$('#selected-all').css('color','rgb(193, 193, 193)');
+			this.$('#selected-count').html('');
+			this.$(".checkedboxes").prop("checked", false);
+			this.$("#collectionTitle").val('');
+			this.$(".collectionTabSearch").trigger("click");
+			collectionList();
+			collectionsSearch();
+			if(trigger){
+				return arcs.bus.trigger("selection")
+			}
+		};
+
+
 		var collectionArray = [];
 		function collectionList() {
 			collectionArray = [];
+			var href = $('#resources').attr('href');
+			href = href.split('/');
+			var projectKid = href.pop();
 			$.ajax({
 				url: arcs.baseURL + "collections/titlesAndIds",
 				type: "get",
-				//data: "",
+				data: {pKid: projectKid},
 				success: function (data) {
-					//console.log("collectionlist ajax success");
-					//console.log(data);
-
 					data.forEach(function (tempdata) {
 						var temparray = $.map(tempdata, function(value, index) {
 							return [value];
 						});
 						collectionArray.push(temparray);
 					})
-
 					collectionsSearch();
-
-					//console.log("finished the ajax");
-					//console.log(collectionArray);
 				}
 			});
 		}
 		collectionList();
-		//var collections = [];
-		//console.log("collectionArray below here");
-		//console.log(collectionArray);
-		//collectionArray.forEach(function (element) {
-		//console.log(element);
-		//collections.push(element['Collection']);
-		//});
-
-		//collectionsSearch();
 	</script>

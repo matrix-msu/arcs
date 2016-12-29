@@ -495,7 +495,7 @@ class SearchController extends AppController {
         ///////////////////////////////////////////////////////
         $catchcollections = 1;
         if ( substr($this->request->query['q'],0,13) == 'collection_id' && $catchcollections == 1){
-            $collection_table_id = substr($this->request->query['q'],15,-1);
+            $collection_id = substr($this->request->query['q'],15,-1);
             //$response['results'] = array('hello' => 'Collections catch',
             //'collection_id' => substr($this->request->query['q'],15,-1));
             //// Start SQL Area
@@ -509,6 +509,7 @@ class SearchController extends AppController {
                 die('Connect Error (' . $mysqli->connect_errno . ') '
                     . $mysqli->connect_error);
             }
+			/*
             //Get a collection_id from the id
             $sql = "SELECT collection_id FROM collections WHERE collections.id ='".$collection_table_id."' LIMIT 1";
             //WHERE title = '".$file_name."'";
@@ -519,6 +520,7 @@ class SearchController extends AppController {
             //$response['sql'] = $sql;
             $collection_id = mysqli_fetch_assoc($result);
             $collection_id = $collection_id['collection_id'];
+			*/
 
             //Get the kid's from the collection_id
             if ($limit > 0) {

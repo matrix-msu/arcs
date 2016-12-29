@@ -701,8 +701,14 @@
       $('.select-button').click(function() {
         var index;
         var data_id = $(this).parent().attr("data-id");
-
-
+		
+		//todo- clear selected array and repop correctly.
+		Search.selected = [];
+		selectedMap['selected'] = [];
+		$('.resource-item-container.result.selected').each(function(){
+			Search.selected.push($(this).attr('data-id'));
+			selectedMap['selected'].push($(this).attr('data-id'));
+		});
 
         if ($(this).html() === 'SELECT') {
           if(data_id != ""){
@@ -716,6 +722,7 @@
             color: 'black'
           });
           selectedMap['selected'].push($(this).parents('.result').data("id"));
+		  
           $('#selected-resource-ids').html(selectedMap["selected"]);
           $('#selected-count').html(selectedMap["selected"].length);
           arcs.bus.trigger('selection');
@@ -741,7 +748,6 @@
           $('#selected-count').html(selectedMap["selected"].length);
           arcs.bus.trigger('selection');
         }
-        console.log(Search.selected);
       });
       $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");

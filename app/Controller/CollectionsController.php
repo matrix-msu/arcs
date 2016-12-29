@@ -87,9 +87,24 @@ class CollectionsController extends AppController {
                 'group' => 'collection_id'
             ));
         }
+        //grab all user_names out of the collections.
+        $authorList = array();
+        foreach( $collections as $collection ){
+            $authorList[] = $collection['Collection']['user_name'];
+        }
+        $authorList = array_unique($authorList);  //only keep unique
 
-        //$projectKids = $this->Session->read('allProjectResourceKids');
-        //$this->set('collections', $projectKids);
+        //generate the html
+        $authorString = "";
+        forEach( $authorList as $author ) {
+            $authorString .= '<li><a class="author-filter" href="#">'.$author.'</a></li>';
+        }
+        if( $authorString == '' ){  //html if none are found.
+            $authorString = '<li><a class="author-filter" href="#">No Authors Available</a></li>';
+        }
+
+        //set variables for the view.
+        $this->set('authors', $authorString);
         $this->set('collections', $collections);
     }
 
@@ -353,17 +368,21 @@ class CollectionsController extends AppController {
         }else return '';
     }
 
-    /**
-     * Return an array of (user_id, user_name) pairs.
-     */
-    public function distinctUsers() {
-        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
-        return $this->json(200, $this->Collection->find('all', array(
-            'fields' => array('Collection.user_id', 'Collection.user_name'),
-            'group' => 'Collection.user_id',
-            'order' => 'Collection.user_name'
-        )));
-    }
+//    /**
+//     * Return an array of (user_id, user_name) pairs. Collections page filter by author list
+//     */
+//    public function distinctUsers() {
+//        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
+//
+//        //todo-move this to not be ajax if possible!!!!!!!
+//        //put in the first controller.
+//        if (isset($this->request->query['pKid'])) {
+//
+//
+//        }else{
+//            return '';
+//        }
+//    }
 
     /**
      * Complete collection titles.

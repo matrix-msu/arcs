@@ -19,7 +19,10 @@ $( document ).ready(function() {
 
     //go to the arcs collection page from collection added modal.
     $(".viewCollection").click(function () {
-        window.location.href = arcs.baseURL + "collections?" + lastCheckedId.substr(5);
+		var href = $('#resources').attr('href');
+		href = href.split('/');
+		href = href.pop();
+		window.location.href=arcs.baseURL+"collections/"+href+"?"+$('.viewCollection').attr('data-colId');
     });
     //close the collection added modal
     $(".backToSearch").click(function () {
@@ -48,6 +51,7 @@ $( document ).ready(function() {
             statusCode: {
                 201: function (data) {
                     var collection_id = data['collection_id'];
+					$('.viewCollection').attr('data-colId', data.collection_id);
                     var intSuccess = 0;
                     var length = resource_kids.length;
                     for(var i=0; i <resource_kids.length; i++){
@@ -111,6 +115,7 @@ $( document ).ready(function() {
                 data: formdata,
                 statusCode: {
                     201: function (data) {
+						$('.viewCollection').attr('data-colId', data.collection_id);
                         intSuccess++;
                         if( intSuccess == length ) {
                             var text = $("label[for=" + lastCheckedId + "]").children(":first").text();

@@ -17,7 +17,12 @@ $( document ).ready(function() {
 
     //go to the arcs collection page from collection added modal.
     $(".viewCollection").click(function () {
-        window.location.href = arcs.baseURL + "collections?" + lastCheckedId.substr(5);
+		//add project kid to the collections url.
+		var href = $('#collections').attr('href');
+		href = href.split('/'); 
+		href = href.pop();
+		var col_id = $('.viewCollection').attr('data-colid');
+        window.location.href = arcs.baseURL + "collections/"+href+"?" + col_id;
     });
     //close the collection added modal
     $(".backToSearch").click(function () {
@@ -39,7 +44,8 @@ $( document ).ready(function() {
             type: "POST",
             data: formdata,
             statusCode: {
-                201: function () {
+                201: function (data) {
+					$('.viewCollection').attr('data-colId', data.collection_id);
                     $("#collectionName").text($('#collectionTitle').val());
                     $("#collectionModal").hide();
                     $("#addedCollectionModal").show();
@@ -77,6 +83,7 @@ $( document ).ready(function() {
                 data: formdata,
                 statusCode: {
                     201: function (data) {
+						$('.viewCollection').attr('data-colId', data.collection_id);
                         var text = $("label[for=" + lastCheckedId + "]").children(":first").text();
                         $("#collectionName").text(text);
                         $("#collectionModal").hide();
