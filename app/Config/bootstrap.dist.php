@@ -46,7 +46,7 @@ define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
 
 // EDIT
 //////////////////////////////////////////////////////////////
-define("BASE_URL",  "arcs2/" );
+define("BASE_URL",  "arcs/" );
 define ("LOCAL_URI", "~austin.rix/arcs2/webroot/");
 /////////////////////////////////////////////////////////////
 // EDIT 2
