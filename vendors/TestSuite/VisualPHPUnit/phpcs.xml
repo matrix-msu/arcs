@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+	<description>visual-phpunit</description>
+
+	<file>src</file>
+	<file>backend</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/bin/*</exclude-pattern>
+        <exclude-pattern>*/backend/index.php</exclude-pattern>
+
+	<arg name="report" value="full" />
+	<arg value="sp" />
+
+	<rule ref="PSR2" />
+</ruleset>

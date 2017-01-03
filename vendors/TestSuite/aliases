@@ -1,0 +1,5 @@
+setenv run "phpunit --testdox --configuration `pwd`/phpunit.xml --testsuite" 
+setenv list "phpunit --list-suites"
+setenv help "phpunit --help"
+setenv create_html "phpunit --testdox --configuration phpunit.xml --testsuite AllTests --testdox-html test.html"
+

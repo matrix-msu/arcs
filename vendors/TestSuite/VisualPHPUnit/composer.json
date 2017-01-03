@@ -1,0 +1,48 @@
+{
+	"name" : "visualphpunit/visualphpunit",
+	"description" : "A PHPUnit GUI",
+	"type" : "application",
+	"authors" : [{
+			"name" : "Johannes Skov Frandsen",
+			"email" : "localgod@heaven.dk",
+			"homepage" : "https://github.com/localgod",
+			"role" : "Lead"
+		}
+	],
+	"keywords" : [
+		"phpunit"
+	],
+	"homepage" : "https://github.com/VisualPHPUnit/VisualPHPUnit",
+	"license" : "BSD-3-Clause-Clear",
+	"require" : {
+		"php" : ">=5.6",
+		"ext-pdo_sqlite" : "*",
+		"symfony/console" : "~3.1@stable",
+		"phpunit/phpunit" : "~5.6@stable",
+		"silex/silex" : "~2.0@stable",
+		"jdesrosiers/silex-cors-provider" : "~1.0@stable",
+		"symfony/finder" : "~3.1@stable",
+		"doctrine/dbal" : "~2.5@stable"
+	},
+	"minimum-stability" : "stable",
+	"support" : {
+		"source" : "https://github.com/VisualPHPUnit/VisualPHPUnit",
+		"issues" : "https://github.com/VisualPHPUnit/VisualPHPUnit/issues",
+		"wiki" : "https://github.com/VisualPHPUnit/VisualPHPUnit/wiki"
+	},
+	"config" : {
+		"bin-dir" : "bin/",
+		"vendor-dir" : "vendor/"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Visualphpunit\\" : "src"
+		}
+	},
+	"require-dev" : {
+		"ext-mbstring" : "*"
+	},
+	"suggest" : {
+		"phpunit/dbunit" : "The DbUnit extension considerably simplifies the setup of a database for testing"
+	}
+}
