@@ -89,9 +89,8 @@ class ProjectsController extends AppController {
 
         $user = "";
 		$pass = "";
-
+	
         $project = new Project($proj);
-
 		$projectResourceKids = $project->getProjectResources();
 
 		$recent = array();

@@ -147,7 +147,7 @@
           <a name="searchJump"></a>
           <div id="searchBox">
           	<div class="searchIcon"></div>
-          	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+		<input data-project-Kid="<?=$kid?>" type="text" class="searchBoxInput search-bar-js" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
           </div><br>
           <?php echo $this->Html->script('searchBox.js');?>
          <div class="proper-width">

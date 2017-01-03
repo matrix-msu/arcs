@@ -94,22 +94,25 @@ class Keyword_Search extends Kora{
   */
   private function set_search_parameters($query,$project){
 
-    $projectResources = SearchController::getProjectResourceKids($project);
-    
-    if(empty($projectResources))
-    	$projectResources = array("none");
-
     $this->token = TOKEN;
     $this->projectMapping = PID;
     $this->schemeMapping = RESOURCE_SID;
 
-    $clause = new KORA_Clause("kid","IN", $projectResources);
-   
     $clause1 = new KORA_Clause("ANY", "LIKE", "%".$query."%");
-  
+    $this->The_Clause = $clause1;
 
-    $this->The_Clause =new KORA_Clause($clause1,"AND",$clause);
+    if($project !== "all"){
+    
+    	$projectResources = SearchController::getProjectResourceKids($project);
 
+    	if(empty($projectResources))
+    		$projectResources = array("none");
+
+   	$clause = new KORA_Clause("kid","IN", $projectResources);
+    	  
+    	$this->The_Clause =new KORA_Clause($clause1,"AND",$clause);
+    }
+ 
     $this->fields = array(
       "Excavation - Survey Associator",
       "Title",
