@@ -73,10 +73,10 @@ class DATABASE_CONFIG {
     public $test = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'www',
-		'password' => 'www',
-		'database' => 'arcs_test',
-		'prefix' => '',
+		'host' => 'rush.matrix.msu.edu',
+		'login' => 'rix_dev',
+		'password' => '59g37I1RhU',
+		'database' => 'rix_dev',
+		'prefix' => 'arcs_test_',
     );
 }

@@ -42,7 +42,7 @@
         <script>arcs.user = new arcs.models.User(<?php echo json_encode($user) ?>);</script>
     </head>
     <body class="<?php echo $body_class ?>">
-        <div class="wrap">
+	<div class="wrap">
             <div class="page fluid-container">
 
             <?php

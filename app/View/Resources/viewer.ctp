@@ -8,7 +8,7 @@
   display: flex !important;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 930px) {
     .tools{
       display: none !important;
     }
@@ -430,7 +430,7 @@ var annotateData = {
                     <div class="level-content">
 
 
-                        <table id="Project" data-kid="<?php echo $project['kid'];?>" >
+                        <table id="Project">
                             <tr>
                                 <td>Name</td>
                                 <td<?php $name = "Name";
@@ -2110,25 +2110,5 @@ var annotateData = {
 
 
 <script>
-
-//update the toolbar page urls with project.
-
-//add the project kid to the resources url.
-var href = $('#resources').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+PROJECT_KID;
-$('#resources').attr('href', href);
-
-//add project kid to the collections url.
-var href = $('#collections').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+PROJECT_KID;
-$('#collections').attr('href', href);
-
-//add project kid to the search url.
-var href = $('#search').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+PROJECT_KID;
-$('#search').attr('href', href);
 
 </script>

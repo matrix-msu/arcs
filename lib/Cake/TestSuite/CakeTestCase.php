@@ -475,7 +475,7 @@ abstract class CakeTestCase extends PHPUnit_Framework_TestCase {
  * @param string $message the text to display if the assertion is not correct
  * @return void
  */
-	protected function expectException($name = 'Exception', $message = '') {
+	public function expectException($name = 'Exception', $message = '') {
 		$this->setExpectedException($name, $message);
 	}
 

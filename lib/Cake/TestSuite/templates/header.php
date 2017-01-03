@@ -139,6 +139,7 @@
 	<body>
 		<div id="container">
 			<div id="header">
+			<?=CAKE?>
 			<div id="version">PHPUnit: <?php echo class_exists('PHPUnit_Runner_Version') ? PHPUnit_Runner_Version::id() : 'n/a'; ?></div>
 				<h1>CakePHP: the rapid development php framework</h1>
 			</div>

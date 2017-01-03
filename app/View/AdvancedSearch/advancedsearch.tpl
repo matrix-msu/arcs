@@ -1,7 +1,25 @@
+<style media="screen">
+.push{
+  height: 0px;
+}
+.wrap {
+    min-height: 100%;
+    padding-top: 60px !important;
+    padding-bottom: 0px;
+}
+@media screen and (max-width: 780px) {
+  .searchBoxColumn{
+    width: 100% !important;
+    display: block !important;
+
+  }
+}
+</style>
 <div class='searchIntro'>
     <h1>Advanced Search</h1>
-    
-    <p>Vommits food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
+    <p>
+      Lorem ipsum dolor sit amet, ignota consetetur quo at, augue accumsan efficiendi ut usu. Dictas eripuit albucius mea in, ex officiis philosophia eum. Consul singulis ad pro, te saperet contentiones qui. Ne has reque temporibus, saepe quaerendum temporibus cum ei.
+    </p>
 </div>
 
 <a name="searchJump"></a>
@@ -22,7 +40,7 @@
 		<input type="text" class="searchBoxAdvanced" name="Language" 		id="Language" 		placeholder="Language">
 		<input type="text" class="searchBoxAdvanced" name="Medium" 			id="Medium" 		placeholder="Medium">
 		<input type='submit' class='user-reg-btn btn btn-success searchButton' id="advanced_search_button" value='Search'></input>
-	</div>	
+	</div>
 </div>
 
 <div id="search-results-wrapper">
@@ -39,7 +57,7 @@
 		        <li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="seasons-buttons" class="btn-group actions-left">
 		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Season
@@ -51,7 +69,7 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="resources-buttons" class="btn-group actions-left">
 		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Resource Type
@@ -67,7 +85,7 @@
 		        <li><a class="sort-btn" id="open-btn">Report&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="author-buttons" class="btn-group actions-left">
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Creator
@@ -80,19 +98,6 @@
 		      </ul>
 		    </div>
 
-			<!--
-		    <div id="data-buttons" class="btn-group actions-left">
-		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Data
-		      	<span class="pointerDown sort-arrow"></span>
-		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
-		      </ul>
-		    </div>
-		    -->
 
 			<div id="options-buttons" class="btn-group actions-right">
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -107,7 +112,7 @@
 		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="view-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        <span id="sort-by">view</span>
@@ -119,7 +124,7 @@
 		        <li><a class="sort-btn" id="sort-modified-btn">detailed&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="sorting-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        Sort by
@@ -136,83 +141,15 @@
 		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		</div>
 	</div>
   <div id="search-results">
 	  <ul class="flex-container">
-	  		<!--<div class="resource-item-container">
-		  		<li class="flex-item">1</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-annotate"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">2</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-annotate"></div>
-		  		<div class="icon-flag"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">3</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-flag"></div>
-		  		<div class="search-icon-edit"></div>
-		  		<div class="icon-in-collection"></div>
-		  		<div class="icon-discussed"></div>
-		  		<div class="icon-tagged"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">4</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  		<div class="icon-flag search-icon-edit"></div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">5</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">6</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">7</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">8</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">9</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">10</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">11</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>
-	  		<div class="resource-item-container">
-		  		<li class="flex-item">12</li>
-		  		<div class="resource-title">Resource Title</div>
-		  		<div class="resource-type">Resource Type</div>
-		  	</div>-->
+
 		</ul>
   </div>
-  
+
   <div id='search-bottom-bar'>
 	  <div id="search-actions" class="search-toolbar">
 		  <div id="items-per-pages-buttons" class="btn-group actions-left">
@@ -254,39 +191,5 @@
 	arcs.searchView = new arcs.views.advanced_search.AdvancedSearch({
 		el: $('.wrap')
 	});
-
-//	function toggle_search_visibility() {
-//	  if(e.style.visibility == 'hidden') {
-//		  e.style.visibility = 'visible';
-//	  }
-//	}
-//
-//
-//
-//	$("#advanced_search_button").click(function (e) {
-//		console.log("Hi ad but clicked");
-//		var e = document.getElementById("search-results-wrapper");
-//		e.style.visibility = 'visible';
-//
-//	});
-//
-//	function movePage() {
-//		window.location.hash = "searchJump";
-//	}
-//
-//	/*$(document).ready(function () {
-//	$("li").click(function () {
-//		$('li > ul').not($(this).children("ul")).hide();
-//		$(this).children("ul").toggle();
-//	});
-//	});*/
-//
-//	/* function for page numbers */
-//	$('.pageNumber').click(function(){
-//	  /* console.log(this.id); */
-//	  $('.pageNumber').removeClass('selected');
-//	  $(this).addClass('selected');
-//	  /* add functions here, use this.id to identify page number. */
-//	});
 
 </script>

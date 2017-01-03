@@ -1,28 +1,3 @@
-//$(document).ready(function(){
-//
-//    $("#resources").click(function(){
-//		document.getElementById("toolbarHead").innerHTML = 'Blahahaa' + document.getElementById("toolbarHead").innerHTML;
-////        if(index != -1){
-////			this.href = this.href+"?"+index;
-////		}
-////    });
-////    $("#collections").click(function(){
-////        if(index != -1){
-////			this.href = this.href+"?"+index;
-////		}
-////    });
-////     $("#search").click(function(){
-////        if(index != -1){
-////			this.href = this.href//+"?"+index;
-////		}
-////    });
-////    $("#help").click(function(){
-////		if(index != -1){
-////			this.href = this.href+"?"+index;
-////		}
-////        
-//    });
-//});
 
 
 /*Keep as global*/
@@ -39,28 +14,20 @@ if(index == -1){
 else{
 	document.getElementById("toolbarHead").innerHTML = projects[index] + document.getElementById("toolbarHead").innerHTML;
 }
+
+// var login = {
+// 	mobile:"",
+// 	desktop:"",
+// 	loadModal:function(){
+// 		console.log("load modal");
+// 		login.mobile.css({opacity: "1"});
+// 	}
+// };
 //
-//if(index ==-1){
-////get the previous index stored somewhere
-//	var prevIndex;
-//	var i = toolId.substr(toolId.length -1);
-//	var i2 =toolId.substr(toolId.length -2);
-//	if (i2 != -1){
-//		prevIndex = projects[i];
-//		if(i == 1 || i== 0 || i == 2){
 //
-//			document.getElementById("toolbarHead").innerHTML = projects[i] + document.getElementById("toolbarHead").innerHTML;
-//			index=i; 
-//			}
-//		else{
-//			document.getElementById("toolbarHead").innerHTML = "Projects" + document.getElementById("toolbarHead").innerHTML;
-//			}
-//		
-//	}
-//	else{
-//		document.getElementById("toolbarHead").innerHTML = "Projects" + document.getElementById("toolbarHead").innerHTML;
-//	}
-//	}
-//else{
-//	document.getElementById("toolbarHead").innerHTML = toolId + document.getElementById("toolbarHead").innerHTML  ;
-//}
+// $(document).ready(function() {
+// 	login.mobile = $(".mobile-login");
+// 	login.desktop = $(".desktop-login");
+//
+// 	$("#menu").click(login.loadModal);
+// });

@@ -1,3 +1,9 @@
+<style media="screen">
+.push{
+  height: 0px;
+}
+}
+</style>
 <div class="viewers-container">
 	<div class="collectionModalBackground" id="collectionModalBackground">
 		<div class="collectionWrap" style="margin-top:9em;">
@@ -254,9 +260,9 @@
 		$(document).ready(function(){
 			var url = window.location.href;
 			var split = url.split("/").reverse()[0];
-			if(split != "search"){
+			if(split != "search" && window.globalquery != undefined){
 				if (split != "advanced_search") {
-					$(".searchBoxInput").val(split);
+					$(".searchBoxInput").val(globalquery);
 					var e = $.Event("keyup");
 					e.keyCode = 13; // # Some key code value
 					$(".searchBoxInput").trigger(e);

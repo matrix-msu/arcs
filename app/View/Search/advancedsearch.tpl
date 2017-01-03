@@ -1,7 +1,10 @@
+<!-- I don't think this page is being used -->
 <div class='searchIntro'>
-    <h1>Advanced Search</h1>
-    
-    <p>Vommits food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
+    <h1>Advanced Searchs</h1>
+
+    <p>
+      Lorem ipsum dolor sit amet, ignota consetetur quo at, augue accumsan efficiendi ut usu. Dictas eripuit albucius mea in, ex officiis philosophia eum. Consul singulis ad pro, te saperet contentiones qui. Ne has reque temporibus, saepe quaerendum temporibus cum ei.
+    </p>
 </div>
 
 <a name="searchJump"></a>
@@ -22,7 +25,7 @@
 		<input type="text" class="searchBoxAdvanced" name="Language" placeholder="Language">
 		<input type="text" class="searchBoxAdvanced" name="Medium" placeholder="Medium">
 		<input type='submit' onclick="toggle_search_visibility()" class='user-reg-btn btn btn-success searchButton' id="advanced_searchButton" value='Search'></input>
-	</div>	
+	</div>
 </div>
 
 <div id="search-results-wrapper">
@@ -39,7 +42,7 @@
 		        <li><a class="sort-btn" id="open-btn">Chersonesos&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="seasons-buttons" class="btn-group actions-left">
 		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Season
@@ -51,7 +54,7 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="resources-buttons" class="btn-group actions-left">
 		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Resource Type
@@ -67,7 +70,7 @@
 		        <li><a class="sort-btn" id="open-btn">Report&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="author-buttons" class="btn-group actions-left">
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Author
@@ -79,7 +82,7 @@
 		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="data-buttons" class="btn-group actions-left">
 		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Data
@@ -105,7 +108,7 @@
 		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="view-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        <span id="sort-by">view</span>
@@ -117,7 +120,7 @@
 		        <li><a class="sort-btn" id="sort-modified-btn">detailed&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		    <div id="sorting-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		        Sort by
@@ -134,7 +137,7 @@
 		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
 		      </ul>
 		    </div>
-		    
+
 		</div>
 	</div>
   <div id="search-results">
@@ -210,7 +213,7 @@
 		  	</div>-->
 		</ul>
   </div>
-  
+
   <div id='search-bottom-bar'>
 	  <div id="search-actions" class="search-toolbar">
 		  <div id="items-per-pages-buttons" class="btn-group actions-left">
@@ -236,7 +239,7 @@
 			</div>
 	  </div>
     <div id="search-pagination"></div>
-    
+
   </div>
 </div>
 
@@ -244,19 +247,19 @@
   arcs.searchView = new arcs.views.search.Search({
     el: $('.wrap')
   });
-   
+
    function toggle_search_visibility() {
        var e = document.getElementById("search-results-wrapper");
        if(e.style.visibility == 'hidden')
        		console.log("hiiiiiiiiiiiii");
 	   		e.style.visibility = 'visible';
     }
-    
+
     function movePage() {
 	    console.log("hiiiiiiGUH");
 	    window.location.hash = "searchJump";
 	    }
-    
+
     /*$(document).ready(function () {
     $("li").click(function () {
         $('li > ul').not($(this).children("ul")).hide();
