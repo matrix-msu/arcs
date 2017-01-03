@@ -1,6 +1,6 @@
 // collection
 $( document ).ready(function() {
-
+	
     //open collection modal
     $("#collection-modal-btn").click(function () {
         $(".collectionModalBackground").show();
@@ -127,7 +127,7 @@ var collectionArray = [];
 
 //get collection list for search modal
 function collectionList() {
-    var pKid = $('#Project').attr('data-kid');
+    var pKid = PROJECT_KID;
     collectionArray = [];
     $.ajax({
         url: arcs.baseURL + "collections/titlesAndIds",

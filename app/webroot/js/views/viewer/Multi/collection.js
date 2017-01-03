@@ -2,7 +2,7 @@
 // there are more comments in single resource collections.js!
 
 $( document ).ready(function() {
-
+	
     //open collection modal
     $("#collection-modal-btn").click(function () {
         $(".collectionModalBackground").show();
