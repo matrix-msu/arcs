@@ -6,25 +6,42 @@ App::uses('ProgressHelper', 'View/Helper');
 
 use PHPUnit\Framework\TestCase;
 class SearchControllerTest extends ControllerTestCase{
-	private $control;
 	public function setUp() {
-    	    parent::setUp();
-	    $Controller = new Controller();
-	    $View = new View($Controller);
+    	  
 	}	
 	public function testSearchPageRender(){
-		$data = array(
-			"Post" => array(
+		$page = getRequest("/");
+		$this->assertTrue(hasNoErrors($page),"Error found on page");
+	
+	}
+	public function testSingleProjectSearchRequest(){
+		//searching 1974
+		$json = getRequest("/simple_search/7B-2DE-0/1974/1/20");
+		$decoded = json_decode($json);
 
-			)
-		);
-		$this->testAction("/posts/add",array('data' => $data , 'method'=>'get'));
-	}
-	public function testSimpleSearchFunction(){
-		
-	}
-	public function testAdvancedSearchFunction(){
+		//test for results
+		$this->assertFalse($decoded == NULL, "Json response is NULL");
+
 	
+		$this->assertTrue( isset($decoded->total) , "missing 'total' attribute" );
+		$this->assertTrue( isset($decoded->time) , "missing 'time' attribute" );
+		$this->assertTrue( isset($decoded->Memory) , "missing 'memory' attribute" );
+		$this->assertTrue( isset($decoded->filters) , "missing 'filters' attribute" );
+		$this->assertTrue( isset($decoded->results) , "missing 'results' attribute" );
+	}
+	public function testAllProjectSearchRequest(){
+		//searching 1974 on All projects
+		$json = getRequest("/simple_search/all/1974/1/20");
+		$decoded = json_decode($json);
+
+		//test for results
+		$this->assertFalse($decoded == NULL, "Json response is NULL");
+
 	
+		$this->assertTrue( isset($decoded->total) , "missing 'total' attribute" );
+		$this->assertTrue( isset($decoded->time) , "missing 'time' attribute" );
+		$this->assertTrue( isset($decoded->Memory) , "missing 'memory' attribute" );
+		$this->assertTrue( isset($decoded->filters) , "missing 'filters' attribute" );
+		$this->assertTrue( isset($decoded->results) , "missing 'results' attribute" );	
 	}
 }
