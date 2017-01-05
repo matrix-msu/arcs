@@ -257,11 +257,13 @@ function collectionsSearch() {
 
 //for the details tab, what collections the resource is a part of.
 function getCollections() {
-    var resource_kid = $('.resource-container-level').find('img').filter(function () { //by border
-        return $(this).css('border-width') == '5px';
-    });
-    resource_kid = resource_kid.attr('id');
+    /////********* Rix - Accordion fix is here*****
+    ////////////////Yours is broken on version 517 now.
+    var resource_kid = $('.selectedResource').prev();
+    resource_kid = $(resource_kid).attr('id');
     resource_kid = resource_kid.replace('identifier-', '');
+    //****************** End fix! ********
+
     var ctab = $("#collections_tab");
     ctab[0].innerHTML = "COLLECTIONS (" + 0 + ")";
     $("#collections_table").html('');
