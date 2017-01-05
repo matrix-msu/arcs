@@ -79,9 +79,17 @@
 
 		</div>
 		<div id= 'belowProjects'>
-		    <?php $pKid = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		            $pKid = explode('/', $pKid);
-		            $pKid = '/'.array_pop($pKid);
+		    <?php
+		        //skip links if in profile or all project search
+                if( ($this->request->params['controller'] != 'user' &&
+                    $this->request->params['action'] != 'profile') &&
+                    ($this->request->params['action'] != 'search' &&
+                    $this->request->params['action'] != 'search' &&
+                    $this->request->params['pass'][0] != 'all')
+                    ){
+		                $pKid = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                        $pKid = explode('/', $pKid);
+                        $pKid = '/'.array_pop($pKid);
             ?>
 			 <a id="resources" class="btn btn-grey"
 				href="<?php echo $this->Html->url('/resources').$pKid ?>">
@@ -96,6 +104,20 @@
 				href="<?php echo $this->Html->url('/search').$pKid ?>">
 				<i class="icon-white icon-search"></i> Search
 			</a>
+
+			<?php //add the search link back into the all project search
+
+			    }if( $this->request->params['action'] == 'search' &&
+                       $this->request->params['action'] == 'search' &&
+                       $this->request->params['pass'][0] == 'all' ){?>
+                <a id="search" class="btn btn-grey"
+                    href="<?php echo $this->Html->url('/search').'/all/'
+                            .$this->request->params['pass'][1] ?>">
+                    <i class="icon-white icon-search"></i> Search
+                </a>
+
+            <?php } ?>
+
 			<a id="help" class="btn btn-grey"
 				href="<?php echo $this->Html->url('/help/')?>">
 				<i class="icon-white icon-book"></i> Help
