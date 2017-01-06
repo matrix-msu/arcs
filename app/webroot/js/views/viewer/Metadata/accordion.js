@@ -22,10 +22,11 @@ $(document).ready(function(){
         });
         console.log("here");
     });
-    $('.metadata-accordion').height($('#viewer-left').height() + 40);
+    //height of the viewer window - the height of the tabs - 2 for the border width
+    $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2);
 
     $(window).resize(function () {
-        $('.metadata-accordion').height($('#viewer-left').height()+ 40);
+        $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2 );
     });
     $(function () {
         $("#soo").tabs();
