@@ -102,8 +102,17 @@
 		                $pKid = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         $pKid = explode('/', $pKid);
                         $pKid = '/'.array_pop($pKid);
+
+                        //make multi-resources' resource link blue
+                        $resourceBlue = '';
+                        if(
+                            $this->request->params['controller'] == 'resources' &&
+                            $this->request->params['action'] == 'multi_viewer'
+                        ){
+                            $resourceBlue = ' btn-blue';
+                        }
             ?>
-			 <a id="resources" class="btn btn-grey"
+			 <a id="resources" class="btn btn-grey<?php echo $resourceBlue ?>"
 				href="<?php echo $this->Html->url('/resources').$pKid ?>">
 				<i class="icon-white icon-folder-open"></i> Resources
 
