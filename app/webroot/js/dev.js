@@ -6,6 +6,9 @@
     arcs.baseURL += document.location.href.match(/\/~[a-z.]+\//);
     arcs.baseURL += BASE_URL;
   }
+  else{
+    arcs.baseURL = "/"+BASE_URL;
+  }
 
   if (arcs.mode > 0) {
     arcs.dev = {};
