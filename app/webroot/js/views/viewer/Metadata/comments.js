@@ -1,16 +1,20 @@
 (function(){
 
+    console.log("getComments URL " +CM_URL);
+    console.log("getComments R ID " +CM_R_ID);
+    console.log("getComments NEW COM URL " +NEW_COM_URL);
 
-      var kid = "<?php echo $kid; ?>";
-
+    $(document).ready(function(){
+      getComments();
+   
       var parent;
 
       function getComments() {
           $.ajax({
-              url: "<?php echo Router::url('/', true); ?>api/comments/findall.json",
+              url: CM_URL,
               type: "POST",
               data: {
-                  id: "<?php echo $resource['kid']; ?>"
+                  id: CM_R_ID
               },
               success: function (data) {
                   $(".commentContainer").empty();
@@ -93,14 +97,16 @@
           e.preventDefault();
           if ($(".commentTextArea").val() != "") {
               $.ajax({
-                  url: "<?php echo Router::url('/', true); ?>api/comments.json",
+                  url: NEW_COM_URL,
                   type: "POST",
                   data: {
-                      resource_kid: "<?php echo $resource['kid']; ?>",
+                      resource_kid: CM_R_ID,
                       content: $(".commentTextArea").val(),
                       parent_id: parent
                   },
                   success: function (data) {
+                    console.log(data);
+
                       $(".commentTextArea").val("");
                       $("#tabs-3").append($(".newCommentForm,.newReplyForm"));
                       $(".newCommentForm,.newReplyForm").hide();
@@ -111,10 +117,10 @@
           }
           else if ($(".replyTextArea").val() != "") {
               $.ajax({
-                  url: "<?php echo Router::url('/', true); ?>api/comments.json",
+                  url: NEW_COM_URL,
                   type: "POST",
                   data: {
-                      resource_kid: "<?php echo $resource['kid']; ?>",
+                      resource_kid: CM_R_ID,
                       content: $(".replyTextArea").val(),
                       parent_id: parent
                   },
@@ -137,5 +143,5 @@
   //			$('.resources-annotate-icon').attr('src') = "../img/AnnotationsOff.svg"
   //		}
   //	});
-
+	})
 })();

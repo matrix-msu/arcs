@@ -182,6 +182,11 @@ var annotateData = {
     y1: "",
     y2: ""
 };
+
+///comments.js variables
+var CM_URL = "<?php echo Router::url('/', true); ?>comments/findall"
+var CM_R_ID = "<?php echo $resource['kid']; ?>"
+var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 </script>
 
 <?= $this->Html->script("views/viewer/Metadata/flag.js")?>
@@ -192,7 +197,7 @@ var annotateData = {
 <?= $this->Html->script("views/viewer/Metadata/export.js")?>
 <?= $this->Html->script("views/viewer/Metadata/keyword.js")?>
 <?= $this->Html->script("views/viewer/Metadata/metadata.js")?>
-
+<?= $this->Html->script("views/viewer/Metadata/comments.js")?>
 
 
 
