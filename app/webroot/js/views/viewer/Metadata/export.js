@@ -9,28 +9,61 @@ $(document).ready(function(){
         $('.icon-export').css('background-image','url(../img/arcs-preloader.gif)');
         //load data in variables
         var schemes = SCHEMES;
+        var projects = SCHEMES[0];
+        var seasons = SCHEMES[1];
+        var excavations = SCHEMES[2];
         var subjects = SUBJECTS;
         var pages = PAGES;
         //build xmls for all the single records
         var xmlArray = [];
 
-        //console.log('schemes:');
-        //console.log(schemes);
-        schemes.forEach(function (tempdata) {
-            var jsonObject = JSON.parse(tempdata);
-            if( 'thumb' in jsonObject ){
-                delete jsonObject.thumb;
-            }
-            var recordObject = {Record: jsonObject};
-            var dataObject = {Data: recordObject};
-            var xmlString = json2xml(dataObject, '');
-            xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
-            xmlArray.push(xmlString);
-            //console.log(xmlArray);
+        console.log('schemes:');
+        console.log('projects:');
+        console.log(projects);
+        console.log('seasons:');
+        console.log(seasons);
+        console.log('excavations:');
+        console.log(excavations);
+        //return;
+
+        // handle project
+        var jsonObject = JSON.parse(projects);
+        jsonObject.linkers.forEach(function (tempdata) {
+            console.log(tempdata);
         })
+        if( 'thumb' in jsonObject ){
+            delete jsonObject.thumb;
+        }
+        var recordObject = {Record: jsonObject};
+        var dataObject = {Data: recordObject};
+        var xmlString = json2xml(dataObject, '');
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
+        xmlArray.push(xmlString);
+
+        // handle season
+        var jsonObject = JSON.parse(seasons);
+        if( 'thumb' in jsonObject ){
+            delete jsonObject.thumb;
+        }
+        var recordObject = {Record: jsonObject};
+        var dataObject = {Data: recordObject};
+        var xmlString = json2xml(dataObject, '');
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
+        xmlArray.push(xmlString);
+
+        // handle excavation
+        var jsonObject = JSON.parse(excavations);
+        if( 'thumb' in jsonObject ){
+            delete jsonObject.thumb;
+        }
+        var recordObject = {Record: jsonObject};
+        var dataObject = {Data: recordObject};
+        var xmlString = json2xml(dataObject, '');
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
+        xmlArray.push(xmlString);
 
         //treat subject of observation differently since you can have multiple
-       var xmlString = '';
+        var xmlString = '';
         subjects.forEach(function (tempdata) {
             var jsonObject = JSON.parse(tempdata);
             var recordObject = {Record: jsonObject};
