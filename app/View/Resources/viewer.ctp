@@ -281,7 +281,6 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                                                                     class="modalClose annotationClose"/></div>
                 <hr class="annotateHeaderDivider">
                 <p class="annotateTab annotateTabRelation activeTab">RELATION</p>
-                <!--<p class="annotateTab annotateTabTranscript">TRANSCRIPT</p>-->
                 <p class="annotateTab annotateTabUrl">URL</p>
                 <div class="annotateRelationContainer">
                     <form class="annotateSearchForm" action="#">
@@ -289,9 +288,6 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     </form>
                     <div class="resultsContainer"></div>
                 </div>
-                <!--<div class="annotateTranscriptContainer">-->
-                    <!--<textarea class="annotateTranscript" placeholder="ENTER TRANSCRIPT"></textarea>-->
-                <!--</div>-->
                 <div class="annotateUrlContainer">
                     <textarea class="annotateUrl" placeholder="ENTER URL"></textarea>
                 </div>

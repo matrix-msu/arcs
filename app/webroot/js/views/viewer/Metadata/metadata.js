@@ -183,75 +183,80 @@ $(document).ready(function () {
     });
 
     function BuildResults(data) {
-        //Iterate search results
-        $.each(data, function (key, value) {
-            $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value.kid + "'></div>");
+        if (Object.keys(data).length > 0) {
+            //Iterate search results
+            $.each(data, function (key, value) {
+                $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value.kid + "'></div>");
 
-            //Get related pages
-            $.ajax({
-                url: arcs.baseURL + "resources/advanced_search",
-                type: "POST",
-                data: {
-                    q: [
-                        ['Resource Identifier', 'like', value['Resource Identifier']],
-                    ],
-                    sid: page_sid
-                },
-                success: function (pages) {
-                    pages = JSON.parse(pages);
-                    $.each(pages, function (k, v) {
-                        var image = KORA_FILES_URI + pid + '/' + page_sid + '/' + v['Image Upload'].localName;
-                        $("#" + value.kid).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
-                        if (v.thumb == "img/DefaultResourceImage.svg") {
-                            $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
-                        }
-                        else {
-                            $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
-                        }
-
-                        $("#" + v.kid).append(
-                            "<div class='pageInfo'>" +
-                            "<p>" + v['Page Identifier'] + "</p>" +
-                            "</div>"
-                        );
-
-                        $("#" + v.kid).append("<hr class='resultDivider'>");
-
-                        //Clicked a page
-                        $("#" + v.kid).click(function () {
-                            if ($(this).hasClass("selectedRelation")) {
-                                $(this).removeClass("selectedRelation");
-                                selected = false;
-                                annotateData.page_kid = "";
-                                annotateData.resource_kid = "";
-                                annotateData.resource_name = "";
-                                annotateData.relation_resource_kid = "";
-                                annotateData.relation_page_kid = "";
-                                annotateData.relation_resource_name = "";
+                //Get related pages
+                $.ajax({
+                    url: arcs.baseURL + "resources/advanced_search",
+                    type: "POST",
+                    data: {
+                        q: [
+                            ['Resource Identifier', 'like', value['Resource Identifier']]
+                        ],
+                        sid: page_sid
+                    },
+                    success: function (pages) {
+                        pages = JSON.parse(pages);
+                        $.each(pages, function (k, v) {
+                            var image = KORA_FILES_URI + pid + '/' + page_sid + '/' + v['Image Upload'].localName;
+                            $("#" + value.kid).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                            if (v.thumb == "img/DefaultResourceImage.svg") {
+                                $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
                             }
                             else {
-                                $(".annotateSearchResult").removeClass('selectedRelation');
-                                $(this).addClass("selectedRelation");
-                                selected = true;
-                                annotateData.page_kid = kid;
-                                annotateData.resource_kid = resourceKid;
-                                annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
-                                annotateData.relation_resource_name = v['Resource Identifier'];
-                                annotateData.relation_resource_kid = v['Resource Associator'][0];
-                                annotateData.relation_page_kid = v.kid;
+                                $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
                             }
 
-                            if (selected || annotateData.url.length > 0) {
-                                $(".annotateSubmit").show();
-                            }
-                            else {
-                                $(".annotateSubmit").hide();
-                            }
+                            $("#" + v.kid).append(
+                                "<div class='pageInfo'>" +
+                                "<p>" + v['Page Identifier'] + "</p>" +
+                                "</div>"
+                            );
+
+                            $("#" + v.kid).append("<hr class='resultDivider'>");
+
+                            //Clicked a page
+                            $("#" + v.kid).click(function () {
+                                if ($(this).hasClass("selectedRelation")) {
+                                    $(this).removeClass("selectedRelation");
+                                    selected = false;
+                                    annotateData.page_kid = "";
+                                    annotateData.resource_kid = "";
+                                    annotateData.resource_name = "";
+                                    annotateData.relation_resource_kid = "";
+                                    annotateData.relation_page_kid = "";
+                                    annotateData.relation_resource_name = "";
+                                }
+                                else {
+                                    $(".annotateSearchResult").removeClass('selectedRelation');
+                                    $(this).addClass("selectedRelation");
+                                    selected = true;
+                                    annotateData.page_kid = kid;
+                                    annotateData.resource_kid = resourceKid;
+                                    annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+                                    annotateData.relation_resource_name = v['Resource Identifier'];
+                                    annotateData.relation_resource_kid = v['Resource Associator'][0];
+                                    annotateData.relation_page_kid = v.kid;
+                                }
+
+                                if (selected || annotateData.url.length > 0) {
+                                    $(".annotateSubmit").show();
+                                }
+                                else {
+                                    $(".annotateSubmit").hide();
+                                }
+                            })
                         })
-                    })
-                }
+                    }
+                });
             });
-        });
+        }
+        else {
+            $(".resultsContainer").append("<div class='NoResultsMessage'>No results found.</div>");
+        }
     }
 
     //Set transcript and url
