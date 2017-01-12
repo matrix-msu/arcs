@@ -88,6 +88,9 @@
     Router::connect('/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
+	Router::connect('/resources/viewkid/*',
+        array('controller' => 'resources', 'action' => 'viewKid')
+    );
     # We can access the JSON search through either /api/search or this:
     Router::connect('/resources/search',
         array('controller' => 'search', 'action' => 'resources')
