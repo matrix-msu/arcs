@@ -37,6 +37,10 @@ HEADER="/**\n\
 
 default:all
 
+install:
+	php ini/configure.ini.php
+bootstrap:
+	php ini/bootstrap.ini.php 
 
 # Compile less in (and included in) css/app.less to css/app.css
 less:
@@ -53,7 +57,7 @@ docs:
 		app/View/Help/$(notdir $(basename $(doc))).ctp;)
 
 # Install the packages we use.
-install:
+install-old:
 	npm install -g uglify-js
 	npm install -g clean-css
 	npm install -g less
