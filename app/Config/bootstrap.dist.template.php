@@ -1,78 +1,106 @@
 <?php
 /**
- * This file is loaded automatically by the app/webroot/index.php file after core.php
- *
- * This file should load/create any application wide configuration settings, such as
- * Caching, Logging, loading additional configuration files.
- *
- * You should also use this file to include any files that provide global functions/constants
- * that your application uses.
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Config
- * @since         CakePHP(tm) v 0.10.8.2117
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
-
-# Kora search include
-
-
-
+*           _____                    _____                    _____                    _____
+*          /\    \                  /\    \                  /\    \                  /\    \
+*         /::\    \                /::\    \                /::\    \                /::\    \
+*        /::::\    \              /::::\    \              /::::\    \              /::::\    \
+*       /::::::\    \            /::::::\    \            /::::::\    \            /::::::\    \
+*      /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \
+*     /:::/__\:::\    \        /:::/__\:::\    \        /:::/  \:::\    \        /:::/__\:::\    \
+*    /::::\   \:::\    \      /::::\   \:::\    \      /:::/    \:::\    \       \:::\   \:::\    \
+*   /::::::\   \:::\    \    /::::::\   \:::\    \    /:::/    / \:::\    \    ___\:::\   \:::\    \
+*  /:::/\:::\   \:::\    \  /:::/\:::\   \:::\____\  /:::/    /   \:::\    \  /\   \:::\   \:::\    \
+* /:::/  \:::\   \:::\____\/:::/  \:::\   \:::|    |/:::/____/     \:::\____\/::\   \:::\   \:::\____\
+* \::/    \:::\  /:::/    /\::/   |::::\  /:::|____|\:::\    \      \::/    /\:::\   \:::\   \::/    /
+* \/____/ \:::\/:::/    /  \/____|:::::\/:::/    /  \:::\    \      \/____/  \:::\   \:::\   \/____/
+*          \::::::/    /         |:::::::::/    /    \:::\    \               \:::\   \:::\    \
+*           \::::/    /          |::|\::::/    /      \:::\    \               \:::\   \:::\____\
+*           /:::/    /           |::| \::/____/        \:::\    \               \:::\  /:::/    /
+*          /:::/    /            |::|  ~|               \:::\    \               \:::\/:::/    /
+*         /:::/    /             |::|   |                \:::\    \               \::::::/    /
+*        /:::/    /              \::|   |                 \:::\____\               \::::/    /
+*        \::/    /                \:|   |                  \::/    /                \::/    /
+*         \/____/                  \|___|                   \/____/                  \/____/
+*
+*
+* This file is loaded automatically by the app/webroot/index.php file after core.php
+*
+* This file should load/create any application wide configuration settings, such as
+* Caching, Logging, loading additional configuration files.
+*
+* You should also use this file to include any files that provide global functions/constants
+* that your application uses.
+*
+* PHP 5
+*
+*
+* CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+* Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+*
+* Licensed under The MIT License
+* Redistributions of files must retain the above copyright notice.
+*
+* @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+* @link          http://cakephp.org CakePHP(tm) Project
+* @package       app.Config
+* @since         CakePHP(tm) v 0.10.8.2117
+* @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+*
+* @author SOFTWARE LEAD: SEILA GONZALEZ
+*					SOFTWARE DEVS: AUSTIN RIX, CHARLIE DENEUA, JOSH CHRIST, MATT SCHLEUSENER
+*												 ARNOLD MUTAYOBA, JACOB BUCKLEY
+* @design AUSTIN TRUCHAN, ALEXIS REININGER
+* @documentation https://wiki.matrix.msu.edu/index.php/Arcs_Documentation
+*
+*/
+/*///////////////////////////////////////////////////////////////////////
+APPLICATION
+///////////////////////////////////////////////////////////////////////*/
+$base = $_SERVER['SERVER_NAME'];
+$encrypted = false;
+$protocol = $encrypted ? "https" : "http";
+define("BASE_URL"      ,  "BASE_URL_REPLACE" );
+define("DEFAULT_THUMB" ,  "img/DefaultResourceImage.svg");
+/*///////////////////////////////////////////////////////////////////////
+CAKE Configure
+///////////////////////////////////////////////////////////////////////*/
 # Setup a 'default' cache configuration for use in the application.
-Cache::config('default', array('engine' => 'File'));
-App::uses('IniReader', 'Configure', 'Security');
-App::uses('CakeLog', 'Log');
-Configure::config('default', new IniReader(APP . 'Config' . DS));
+Cache::config('default'     ,  array('engine' => 'File'));
+App::uses('IniReader'       ,  'Configure', 'Security');
+App::uses('CakeLog'         ,  'Log');
+Configure::config('default' ,  new IniReader(APP . 'Config' . DS));
 # Load additional config files.
 Configure::load('arcs');
 Configure::load('assets');
-
-# Basic Kora Information
-define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
-define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
-define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
-define("KORA_LIB", CORE_PATH . "Kora/Local/");
-define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
-define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
-
-// EDIT
-//////////////////////////////////////////////////////////////
-define("BASE_URL",  "BASE_URL_REPLACE" );
-define ("LOCAL_URI", "~austin.rix/arcs2/webroot/");
-/////////////////////////////////////////////////////////////
-// EDIT 2
-define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
-//////////////////////////////////////////////////////////////
-
-define ("PID", "PID_REPLACE");
-define ("PROJECT_SID", "PROJECT_SID_REPLACE");
-define ("SEASON_SID", "SEASON_SID_REPLACE");
-define ("RESOURCE_SID", "RESOURCE_SID_REPLACE");
-define ("PAGES_SID", "PAGES_SID_REPLACE");
-define ("SUBJECT_SID", "SUBJECT_SID_REPLACE");
-define ("SURVEY_SID", "SURVEY_SID_REPLACE");
-define ("TOKEN", "TOKEN_REPLACE");
-
-# Thumbnail location
-define("THUMBS_URL", "http://dev2.matrix.msu.edu/arcs/app/webroot/thumbs/");
-define("THUMBS", "/matrix/dev/public_html/arcs/app/webroot/thumbs/");
 
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
 CakePlugin::load('TwigView');
 
+/*///////////////////////////////////////////////////////////////////////
+KORA
+///////////////////////////////////////////////////////////////////////*/
+define("KORA_FILES_URI"     ,  "KORA_FILES_URI_REPLACE"); //unique
+define("KORA_SEARCH"        ,  "KORA_SEARCH_REPLACE"); //unique
+define ("KORA_RESTFUL_URL"  ,  "KORA_RESTFUL_URL_REPLACE"); //unique
+define("KORA_PLUGIN_USERS"  ,  "KORA_PLUGIN_USERS_REPLACE"); //unique
+#PRJOECT AND SCHEME DATA
+define ("PID"          ,  "PID_REPLACE");
+define ("PROJECT_SID"  ,  "PROJECT_SID_REPLACE");
+define ("SEASON_SID"   ,  "SEASON_SID_REPLACE");
+define ("RESOURCE_SID" ,  "RESOURCE_SID_REPLACE");
+define ("PAGES_SID"    ,  "PAGES_SID_REPLACE");
+define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
+define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
+define ("TOKEN"        ,  "TOKEN_REPLACE");
+define("KORA_LIB"      ,  LIB . "Kora/Local/");
+# Thumbnail location
+define("THUMBS_URL", "$protocol://$base/".BASE_URL."app/webroot/thumbs/");
+define("THUMBS", APP."webroot/thumbs/");
 
-//Edit 3
-////////////////////////////////////////////////////
+/*///////////////////////////////////////////////////////////////////////
+JAVASCRIPT
+///////////////////////////////////////////////////////////////////////*/
 define("globaljsvars",
 	"<script type='text/javascript'>" .
 	"var BASE_URL ='".BASE_URL."';" .

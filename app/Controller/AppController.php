@@ -23,10 +23,9 @@ class AppController extends Controller {
     );
 
     public function beforeFilter() {
-
+        //echo "<ptest></p><p>test</p><p>test</p><p>test</p>";
 
         // code to pull the projects from kora for the header - here because every page needs it
-
         $user = "";
         $pass = "";
         $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";

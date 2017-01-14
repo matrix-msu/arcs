@@ -35,6 +35,7 @@ function command_prompt()
 	create_access("app/webroot",$base);
 
 	make_tmp($root);
+	make_thumb_dir($root);
 
 }
 function license()
@@ -80,6 +81,16 @@ function make_tmp($root){
 	create_mod("$root/app/tmp/cache/");
 	create_mod("$root/app/tmp/cache/persistent/");
 	create_mod("$root/app/tmp/cache/models/");
+}
+function make_thumb_dir($root){
+	print("Syncing all thumbnail files \n");
+	if(file_exists("$root/app/webroot/thumbs/")){
+		print("Deleting thumb dir \n");
+		deleteDir("$root/app/webroot/thumbs/");
+	}
+	create_mod("$root/app/webroot/thumbs/");
+	create_mod("$root/app/webroot/thumbs/smallThumbs/");
+	create_mod("$root/app/webroot/thumbs/largeThumbs/");
 }
 function create_mod($name){
 		mkdir($name);

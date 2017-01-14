@@ -1,6 +1,39 @@
 # Makefile
 # --------
 # Builds assets and documentation for ARCS.
+#          _____                    _____                    _____                    _____
+#         /\    \                  /\    \                  /\    \                  /\    \
+#        /::\    \                /::\    \                /::\    \                /::\    \
+#       /::::\    \              /::::\    \              /::::\    \              /::::\    \
+#      /::::::\    \            /::::::\    \            /::::::\    \            /::::::\    \
+#     /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \
+#    /:::/__\:::\    \        /:::/__\:::\    \        /:::/  \:::\    \        /:::/__\:::\    \
+#   /::::\   \:::\    \      /::::\   \:::\    \      /:::/    \:::\    \       \:::\   \:::\    \
+#  /::::::\   \:::\    \    /::::::\   \:::\    \    /:::/    / \:::\    \    ___\:::\   \:::\    \
+# /:::/\:::\   \:::\    \  /:::/\:::\   \:::\____\  /:::/    /   \:::\    \  /\   \:::\   \:::\    \
+#/:::/  \:::\   \:::\____\/:::/  \:::\   \:::|    |/:::/____/     \:::\____\/::\   \:::\   \:::\____\
+#\::/    \:::\  /:::/    /\::/   |::::\  /:::|____|\:::\    \      \::/    /\:::\   \:::\   \::/    /
+# \/____/ \:::\/:::/    /  \/____|:::::\/:::/    /  \:::\    \      \/____/  \:::\   \:::\   \/____/
+#          \::::::/    /         |:::::::::/    /    \:::\    \               \:::\   \:::\    \
+#           \::::/    /          |::|\::::/    /      \:::\    \               \:::\   \:::\____\
+#           /:::/    /           |::| \::/____/        \:::\    \               \:::\  /:::/    /
+#          /:::/    /            |::|  ~|               \:::\    \               \:::\/:::/    /
+#         /:::/    /             |::|   |                \:::\    \               \::::::/    /
+#        /:::/    /              \::|   |                 \:::\____\               \::::/    /
+#        \::/    /                \:|   |                  \::/    /                \::/    /
+#         \/____/                  \|___|                   \/____/                  \/____/
+#
+# @package    ARCS
+# @link       http://svn.matrix.msu.edu/svn/arcs/
+# @copyright  Copyright 2012, Michigan State University Board of Trustees
+# @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
+#
+# @author SOFTWARE LEAD: SEILA GONZALEZ
+#					SOFTWARE DEVS: AUSTIN RIX, CHARLIE DENEUA, JOSH CHRIST, MATT SCHLEUSENER
+#												 ARNOLD MUTAYOBA, JACOB BUCKLEY
+# @design AUSTIN TRUCHAN, ALEXIS REININGER
+# @documentation https://wiki.matrix.msu.edu/index.php/Arcs_Documentation
+
 #
 # To use it, you'll need NodeJS and the following NPM packages:
 #   - uglify-js
@@ -10,6 +43,7 @@
 # To build the docs, we're using markdown_py, from the Python
 # Markdown module. You can substitute it with another Markdown
 # converter that supports tables.
+#
 
 # Asset dirs
 CSS=app/webroot/css
@@ -40,7 +74,7 @@ default:all
 install:
 	php ini/configure.ini.php
 bootstrap:
-	php ini/bootstrap.ini.php 
+	php ini/bootstrap.ini.php
 
 # Compile less in (and included in) css/app.less to css/app.css
 less:
@@ -57,7 +91,7 @@ docs:
 		app/View/Help/$(notdir $(basename $(doc))).ctp;)
 
 # Install the packages we use.
-install-old:
+install-tools:
 	npm install -g uglify-js
 	npm install -g clean-css
 	npm install -g less

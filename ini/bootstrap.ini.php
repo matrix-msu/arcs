@@ -93,8 +93,8 @@
 
   function copy_bootstrap($dist = "app/Config", $boot = "bootstrap.dist.template.php", $new_boot = "bootstrap.php"){
 
-    if(!file_exists("$dist/bootstrap.dist.php")){
-  		throw new Exception("Missing $dist/bootstrap.dist.php");
+    if(!file_exists("$dist/bootstrap.dist.template.php")){
+  		throw new Exception("Missing $dist/bootstrap.dist.template.php");
   	}
   	else{
       if(file_exists("$dist/$new_boot")){
@@ -121,7 +121,12 @@
     }
     $array[$rID] = $response;
   }
-
+  /*
+  define("KORA_FILES_URI"     ,  "KORA_FILES_URI_REPLACE"); //unique
+  define("KORA_SEARCH"        ,  "KORA_SEARCH_REPLACE"); //unique
+  define ("KORA_RESTFUL_URL"  ,  "KORA_RESTFUL_URL_REPLACE"); //unique
+  define("KORA_PLUGIN_USERS"  ,  "KORA_PLUGIN_USERS_REPLACE"); //unique
+  */
   function replace_sequence()
   {
     print("To skip a selection type \"sk\" \n");
@@ -132,25 +137,37 @@
       "Enter the Base Url", "BASE_URL_REPLACE", $array
     );
     get_replacement(
-      "Enter the KORA project ID", "PID_REPLACE", $array
+      "Enter the KORA FILES URI", "KORA_FILES_URI_REPLACE", $array
     );
     get_replacement(
-      "Enter the KORA PROJECT_SID", "PROJECT_SID_REPLACE",$array
+      "Enter the absolute path for kora Search", "KORA_SEARCH_REPLACE", $array
     );
     get_replacement(
-      "Enter the KORA SEASON_SID", "SEASON_SID_REPLACE", $array
+      "Enter the KORA RESTFUL URL ", "KORA_RESTFUL_URL_REPLACE", $array
     );
     get_replacement(
-      "Enter the KORA RESOURCET_SID", "RESOURCE_SID_REPLACE", $array
+      "Enter the KORA PLUGIN USERS URL", "KORA_PLUGIN_USERS_REPLACE", $array
     );
     get_replacement(
-      "Enter the KORA PAGES_SID", "PAGES_SID_REPLACE", $array
+      "Enter the KORA ARCS PID", "PID_REPLACE",$array
     );
     get_replacement(
-      "Enter the KORA SUBJECT_SID", "SUBJECT_SID_REPLACE", $array
+      "Enter the KORA ARCS PROJECT_SID", "PROJECT_SID_REPLACE",$array
     );
     get_replacement(
-      "Enter the KORA SURVEY_SID", "SURVEY_SID_REPLACE", $array
+      "Enter the KORA ARCS SEASON_SID", "SEASON_SID_REPLACE", $array
+    );
+    get_replacement(
+      "Enter the KORA ARCS RESOURCET_SID", "RESOURCE_SID_REPLACE", $array
+    );
+    get_replacement(
+      "Enter the KORA ARCS PAGES_SID", "PAGES_SID_REPLACE", $array
+    );
+    get_replacement(
+      "Enter the KORA ARCS SUBJECT_SID", "SUBJECT_SID_REPLACE", $array
+    );
+    get_replacement(
+      "Enter the KORA ARCS SURVEY_SID", "SURVEY_SID_REPLACE", $array
     );
     get_replacement(
       "Enter the KORA TOKEN", "TOKEN_REPLACE", $array
