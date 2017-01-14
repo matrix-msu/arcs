@@ -27,7 +27,7 @@
       write_to_file($bootstrap);
     }
     else{
-      echo "ERROR: could not parse JSON from file!"
+      echo "ERROR: could not parse JSON from file!";
     }
 
   }
