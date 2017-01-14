@@ -82,7 +82,7 @@
       $bootstrap = copy_bootstrap();
       $json = replace_sequence();
       loop_replace($bootstrap, $json);
-      //write_to_file($bootstrap);
+      write_to_file($bootstrap);
       copy_json($json);
     }
     catch(Exception $e){
