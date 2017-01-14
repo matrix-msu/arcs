@@ -1,7 +1,24 @@
 <?php
+/**
+ * Configuration installer.
+ *
+ * The Config installer is used on first installation of arcs.
+ * When this script is ran:
+ * 	- All Temp files will be created
+ *  - Chmod models and persistent data to 777
+ * 	- .htaccess will be created with proper base rewrite.
+ *
+ * @package    ARCS
+ * @link       http://svn.matrix.msu.edu/svn/arcs/
+ * @copyright  Copyright 2012, Michigan State University Board of Trustees
+ * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
+ * @author Austin Rix
+ */
 
 function command_prompt()
 {
+	license();
+
 	echo "Enter Base Url: ";
 
 	$stdin = fopen('php://stdin', 'r');
@@ -20,8 +37,20 @@ function command_prompt()
 	make_tmp($root);
 
 }
-
-
+function license()
+{
+	echo  "* Configuration installer \n";
+	echo  "* \n";
+	echo  "* The Config installer is used on first installation of arcs. \n";
+	echo  "* When this script is ran: \n";
+	echo  "* 	- All Temp files will be created \n";
+	echo  "* - Chmod models and persistent data to 777 \n";
+	echo  "* - .htaccess will be created with proper base rewrite \n";
+	echo  "* @package    ARCS \n";
+	echo  "* @link       http://svn.matrix.msu.edu/svn/arcs/ \n";
+	echo  "* @copyright  Copyright 2012, Michigan State University Board of Trustees \n";
+	echo  "* @license    BSD License (http://www.opensource.org/licenses/bsd-license.php) \n";
+}
 
 function create_access($dir,$base){
 	print("Creating access file in $dir \n");
@@ -42,7 +71,7 @@ function get_template($name, $root_path){
 }
 
 function make_tmp($root){
-	print_r("Syncing all tmp files \n");
+	print("Syncing all tmp files \n");
 	if(file_exists("$root/app/tmp/")){
 		print("Deleting tmp files \n");
 		deleteDir("$root/app/tmp/");

@@ -1,12 +1,40 @@
 <?php
-
+/**
+ * bootstrap installer.
+ *
+ * The boostrap installer is used to configure the app/Config/bootstrap file
+ * to preserve the hooks between kora and cakephp.
+ *
+ * @package    ARCS
+ * @link       http://svn.matrix.msu.edu/svn/arcs/
+ * @copyright  Copyright 2012, Michigan State University Board of Trustees
+ * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
+ * @author Austin Rix
+ */
 
   if(sizeof($argv) == 1)
     command_prompt();
+
   else if(sizeof($argv) == 2){
 
-  }
+    $json = file_get_contents($argv[1]);
 
+    if($json != false && isJson($json)){
+      echo "Extracting Config from Json \n";
+      $bootstrap = copy_bootstrap();
+      loop_replace($bootstrap, $json);
+      echo "Creating bootstrap \n";
+      write_to_file($bootstrap);
+    }
+    else{
+      echo "ERROR: could not parse JSON from file!"
+    }
+
+  }
+  function isJson($string) {
+   json_decode($string);
+   return (json_last_error() == JSON_ERROR_NONE);
+  }
 
   function command_prompt(){
       echo "Run Boostrap Configure (Y/N)? ";
@@ -15,6 +43,52 @@
       if($response == "Y"){
           run_boot_config();
       }
+  }
+  function copy_json($json){
+    $response = NULL;
+    echo "Would you like to make a copy of the configuration (Y/N)? ";
+    $stdin = fopen('php://stdin', 'r');
+    $response = strtoupper(fgetc($stdin));
+
+    while($response != "Y" && $response != "N" ){
+      echo "Please enter 'Y' or 'N' \n";
+      echo "Would you like to make a copy of the configuration (Y/N)? ";
+      $stdin = fopen('php://stdin', 'r');
+      $response = strtoupper(fgetc($stdin));
+    }
+    if($response == "Y"){
+      $name = NULL;
+      echo "Enter the json file name: ";
+      $stdin = fopen('php://stdin', 'r');
+      $name = str_replace("\n","",fgets($stdin));
+      $name = str_replace(" ","_",$name);
+      while($name == ""){
+        echo "Please enter a file name or \"Ctrl C\" to cancel \n";
+        $stdin = fopen('php://stdin', 'r');
+        $name = str_replace("\n","",fgets($stdin));
+        $name = str_replace(" ","_",$name);
+      }
+      echo "saving $name.json \n";
+      $json = str_replace("{", "{\n", $json);
+      $json = str_replace("}", "\n}", $json);
+      $json = str_replace(",", ",\n", $json);
+      file_put_contents("$name.json",$json);
+    }
+
+
+  }
+  function run_boot_config(){
+    try{
+      $bootstrap = copy_bootstrap();
+      $json = replace_sequence();
+      loop_replace($bootstrap, $json);
+      //write_to_file($bootstrap);
+      copy_json($json);
+    }
+    catch(Exception $e){
+      echo $e->getMessage() . "\n";
+      exit();
+    }
   }
 
   function copy_bootstrap($dist = "app/Config", $boot = "bootstrap.dist.template.php", $new_boot = "bootstrap.php"){
@@ -48,22 +122,11 @@
     $array[$rID] = $response;
   }
 
-  /*
-  define ("PID", "123");
-  define ("PROJECT_SID", "734");
-  define ("SEASON_SID", "735");
-  define ("RESOURCE_SID", "736");
-  define ("PAGES_SID", "738");
-  define ("SUBJECT_SID", "739");
-  define ("SURVEY_SID", "740");
-  define ("TOKEN", "8b88eecedaa2d3708ebec77a");
-  */
   function replace_sequence()
   {
     print("To skip a selection type \"sk\" \n");
 
     $array = [];
-
 
     get_replacement(
       "Enter the Base Url", "BASE_URL_REPLACE", $array
@@ -106,18 +169,7 @@
   function write_to_file($content,$file="app/Config/bootstrap.php"){
       file_put_contents($file, $content);
   }
-  function run_boot_config(){
-    try{
-      $bootstrap = copy_bootstrap();
-      $json = replace_sequence();
-      loop_replace($bootstrap, $json);
-      write_to_file($bootstrap);
-    }
-    catch(Exception $e){
-      echo $e->getMessage() . "\n";
-      exit();
-    }
-  }
+
 
 
  ?>
