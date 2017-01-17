@@ -632,7 +632,7 @@ class ResourcesController extends AppController {
 
         $count = 0;
         $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
-            'Subject_Of_Observation_data.xml', 'Pages_data.xml'];
+            'Pages_data.xml', 'Subject_Of_Observation_data.xml'];
         foreach ($this->request->data['xmls'] as $xml) {
             $zip->addFromString($xmlNames[$count], $xml);
             $count++;
