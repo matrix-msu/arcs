@@ -8,65 +8,87 @@ $(document).ready(function(){
         isExporting = 1;
         $('.icon-export').css('background-image','url(../img/arcs-preloader.gif)');
         //load data in variables
-        var schemes = SCHEMES;
+        //var schemes = SCHEMES;
         var projects = SCHEMES[0];
         var seasons = SCHEMES[1];
         var excavations = SCHEMES[2];
+        var resources = SCHEMES[3];
         var subjects = SUBJECTS;
         var pages = PAGES;
         //build xmls for all the single records
         var xmlArray = [];
 
-        console.log('schemes:');
-        console.log('projects:');
-        console.log(projects);
-        console.log('seasons:');
-        console.log(seasons);
-        console.log('excavations:');
-        console.log(excavations);
-        //return;
+        var projectsObject = JSON.parse(projects);
+        var seasonsObject = JSON.parse(seasons);
+		var excavationsObjectArray = JSON.parse(excavations);
+        var resourcesObject = JSON.parse(resources);
+		resourcesObject['Excavation - Survey Associator'] = [];
+        var pagesObjectsArray = [];
+        pages.forEach(function (tempdata) {
+            pagesObjectsArray.push( JSON.parse(tempdata) );
+        })
+        var subjectsObjectsArray = [];
+        subjects.forEach(function (tempdata) {
+            var subjectJson = JSON.parse(tempdata);
+            if ('Pages Associator' in subjectJson) {
+                delete subjectJson['Pages Associator'];
+            }
+            subjectsObjectsArray.push( subjectJson );
+        })
 
         // handle project
-        var jsonObject = JSON.parse(projects);
-        jsonObject.linkers.forEach(function (tempdata) {
-            console.log(tempdata);
+        projectsObject.linkers.forEach(function (tempdata) {
+            if( tempdata == seasonsObject.kid ){
+                var data = '';
+                if( 'Name' in projectsObject ){
+                    data = projectsObject.Name;
+                }
+                seasonsObject['Project Associator'] = data;
+            }
         })
-        if( 'thumb' in jsonObject ){
-            delete jsonObject.thumb;
-        }
-        var recordObject = {Record: jsonObject};
-        var dataObject = {Data: recordObject};
-        var xmlString = json2xml(dataObject, '');
-        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
-        xmlArray.push(xmlString);
+        deleteTags(projectsObject);
+        object2xml(projectsObject, xmlArray);
 
         // handle season
-        var jsonObject = JSON.parse(seasons);
-        if( 'thumb' in jsonObject ){
-            delete jsonObject.thumb;
+        if( 'linkers' in seasonsObject ) {
+            seasonsObject.linkers.forEach(function (tempdata) {
+				excavationsObjectArray.forEach(function (tempdata2) {
+                    if (tempdata == tempdata2.kid) {
+                        var data = '';
+                        if ('Title' in seasonsObject) {
+                        data = seasonsObject.Title;
+                    }
+                        tempdata2['Season Associator'] = data;
+                    }
+                })
+                if (tempdata == resourcesObject.kid) {
+                    var data = '';
+                    if ('Title' in seasonsObject) {
+                        data = seasonsObject.Title;
+                    }
+                    resourcesObject['Season Associator'] = data;
+                }
+            })
         }
-        var recordObject = {Record: jsonObject};
-        var dataObject = {Data: recordObject};
-        var xmlString = json2xml(dataObject, '');
-        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
-        xmlArray.push(xmlString);
+        deleteTags(seasonsObject);
+        object2xml(seasonsObject, xmlArray);
 
         // handle excavation
-        var jsonObject = JSON.parse(excavations);
-        if( 'thumb' in jsonObject ){
-            delete jsonObject.thumb;
-        }
-        var recordObject = {Record: jsonObject};
-        var dataObject = {Data: recordObject};
-        var xmlString = json2xml(dataObject, '');
-        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
-        xmlArray.push(xmlString);
-
-        //treat subject of observation differently since you can have multiple
-        var xmlString = '';
-        subjects.forEach(function (tempdata) {
-            var jsonObject = JSON.parse(tempdata);
-            var recordObject = {Record: jsonObject};
+		var xmlString = '';
+		excavationsObjectArray.forEach(function (tempdata) {
+			if( 'linkers' in tempdata ) {
+				tempdata.linkers.forEach(function (tempdata2) {
+					if (tempdata2 == resourcesObject.kid) {
+						var data = '';
+						if ('Name' in tempdata) {
+							data = tempdata.Name;
+						}
+						resourcesObject['Excavation - Survey Associator'].push(data);
+					}
+				})
+			}
+			deleteTags(tempdata);
+            var recordObject = {Record: tempdata};
             var dataObject = {Data: recordObject};
             var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
             trim = trim.substring(0, trim.length - 7);  //remove the </Data>
@@ -76,24 +98,66 @@ $(document).ready(function(){
             xmlString + '</Data>';
         xmlArray.push(xmlString);
 
+        //handle resource
+        if( 'linkers' in resourcesObject ) {
+            resourcesObject.linkers.forEach(function (tempdata) {
+                pagesObjectsArray.forEach(function (tempdata2) {
+                    if (tempdata == tempdata2.kid) {
+                        var data = '';
+                        if ('Resource Identifier' in resourcesObject) {
+                            data = resourcesObject['Resource Identifier'];
+                        }
+                        tempdata2['Resource Identifier'] = data;
+                    }
+                })
+            })
+        }
+        deleteTags(resourcesObject);
+        object2xml(resourcesObject, xmlArray);
+
         //take care of the multiple pages
         xmlString = '';
         var pageUrls = [];
-        pages.forEach(function (tempdata) {
-            var jsonObject = JSON.parse(tempdata);
-            pageUrls.push(jsonObject['Image Upload']['localName']); //collect image url stuff for later
-            var uploadObject = {originalName:jsonObject['Image Upload']['originalName'],text:jsonObject['Image Upload']['localName']};
-            jsonObject['Image Upload'] = uploadObject;
-            delete jsonObject.thumb;
-            delete jsonObject.thumbnail;
-            var recordObject = {Record: jsonObject};
+        pagesObjectsArray.forEach(function (tempdata) {
+            if( 'linkers' in tempdata ) {
+                tempdata.linkers.forEach(function (tempdata2) {
+                    subjectsObjectsArray.forEach(function (tempdata3) {
+                        if (tempdata2 == tempdata3.kid) {
+                            var data = '';
+                            if ('Page Identifier' in tempdata) {
+                                data = tempdata['Page Identifier'];
+                            }
+                            tempdata3['Pages Associator'] = data;
+                        }
+                    })
+                })
+            }
+            deleteTags(tempdata);
+            pageUrls.push(tempdata['Image Upload']['localName']); //collect image url stuff for later
+            var uploadObject = {originalName:tempdata['Image Upload']['originalName'],text:tempdata['Image Upload']['localName']};
+            tempdata['Image Upload'] = uploadObject;
+            var recordObject = {Record: tempdata};
             var dataObject = {Data: recordObject};
             var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
             trim = trim.substring(0, trim.length - 7);  //remove the </Data>
             xmlString += trim;
         })
         xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
-                    xmlString + '</Data>';
+            xmlString + '</Data>';
+        xmlArray.push(xmlString);
+
+        //treat subject of observation differently since you can have multiple
+        var xmlString = '';
+        subjectsObjectsArray.forEach(function (tempdata) {
+            deleteTags(tempdata);
+            var recordObject = {Record: tempdata};
+            var dataObject = {Data: recordObject};
+            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
+            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
+            xmlString += trim;
+        })
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
+            xmlString + '</Data>';
         xmlArray.push(xmlString);
 
         //go to php for the pictures and zipping
@@ -154,6 +218,36 @@ $(document).ready(function(){
           return blob;
         }
     });
+
+    function deleteTags(o){
+        if( 'thumb' in o ){
+            delete o.thumb;
+        }if( 'kid' in o ){
+            delete o.kid;
+        }if( 'linkers' in o ){
+            delete o.linkers;
+        }if( 'pid' in o ){
+            delete o.pid;
+        }if( 'recordowner' in o ){
+            delete o.recordowner;
+        }if( 'schemeID' in o ){
+            delete o.schemeID;
+        }if( 'systimestamp' in o ){
+            delete o.systimestamp;
+        }if( 'thumbnail' in o ){
+            delete o.thumbnail;
+        }if( 'Resource Associator' in o ){
+            delete o['Resource Associator'];
+        }
+    }
+
+    function object2xml( o, xmlArray ) {
+        var recordObject = {Record: o};
+        var dataObject = {Data: recordObject};
+        var xmlString = json2xml(dataObject, '');
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString;
+        xmlArray.push(xmlString);
+    }
 
     function json2xml(o, tab) {
         //console.log('json object:');
