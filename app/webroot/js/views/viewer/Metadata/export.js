@@ -119,7 +119,7 @@ $(document).ready(function(){
         xmlString = '';
         var pageUrls = [];
         pagesObjectsArray.forEach(function (tempdata) {
-			console.log(tempdata);
+			tempdata['Resource Associator'] = [' '];
             if( 'linkers' in tempdata ) {
                 tempdata.linkers.forEach(function (tempdata2) {
                     subjectsObjectsArray.forEach(function (tempdata3) {
