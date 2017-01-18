@@ -237,7 +237,7 @@ $(document).ready(function(){
         }if( 'thumbnail' in o ){
             delete o.thumbnail;
         }if( 'Resource Associator' in o ){
-            delete o['Resource Associator'];
+            o['Resource Associator'] = [];
         }
     }
 
