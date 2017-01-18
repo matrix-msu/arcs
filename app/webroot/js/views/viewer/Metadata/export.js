@@ -119,6 +119,7 @@ $(document).ready(function(){
         xmlString = '';
         var pageUrls = [];
         pagesObjectsArray.forEach(function (tempdata) {
+			console.log(tempdata);
             if( 'linkers' in tempdata ) {
                 tempdata.linkers.forEach(function (tempdata2) {
                     subjectsObjectsArray.forEach(function (tempdata3) {
@@ -236,8 +237,6 @@ $(document).ready(function(){
             delete o.systimestamp;
         }if( 'thumbnail' in o ){
             delete o.thumbnail;
-        }if( 'Resource Associator' in o ){
-            o['Resource Associator'] = [];
         }
     }
 
