@@ -5,6 +5,14 @@ $(document).ready(function () {
     var mouseOn = false;
     var gen_box = null;
     var disabled = true;
+    var subject_sid = JSON.parse(SUBJECTS[0]).schemeID;
+    var result_ids = [];
+    var results_found = false;
+    var results_count = 0;
+    var results_per_page = 10;
+    var current_offset = 0;
+    var total_pages = 0;
+    var index = 0;
 
     $(".resources-annotate-icon").click(function () {
         if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg") {
@@ -156,16 +164,39 @@ $(document).ready(function () {
 
     //Annotation search
     $(".annotateSearchForm").submit(function (event) {
-        //$(".annotateSearchForm").keyup(function (event) {
+        SubmitSearch(0);
+        event.preventDefault();
+    });
+
+    // Search pagination
+    $(".annotation_next").click(function() {
+        SubmitSearch(current_offset + results_per_page);
+    });
+
+    $(".annotation_prev").click(function() {
+        SubmitSearch(current_offset - results_per_page);
+    });
+
+
+
+    function SubmitSearch(offset) {
+        result_ids = [];
+        current_offset = offset;
+        index = 0;
+        total_pages = 0;
+
         $(".resultsContainer").empty();
         var annotateSearch = $(".annotateSearch");
+        results_found = false;
+
+        // Search Resources
         $.ajax({
             url: arcs.baseURL + "resources/advanced_search",
             type: "POST",
             data: {
                 q: [
                     ['Type', 'like', '%' + annotateSearch.val() + '%'],
-                    ['Title', 'like', '%' + annotateSearch.val() + '%'],
+                    //['Title', 'like', '%' + annotateSearch.val() + '%'],
                     ['Resource Identifier', 'like', '%' + annotateSearch.val() + '%'],
                     ['Description', 'like', '%' + annotateSearch.val() + '%'],
                     ['Accession Number', 'like', '%' + annotateSearch.val() + '%'],
@@ -175,51 +206,108 @@ $(document).ready(function () {
                 sid: resource_sid
             },
             success: function (data) {
-                BuildResults(JSON.parse(data));
+                BuildResults(JSON.parse(data), "resource");
             }
         });
 
-        event.preventDefault();
-    });
+        // Search Subjects of Observation
+        $.ajax({
+            url: arcs.baseURL + "resources/advanced_search",
+            type: "POST",
+            data: {
+                q: [
+                    ['Artifact - Structure Classification', 'like', '%' + annotateSearch.val() + '%'],
+                    //['Artifact - Structure Description', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Type', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Material', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Technique', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Period', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Terminus Ante Quem', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Terminus Post Quem', 'like', '%' + annotateSearch.val() + '%']
+                ],
+                sid: subject_sid
+            },
+            success: function (data) {
+                BuildResults(JSON.parse(data), "subject");
+            }
+        });
+    }
 
-    function BuildResults(data) {
+    function BuildResults(data, scheme) {
         if (Object.keys(data).length > 0) {
+            results_found = true;
+            results_count = 0;
             //Iterate search results
-            $.each(data, function (key, value) {
-                $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value.kid + "'></div>");
+            var q = [];
+            var resource_info = {};
+            if (scheme == "resource") {
+                $.each(data, function (key, value) {
+                    if (result_ids.indexOf(value.kid) == -1 && value['Resource Identifier'] != "") {
+                        result_ids.push(value.kid);
+                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'] + "'></div>");
+                        q.push(['Resource Identifier', '=', value['Resource Identifier']]);
 
-                //Get related pages
-                $.ajax({
-                    url: arcs.baseURL + "resources/advanced_search",
-                    type: "POST",
-                    data: {
-                        q: [
-                            ['Resource Identifier', 'like', value['Resource Identifier']]
-                        ],
-                        sid: page_sid
-                    },
-                    success: function (pages) {
-                        pages = JSON.parse(pages);
-                        $.each(pages, function (k, v) {
+                        resource_info[value['Resource Identifier']] = {
+                            title: "Resource Title: " + value.Title,
+                            scheme: "Relevant Scheme: Resources"
+                        }
+                    }
+                });
+            }
+            else if (scheme == "subject") {
+                $.each(data, function (key, value) {
+                    if (result_ids.indexOf(value.kid) == -1 && value['Pages Associator'] != "") {
+                        result_ids.push(value.kid);
+                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'] + "'></div>");
+                        $.each(value['Pages Associator'], function (i, page) {
+                            q.push(['kid', 'like', page]);
+                        });
+
+                        resource_info[value['Resource Identifier']] = {
+                            title: "Subject Description: " + value['Artifact - Structure Description'],
+                            scheme: "Relevant Scheme: Subject of Observation"
+                        }
+                    }
+                });
+            }
+
+            //Get related pages
+            $.ajax({
+                url: arcs.baseURL + "resources/advanced_search",
+                type: "POST",
+                data: {
+                    q: q,
+                    sid: page_sid
+                },
+                success: function (pages) {
+                    pages = JSON.parse(pages);
+                    total_pages += Object.keys(pages).length;
+
+                    $.each(pages, function (k, v) {
+                        if (index >= current_offset && index < current_offset + results_per_page) {
+                            $("#" + v['Resource Identifier']).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+
                             var image = KORA_FILES_URI + pid + '/' + page_sid + '/' + v['Image Upload'].localName;
-                            $("#" + value.kid).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                            var pageDisplay = $("#" + v.kid);
                             if (v.thumb == "img/DefaultResourceImage.svg") {
-                                $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
+                                pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
                             }
                             else {
-                                $("#" + v.kid).append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
+                                pageDisplay.append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
                             }
 
-                            $("#" + v.kid).append(
+                            pageDisplay.append(
                                 "<div class='pageInfo'>" +
-                                "<p>" + v['Page Identifier'] + "</p>" +
+                                "<p>" + resource_info[v['Resource Identifier']].scheme + "</p>" +
+                                "<p>" + resource_info[v['Resource Identifier']].title + "</p>" +
+                                "<p>Page Identifier: " + v['Page Identifier'] + "</p>" +
                                 "</div>"
                             );
 
-                            $("#" + v.kid).append("<hr class='resultDivider'>");
+                            pageDisplay.append("<hr class='resultDivider'>");
 
                             //Clicked a page
-                            $("#" + v.kid).click(function () {
+                            pageDisplay.click(function () {
                                 if ($(this).hasClass("selectedRelation")) {
                                     $(this).removeClass("selectedRelation");
                                     selected = false;
@@ -248,14 +336,57 @@ $(document).ready(function () {
                                 else {
                                     $(".annotateSubmit").hide();
                                 }
-                            })
-                        })
+                            });
+                        }
+                        if (index >= current_offset + results_per_page) {
+                            return false;
+                        }
+                        index++;
+                    });
+
+
+                    // Display pagination
+                    if (index < total_pages) {
+                        $(".annotation_pagination").show();
+                        $(".annotation_next").show();
                     }
-                });
+                    if (index > results_per_page) {
+                        $(".annotation_pagination").show();
+                        $(".annotation_prev").show();
+                    }
+                    if (index >= total_pages) {
+                        $(".annotation_next").hide();
+                    }
+                    if (index <= results_per_page) {
+                        $(".annotation_prev").hide();
+                    }
+                    if (total_pages <= results_per_page) {
+                        $(".annotation_pagination").hide();
+                    }
+
+                    var page_nums = Math.ceil(total_pages / results_per_page);
+                    var active_page = (current_offset / results_per_page) + 1;
+                    $(".annotation_numbers").empty();
+                    for (var i = 1; i <= page_nums; i++) {
+                        var class_string = i == active_page ? "page_number page_active" : "page_number";
+                        $(".annotation_numbers").append("<span class='" + class_string + "' id='" + i + "'>" + i + "</span>");
+                    }
+
+                    $(".page_number").click(function() {
+                        var num = $(this).attr('id');
+                        SubmitSearch((num * results_per_page) - results_per_page);
+                    });
+                }
             });
         }
         else {
-            $(".resultsContainer").append("<div class='NoResultsMessage'>No results found.</div>");
+            if (!results_found) {
+                $(".resultsContainer").empty();
+                $(".resultsContainer").append("<div class='NoResultsMessage'>No results found.</div>");
+            }
+            else {
+                $(".NoResultsMessage").hide();
+            }
         }
     }
 
@@ -264,7 +395,6 @@ $(document).ready(function () {
     $(".annotateTranscript, .annotateUrl").on('change keyup paste mouseup', function () {
         if ($(this).val() != lastValue) {
             lastValue = $(this).val();
-            //annotateData.transcript = $(".annotateTranscript").val();
             annotateData.url = $(".annotateUrl").val();
             if (selected || annotateData.url.length > 0) {
                 $(".annotateSubmit").show();
@@ -462,7 +592,6 @@ $(document).ready(function () {
                             type: "DELETE",
                             statusCode: {
                                 204: function () {
-                                    console.log("In the 204 status")
                                     GetDetails();
                                     DrawBoxes(kid);
 
@@ -785,8 +914,6 @@ $(document).ready(function () {
                 metadata_kid: meta_resource_kid
             },
             success: function (data) {
-                //console.log("MetadataEditsHere");
-                //console.log(data);
                 window.location.reload();
             }
         })
@@ -806,7 +933,6 @@ $(document).ready(function () {
     var associator_selected = [];
 
     $(".metadataEdit").click(function() {
-        //console.log("metadataEdit click");
         $(this).each(
             function(){
                 // if the td elements contain any input tag
@@ -824,7 +950,6 @@ $(document).ready(function () {
                             var fill = '<div id="'+meta_field_name+'" data-control="'+meta_control_type+'">'+meta_value_before+"</div>";
                         }else{
                             meta_options = meta_options.replace(/["]+/g, '&quot;');
-                            //console.log(meta_options);
                             if( meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' ) ){
                                 meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
                             }
@@ -837,15 +962,11 @@ $(document).ready(function () {
                     meta_field_name = $(this).children('div').eq(1).attr('id');
                     meta_control_type = $(this).children('div').eq(1).attr('data-control');
                     meta_options = '';
-                    //console.log('meta control');
-                    //console.log(meta_control_type);
                     meta_scheme_name = $(this).parent().parent().parent().attr('id');
                     meta_resource_kid = $(this).parent().parent().parent().parent().attr('data-kid');
                     var temp_element = $(this).children('div').eq(1).clone();
                     temp_element.find('br').replaceWith('\n');
                     meta_value_before = temp_element.text();
-                    //console.log('meta_value before:');
-                    //console.log(meta_value_before);
 
                     //give different control edits based on the kora control type
                     var html = '';
@@ -880,8 +1001,6 @@ $(document).ready(function () {
                             month = dateArray[0];
                             day = dateArray[1];
                             year = dateArray[2];
-                            //console.log('year:');
-                            //console.log(year);
                             $('#month_select option[value="'+ month +'"]').prop('selected', true);
                             $('#day_select option[value="'+ day +'"]').prop('selected', true);
                             $('#year_select option[value="'+ year +'"]').prop('selected', true);
@@ -1059,7 +1178,6 @@ $(document).ready(function () {
                                         associator_full_array.push(obj);
                                     }
                                 }
-                                //console.log(associator_full_array);
                                 populateAssociatorCheckboxes();
                             }
                         });
@@ -1071,7 +1189,6 @@ $(document).ready(function () {
     });
     $('.associatorSearchSubmit').on('click', function(evt){
         evt.stopImmediatePropagation();
-        //console.log('associator submit clicked');
         meta_new_value = '';
         $('#associatorSearchObjects input:checked').each(function () {
             meta_new_value += $( this ).val() + "\n";
@@ -1084,7 +1201,6 @@ $(document).ready(function () {
     });
 
     $('#associatorSearchObjects').on('click', 'label', function(evt){
-        //console.log('clicked label');
         if( meta_field_name == 'Project Associator' || meta_field_name == 'Season Associator' ){
             $('#associatorSearchObjects input:checked').each(function () {
                 $(this).attr('checked', false);
@@ -1105,7 +1221,6 @@ $(document).ready(function () {
     });
 
     function populateAssociatorCheckboxes() {
-        //console.log('start associator populate');
 
         var populateCheckboxes = "<hr>";
         for (i = 0; i < associator_full_array.length; i++) {
@@ -1153,7 +1268,6 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".edit-btn", function() {
-        //console.log("edit-btn clicked");
         $('.metadataEdit').css('cursor', 'default');
         if (editBtnClick != 1) {
             $(this).text("SAVE");
@@ -1171,11 +1285,10 @@ $(document).ready(function () {
     });
 
     $(".level-tab span .save-btn").click(function() {
-        //console.log("level tab save btn click");
+        //.log("level tab save btn click");
     });
 
     $(".soo-click").click(function() {
-        //console.log("sso click change");
         $(".save-btn").removeClass("save-btn").text("EDIT").addClass("edit-btn").css("color", '');
         var id = $("#meta_textarea").parent().children("div").eq(0).text();
         var text = $("#meta_textarea").text();
@@ -1186,7 +1299,6 @@ $(document).ready(function () {
             var fill = '<div id="'+meta_field_name+'" data-control="'+meta_control_type+'">'+meta_value_before+"</div>";
         }else{
             meta_options = meta_options.replace(/["]+/g, '&quot;');
-            //console.log(meta_options);
             if( meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' ) ){
                 meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
             }
@@ -1198,11 +1310,8 @@ $(document).ready(function () {
     });
 
     $(".level-tab").click(function(e) {
-        //console.log("clicked thingy");
-        //console.log(e);
         $('.metadataEdit').css('cursor', 'default');
         if( e.target.getAttribute("class") == 'save-btn' ){
-            //console.log("level tab save btn click");
             e.stopPropagation();
             if (metadataIsSelected == 1) {
                 $(".save-btn").removeClass("save-btn");
@@ -1260,7 +1369,6 @@ $(document).ready(function () {
             return;
         }
         if( e.target.getAttribute("aria-expanded") == 'true' ){
-            //console.log("already expanded");
             return;
         }
         $(".save-btn").removeClass("save-btn").text("EDIT").addClass("edit-btn").css("color", '');
@@ -1273,7 +1381,6 @@ $(document).ready(function () {
             var fill = '<div id="'+meta_field_name+'" data-control="'+meta_control_type+'">'+meta_value_before+"</div>";
         }else{
             meta_options = meta_options.replace(/["]+/g, '&quot;');
-            //console.log(meta_options);
             if( meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' ) ){
                 meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
             }
