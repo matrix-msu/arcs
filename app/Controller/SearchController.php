@@ -571,6 +571,8 @@ class SearchController extends AppController {
                     $temp_array['title'] = 'Unknown Title';
                 }
 
+                $temp_array['orphan'] = 'false';
+
                 //Handle resource type
                 $resource_type = $r['Type'];
                 if ( !empty($resource_type) ){
@@ -676,6 +678,10 @@ class SearchController extends AppController {
                     $returnResults[0]['more_results'] = 1;
                     break;
                 }
+
+                $temp['orphan'] = 'true';
+
+                $temp['kid'] = $page['kid'];
 
                 $temp['title'] = 'Unknown Title';
                 if (array_key_exists('Image Upload', $page) && array_key_exists('originalName', $page['Image Upload']) ) {
