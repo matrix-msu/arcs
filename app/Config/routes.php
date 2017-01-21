@@ -204,7 +204,7 @@
     Router::connect('/advanced_search',
         array('controller' => 'AdvancedSearch', 'action' => 'advance_search')
     );
-
+     
     Router::connect('/advanced_search/*',
         array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
     );
@@ -294,6 +294,13 @@
 Router::connect('/comments/findall',
     array('controller' => 'comments', 'action' => 'findall')
 );
+    
+ ////////////////////////////////////////////////////////////////////////
+# Orphans controller
+///////////////////////////////////////////////////////////////////////
+Router::connect('/orphan/*',
+    array('controller' => 'orphans', 'action' => 'display')
+); 
 ////////////////////////////////////////////////////////////////////////
 ##################
 ////////////////////////////////////////////////////////////////////////
