@@ -153,6 +153,7 @@ var kid = "<?php echo $kid; ?>"; // needs to stay
 var pid = "<?php echo PID; ?>"; // needs to stay
 var resource_sid = "<?php echo RESOURCE_SID;?>";
 var page_sid = "<?php echo PAGES_SID;?>";
+var subject_sid = "<?php echo SUBJECT_SID;?>";
 var webroot = "<?php echo Router::url('/', true); ?>app/webroot/";
 var resourceName = "<?php echo $resource['Resource Identifier']; ?>";
 var JSON_KEYS = <?php echo json_encode(array_keys($pages)); ?>;

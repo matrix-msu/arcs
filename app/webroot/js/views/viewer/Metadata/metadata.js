@@ -5,7 +5,6 @@ $(document).ready(function () {
     var mouseOn = false;
     var gen_box = null;
     var disabled = true;
-    var subject_sid = JSON.parse(SUBJECTS[0]).schemeID;
     var result_ids = [];
     var results_found = false;
     var results_count = 0;
@@ -66,6 +65,7 @@ $(document).ready(function () {
     });
 
     function Draw(showForm, id) {
+        $("#ImageWrap").draggable( "disable" );
         $(".annotate").addClass("annotateActive");
         $(".canvas").show();
         $(".annotateHelp").show();
@@ -196,7 +196,7 @@ $(document).ready(function () {
             data: {
                 q: [
                     ['Type', 'like', '%' + annotateSearch.val() + '%'],
-                    //['Title', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Title', 'like', '%' + annotateSearch.val() + '%'],
                     ['Resource Identifier', 'like', '%' + annotateSearch.val() + '%'],
                     ['Description', 'like', '%' + annotateSearch.val() + '%'],
                     ['Accession Number', 'like', '%' + annotateSearch.val() + '%'],
@@ -466,7 +466,7 @@ $(document).ready(function () {
         annotateData.y2 = "";
 
         disabled = true;
-
+        $("#ImageWrap").draggable( "enable" );
         $(".annotateRelationContainer").show();
         $(".annotateTranscriptContainer").hide();
         $(".annotateUrlContainer").hide();
@@ -483,6 +483,7 @@ $(document).ready(function () {
         $(".canvas").selectable({disabled: true});
         //$( ".canvas" ).removeClass("select ui-selectable ui-selectable-disabled");
         $(".annotate").removeClass("annotateActive");
+        $(".annotation_pagination").hide();
         $(".annotateSubmit").hide();
     }
 
