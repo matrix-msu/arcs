@@ -225,7 +225,7 @@ $(document).ready(function () {
             data: {
                 q: [
                     ['Artifact - Structure Classification', 'like', '%' + annotateSearch.val() + '%'],
-                    //['Artifact - Structure Description', 'like', '%' + annotateSearch.val() + '%'],
+                    ['Artifact - Structure Description', 'like', '%' + annotateSearch.val() + '%'],
                     ['Artifact - Structure Type', 'like', '%' + annotateSearch.val() + '%'],
                     ['Artifact - Structure Material', 'like', '%' + annotateSearch.val() + '%'],
                     ['Artifact - Structure Technique', 'like', '%' + annotateSearch.val() + '%'],
@@ -257,7 +257,7 @@ $(document).ready(function () {
 
                         resource_info[value['Resource Identifier']] = {
                             title: "Resource Title: " + value.Title,
-                            scheme: "Relevant Scheme: Resources"
+                            scheme: "Relevant Scheme: Resource"
                         }
                     }
                 });
