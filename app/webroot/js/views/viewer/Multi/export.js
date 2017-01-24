@@ -8,63 +8,150 @@ $(document).ready(function(){
         isExporting = 1;
         $('.icon-export').css('background-image','url(../img/arcs-preloader.gif)');
         //load data in variables
-        var schemes = [PROJECTS, SEASONS, EXCAVATIONS, RESOURCES];
-        //console.log(schemes);
+		
+		//var projects = PROJECTS;
+        var seasons = SEASONS;
+        var excavations = EXCAVATIONS;
+        var resources = RESOURCES;
         var pages = {};
         var subjects = SUBJECTS;
-        var pageUrls = [];
+		
         //build xmls for all the single records
         var xmlArray = [];
-        //schemes.forEach(function (tempdata) {
-        for( var i=0; i< schemes.length; i++){
-            //build the all the records into a json encoded array.
-            var schemeString = '[';
-            for( var index in schemes[i] ){
-                schemeString += JSON.stringify(schemes[i][index]) +',';
-            }
-            schemeString = schemeString.substring(0, schemeString.length -1 ); //remove last comma
-            schemeString += ']';
+        var xmlString = '';
 
-            var jsonObject = JSON.parse(schemeString);//get array of json objects
-            jsonObject.forEach(function(tempRecordObject){ //remove the extra backend tags.
-                if( 'thumb' in tempRecordObject ){
-                    delete tempRecordObject.thumb;
+		var projectsObject = scheme2json(PROJECTS);
+		var seasonsObject = scheme2json(seasons);
+		var excavationsObject = scheme2json(excavations);
+		var resourcesObject = scheme2json(resources);
+        var pagesObject = [];
+        resourcesObject.forEach(function (tempdata) {
+            if ('page' in tempdata) {
+                for( var key in tempdata['page'] ){
+                    pagesObject.push(tempdata['page'][key]);
                 }
-                if( 'linkers' in tempRecordObject ){
-                    delete tempRecordObject.linkers;
-                }
-                if( 'project_kid' in tempRecordObject ){
-                    delete tempRecordObject.project_kid;
-                }
-                if( 'page' in tempRecordObject ){
-                    var page = tempRecordObject.page;
-                    for( var key in page ){
-                        pages[key] = page[key];
-                    }
-                    delete tempRecordObject.page;
-                }
-                //get page urls for the images in php later
-                if( 'Image Upload' in tempRecordObject && 'localName' in tempRecordObject['Image Upload']){
-                    var url = tempRecordObject['Image Upload']['localName'];
-                    if( $.inArray(url, pageUrls) == -1 ) {//make sure not a duplicate
-                        pageUrls.push(url);
-                    }
-                }
-            })
-            if(!$.isEmptyObject(pages)){ // add in the pages and subjects after done with resource
-                schemes.push(subjects);
-                schemes.push(pages);
-                pages = {};
+                delete tempdata['page'];
             }
-            //wrap the data in a record and data tag
-            var recordObject = {Record: jsonObject};
-            var dataObject = {Data: recordObject};
-            var xmlString = json2xml(dataObject, ''); //convert the array into xml tags
-            xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n' + xmlString; //header
-            xmlArray.push(xmlString);  //done
-        }
-        //console.log(xmlArray);
-        //console.log(pageUrls);
+        })
+        var pageUrls = [];
+		var subjectsObjectsArray = scheme2json(subjects);
+
+        // handle project
+        projectsObject.forEach(function (tempdata) {
+            if( 'linkers' in tempdata ) {
+                tempdata.linkers.forEach(function (linker) {
+                    seasonsObject.forEach(function (record) {
+                        if (linker == record.kid) {
+                            var data = '';
+                            if ('Name' in tempdata) {
+                                data = tempdata.Name;
+                            }
+                            record['Project Associator'] = data;
+                        }
+                    })
+                })
+            }
+        })
+        xmlString = objects2xmlString(projectsObject);
+        xmlArray.push(xmlString);
+
+        // handle season
+        seasonsObject.forEach(function (tempdata) {
+            if( 'linkers' in tempdata ) {
+                tempdata.linkers.forEach(function (linker) {
+                    excavationsObject.forEach(function (record) {
+                        if (linker == record.kid) {
+                            var data = '';
+                            if ('Title' in tempdata) {
+                                data = tempdata.Title;
+                            }
+                            record['Season Associator'] = data;
+                        }
+                    })
+                    resourcesObject.forEach(function (record) {
+                        if (linker == record.kid) {
+                            var data = '';
+                            if ('Title' in tempdata) {
+                                data = tempdata.Title;
+                            }
+                            record['Season Associator'] = data;
+                        }
+                    })
+                })
+            }
+        })
+        xmlString = '';
+        xmlString = objects2xmlString(seasonsObject);
+        xmlArray.push(xmlString);
+
+        // handle excavation
+        excavationsObject.forEach(function (tempdata) {
+            if( 'linkers' in tempdata ) {
+                tempdata.linkers.forEach(function (linker) {
+                    resourcesObject.forEach(function (record) {
+                        if (linker == record.kid) {
+                            var data = '';
+                            if ('Name' in tempdata) {
+                                data = tempdata.Name;
+                            }
+                            record['Excavation - Survey Associator'] = data;
+                        }
+                    })
+                })
+            }
+        })
+        xmlString = '';
+        xmlString = objects2xmlString(excavationsObject);
+        xmlArray.push(xmlString);
+
+        //handle resource
+        resourcesObject.forEach(function (tempdata) {
+            if( 'linkers' in tempdata ) {
+                tempdata.linkers.forEach(function (linker) {
+                    pagesObject.forEach(function (record) {
+                        if (linker == record.kid) {
+                            var data = '';
+                            if ('Resource Identifier' in tempdata) {
+                                data = tempdata['Resource Identifier'];
+                            }
+                            record['Resource Identifier'] = data;
+                        }
+                    })
+                })
+            }
+        })
+        xmlString = '';
+        xmlString = objects2xmlString(resourcesObject);
+        xmlArray.push(xmlString);
+
+        //take care of the multiple pages
+        pagesObject.forEach(function (tempdata) {
+            if( 'linkers' in tempdata ) {
+                tempdata.linkers.forEach(function (linker) {
+                    subjectsObjectsArray.forEach(function (record) {
+                        if (linker == record.kid) {
+                            var data = '';
+                            if ('Page Identifier' in tempdata) {
+                                data = tempdata['Page Identifier'];
+                            }
+                            record['Pages Associator'] = data;
+                        }
+                    })
+                })
+            }
+            pageUrls.push(tempdata['Image Upload']['localName']); //collect image url stuff for later
+            var uploadObject = {originalName:tempdata['Image Upload']['originalName'],text:tempdata['Image Upload']['localName']};
+            tempdata['Image Upload'] = uploadObject;
+        })
+        xmlString = '';
+        xmlString = objects2xmlString(pagesObject);
+        xmlArray.push(xmlString);
+
+        //nothing fancy for subject since it doesn't have a scheme below.
+        xmlString = '';
+        xmlString = objects2xmlString(subjectsObjectsArray);
+        xmlArray.push(xmlString);
+
         //go to php for the pictures and zipping
         $.ajax({
             url: arcs.baseURL + "resources/export",
@@ -124,6 +211,57 @@ $(document).ready(function(){
           return blob;
         }
     });
+	
+	function scheme2json(scheme){
+		//build the all the records into a json encoded array.
+            var schemeString = '[';
+            for( var index in scheme ){
+                schemeString += JSON.stringify(scheme[index]) +',';
+            }
+            schemeString = schemeString.substring(0, schemeString.length -1 ); //remove last comma
+            schemeString += ']';
+
+            return JSON.parse(schemeString);//get array of json objects
+	}
+
+	function objects2xmlString(o){
+        var xmlString = '';
+        o.forEach(function (tempdata) {
+            deleteTags(tempdata);
+            var recordObject = {Record: tempdata};
+            var dataObject = {Data: recordObject};
+            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
+            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
+            xmlString += trim;
+        })
+        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
+            xmlString + '</Data>';
+        return xmlString;
+    }
+	
+	function deleteTags(o){
+        if( 'thumb' in o ){
+            delete o.thumb;
+        }if( 'kid' in o ){
+            delete o.kid;
+        }if( 'linkers' in o ){
+            delete o.linkers;
+        }if( 'pid' in o ){
+            delete o.pid;
+        }if( 'recordowner' in o ){
+            delete o.recordowner;
+        }if( 'schemeID' in o ){
+            delete o.schemeID;
+        }if( 'systimestamp' in o ){
+            delete o.systimestamp;
+        }if( 'thumbnail' in o ){
+            delete o.thumbnail;
+        }if( 'Resource Associator' in o ){
+            delete o['Resource Associator'];
+        }if( 'project_kid' in o ){
+            delete o['project_kid'];
+        }
+    }
 
     function json2xml(o, tab) {
         //console.log('json object:');
