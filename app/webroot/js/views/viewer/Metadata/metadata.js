@@ -244,7 +244,7 @@ $(document).ready(function () {
                 $.each(data, function (key, value) {
                     if (result_ids.indexOf(value.kid) == -1 && value['Resource Identifier'] != "") {
                         result_ids.push(value.kid);
-                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'] + "'></div>");
+                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
                         q.push(['Resource Identifier', '=', value['Resource Identifier']]);
 
                         resource_info[value['Resource Identifier']] = {
@@ -258,7 +258,7 @@ $(document).ready(function () {
                 $.each(data, function (key, value) {
                     if (result_ids.indexOf(value.kid) == -1 && value['Pages Associator'] != "") {
                         result_ids.push(value.kid);
-                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'] + "'></div>");
+                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
                         $.each(value['Pages Associator'], function (i, page) {
                             q.push(['kid', 'like', page]);
                         });
@@ -285,7 +285,7 @@ $(document).ready(function () {
 
                     $.each(pages, function (k, v) {
                         if (index >= current_offset && index < current_offset + results_per_page) {
-                            $("#" + v['Resource Identifier']).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                            $("#" + v['Resource Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
                             var image = KORA_FILES_URI + pid + '/' + page_sid + '/' + v['Image Upload'].localName;
                             var pageDisplay = $("#" + v.kid);
@@ -366,10 +366,17 @@ $(document).ready(function () {
 
                     var page_nums = Math.ceil(total_pages / results_per_page);
                     var active_page = (current_offset / results_per_page) + 1;
+
                     $(".annotation_numbers").empty();
                     for (var i = 1; i <= page_nums; i++) {
                         var class_string = i == active_page ? "page_number page_active" : "page_number";
-                        $(".annotation_numbers").append("<span class='" + class_string + "' id='" + i + "'>" + i + "</span>");
+                        var max = active_page + 5;
+                        if (active_page <= 5) {
+                            max = 10;
+                        }
+                        if (i > active_page - 5 && i <= max) {
+                            $(".annotation_numbers").append("<span class='" + class_string + "' id='" + i + "'>" + i + "</span>");
+                        }
                     }
 
                     $(".page_number").click(function() {
