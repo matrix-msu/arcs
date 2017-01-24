@@ -1521,6 +1521,12 @@ $( document ).ready(function() {
             }
         }
     });
+    $(".fullscreen-next").click(function () {
+       $('#next-resource').trigger("click");
+    });
+    $(".fullscreen-prev").click(function () {
+       $('#prev-resource').trigger("click");
+    });
     function isElementInViewport (el) {
 
         //special bonus for those using jQuery

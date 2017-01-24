@@ -107,79 +107,55 @@ $(document).ready(function () {
     }
 
 
-  $('.expandedArrowBoxLeft').click(previousImage);
-  $('.expandedArrowBoxRight').click(nextImage);
-  $('.fullscreenInner').mouseover(hoverExpand);
-  $('.fullscreenInner').mouseout(hoverExpandClose);
-
-
-  function hoverExpandClose(){
-    $('.expandedArrowBoxLeft').css('display','none');
-    $('.expandedArrowBoxRight').css('display','none');
-  }
-  function hoverExpand(){
-    if ($('.leftHalf').is(':hover')){
-      if (current > 0){
-        $('.expandedArrowBoxLeft').css('display','block');
-      }
-
-      $('.expandedArrowBoxRight').css('display','none');
-    }
-    else{
-       if(current < keys.length-1){
-         $('.expandedArrowBoxRight').css('display','block');
-       }
-
-      $('.expandedArrowBoxLeft').css('display','none');
-    }
-  }
-  function previousImage(){
-    event.preventDefault();
-    if(current > 0){
-      $('.numberOverResources').removeClass('selectedResource');
-      $pics[current].style.borderWidth = "0px";
-      $selected[current].style.background =""
-      current--;
-      $pics[current].style.borderWidth = "5px";
-      $selected[current].style.background ="#0094bc"
-      $selected[current].className += ' selectedResource';
-      var kid = keys[current];
-
-      $('.other-resources').each( function () {
-        if($(this).find('.numberOverResources').hasClass('selectedResource')){
-          $(this).trigger('click');
-
-        }
-
-      });
-      $(".fullscreenImage").attr('src', kora_url + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
-    }
-
-  }
-
-  function nextImage(){
-
-    event.preventDefault();
-    if(current < keys.length-1){
-      $('.numberOverResources').removeClass('selectedResource');
-      $pics[current].style.borderWidth = "0px";
-      $selected[current].style.background =""
-      current++;
-      $pics[current].style.borderWidth = "5px";
-      $selected[current].style.background ="#0094bc"
-      $selected[current].className += ' selectedResource';
-      var kid = keys[current];
-      $('.other-resources').each( function () {
-        if($(this).find('.numberOverResources').hasClass('selectedResource')){
-          $(this).trigger('click');
-        }
-
-      });
+//  $('.expandedArrowBoxLeft').click(previousImage);
+//  $('.expandedArrowBoxRight').click(nextImage);
+//  function previousImage(){
+//    event.preventDefault();
+//    if(current > 0){
+//      $('.numberOverResources').removeClass('selectedResource');
+//      $pics[current].style.borderWidth = "0px";
+//      $selected[current].style.background =""
+//      current--;
+//      $pics[current].style.borderWidth = "5px";
+//      $selected[current].style.background ="#0094bc"
+//      $selected[current].className += ' selectedResource';
+//      var kid = keys[current];
 //
-      $(".fullscreenImage").attr('src',kora_url + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
-
-    }
-  }
+//      $('.other-resources').each( function () {
+//        if($(this).find('.numberOverResources').hasClass('selectedResource')){
+//          $(this).trigger('click');
+//
+//        }
+//
+//      });
+//      $(".fullscreenImage").attr('src', kora_url + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
+//    }
+//
+//  }
+//
+//  function nextImage(){
+//
+//    event.preventDefault();
+//    if(current < keys.length-1){
+//      $('.numberOverResources').removeClass('selectedResource');
+//      $pics[current].style.borderWidth = "0px";
+//      $selected[current].style.background =""
+//      current++;
+//      $pics[current].style.borderWidth = "5px";
+//      $selected[current].style.background ="#0094bc"
+//      $selected[current].className += ' selectedResource';
+//      var kid = keys[current];
+//      $('.other-resources').each( function () {
+//        if($(this).find('.numberOverResources').hasClass('selectedResource')){
+//          $(this).trigger('click');
+//        }
+//
+//      });
+////
+//      $(".fullscreenImage").attr('src',kora_url + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
+//
+//    }
+//  }
     $('#zoom-out').click(function(event){
         event.preventDefault();
         var zoomrange = document.getElementById("zoom-range");

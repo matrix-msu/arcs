@@ -11,6 +11,7 @@ _resource.viewWindow = "#viewer-window";
 _resource.pointer = ".p-select";
 _resource.currentPage;
 _resource.currentResource;
+_resource.rotate = '.resources-rotate-icon';
 _resource.SwapResource = function(kid) {
 
     $(this.pageSlider).find("a").each(function() {
@@ -240,10 +241,22 @@ $(document).ready(function() {
 
     var angle = 0
     var className;
-    $('.resources-rotate-icon').click(function() {
+    $(_resource.rotate).click(function() {
         angle = (angle + 90) % 360;
         className = 'rotate(' + angle + 'deg' + ')';
-        $('#ImageWrap').css('transform', className)
+        $('#ImageWrap').css('transform', className);
+        $(".fullscreenImage").css('transform', className);
+    });
+
+    $(".resource-reset-icon").click( function () {
+      angle = 0;
+      $('#ImageWrap').css('transform','');
+      $("#canvas").css('transform', 'scale(1)');
+      $("#PageImage").css('transform', 'scale(1)');
+      $('.zoom-bar').val(1);
+      $('#ImageWrap').css('top','');
+      $('#ImageWrap').css('left','');
+      $(".fullscreenImage").css('transform', 'rotate(' + angle + 'deg' + ')');
     });
 
     $(_resource.pageSlider + " img").click(function(e) {
