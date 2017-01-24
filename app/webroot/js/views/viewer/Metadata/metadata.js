@@ -12,6 +12,7 @@ $(document).ready(function () {
     var current_offset = 0;
     var total_pages = 0;
     var index = 0;
+    var page_nums = 0;
 
     $(".resources-annotate-icon").click(function () {
         if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg") {
@@ -177,6 +178,13 @@ $(document).ready(function () {
         SubmitSearch(current_offset - results_per_page);
     });
 
+    $(".annotation_begin").click(function() {
+        SubmitSearch(0);
+    });
+
+    $(".annotation_end").click(function() {
+        SubmitSearch(page_nums * results_per_page - results_per_page);
+    });
 
 
     function SubmitSearch(offset) {
@@ -364,8 +372,21 @@ $(document).ready(function () {
                         $(".annotation_pagination").hide();
                     }
 
-                    var page_nums = Math.ceil(total_pages / results_per_page);
+                    page_nums = Math.ceil(total_pages / results_per_page);
                     var active_page = (current_offset / results_per_page) + 1;
+
+                    if (active_page > 1) {
+                        $(".annotation_begin").show();
+                    }
+                    else {
+                        $(".annotation_begin").hide();
+                    }
+                    if (active_page < page_nums) {
+                        $(".annotation_end").show();
+                    }
+                    else {
+                        $(".annotation_end").hide();
+                    }
 
                     $(".annotation_numbers").empty();
                     for (var i = 1; i <= page_nums; i++) {

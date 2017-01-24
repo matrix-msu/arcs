@@ -1226,14 +1226,22 @@ img.resource-reset-icon{
 	text-align: center;
 }
 
-.annotation_next, .annotation_prev {
+.annotation_next, .annotation_prev, .annotation_begin, .annotation_end {
 	display: none;
 }
 
-.annotation_next img, .annotation_prev img {
+.annotation_next img, .annotation_prev img, .annotation_begin img, .annotation_end img {
 	position: relative;
 	height: 15px;
 	bottom: 2px;
+}
+
+.annotation_begin {
+	padding-right: 10px;
+}
+
+.annotation_end {
+	padding-left: 10px;
 }
 
 .page_number {
