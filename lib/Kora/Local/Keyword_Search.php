@@ -31,12 +31,27 @@ class Keyword_Search extends Kora{
       //call parent constructor 'kora'
       parent::__construct();
 
-      //set up the kora search parameters for keyword search
-      $this->set_search_parameters($query,$project);
+      $resourcesFromSOO = $this->search_soo($query,$project);
+      
+      $clause = $this->clauseGen("OR","LIKE",
+        array(
+          "Resource Identifier","Type","Earliest Date","Latest Date","Accession Number"
+        ),$query
+      
+      );
+      //set up the kora search parameters for keyword search on RESOURCE
+      $this->set_search_parameters($query,$project,RESOURCE_SID,$clause);
 
       //do the keyword search
-      $this->formulatedResult = parent::search();
-
+      $resourcesFromResource = parent::search();
+      
+      $this->formulatedResult = array_merge($resourcesFromResource,$resourcesFromSOO);
+      
+      $extra_data = array(
+        "Return_Count_SOO"=>count($resourcesFromSOO),
+        "Return_Count_Resource"=>count($resourcesFromResource), 
+      );
+        
       // traverse the database to include excavation,
       // season and project associations;
       $this->traverse_insert();
@@ -47,7 +62,6 @@ class Keyword_Search extends Kora{
       //adjust the results to the requested section
       $this->adjust_requested_limits($start,$end);
 
-
       $time_end = microtime(true);
       $mem_end = memory_get_usage();
 
@@ -55,11 +69,90 @@ class Keyword_Search extends Kora{
       $total_mem = ($mem_end - $mem_start) / pow(10,9);
 
       //format and prepare for a json response
-      $this->format_results($time,$total_mem,$filters);
+      $this->format_results($time,$total_mem,$filters,$extra_data);
 
   }
+  private function search_soo($query, $project){
+    
+      //set up the kora search parameters for keyword search on SOO
+      $clause = $this->clauseGen(
+        "OR",
+        "LIKE",
+        array(
+          "Artifact - Structure Classification","Artifact - Structure Type",
+          "Artifact - Structure Material","Artifact - Structure Technique",
+          "Artifact - Structure Period","Artifact - Structure Terminus Ante Quem",
+          "Artifact - Structure Terminus Post Quem"
+        ),$query
+      ); 
+      $this->set_search_parameters($query,$project,SUBJECT_SID,$clause,array("Pages Associator"));
 
-  private function format_results($time,$total_mem,$filters){
+      //search on soo level
+      $soo = parent::search();
+      if(empty($soo))
+        return array();
+
+      $pages = $this->mergeIntoArray($soo,"Pages Associator");
+      
+      $clause = new KORA_Clause("kid","IN",$pages); 
+      $this->set_search_parameters($query,$project,PAGES_SID,$clause,array("Resource Associator")); 
+      $page = parent::search();
+
+      if(empty($page))
+        return array();
+       
+      $resources = $this->mergeIntoArray($page, "Resource Associator");
+       
+      $clause = new KORA_Clause("kid","IN",$resources); 
+      $this->set_search_parameters($query,$project,RESOURCE_SID,$clause,NULL); 
+      $resourcesWithFields = parent::search();
+
+ 
+      return $resourcesWithFields;    
+  }
+  private function clauseGen($join,$condition,$array,$query){
+    if(empty($array))
+      return array();
+    
+    $clauses = array();
+    foreach($array as $term){
+      $clause = new KORA_Clause($term,$condition,"%$query%");
+      array_push($clauses,$clause);
+    }
+    $joins = $clauses[0];
+    for($i = 1; $i < count($clauses); $i++){
+     $joins = new KORA_Clause($joins,$join,$clauses[$i]);
+    }
+    return $joins;
+  }
+  /* 
+   * 
+   * combines all results into one array.
+   * only the attribute (Kora return field) is merged 
+   * removes all duplicates
+   *
+   */
+  private function mergeIntoArray($input_array, $attribute){
+    $return_array = array();
+    //combine all results pages into an array
+    foreach($input_array as $kid){
+      if(isset($kid[$attribute]) && is_array($kid[$attribute])){  
+     
+        $associator = $kid[$attribute];
+        $difference = array_diff($associator,$return_array); 
+     
+        foreach($difference as $one){
+          array_push($return_array,$one);
+        }
+     
+      }
+    
+    }
+    //ensure array has no duplicates
+    return  array_unique($return_array);
+  }
+
+  private function format_results($time,$total_mem,$filters,$data=array()){
 
     $this->formulatedResult = array(
 
@@ -67,6 +160,7 @@ class Keyword_Search extends Kora{
       "time"=>$time,
       "Memory"=>$total_mem . " GB",
       "filters" => $filters,
+      "data" => $data,
       "results"=>$this->formulatedResult
 
     );
@@ -92,38 +186,46 @@ class Keyword_Search extends Kora{
     @return VOID
     set up the kora search parameters for keyword search
   */
-  private function set_search_parameters($query,$project){
+  private function set_search_parameters($query,$project,$scheme,$clause=NULL,$fields=NULL){
 
     $this->token = TOKEN;
     $this->projectMapping = PID;
-    $this->schemeMapping = RESOURCE_SID;
+    $this->schemeMapping = $scheme;
 
     $clause1 = new KORA_Clause("ANY", "LIKE", "%".$query."%");
+    
     $this->The_Clause = $clause1;
 
-    if($project !== "all"){
+    if($project !== "all" && $scheme === RESOURCE_SID){
     
     	$projectResources = SearchController::getProjectResourceKids($project);
 
     	if(empty($projectResources))
     		$projectResources = array("none");
 
-   	$clause = new KORA_Clause("kid","IN", $projectResources);
+   	  $clause2 = new KORA_Clause("kid","IN", $projectResources);
     	  
-    	$this->The_Clause =new KORA_Clause($clause1,"AND",$clause);
+    	$this->The_Clause =new KORA_Clause($clause1,"AND",$clause2);
     }
- 
-    $this->fields = array(
-      "Excavation - Survey Associator",
-      "Title",
-      "Type",
-      "Resource Identifier",
-      "Accession Number",
-      "Creator",
-      "Creator2",
-      "systimestamp"
-    );
+    if($clause != NULL){
+      $this->The_Clause = $clause;
+    }
 
+    if(empty($fields)){ //default fields
+       $this->fields = array(
+        "Excavation - Survey Associator",
+        "Title",
+        "Type",
+        "Resource Identifier",
+        "Accession Number",
+        "Creator",
+        "Creator2",
+        "systimestamp"
+      );
+    }
+    else{
+      $this->fields = $fields;
+    }
   }
 
   /*

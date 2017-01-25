@@ -359,13 +359,20 @@
                         <table id="Project">
 <?php
                           foreach($pageMetadata as $key => $value){
-
+                            if(!empty($value)) {
+                             
 ?>
                             <tr>
                               <td><?=$key?></td>
-                              <td><?=$value?></td>
+                              <?php if(is_array($value)){ ?>
+                              <td><?php foreach($value as $val)echo $val . "</br>" ?></td>
+                              <?php }else {?>
+                              <td><?= $value ?></td>
+                              <?php }?>
                             </tr>
+
 <?php
+                            }
                           }
 
 ?>

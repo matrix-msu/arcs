@@ -21,7 +21,10 @@ class Page{
   public function doesExist(){
     return $this->exist;
   }
-  public function getPageAttribute($attr){
+  public function getPageAttribute($attr,$nest=NULL){
+    if(!empty($nest) && isset($this->value($attr)[$nest])){
+     return $this->value($attr)[$nest]; 
+    }
     return $this->value($attr);
   }
   private function value($value){

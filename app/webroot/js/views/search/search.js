@@ -564,7 +564,7 @@
       val = $(".searchBoxInput").val();
       pageNum = $('.currentPage').html();
       perPage = $('#items-per-page-btn').html().substring(0, 2);
-      val = val.replace(/[^A-Za-z0-9-]/g, '');
+      //val = val.replace(/[^A-Za-z0-9-]/g, '');
       if (val === "") {
         noResults();
         totalResults = [];
@@ -573,7 +573,8 @@
         });
         return;
       }
-      resourcequery = encodeURIComponent("" + val);
+      console.log(val);
+      resourcequery = encodeURIComponent(""+val);
       pageNumber = encodeURIComponent("" + pageNum);
       perPageUrl = encodeURIComponent("" + perPage);
       $('.pageNumber').removeClass('currentPage');
