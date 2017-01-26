@@ -12,8 +12,12 @@ class Resource {
     $type = array();
     $excavation = array();
     $creator = array();
-
+    $projects = array();
+    
     foreach($array as $key => $value){
+      if( !empty($value["Project Name"]) && !in_array($value["Project Name"], $projects) ){
+        array_push($projects, $value["Project Name"]);
+      }
       if( !empty($value["Type"]) && !in_array($value["Type"], $type) ){
         array_push($type, $value["Type"]);
       }
@@ -37,6 +41,7 @@ class Resource {
     }
 
     return array(
+      "projects"=>$projects,
       "sites"=> $sites,
       "seasons" => $seasons,
       "types" => $type,

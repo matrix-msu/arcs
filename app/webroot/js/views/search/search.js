@@ -461,7 +461,7 @@
       var a, key, li, ref, results1, val;
       $('.excavationMenu').empty();
       $('.excavationMenu').append(createAllFilter());
-      ref = filters['excavations'];
+      ref = filters['sites'];
       results1 = [];
       for (key in ref) {
         val = ref[key];
@@ -515,7 +515,7 @@
       var a, key, li, ref, results1, val;
       $('.sitesMenu').empty();
       $('.sitesMenu').append(createAllFilter());
-      ref = filters['sites'];
+      ref = filters['projects'];
       results1 = [];
       for (key in ref) {
         val = ref[key];

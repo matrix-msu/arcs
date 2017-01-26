@@ -2,6 +2,18 @@
 .push{
   height: 0px;
 }
+#open-colview-btn{
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 12px;
+  height: 35px;
+  padding: 10px;
+  float: right;
+  color: #C1C1C1;
+  cursor: pointer;
+}
+#open-colview-btn:hover{
+  color:#337ab7;
 }
 </style>
 <div class="viewers-container">
@@ -66,7 +78,7 @@
 		<div id="search-actions" class="search-toolbar">
 			<div id="sites-buttons" class="btn-group actions-left">
 		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Sites
+		      	Projects
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
@@ -95,7 +107,7 @@
 
 			<div id="excavation-buttons" class="btn-group actions-left">
 				<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-					Exacavation
+					Excavation Units
 					<span class="pointerDown sort-arrow pointerSearch"></span>
 				</button>
 				<ul class="dropdown-menu excavationMenu" data-id="Excavation Type">
@@ -130,22 +142,9 @@
 
 			<div id="options-buttons" class="btn-group actions-right">
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Options
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
+		      	Export
 		      </button>
-		      <ul class="dropdown-menu leftMost">
-		        <li><a class="sort-btn active" id="open-btn">open In separate windows&nbsp;</a></li>
-		        <li>
-							<form id = "open-colview-form" method = "POST">
-								<a class="sort-btn" id="open-colview-btn">open In a collection view&nbsp;</a>
-								<input type="hidden" name="resources" value="">
-							</form>
-						</li>
-		        <li class="divider"></li>
-		        <li><a class="sort-btn" id="open-btn">Download&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Download as a Zip file&nbsp;</a></li>
-		      </ul>
-		    </div>
+		  </div>
 
 		    <div id="view-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -185,6 +184,10 @@
 				<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
 				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <div class="icon-collection"></div></a>
 				<div id="selected-resource-ids" style="display: none;"></div>
+        <form id="open-colview-form" method="POST">
+          <div id="open-colview-btn">Open in Collection View</div>
+          <input type="hidden" name="resources" value="">
+        </form>
 			</div>
 
 			<ul class="flex-container">
