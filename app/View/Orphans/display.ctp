@@ -353,7 +353,7 @@
 
                 <div class="accordion metadata-accordion">
                     <h3 class="level-tab">Page
-                        <span class="edit-btn">Edit</span>
+                        
                     </h3>
                     <div class="level-content">
                         <table id="Project">

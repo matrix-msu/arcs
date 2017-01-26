@@ -9,6 +9,9 @@ $(window).resize(function(){
 
 // other resources
 $(document).ready(function () {
+  var url = window.location.href;
+  if(!url.includes("/orphan/"))
+    return
   var h = $("#viewer-window").height();
   $("#ImageWrap img").css({height: h+"px"});
 
