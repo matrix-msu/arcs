@@ -1,9 +1,5 @@
 (function(){
 
-    console.log("getComments URL " +CM_URL);
-    console.log("getComments R ID " +CM_R_ID);
-    console.log("getComments NEW COM URL " +NEW_COM_URL);
-
     $(document).ready(function(){
       getComments();
    
@@ -33,9 +29,10 @@
                           );
                       }
                   });
-
+                  data = data.reverse();
                   $.each(data, function (index, comment) {
                       if (comment.parent_id) {
+                          
                           $("#" + comment.parent_id).append(
                                   "<div class='discussionReply' id='" + comment.id + "'><span class='replyTo'>" +
                                   "In reply to " + $("#" + comment.parent_id + " > .commentName").html() +
@@ -45,7 +42,9 @@
                                   formatDate(comment.created) +
                                   "</span><br><span class='commentBody'>" +
                                   comment.content +
-                                  "</span></div>");
+                                  "</span><div class='reply'>Reply</div>" +
+                                  "</div>"
+                          );
                       }
                   });
 
@@ -58,6 +57,7 @@
                       $(".newReplyForm").css("display", "inline");
                       $(".newComment").show();
                       parent = $(this).parent().attr("id");
+                      
                       $('html, body').animate({
                           scrollTop: $(".newReplyForm").offset().top - 600
                       }, 1000);
@@ -94,8 +94,10 @@
       });
 
       $(".newCommentForm,.newReplyForm").submit(function (e) {
+          
           e.preventDefault();
           if ($(".commentTextArea").val() != "") {
+              
               $.ajax({
                   url: NEW_COM_URL,
                   type: "POST",
@@ -105,7 +107,7 @@
                       parent_id: parent
                   },
                   success: function (data) {
-                    console.log(data);
+                    
 
                       $(".commentTextArea").val("");
                       $("#tabs-3").append($(".newCommentForm,.newReplyForm"));
@@ -116,6 +118,7 @@
               });
           }
           else if ($(".replyTextArea").val() != "") {
+              
               $.ajax({
                   url: NEW_COM_URL,
                   type: "POST",

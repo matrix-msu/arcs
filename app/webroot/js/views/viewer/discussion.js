@@ -15,6 +15,7 @@
     };
 
     DiscussionTab.prototype.initialize = function(options) {
+      console.log("hiiii");
       _.extend(this.options, _.pick(options, 'el'));
       this.collection = new arcs.collections.Discussion;
       this.collection.on('add remove reset', this.render, this);
