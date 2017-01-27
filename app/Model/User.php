@@ -121,7 +121,7 @@ class User extends AppModel {
                     $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
 
 
-                    $temp_array = array('id' => $row['id'],
+                    $temp_array = array('id' => $row['collection_id'],
                         'title' => $row['title'],
                         'date' => $return_date,
                         'public' => $row['public'],
