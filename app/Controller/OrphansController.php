@@ -16,7 +16,9 @@ class OrphansController extends AppController {
 
   public function beforeFilter() {
     parent::beforeFilter();
+    $this->Auth->allow("display");
   }
+
   /**
      * Displays a single orphans with the matching kid
    * @param kid | the kid of the page
