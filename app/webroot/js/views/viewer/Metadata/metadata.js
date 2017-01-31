@@ -13,6 +13,18 @@ $(document).ready(function () {
     var total_pages = 0;
     var index = 0;
     var page_nums = 0;
+	
+	//get annotate to support multi-pages.
+	$('#other-resources').find('.img-holder').click(function(){
+		$('#canvas').html('');
+		waitForElement(0);
+	});
+	
+	function reload_js(src) {
+        $('script[src="' + src + '"]').remove();
+        $('<script>').attr('src', src).appendTo('head');
+    }
+    
 
     $(".resources-annotate-icon").click(function () {
         if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg") {
@@ -35,13 +47,17 @@ $(document).ready(function () {
     var selected = false;
 
     //on document load. wait for page image and trigger drawboxes.
-    waitForElement();
-    function waitForElement() {
+    waitForElement(1);
+    function waitForElement(offset) {
         if ($("#PageImage").height() !=0 && $("#PageImage").attr('src') != '../img/arcs-preloader.gif' &&
             $("#PageImage")[0].complete != false ) {
             $(".canvas").height($("#PageImage").height());
             $(".canvas").width($("#PageImage").width());
-            $(".canvas").css({bottom: $("#PageImage").height()});
+			if( offset == 1){
+				$(".canvas").css({bottom: $("#PageImage").height()});
+			}else{
+				$(".canvas").css({bottom: '0px'});
+			}
 
             //get current page kid.
             var pageKid = $("#PageImage").attr('src');
@@ -53,7 +69,11 @@ $(document).ready(function () {
         }
         else {
             setTimeout(function () {
-                waitForElement();
+				if(offset == 1){
+					waitForElement(1);
+				}else{
+					waitForElement(0);
+				}
             }, 250);
         }
     }
