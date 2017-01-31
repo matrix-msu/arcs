@@ -18,13 +18,7 @@ $(document).ready(function () {
 	$('#other-resources').find('.img-holder').click(function(){
 		$('#canvas').html('');
 		waitForElement(0);
-	});
-	
-	function reload_js(src) {
-        $('script[src="' + src + '"]').remove();
-        $('<script>').attr('src', src).appendTo('head');
-    }
-    
+	});    
 
     $(".resources-annotate-icon").click(function () {
         if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg") {
