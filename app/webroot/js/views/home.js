@@ -48,7 +48,10 @@
         $(e.currentTarget).removeClass('btn-show-all');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
         $(e.currentTarget).find("img:first").attr('src', src);
-        limit = $el.find('.resource-thumb').length + 14;
+        //limit = $el.find('.resource-thumb').length + 14;
+        limit = -1;
+        //console.log('resources show more redirect here');
+        //return;
       } else {
         $el = $(e.currentTarget).parent();
         $el.toggleAttr('open');
@@ -78,13 +81,30 @@
         query2 += "pKid=" + kid + "&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
-        var html;
-        html = arcs.tmpl('home/details', {
-          resources: response.results,
-          searchURL: arcs.baseURL + "collection/"
-        });
-        $el.children('div').html(html);
-        return $el.find('.show-all-btn-text').html('SHOW MORE');
+        if(typeof response.results[0] == "object" ){
+          var html;
+          html = arcs.tmpl('home/details', {
+            resources: response.results,
+            searchURL: arcs.baseURL + "collection/"
+          });
+          $el.children('div').html(html);
+          return $el.find('.show-all-btn-text').html('SHOW MORE');
+        }else {
+          console.log(response.results);
+          $('<form />')
+              .hide()
+              .attr({ method : "post" })
+              .attr({ action : "viewType"})
+              .append($('<input />')
+                  .attr("type","hidden")
+                  .attr({ "name" : "resource_kids" })
+                  .val(response.results)
+              )
+              .append('<input type="submit" />')
+              .appendTo($("body"))
+              .submit();
+          return;
+        }
       });
     };
 

@@ -88,6 +88,9 @@
     Router::connect('/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
+    Router::connect('/resources/viewType',
+        array('controller' => 'resources', 'action' => 'viewType')
+    );
 	Router::connect('/resources/viewkid/*',
         array('controller' => 'resources', 'action' => 'viewKid')
     );

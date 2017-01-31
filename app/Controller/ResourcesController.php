@@ -30,7 +30,7 @@ class ResourcesController extends AppController {
         # are allowed by default.
         $this->Auth->allow(
             'view', 'viewer', 'search', 'comments', 'annotations',
-            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'export'
+            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'export', 'viewType'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -648,6 +648,12 @@ class ResourcesController extends AppController {
         //send back base64 format of a zip file
         $data = file_get_contents($tmp_file);
         $this->json(200, base64_encode($data) );
+    }
+
+    public function viewType(){
+        echo json_encode( $this->request->data );
+        //echo 'testing';
+        return;
     }
 
     //view muitiple resources in a viewer

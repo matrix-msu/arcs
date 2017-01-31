@@ -725,12 +725,17 @@ class SearchController extends AppController {
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($sid, $fields, 0, $limit+1);
             }else{
-                $kora = new Advanced_Search($sid, $fields, 0, 0);
+                $kora = new Advanced_Search($sid, array('Title'), 0, 0);
             }
             //Get resources by type and in the project resource kid array.
             $kora->add_double_clause($query_array[0], $query_array[1], $query_array[2],
                                         "kid", "IN", $projectKids);
             $resources = json_decode($kora->search(), true);
+
+            if( $limit == -1 ){
+                $return = array('results'=> array_keys($resources) );
+                return $this->json(200, $return );
+            }
 
             //grab all pages with the resource identifier
             $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
