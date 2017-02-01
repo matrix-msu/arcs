@@ -30,7 +30,7 @@ class ResourcesController extends AppController {
         # are allowed by default.
         $this->Auth->allow(
             'view', 'viewer', 'search', 'comments', 'annotations',
-            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'export', 'viewType'
+            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'export', 'viewtype'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -650,7 +650,7 @@ class ResourcesController extends AppController {
         $this->json(200, base64_encode($data) );
     }
 
-    public function viewType(){
+    public function viewtype(){
         echo json_encode( $this->request->data );
         //echo 'testing';
         return;

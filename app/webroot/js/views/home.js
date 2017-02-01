@@ -90,19 +90,33 @@
           $el.children('div').html(html);
           return $el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
-          console.log(response.results);
-          $('<form />')
-              .hide()
-              .attr({ method : "post" })
-              .attr({ action : "viewType"})
-              .append($('<input />')
-                  .attr("type","hidden")
-                  .attr({ "name" : "resource_kids" })
-                  .val(response.results)
-              )
-              .append('<input type="submit" />')
-              .appendTo($("body"))
-              .submit();
+          if (type === 'Orphaned') {
+            $('<form />')
+                .hide()
+                .attr({ method : "post" })
+                .attr({ action : "viewtype"})
+                .append($('<input />')
+                    .attr("type","hidden")
+                    .attr({ "name" : "orphaned_kids" })
+                    .val(response.results)
+                )
+                .append('<input type="submit" />')
+                .appendTo($("body"))
+                .submit();
+          }else {
+            $('<form />')
+                .hide()
+                .attr({method: "post"})
+                .attr({action: "viewtype"})
+                .append($('<input />')
+                    .attr("type", "hidden")
+                    .attr({"name": "resource_kids"})
+                    .val(response.results)
+                )
+                .append('<input type="submit" />')
+                .appendTo($("body"))
+                .submit();
+          }
           return;
         }
       });

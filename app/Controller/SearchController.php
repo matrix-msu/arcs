@@ -670,6 +670,11 @@ class SearchController extends AppController {
             $kora->add_clause($query_array[0], $query_array[1], $query_array[2]);
             $response['results'] = json_decode($kora->search(), true);
 
+            if( $limit == -1 ){
+                $return = array('results'=> array_keys($response['results']) );
+                return $this->json(200, $return );
+            }
+
             $returnResults = array();
             $count = 0;
             foreach ($response['results'] as $page){
