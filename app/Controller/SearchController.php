@@ -11,8 +11,10 @@
 require_once(KORA_LIB . "Keyword_Search.php");
 require_once(KORA_LIB . "General_Search.php");
 require_once(KORA_LIB . "Advanced_Search.php");
+require_once(KORA_LIB . "Resource.php");
 
 use Lib\Kora\Keyword_Search;
+use Lib\Resource;
 
 class SearchController extends AppController {
     public $name = 'Search';
@@ -37,16 +39,15 @@ class SearchController extends AppController {
      */
     public function search($project, $query=null) {
 
-        $title = 'Search';
-        if ($query) $title .= ' - ' . urldecode($query);
+      $title = 'Search';
+      if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
-	if(!empty($query)){
-		echo "<script>var globalquery = '".$query."';</script>";
-	}
-	echo "<script type='text/javascript'>var globalproject = '".$project."';</script>";
-
+	    if(!empty($query)){
+		   echo "<script>var globalquery = '".$query."';</script>";
+	    }
+	    echo "<script type='text/javascript'>var globalproject = '".$project."';</script>";
     }
-
+    
     public function simple_search($project,$query="",$page,$perPage) {
         $options = $this->parseParams();
         $this->autoRender = false;
@@ -59,7 +60,6 @@ class SearchController extends AppController {
           $kora = new Keyword_Search($query,$project);
           $kora->print_json();
         }
-
 
     }
 

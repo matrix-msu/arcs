@@ -58,6 +58,8 @@ class Keyword_Search extends Kora{
 
       // get resource filters
       $filters = Resource::filter_analysis($this->formulatedResult);
+      //get indicators
+      $indicators = Resource::flag_analysis($this->formulatedResult);
 
       //adjust the results to the requested section
       $this->adjust_requested_limits($start,$end);
@@ -69,7 +71,7 @@ class Keyword_Search extends Kora{
       $total_mem = ($mem_end - $mem_start) / pow(10,9);
 
       //format and prepare for a json response
-      $this->format_results($time,$total_mem,$filters,$extra_data);
+      $this->format_results($time,$total_mem,$filters,$indicators,$extra_data);
 
   }
   private function search_soo($query, $project){
@@ -152,7 +154,7 @@ class Keyword_Search extends Kora{
     return  array_unique($return_array);
   }
 
-  private function format_results($time,$total_mem,$filters,$data=array()){
+  private function format_results($time,$total_mem,$filters,$indicators,$data=array()){
 
     $this->formulatedResult = array(
 
@@ -160,6 +162,7 @@ class Keyword_Search extends Kora{
       "time"=>$time,
       "Memory"=>$total_mem . " GB",
       "filters" => $filters,
+      "indicators"=> $indicators,
       "data" => $data,
       "results"=>$this->formulatedResult
 

@@ -131,6 +131,9 @@ class Kora extends AppController{
     public static function to_json($array){
         return json_encode($array);
     }
+  public function getResultsAsArray(){
+    return $this->comprehensive_results;
+  }
 }
 
 
