@@ -483,13 +483,14 @@ class SearchController extends AppController {
         if (isset($this->request->query['n'])) {
             $limit = $this->request->query['n'];
             //$response['limit'] = $limit;
+        }else{
+            $limit = -1;
         }
+
         if (isset($this->request->query['pKid'])) {
             $pKid = $this->request->query['pKid'];
         }
-        else{
-            $limit = -1;
-        }
+
 
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
@@ -535,8 +536,16 @@ class SearchController extends AppController {
                 $test[] = $row;
                 $count++;
             }
-            //Test if there are more results--
 
+            if( $limit == -1 ){  //show all was pressed. return resource_kids immediately.
+                $return = array('results'=>array());
+                foreach($test as $row){
+                    $return['results'][] = $row['resource_kid'];
+                }
+                return $this->json(200, $return );
+            }
+
+            //Test if there are more results--
             $more_results = 0;
             if ( $count > $limit && $limit != -1 ){
                 $more_results = 1;

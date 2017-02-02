@@ -179,13 +179,28 @@
       query = encodeURIComponent('collection_id:"' + id + '"');
       query2 = arcs.baseURL + "resources/search?";
       if (limit !== 0) {
-        query2 += "n=15&";
+        query2 += "n=25&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
-        return $el.children('.results').html(arcs.tmpl('home/details', {
-          resources: response.results,
-          searchURL: arcs.baseURL + ("collection/" + id)
-        }));
+        if(typeof response.results[0] == "object" ) {
+          return $el.children('.results').html(arcs.tmpl('home/details', {
+            resources: response.results,
+            searchURL: arcs.baseURL + ("collection/" + id)
+          }));
+        }else{
+          $('<form />')
+              .hide()
+              .attr({ method : "post" })
+              .attr({ action : "../search/collection"})
+              .append($('<input />')
+                  .attr("type","hidden")
+                  .attr({ "name" : "resource_kids" })
+                  .val(response.results)
+              )
+              .append('<input type="submit" />')
+              .appendTo($("body"))
+              .submit();
+        }
       });
     };
 

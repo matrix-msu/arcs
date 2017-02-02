@@ -38,7 +38,7 @@
           return;
         }
         $el.toggleAttr('open');
-        limit = 15;
+        limit = 25;
         src = arcs.baseURL + 'img/arcs-preloader.gif';
         if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
           $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
@@ -88,13 +88,13 @@
             searchURL: arcs.baseURL + "collection/"
           });
           $el.children('div').html(html);
-          return $el.find('.show-all-btn-text').html('SHOW MORE');
+          return; //$el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
           if (type === 'Orphaned') {
             $('<form />')
                 .hide()
                 .attr({ method : "post" })
-                .attr({ action : "viewtype"})
+                .attr({ action : "../search/collection"})
                 .append($('<input />')
                     .attr("type","hidden")
                     .attr({ "name" : "orphaned_kids" })
@@ -107,7 +107,7 @@
             $('<form />')
                 .hide()
                 .attr({method: "post"})
-                .attr({action: "viewtype"})
+                .attr({action: "../search/collection"})
                 .append($('<input />')
                     .attr("type", "hidden")
                     .attr({"name": "resource_kids"})
