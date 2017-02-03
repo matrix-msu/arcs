@@ -23,14 +23,16 @@ class Keyword_Search extends Kora{
   /**
   * Constructor
   */
-  function __construct($query,$project=null,$start=1,$end=10000){
+  function __construct(){
+    //call parent constructor 'kora'
+    parent::__construct();
+  }
+
+  public function execute($query,$project=null,$start=1,$end=10000){
 
       $time_start = microtime(true);
       $mem_start =  memory_get_usage();
-
-      //call parent constructor 'kora'
-      parent::__construct();
-
+ 
       $resourcesFromSOO = $this->search_soo($query,$project);
       
       $clause = $this->clauseGen("OR","LIKE",
@@ -154,7 +156,7 @@ class Keyword_Search extends Kora{
     return  array_unique($return_array);
   }
 
-  private function format_results($time,$total_mem,$filters,$indicators,$data=array()){
+  protected function format_results($time,$total_mem,$filters,$indicators,$data=array()){
 
     $this->formulatedResult = array(
 
@@ -176,7 +178,7 @@ class Keyword_Search extends Kora{
     @return VOID
     set up the kora search parameters for keyword search
   */
-  private function adjust_requested_limits($start,$end){
+  protected function adjust_requested_limits($start,$end){
 
     $this->total = count($this->formulatedResult);
     if($this->total > $end){
@@ -236,7 +238,7 @@ class Keyword_Search extends Kora{
     @return VOID
     sequence to traverse the data associated with the search
   */
-  private function traverse_insert(){
+  protected function traverse_insert(){
 
     if(!empty($this->formulatedResult)){
         $this->insertPages();

@@ -12,7 +12,7 @@
 
  require_once(KORA_LIB . "General_Search.php");
  require_once(KORA_LIB . "Advanced_Search.php");
-
+ require_once(KORA_LIB . "Resource_Search.php");
 
 
 class ResourcesController extends AppController {
@@ -651,9 +651,19 @@ class ResourcesController extends AppController {
     }
 
     public function viewtype(){
-        echo json_encode( $this->request->data );
-        //echo 'testing';
-        return;
+      if(isset($this->request->data['resource_kids'])){
+        $json =  $this->request->data['resource_kids'];
+        $rKids = json_decode($json);
+        $search = new Resource_Search($rKids);
+        $results = $search->getResultsAsArray();
+        echo "<script>var results_to_display = ".json_encode($results).";</script>";
+        //echo "<style>.searchIntro</style>"
+
+      }
+      else if(isset($this->request->data['orphaned_kids'])){
+        $pKids = $this->request->data['orphaned_kids'];
+      }
+      $this->render("../Search/search");
     }
 
     //view muitiple resources in a viewer

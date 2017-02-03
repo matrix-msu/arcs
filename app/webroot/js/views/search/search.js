@@ -42,7 +42,6 @@
 
   arcs.views.search.Search = (function(superClass) {
     var adjustPage, setIndicators ,createAllFilter, fillArray, noResults, pagination, search, setCreators, setExcavations, setFilters, setResources, setSeasons, setSites, showSelected, sortBy;
-
     extend(Search, superClass);
 
     function Search() {
@@ -62,6 +61,34 @@
     /* Initialize and define events */
 
     Search.prototype.initialize = function(options) {
+      if(typeof results_to_display != "undefined"){
+        var data = results_to_display
+        $(".searchIntro").css("display","none")
+        $("#searchBox").css("display","none")
+        $("#advanced").css("display","none")
+        
+        console.log(data);
+        $('#search-results-wrapper').css('visibility', 'visible');
+
+        $('#results-count').html(data['total']);
+            filters = data['filters'];
+            indicators = data['indicators'];
+            filteredFilters = filters;
+            ref = data['results'];
+            for (key in ref) {
+              value = ref[key];
+              if (value['Title'] === '') {
+                value['Title'] = "No title given";
+              }
+              totalResults.push(value);
+              unfilteredResults.push(value);
+              selectedMap['unselected'].push(value['kid']);
+            }
+            selectedMap['unselected'] = totalResults;
+            waiting = false;
+            setFilters();
+            adjustPage(totalResults, 1); 
+      }
       _.extend(this.options, _.pick(options, 'el'));
       this.setupSelect();
       this.setupSearch();

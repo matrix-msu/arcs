@@ -57,8 +57,9 @@ class SearchController extends AppController {
         if ($query == ''){
             return $this->emptySearch($options);
         }else {
-          $kora = new Keyword_Search($query,$project);
-          $kora->print_json();
+          $keySearch = new Keyword_Search();
+          $keySearch->execute($query,$project);
+          $keySearch->print_json();
         }
 
     }
