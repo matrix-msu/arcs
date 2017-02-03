@@ -195,7 +195,7 @@
               .append($('<input />')
                   .attr("type","hidden")
                   .attr({ "name" : "resource_kids" })
-                  .val(response.results)
+                  .val(JSON.stringify(response.results))
               )
               .append('<input type="submit" />')
               .appendTo($("body"))
