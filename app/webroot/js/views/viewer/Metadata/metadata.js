@@ -310,6 +310,7 @@ $(document).ready(function () {
                             $("#" + v['Resource Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
                             var image = KORA_FILES_URI + pid + '/' + page_sid + '/' + v['Image Upload'].localName;
+                            //var image = "http://dev2.matrix.msu.edu/arcs/app/webroot/thumbs/smallThumbs/" + v['Image Upload'].originalName;
                             var pageDisplay = $("#" + v.kid);
                             if (v.thumb == "img/DefaultResourceImage.svg") {
                                 pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
