@@ -8721,7 +8721,7 @@ input[type=range]:focus::-ms-fill-upper {
 .viewers-container {
   margin-top: -60px;
   position: relative;
-  height: 850px;
+  height: 612px;
   border-top: 1px solid #ccc !important;
 }
 #viewer-left {
@@ -9574,9 +9574,12 @@ input[type=range]:focus::-ms-fill-upper {
   margin: auto;
   width: 500px;
   max-height: 600px;
-  overflow: auto;
   text-align: left;
   color: #fff;
+}
+.resultsContainer {
+  max-height: 475px;
+  overflow: auto;
 }
 #annotateModal .annotateModalHeader {
   color: #fff;
@@ -9611,7 +9614,6 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .annotateSubmit {
   position: absolute;
-  bottom: -53px;
   width: 500px;
   background-color: #2A9FD8;
   color: #fff;
@@ -9681,9 +9683,47 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .pageInfo {
   position: relative;
-  width: 200px;
+  width: 240px;
   display: inline-block;
-  top: -58px;
+  float: right;
+  margin-top: 10px;
+  margin-right: 15px;
+}
+.annotation_pagination {
+  display: none;
+  padding: 15px;
+  background-color: #565656;
+  cursor: pointer;
+  text-align: center;
+}
+.annotation_next,
+.annotation_prev,
+.annotation_begin,
+.annotation_end {
+  display: none;
+}
+.annotation_next img,
+.annotation_prev img,
+.annotation_begin img,
+.annotation_end img {
+  position: relative;
+  height: 15px;
+  bottom: 2px;
+}
+.annotation_begin {
+  padding-right: 10px;
+}
+.annotation_end {
+  padding-left: 10px;
+}
+.page_number {
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.page_active {
+  background-color: #2A9FD8;
 }
 .imageWrap {
   display: inline-block;
@@ -9797,6 +9837,9 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
   left: 1px;
   top: 3px;
+}
+.NoResultsMessage {
+  padding: 0px 15px 15px 15px;
 }
 .notAdmin {
   border-left: 1px solid rgba(42, 159, 216, 0.7);
@@ -10084,14 +10127,15 @@ input[type=range]:focus::-ms-fill-upper {
 #deleteModel {
   width: 370px;
   height: 155px;
-  position: absolute;
+  position: fixed;
   background: #333;
-  top: 42%;
-  bottom: 0;
-  right: 0;
-  left: 35%;
   z-index: 1;
   border: 1px solid #888;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
 }
 .deleteModelHeader {
   position: absolute;
@@ -10126,7 +10170,6 @@ img.other-resource {
   margin-left: 15px;
   margin-right: 15px;
   margin-top: 9px;
-  width: 250px;
   height: 175px;
   border-radius: 2px;
   box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.2);

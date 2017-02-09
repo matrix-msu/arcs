@@ -16,6 +16,9 @@
 }
 </style>
 <div class='searchIntro'>
+    <p>
+      <a href="search">Back To Search</a>
+    </p>
     <h1>Advanced Search</h1>
     <p>
       Lorem ipsum dolor sit amet, ignota consetetur quo at, augue accumsan efficiendi ut usu. Dictas eripuit albucius mea in, ex officiis philosophia eum. Consul singulis ad pro, te saperet contentiones qui. Ne has reque temporibus, saepe quaerendum temporibus cum ei.

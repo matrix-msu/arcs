@@ -37,7 +37,7 @@
       sort: 'title',
       sortDir: 'asc',
       grid: true,
-      url: arcs.baseURL + 'advanced_search/'
+      url: arcs.baseURL
     };
 
 
@@ -484,7 +484,7 @@
         resourcequery = encodeURIComponent("" + val);
         pageNumber = encodeURIComponent("" + pageNum);
         perPageUrl = encodeURIComponent("" + perPage);
-        return req = $.getJSON(arcs.baseURL + 'advanced_search/' + resourcequery + "/" + pageNumber + "/" + perPageUrl, function(response) {
+        return req = $.getJSON(arcs.baseURL + 'api/search/advanced/' + resourcequery +"/", function(response) {
           var temp;
           console.log(response);
           $('#lastPage').html(response['pages']);

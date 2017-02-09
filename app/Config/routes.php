@@ -205,18 +205,10 @@
 # advancedSearch controller
 ////////////////////////////////////////////////////////////////////////
     Router::connect('/advanced_search',
-        array('controller' => 'AdvancedSearch', 'action' => 'advance_search')
-    );
-     
-    Router::connect('/advanced_search/*',
-        array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
-    );
-
-    Router::connect('/api/advanced_search/*',
-        array('controller' => 'AdvancedSearch', 'action' => 'advanced_search')
-    );
-	  Router::connect('/resources/flags/add',
-        array('controller' => 'flags', 'action' => 'add')
+        array('controller' => 'AdvancedSearch', 'action' => 'display')
+    ); 
+    Router::connect('/api/search/advanced/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'search')
     );
 ////////////////////////////////////////////////////////////////////////
 # redirects
@@ -294,10 +286,13 @@
 ////////////////////////////////////////////////////////////////////////
 # comments controller
 ////////////////////////////////////////////////////////////////////////
-Router::connect('/comments/findall',
-    array('controller' => 'comments', 'action' => 'findall')
-);
-    
+  Router::connect('/comments/findall',
+      array('controller' => 'comments', 'action' => 'findall')
+  );
+   Router::connect('/resources/flags/add',
+        array('controller' => 'flags', 'action' => 'add')
+    );
+
  ////////////////////////////////////////////////////////////////////////
 # Orphans controller
 ///////////////////////////////////////////////////////////////////////
