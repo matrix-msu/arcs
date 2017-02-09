@@ -197,7 +197,8 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?= $this->Html->script("views/viewer/Metadata/newResource.js")?>
 <?= $this->Html->script("views/viewer/Metadata/export.js")?>
 <?= $this->Html->script("views/viewer/Metadata/keyword.js")?>
-<?= $this->Html->script("views/viewer/Metadata/metadata.js")?>
+<?= $this->Html->script("views/viewer/Metadata/annotations.js")?>
+<?= $this->Html->script("views/viewer/Metadata/editMetadata.js")?>
 <?= $this->Html->script("views/viewer/Metadata/comments.js")?>
 
 
