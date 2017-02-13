@@ -37,7 +37,7 @@ class ProjectsController extends AppController {
         $query_array = explode(",", $query);
         $kora = new General_Search(PROJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
         $projects = json_decode($kora->return_json(), true);
-    \
+
      /*   $url=KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
