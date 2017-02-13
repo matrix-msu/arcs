@@ -9,6 +9,8 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
  require_once(KORA_LIB . "Project.php");
+ require_once(KORA_LIB . "General_Search.php");
+ 
  use Lib\Kora\Project;
 
 class ProjectsController extends AppController {
@@ -26,13 +28,17 @@ class ProjectsController extends AppController {
 
     }
 	public function getProjects() {
-		$user = "";
-		$pass = "";
+		//$user = "";
+		//$pass = "";
 
 		$display = "json";
-		$query = "";
-
-        $url=KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
+		$query = "kid,!=,''";
+        $fields = array('ALL');
+        $query_array = explode(",", $query);
+        $kora = new General_Search(PROJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $projects = json_decode($kora->return_json(), true);
+    \
+     /*   $url=KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
 		///initialize post request to KORA API using curl
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -44,7 +50,7 @@ class ProjectsController extends AppController {
 		$projects = array();
 		foreach($server_output as $item) {
 			array_push($projects, $item);
-		}
+		}*/
 		$this->set('projects', $projects);
 	}
 
