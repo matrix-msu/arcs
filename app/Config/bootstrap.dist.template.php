@@ -92,7 +92,17 @@ define ("RESOURCE_SID" ,  "RESOURCE_SID_REPLACE");
 define ("PAGES_SID"    ,  "PAGES_SID_REPLACE");
 define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
 define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
+
+//new bootstrap setup
+define ("PID_ARRAY", array( 'isthmia' => 123, 'dummy' => 168 ) );
+define ("PROJECT_SID_ARRAY", array( 'isthmia' => 734, 'dummy' => 911 ) );
+define ("SEASON_SID_ARRAY", array( 'isthmia' => 735, 'dummy' => 913 ) );
+define ("SURVEY_SID_ARRAY", array( 'isthmia' => 740, 'dummy' => 914 ) );
+define ("RESOURCE_SID_ARRAY", array( 'isthmia' => 736, 'dummy' => 915 ) );
+define ("PAGES_SID_ARRAY", array( 'isthmia' => 738, 'dummy' => 916 ) );
+define ("SUBJECT_SID_ARRAY", array( 'isthmia' => 739, 'dummy' => 917 ) );
 define ("TOKEN"        ,  "TOKEN_REPLACE");
+
 define("KORA_LIB"      ,  LIB . "Kora/Local/");
 # Thumbnail location
 define("THUMBS_URL", "$protocol://$base/".BASE_URL."app/webroot/thumbs/");
