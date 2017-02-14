@@ -19,11 +19,13 @@
         container: $('.search-wrapper'),
         run: false,
         onSearch: (function(_this) {
+
           return function() {
             return location.href = arcs.url('search', _this.search.query);
           };
         })(this)
       });
+
     };
 
     CollectionList.prototype.events = {
@@ -67,15 +69,21 @@
         if ($(e.currentTarget).next().next().children().eq(0).prop("tagName") !== 'IMG') {
           $(e.currentTarget).next().next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
         }
+
+
+        adjustResultsCenter();
       }
       console.log($el);
       this.renderDetails($el, limit);
+      adjustResultsCenter();
       if ((e.srcElement != null)) {
         if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
           e.preventDefault();
           return false;
         }
+
       }
+      adjustResultsCenter();
     };
 
     CollectionList.prototype.deleteCollection = function(e) {
@@ -95,6 +103,7 @@
                 silent: true
               });
               _this.render();
+
               return arcs.loader.hide();
             }
           });
@@ -113,6 +122,7 @@
         i++;
       }
       this.$el.html(arcs.tmpl('collections/list', {
+
         collections: currentCollectionList
       }));
       this;
@@ -171,6 +181,8 @@
         $('.currentPage').html(temp);
         return adjustPage(fullCollectionList, parseInt($('.currentPage').html()));
       });
+
+      adjustResultsCenter();
     };
 
     CollectionList.prototype.renderDetails = function($el, limit) {
@@ -181,12 +193,17 @@
       if (limit !== 0) {
         query2 += "n=25&";
       }
+      adjustResultsCenter();
       return $.getJSON(query2 + ("q=" + query), function(response) {
         if(typeof response.results[0] == "object" ) {
-          return $el.children('.results').html(arcs.tmpl('home/details', {
+          var html;
+
+          html=$el.children('.results').html(arcs.tmpl('home/details', {
             resources: response.results,
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
+          adjustResultsCenter();
+          return html;
         }else{
           $('<form />')
               .hide()
@@ -202,6 +219,8 @@
               .submit();
         }
       });
+
+      adjustResultsCenter();
     };
 
     pagination = function(pageArray, currentPage, lastPage) {
@@ -273,6 +292,7 @@
         currentCollectionList.push(results[i]);
         i++;
       }
+      adjustResultsCenter();
       return $('#all-collections').html(arcs.tmpl('collections/list', {
         collections: currentCollectionList
       }));

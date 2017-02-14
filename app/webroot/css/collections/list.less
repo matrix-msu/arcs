@@ -2,10 +2,10 @@
 // ---------
 
 .collection-list-wrapper {
-    
+
     .dropdown {
         position: relative;
-        
+
         .dropdown-toggle {
             width: 12em;
             background: transparent;
@@ -17,12 +17,12 @@
             border-radius: 0;
             padding-left: 0;
         }
-        
+
         .dropdown-open {
             z-index: 1;
             outline: none;
         }
-        
+
         .dropdown-menu, .dropdown-submenu {
             width: 12em;
             border-radius: 0;
@@ -33,7 +33,7 @@
         .dropdown-submenu {
             position: relative;
         }
-        
+
         .pointerDown {
             position: absolute;
             left: 6em;
@@ -69,17 +69,18 @@
 
     width: 90%;
     margin: 50px auto;
-    
+
     .collection-list {
-	    
+
         details {
             min-height: 20px;
             margin: 25px 0 0;
 			border: 1px solid #ccc;
-			
+
             div {
                 visibility: hidden;
                 display: none;
+                background: #F4F4F4;
             }
             // Focus state for keyboard and accessibility
             &:focus {
@@ -102,7 +103,7 @@
                 &:focus {
                     outline: none;
                 }
-                
+
                 h5, .h5 {
 				text-shadow: none;
 				}
@@ -124,7 +125,7 @@
                 // Transitions
                 .transition(.1s linear all);
 
-                // Button Sizes 
+                // Button Sizes
                 &.large {
                     padding: 15px 25px;
                     font-size: @baseFontSize + 4px;
@@ -155,7 +156,7 @@
                 .box-shadow(none);
             }
 
-            // Sizes 
+            // Sizes
             &.large {
               padding: 10px 14px 6px;
               font-size: @baseFontSize + 4px;
@@ -186,9 +187,23 @@
 
                 ul.resource-thumbs {
                     display: block;
-                    padding-left: 20px;
+                    padding-left: 10px;
                     padding-bottom: 10px;
-                    li.resource-thumb { 
+                                    
+                   display: block;
+                   padding-left: 10px;
+                   padding-bottom: 10px;
+                   -ms-box-orient: horizontal;
+                   display: -webkit-box;
+                   display: -moz-box;
+                   display: -ms-flexbox;
+                   display: -moz-flex;
+                   display: -webkit-flex;
+                   display: flex;
+                   flex-flow: row wrap;
+                   justify-content: flex-start;
+
+                    li.resource-thumb {
                         display: inline-block;
                         vertical-align: top;
                         a img {
@@ -217,11 +232,11 @@
                     .transition(.1s linear all);
                 }
             }
-            
+
             .results {
                 min-height: 55px;
             }
-            
+
             ul.resource-thumbs {
                 padding: 10px;
             }
@@ -235,13 +250,13 @@
             a {
                 margin-left: 5px;
             }
-            
+
             // remove if button is needed
             .btn-group {
                 visibility: hidden;
             }
         }
-        
+
         h3,
         h4,
         h5 {
@@ -249,7 +264,7 @@
             padding-left: 30px;
             text-shadow: none;
         }
-        
+
         h4,
         h5 {
             color: #868686;

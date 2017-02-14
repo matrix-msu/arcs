@@ -22,7 +22,7 @@ h1.title{
   line-height: 200%;
 }
 
-	
+
 .more-info{
 	margin: 50px auto;
 	text-align: right;
@@ -59,7 +59,7 @@ img.resource_imginfo_1{
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.25);
 	-moz-box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.25);
 	box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.25);
-	width: 200px;
+	max-width: 200px;
 	height: 150px;
 }
 
@@ -68,14 +68,14 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.25);
 	-moz-box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.25);
 	box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.25);
-	width: 120px;
+	// width: 120px;
 	height:100px;
 	border:1px solid #E2E2E2;
 }
 
 .recent-resource .resource-pic .resource-title{
 	color: #6D6E70;
-	font-size: 16px;
+	font-size: 13px;
 }
 .recnt-resource .resource-pic .resource-type{
 	color: #6D6E70;
@@ -98,7 +98,7 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
 
 .resource-thumbs .resource-thumb .resource-title{
 	color: #6D6E70;
-	font-size: 16px;
+	font-size: 13px;
 }
 .resource-thumbs .resource-thumb .resource-type{
 	color: #6D6E70;
@@ -173,7 +173,7 @@ a.view-colc{
 
 
 .login_msg a{
-	text-decoration: none; 
+	text-decoration: none;
 }
 
 .collection-list-wrapper .collection-list .back-color summary{
@@ -228,7 +228,7 @@ a.view-colc{
 
 
 .asearch a{
-	text-decoration: none; 
+	text-decoration: none;
 	font-size:12px;
 	color:#0094BC;
 }
@@ -294,7 +294,7 @@ body{
 }
 
 
-@media screen and (max-width:380px){
+@media screen and (max-width:700px){
 
 	h1{
 		font-size:30px;
@@ -306,10 +306,11 @@ body{
 
 	li.resource-pic {
 		width:44%!important;
+    text-align: center;
 	}
 
 	img.resource_imginfo_1{
-		width:100%!important;
+		// width:100%!important;
 		height: 100px;
 	}
 
@@ -322,8 +323,8 @@ body{
 	}
 
 	.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb{
-		margin:2%;
-		width:45%;
+		// margin:2%;
+		// width:45%;
 	}
 	.collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2{
 		width:100%;
@@ -337,7 +338,7 @@ body{
 		color: #6D6E70;
 		font-size: 12px;
 	}
-	
+
 
 	#show-min, #show-min .more-info a{
 		display:block;
@@ -351,5 +352,3 @@ body{
 		margin: 5px 0;
 	}
 }
-
-

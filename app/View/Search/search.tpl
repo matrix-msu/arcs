@@ -66,12 +66,16 @@
 <div id="searchBox">
 	<div class="searchIcon"></div>
 	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+  <div id="searchButtonMobile">
+      SEARCH
+  </div>
+  <div id="advanced">
+  	<a class="advancedSearch" href="advanced_search" >Advanced Search</a>
+  </div>
 </div>
 
 
-<div id="advanced">
-	<a class="advancedSearch" href="advanced_search" >Advanced Search</a>
-</div>
+
 
 <div id="search-results-wrapper">
 	<div class="SearchBar">
@@ -437,7 +441,7 @@
 						selected_resources.shift();
 						var new_col_id = data['collection_id'];
 						$('.viewCollection').attr('data-colId', data.collection_id);
-						
+
 						selected_resources.forEach(function(resource){
 							var resource_kid = resource;
 							var formdata = {
@@ -515,7 +519,7 @@
 					});
 				});
 			})
-			
+
 			var text = $("label[for="+lastCheckedId+"]").children(":first").text();
 			$("#collectionName").text(text);
 			$("#collectionModal").hide();

@@ -58,6 +58,7 @@ div#search-results-wrapper {
     width: 100%;
     background: #f9f9f9;
     visibility: hidden;
+		display: none;
     position:relative;
     height: auto;
 
@@ -285,13 +286,15 @@ img.search-results-thumbnall {
     -moz-flex-flow: row wrap;
     margin-bottom: 7em;
     margin-top: 3em;
+    margin-left: auto;
     flex-wrap: wrap;
-		justify-content: center;
+    width: 90%;
+    margin-right: auto;
 }
 
 .flex-item {
     background: #CABCBA;
-    width: 175px;
+    max-width: 175px;
     height: 125px;
     line-height: 125px;
     color: white;

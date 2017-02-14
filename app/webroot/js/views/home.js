@@ -16,12 +16,14 @@
         container: $('.search-wrapper'),
         run: false,
         onSearch: (function(_this) {
+
           return function() {
             return location.href = arcs.url('search', _this.search.query);
           };
         })(this)
       });
       return $('details:first').children().eq(0).trigger("click");
+
     };
 
     Home.prototype.events = {
@@ -58,6 +60,7 @@
         limit = 0;
       }
       this.renderDetails($el, limit);
+
       e.preventDefault();
       return false;
     };
@@ -88,6 +91,7 @@
             searchURL: arcs.baseURL + "collection/"
           });
           $el.children('div').html(html);
+          adjustResultsCenter();
           return; //$el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
           if (type === 'Orphaned') {
@@ -120,10 +124,47 @@
           return;
         }
       });
-    };
 
+    };
     return Home;
 
   })(Backbone.View);
 
+
 }).call(this);
+
+$(document).ready(function()
+{
+  $(window).resize( function (){
+    adjustResultsCenter();
+  });
+});
+function adjustResultsCenter() {
+
+        var ul = $(".resource-thumbs");
+        var totalWidth = ul.outerWidth(true) - (ul.outerWidth() - ul.width());
+        // console.log("Total width: "+totalWidth);
+        var li = $(".resource-thumb");
+        // li.css("margin", "");
+        ul.css("margin", "");
+        ul.css("padding", "");
+        ul.css("font-size", "");
+        var recordWidth = li.outerWidth(true)  - (li.outerWidth() - li.width());
+        // console.log("RecordWidth: "+recordWidth);
+        var margin = ((totalWidth % recordWidth) / 2);
+        if (margin < 0){
+            margin = 0;
+        }
+        var ulWidth =   ul.outerWidth(true) - (margin*2);
+        var numLi = Math.floor(ulWidth / recordWidth);
+        // console.log("Numli: "+numLi);
+        var liMargin = (ulWidth-(121*numLi))/(numLi*2);
+        // console.log(liMargin);
+        // li.css("margin", ("10px " + liMargin + "px"));
+        ul.css("margin", ("0 " + (margin-1) + "px"));
+        // console.log("UL width: "+ulWidth);
+        ul.css("padding", "0");
+        ul.css("font-size", "0");
+
+        // li.css("margin", ("0 " + Math.floor(margin) + "px"));
+}

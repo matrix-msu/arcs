@@ -424,7 +424,7 @@ var resourceKid = "";//"<?php  ?> ";
          ?>
         <a class='other-resources' href="#" data-projectKid="<?=$r['project_kid']?>" >
 
-            <img id="identifier-<?=$r['kid']?>" class="other-resource" src="<?php echo AppController::smallThumb($p); ?> " height="200px" width="200px"/>
+            <img id="identifier-<?=$r['kid']?>" class="other-resource" src="<?php echo AppController::smallThumb($p); ?> " height="200px"/>
 			<?php if ($cnt ==1) :  ?>
 				<div class='numberOverResources selectedResource'>
 					<?php  echo $cnt;   ?>

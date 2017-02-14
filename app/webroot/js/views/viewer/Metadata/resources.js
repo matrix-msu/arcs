@@ -16,7 +16,6 @@ scale.inc = .05;
 
 $(document).ready(function()
 {
-
   //resource nav
     var zoomOption = 1;
     $('.other-resources').click(function(){

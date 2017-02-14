@@ -66,7 +66,7 @@
         $(".searchIntro").css("display","none")
         $("#searchBox").css("display","none")
         $("#advanced").css("display","none")
-        
+
         console.log(data);
         $('#search-results-wrapper').css('visibility', 'visible');
 
@@ -87,7 +87,7 @@
             selectedMap['unselected'] = totalResults;
             waiting = false;
             setFilters();
-            adjustPage(totalResults, 1); 
+            adjustPage(totalResults, 1);
       }
       _.extend(this.options, _.pick(options, 'el'));
       this.setupSelect();
@@ -287,7 +287,7 @@
       $(e.currentTarget).parents('.result').toggleClass('selected');
       return arcs.bus.trigger('selection');
     };
-   
+
     Search.prototype.maybeUnselectAll = function(e) {
       if (!(e instanceof jQuery.Event)) {
         return this.unselectAll();
@@ -458,7 +458,7 @@
             indicator.css({display:display})
           }
         }
-      }  
+      }
     }
     adjustPage = function(results, currentPage) {
       var lastPage, numberPerPage, pageNum, skip, temp;
@@ -660,9 +660,7 @@
     };
 
     $(function() {
-
-      return $(".searchBoxInput").keyup(function(e) {
-        if (e.keyCode === 13) {
+      function displayResults(e){
           selectedMap = {
             "unselected": [],
             "selected": []
@@ -676,10 +674,20 @@
           $('.flex-container').empty();
           $('.flex-container').append('<img src=' +arcs.baseURL+'img/arcs-preloader.gif>');
           $('#search-results-wrapper').css('visibility', 'visible');
+          $('#search-results-wrapper').css('display', 'block');
           return search();
+      }
+
+      $("#searchButtonMobile").click(function (e){
+          displayResults(e);
+      });
+      return $(".searchBoxInput").keyup(function(e) {
+        if (e.keyCode === 13) {
+          displayResults(e);
         }
       });
     });
+
 
     Search.prototype._render = function(results, append) {
       var $results, filterResults, getCnt, template;
@@ -750,7 +758,7 @@
       $('.select-button').click(function() {
         var index;
         var data_id = $(this).parent().attr("data-id");
-		
+
 		//todo- clear selected array and repop correctly.
 		Search.selected = [];
 		selectedMap['selected'] = [];
@@ -771,7 +779,7 @@
             color: 'black'
           });
           selectedMap['selected'].push($(this).parents('.result').data("id"));
-		  
+
           $('#selected-resource-ids').html(selectedMap["selected"]);
           $('#selected-count').html(selectedMap["selected"].length);
           arcs.bus.trigger('selection');

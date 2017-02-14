@@ -2,7 +2,9 @@
 // -----------
 
 @ArcsBlue: rgb(0, 147, 190);
-
+div#searchButtonMobile{
+	display: none;
+}
 a.search-type {
 	color: #0093be;
 }
@@ -89,13 +91,13 @@ input.searchBoxAdvanced:focus {
 
 
 div#advanced {
-    margin: 80px;
-    width: 90%;
+    // margin: 80px;
+    // width: 90%;
     margin-top: 1em;
 }
 
 a.advancedSearch {
-		margin-right:1.5%;
+		// margin-right:1.5%;
     float: right;
     text-transform: uppercase;
     color: #2FA6C7 !important;
@@ -276,4 +278,40 @@ div#searchCriteria ul {
         right: 15px;
         top: 15px;
     }
+
+}
+
+@media screen and (min-width: 1500px){
+
+	div.searchIntro {
+    width: 1200px;
+    margin: auto;
+		margin-bottom: 4em;
+	}
+}
+
+@media screen and (max-width: 930px){
+	#searchButtonMobile{
+		display: block !important;
+    margin-top: 20px;
+    height: 50px;
+    border: 1px solid #0094BC;
+    background: #0094bc;
+    color: white;
+    text-align: center;
+    vertical-align: text-top;
+    line-height: 50px;
+}
+div#advanced {
+    margin-top: 20px;
+    height: 100px;
+    color: white;
+    text-align: center;
+    vertical-align: text-top;
+    line-height: 100px;
+		clear: both;
+}
+a.advancedSearch{
+	float: none;
+}
 }

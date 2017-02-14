@@ -6442,7 +6442,6 @@ body {
   padding-right: 10px;
 }
 .wrap {
-  min-height: 100%;
   padding-top: 120px !important;
   padding-bottom: 0px;
 }
@@ -7828,6 +7827,9 @@ input.indexSearchBox {
 .hotkeys-modal .modal-body table th {
   font-weight: bold;
 }
+div#searchButtonMobile {
+  display: none;
+}
 a.search-type {
   color: #0093be;
 }
@@ -7903,12 +7905,9 @@ input.searchBoxAdvanced:focus {
   border: 0;
 }
 div#advanced {
-  margin: 80px;
-  width: 90%;
   margin-top: 1em;
 }
 a.advancedSearch {
-  margin-right: 1.5%;
   float: right;
   text-transform: uppercase;
   color: #2FA6C7 !important;
@@ -8074,6 +8073,38 @@ div#searchCriteria ul {
   text-decoration: none;
   color: #ddd;
 }
+@media screen and (min-width: 1500px) {
+  div.searchIntro {
+    width: 1200px;
+    margin: auto;
+    margin-bottom: 4em;
+  }
+}
+@media screen and (max-width: 930px) {
+  #searchButtonMobile {
+    display: block !important;
+    margin-top: 20px;
+    height: 50px;
+    border: 1px solid #0094BC;
+    background: #0094bc;
+    color: white;
+    text-align: center;
+    vertical-align: text-top;
+    line-height: 50px;
+  }
+  div#advanced {
+    margin-top: 20px;
+    height: 100px;
+    color: white;
+    text-align: center;
+    vertical-align: text-top;
+    line-height: 100px;
+    clear: both;
+  }
+  a.advancedSearch {
+    float: none;
+  }
+}
 .pointerDown {
   width: 8px;
   height: 8px;
@@ -8116,6 +8147,7 @@ div#search-results-wrapper {
   width: 100%;
   background: #f9f9f9;
   visibility: hidden;
+  display: none;
   position: relative;
   height: auto;
 }
@@ -8317,12 +8349,14 @@ img.search-results-thumbnall {
   -moz-flex-flow: row wrap;
   margin-bottom: 7em;
   margin-top: 3em;
+  margin-left: auto;
   flex-wrap: wrap;
-  justify-content: center;
+  width: 90%;
+  margin-right: auto;
 }
 .flex-item {
   background: #CABCBA;
-  width: 175px;
+  max-width: 175px;
   height: 125px;
   line-height: 125px;
   color: white;
@@ -8543,7 +8577,7 @@ ul.pagination .selected {
   padding: 3px;
   background: #444;
   margin: 3px;
-  width: 175px !important;
+  max-width: 175px !important;
   height: 125px !important;
 }
 .result .img-hover {
@@ -8722,7 +8756,6 @@ input[type=range]:focus::-ms-fill-upper {
   margin-top: -60px;
   position: relative;
   height: 612px;
-  border-top: 1px solid #ccc !important;
 }
 #viewer-left {
   float: left;
@@ -9352,7 +9385,6 @@ input[type=range]:focus::-ms-fill-upper {
   white-space: nowrap;
   background: #efefef;
   height: 228px;
-  width: 100%;
 }
 #resources-nav div {
   display: inline-block;
@@ -9578,7 +9610,7 @@ input[type=range]:focus::-ms-fill-upper {
   color: #fff;
 }
 .resultsContainer {
-  max-height: 475px;
+  max-height: 50vh;
   overflow: auto;
 }
 #annotateModal .annotateModalHeader {
@@ -13554,11 +13586,24 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 ul.resource-thumbs {
   list-style: none;
+  padding: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  -ms-box-orient: horizontal;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
 }
 ul.resource-thumbs li.resource-thumb {
-  display: inline-block;
-  padding: 10px;
-  border-radius: 4px;
+  padding: 0px;
+  height: 175px;
+  width: 115px;
+  position: relative;
   -webkit-transition: 0.1s linear background-image;
   -o-transition: 0.1s linear background-image;
   transition: 0.1s linear background-image;
@@ -13576,9 +13621,10 @@ ul.resource-thumbs li.resource-thumb a {
 ul.resource-thumbs li.resource-thumb a img {
   margin: 0 auto;
   box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
-  width: 120px;
+  max-width: 115px;
   border: 1px solid #e2e2e2;
   object-fit: cover;
+  height: 95px;
 }
 ul.resource-thumbs li.resource-thumb:hover {
   background-color: #bbb;
@@ -13605,7 +13651,7 @@ ul.resource-thumbs li.resource-thumb:hover a {
 }
 .resource-thumbs .resource-thumb .rsc-text {
   color: #333;
-  font-size: 16px;
+  font-size: 13px;
 }
 .back-color[open] ul.resource-thumbs li.resource-thumb:hover .rsc-text {
   color: #0094bc;
@@ -14838,6 +14884,7 @@ footer#standard-MSU-footer {
 .collection-list-wrapper .collection-list details div {
   visibility: hidden;
   display: none;
+  background: #F4F4F4;
 }
 .collection-list-wrapper .collection-list details:focus {
   outline: none;
@@ -14937,8 +14984,17 @@ footer#standard-MSU-footer {
 }
 .collection-list-wrapper .collection-list details[open] ul.resource-thumbs {
   display: block;
-  padding-left: 20px;
+  padding-left: 10px;
   padding-bottom: 10px;
+  -ms-box-orient: horizontal;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
 }
 .collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb {
   display: inline-block;
@@ -15386,20 +15442,19 @@ img.resource_imginfo_1 {
   -webkit-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.25);
   box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.25);
-  width: 200px;
+  max-width: 200px;
   height: 150px;
 }
 ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
   -webkit-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.25);
   box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.25);
-  width: 120px;
   height: 100px;
   border: 1px solid #E2E2E2;
 }
 .recent-resource .resource-pic .resource-title {
   color: #6D6E70;
-  font-size: 16px;
+  font-size: 13px;
 }
 .recnt-resource .resource-pic .resource-type {
   color: #6D6E70;
@@ -15417,7 +15472,7 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
 }
 .resource-thumbs .resource-thumb .resource-title {
   color: #6D6E70;
-  font-size: 16px;
+  font-size: 13px;
 }
 .resource-thumbs .resource-thumb .resource-type {
   color: #6D6E70;
@@ -15580,7 +15635,7 @@ body {
     display: none;
   }
 }
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 700px) {
   h1 {
     font-size: 30px;
   }
@@ -15589,9 +15644,9 @@ body {
   }
   li.resource-pic {
     width: 44%!important;
+    text-align: center;
   }
   img.resource_imginfo_1 {
-    width: 100%!important;
     height: 100px;
   }
   input.searchBoxInput {
@@ -15599,10 +15654,6 @@ body {
   }
   .collection-list-wrapper .collection-list details[open] ul.resource-thumbs {
     padding: 10px 5px;
-  }
-  .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb {
-    margin: 2%;
-    width: 45%;
   }
   .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
     width: 100%;

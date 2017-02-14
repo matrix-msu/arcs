@@ -2090,7 +2090,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
     <div class="img-holder">
         <a class='other-resources' href="#">
 
-            <img id="identifier-<?= $r["kid"]; ?>" class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px" width="200px"/>
+            <img id="identifier-<?= $r["kid"]; ?>" class="other-resource" src="<?php echo $r['thumbnail'] ?>" height="200px"/>
 			<?php if ($cnt ==1) :?>
 				<div class='numberOverResources selectedResource'>
 					<?php echo $cnt; ?>

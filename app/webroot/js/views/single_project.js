@@ -83,10 +83,12 @@
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
         if(typeof response.results[0] == "object" ) {
-          return $el.children('.results').html(arcs.tmpl('home/details', {
+          var html = $el.children('.results').html(arcs.tmpl('home/details', {
             resources: response.results,
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
+          adjustResultsCenter();
+          return
         }else{
           $('<form />')
               .hide()
