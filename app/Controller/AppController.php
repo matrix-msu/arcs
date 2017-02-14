@@ -26,7 +26,7 @@ class AppController extends Controller {
         //echo "<ptest></p><p>test</p><p>test</p><p>test</p>";
 
         // code to pull the projects from kora for the header - here because every page needs it
-       /* $user = "";
+        $user = "";
         $pass = "";
         $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
         $ch = curl_init($url);
@@ -36,13 +36,7 @@ class AppController extends Controller {
         $projects = array();
         foreach($out as $item) {
             array_push($projects, $item);
-        }*/
-        	$display = "json";
-		$query = "kid,!=,''";
-        $fields = array('ALL');
-        $query_array = explode(",", $query);
-        $kora = new General_Search(PROJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
-        $projects = json_decode($kora->return_json(), true);
+        }
         if (substr($this->request->url, 0, 3) == 'api')
             $this->Auth->authenticate = array('Basic');
 
