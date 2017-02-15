@@ -9,10 +9,12 @@ class Advanced_Search extends Kora{
     private $clauses = array();
     private $final_clause;
     private $sid;
+	private $pid;
 
-    function __construct($sid, $fields = 'ALL', $start = 0, $limit = 0, $sort = array() ){
+    function __construct($pid, $sid, $fields = 'ALL', $start = 0, $limit = 0, $sort = array() ){
         //call parent constructor 'kora'
         parent::__construct();
+        $this->pid = $pid;
         $this->sid = $sid;
         $this->fields = $fields;
         $this->start = $start;
@@ -49,7 +51,7 @@ class Advanced_Search extends Kora{
         }
 
         $this->token = TOKEN;
-        $this->projectMapping = PID;
+        $this->projectMapping = $this->pid;
         $this->schemeMapping = $this->sid;
         $this->The_Clause = $this->final_clause;
 
