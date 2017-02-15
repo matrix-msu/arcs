@@ -8,13 +8,13 @@ class General_Search extends Kora{
   protected $formulatedResult;
 
 
-  function __construct($sid, $query1, $query2, $query3, $fields){
+  function __construct($pid, $sid, $query1, $query2, $query3, $fields){
       //call parent constructor 'kora'
       parent::__construct();
 
       //set up the kora search parameters for keyword search
       $this->token = TOKEN;
-      $this->projectMapping = PID;
+      $this->projectMapping = $pid;
       $this->schemeMapping = $sid;
 
 

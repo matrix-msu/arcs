@@ -23,25 +23,20 @@ class AppController extends Controller {
     );
 
     public function beforeFilter() {
-        //echo "<ptest></p><p>test</p><p>test</p><p>test</p>";
 
-        // code to pull the projects from kora for the header - here because every page needs it
-        $user = "";
-        $pass = "";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        $out = json_decode(curl_exec($ch), true);
-        $projects = array();
-        foreach($out as $item) {
-            array_push($projects, $item);
+        $projectstemp = array();
+        foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
+            $fields = array('Geolocation', "Persistent Name", "Description", "Name");
+            $kora = new General_Search($pid, $GLOBALS['PROJECT_SID_ARRAY'][$name], 'kid', '!=', '0', $fields);
+            $projectstemp[] = json_decode($kora->return_json(), true);
         }
+        $projects = array();
+        foreach($projectstemp as $value){
+            $projects[] = reset($value);
+        }
+
         if (substr($this->request->url, 0, 3) == 'api')
             $this->Auth->authenticate = array('Basic');
-
-
-
 
         $this->set(array(
             'user' => array(

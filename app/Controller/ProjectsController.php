@@ -28,29 +28,17 @@ class ProjectsController extends AppController {
 
     }
 	public function getProjects() {
-		//$user = "";
-		//$pass = "";
 
-		$display = "json";
-		$query = "kid,!=,''";
-        $fields = array('ALL');
-        $query_array = explode(",", $query);
-        $kora = new General_Search(PROJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
-        $projects = json_decode($kora->return_json(), true);
-
-     /*   $url=KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=json";
-		///initialize post request to KORA API using curl
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-
-		///capture results and display
-		$server_output = json_decode(curl_exec($ch), true);
-		//var_dump($server_output);
-		$projects = array();
-		foreach($server_output as $item) {
-			array_push($projects, $item);
-		}*/
+        $projectstemp = array();
+        foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
+            $fields = array('Geolocation', "Persistent Name", "Description", "Name");
+            $kora = new General_Search($pid, $GLOBALS['PROJECT_SID_ARRAY'][$name], 'kid', '!=', '0', $fields);
+            $projectstemp[] = json_decode($kora->return_json(), true);
+        }
+        $projects = array();
+        foreach($projectstemp as $value){
+            $projects[] = reset($value);
+        }
 		$this->set('projects', $projects);
 	}
 

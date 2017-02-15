@@ -80,10 +80,13 @@ echo $this->Session->flash('flash_success'); ?>
 			$html .= ".addTo(map);";
 			$brief = str_replace("'", "\'", $item['Description']);
 			$html .= 'polygon.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+			//$html .= '.removeLayer('.L.polyline().');';
 			print $html;
 			//print "console.log(coords_array);";
 		}
 	?>
+	window.map.removeLayer(window.polygon);
+	
 	var group = new L.featureGroup(marker_array);
 
 	map.fitBounds(group.getBounds()).setZoom(7);
