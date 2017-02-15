@@ -27,7 +27,7 @@ class AppController extends Controller {
 		//set the project Persistent Names for the toolbar.
         $projects = array();
         foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
-			$projects[] = array('Persistent Name' => $name);
+			$projects[] = array('Persistent Name' => ucfirst($name) );
         }
 
         if (substr($this->request->url, 0, 3) == 'api')

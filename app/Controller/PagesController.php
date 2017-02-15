@@ -46,14 +46,10 @@ class PagesController extends AppController {
 				if(empty($path[1])){
 					$this->redirect('/');
 				}
-				$pKid = array_pop($path);
+				$pName = array_pop($path);
 				$count = count($path);
-				//make sure it is a real project
-				$fields = array('Name');
-				$kora = new General_Search(PROJECT_SID, "kid", "=", $pKid, $fields);
-				$project = json_decode($kora->return_json(), true);
-
-				if(empty($project)){    //not a real project to redirect.
+				
+				if( !array_key_exists(strtolower($pName), $GLOBALS['PID_ARRAY']) ){  //make sure bootstrap has this project info
 					$this->redirect('/');
 				}
 			}

@@ -169,23 +169,6 @@
 </html>
 
 <script>
-//add the project kid to the resources url.
-var href = $('#resources').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/<?php echo $kid; ?>';
-$('#resources').attr('href', href);
-
-//add project kid to the collections url.
-var href = $('#collections').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/<?php echo $kid; ?>';
-$('#collections').attr('href', href);
-
-//add project kid to the search url.
-var href = $('#search').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/<?php echo $kid; ?>';
-$('#search').attr('href', href);
 
 if( $('#menu').html() != 'Login / Register' ){  //remove the login message if logged in
     $('.login_msg').remove();
