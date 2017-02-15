@@ -24,15 +24,10 @@ class AppController extends Controller {
 
     public function beforeFilter() {
 
-        $projectstemp = array();
-        foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
-            $fields = array('Geolocation', "Persistent Name", "Description", "Name");
-            $kora = new General_Search($pid, $GLOBALS['PROJECT_SID_ARRAY'][$name], 'kid', '!=', '0', $fields);
-            $projectstemp[] = json_decode($kora->return_json(), true);
-        }
+		//set the project Persistent Names for the toolbar.
         $projects = array();
-        foreach($projectstemp as $value){
-            $projects[] = reset($value);
+        foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
+			$projects[] = array('Persistent Name' => $name);
         }
 
         if (substr($this->request->url, 0, 3) == 'api')
