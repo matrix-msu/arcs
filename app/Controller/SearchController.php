@@ -492,7 +492,6 @@ class SearchController extends AppController {
             $pKid = $this->request->query['pKid'];
         }
 
-
         //Josh- Collections searches for resources
         ///////////////////////////////////////////////////////
         $catchcollections = 1;
@@ -552,7 +551,13 @@ class SearchController extends AppController {
                 $more_results = 1;
                 array_pop($test);
             }
-
+			
+			$pKid = explode('/', $_SERVER['HTTP_REFERER']);
+			$pKid = array_pop($pKid);
+			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
+			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
+			$pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
+			
             $response['results'] = array();
             $first = 1;
             foreach( $test as $row){
@@ -568,7 +573,7 @@ class SearchController extends AppController {
 
                 $fields = array('Title','Type','Resource Identifier');
                 $query_array = explode(",", $query);
-                $kora = new General_Search(RESOURCE_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
 
                 $r = $resource[$temp_kid];
@@ -598,7 +603,7 @@ class SearchController extends AppController {
 
                 //grab all pages with the resource identifier
                 $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
-                $kora = new Advanced_Search(PAGES_SID, $fields);
+                $kora = new Advanced_Search($pid, $pageSid, $fields);
 
                 if( $resource_type == 'Field journal' ) {
                     $temp_array['resource-type'] = $resource_type;
@@ -837,35 +842,6 @@ class SearchController extends AppController {
         $response['total'] = count($response['results']);
         $this->json(200, $response);
     }
-
-    //get all resource kids a project has
-    public static function getProjectResourceKids($pKid) {
-
-        //get all seasons based on project kid
-        $fields = array('Project Associator');
-        $kora = new General_Search(SEASON_SID, "Project Associator", "=", $pKid, $fields);
-        $seasons = json_decode($kora->return_json(), true);
-        
-        //get an array of the seasons
-        $seasonArray = array_keys($seasons);
-        
-        //get all excavations based on the seasons.
-        $fields = array('Season Associator');
-        $kora = new General_Search(SURVEY_SID, "Season Associator", "IN", $seasonArray, $fields);
-        $surveys = json_decode($kora->return_json(), true);
-
-        //get an excavation array.
-        $surveyArray = array_keys($surveys);
-
-        //get all resources based on the excavations and seasons.
-        $fields = array("Title");
-        $kora = new Advanced_Search(RESOURCE_SID, $fields);
-        $kora->add_double_clause_or("Excavation - Survey Associator", "IN", $surveyArray,
-            "Season Associator", "IN", $seasonArray);
-
-        return array_keys(json_decode($kora->search(), true));
-    }
-
 
 
     /**

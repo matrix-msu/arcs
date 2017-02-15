@@ -43,7 +43,7 @@ class CollectionsController extends AppController {
 
         $path = func_get_args();
 
-        $resources = $this->getProjectResources($path[0]);
+        //$resources = $this->getProjectResources($path[0]);
 
         $this->Collection->recursive = -1;
 
@@ -57,7 +57,7 @@ class CollectionsController extends AppController {
                     array( 'Collection.public' => '2'),
                     array( 'Collection.public' => '3'),
                     array( 'Collection.user_id' => $user_id)
-                ), 'resource_kid' => $resources),
+                ) ),
                 'group' => 'collection_id'
             ));
 
@@ -82,8 +82,7 @@ class CollectionsController extends AppController {
         }else { //not signed in
             $collections = $this->Collection->find('all', array(
                 'order' => 'Collection.modified DESC',
-                'conditions' => array('Collection.public' => '1',  //only get public collections
-                                      'resource_kid' => $resources),
+                'conditions' => array('Collection.public' => '1'),  //only get public collections
                 'group' => 'collection_id'
             ));
         }
@@ -316,7 +315,7 @@ class CollectionsController extends AppController {
             //return $this->request->query['pKid'];
             //exit();
 
-            $resources = $this->getProjectResources( $this->request->query['pKid'] );
+            //$resources = $this->getProjectResources( $this->request->query['pKid'] );
 
             if ($user_id !== null) { //signed in
                 $collections = $this->Collection->find('all', array(
@@ -326,7 +325,7 @@ class CollectionsController extends AppController {
                         array('Collection.public' => '2'),
                         array('Collection.public' => '3'),
                         array('Collection.user_id' => $user_id)
-                    ), 'resource_kid' => $resources),
+                    ) ),
                     'group' => 'collection_id'
                 ));
 
@@ -351,8 +350,7 @@ class CollectionsController extends AppController {
             } else { //not signed in
                 $collections = $this->Collection->find('all', array(
                     'order' => 'Collection.modified DESC',
-                    'conditions' => array('Collection.public' => '1',  //only get public collections
-                        'resource_kid' => $resources),
+                    'conditions' => array('Collection.public' => '1' ),  //only get public collections
                     'group' => 'collection_id'
                 ));
             }
