@@ -94,31 +94,31 @@ define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
 define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
 
 //new bootstrap setup
-$PID_ARRAY = array(
+$GLOBALS['PID_ARRAY'] = array(
     'isthmia' => 123,
     'dummy' => 168
 );
-$PROJECT_SID_ARRAY = array(
+$GLOBALS['PROJECT_SID_ARRAY'] = array(
     'isthmia' => 734,
     'dummy' => 911
 );
-$SEASON_SID_ARRAY = array(
+$GLOBALS['SEASON_SID_ARRAY'] = array(
     'isthmia' => 735,
     'dummy' => 913
 );
-$SURVEY_SID_ARRAY = array(
+$GLOBALS['SURVEY_SID_ARRAY'] = array(
     'isthmia' => 740,
     'dummy' => 914
 );
-$RESOURCE_SID_ARRAY = array(
+$GLOBALS['RESOURCE_SID_ARRAY'] = array(
     'isthmia' => 736,
     'dummy' => 915
 );
-$PAGES_SID_ARRAY = array(
+$GLOBALS['PAGES_SID_ARRAY'] = array(
     'isthmia' => 738,
     'dummy' => 916
 );
-$SUBJECT_SID_ARRAY = array(
+$GLOBALS['SUBJECT_SID_ARRAY'] = array(
     'isthmia' => 739,
     'dummy' => 917
 );
