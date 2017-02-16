@@ -167,7 +167,7 @@ var PAGES = [ <?php $text=''; foreach($pages as $page){ $text=$text."'". json_en
 
 var PAGESOBJECT = <?php echo json_encode($pages); ?>;
 var PROJECT_KID = "<?php echo $project['kid']; ?>"
-var PROJECT_NAME = "<?php echo $project['Persistent Name']; ?>"
+var PROJECT_NAME = "<?php echo strtolower(str_replace(' ', '_', $project['Persistent Name'])); ?>"
 var KORA_FILES_URI = "<?php echo KORA_FILES_URI; ?>"
 
 var annotateData = {
