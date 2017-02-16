@@ -11,11 +11,21 @@ JST["admin/users"] = "<table class=\"table table-striped table-bordered\">  <tr>
 JST["collections/list"] = "<% _.each(collections, function(c, i) { %><% if (i == -1) { %>  <details data-id=\"<%= c.collection_id %>\" class=\"open back-color\" open=\"open\"><% } else { %>  <details data-id=\"<%= c.collection_id %>\" class=\"closed back-color\"><% } %>    <summary>      <h3><%= c.title %></h3>      <h4><%= c.user_name %></h4>      <h5><%= relativeDate(new Date(c.modified)) %></h5>    </summary>    <div class=\"results\"></div>  </details><% }) %>";
 
 JST["home/details"] = "<ul class=\"resource-thumbs\"><% _.each(resources, function(r, i) { %>  <li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">  <% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/' + r.kid }else{ temp = arcs.baseURL + 'resource/' + r.kid } %>  <a href=\"<%= temp %>\">      <img src=\"<%= r.thumb %>\" alt=\"resource\" />   </a>    <a class=\"resource-title\" href=\"<%= temp %>\"><%= r.title %><br /><span class='resource-type'><%= r.type %></a>  </li><% }) %><% if (!resources.length) { %>  <li>    <i class=\"icon-exclamation-sign\"></i> No Results Found  </li><% } else if (1) { %>  <li class=\"resource-thumb\">    <% if (typeof searchURL != \"undefined\") { %>      <div class=\"btn-show-all\"><a><img src=\"<%= arcs.baseURL + 'img/SeeAll.svg' %>\" alt=\"SeeAll.svg\"/></a><a><i class=\"icon-share-alt\"></i><p class=\"show-all-btn-text\" style=\"margin-top: 12px;margin-bottom: 0px;color: #6D6E70;font-size: 16px;font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\">SHOW ALL</p><br /></a></div>    <% } else { %>      <a href='<%= arcs.baseURL + 'search/type:\"' + resources[0].type + '\"' %>'>        <i class=\"icon-share-alt\"></i> Show all      </a>    <% } %>  </li><% } %></ul>";
-/*
-JST["search/grid"] = "<% _.each(results, function(r, i) { %>  <a href='../resource/<%= r.kid %>' class='resource-item-container' data-id='<%= r.kid %>'>  <li class='flex-item'><img class='flex-img' src='<%= r.thumb %>'></li>  <div class='resource-title'><%= r.Title %></div>  <div class='resource-type'><%= r.Type %></div>  <div class='icon-flag'></div>  <div class='search-icon-edit'></div>  <div class='icon-in-collection'></div>  <div class='icon-discussed'></div>  <div class='icon-tagged'></div>  </a>  <% }) %>";
-*/
 
-JST["search/grid"] = "<% _.each(results, function(r, i) { %>  <div class='resource-item-container result' data-id='<%= r.kid %>'>  <li class='flex-item img-wrapper'><img class='flex-img' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'></li>  <span class='select-button' style='display:none;'>SELECT</span>  <a href='../resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>  <div class='resource-type'><%= r.Type %></div></a>  <div class='icon-flag'></div>  <div class='search-icon-edit'></div>  <div class='icon-in-collection'></div>  <div class='icon-discussed'></div>  <div class='icon-tagged'></div>  </div>  <% }) %>";
+JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
+  "<li class='resource-thumb'data-id='<%= r.kid %>'> ",
+    " <a href='../resource/<%= r.kid %>'> <img class='' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'> <span class='select-button' style='display:none;'>SELECT</span> ",
+    "<div class='resource-title'><%= r.Title %></div>",
+    "<div class='resource-type'><%= r.Type %></div> </a>",
+    "<div class='icon-flag'></div>",
+    "<div class='search-icon-edit'></div>",
+    " <div class='icon-in-collection'></div>",
+    "<div class='icon-discussed'></div>",
+    "<div class='icon-tagged'></div>",
+  "</li>"
+].join("\n") + "<% }) %>";
+
+// JST["search/grid"] = "<% _.each(results, function(r, i) { %>  <div class='resource-item-container result' data-id='<%= r.kid %>'>  <li class='flex-item img-wrapper'><img class='flex-img' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'></li>  <span class='select-button' style='display:none;'>SELECT</span>  <a href='../resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>  <div class='resource-type'><%= r.Type %></div></a>  <div class='icon-flag'></div>  <div class='search-icon-edit'></div>  <div class='icon-in-collection'></div>  <div class='icon-discussed'></div>  <div class='icon-tagged'></div>  </div>  <% }) %>";
 
 JST["search/help-toggle"] = "<i class=\"search-help-btn icon-info-sign\" rel=\"tooltip\"   data-placement=\"top\" data-original-title=\"Show Search Help\"></i>";
 
