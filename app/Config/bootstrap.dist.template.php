@@ -96,31 +96,31 @@ define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
 //new bootstrap setup
 $GLOBALS['PID_ARRAY'] = array(
     'isthmia' => 123,
-    'dummy' => 168
+    'grotto tiberri' => 168
 );
 $GLOBALS['PROJECT_SID_ARRAY'] = array(
     'isthmia' => 734,
-    'dummy' => 911
+    'grotto tiberri' => 911
 );
 $GLOBALS['SEASON_SID_ARRAY'] = array(
     'isthmia' => 735,
-    'dummy' => 913
+    'grotto tiberri' => 913
 );
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
     'isthmia' => 740,
-    'dummy' => 914
+    'grotto tiberri' => 914
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
     'isthmia' => 736,
-    'dummy' => 915
+    'grotto tiberri' => 915
 );
 $GLOBALS['PAGES_SID_ARRAY'] = array(
     'isthmia' => 738,
-    'dummy' => 916
+    'grotto tiberri' => 916
 );
 $GLOBALS['SUBJECT_SID_ARRAY'] = array(
     'isthmia' => 739,
-    'dummy' => 917
+    'grotto tiberri' => 917
 );
 $GLOBALS['TOKEN_ARRAY'] = array(
     123 => "8b88eecedaa2d3708ebec77a",

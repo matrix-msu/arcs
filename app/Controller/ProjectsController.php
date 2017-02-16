@@ -10,7 +10,8 @@
  */
  require_once(KORA_LIB . "Project.php");
  require_once(KORA_LIB . "General_Search.php");
- 
+ require_once(KORA_LIB . "Advanced_Search.php");
+
  use Lib\Kora\Project;
 
 class ProjectsController extends AppController {
@@ -83,27 +84,23 @@ class ProjectsController extends AppController {
 
         $user = "";
 		$pass = "";
-	
         $project = new Project($proj);
-		$projectResourceKids = $project->getProjectResources();
+
+        $pid = $GLOBALS['PID_ARRAY'][strtolower($proj)];
+        $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($proj)];
+        $fields = array("Title","Type","Resource Identifier", "systimestamp");
+        $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+        $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
+        $kora->add_clause("kid", "!=", '0');
+        $server_output = json_decode($kora->search(), true);
+
+        $projectResourceKids = $project->getProjectResources(); //use this for collections, might be removed.
 
 		$recent = array();
-		$size = sizeof($projectResourceKids)-1;
-		for($x=0; $x<8; $x++){
-			$recent[] = $projectResourceKids[$size-$x];
-		}
-		//print_r($recent);
-		//exit();
-		$server_output = $project->getRecent($recent);
-		//print_r($server_output);
-		//exit();
 
         $this->set("name",$project->get_name());
         $this->set("description",$project->get_description());
         $this->set("kid",$project->get_kid());
-        //$this->set("recently_added", $project->get_recent());
-
-         //print_r($server_output);//exit();
     
         // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
