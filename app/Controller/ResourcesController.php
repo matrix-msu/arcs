@@ -159,8 +159,6 @@ class ResourcesController extends AppController {
         $resource = json_decode($kora->return_json(), true);
         $resource = $resource[$id];
 
-        $resource_id = $resource['Resource Identifier']; //used for subjects
-
         //grab all pages with the resource identifier
         $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
         $fields = array('ALL');
@@ -173,7 +171,9 @@ class ResourcesController extends AppController {
         $firstPage = array_values($pages)[0]['kid'];
 
         // Shifting to create thumbnails for every page
+        $pageKids = array();
         foreach($pages as $page) {
+            $pageKids[] = $page['kid'];
             $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
             $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
         }
@@ -206,10 +206,10 @@ class ResourcesController extends AppController {
 
         // SOO - Subject of Observation
         $sid = $GLOBALS['SUBJECT_SID_ARRAY'][strtolower($pName)];
-        $query = "Resource Identifier,=,".$resource_id; // use this particular resource identifier
+        $query = "Pages Associator,IN"; // use this particular resource identifier
         $fields = array('ALL');
         $query_array = explode(",", $query);
-        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $pageKids, $fields);
         $subject = json_decode($kora->return_json(), true);
 
         //season
@@ -255,14 +255,6 @@ class ResourcesController extends AppController {
                 $resource['Resource']['context'] . '/' . $id
             );
         }
-
-        //Set kid for viewer
-        //moved to line 260
-        /*if (isset($pages[$firstPage]['kid'])) {
-            $this->set(array('kid' =>$pages[$firstPage]['kid']));
-        } else {
-            $this->set(array('kid' => $resource['kid']));
-        }*/
 
         $collections = json_encode($this->Collection->find('all', array(
             'fields'    => array('DISTINCT collection_id', 'title', 'user_name'),
