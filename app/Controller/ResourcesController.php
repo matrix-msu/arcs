@@ -146,8 +146,12 @@ class ResourcesController extends AppController {
      *                              collection view when the resource has a
      *                              non-null context attribute.
      */
-    public function viewer($pName, $id, $page=0, $ignore_ctx=false) {
+    public function viewer($id, $page=0, $ignore_ctx=false) {
 
+        $pid = $id;
+
+        print_r($pid);
+        die;
         $pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
 
         //resource

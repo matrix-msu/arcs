@@ -73,7 +73,7 @@
 			 </div>
 			<div id="projectsMenu" class="projects-menu">
 			    <?php foreach($projects as $p): ?>
-				<a href="<?php echo$this->Html->url('/projects/single_project/' . $p['Persistent Name'])?>"><?php echo $p['Persistent Name'] ?></a>
+				<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent Name'])) )?>"><?php echo $p['Persistent Name'] ?></a>
 			    <?php endforeach ?>
 			</div>
 
@@ -160,7 +160,7 @@
 			 </div>
 			<div id="projectsMenu" class="projects-menu homeProject">
 				<?php foreach($projects as $p): ?>
-                <a href="<?php echo$this->Html->url('/projects/single_project/' . $p['Persistent Name'])?>"><?php echo $p['Persistent Name'] ?></a>
+                <a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent Name'])) )?>"><?php echo $p['Persistent Name'] ?></a>
                 <?php endforeach ?>
 			</div>
 		</div>
