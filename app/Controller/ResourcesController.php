@@ -148,11 +148,8 @@ class ResourcesController extends AppController {
      */
     public function viewer($id, $page=0, $ignore_ctx=false) {
 
-        $pid = $id;
-
-        print_r($pid);
-        die;
-        $pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
+        $pid = hexdec( explode('-', $id)[0] );
+        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
 
         //resource
         $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];

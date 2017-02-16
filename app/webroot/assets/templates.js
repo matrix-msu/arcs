@@ -13,7 +13,7 @@ JST["collections/list"] = "<% _.each(collections, function(c, i) { %><% if (i ==
 JST["home/details"] = "<ul class=\"resource-thumbs\">"+
     "<% _.each(resources, function(r, i) { %>" + [
       "<li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">",
-        "<% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/'+ $('#resources').attr('href').split('/').pop()+ '/' + r.kid }else{ temp = arcs.baseURL + 'resource/'+ $('#resources').attr('href').split('/').pop() + '/' + r.kid } %>",
+        "<% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/'+ r.kid }else{ temp = arcs.baseURL + 'resource/'+ r.kid } %>",
         "<a href=\"<%= temp %>\"> <img src=\"<%= r.thumb %>\" alt=\"resource\" />   </a>",
         "<a class=\"resource-title\" href=\"<%= temp %>\"><%= r.title %><br /><span class='resource-type'><%= r.type %></a>",
       "</li>",
