@@ -146,22 +146,26 @@ class ResourcesController extends AppController {
      *                              collection view when the resource has a
      *                              non-null context attribute.
      */
-    public function viewer($id, $page=0, $ignore_ctx=false) {
+    public function viewer($pName, $id, $page=0, $ignore_ctx=false) {
+
+        $pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
 
         //resource
+        $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
         $query = "kid,=,".$id;
         $fields = array('ALL');
         $query_array = explode(",", $query);
-        $kora = new General_Search(RESOURCE_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         $resource = json_decode($kora->return_json(), true);
         $resource = $resource[$id];
 
         $resource_id = $resource['Resource Identifier']; //used for subjects
 
         //grab all pages with the resource identifier
+        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
         $fields = array('ALL');
         $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
-        $kora = new Advanced_Search(PAGES_SID, $fields, 0, 0, $sort);
+        $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
         $kora->add_clause("Resource Associator", "=", $id);
         $pages = json_decode($kora->search(), true);
 
@@ -177,12 +181,13 @@ class ResourcesController extends AppController {
         //survey
         $surveys = array();
         $seasonKID = '';
+        $sid = $GLOBALS['SURVEY_SID_ARRAY'][strtolower($pName)];
         if(is_array($resource['Excavation - Survey Associator'])){
           foreach ($resource['Excavation - Survey Associator'] as $kid) {
               $query = "kid,=,".$kid;
               $fields = array('ALL');
               $query_array = explode(",", $query);
-              $kora = new General_Search(SURVEY_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+              $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
               $survey = json_decode($kora->return_json(), true);
 
               $survey = $survey[$kid];
@@ -200,19 +205,20 @@ class ResourcesController extends AppController {
         }
 
         // SOO - Subject of Observation
+        $sid = $GLOBALS['SUBJECT_SID_ARRAY'][strtolower($pName)];
         $query = "Resource Identifier,=,".$resource_id; // use this particular resource identifier
         $fields = array('ALL');
         $query_array = explode(",", $query);
-        $kora = new General_Search(SUBJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         $subject = json_decode($kora->return_json(), true);
 
         //season
         $projectKid = '';
-
+        $sid = $GLOBALS['SEASON_SID_ARRAY'][strtolower($pName)];
         $query = "kid,=,".$seasonKID;
         $fields = array('ALL');
         $query_array = explode(",", $query);
-        $kora = new General_Search(SEASON_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         $season = json_decode($kora->return_json(), true);
         $season = $season[$seasonKID];
 
@@ -221,23 +227,14 @@ class ResourcesController extends AppController {
         }
 
         //project
+        $sid = $GLOBALS['PROJECT_SID_ARRAY'][strtolower($pName)];
         $query = "kid,=,".$projectKid;
         $fields = array('ALL');
         $query_array = explode(",", $query);
-        $kora = new General_Search(PROJECT_SID, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         $project = json_decode($kora->return_json(), true);
 
-//        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PROJECT_SID."&token=".TOKEN."&display=".$display."&query=".
-//            urlencode($query).'&fields=ALL';
-//        ///initialize post request to KORA API using curl
-//        $ch = curl_init($url);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-//        //capture results and display
-//        $project = json_decode(curl_exec($ch), true);
         $project = $project[$projectKid];
-        //$project['url'] = $url;
-
         $resource['thumb'] = $pages[$firstPage]['thumb'];
 
         $public = isset($resource['Resource']['public']) ? $resource['Resource']['public'] : false;

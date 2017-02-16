@@ -167,6 +167,7 @@ var PAGES = [ <?php $text=''; foreach($pages as $page){ $text=$text."'". json_en
 
 var PAGESOBJECT = <?php echo json_encode($pages); ?>;
 var PROJECT_KID = "<?php echo $project['kid']; ?>"
+var PROJECT_NAME = "<?php echo $project['Persistent Name']; ?>"
 var KORA_FILES_URI = "<?php echo KORA_FILES_URI; ?>"
 
 var annotateData = {
@@ -2124,19 +2125,19 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 	//add the project kid to the resources url.
 	var href = $('#resources').attr('href');
 	href = href.split('/'); href.pop(); href = href.join('/');
-	var href = href+'/'+PROJECT_KID;
+	var href = href+'/'+PROJECT_NAME;
 	$('#resources').attr('href', href);
 
 	//add project kid to the collections url.
 	var href = $('#collections').attr('href');
 	href = href.split('/'); href.pop(); href = href.join('/');
-	var href = href+'/'+PROJECT_KID;
+	var href = href+'/'+PROJECT_NAME;
 	$('#collections').attr('href', href);
 
 	//add project kid to the search url.
 	var href = $('#search').attr('href');
 	href = href.split('/'); href.pop(); href = href.join('/');
-	var href = href+'/'+PROJECT_KID;
+	var href = href+'/'+PROJECT_NAME;
 	$('#search').attr('href', href);
 
 </script>

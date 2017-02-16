@@ -10,7 +10,25 @@ JST["admin/users"] = "<table class=\"table table-striped table-bordered\">  <tr>
 
 JST["collections/list"] = "<% _.each(collections, function(c, i) { %><% if (i == -1) { %>  <details data-id=\"<%= c.collection_id %>\" class=\"open back-color\" open=\"open\"><% } else { %>  <details data-id=\"<%= c.collection_id %>\" class=\"closed back-color\"><% } %>    <summary>      <h3><%= c.title %></h3>      <h4><%= c.user_name %></h4>      <h5><%= relativeDate(new Date(c.modified)) %></h5>    </summary>    <div class=\"results\"></div>  </details><% }) %>";
 
-JST["home/details"] = "<ul class=\"resource-thumbs\"><% _.each(resources, function(r, i) { %>  <li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">  <% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/' + r.kid }else{ temp = arcs.baseURL + 'resource/' + r.kid } %>  <a href=\"<%= temp %>\">      <img src=\"<%= r.thumb %>\" alt=\"resource\" />   </a>    <a class=\"resource-title\" href=\"<%= temp %>\"><%= r.title %><br /><span class='resource-type'><%= r.type %></a>  </li><% }) %><% if (!resources.length) { %>  <li>    <i class=\"icon-exclamation-sign\"></i> No Results Found  </li><% } else if (1) { %>  <li class=\"resource-thumb\">    <% if (typeof searchURL != \"undefined\") { %>      <div class=\"btn-show-all\"><a><img src=\"<%= arcs.baseURL + 'img/SeeAll.svg' %>\" alt=\"SeeAll.svg\"/></a><a><i class=\"icon-share-alt\"></i><p class=\"show-all-btn-text\" style=\"margin-top: 12px;margin-bottom: 0px;color: #6D6E70;font-size: 16px;font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\">SHOW ALL</p><br /></a></div>    <% } else { %>      <a href='<%= arcs.baseURL + 'search/type:\"' + resources[0].type + '\"' %>'>        <i class=\"icon-share-alt\"></i> Show all      </a>    <% } %>  </li><% } %></ul>";
+JST["home/details"] = "<ul class=\"resource-thumbs\">"+
+    "<% _.each(resources, function(r, i) { %>" + [
+      "<li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">",
+        "<% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/'+ $('#resources').attr('href').split('/').pop()+ '/' + r.kid }else{ temp = arcs.baseURL + 'resource/'+ $('#resources').attr('href').split('/').pop() + '/' + r.kid } %>",
+        "<a href=\"<%= temp %>\"> <img src=\"<%= r.thumb %>\" alt=\"resource\" />   </a>",
+        "<a class=\"resource-title\" href=\"<%= temp %>\"><%= r.title %><br /><span class='resource-type'><%= r.type %></a>",
+      "</li>",
+    "<% }) %><% if (!resources.length) { %>",
+      "<li><i class=\"icon-exclamation-sign\"></i> No Results Found  </li>",
+    "<% } else if (1) { %>",
+      "<li class=\"resource-thumb\">",
+      "<% if (typeof searchURL != \"undefined\") { %>",
+      "<div class=\"btn-show-all\"><a><img src=\"<%= arcs.baseURL + 'img/SeeAll.svg' %>\" alt=\"SeeAll.svg\"/></a>",
+      "<a><i class=\"icon-share-alt\"></i><p class=\"show-all-btn-text\" style=\"margin-top: 12px;margin-bottom: 0px;color: #6D6E70;font-size: 16px;font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\">SHOW ALL</p><br /></a></div>",
+    "<% } else { %>",
+      "<a href='<%= arcs.baseURL + 'search/type:\"' + resources[0].type + '\"' %>'>",
+      "<i class=\"icon-share-alt\"></i> Show all      </a>",
+    "<% } %>  </li>"
+    ].join("\n") + "<% } %></ul>";
 
 JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
   "<li class='resource-thumb'data-id='<%= r.kid %>'> ",

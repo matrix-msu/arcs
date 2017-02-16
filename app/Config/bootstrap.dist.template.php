@@ -122,6 +122,10 @@ $GLOBALS['SUBJECT_SID_ARRAY'] = array(
     'isthmia' => 739,
     'dummy' => 917
 );
+$GLOBALS['TOKEN_ARRAY'] = array(
+    123 => "8b88eecedaa2d3708ebec77a",
+    168 => "8b88eecedaa2d3708ebec77a"
+);
 
 define ("TOKEN"        ,  "TOKEN_REPLACE");
 
