@@ -552,15 +552,14 @@ class SearchController extends AppController {
                 array_pop($test);
             }
 			
-			$pKid = explode('/', $_SERVER['HTTP_REFERER']);
-			$pKid = array_pop($pKid);
-			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
-			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
-			$pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
-			
             $response['results'] = array();
             $first = 1;
             foreach( $test as $row){
+                $pid = hexdec( explode('-', $row['resource_kid'])[0] );
+                $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+                $resourceSid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+                $pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+
                 $temp_array = array();
                 if( $first == 1 ) {
                     $temp_array['more_results'] = $more_results;
@@ -573,7 +572,7 @@ class SearchController extends AppController {
 
                 $fields = array('Title','Type','Resource Identifier');
                 $query_array = explode(",", $query);
-                $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $kora = new General_Search($pid, $resourceSid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
 
                 $r = $resource[$temp_kid];
