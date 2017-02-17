@@ -43,7 +43,7 @@ class CollectionsController extends AppController {
 
         $path = func_get_args();
 
-        //$resources = $this->getProjectResources($path[0]);
+        $projectResourceKids = $this->getProjectResources($path[0]);
 
         $this->Collection->recursive = -1;
 
@@ -57,7 +57,7 @@ class CollectionsController extends AppController {
                     array( 'Collection.public' => '2'),
                     array( 'Collection.public' => '3'),
                     array( 'Collection.user_id' => $user_id)
-                ) ),
+                ), 'resource_kid' => $projectResourceKids),
                 'group' => 'collection_id'
             ));
 
@@ -82,7 +82,10 @@ class CollectionsController extends AppController {
         }else { //not signed in
             $collections = $this->Collection->find('all', array(
                 'order' => 'Collection.modified DESC',
-                'conditions' => array('Collection.public' => '1'),  //only get public collections
+                'conditions' => array(
+                    'Collection.public' => '1',
+                    'resource_kid' => $projectResourceKids
+                ),  //only get public collections
                 'group' => 'collection_id'
             ));
         }
@@ -108,34 +111,16 @@ class CollectionsController extends AppController {
     }
 
     /**
-     *  get all resource kids in a project based on the project kid.
+     *  get all resource kids in a project based on the project name.
      */
-    protected function getProjectResources($pKid){
+    protected function getProjectResources($pName){
 
-        //get all seasons based on project kid
-        $fields = array('Project Associator');
-        $kora = new General_Search(SEASON_SID, "Project Associator", "=", $pKid, $fields);
-        $seasons = json_decode($kora->return_json(), true);
-
-        //get an array of the seasons
-        $seasonArray = array_keys($seasons);
-
-        //get all excavations based on the seasons.
-        $fields = array('Season Associator');
-        $kora = new General_Search(SURVEY_SID, "Season Associator", "IN", $seasonArray, $fields);
-        $surveys = json_decode($kora->return_json(), true);
-
-        //get an excavation array.
-        $surveyArray = array_keys($surveys);
-
-        //get 8 newest resources based on the excavations and seasons.
-        $fields = array("Title");
-        $kora = new Advanced_Search(RESOURCE_SID, $fields);
-        $kora->add_clause("Excavation - Survey Associator", "IN", $surveyArray);
-        $kora->add_clause("Season Associator", "IN", $seasonArray);
-
-        //array_keys to return only kids.
-        return array_keys(json_decode($kora->search(), true));
+        $pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
+        $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+        $fields = array('Title');
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $allResources = json_decode($kora->return_json(), true);
+        return array_keys($allResources);
     }
 
     /**
@@ -312,10 +297,10 @@ class CollectionsController extends AppController {
 
         if (isset($this->request->query['pKid'])) {
 
-            //return $this->request->query['pKid'];
-            //exit();
+            $pid = hexdec( explode('-', $this->request->query['pKid'])[0] );
+            $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
 
-            //$resources = $this->getProjectResources( $this->request->query['pKid'] );
+            $projectResourceKids = $this->getProjectResources($pName);
 
             if ($user_id !== null) { //signed in
                 $collections = $this->Collection->find('all', array(
@@ -325,7 +310,7 @@ class CollectionsController extends AppController {
                         array('Collection.public' => '2'),
                         array('Collection.public' => '3'),
                         array('Collection.user_id' => $user_id)
-                    ) ),
+                    ), 'resource_kid' => $projectResourceKids),
                     'group' => 'collection_id'
                 ));
 
@@ -350,7 +335,10 @@ class CollectionsController extends AppController {
             } else { //not signed in
                 $collections = $this->Collection->find('all', array(
                     'order' => 'Collection.modified DESC',
-                    'conditions' => array('Collection.public' => '1' ),  //only get public collections
+                    'conditions' => array(
+                        'Collection.public' => '1',
+                        'resource_kid' => $projectResourceKids
+                    ),  //only get public collections
                     'group' => 'collection_id'
                 ));
             }
@@ -365,22 +353,6 @@ class CollectionsController extends AppController {
             return $this->json(200, $retval);
         }else return '';
     }
-
-//    /**
-//     * Return an array of (user_id, user_name) pairs. Collections page filter by author list
-//     */
-//    public function distinctUsers() {
-//        //if (!$this->request->is('get')) throw new MethodNotAllowedException();
-//
-//        //todo-move this to not be ajax if possible!!!!!!!
-//        //put in the first controller.
-//        if (isset($this->request->query['pKid'])) {
-//
-//
-//        }else{
-//            return '';
-//        }
-//    }
 
     /**
      * Complete collection titles.
