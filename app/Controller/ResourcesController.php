@@ -511,33 +511,23 @@ class ResourcesController extends AppController {
     }
 
     /**
-     * Lightweight version of what viewer() does.
-     * Instead of returning the entire page content though
-     *
-     * return only the image for viewer-window and content for right sidebar
+     * Return Page info based on page kid*
+     * @param string $id = page kid
      */
     public function loadNewResource($id) {
         $this->autoRender = false;
 
-        //Get the Images
-        $query = "kid,=,".$id;
-        $user = "";
-        $pass = "";
-        $display = "json";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        //capture results and map to array
-        $page = json_decode(curl_exec($ch), true);
-        $p = $page[$id];
-        $p['kora_url'] = KORA_FILES_URI.PID."/".PAGES_SID."/";
+        $pid = hexdec( explode('-', $id)[0] );
+        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
-        //$this->_View->viewVars['kid'] = $p['kid'];
+        $fields = array('ALL');
+        $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
+        $page = json_decode($kora->return_json(), true);
+        $page = $page[$id];
+        $page['kora_url'] = KORA_FILES_URI.$pid."/".$sid."/";
 
-		// return KORA_FILES_URI.PID."/".PAGES_SID."/".$p['Image Upload']['localName'];
-		return json_encode($p);
+		return json_encode($page);
     }
 
     /**
