@@ -620,7 +620,11 @@ class ResourcesController extends AppController {
 
         foreach($this->request->data['picUrls'] as $url){
             # download file
-            $string = KORA_FILES_URI.PID.'/'.PAGES_SID.'/'.$url;
+            $pid = hexdec( explode('-', $url)[0] );
+            $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+            $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+
+            $string = KORA_FILES_URI.$pid.'/'.$sid.'/'.$url;
             $download_file = file_get_contents( $string );
             $zip->addFromString('images/'.basename($url),$download_file);
         }
