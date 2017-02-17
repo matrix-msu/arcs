@@ -71,7 +71,7 @@
       type = $el.data('type');
       query = encodeURIComponent("Type,=," + type);
       if (type === 'Orphaned') {
-        query = encodeURIComponent('Orphan,=,true') + '&sid=' + arcs.pagesSid;
+        query = encodeURIComponent('Orphan,=,true');
       }
       query2 = arcs.baseURL + 'resources/search?';
       if (limit !== 0) {
@@ -84,7 +84,11 @@
         query2 += "pKid=" + kid + "&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
-        if(typeof response.results[0] == "object" ){
+        if( response.results.length == 0 || response.results == 'No Results'){
+          $el.children('div').html('No Results');
+          return;
+        }
+        if( typeof response.results[0] == "object" ){
           var html;
           html = arcs.tmpl('home/details', {
             resources: response.results,
