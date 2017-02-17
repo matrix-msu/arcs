@@ -913,7 +913,11 @@ $(document).ready(function () {
                 }
             });
     });
+    // Details tab
+    $(".details").click(function () {
+        GetDetails();
 
+    });
 
 
 });

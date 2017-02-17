@@ -406,12 +406,6 @@ $(document).ready(function () {
         $(this).parent().next().find('.metadataEdit').css('cursor', 'pointer');
     });
 
-    // Details tab
-    $(".details").click(function () {
-        GetDetails();
-
-    });
-
     $(".level-tab span .save-btn").click(function() {
         //.log("level tab save btn click");
     });
