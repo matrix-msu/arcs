@@ -38,7 +38,7 @@ class SearchController extends AppController {
      * Display the search page
      */
     public function search($project, $query=null) {
-
+      parent::verifyGlobals($project);
       $title = 'Search';
       if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
@@ -47,16 +47,24 @@ class SearchController extends AppController {
 	    }
 	    echo "<script type='text/javascript'>var globalproject = '".$project."';</script>";
     }
-    
+
     public function simple_search($project,$query="",$page,$perPage) {
-        $options = $this->parseParams();
         $this->autoRender = false;
-        // This array will be used to get results from multiple schemes.
-        $schemes = array(RESOURCE_SID,SUBJECT_SID);
 
         if ($query == ''){
             return $this->emptySearch($options);
-        }else {
+        } else if ($project == "all") {
+          $projects = array_keys($GLOBALS['PID_ARRAY']);
+          $keySearch = new Keyword_Search();
+          $results = array();
+
+          foreach ($projects as $project) {
+            $keySearch->execute($query,$project);
+            $results[$project] = $keySearch->getResultsAsArray();
+          }
+          echo json_encode($results);
+
+        } else {
           $keySearch = new Keyword_Search();
           $keySearch->execute($query,$project);
           $keySearch->print_json();
@@ -551,15 +559,16 @@ class SearchController extends AppController {
                 $more_results = 1;
                 array_pop($test);
             }
-			
+
+			$pKid = explode('/', $_SERVER['HTTP_REFERER']);
+			$pKid = array_pop($pKid);
+			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
+			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
+			$pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
+
             $response['results'] = array();
             $first = 1;
             foreach( $test as $row){
-                $pid = hexdec( explode('-', $row['resource_kid'])[0] );
-                $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-                $resourceSid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
-                $pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
-
                 $temp_array = array();
                 if( $first == 1 ) {
                     $temp_array['more_results'] = $more_results;
@@ -572,7 +581,7 @@ class SearchController extends AppController {
 
                 $fields = array('Title','Type','Resource Identifier');
                 $query_array = explode(",", $query);
-                $kora = new General_Search($pid, $resourceSid, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
 
                 $r = $resource[$temp_kid];
@@ -730,7 +739,7 @@ class SearchController extends AppController {
             $user = "";
             $pass = "";
             $query = $this->request->query['q'];
-			
+
 			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
 			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
 
@@ -742,12 +751,12 @@ class SearchController extends AppController {
             }else{
                 $kora = new Advanced_Search($pid, $sid, array('Title'), 0, 0);
             }
+            //Get resources by type and in the project resource kid array.
+            //$kora->add_double_clause($query_array[0], $query_array[1], $query_array[2],
+            //                            "kid", "IN", $projectKids);
 			$kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
 
-            if( count($resources) == 0 ) {
-                return $this->json(200, array('results'=> 'No Results') );
-            }
             if( $limit == -1 ){
                 $return = array('results'=> array_keys($resources) );
                 return $this->json(200, $return );

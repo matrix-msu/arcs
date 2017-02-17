@@ -61,7 +61,10 @@ class Kora extends AppController{
             $this->The_Clause,
             $this->fields
         );
-        return $this->comprehensive_results;
+        if(is_array($this->comprehensive_results))
+          return $this->comprehensive_results;
+        else
+          return array();
 
     }
 

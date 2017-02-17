@@ -7,10 +7,15 @@ require_once("Resource.php");
 
 require_once("../../app/Controller/SearchController.php");
 
+
 use Lib\Kora;
 use Lib\Resource;
 use Lib\KORA_Clause;
 use \SearchController;
+use arcs_e\ArcsException;
+use \App;
+use \Exception;
+
 
 class Keyword_Search extends Kora{
 
@@ -20,10 +25,11 @@ class Keyword_Search extends Kora{
   protected $excavation_list = array();
   protected $total = 0;
 
+
   /**
   * Constructor
   */
-  function __construct(){
+  function __construct(){;
     //call parent constructor 'kora'
     parent::__construct();
   }
@@ -32,31 +38,34 @@ class Keyword_Search extends Kora{
 
       $time_start = microtime(true);
       $mem_start =  memory_get_usage();
- 
+
       $resourcesFromSOO = $this->search_soo($query,$project);
-      
+
       $clause = $this->clauseGen("OR","LIKE",
         array(
           "Resource Identifier","Type","Earliest Date","Latest Date","Accession Number"
         ),$query
-      
+
       );
       //set up the kora search parameters for keyword search on RESOURCE
-      $this->set_search_parameters($query,$project,RESOURCE_SID,$clause);
+      $pid = parent::getPIDFromProjectName($project);
+      $rid = parent::getResourceSIDFromProjectName($project);
+      $token = parent::getTokenFromProjectName($project);
+      $this->set_search_parameters($query,$pid,$rid,$token,$clause);
 
       //do the keyword search
       $resourcesFromResource = parent::search();
-      
+
       $this->formulatedResult = array_merge($resourcesFromResource,$resourcesFromSOO);
-      
+
       $extra_data = array(
         "Return_Count_SOO"=>count($resourcesFromSOO),
-        "Return_Count_Resource"=>count($resourcesFromResource), 
+        "Return_Count_Resource"=>count($resourcesFromResource),
       );
-        
+
       // traverse the database to include excavation,
       // season and project associations;
-      $this->traverse_insert();
+      $this->traverse_insert($project);
 
       // get resource filters
       $filters = Resource::filter_analysis($this->formulatedResult);
@@ -77,8 +86,11 @@ class Keyword_Search extends Kora{
 
   }
   private function search_soo($query, $project){
-    
+
       //set up the kora search parameters for keyword search on SOO
+      $pid = parent::getPIDFromProjectName($project);
+      $token = parent::getTokenFromProjectName($project);
+
       $clause = $this->clauseGen(
         "OR",
         "LIKE",
@@ -88,36 +100,42 @@ class Keyword_Search extends Kora{
           "Artifact - Structure Period","Artifact - Structure Terminus Ante Quem",
           "Artifact - Structure Terminus Post Quem"
         ),$query
-      ); 
-      $this->set_search_parameters($query,$project,SUBJECT_SID,$clause,array("Pages Associator"));
+      );
+
+      $subject = parent::getSubjectSIDFromProjectName($project);
+      $this->set_search_parameters($query,$pid,$subject,$token,$clause,array("Pages Associator"));
 
       //search on soo level
       $soo = parent::search();
+
       if(empty($soo))
         return array();
 
       $pages = $this->mergeIntoArray($soo,"Pages Associator");
-      
-      $clause = new KORA_Clause("kid","IN",$pages); 
-      $this->set_search_parameters($query,$project,PAGES_SID,$clause,array("Resource Associator")); 
+
+      $clause = new KORA_Clause("kid","IN",$pages);
+      $pageSID = parent::getPageSIDFromProjectName($project);
+      $this->set_search_parameters($query,$pid,$pageSID,$token,$clause,array("Resource Associator"));
+
       $page = parent::search();
 
       if(empty($page))
         return array();
-       
+
       $resources = $this->mergeIntoArray($page, "Resource Associator");
-       
-      $clause = new KORA_Clause("kid","IN",$resources); 
-      $this->set_search_parameters($query,$project,RESOURCE_SID,$clause,NULL); 
+
+      $clause = new KORA_Clause("kid","IN",$resources);
+      $rid = parent::getResourceSIDFromProjectName($project);
+      $this->set_search_parameters($query,$pid,$rid,$token,$clause,NULL);
       $resourcesWithFields = parent::search();
 
- 
-      return $resourcesWithFields;    
+
+      return $resourcesWithFields;
   }
   private function clauseGen($join,$condition,$array,$query){
     if(empty($array))
       return array();
-    
+
     $clauses = array();
     foreach($array as $term){
       $clause = new KORA_Clause($term,$condition,"%$query%");
@@ -129,10 +147,10 @@ class Keyword_Search extends Kora{
     }
     return $joins;
   }
-  /* 
-   * 
+  /*
+   *
    * combines all results into one array.
-   * only the attribute (Kora return field) is merged 
+   * only the attribute (Kora return field) is merged
    * removes all duplicates
    *
    */
@@ -140,17 +158,17 @@ class Keyword_Search extends Kora{
     $return_array = array();
     //combine all results pages into an array
     foreach($input_array as $kid){
-      if(isset($kid[$attribute]) && is_array($kid[$attribute])){  
-     
+      if(isset($kid[$attribute]) && is_array($kid[$attribute])){
+
         $associator = $kid[$attribute];
-        $difference = array_diff($associator,$return_array); 
-     
+        $difference = array_diff($associator,$return_array);
+
         foreach($difference as $one){
           array_push($return_array,$one);
         }
-     
+
       }
-    
+
     }
     //ensure array has no duplicates
     return  array_unique($return_array);
@@ -191,29 +209,23 @@ class Keyword_Search extends Kora{
     @return VOID
     set up the kora search parameters for keyword search
   */
-  private function set_search_parameters($query,$project,$scheme,$clause=NULL,$fields=NULL){
+  private function set_search_parameters($query,$project,$scheme,$token,$clause=NULL,$fields=NULL){
 
-    $this->token = TOKEN;
-    $this->projectMapping = PID;
+    $this->token = $token;
+    $this->projectMapping = $project;
     $this->schemeMapping = $scheme;
 
     $clause1 = new KORA_Clause("ANY", "LIKE", "%".$query."%");
-    
+
     $this->The_Clause = $clause1;
-
-    if($project !== "all" && $scheme === RESOURCE_SID){
-    
-    	$projectResources = SearchController::getProjectResourceKids($project);
-
-    	if(empty($projectResources))
-    		$projectResources = array("none");
-
-   	  $clause2 = new KORA_Clause("kid","IN", $projectResources);
-    	  
-    	$this->The_Clause =new KORA_Clause($clause1,"AND",$clause2);
-    }
     if($clause != NULL){
       $this->The_Clause = $clause;
+    }
+    else if($project !== "all" && $scheme === RESOURCE_SID){
+    	$clause1 = new KORA_Clause("ANY", "LIKE", "%".$query."%");
+    }
+    else {
+
     }
 
     if(empty($fields)){ //default fields
@@ -238,13 +250,20 @@ class Keyword_Search extends Kora{
     @return VOID
     sequence to traverse the data associated with the search
   */
-  protected function traverse_insert(){
+  protected function traverse_insert($project){
 
     if(!empty($this->formulatedResult)){
-        $this->insertPages();
-        $this->insertExcavations();
-        $this->insertSeasons();
-        $this->insertProjects();
+
+        $page = parent::getPageSIDFromProjectName($project);
+        $this->insertPages($page);
+
+        $survey = parent::getSurveySIDProjectName($project);
+        $this->insertExcavations($survey);
+
+        $season = parent::getSeasonSIDFromProjectName($project);
+        $this->insertSeasons($season);
+
+        //$this->insertProjects();
     }
 
   }
@@ -288,11 +307,10 @@ class Keyword_Search extends Kora{
     ...
 
   */
-  protected function getSeasonList(){
+  protected function getSeasonList($sid){
 
     $season = array();
-    $this->projectMapping = PID;
-    $this->schemeMapping = SEASON_SID;
+    $this->schemeMapping = $sid;
     $this->fields = array("Title", "Project Associator");
     $this->The_Clause = new KORA_Clause("kid", "!=", "");
 
@@ -322,11 +340,10 @@ class Keyword_Search extends Kora{
     ...
 
   */
-  protected function getExcavationList(){
+  protected function getExcavationList($survey){
 
     $excavation = array();
-    $this->projectMapping = PID;
-    $this->schemeMapping = SURVEY_SID;
+    $this->schemeMapping = $survey;
     $this->fields = array("Name", "Season Associator","Type");
     $this->The_Clause = new KORA_Clause("kid", "!=", "");
 
@@ -345,10 +362,10 @@ class Keyword_Search extends Kora{
 
   }
 
-  public function insertPages(){
+  public function insertPages($page){
 
       $pageArray = array();
-      $this->schemeMapping = PAGES_SID;
+      $this->schemeMapping = $page;
       $this->fields = array("Image Upload", "Resource Associator");
       $this->The_Clause = new KORA_Clause("kid", "!=" , "");
 
@@ -388,9 +405,9 @@ class Keyword_Search extends Kora{
       }
   }
 
-  private function insertExcavations(){
+  private function insertExcavations($survey){
 
-    $this->excavation_list = self::getExcavationList();
+    $this->excavation_list = self::getExcavationList($survey);
 
     foreach ($this->formulatedResult as $key => $value) {
 
@@ -410,9 +427,9 @@ class Keyword_Search extends Kora{
     }
 
   }
-  private function insertSeasons(){
+  private function insertSeasons($season){
 
-    $this->season_list = self::getSeasonList();
+    $this->season_list = self::getSeasonList($season);
     foreach ($this->formulatedResult as $key => $value) {
 
       $newkey = isset($value["Season Associator"])?
@@ -430,6 +447,7 @@ class Keyword_Search extends Kora{
     }
 
   }
+  //TODO not being used
   private function insertProjects(){
 
     $this->project_list = self::getProjectList();
@@ -446,9 +464,5 @@ class Keyword_Search extends Kora{
           $this->formulatedResult[$key]["Project Name"] = "";
       }
     }
-
   }
-
-
-
 }

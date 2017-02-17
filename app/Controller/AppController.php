@@ -1,14 +1,20 @@
 <?php
 App::uses('Controller', 'Controller');
+
+require_once LIB . "Arcs/ArcsException.php";
+
+use arcs\ArcsException;
+use arcs\ErrorCodes;
 /**
  * Application Controller
  *
- * @package    ARCS
- * @link       http://github.com/calmsu/arcs
- * @copyright  Copyright 2012, Michigan State University Board of Trustees
- * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
+ * @package   ARCS
+ * @link      http://github.com/calmsu/arcs
+ * @copyright Copyright 2012, Michigan State University Board of Trustees
+ * @license   BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-class AppController extends Controller {
+class AppController extends Controller
+{
     public $helpers = array('Html', 'Form', 'Session', 'Assets');
     public $viewClass = 'TwigView.Twig';
     public $uses = array('Job');
@@ -22,18 +28,21 @@ class AppController extends Controller {
         'Access'
     );
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
 
-		//set the project Persistent Names for the toolbar.
+        //set the project Persistent Names for the toolbar.
         $projects = array();
         foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
-			$projects[] = array('Persistent Name' => str_replace('_', ' ', $name) );
+            $projects[] = array('Persistent Name' => str_replace('_', ' ', $name) );
         }
 
-        if (substr($this->request->url, 0, 3) == 'api')
+        if (substr($this->request->url, 0, 3) == 'api') {
             $this->Auth->authenticate = array('Basic');
+        }
 
-        $this->set(array(
+        $this->set(
+            array(
             'user' => array(
                 'loggedIn' => $this->Auth->loggedIn(),
                 'id' => $this->Auth->user('id'),
@@ -52,27 +61,143 @@ class AppController extends Controller {
             'footer' => true,
             'debug' => Configure::read('debug'),
             'projects' => $projects
-        ));
+            )
+        );
 
         $this->RequestHandler->addInputType('json', array('json_decode', true));
 
 
     }
+    public static function verifyGlobals($project)
+    {
+        self::getPIDFromProjectName($project);
+        self::getProjectSIDFromProjectName($project);
+        self::getSeasonSIDFromProjectName($project);
+        self::getSurveySIDProjectName($project);
+        self::getResourceSIDFromProjectName($project);
+        self::getPageSIDFromProjectName($project);
+        self::getSubjectSIDFromProjectName($project);
+        self::getTokenFromProjectName($project);
+    }
+    public static function getPIDFromProjectName($name)
+    {
+        if (isset($GLOBALS['PID_ARRAY'])) {
+            if (isset($GLOBALS['PID_ARRAY'][$name])) {
+                return $GLOBALS['PID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::ProjectPIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound);
+        }
+    }
+    public static function getProjectSIDFromProjectName($name)
+    {
+        if (isset($GLOBALS['PROJECT_SID_ARRAY'])) {
+            if (isset($GLOBALS['PROJECT_SID_ARRAY'][$name])) {
+                return $GLOBALS['PROJECT_SID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::ProjectSIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::ProjectSIDArrayNotFound);
+        }
+    }
+
+    public static function getSeasonSIDFromProjectName($name)
+    {
+        if (isset($GLOBALS['SEASON_SID_ARRAY'])) {
+            if (isset($GLOBALS['SEASON_SID_ARRAY'][$name])) {
+                return $GLOBALS['SEASON_SID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::SeasonSIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::SeasonSIDArrayNotFound);
+        }
+    }
+    public static function getSurveySIDProjectName($name)
+    {
+        if (isset($GLOBALS['SURVEY_SID_ARRAY'])) {
+            if (isset($GLOBALS['SURVEY_SID_ARRAY'][$name])) {
+                return $GLOBALS['SURVEY_SID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::SurveySIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::SurveySIDArrayNotFound);
+        }
+    }
+    public static function getResourceSIDFromProjectName($name)
+    {
+        if (isset($GLOBALS['RESOURCE_SID_ARRAY'])) {
+            if (isset($GLOBALS['RESOURCE_SID_ARRAY'][$name])) {
+                return $GLOBALS['RESOURCE_SID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::ResourceSIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::ResourceSIDArrayNotFound);
+        }
+    }
+    public static function getPageSIDFromProjectName($name)
+    {
+        if (isset($GLOBALS['PAGES_SID_ARRAY'])) {
+            if (isset($GLOBALS['PAGES_SID_ARRAY'][$name])) {
+                return $GLOBALS['PAGES_SID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::PageSIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::PageSIDArrayNotFound);
+        }
+    }
+    public static function getSubjectSIDFromProjectName($name)
+    {
+        if (isset($GLOBALS['SUBJECT_SID_ARRAY'])) {
+            if (isset($GLOBALS['SUBJECT_SID_ARRAY'][$name])) {
+                return $GLOBALS['SUBJECT_SID_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::SubjectSIDNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::SubjectSIDArrayNotFound);
+        }
+    }
+
+    public static function getTokenFromProjectName($name)
+    {
+        if (isset($GLOBALS['TOKEN_ARRAY'])) {
+            if (isset($GLOBALS['TOKEN_ARRAY'][$name])) {
+                return $GLOBALS['TOKEN_ARRAY'][$name];
+            } else {
+                throw new ArcsException(ErrorCodes::TokenNotFound);
+            }
+        } else {
+            throw new ArcsException(ErrorCodes::TokenArrayNotFound);
+        }
+    }
+
 
     /**
      * Convenience method for multiple Request->is($type) checks.
      *
-     * @param  string $args   One or more request types to check.
+     * @param  string $args One or more request types to check.
      * @return bool           True if *all* checks pass.
      */
-    public function requestIs($args) {
+    public function requestIs($args)
+    {
         $checks = func_get_args();
-        foreach($checks as $check)
-            if (!$this->request->is($check)) return false;
+        foreach($checks as $check) {
+            if (!$this->request->is($check)) {
+              return false;
+            }
+        }
         return true;
     }
 
-    public function baseURL() {
+    public function baseURL()
+    {
         return 'http://' . $_SERVER['HTTP_HOST'] . $this->base;
     }
 
@@ -83,20 +208,22 @@ class AppController extends Controller {
      * HTTP status code (or 200, if not given), and delivers the (possibly
      * empty) payload.
      *
-     * @param  int $status      HTTP status code to set, 200 (OK) by default.
-     * @param  mixed $data      Payload to deliver, is coerced to an array.
+     * @param  int   $status HTTP status code to set, 200 (OK) by default.
+     * @param  mixed $data   Payload to deliver, is coerced to an array.
      * @return void
      */
-    public function json($status=200, $data=null) {
+    public function json($status=200, $data=null)
+    {
         $this->autoRender = false;
         $this->response->statusCode($status);
         $this->RequestHandler->respondAs('json');
-        # JSON_NUMERIC_CHECK was added in 5.3.3. It ensures numbers are encoded
-        # as numbers. We use it if available.
-        if (defined('JSON_NUMERIC_CHECK'))
+        // JSON_NUMERIC_CHECK was added in 5.3.3. It ensures numbers are encoded
+        // as numbers. We use it if available.
+        if (defined('JSON_NUMERIC_CHECK')) {
             $this->response->body(json_encode((array)$data, JSON_NUMERIC_CHECK));
-        else
+        } else {
             $this->response->body(json_encode((array)$data));
+        }
     }
 
 
@@ -111,8 +238,9 @@ class AppController extends Controller {
      *
      * @return string the url to the thumb
      */
-    public static function smallThumb($name) {
-        $pid = hexdec( explode('-', $name)[0] );
+    public static function smallThumb($name)
+    {
+        $pid = hexdec(explode('-', $name)[0]);
         $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
         $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
@@ -120,7 +248,7 @@ class AppController extends Controller {
         $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
         $url = THUMBS_URL . "smallThumbs/" . $thumb;
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             $imgpath = KORA_FILES_URI . "/" . $pid . "/" . $sid . "/" . $name;
             $image = imagecreatefromstring(file_get_contents($imgpath));
             $result = AppController::resize($image, 240, 200);
@@ -138,8 +266,9 @@ class AppController extends Controller {
      *
      * @return string the url to the thumb
      */
-    public function largeThumb($name) {
-        $pid = hexdec( explode('-', $name)[0] );
+    public function largeThumb($name)
+    {
+        $pid = hexdec(explode('-', $name)[0]);
         $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
         $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
@@ -147,7 +276,7 @@ class AppController extends Controller {
         $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
         $url = THUMBS_URL . "largeThumbs/" . $thumb;
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             $imgpath = KORA_FILES_URI . "/" . $pid . "/" . $sid . "/" . $name;
             $image = imagecreatefromstring(file_get_contents($imgpath));
             $result = $this->resize($image, 400, 400);
@@ -161,10 +290,11 @@ class AppController extends Controller {
 
     /**
      * Used by smallThumb and largeThumb to do the resizing work - I think this should work...
-     * @param $image
-     * @param $min_width
-     * @param $min_height
-     * @param string $method
+     *
+     * @param  $image
+     * @param  $min_width
+     * @param  $min_height
+     * @param  string     $method
      * @return resource
      */
     private static function resize($image, $min_width, $min_height, $method = 'scale')
@@ -174,17 +304,17 @@ class AppController extends Controller {
         $src_height = imagesy($image);
 
         // if either max_width or max_height are 0 or null then calculate it proportionally
-        if( !$min_width ){
+        if (!$min_width ) {
             $min_width = $src_width / ($src_height / $min_height);
         }
-        elseif( !$min_height ){
+        elseif (!$min_height ) {
             $min_height = $src_height / ($src_width / $min_width);
         }
 
         // if scaling the image calculate the dest width and height
         $dx = $src_width / $min_width;
         $dy = $src_height / $min_height;
-        /*if( $method == 'scale' ){
+        /*if ( $method == 'scale' ){
             $d = max($dx,$dy);
         }
         // otherwise assume cropping image
@@ -195,8 +325,8 @@ class AppController extends Controller {
         $new_width = $src_width / $d;
         $new_height = $src_height / $d;
         // sanity check to make sure neither is zero
-        $new_width = max(1,$new_width);
-        $new_height = max(1,$new_height);
+        $new_width = max(1, $new_width);
+        $new_height = max(1, $new_height);
 
         $thumb_width = max($min_width, $new_width);
         $thumb_height = max($min_height, $new_height);
