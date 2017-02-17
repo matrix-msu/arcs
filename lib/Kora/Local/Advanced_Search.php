@@ -50,7 +50,8 @@ class Advanced_Search extends Kora{
             $this->final_clause = new KORA_Clause($this->final_clause, "OR", $clause);
         }
 
-        $this->token = $GLOBALS['TOKEN_ARRAY'][$this->pid];
+        $pName = array_search($this->pid, $GLOBALS['PID_ARRAY']);
+        $this->token = $GLOBALS['TOKEN_ARRAY'][$pName];
         $this->projectMapping = $this->pid;
         $this->schemeMapping = $this->sid;
         $this->The_Clause = $this->final_clause;

@@ -13,7 +13,8 @@ class General_Search extends Kora{
       parent::__construct();
 
       //set up the kora search parameters for keyword search
-      $this->token = $GLOBALS['TOKEN_ARRAY'][$pid];
+      $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+      $this->token = $GLOBALS['TOKEN_ARRAY'][$pName];
       $this->projectMapping = $pid;
       $this->schemeMapping = $sid;
 
