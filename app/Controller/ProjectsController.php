@@ -82,10 +82,6 @@ class ProjectsController extends AppController {
 
 	public function single_project($proj) {
 
-        $user = "";
-		$pass = "";
-        $project = new Project($proj);
-
         $pid = $GLOBALS['PID_ARRAY'][strtolower($proj)];
         $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($proj)];
         $fields = array("Title","Type","Resource Identifier", "systimestamp");
@@ -94,19 +90,35 @@ class ProjectsController extends AppController {
         $kora->add_clause("kid", "!=", '0');
         $server_output = json_decode($kora->search(), true);
 
-        $projectResourceKids = $project->getProjectResources(); //use this for collections, might be removed.
+        $fields = array('Title');
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $allResources = json_decode($kora->return_json(), true);
+        $projectResourceKids = array_keys($allResources); //all resource kids in the project. for collections
 
-		$recent = array();
+        $sid = $GLOBALS['PROJECT_SID_ARRAY'][strtolower($proj)];
+        $fields = array('ALL');
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $project = json_decode($kora->return_json(), true);
+        $project = array_values($project)[0];
 
-        $this->set("name",$project->get_name());
-        $this->set("description",$project->get_description());
-        $this->set("kid",$project->get_kid());
+        $this->set("name",$project['Name']);
+        $this->set("description",$project['Description']);
+        $this->set("kid",$project['kid']);
     
         // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
 		foreach($server_output as $result) {
-
-            $page = $project->get_page($result['kid'], $result['Type']);
+            $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($proj)];
+            $fields = array("Image Upload");
+            $sort = array();
+            $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
+            if( $result['Type'] == 'Field journal' ) {
+                $kora->add_double_clause("Resource Associator", "=", $result['kid'],
+                    "Scan Number", "=", "1");
+            }else {
+                $kora->add_clause("Resource Associator", "=", $result['kid']);
+            }
+            $page = json_decode($kora->search(), true);
     
             $picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
                      array_values($page)[0]['Image Upload']['localName'] : null;
