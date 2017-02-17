@@ -47,7 +47,7 @@
 			            array_pop($url);
 			            array_pop($url);
 			            $url=implode('/', $url);
-			            echo $url.'/resources/'.$kid;
+			            echo $url.'/resources/'.$pName;
 			      ?>">EXPLORE MORE RESOURCES</a>
             </div></span>
 		</div>
@@ -131,7 +131,7 @@
 			            array_pop($url);
 			            array_pop($url);
 			            $url=implode('/', $url);
-			            echo $url.'/collections/'.$kid;
+			            echo $url.'/collections/'.$pName;
 			      ?>">EXPLORE MORE COLLECTIONS</a></span>
 			</div>
 

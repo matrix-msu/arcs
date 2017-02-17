@@ -104,7 +104,8 @@ class ProjectsController extends AppController {
         $this->set("name",$project['Name']);
         $this->set("description",$project['Description']);
         $this->set("kid",$project['kid']);
-    
+        $this->set("pName",$proj);
+
         // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
 		foreach($server_output as $result) {
