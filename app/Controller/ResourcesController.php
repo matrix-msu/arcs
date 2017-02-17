@@ -176,7 +176,7 @@ class ResourcesController extends AppController {
         foreach($pages as $page) {
             $pageKids[] = $page['kid'];
             $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
-            $pages[$page['kid']]['thumb'] = KORA_FILES_URI.PID."/".PAGES_SID."/".$pages[$page['kid']]['Image Upload']['localName'];
+            $pages[$page['kid']]['thumb'] = KORA_FILES_URI.$pid."/".$sid."/".$pages[$page['kid']]['Image Upload']['localName'];
         }
 
         //survey
