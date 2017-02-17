@@ -112,12 +112,16 @@ class AppController extends Controller {
      * @return string the url to the thumb
      */
     public static function smallThumb($name) {
+        $pid = hexdec( explode('-', $name)[0] );
+        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+
         $path = THUMBS . "smallThumbs/";
         $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
         $url = THUMBS_URL . "smallThumbs/" . $thumb;
         if(!file_exists($path)) {
-            $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
+            $imgpath = KORA_FILES_URI . "/" . $pid . "/" . $sid . "/" . $name;
             $image = imagecreatefromstring(file_get_contents($imgpath));
             $result = AppController::resize($image, 240, 200);
             imagedestroy($image);
@@ -135,12 +139,16 @@ class AppController extends Controller {
      * @return string the url to the thumb
      */
     public function largeThumb($name) {
+        $pid = hexdec( explode('-', $name)[0] );
+        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+
         $path = THUMBS . "largeThumbs/";
         $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
         $url = THUMBS_URL . "largeThumbs/" . $thumb;
         if(!file_exists($path)) {
-            $imgpath = KORA_FILES_URI . "/" . PID . "/" . PAGES_SID . "/" . $name;
+            $imgpath = KORA_FILES_URI . "/" . $pid . "/" . $sid . "/" . $name;
             $image = imagecreatefromstring(file_get_contents($imgpath));
             $result = $this->resize($image, 400, 400);
             imagedestroy($image);
