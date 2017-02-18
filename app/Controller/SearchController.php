@@ -38,7 +38,8 @@ class SearchController extends AppController {
      * Display the search page
      */
     public function search($project, $query=null) {
-      parent::verifyGlobals($project);
+      if($project != "all")
+        parent::verifyGlobals($project);
       $title = 'Search';
       if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
