@@ -52,7 +52,7 @@ echo $this->Session->flash('flash_success'); ?>
 				array(
 					'controller' => 'projects',
 					'action' => 'single_project',
-					$item["Persistent Name"]
+					str_replace(' ', '_', strtolower($item["Persistent Name"]))
 				)
 			);
 
