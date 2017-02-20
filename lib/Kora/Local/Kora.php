@@ -46,8 +46,8 @@ class Kora extends AppController{
       require_once(LIB . "Kora/search");
 
       $this->token = TOKEN;
-      $this->projectMapping = PID;
-      $this->schemeMapping = PROJECT_SID;
+      //$this->projectMapping = PID;
+      //$this->schemeMapping = PROJECT_SID;
       $this->fields = "ALL";
       $this->results_per_page = 100;
     }

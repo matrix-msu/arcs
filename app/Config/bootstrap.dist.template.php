@@ -84,14 +84,15 @@ define("KORA_FILES_URI"     ,  "KORA_FILES_URI_REPLACE"); //unique
 define("KORA_SEARCH"        ,  "KORA_SEARCH_REPLACE"); //unique
 define ("KORA_RESTFUL_URL"  ,  "KORA_RESTFUL_URL_REPLACE"); //unique
 define("KORA_PLUGIN_USERS"  ,  "KORA_PLUGIN_USERS_REPLACE"); //unique
-#PRJOECT AND SCHEME DATA
-define ("PID"          ,  "PID_REPLACE");
-define ("PROJECT_SID"  ,  "PROJECT_SID_REPLACE");
-define ("SEASON_SID"   ,  "SEASON_SID_REPLACE");
-define ("RESOURCE_SID" ,  "RESOURCE_SID_REPLACE");
-define ("PAGES_SID"    ,  "PAGES_SID_REPLACE");
-define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
-define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
+
+#PRJOECT AND SCHEME DATA - old, not used.
+//define ("PID"          ,  "PID_REPLACE");
+//define ("PROJECT_SID"  ,  "PROJECT_SID_REPLACE");
+//define ("SEASON_SID"   ,  "SEASON_SID_REPLACE");
+//define ("RESOURCE_SID" ,  "RESOURCE_SID_REPLACE");
+//define ("PAGES_SID"    ,  "PAGES_SID_REPLACE");
+//define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
+//define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
 
 //new bootstrap setup
 $GLOBALS['PID_ARRAY'] = array(
@@ -138,14 +139,14 @@ define("THUMBS", APP."webroot/thumbs/");
 JAVASCRIPT
 ///////////////////////////////////////////////////////////////////////*/
 define("globaljsvars",
-	"<script type='text/javascript'>" .
-	"var BASE_URL ='".BASE_URL."';" .
-	"var PROJECT_SID ='".PROJECT_SID."';" .
-	"var SEASON_SID ='".SEASON_SID."';" .
-	"var RESOURCE_SID ='".RESOURCE_SID."';" .
-	"var SUBJECT_SID ='".SUBJECT_SID."';" .
-	"var SURVEY_SID ='".SURVEY_SID."';" .
-	"var PAGES_SID ='".PAGES_SID."';" .
-	"var KORA_FILES_URI ='".KORA_FILES_URI."';".
-	"var PID ='".PID."';".
-	"</script>");
+    "<script type='text/javascript'>" .
+    "var BASE_URL ='".BASE_URL."';" .
+    "var PID_ARRAY ='".json_encode($GLOBALS['PID_ARRAY'])."';" .
+    "var PROJECT_SID_ARRAY ='".json_encode($GLOBALS['PROJECT_SID_ARRAY'])."';" .
+    "var SEASON_SID_ARRAY ='".json_encode($GLOBALS['SEASON_SID_ARRAY'])."';" .
+    "var RESOURCE_SID_ARRAY ='".json_encode($GLOBALS['RESOURCE_SID_ARRAY'])."';" .
+    "var SUBJECT_SID_ARRAY ='".json_encode($GLOBALS['SUBJECT_SID_ARRAY'])."';" .
+    "var SURVEY_SID_ARRAY ='".json_encode($GLOBALS['SURVEY_SID_ARRAY'])."';" .
+    "var PAGES_SID_ARRAY ='".json_encode($GLOBALS['PAGES_SID_ARRAY'])."';" .
+    "var KORA_FILES_URI ='".KORA_FILES_URI."';".
+    "</script>");
