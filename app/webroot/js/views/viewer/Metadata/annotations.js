@@ -218,9 +218,9 @@ $(document).ready(function () {
             data: {
                 q: [
                     ['Type', 'like', '%' + annotateSearch.val() + '%'],
-                    ['Title', 'like', '%' + annotateSearch.val() + '%'],
+                    //['Title', 'like', '%' + annotateSearch.val() + '%'],
                     ['Resource Identifier', 'like', '%' + annotateSearch.val() + '%'],
-                    ['Description', 'like', '%' + annotateSearch.val() + '%'],
+                    //['Description', 'like', '%' + annotateSearch.val() + '%'],
                     ['Accession Number', 'like', '%' + annotateSearch.val() + '%'],
                     ['Earliest Date', 'like', '%' + annotateSearch.val() + '%'],
                     ['Latest Date', 'like', '%' + annotateSearch.val() + '%']
