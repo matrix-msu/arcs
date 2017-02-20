@@ -149,11 +149,12 @@ var resourceKid = "<?php echo $resource['kid']; ?>";
 var ADMIN = "<?php echo $admin ?>";
 var kora_url = "<?php echo $kora_url ?>";
 // preloader image and images
+var PROJECT_NAME = "<?php echo strtolower(str_replace(' ', '_', $project['Persistent Name'])); ?>";
 var kid = "<?php echo $kid; ?>"; // needs to stay
-var pid = "<?php echo PID; ?>"; // needs to stay
-var resource_sid = "<?php echo RESOURCE_SID;?>";
-var page_sid = "<?php echo PAGES_SID;?>";
-var subject_sid = "<?php echo SUBJECT_SID;?>";
+var pid = "<?php echo $pid = hexdec(explode('-', $kid)[0]); ?>"; // needs to stay
+var resource_sid = "<?php echo $GLOBALS['RESOURCE_SID_ARRAY'][strtolower(str_replace(' ', '_', $project['Persistent Name']))];?>";
+var page_sid = "<?php echo $GLOBALS['PAGES_SID_ARRAY'][strtolower(str_replace(' ', '_', $project['Persistent Name']))]?>";
+var subject_sid = "<?php echo $GLOBALS['SUBJECT_SID_ARRAY'][strtolower(str_replace(' ', '_', $project['Persistent Name']))]?>";
 var webroot = "<?php echo Router::url('/', true); ?>app/webroot/";
 var resourceName = "<?php echo $resource['Resource Identifier']; ?>";
 var JSON_KEYS = <?php echo json_encode(array_keys($pages)); ?>;
@@ -167,7 +168,7 @@ var PAGES = [ <?php $text=''; foreach($pages as $page){ $text=$text."'". json_en
 
 var PAGESOBJECT = <?php echo json_encode($pages); ?>;
 var PROJECT_KID = "<?php echo $project['kid']; ?>"
-var PROJECT_NAME = "<?php echo strtolower(str_replace(' ', '_', $project['Persistent Name'])); ?>"
+
 var KORA_FILES_URI = "<?php echo KORA_FILES_URI; ?>"
 
 var annotateData = {

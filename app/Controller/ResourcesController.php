@@ -162,6 +162,7 @@ class ResourcesController extends AppController {
 
         //grab all pages with the resource identifier
         $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+        $pageSid = $sid;
         $fields = array('ALL');
         $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
@@ -280,7 +281,8 @@ class ResourcesController extends AppController {
             'toolbar' => array('actions' => true),
             'footer' => false,
             'body_class' => 'viewer standalone',
-            'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
+            'kora_url' => KORA_FILES_URI.$pid."/".$pageSid."/",
+            //'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
             'admin' => $this->Auth->user('isAdmin') == 1
         ));
 
