@@ -561,13 +561,6 @@ class SearchController extends AppController {
                 array_pop($test);
             }
 
-			$pName = explode('/', $_SERVER['HTTP_REFERER']);
-			$pName = array_pop($pName);
-			$pName = explode('?', $pName)[0];
-			$pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
-			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
-			$pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
-
             $response['results'] = array();
             $first = 1;
             foreach( $test as $row){
@@ -577,6 +570,11 @@ class SearchController extends AppController {
                     $first = 0;
                 }
                 $temp_kid = $row['resource_kid'];
+
+                $pid = hexdec(explode('-', $temp_kid)[0]);
+                $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+                $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+                $pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
