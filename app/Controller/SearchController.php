@@ -501,15 +501,10 @@ class SearchController extends AppController {
             $pKid = $this->request->query['pKid'];
         }
 
-        //Josh- Collections searches for resources
-        ///////////////////////////////////////////////////////
-        $catchcollections = 1;
-        if ( substr($this->request->query['q'],0,13) == 'collection_id' && $catchcollections == 1){
+        //Collections search
+        if ( substr($this->request->query['q'],0,13) == 'collection_id' ){
             $collection_id = substr($this->request->query['q'],15,-1);
-            //$response['results'] = array('hello' => 'Collections catch',
-            //'collection_id' => substr($this->request->query['q'],15,-1));
             //// Start SQL Area
-            ///////////////////
             $db = new DATABASE_CONFIG;
             $db_object =  (object) $db;
             $db_array = $db_object->{'default'};
@@ -519,18 +514,6 @@ class SearchController extends AppController {
                 die('Connect Error (' . $mysqli->connect_errno . ') '
                     . $mysqli->connect_error);
             }
-			/*
-            //Get a collection_id from the id
-            $sql = "SELECT collection_id FROM collections WHERE collections.id ='".$collection_table_id."' LIMIT 1";
-            //WHERE title = '".$file_name."'";
-            $result = $mysqli->query($sql);
-            //while($row = mysqli_fetch_assoc($result))
-            //  $test[] = $row;
-            //$response['collection_table_id'] = $collection_table_id;
-            //$response['sql'] = $sql;
-            $collection_id = mysqli_fetch_assoc($result);
-            $collection_id = $collection_id['collection_id'];
-			*/
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
@@ -640,47 +623,10 @@ class SearchController extends AppController {
             //return collections
             $response['total'] = count($response['results']);
             return $this->json(200, $response);
-        }
-        //End of collections
-        ///////////////////////////////////////
+        }//finished collections search
 
-        //Josh- This code makes no sense to me
-        //It brakes the resources page but only when the require_once(KORA_LIB . "Keyword_Search.php"); is there.
-        //
-        /*
-        if (isset($response['order']) && $response['order'] == 'relevance') {
-            $response['results'] = $this->Resource->findAllFromIds($response['results']);
-        } else {
-            //check if it is set
-            $response['results'] = isset($response['results']) ? $response['results'] : "";
-            $response['results'] = $this->Resource->find('all', array(
-                'conditions' => array('Resource.id' => $response['results']),
-                'order' => "Resource.{$options['order']} {$options['direction']}"
-            ));
-        }
-        */
-
-        /* todo - this code breaks if the user is not logged in
-        // The searcher will return debug information that should be hidden for
-        // most account types.
-        if (!$this->Access->isAdmin()) {
-            unset($response['raw_query']);
-            unset($response['mode']);
-        }
-        */
-/*
-        $fields = array('Resource Identifier', 'Type', 'Title');
-        $kora = new General_Search(RESOURCE_SID, 'kid', '!=', '1', $fields);
-        $results['return'] = $kora->return_json();
-        return $this->json(200, $results);
-        //$json = $kora->return_json();
-*/
-
-        //return $this->json(200, 'hi' );
-        //return;
-
-
-        if ( $this->request->query['q'] == 'Orphan,=,true' ){  //search only for pages that are orphans
+        //// Resource Type search - resources page - orphans
+        if ( $this->request->query['q'] == 'Orphan,=,true' ){
 
             //search for the orphaned pages with a limit.
 			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
@@ -734,7 +680,7 @@ class SearchController extends AppController {
             }
 
 
-        }else {     //search resources first by type, then get the page by resource
+        }else {     // Resource type search - resources page
             //Get the Resources
             $user = "";
             $pass = "";
@@ -751,41 +697,43 @@ class SearchController extends AppController {
             }else{
                 $kora = new Advanced_Search($pid, $sid, array('Title'), 0, 0);
             }
-            //Get resources by type and in the project resource kid array.
-            //$kora->add_double_clause($query_array[0], $query_array[1], $query_array[2],
-            //                            "kid", "IN", $projectKids);
 			$kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
+
+            if( empty( $resources ) ) { //return now, there are no resources.
+                $return = array('results'=> 'No Results' );
+                return $this->json(200, $return);
+            }
 
             if( $limit == -1 ){
                 $return = array('results'=> array_keys($resources) );
                 return $this->json(200, $return );
             }
 
-            //grab all pages with the resource identifier
+            //grab all pages with the resource associator
 			$sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
             $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
             $kora = new Advanced_Search($pid, $sid, $fields);
 
-            //get a accepted resource_identifier array for kora,
+            //get a accepted resource associator array for kora,
             //stay within the limit
             $count = 0;
-            $resourceIdArray = array();
+            $resourceKidArray = array();
             foreach ($resources as $key => $item) {
                 $count++;
                 //if there are more resources, add more results
                 if ($count > $limit && $limit != -1) {
                     break;
                 }
-                $resourceIdArray[] = $item['Resource Identifier'];
+                $resourceKidArray[] = $key;
             }
 
             //using the array and 'in' this way because it's much faster.
             if( $query_array[2] == 'Field Journal' ) {
-                $kora->add_double_clause("Resource Identifier", "IN", $resourceIdArray,
+                $kora->add_double_clause("Resource Associator", "IN", $resourceKidArray,
                     "Scan Number", "=", "1");
             }else {
-                $kora->add_clause("Resource Identifier", "IN", $resourceIdArray);
+                $kora->add_clause("Resource Associator", "IN", $resourceKidArray);
             }
 
             $pages = json_decode($kora->search(), true);
