@@ -561,11 +561,12 @@ class SearchController extends AppController {
                 array_pop($test);
             }
 
-			$pKid = explode('/', $_SERVER['HTTP_REFERER']);
-			$pKid = array_pop($pKid);
-			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
-			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
-			$pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
+			$pName = explode('/', $_SERVER['HTTP_REFERER']);
+			$pName = array_pop($pName);
+			$pName = explode('?', $pName)[0];
+			$pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
+			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+			$pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
             $response['results'] = array();
             $first = 1;

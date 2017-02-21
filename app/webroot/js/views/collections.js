@@ -37,8 +37,6 @@
 
     CollectionList.prototype.onClick = function(e) {
       var $el, limit, ref, src;
-      console.log("Clicked here.");
-      console.log(e.currentTarget.tagName);
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
         if ($el[0].hasAttribute("open")) {
@@ -49,7 +47,7 @@
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
-        $(e.currentTarget).children().eq(2).prepend('<img src="' + src + '" alt="SeeAll.svg">');
+        $(e.currentTarget).children().eq(1).prepend('<img src="' + src + '" alt="SeeAll.svg">');
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
         $(e.currentTarget).removeClass('btn-show-all');
@@ -66,14 +64,13 @@
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
-        if ($(e.currentTarget).next().next().children().eq(0).prop("tagName") !== 'IMG') {
-          $(e.currentTarget).next().next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
+        if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
+          $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
         }
 
 
         adjustResultsCenter();
       }
-      console.log($el);
       this.renderDetails($el, limit);
       adjustResultsCenter();
       if ((e.srcElement != null)) {

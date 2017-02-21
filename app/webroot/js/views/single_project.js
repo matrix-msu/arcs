@@ -50,8 +50,8 @@
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
-        if ($(e.currentTarget).next().next().children().eq(0).prop("tagName") !== 'IMG') {
-          $(e.currentTarget).next().next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
+        if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
+          $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
         }
       }
       this.renderDetails($el, limit);
