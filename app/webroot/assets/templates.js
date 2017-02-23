@@ -32,7 +32,8 @@ JST["home/details"] = "<ul class=\"resource-thumbs\">"+
 
 JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
   "<li class='resource-thumb'data-id='<%= r.kid %>'> ",
-    " <a href='../resource/<%= r.kid %>'> <img class='' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'> <span class='select-button' style='display:none;'>SELECT</span> ",
+    "<div class='select-overlay'><div class='circle-container'><div class='select-circle'><div class='i-circle'></div></div></div></div>",
+    " <a href='../resource/<%= r.kid %>'> <img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'>",
     "<div class='resource-title'><%= r.Title %></div>",
     "<div class='resource-type'><%= r.Type %></div> </a>",
     "<div class='icon-flag'></div>",

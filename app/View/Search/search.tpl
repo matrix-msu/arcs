@@ -233,7 +233,7 @@
 				  </button>
 				  <ul class="dropdown-menu">
 					<li><a class="sort-btn perpage-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
-					<li><a class="sort-btn perpage-btn" id="open-colview-btn">40 Items per Page&nbsp;</a></li>
+					<li><a class="sort-btn perpage-btn" id="open-btn">40 Items per Page&nbsp;</a></li>
 					<li><a class="sort-btn perpage-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
 				  </ul>
 			</div>

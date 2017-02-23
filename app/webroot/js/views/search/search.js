@@ -141,7 +141,7 @@
         })(this),
         selected: (function(_this) {
           return function(e, ui) {
-
+            console.log("Selecting");
             $(ui.selected).parents('.result').addClass('selected');
             $(ui.selected).parents('.result').children('.select-button').html('DE-SELECT');
             $(ui.selected).parents('.result').children('.select-button').addClass('de-select');
@@ -254,9 +254,11 @@
       if (trigger == null) {
         trigger = true;
       }
-      this.$('.result').removeClass('selected');
-      this.$('.select-button').removeClass('de-select');
-      this.$('.select-button, #toggle-select').html('SELECT');
+      Search.selected = selectedMap["selected"]
+      this.$(".circle-container").css('background', '')
+      this.$('.select-circle').removeClass('selected');
+      this.$('.select-overlay').css('opacity', '')
+      this.$('.select-overlay').css('background', '')
       this.$('#deselect-all').attr({
         id: 'select-all'
       });
@@ -269,9 +271,17 @@
       if (trigger == null) {
         trigger = true;
       }
-      this.$('.result').addClass('selected');
-      this.$('.select-button').addClass('de-select');
-      this.$('.select-button, #toggle-select').html('DE-SELECT');
+      console.log("select everything");
+      this.$(".select-overlay").each(function(){
+        w = Math.ceil($(this)[0].nextElementSibling.childNodes[1].offsetWidth)
+        $(this).css('width', w)
+      })
+      console.log(selectedMap["selected"]);
+      Search.selected = selectedMap["selected"]
+      this.$(".circle-container").css('background', 'transparent')
+      this.$('.select-circle').addClass('selected');
+      this.$('.select-overlay').css('opacity', 1)
+      this.$('.select-overlay').css('background', 'rgba(0, 147, 190, 0.75)')
       this.$('#select-all').attr({
         id: 'deselect-all'
       });
@@ -460,6 +470,29 @@
         }
       }
     }
+    function select_selected(){
+      console.log("called");
+      $(".resource-thumb").each(function(){
+        console.log("C");
+        if(Search.selected.indexOf($(this).attr("data-id")) !== -1 ){
+          console.log(this.childNodes);
+          w = $(this).find(".results").css('width')
+          $(this).find(".select-overlay").css("width", w)
+          this.childNodes[1].childNodes[0].childNodes[0].className += " selected"
+          this.childNodes[1].childNodes[0].style.background = 'transparent'
+          this.childNodes[1].style.opacity = 1
+          this.childNodes[1].style.background = 'rgba(0, 147, 190, 0.75)'
+        }
+      })
+    }
+    function set_widths(){
+      console.log("adjust widths");
+      $(".select-overlay").each(function(){
+        w = Math.ceil($(this)[0].nextElementSibling.childNodes[1].offsetWidth)
+        console.log(w);
+        $(this).css('width', w)
+      })
+    }
     adjustPage = function(results, currentPage) {
       var lastPage, numberPerPage, pageNum, skip, temp;
       if (waiting) {
@@ -480,10 +513,10 @@
       Search.prototype._render({
         results: totalResults.slice(skip, skip + numberPerPage)
       });
-      if (selectedMap['selected'].length > 0) {
-        return showSelected();
-      }
+      set_widths()
+      select_selected()
       setIndicators();
+
     };
 
     setCreators = function() {
@@ -690,6 +723,8 @@
 
 
     Search.prototype._render = function(results, append) {
+
+
       var $results, filterResults, getCnt, template;
       if (append == null) {
         append = false;
@@ -710,6 +745,7 @@
           $(this).addClass('selected');
           $(this).addClass('currentPage');
           adjustPage(totalResults, parseInt($('.currentPage').html()));
+
         }
       });
       $('#leftArrowBox').unbind().click(function(e) {
@@ -717,6 +753,7 @@
         temp = $('.currentPage').html();
         $('.currentPage').html(parseInt(temp) + 1);
         return adjustPage(totalResults, parseInt($('.currentPage').html()));
+        select_selected()
       });
       $('#rightArrowBox').unbind().click(function(e) {
         var temp;
@@ -726,6 +763,7 @@
         } else {
           $('.currentPage').html(parseInt(temp) - 1);
           return adjustPage(totalResults, parseInt($('.currentPage').html()));
+          select_selected()
         }
       });
       $('#dots').unbind().click(function() {
@@ -736,6 +774,7 @@
         }
         $('.currentPage').html(temp);
         return adjustPage(totalResults, parseInt($('.currentPage').html()));
+        select_selected()
       });
       $('#fDots').unbind().click(function() {
         var temp;
@@ -745,66 +784,92 @@
         }
         $('.currentPage').html(temp);
         return adjustPage(totalResults, parseInt($('.currentPage').html()));
+        select_selected()
       });
-      $('.result').hover((function() {
-        $(this).find('.select-button').show();
-        $(this).find('img').addClass('img-hover');
-        $(this).find('.select-button').css('visibility', 'visible');
+      $('.resource-thumb').hover((function() {
+        $(this).find('.select-overlay').addClass('select-hover');
+        w = $(this).find(".results").css('width')
+        $(this).find(".select-overlay").css("width", w)
+        // $(this).find('img').addClass('img-hover');
+        // $(this).find('.select-button').css('visibility', 'visible');
       }), function() {
-        $(this).find('.select-button').hide();
-        $(this).find('img').removeClass('img-hover');
-        $(this).find('.select-button').css('visibility', 'hidden');
+        $(this).find('.select-overlay').removeClass('select-hover');
+        // $(this).find('img').removeClass('img-hover');
+        // $(this).find('.select-button').css('visibility', 'hidden');
       });
-      $('.select-button').click(function() {
-        var index;
-        var data_id = $(this).parent().attr("data-id");
-
-		//todo- clear selected array and repop correctly.
-		Search.selected = [];
-		selectedMap['selected'] = [];
-		$('.resource-item-container.result.selected').each(function(){
-			Search.selected.push($(this).attr('data-id'));
-			selectedMap['selected'].push($(this).attr('data-id'));
-		});
-
-        if ($(this).html() === 'SELECT') {
-          if(data_id != ""){
-            if(Search.selected.indexOf(data_id) == -1)
-              Search.selected.push(data_id);
-          }
-          $(this).html('DE-SELECT');
-          $(this).addClass('de-select');
-          $(this).parents('.result').addClass('selected');
-          $('#selected-all').css({
-            color: 'black'
-          });
-          selectedMap['selected'].push($(this).parents('.result').data("id"));
-
-          $('#selected-resource-ids').html(selectedMap["selected"]);
-          $('#selected-count').html(selectedMap["selected"].length);
-          arcs.bus.trigger('selection');
-        } else {
-          if(data_id != ""){
-            index = Search.selected.indexOf(data_id);
-            if(index != -1)
-              Search.selected.splice(index, 1);
-          }
-          $(this).html('SELECT');
-          $(this).removeClass('de-select');
-          $(this).parents('.result').removeClass('selected');
-          index = selectedMap['selected'].indexOf($(this).parents('.result').data("id"));
-          if (index > -1) {
-            selectedMap['selected'].splice(index, 1);
-          }
-          if (selectedMap['selected'].length < 1) {
-            $('#selected-all').css({
-              color: '#C1C1C1'
-            });
-          }
-          $('#selected-resource-ids').html(selectedMap["selected"]);
-          $('#selected-count').html(selectedMap["selected"].length);
-          arcs.bus.trigger('selection');
+      $('.select-circle').click(function() {
+        makeSelect = false;
+        if($(this).hasClass("selected")){
+          $(this).removeClass('selected')
+          $(this).closest(".circle-container").css('background', '')
+          // console.log($(this).parent().parent().find('.select-overlay'));
+          $(this).closest('.select-overlay').css('background', '')
+          $(this).closest('.select-overlay').css('opacity', '')
+          makeSelect = false;
         }
+        else{
+          $(this).addClass('selected')
+          $(this).closest(".circle-container").css('background', 'transparent')
+          $(this).closest('.select-overlay').css('opacity', 1)
+          // console.log($(this).closest('.select-overlay'));
+
+          $(this).closest('.select-overlay').css('background', 'rgba(0, 147, 190, 0.75)')
+          makeSelect = true;
+        }
+        var index;
+        var data_id = $(this).closest(".resource-thumb")
+        data_id = data_id[0]
+        data_id = data_id.getAttribute('data-id');
+        // console.log(makeSelect);
+        if (makeSelect){
+          Search.selected.push(data_id)
+          selectedMap['selected'] = Search.selected
+          $("#selected-resource-ids").html(Search.selected)
+          $('#selected-count').html(Search.selected.length);
+          // console.log("add to array");
+        }
+        else{
+          var index = Search.selected.indexOf(data_id)
+          Search.selected.splice(index,1)
+          selectedMap['selected'] = Search.selected
+          console.log(selectedMap['selected'])
+          $("#selected-resource-ids").html(Search.selected)
+          $('#selected-count').html(Search.selected.length);
+          // console.log("delete from array");
+        }
+
+        // if(data_id != ""){
+        //     if(Search.selected.indexOf(data_id) == -1)
+        //       Search.selected.push(data_id);
+        //   }
+        //   if($(this).hasClass('selected')){
+        //
+        //       selectedMap['selected'].push(data_id);
+        //
+        //         $('#selected-resource-ids').html(selectedMap["selected"]);
+        //         $('#selected-count').html(selectedMap["selected"].length);
+        //         // arcs.bus.trigger('selection');
+        //   } else {
+        //   if(data_id != ""){
+        //     index = Search.selected.indexOf(data_id);
+        //     if(index != -1)
+        //       Search.selected.splice(index, 1);
+        //   }
+        //   $(this).parents('.result').removeClass('selected');
+        //   index = selectedMap['selected'].indexOf(data_id);
+        //   if (index > -1) {
+        //     selectedMap['selected'].splice(index, 1);
+        //   }
+        //   if (selectedMap['selected'].length < 1) {
+        //     $('#selected-all').css({
+        //       color: '#C1C1C1'
+        //     });
+        //   }
+        //   $('#selected-resource-ids').html(selectedMap["selected"]);
+        //   $('#selected-count').html(selectedMap["selected"].length);
+        //   // arcs.bus.trigger('selection');
+        // }
+
       });
       $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
@@ -952,3 +1017,12 @@
   })(Backbone.View);
 
 }).call(this);
+
+$(document).ready(function() {
+
+    var dynamic = $('.resource-thumb a img');
+    var static = $('.select-overlay');
+    console.log(dynamic);
+    static.height(dynamic.height());
+
+});
