@@ -119,7 +119,9 @@
       'click .sort-btn': 'scrollTop',
       'click .fDots': 'scrollTop',
       'click .dots': 'scrollTop',
-      'click #open-colview-form': 'openCollection'
+      'click #open-colview-form': 'openCollection',
+      'click #open-colview-form': 'advancedRedirect',
+
     };
 
 
@@ -222,6 +224,11 @@
       }, time);
     };
 
+    Search.prototype.advancedRedirect = function(e) {
+      console.log("redirect HI");
+
+
+    };
     Search.prototype.openCollection = function(e) {
       var form = $(e.target).parent();
       form.find("input").attr({value: JSON.stringify(Search.selected) });
@@ -654,6 +661,7 @@
         return;
       }
       console.log(val);
+      val = val.replace(/\//g,"-")
       resourcequery = encodeURIComponent(""+val);
       pageNumber = encodeURIComponent("" + pageNum);
       perPageUrl = encodeURIComponent("" + perPage);

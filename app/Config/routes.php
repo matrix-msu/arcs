@@ -178,6 +178,17 @@
         array('controller' => 'users', 'action' => 'getAllUsers')
     );
 ////////////////////////////////////////////////////////////////////////
+# advancedSearch controller
+////////////////////////////////////////////////////////////////////////
+    // order matters here! do not move this below search.
+    Router::connect('/search/advanced/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'display')
+    ); 
+    Router::connect('/api/search/advanced/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'search')
+    );
+
+////////////////////////////////////////////////////////////////////////
 # search controller
 ////////////////////////////////////////////////////////////////////////
     Router::connect('/simple_search/*',
@@ -200,15 +211,6 @@
     );
 	   Router::connect('/search/paginate',
         array('controller' => 'search', 'action' => 'paginate')
-    );
-////////////////////////////////////////////////////////////////////////
-# advancedSearch controller
-////////////////////////////////////////////////////////////////////////
-    Router::connect('/advanced_search',
-        array('controller' => 'AdvancedSearch', 'action' => 'display')
-    ); 
-    Router::connect('/api/search/advanced/*',
-        array('controller' => 'AdvancedSearch', 'action' => 'search')
     );
 ////////////////////////////////////////////////////////////////////////
 # redirects

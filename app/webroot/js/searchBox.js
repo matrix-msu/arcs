@@ -9,6 +9,7 @@ $(document).ready(function(){
            window.location.replace(url);
        }
    });
+   $("#advancedSearchLink").attr("href","advanced/" + globalproject)
 });
 
 $(".searchBoxInput").keyup(function(e){
@@ -19,3 +20,4 @@ $(".searchBoxInput").keyup(function(e){
         window.location.replace(url);
     }
 });
+
