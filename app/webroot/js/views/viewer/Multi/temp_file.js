@@ -1600,6 +1600,8 @@ $( document ).ready(function() {
             .find("[id='Excavation - Survey Associator']").html();
         var excavationKids = stringExcavationKids.split('<br>'); //turn into array
         excavationKids.pop(); //remove an empty index
+        excavationKids.sort();
+        var excavationSeasonAssociators = [];
         setTimeout(function () {//wasn't hiding all if not in this..
             $('.excavation-tab-head').css('display', 'none'); //hide all
             $('.excavation-tab-content').css('display', 'none');
@@ -1621,21 +1623,61 @@ $( document ).ready(function() {
                     $('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]')[0].innerText = text;
                 }
                 //only show the first excavation drawer.
-                if($('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').length>0 && firstDrawer2==0 ){
-                    $('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').eq(0).css('display', 'block');
-                    firstDrawer2 = 1;
+                if($('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').length>0 ){
+                    if( firstDrawer2==0 ) {
+                        $('.excavation-tab-content[data-kid="' + excavationKids[i] + '"]').eq(0).css('display', 'block');
+                        firstDrawer2 = 1;
+                    }
+                    var ex = $('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]')
+                        .find("[id='Season Associator']").html();
+                    ex = ex.replace('<br>', '');
+                    console.log(ex);
+                    excavationSeasonAssociators.push(ex);
                 }
             }
+            //find the season
+            var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
+                .find("[id='Season Associator']").html();
+            var seasonKids = stringSeasonKids.split('<br>'); //turn into array
+            seasonKids.pop(); //remove an empty index
+            //todo- improve this to hide/show correct seasons**associated through excavation
+            $('.Seasons-table').css('display', 'none');
+            $('.season-tab-head').css('display', 'none');
+            $('.season-tab-content').css('display', 'none');
+            var index =1;
+            var firstDrawerS = 0;
+            $('.Seasons-table').each(function(){
+                var season = $(this);
+                var sKid = season.attr('data-kid');
+                seasonKids.every(function(e){
+                    if( e == sKid ){
+                        season.css('display', 'table');
+                        season.parent().css('display', 'block');
+                        season.parent().prev().html('Season Level '+index);
+                        season.parent().prev().css('display', 'block');
+                        index++;
+                        if( firstDrawerS==0 ) {
+                            season.parent().prev().click();
+                            firstDrawerS = 1;
+                        }
+                        return false;
+                    }
+                    return true;
+                });
+                if( excavationSeasonAssociators.indexOf(sKid) != -1 ){
+                    season.css('display', 'table');
+                    season.parent().css('display', 'block');
+                    season.parent().prev().html('Season Level '+index);
+                    season.parent().prev().css('display', 'block');
+                    index++;
+                    if( firstDrawerS==0 ) {
+                        season.parent().prev().click();
+                        firstDrawerS = 1;
+                    }
+                }
+            });
         }, 1);
-        //find the season
-        var seasonKid = '';
-        seasonKid = $('.archival.objects-table[data-kid="'+resourceKid+'"]').find("[id='Season Associator']").html();
-        if(seasonKid == '' ){
-            seasonKid = $('.excavation-tab-content[data-kid="'+excavationKids[0]+'"]').find("[id='Season Associator']").html();
-            seasonKid = seasonKid.replace('<br>', '');
-        }
-        $('.Seasons-table').css('display', 'none');
-        $('.Seasons-table[data-kid="'+seasonKid+'"]').css('display', 'table');
+
     })
 
     //javascript to fix the mulit-resource accordion frontend

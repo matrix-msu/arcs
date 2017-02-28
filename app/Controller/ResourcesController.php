@@ -674,22 +674,26 @@ class ResourcesController extends AppController {
 
             //get resource information
             $info_array = $this->getResource($resource);
-            $identifier = $info_array[$resource]['Resource Identifier'];
+            //$identifier = $info_array[$resource]['Resource Identifier'];
 
-            $exc_kid = $this->getFromKey($info_array, "Excavation - Survey Associator");
+			if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
+                $exc_kids = $this->getFromKey($info_array, "Excavation - Survey Associator");
+
+                //get Season data
+                $excavation_array = $this->getExcavation($exc_kids);
+                $this->pushToArray($excavation_array, $excavations);
+
+                $season_kids = $this->getFromKey($excavation_array, "Season Associator");
+
+            }else{
+                $season_kids = $this->getFromKey($info_array, "Season Associator");
+            }
 
             //get Season data
-            $excavation_array = $this->getExcavation($exc_kid);
-            $this->pushToArray($excavation_array, $excavations);
-
-            $season_kid = $this->getFromKey($excavation_array,"Season Associator");
-
-
-            //get Season data
-            $season_array = $this->getSeason($season_kid);
+            $season_array = $this->getSeason($season_kids);
             $this->pushToArray($season_array, $seasons);
 
-            $project_kid = $this->getFromKey($season_array,"Project Associator");
+            $project_kid = $this->getFromKey($season_array,"Project Associator")[0];
             $info_array[$resource]['project_kid'] = $project_kid;
 
             //get project array
@@ -698,13 +702,14 @@ class ResourcesController extends AppController {
 
             //get pages and add to resource array
             $page = $this->getPages($resource);
+            $pageKids = array_keys($page);
             //var_dump($page);
             //$page[] = $project_kid;
 
             $info_array[$resource]["page"] =  $page;
 
             //get SOO
-            $soo = $this->getSubjectOfObservation($identifier);
+            $soo = $this->getSubjectOfObservation($pageKids);
             $this->pushToArray($soo, $subjects);
 
             //push to array
@@ -716,7 +721,9 @@ class ResourcesController extends AppController {
 
         $this->set("resources", $resources);
         $this->set("projects", $projects);
+        ksort($seasons);
         $this->set("seasons", $seasons);
+        ksort($excavations);
         $this->set("excavations", $excavations);
         $this->set("subjects", $subjects);
         $this->set("metadataEdits", $metadataedits);
@@ -725,55 +732,70 @@ class ResourcesController extends AppController {
 
     }
     protected function pushToArray($value, &$array){
-      $key = key($value);
-      if(!isset($array[$key]) && !empty($key)){
-        $array[$key] = $value[$key];
-      }
+        foreach($value as $key => $v){
+            if(!isset($array[$key]) && !empty($key)){
+                $array[$key] = $value[$key];
+            }
+        }
+
     }
     protected function getFromKey($array, $key){
-      return array_values($array)[0][$key][0];
+      return array_values($array)[0][$key];
     }
     protected function getProject($kid){
-      $sid = PROJECT_SID;
+	  $pid = hexdec( explode('-', $kid)[0] );
+	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+	  $sid = parent::getProjectSIDFromProjectName($pName);
       $query_array = array("kid","=",$kid);
       $fields = "ALL";
-      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
       return $result->return_array();
     }
-    protected function getSeason($kid){
-      $sid = SEASON_SID;
-      $query_array = array("kid","=",$kid);
+    protected function getSeason($kids){
+      $pid = hexdec( explode('-', $kids[0])[0] );
+	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+	  $sid = parent::getSeasonSIDFromProjectName($pName);
+      $query_array = array("kid","IN",$kids);
       $fields = "ALL";
-      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
       return $result->return_array();
     }
-    protected function getExcavation($kid){
-      $sid = SURVEY_SID;
-      $query_array = array("kid","=",$kid);
+    protected function getExcavation($kids){
+      $pid = hexdec( explode('-', $kids[0])[0] );
+	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+	  $sid = parent::getSurveySIDProjectName($pName);
+      $query_array = array("kid","IN",$kids);
       $fields = "ALL";
-      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
       return $result->return_array();
     }
     protected function getResource($kid){
-      $sid = RESOURCE_SID;
+      $pid = hexdec( explode('-', $kid)[0] );
+	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+	  $sid = parent::getResourceSIDFromProjectName($pName);
       $query_array = array("kid","=",$kid);
       $fields = "ALL";
-      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
       return $result->return_array();
     }
     protected function getPages($resource_kid){
-      //grab all pages with the resource identifier
+      //grab all pages with the resource associator
+	  $pid = hexdec( explode('-', $resource_kid)[0] );
+	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+	  $sid = parent::getPageSIDFromProjectName($pName);
       $fields = array('ALL');
       $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
-      $kora = new Advanced_Search(PAGES_SID, $fields, 0, 0, $sort);
+      $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
       $kora->add_clause("Resource Associator", "=", $resource_kid);
       return json_decode($kora->search(), true);
     }
-    protected function getSubjectOfObservation($resource_kid){
-      $sid = SUBJECT_SID;
-      $query_array = array("Resource Identifier","=", $resource_kid);
-      $fields = "ALL";
-      $result = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-      return $result->return_array();
+    protected function getSubjectOfObservation($pageKids){
+        $pid = hexdec(explode('-', $pageKids[0])[0]);
+        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        $sid = parent::getSubjectSIDFromProjectName($pName);
+        $query_array = array("Pages Associator", "IN", $pageKids);
+        $fields = "ALL";
+        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        return $result->return_array();
     }
 }

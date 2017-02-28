@@ -457,22 +457,26 @@ var resourceKid = "";//"<?php  ?> ";
 
 //update the toolbar page urls with project.
 
+//get project name
+var pName = $('#project1').find("[id='Persistent Name']").html();
+pName = pName.replace(/ /g, '_').toLowerCase();
+
 //add the project kid to the resources url.
 var href = $('#resources').attr('href');
 href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+$('#project1').attr('data-kid');
+var href = href+'/'+pName;
 $('#resources').attr('href', href);
 
 //add project kid to the collections url.
 var href = $('#collections').attr('href');
 href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+$('#project1').attr('data-kid');
+var href = href+'/'+pName;
 $('#collections').attr('href', href);
 
 //add project kid to the search url.
 var href = $('#search').attr('href');
 href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+$('#project1').attr('data-kid');
+var href = href+'/'+pName;
 $('#search').attr('href', href);
 
 </script>
