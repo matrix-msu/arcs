@@ -61,6 +61,7 @@
     /* Initialize and define events */
 
     Search.prototype.initialize = function(options) {
+      console.log("Hi");
       if(typeof results_to_display != "undefined"){
         var data = results_to_display
         $(".searchIntro").css("display","none")
@@ -120,7 +121,6 @@
       'click .fDots': 'scrollTop',
       'click .dots': 'scrollTop',
       'click #open-colview-form': 'openCollection',
-      'click #open-colview-form': 'advancedRedirect',
 
     };
 
@@ -224,11 +224,7 @@
       }, time);
     };
 
-    Search.prototype.advancedRedirect = function(e) {
-      console.log("redirect HI");
-
-
-    };
+  
     Search.prototype.openCollection = function(e) {
       var form = $(e.target).parent();
       form.find("input").attr({value: JSON.stringify(Search.selected) });
