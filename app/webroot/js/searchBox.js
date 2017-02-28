@@ -9,10 +9,10 @@ $(document).ready(function(){
            window.location.replace(url);
        }
    });
-   $("#advancedSearchLink").attr("href","advanced/" + globalproject)
 });
 
 $(".searchBoxInput").keyup(function(e){
+	$("#advancedSearchLink").attr("href","advanced/" + globalproject)
     var val = $('.searchBoxInput').val();
     if(e.keyCode == 13){
         console.log(val);
