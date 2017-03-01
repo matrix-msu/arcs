@@ -88,7 +88,7 @@
     Router::connect('/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
-    Router::connect('/search/collection',
+    Router::connect('/search/collection/*',
         array('controller' => 'resources', 'action' => 'viewtype')
     );
 	Router::connect('/resources/viewkid/*',
@@ -183,7 +183,7 @@
     // order matters here! do not move this below search.
     Router::connect('/search/advanced/*',
         array('controller' => 'AdvancedSearch', 'action' => 'display')
-    ); 
+    );
     Router::connect('/api/search/advanced/*',
         array('controller' => 'AdvancedSearch', 'action' => 'search')
     );
@@ -300,7 +300,7 @@
 ///////////////////////////////////////////////////////////////////////
 Router::connect('/orphan/*',
     array('controller' => 'orphans', 'action' => 'display')
-); 
+);
 ////////////////////////////////////////////////////////////////////////
 ##################
 ////////////////////////////////////////////////////////////////////////
