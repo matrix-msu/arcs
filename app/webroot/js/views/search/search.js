@@ -61,8 +61,13 @@
     /* Initialize and define events */
 
     Search.prototype.initialize = function(options) {
-      if(typeof results_to_display != "undefined"){
 
+      if(globalproject == "all"){
+        //remove export button
+        $("#options-btn").css("display","none");
+      }
+
+      if(typeof results_to_display != "undefined"){
         var data = results_to_display
         $(".searchIntro").css("display","none")
         $("#searchBox").css("display","none")
@@ -1028,5 +1033,20 @@ $(document).ready(function() {
     var static = $('.select-overlay');
     console.log(dynamic);
     static.height(dynamic.height());
+
+    var url = window.location.href;
+    var split = url.split("/").reverse()[0];
+    if(split != "search" && window.globalquery != undefined){
+        if (split != "advanced_search") {
+            $(".searchBoxInput").val(globalquery);
+            var e = $.Event("keyup");
+            e.keyCode = 13; // # Some key code value
+            $(".searchBoxInput").trigger(e);
+        }
+    }
+    if(split == "advanced_search"){
+        url= arcs.baseURL + 'advanced_search';
+        window.location.replace(url);
+    }
 
 });
