@@ -9,12 +9,12 @@ use Lib\Resource;
 class Resource_Search extends Keyword_Search{
 
 
-  function __construct($array){
+  function __construct($array, $projectName){
     //call parent constructor 'kora'
-    parent::__construct(); 
+    parent::__construct();
     $time_start = microtime(true);
     $mem_start =  memory_get_usage();
-     
+
      $this->fields = array(
         "Excavation - Survey Associator",
         "Title",
@@ -27,14 +27,15 @@ class Resource_Search extends Keyword_Search{
       );
 
     //print_r($array);
-    $this->schemeMapping = RESOURCE_SID;
+    $this->token = parent::getTokenFromProjectName($projectName);
+    $this->projectMapping = parent::getPIDFromProjectName($projectName);
+    $this->schemeMapping = parent::getResourceSIDFromProjectName($projectName);
     $this->The_Clause = new KORA_Clause("kid","IN",$array);
-  
     $this->formulatedResult = parent::search();
-         
+
     // traverse the database to include excavation,
     // season and project associations;
-    $this->traverse_insert();
+    $this->traverse_insert($projectName);
 
     // get resource filters
     $filters = Resource::filter_analysis($this->formulatedResult);
