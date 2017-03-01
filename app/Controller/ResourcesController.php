@@ -636,15 +636,14 @@ class ResourcesController extends AppController {
         $this->json(200, base64_encode($data) );
     }
 
-    public function viewtype(){
+    public function viewtype($projectName){
+
       if(isset($this->request->data['resource_kids'])){
         $json =  $this->request->data['resource_kids'];
         $rKids = json_decode($json);
-        $search = new Resource_Search($rKids);
+        $search = new Resource_Search($rKids, $projectName);
         $results = $search->getResultsAsArray();
         echo "<script>var results_to_display = ".json_encode($results).";</script>";
-        //echo "<style>.searchIntro</style>"
-
       }
       else if(isset($this->request->data['orphaned_kids'])){
         $pKids = $this->request->data['orphaned_kids'];

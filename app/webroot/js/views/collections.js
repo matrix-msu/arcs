@@ -202,10 +202,14 @@
           adjustResultsCenter();
           return html;
         }else{
+          var project = window.location.href
+            .split("/")
+            .reverse()[0]
+
           $('<form />')
               .hide()
               .attr({ method : "post" })
-              .attr({ action : "../search/collection"})
+              .attr({ action : "../search/collection/" + project})
               .append($('<input />')
                   .attr("type","hidden")
                   .attr({ "name" : "resource_kids" })

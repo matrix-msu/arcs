@@ -61,16 +61,16 @@
     /* Initialize and define events */
 
     Search.prototype.initialize = function(options) {
-      console.log("Hi");
       if(typeof results_to_display != "undefined"){
+
         var data = results_to_display
         $(".searchIntro").css("display","none")
         $("#searchBox").css("display","none")
         $("#advanced").css("display","none")
-
-        console.log(data);
-        $('#search-results-wrapper').css('visibility', 'visible');
-
+        $('#search-results-wrapper').css({
+            visibility : 'visible',
+            display    : 'initial'
+        });
         $('#results-count').html(data['total']);
             filters = data['filters'];
             indicators = data['indicators'];
@@ -224,7 +224,7 @@
       }, time);
     };
 
-  
+
     Search.prototype.openCollection = function(e) {
       var form = $(e.target).parent();
       form.find("input").attr({value: JSON.stringify(Search.selected) });

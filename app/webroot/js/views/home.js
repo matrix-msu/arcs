@@ -98,11 +98,14 @@
           adjustResultsCenter();
           return; //$el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
+          var project = window.location.href
+            .split("/")
+            .reverse()[0]
           if (type === 'Orphaned') {
             $('<form />')
                 .hide()
                 .attr({ method : "post" })
-                .attr({ action : "../search/collection"})
+                .attr({ action : "../search/collection/" + project})
                 .append($('<input />')
                     .attr("type","hidden")
                     .attr({ "name" : "orphaned_kids" })
@@ -115,7 +118,7 @@
             $('<form />')
                 .hide()
                 .attr({method: "post"})
-                .attr({action: "../search/collection"})
+                .attr({action: "../search/collection/" + project})
                 .append($('<input />')
                     .attr("type", "hidden")
                     .attr({"name": "resource_kids"})
