@@ -4,15 +4,15 @@ $(document).ready(function(){
     $(function () {
         $("#tabs").tabs();
         $(document).ready(function(){
-          var cnt = 1;
-          console.log("hi");
-          $(".soo").each(function(){
-            var display = $(this).css("display");
-            if(display == "none"){
-              $(".soo-click"+cnt).parent().css({display:"none"});
-            }
-            cnt++;
-          });
+            var cnt = 1;
+            console.log("hi");
+            $(".soo").each(function(){
+                var display = $(this).css("display");
+                if(display == "none"){
+                    $(".soo-click"+cnt).parent().css({display:"none"});
+                }
+                cnt++;
+            });
 
         });
     });
@@ -22,12 +22,11 @@ $(document).ready(function(){
         });
         console.log("here");
     });
-    $('.metadata-accordion').height($('#viewer-window').height() + 40);
-
+    //height of the viewer window - the height of the tabs - 2 for the border width
+    $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2);
 
     $(window).resize(function () {
-        $('.metadata-accordion').height($('#viewer-window').height() + 40);
-        $(".accordion").accordion("refresh");
+        $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2 );
     });
     $(function () {
         $("#soo").tabs();
