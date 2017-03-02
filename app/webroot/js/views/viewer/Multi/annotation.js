@@ -7,11 +7,11 @@ $(document).ready(function () {
 
     $(".resources-annotate-icon").click(function () {
         console.log("ahh");
-        if ($('.resources-annotate-icon').attr('src') === "../img/AnnotationsOff.svg") {
-            $('.resources-annotate-icon').attr('src', "../img/annotationsProfile.svg")
+        if ($('.resources-annotate-icon').attr('src') === "/"+BASE_URL+"img/AnnotationsOff.svg") {
+            $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/annotationsProfile.svg")
         }
         else {
-            $('.resources-annotate-icon').attr('src', "../img/AnnotationsOff.svg")
+            $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/AnnotationsOff.svg")
         }
 
         if (showAnnotations) {
@@ -189,11 +189,11 @@ $(document).ready(function () {
                         });
 
                         if (isAdmin == 1) {
-                            $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='../app/webroot/assets/img/Trash-White.svg'/></div>");
-                            $(gen_box).append("<div class='flagAnnotation'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                            $(gen_box).append("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='/'+BASE_URL+'app/webroot/assets/img/Trash-White.svg'/></div>");
+                            $(gen_box).append("<div class='flagAnnotation'><img src='/'+BASE_URL+'app/webroot/assets/img/FlagTooltip.svg'/></div>");
                         }
                         else {
-                            $(gen_box).append("<div class='flagAnnotation notAdmin'><img src='../app/webroot/assets/img/FlagTooltip.svg'/></div>");
+                            $(gen_box).append("<div class='flagAnnotation notAdmin'><img src='/'+BASE_URL+'app/webroot/assets/img/FlagTooltip.svg'/></div>");
                         }
 
                         $("#deleteAnnotation_" + v.id).click(function () {
@@ -573,21 +573,21 @@ $(document).ready(function () {
                 });
 
                 $.each(data, function (key, value) {
-                    var trashButton = isAdmin == 1 ? "<img src='../app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
+                    var trashButton = isAdmin == 1 ? "<img src='/'+BASE_URL+'app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
                     if (value.page_kid == kid && value.transcript != "") {
-                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>" + value.transcript + "<div class='thumbResource'> <img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton + "</div></div>");
+                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>" + value.transcript + "<div class='thumbResource'> <img src='/'+BASE_URL+'app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='/'+BASE_URL+'app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton + "</div></div>");
                     }
                     else {
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>" + value.relation_resource_name + "</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "</div>");
+                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>" + value.relation_resource_name + "</div><img src='/'+BASE_URL+'app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='/'+BASE_URL+'app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "</div>");
                         }
                         else if (value.relation_page_kid != "" && value.incoming == "true") {
                             var text = value.x1 ? "Revert to whole resource" : "Define space";
-                            $(".incoming_relations").append("<div class='annotation_display " + value.id + "' id='" + value.id + "'><div class='relationName'>" + value.relation_resource_name + "</div><img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "<img src='../app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>" + text + "</div></div>");
+                            $(".incoming_relations").append("<div class='annotation_display " + value.id + "' id='" + value.id + "'><div class='relationName'>" + value.relation_resource_name + "</div><img src='/'+BASE_URL+'app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='/'+BASE_URL+'app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "<img src='/'+BASE_URL+'app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>" + text + "</div></div>");
                         }
                     }
                     if (value.url != "") {
-                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>" + value.url + "<img src='../app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='../app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "</div>");
+                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>" + value.url + "<img src='/'+BASE_URL+'app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='/'+BASE_URL+'app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "</div>");
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null

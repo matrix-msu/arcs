@@ -6,7 +6,7 @@ $(document).ready(function(){
             return;
         }
         isExporting = 1;
-        $('.icon-export').css('background-image','url(../img/arcs-preloader.gif)');
+        $('.icon-export').css('background-image','url(/'+BASE_URL+'img/arcs-preloader.gif)');
         //load data in variables
 		
 		//var projects = PROJECTS;
@@ -21,8 +21,15 @@ $(document).ready(function(){
         var xmlString = '';
 
 		var projectsObject = scheme2json(PROJECTS);
-		var seasonsObject = scheme2json(seasons);
-		var excavationsObject = scheme2json(excavations);
+
+		var seasonsObject = [];
+        if( seasons.length > 0 ) {
+            seasonsObject = scheme2json(seasons);
+        }
+		var excavationsObject = [];
+        if( excavations.length > 0 ) {
+            excavationsObject = scheme2json(excavations);
+        }
 		var resourcesObject = scheme2json(resources);
         var pagesObject = [];
         resourcesObject.forEach(function (tempdata) {
@@ -34,7 +41,10 @@ $(document).ready(function(){
             }
         })
         var pageUrls = [];
-		var subjectsObjectsArray = scheme2json(subjects);
+		var subjectsObjectsArray = [];
+        if( subjects.length > 0 ) {
+            subjectsObjectsArray = scheme2json(subjects);
+        }
 
         // handle project
         projectsObject.forEach(function (tempdata) {
@@ -181,8 +191,8 @@ $(document).ready(function(){
             }
         }).done(function(){
             //done exporting successful or not..
-            //console.log('here');
-            $('.icon-export').css('background-image','url(../img/export.svg)');
+            console.log('export is done');
+            $('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
             isExporting = 0;
         });
 

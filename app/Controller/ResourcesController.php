@@ -652,7 +652,7 @@ class ResourcesController extends AppController {
     }
 
     //view muitiple resources in a viewer
-    public function multi_viewer(){
+    public function multi_viewer($id=''){
 
         $resources = array();
         $projects = array();
@@ -664,9 +664,13 @@ class ResourcesController extends AppController {
         if($this->request->method() === "POST"){
             $post_data = $this->request->data;
             $resources_array = json_decode($post_data["resources"]);
-        }
-        else{
-            //Not a post method
+        }elseif($this->request->method() === "GET"){
+            if($id == '' ){
+                throw new NotFoundException();
+            }
+            $resources_array = array( $id );
+        }else{
+            //Not a post or get method
             throw new NotFoundException();
         }
         foreach($resources_array as $resource){
@@ -726,8 +730,6 @@ class ResourcesController extends AppController {
         $this->set("excavations", $excavations);
         $this->set("subjects", $subjects);
         $this->set("metadataEdits", $metadataedits);
-
-
 
     }
     protected function pushToArray($value, &$array){

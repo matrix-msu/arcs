@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     //check if the first page image has loaded and get keywords. if not, wait more
     function waitForPicture() {
-        if ($('#PageImage').attr('src') == '../img/arcs-preloader.gif') {
+        if ($('#PageImage').attr('src') == '/'+BASE_URL+'img/arcs-preloader.gif') {
             //console.log('more waiting');
             setTimeout(function () {
                 waitForPicture();

@@ -47,7 +47,7 @@ var resourceKid = "";//"<?php  ?> ";
     <div class="modalBackground">
         <div class="flagWrap">
             <div id="flagModal">
-                <div class="flagModalHeader">NEW FLAG <img src="../app/webroot/assets/img/Close.svg"
+                <div class="flagModalHeader">NEW FLAG <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                            class="modalClose"/></div>
                 <hr>
                 <form id="flagForm" action="/">
@@ -80,7 +80,7 @@ var resourceKid = "";//"<?php  ?> ";
 
 	<div class="deleteWrap">
 		<div id="deleteModel">
-			<div class="deleteModalHeader"><img src="../app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
+			<div class="deleteModalHeader"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
 			<div class="deleteBody"> Are you sure you want to delete this annotation?</div>
 			<div class="deleteFooter">
 				<div class='deleteCancel'>cancel</div>
@@ -96,13 +96,13 @@ var resourceKid = "";//"<?php  ?> ";
 					<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
 				    <div class='leftHalf'>
 						<div class='expandedArrowBoxLeft'>
-							<img class='leftExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
+							<img class='leftExpandedArrow' src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
 					</div>
 					<div class="rightHalf">
 						<div class='expandedArrowBoxRight'>
-							<img class='rightExpandedArrow' src="../img/arrowRight-White.svg" height="220px" width="10px" />
+							<img class='rightExpandedArrow' src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
 					</div>
@@ -113,7 +113,7 @@ var resourceKid = "";//"<?php  ?> ";
 			</div>
 
 			<div class='fullscreenClose'>
-				<img src="../app/webroot/assets/img/Close.svg"class="closeExpand"/>
+				<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="closeExpand"/>
 			</div>
 		</div>
 	</div>
@@ -121,7 +121,7 @@ var resourceKid = "";//"<?php  ?> ";
     <div class="annotateModalBackground">
         <div class="annotateWrap">
             <div id="annotateModal">
-                <div class="annotateModalHeader">NEW ANNOTATION<img src="../app/webroot/assets/img/Close.svg"
+                <div class="annotateModalHeader">NEW ANNOTATION<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                     class="modalClose annotationClose"/></div>
                 <hr class="annotateHeaderDivider">
                 <p class="annotateTab annotateTabRelation activeTab">RELATION</p>
@@ -148,7 +148,7 @@ var resourceKid = "";//"<?php  ?> ";
     <div class="collectionModalBackground">
         <div class="collectionWrap" style="margin-top:9em;">
             <div id="collectionModal" style="width:35em;">
-                <div class="collectionModalHeader">Add to Collection <img src="../app/webroot/assets/img/Close.svg"
+                <div class="collectionModalHeader">Add to Collection <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
                 <p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
@@ -172,7 +172,7 @@ var resourceKid = "";//"<?php  ?> ";
                 </div>
             </div>
             <div id="addedCollectionModal" style="width:35em;display:none;">
-                <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../app/webroot/assets/img/Close.svg"
+                <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
                 <div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
@@ -188,7 +188,7 @@ var resourceKid = "";//"<?php  ?> ";
                 <div id="collectionModal" style="width:35em;">
                     <div class="collectionModalHeader">
                         <p id="associatorTitle" style='display:inline-block'>Add Associators</p>
-                        <img src="../app/webroot/assets/img/Close.svg" class="modalCloseAssociator"/>
+                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalCloseAssociator"/>
                     </div>
                     <hr>
                     <!-- p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
@@ -365,7 +365,7 @@ var resourceKid = "";//"<?php  ?> ";
 <div id="resources-nav">
     <div class="button-left" id="button-left">
         <a id="left-button">
-            <img src="../img/arrowLeft-White.svg" height="220px" width="10px">
+            <img src="/<?php echo BASE_URL; ?>img/arrowLeft-White.svg" height="220px" width="10px">
         </a>
     </div>
 
@@ -394,7 +394,7 @@ var resourceKid = "";//"<?php  ?> ";
 
   <div class="button-right" id="button-right">
       <a  id="right-button">
-          <img src="../img/arrowRight-White.svg" height="220px" width="10px">
+          <img src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="220px" width="10px">
       </a>
   </div>
 </div>
@@ -402,7 +402,7 @@ var resourceKid = "";//"<?php  ?> ";
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
-            <img src="../img/arrowLeft-White.svg" height="220px" width="10px" />
+            <img src="/<?php echo BASE_URL; ?>img/arrowLeft-White.svg" height="220px" width="10px" />
         </a>
     </div>
 
@@ -444,14 +444,12 @@ var resourceKid = "";//"<?php  ?> ";
 
 <div class="button-right" id="button-right">
     <a id="right-button">
-        <img src="../img/arrowRight-White.svg" height="220px" width="10px" />
+        <img src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="220px" width="10px" />
     </a>
 </div>
 </div>
 
 
-
-<pre id="preview"></pre>
 
 <script>
 

@@ -65,7 +65,7 @@
     );
     # Resource, collection and user singular aliases
     Router::connect('/resource/*',
-        array('controller' => 'resources', 'action' => 'viewer')
+        array('controller' => 'resources', 'action' => 'multi_viewer')
     );
     # Non-RESTful API routes
     Router::connect('/api/search',

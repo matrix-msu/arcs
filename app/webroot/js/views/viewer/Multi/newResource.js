@@ -5,7 +5,7 @@ function GetNewResource(id) {
     if(id == null)
       return;
     image = document.getElementById('PageImage')
-    image.src = '../img/arcs-preloader.gif';
+    image.src = '/'+BASE_URL+'img/arcs-preloader.gif';
     //image.style.height = '100%';
     //image.style.width = '100%';
     waitingId++;
