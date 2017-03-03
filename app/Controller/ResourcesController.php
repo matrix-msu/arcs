@@ -29,7 +29,7 @@ class ResourcesController extends AppController {
         # Read-only actions, such as viewing resources and associated comments
         # are allowed by default.
         $this->Auth->allow(
-            'view', 'viewer', 'search', 'comments', 'annotations',
+            'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
             'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'export', 'viewtype'
         );
         if (!isset($this->request->query['related'])) {
