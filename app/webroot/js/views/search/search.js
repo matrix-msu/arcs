@@ -57,17 +57,9 @@
       url: arcs.baseURL + 'search/'
     };
 
-
-    /* Initialize and define events */
-
-    Search.prototype.initialize = function(options) {
-
-      if(globalproject == "all"){
-        //remove export button
-        $("#options-btn").css("display","none");
-      }
-
+    Search.prototype.changeDisplay = function() {
       if(typeof results_to_display != "undefined"){
+        console.log(results_to_display);
         var data = results_to_display
         $(".searchIntro").css("display","none")
         $("#searchBox").css("display","none")
@@ -95,6 +87,16 @@
             setFilters();
             adjustPage(totalResults, 1);
       }
+    }
+    /* Initialize and define events */
+    Search.prototype.initialize = function(options) {
+
+      if(window.globalproject == "all"){
+        //remove export button
+        $("#options-btn").css("display","none");
+      }
+
+      this.changeDisplay();
       _.extend(this.options, _.pick(options, 'el'));
       this.setupSelect();
       this.setupSearch();
@@ -126,10 +128,14 @@
       'click .fDots': 'scrollTop',
       'click .dots': 'scrollTop',
       'click #open-colview-form': 'openCollection',
+      'click #advancedSearchLink': 'advancedRedirect',
 
     };
 
-
+    Search.prototype.advancedRedirect = function () {
+        var href = arcs.baseURL + "search/advanced/" + globalproject
+        window.location.href = href
+    }
     /* More involved setups run by the initialize method */
 
     Search.prototype.setupSelect = function() {

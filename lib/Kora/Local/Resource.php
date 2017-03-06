@@ -4,6 +4,9 @@
 
 
 namespace Lib;
+
+require_once(APP . "Config/database.php");
+
 use \DATABASE_CONFIG;
 use \mysqli;
 

@@ -471,20 +471,28 @@
     };
 
     advancedSearch = function(val) {
-      var pageNum, perPage, resources;
+      var pageNum, perPage, resources, query;
       $('.flex-img').removeClass('selected');
       console.log(val);
-      val = JSON.stringify(val);
+      //val = JSON.stringify(val);
       pageNum = $('.currentPage').html();
       perPage = $('#items-per-page-btn').html().substring(0, 2);
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
+      query = "?"
+      for(var key in val){
+        if(val[key] !== ""){
+          query += key + "=" + val[key] + "&"
+        }
+      }
+      console.log(query);
       resources = new Promise(function(resolve, reject) {
         var pageNumber, perPageUrl, req, resourcequery;
         resourcequery = encodeURIComponent("" + val);
+        console.log(resourcequery + "<------")
         pageNumber = encodeURIComponent("" + pageNum);
         perPageUrl = encodeURIComponent("" + perPage);
-        return req = $.getJSON(arcs.baseURL + 'api/search/advanced/' + resourcequery +"/", function(response) {
+        return req = $.getJSON(arcs.baseURL + 'api/search/advanced/' + globalproject + '/' + query , function(response) {
           var temp;
           console.log(response);
           $('#lastPage').html(response['pages']);
@@ -538,37 +546,25 @@
 
     $(function() {
       return $("#advanced_search_button").click(function(e) {
-        var coverage, creator, date, date_modified, description, format, identifier, language, location, medium, subject, val, val2, x;
+        var coverage, creator, date, date_modified, description, format, identifier, language, location, medium, subject, x;
+        var val = {}
         console.log("Ran ad");
         $('.pageNumber').removeClass('selected');
         $('.pageNumber').removeClass('currentPage');
         $("#1").addClass('selected');
         $("#1").addClass('currentPage');
         $("#1").html(1);
-        medium = $("#Medium").val();
-        language = $("#Language").val();
-        format = $("#Format").val();
-        date_modified = $("#DateModified").val();
-        creator = $("#Creator").val();
-        subject = $("#Subject").val();
-        location = $("#Location").val();
-        identifier = $("#Identifier").val();
-        description = $("#Description").val();
-        date = $("#Date").val();
-        coverage = $("#Coverage").val();
-        val = [coverage, date, description, identifier, location, subject, creator, date_modified, format, language, medium];
-        console.log(val.length);
-        console.log(val);
-        val2 = [];
-        x = 0;
-        while (x < val.length) {
-          if (val[x] !== '') {
-            val2.push(val[x]);
-          }
-          x++;
-        }
-        val = val2;
-        e.preventDefault();
+        val.medium = $("#Medium").val();
+        val.language = $("#Language").val();
+        val.format = $("#Format").val();
+        val.date_modified = $("#DateModified").val();
+        val.creator = $("#Creator").val();
+        val.subject = $("#Subject").val();
+        val.location = $("#Location").val();
+        val.identifier = $("#Identifier").val();
+        val.description = $("#Description").val();
+        val.date = $("#Date").val();
+        val.coverage = $("#Coverage").val();
         $('.flex-container').empty();
         $('.flex-container').append('<img src=' + arcs.baseURL + "/img/arcs-preloader.gif>");
         $('#search-results-wrapper').css('visibility', 'visible');

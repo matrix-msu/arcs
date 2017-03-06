@@ -181,11 +181,14 @@
 # advancedSearch controller
 ////////////////////////////////////////////////////////////////////////
     // order matters here! do not move this below search.
+    Router::connect('/search/advanced/view/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'viewer')
+    );
     Router::connect('/search/advanced/*',
         array('controller' => 'AdvancedSearch', 'action' => 'display')
     );
     Router::connect('/api/search/advanced/*',
-        array('controller' => 'AdvancedSearch', 'action' => 'search')
+        array('controller' => 'AdvancedSearch', 'action' => 'searchAPI')
     );
 
 ////////////////////////////////////////////////////////////////////////
