@@ -129,7 +129,7 @@ var resourceKid = "";//"<?php  ?> ";
                 <!--<p class="annotateTab annotateTabTranscript">TRANSCRIPT</p>-->
                 <p class="annotateTab annotateTabUrl">URL</p>
                 <div class="annotateRelationContainer">
-                    <form class="annotateSearchForm" action="#">
+                    <form class="annotateSearchForm">
                         <input class="annotateSearch" placeholder="SEARCH"/>
                     </form>
                     <div class="resultsContainer"></div>
@@ -221,7 +221,7 @@ var resourceKid = "";//"<?php  ?> ";
                         <div class="icon-collection"></div>
                     </a>
 
-                    <a id="annotate-new-btn" class="annotate" href="#">
+                    <a id="annotate-new-btn" class="annotate" style="cursor:pointer">
                                         <span class="content">
                                                 Annotate
                                         </span>

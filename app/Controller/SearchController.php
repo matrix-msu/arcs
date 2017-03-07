@@ -192,16 +192,7 @@ class SearchController extends AppController {
         return $results;
     }
 
-
-
-
-
-
-
-
-
-
-
+    //Josh- I think this is not used??? I'm not sure.
     public function advanced_search($query1="",$page,$perPage) {
         if($query1 == ""){
             return 0;
@@ -809,8 +800,17 @@ class SearchController extends AppController {
 
         if (!isset($this->request->data['q']))
             return $this->emptySearch($options);
+        $pid = hexdec($this->request->data['pid']);
+        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        if( $this->request->data['sid'] == 'resource' ){
+            $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+        }elseif( $this->request->data['sid'] == 'subject' ){
+            $sid = $GLOBALS['SUBJECT_SID_ARRAY'][strtolower($pName)];
+        }elseif( $this->request->data['sid'] == 'page' ){
+            $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+        }
 
-        $kora = new Advanced_Search($this->request->data['sid']);
+        $kora = new Advanced_Search($pid,$sid);
 
         foreach ($this->request->data['q'] as $q) {
             $kora->add_clause($q[0], $q[1], $q[2]);
