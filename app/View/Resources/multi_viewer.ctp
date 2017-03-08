@@ -3,7 +3,7 @@
 <script src="<?php  echo Router::url('/', true);  ?>js/vendor/chosen.jquery.js"></script>
 <script>
 //PAGE GLOBALS
-var PROJECTS = <?php echo json_encode($projects);?>;
+var PROJECTS = <?php echo json_encode($projectsArray);?>;
 var SEASONS = <?php echo json_encode($seasons);?>;
 var RESOURCES = <?php echo json_encode($resources);?>;
 var EXCAVATIONS = <?php echo json_encode($excavations);?>;
@@ -273,7 +273,7 @@ var resourceKid = "";//"<?php  ?> ";
                   <div class="accordion metadata-accordion">
                 <?= $this->element("Metadata/generate"); ?>
                 <?php
-                    Generate_Metadata("project",$projects, $metadataEdits);
+                    Generate_Metadata("project",$projectsArray, $metadataEdits);
                     Generate_Metadata("Seasons",$seasons, $metadataEdits);
                     Generate_Metadata("excavations",$excavations, $metadataEdits);
                     Generate_Metadata("archival objects",$resources, $metadataEdits);

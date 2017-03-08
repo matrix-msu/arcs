@@ -655,7 +655,7 @@ class ResourcesController extends AppController {
     public function multi_viewer($id=''){
 
         $resources = array();
-        $projects = array();
+        $projectsArray = array();
         $seasons = array();
         $excavations = array();
         $subjects = array();
@@ -701,7 +701,7 @@ class ResourcesController extends AppController {
 
             //get project array
             $project_array = $this->getProject($project_kid);
-            $this->pushToArray($project_array, $projects);
+            $this->pushToArray($project_array, $projectsArray);
 
             //get pages and add to resource array
             $page = $this->getPages($resource);
@@ -723,7 +723,7 @@ class ResourcesController extends AppController {
         $metadataedits = $this->getEditMetadata();
 
         $this->set("resources", $resources);
-        $this->set("projects", $projects);
+        $this->set("projectsArray", $projectsArray);
         ksort($seasons);
         $this->set("seasons", $seasons);
         ksort($excavations);
