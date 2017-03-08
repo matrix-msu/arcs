@@ -149,10 +149,13 @@ $( document ).ready(function() {
     // run on page load
     $(".collectionNewContainer").hide();
     collectionList();
-    //getCollections();
+    getCollections();
 
-    $('.resource-container-level').click(function() {
-       getCollections();
+    $('.resource-slider').find('.other-resource').click(function() {
+        var resourceKid = $(this).attr('id').split('-');
+        resourceKid.shift();
+        resourceKid = resourceKid.join('-');
+        getCollections(resourceKid);
     });
 
 
@@ -256,13 +259,17 @@ function collectionsSearch() {
 }
 
 //for the details tab, what collections the resource is a part of.
-function getCollections() {
-    /////********* Rix - Accordion fix is here*****
-    ////////////////Yours is broken on version 517 now.
-    var resource_kid = $('.selectedResource').prev();
-    resource_kid = $(resource_kid).attr('id');
-    resource_kid = resource_kid.replace('identifier-', '');
-    //****************** End fix! ********
+function getCollections( resourceKid='' ) {
+    if( resourceKid == '' ) {
+        var currentPage = $('.resource-slider').find('img').filter(function () { //by border
+            return $(this).css('border-width') == '5px';
+        });
+        currentPage = currentPage.attr('id').split('-');
+        currentPage.shift();
+        var resource_kid = currentPage.join('-');
+    }else{
+        var resource_kid = resourceKid;
+    }
 
     var ctab = $("#collections_tab");
     ctab[0].innerHTML = "COLLECTIONS (" + 0 + ")";

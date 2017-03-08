@@ -33,7 +33,6 @@ $(document).ready(function () {
 
     //get annotate to support multi-pages.
     $('.page-slider').find('.other-resource').click(function(){
-        console.log('annotate page click');
         $('#canvas').html('');
         setTimeout(function () {
             waitForElement();
@@ -243,7 +242,6 @@ $(document).ready(function () {
         var annotateSearch = $(".annotateSearch");
 
         var search = annotateSearch.val().split(' ').join('%');
-        console.log(search);
 
         // Search Resources
         $.ajax({

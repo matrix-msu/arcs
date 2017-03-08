@@ -33,14 +33,15 @@ var resourceKid = "";//"<?php  ?> ";
 ?>
 <!-- <?=  $this->Html->script("views/viewer/Multi/flag.js") ?> -->
 <?=  $this->Html->script("views/viewer/Multi/accordion.js") ?>
-<?=  $this->Html->script("views/viewer/Multi/annotation.js") ?>
-<?=  $this->Html->script("views/viewer/Multi/temp_file.js") ?>
-<?=  $this->Html->script("views/viewer/Multi/collection.js")  ?>
 <!-- <?=  $this->Html->script("views/viewer/Multi/details.js")  ?> -->
 <?=  $this->Html->script("views/viewer/Multi/resources.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/newResource.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/export.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?>
+
+<?=  $this->Html->script("views/viewer/Multi/annotation.js") ?>
+<?=  $this->Html->script("views/viewer/Multi/temp_file.js") ?>
+<?=  $this->Html->script("views/viewer/Multi/collection.js")  ?>
 
 
 <div class="viewers-container">
