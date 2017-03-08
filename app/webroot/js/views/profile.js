@@ -159,18 +159,8 @@
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
         }else{
-          $('<form />')
-              .hide()
-              .attr({ method : "post" })
-              .attr({ action : "../../search/collection"})
-              .append($('<input />')
-                  .attr("type","hidden")
-                  .attr({ "name" : "resource_kids" })
-                  .val(JSON.stringify(response.results))
-              )
-              .append('<input type="submit" />')
-              .appendTo($("body"))
-              .submit();
+          //collection show all goes to search
+          window.location.href = "../../search/collection/" + id;
         }
       });
     };

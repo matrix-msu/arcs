@@ -202,23 +202,12 @@
           adjustResultsCenter();
           return html;
         }else{
+          //show all button goes to search.
           var project = window.location.href
             .split("/")
-            .reverse()[0]
-
-          $('<form />')
-              .hide()
-              .attr({ method : "post" })
-              .attr({ action : "../search/collection/" + project})
-              .append($('<input />')
-                  .attr("type","hidden")
-                  .attr({ "name" : "resource_kids" })
-                  .val(JSON.stringify(response.results))
-              )
-              .append('<input type="submit" />')
-              .appendTo($("body"))
-              .submit();
-        }
+            .reverse()[0];
+          window.location.href = "../search/collection/" + id;
+         }
       });
 
       adjustResultsCenter();
