@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-    var currentPagePicture = '';
-
     $('.page-slider').find('.other-resource').click(function() {
         var pageKid = $(this).attr('id')
         getKeywords(pageKid);
@@ -46,24 +44,6 @@ $(document).ready(function(){
                 /////uses the chosen.js to turn the select into a fancy thingy
                 $(".chosen-select").chosen();
 
-                //backspace delete keyword
-                $(".search-field").on('keydown', "input", function(e) {
-                    var id = $(this).val();
-                    if( (id == "" || id == ',') && e.key == 'Backspace' ) { //get the newest keyword and delete it
-                        $.ajax({
-                            url: arcs.baseURL + "keywords/deleteKeyword",
-                            type: "POST",
-                            data: {
-                                page_kid: PAGE_KID,
-                                project_kid: PROJECT_KID,
-                                keyword: $(e.target).parent().prev().children().eq(0).text()
-                            },
-                            success: function (data) {
-                            }
-                        })
-                    }
-                });
-
                 //add new keyword with a comma
                 $(".search-field").on('keyup', "input", function(e) {
                     var id = $(this).val();
@@ -94,17 +74,31 @@ $(document).ready(function(){
                                 keyword: id
                             },
                             success: function (data) {
-                                //console.log("keyword add ajax success");
-                                //console.log(data);
+                                $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
+                                $(".chosen-select").trigger("chosen:updated");
+                                //delete with a click
+                                $(".search-choice-close").one('click', function(e) {
+                                    $.ajax({
+                                        url: arcs.baseURL + "keywords/deleteKeyword",
+                                        type: "POST",
+                                        data: {
+                                            page_kid: PAGE_KID,
+                                            project_kid: PROJECT_KID,
+                                            keyword: $(e.target).prev().html()
+                                        },
+                                        success: function (data) {
+                                            //console.log("keyword delete ajax success");
+                                        }
+                                    })
+                                });
                             }
                         })
-                        $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
-                        $(".chosen-select").trigger("chosen:updated");
+
                     }
                 });
 
                 //delete with a click
-                $(".search-choice-close").on('click', function(e) {
+                $(".search-choice-close").one('click', function(e) {
                     $.ajax({
                         url: arcs.baseURL + "keywords/deleteKeyword",
                         type: "POST",
@@ -174,12 +168,25 @@ $(document).ready(function(){
                             keyword: id
                         },
                         success: function (data) {
-                            //console.log("keyword add ajax success");
+                            $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
+                            $(".chosen-select").trigger("chosen:updated");
+                            //delete with a click
+                            $(".search-choice-close").one('click', function(e) {
+                                $.ajax({
+                                    url: arcs.baseURL + "keywords/deleteKeyword",
+                                    type: "POST",
+                                    data: {
+                                        page_kid: PAGE_KID,
+                                        project_kid: PROJECT_KID,
+                                        keyword: $(e.target).prev().html()
+                                    },
+                                    success: function (data) {
+                                        //console.log("keyword delete ajax success");
+                                    }
+                                })
+                            });
                         }
                     })
-                    $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
-                    $(".chosen-select").trigger("chosen:updated");
-                    //getKeywords();
                 });
             }
         })
