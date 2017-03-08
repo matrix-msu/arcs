@@ -2,44 +2,22 @@ $(document).ready(function(){
 
     var currentPagePicture = '';
 
-    //check if the first page image has loaded and get keywords. if not, wait more
-    function waitForPicture() {
-        if ($('#PageImage').attr('src') == '/'+BASE_URL+'img/arcs-preloader.gif') {
-            //console.log('more waiting');
-            setTimeout(function () {
-                waitForPicture();
-            }, 150);
-        }else{
-            if( $('#PageImage').attr('src') != currentPagePicture ) {
-                currentPagePicture = $('#PageImage').attr('src');
-                getKeywords();
-            }
-        }
-    }
-    //wait and kick off the picture checking
-    function startKeywords() {
-        setTimeout(function () {
-            waitForPicture();
-        }, 500);
-    }
-    startKeywords();
+    $('.page-slider').find('.other-resource').click(function() {
+        var pageKid = $(this).attr('id')
+        getKeywords(pageKid);
+    });
 
-    function getKeywords() {
+    getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'));
+
+    function getKeywords(pageKid) {
         //get the keywords for the current page and update the chosen select thing
         /////////////////
         var html4 = '<fieldset class="users-fieldset">';
         html4 += '<select id ="urlAuthor" data-placeholder="Keywords" multiple class="chosen-select" style="width:90%;">';
 
-        var resource_kid = $('.resource-container-level').find('.selectedResource').prev().attr('id');
-        resource_kid = resource_kid.replace('identifier-', '');
-
-        var PROJECT_KID = RESOURCES[resource_kid]['project_kid'];
-
-        var PAGE_KID = $('#PageImage').attr('src');
-        PAGE_KID = PAGE_KID.split('/');
-        PAGE_KID = PAGE_KID.pop();
-        PAGE_KID = PAGE_KID.split('-');
-        PAGE_KID = PAGE_KID[0]+'-'+PAGE_KID[1]+'-'+PAGE_KID[2];
+        var PAGE_KID = pageKid;
+        //project_kid does not support multi-projects. Change here if that is needed-
+        var PROJECT_KID = $('.resource-slider').find('.other-resources').eq(0).attr('data-projectKid');
 
         var keywordArray = [];
 
@@ -206,10 +184,4 @@ $(document).ready(function(){
             }
         })
     }
-
-    $('.other-resource').on('click', function(e) {
-        if( $(this).attr('id').indexOf('identifier-') == -1 ) {
-            startKeywords();
-        }
-    });
 });
