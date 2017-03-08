@@ -101,7 +101,8 @@
                    ){
 		                $pKid = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         $pKid = explode('/', $pKid);
-                        $pKid = '/'.array_pop($pKid);
+                        $pKid = array_pop($pKid);
+                        $pKid = '/' .explode('?', $pKid)[0];
 
                         //make multi-resources' resource link blue
                         $resourceBlue = '';
