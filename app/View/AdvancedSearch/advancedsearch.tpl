@@ -280,31 +280,7 @@ is from here to ...
 			</div>
 
 			<ul class="flex-container">
-				<!--
-				<div class="resource-item-container">
-					<li class="flex-item">1</li>
-					<div class="resource-title">Resource Title</div>
-					<div class="resource-type">Resource Type</div>
-					<div class="icon-annotate"></div>
-				</div>
-				<div class="resource-item-container">
-					<li class="flex-item">2</li>
-					<div class="resource-title">Resource Title</div>
-					<div class="resource-type">Resource Type</div>
-					<div class="icon-annotate"></div>
-					<div class="icon-flag"></div>
-				</div>
-				<div class="resource-item-container">
-					<li class="flex-item">3</li>
-					<div class="resource-title">Resource Title</div>
-					<div class="resource-type">Resource Type</div>
-					<div class="icon-flag"></div>
-					<div class="search-icon-edit"></div>
-					<div class="icon-in-collection"></div>
-					<div class="icon-discussed"></div>
-					<div class="icon-tagged"></div>
-				</div>
-				-->
+
 			</ul>
 		</div>
 	</div>
@@ -391,7 +367,7 @@ is from here to ...
       paramArray.forEach(function(element) {
         ul.append(
           "<li data-field=\"" + element.field + "\">" +
-          element.field + ": \"" + element.value + "\"" +
+          element.field + ": \"" + decodeURIComponent(element.value) + "\"" +
           "<span class=\"exit-btn\">X</span>" +
           "</li>"
         )
