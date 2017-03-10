@@ -132,6 +132,7 @@
     display: block;
   }
 </style>
+
 <article id="pageHelpModal">
   <div>
 
@@ -201,8 +202,8 @@
       some, somehow, someone, something, sometime, sometimes, somewhere, still, such,
     </p>
   </div>
-
 </article>
+
 <main class="advanced-search-container" data-project="<?=$project?>">
   <article class="search-info">
     <section id="backToSearch">
@@ -388,7 +389,7 @@
         <div class="date-select" data-name="scan_date">
           <select name="year">
             <option value="default">Select Year</option>
-            <?php $this->Search->printYearOptions($min,$max,$step); ?>
+            <?php $this->Search->printYearOptions(2000, $max, $step); ?>
           </select>
           <select name="month">
             <option value="default">Select Month</option>
