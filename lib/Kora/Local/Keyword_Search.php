@@ -603,7 +603,7 @@ class Keyword_Search extends Kora
             if (!empty($date)) {
                 $query[$i] = preg_replace(
                     "/(....)-(..)-(..)/",
-                    "<month>".(int)$date[3]."</month><day>".(int)$date[2]."</day><year>".
+                    "<month>".(int)$date[2]."</month><day>".(int)$date[3]."</day><year>".
                     (int)$date[1]."</year>", $date[0]
                 );
             }
