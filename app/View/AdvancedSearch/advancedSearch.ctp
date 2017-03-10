@@ -570,8 +570,8 @@
 
         year  = parseInt(year.val())  || "00";
         day   = parseInt(day.val())   || "00";
-        month = parseInt(AdvancedSearch.months.indexOf(month.val()));
-        if (month === -1)
+        month = parseInt(AdvancedSearch.months.indexOf(month.val()))+1;
+        if (month === 0)
           month = "00"
 
         var val = year + "-" + month + "-" + day
