@@ -240,16 +240,19 @@ class AppController extends Controller
      */
     public static function smallThumb($name)
     {
+		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
+		$KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
+		
         $pid = hexdec(explode('-', $name)[0]);
         $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
         $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
         $path = THUMBS . "smallThumbs/";
-        $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
+        $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
         $url = THUMBS_URL . "smallThumbs/" . $thumb;
         if (!file_exists($path)) {
-            $imgpath = KORA_FILES_URI . "/" . $pid . "/" . $sid . "/" . $name;
+            $imgpath = KORA_FILES_URI . $pid . "/" . $sid . "/" . $KoraUrlName;
             $image = imagecreatefromstring(file_get_contents($imgpath));
             $result = AppController::resize($image, 240, 200);
             imagedestroy($image);
@@ -268,16 +271,19 @@ class AppController extends Controller
      */
     public function largeThumb($name)
     {
+        $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
+        $KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
+		
         $pid = hexdec(explode('-', $name)[0]);
         $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
         $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
         $path = THUMBS . "largeThumbs/";
-        $thumb = pathinfo($name, PATHINFO_FILENAME) . ".jpg";
+        $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
         $path .= $thumb;
         $url = THUMBS_URL . "largeThumbs/" . $thumb;
         if (!file_exists($path)) {
-            $imgpath = KORA_FILES_URI . "/" . $pid . "/" . $sid . "/" . $name;
+            $imgpath = KORA_FILES_URI . $pid . "/" . $sid . "/" . $KoraUrlName;
             $image = imagecreatefromstring(file_get_contents($imgpath));
             $result = $this->resize($image, 400, 400);
             imagedestroy($image);
