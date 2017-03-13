@@ -70,13 +70,4 @@ class DATABASE_CONFIG {
 		//'encoding' => 'utf8',
 	);
 
-    public $test = array(
-		'datasource' => 'Database/Mysql',
-		'persistent' => false,
-		'host' => 'rush.matrix.msu.edu',
-		'login' => 'rix_dev',
-		'password' => '59g37I1RhU',
-		'database' => 'rix_dev',
-		'prefix' => 'arcs_test_',
-    );
 }

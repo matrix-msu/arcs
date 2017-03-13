@@ -25,12 +25,12 @@ namespace Lib\Kora;
 require_once "Kora.php";
 require_once "Resource.php";
 
-require_once "../../app/Controller/SearchController.php";
+//require_once "../../app/Controller/SearchController.php";
 
 use Lib\Kora;
 use Lib\Resource;
 use Lib\KORA_Clause;
-use \SearchController;
+//use \SearchController;
 use arcs_e\ArcsException;
 use \App;
 use \Exception;
@@ -52,6 +52,7 @@ class Keyword_Search extends Kora
     protected $season_list = array();
     protected $excavation_list = array();
     protected $total = 0;
+    protected $preFilter = false;
 
     protected $months = [
     "January","February","March","April","May","June","July","August",
@@ -99,10 +100,15 @@ class Keyword_Search extends Kora
     /**
     * Constructor
     */
-    function __construct()
+    function __construct($preFilter = array())
     {
         //call parent constructor 'kora'
         parent::__construct();
+
+        // check for included resources;
+        if (!empty($preFilter) && is_array($preFilter)) {
+          $this->preFilter = $preFilter;
+        }
     }
     /**
     * executes a search on a query in a set project
@@ -132,6 +138,12 @@ class Keyword_Search extends Kora
             "Accession Number"
             ), $terms
         );
+
+        if ($this->preFilter) {
+          $keywordFilter = new KORA_Clause("kid", "IN", $this->preFilter);
+          $clause = new KORA_Clause($clause, "OR", $keywordFilter);
+        }
+
         //set up the kora search parameters for keyword search on RESOURCE
         $pid = parent::getPIDFromProjectName($project);
         $rid = parent::getResourceSIDFromProjectName($project);

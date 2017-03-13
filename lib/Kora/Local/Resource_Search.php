@@ -2,11 +2,11 @@
 require_once("Keyword_Search.php");
 require_once("Resource.php");
 
-use Lib\Kora\Keyword_search;
+use Lib\Kora\Keyword_Search;
 use Lib\KORA_Clause;
 use Lib\Resource;
 
-class Resource_Search extends Keyword_Search{
+class Resource_Search extends Keyword_Search {
 
 
   function __construct($array, $projectName){

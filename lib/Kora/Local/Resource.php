@@ -101,7 +101,7 @@ class Resource {
     }
   }
 
-  private static function getConnection(){
+  public static function getConnection(){
     $db = new DATABASE_CONFIG;
     $db_object =  (object) $db;
     $db_array = $db_object->{'default'};

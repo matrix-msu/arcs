@@ -9,7 +9,7 @@
  */
 class Keyword extends AppModel {
     public $name = 'Keyword';
-    public $belongsTo = array('User', 'Resource');
+    //public $belongsTo = array('User', 'Resource');
     public $whitelist = array('keyword', 'page_kid', 'project_kid');
     /*
     public $validate = array(

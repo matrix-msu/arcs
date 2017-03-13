@@ -12,9 +12,11 @@ require_once(KORA_LIB . "Keyword_Search.php");
 require_once(KORA_LIB . "General_Search.php");
 require_once(KORA_LIB . "Advanced_Search.php");
 require_once(KORA_LIB . "Resource.php");
+require_once(KORA_LIB . "Utility_Search.php");
 
 use Lib\Kora\Keyword_Search;
 use Lib\Resource;
+use lib\kora\local\Utility_Search;
 
 class SearchController extends AppController {
     public $name = 'Search';
@@ -33,30 +35,78 @@ class SearchController extends AppController {
         }
 
     }
+    public function keywordSearch($projectName = null) {
+      parent::verifyGlobals($projectName);
+      if (isset($this->request->query["keyword"]) &&
+          !empty($this->request->query["keyword"])) {
 
+        $rKids= $this->getResourcesFromKeyword(
+          $projectName, $this->request->query["keyword"]
+        );
+
+        $search = new Resource_Search($rKids, $projectName);
+        $results = $search->getResultsAsArray();
+        echo "<script>var results_to_display = ".json_encode($results).";</script>";
+        $this->render("../Search/search");
+      }
+      else {
+        throw new Exception("keyword parameter was not set");
+      }
+
+    }
+    public function getResourcesFromKeyword($project,$query){
+
+        $this->loadModel('Keyword');
+
+        $pages = $this->Keyword->find('all', array(
+         'conditions' => array('Keyword.keyword LIKE' => "%$query%"),
+         'fields' => array('Keyword.page_kid'),
+         'recursive' => 1
+        ));
+        $pageArray = array();
+
+        for ($i=0; $i < count($pages); $i++) {
+          $pageArray[$i] = $pages[$i]["Keyword"]["page_kid"];
+        }
+        if (empty($pageArray)) {
+          $pageArray = array("empty");
+        }
+
+        $util = new Utility_Search();
+        $resources = $util->getResourcesFromPages($pageArray, $project);
+
+        return $resources;
+    }
     /**
      * Display the search page
      */
     public function search($project, $query=null) {
+
       if($project != "all")
         parent::verifyGlobals($project);
+
       $title = 'Search';
+
       if ($query) $title .= ' - ' . urldecode($query);
         $this->set('title_for_layout', $title);
+
 	    if(!empty($query)){
-		   echo "<script>var globalquery = '".$query."';</script>";
+		   echo "<script type='text/javascript'>var globalquery = '".$query."';</script>";
 	    }
 	    echo "<script type='text/javascript'>var globalproject = '".$project."';</script>";
     }
 
     public function simple_search($project,$query="",$page,$perPage) {
+
         $this->autoRender = false;
 
-        if ($query == ''){
-            return $this->emptySearch($options);
-        } else if ($project == "all") {
+        $preFilter = $this->getResourcesFromKeyword($project, $query);
+
+        if ($project === "all") {
+
           $projects = array_keys($GLOBALS['PID_ARRAY']);
-          $keySearch = new Keyword_Search();
+          // Kora Search
+          $keySearch = new Keyword_Search($preFilter);
           $results = array();
 
           foreach ($projects as $project) {
@@ -66,7 +116,8 @@ class SearchController extends AppController {
           echo json_encode($results);
 
         } else {
-          $keySearch = new Keyword_Search();
+          // Kora Search
+          $keySearch = new Keyword_Search($preFilter);
           $keySearch->execute($query,$project);
           $keySearch->print_json();
         }
