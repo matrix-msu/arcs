@@ -28,7 +28,7 @@ class SearchController extends AppController {
     }
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('search', 'resources', 'advanced_resources', 'simple_search','advance_search','getProjects');
+        $this->Auth->allow('search', 'resources', 'advanced_resources', 'simple_search','advance_search','getProjects', "keywordSearch");
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
             $this->Resource->flatten = true;
