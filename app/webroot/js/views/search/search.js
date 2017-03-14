@@ -287,7 +287,8 @@
       }
       console.log("select everything");
       this.$(".select-overlay").each(function(){
-        w = Math.ceil($(this)[0].nextElementSibling.childNodes[1].offsetWidth)
+        console.log($(this)[0].nextElementSibling);
+        w = Math.ceil($(this)[0].nextElementSibling.offsetWidth)
         $(this).css('width', w)
       })
       console.log(selectedMap["selected"]);
@@ -485,19 +486,21 @@
       }
     }
     function select_selected(){
-      console.log("called");
-      $(".resource-thumb").each(function(){
-        console.log("C");
-        if(Search.selected.indexOf($(this).attr("data-id")) !== -1 ){
-          console.log(this.childNodes);
-          w = $(this).find(".results").css('width')
-          $(this).find(".select-overlay").css("width", w)
-          this.childNodes[1].childNodes[0].childNodes[0].className += " selected"
-          this.childNodes[1].childNodes[0].style.background = 'transparent'
-          this.childNodes[1].style.opacity = 1
-          this.childNodes[1].style.background = 'rgba(0, 147, 190, 0.75)'
-        }
-      })
+      setTimeout(function () {
+        $(".resource-thumb").each(function(){
+          if(Search.selected.indexOf($(this).attr("data-id")) !== -1 ){
+            console.log($(this).find(".select-overlay"));
+            w = $(this).find(".results").css('width')
+            console.log(w);
+            $(this).find(".select-overlay").css("width", w)
+            $(this).find(".select-circle").addClass("selected")
+            $(this).find(".circle-container").css("background", "transparent")
+            $(this).find(".select-overlay").css("opacity", "1")
+            $(this).find(".select-overlay").css('background','rgba(0, 147, 190, 0.75)')
+          }
+        })
+      }, 100);
+
     }
     function set_widths(){
       console.log("adjust widths");
@@ -527,7 +530,7 @@
       Search.prototype._render({
         results: totalResults.slice(skip, skip + numberPerPage)
       });
-      set_widths()
+      // set_widths()
       select_selected()
       setIndicators();
 
@@ -700,7 +703,11 @@
             }
             selectedMap['unselected'] = totalResults;
             waiting = false;
+
             setFilters();
+            Search.prototype._render({
+              results: totalResults
+            });
             return adjustPage(totalResults, 1);
           }
         }
@@ -738,6 +745,7 @@
 
 
     Search.prototype._render = function(results, append) {
+
 
 
       var $results, filterResults, getCnt, template;
@@ -812,7 +820,27 @@
         // $(this).find('img').removeClass('img-hover');
         // $(this).find('.select-button').css('visibility', 'hidden');
       });
-      $('.select-circle').click(function() {
+      $('.select-overlay').hover(function(){
+        if ($(this).find(".select-circle").hasClass("selected")){
+          $(this).css( 'cursor', '' );
+        }
+        else{
+          $(this).css( 'cursor', 'pointer' );
+        }
+      })
+      $('.select-overlay').click(function (e) {
+        e.stopPropagation();
+        if ($(this).find(".select-circle").hasClass("selected")){
+          return;
+        }
+        else{
+          var href = $(this).parent().parent().find(".result_a").attr('href')
+          window.location.href = href
+          console.log(href);
+        }
+      })
+      $('.select-circle').click(function(e) {
+        e.stopPropagation();
         makeSelect = false;
         if($(this).hasClass("selected")){
           $(this).removeClass('selected')
@@ -918,6 +946,7 @@
           selectedMap['selected'] = [];
           this.id = 'select-all';
           arcs.searchView.unselectAll();
+          $('#toggle-select').html('SELECT');
           $('#selected-resource-ids').html(selectedMap["selected"]);
           return $('#selected-count').html(selectedMap["selected"].length);
         }
@@ -949,8 +978,11 @@
         excavationType = filtersApplied['Excavation Type'];
         creator = filtersApplied['Creator'];
         count = 0;
+        // console.log(filtersApplied);
         for (key in unfilteredResults) {
+          // console.log(sites);
           val = unfilteredResults[key];
+          // console.log(val);
           if (sites !== '') {
             if (val['Excavation Name'] !== sites) {
               continue;
@@ -967,9 +999,16 @@
             }
           }
           if (excavationType !== '') {
-            if (val['Excavation Type'] !== excavationType) {
+            // console.log(sites);
+            // console.log(excavationType);
+            // console.log(val['Excavation Name']);
+            if (val['Excavation Name'] !== excavationType) {
               continue;
             }
+            // if (val['Excavation Name'] === sites) {
+            // console.log("aaa");
+            //
+            // }
           }
           if (creator !== '') {
             if (indexOf.call(val['Creator'], creator) < 0) {
@@ -995,7 +1034,9 @@
           }
           parentUl.find($('.active')).removeClass('active');
           $(this).addClass('active');
+          console.log(filterKey);
           filtersApplied[filterKey] = currentFilter;
+          console.log(filtersApplied);
           filterCnt = getCnt();
           if (filterCnt) {
             filterResults();

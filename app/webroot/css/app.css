@@ -8529,7 +8529,10 @@ ul.pagination .selected {
   margin-left: auto;
   flex-wrap: wrap;
 }
-.flex-container .resource-thumb {
+.flex-container .detailed {
+  width: 100% !important;
+}
+.flex-container .simple {
   height: 200px;
   width: 150px;
   position: relative;
@@ -8540,7 +8543,7 @@ ul.pagination .selected {
   transition: 0.1s linear background-image;
   text-align: center;
 }
-.flex-container .resource-thumb a img {
+.flex-container .simple div img {
   margin: 0 auto;
   box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
   max-width: 115px;
@@ -8549,7 +8552,7 @@ ul.pagination .selected {
   height: 120px;
   text-align: center;
 }
-.flex-container .resource-thumb .select-overlay {
+.flex-container .simple .select-overlay {
   position: absolute;
   height: 120px;
   opacity: 0;
@@ -8561,24 +8564,25 @@ ul.pagination .selected {
   top: 0;
   margin: auto;
 }
-.flex-container .resource-thumb .select-circle {
+.flex-container .simple .select-circle {
   width: 20px;
   height: 20px;
   border: 1px solid white;
   border-radius: 50%;
   position: absolute;
   top: -3px;
-  bottom: 0;
-  right: 0;
   left: -3px;
+  right: 0;
+  bottom: 0;
   margin: auto;
+  ccursor: pointer;
 }
-.flex-container .resource-thumb .selected {
+.flex-container .simple .selected {
   background: white;
   background-clip: content-box;
   padding: 2px;
 }
-.flex-container .resource-thumb .circle-container {
+.flex-container .simple .circle-container {
   width: 30px;
   height: 30px;
   top: 0;
@@ -8586,8 +8590,76 @@ ul.pagination .selected {
   position: relative;
   background: rgba(0, 147, 190, 0.75);
 }
-.flex-container .resource-thumb .select-hover {
+.flex-container .simple .select-hover {
   opacity: 1;
+}
+.flex-container .result_a {
+  display: inline-block;
+  position: relative;
+}
+@media screen and (min-width: 1500px) {
+  .flex-container .detailed {
+    width: 100% !important;
+    height: 200px;
+    margin: 25px 0;
+    position: relative;
+  }
+  .flex-container .detailed div img {
+    vertical-align: middle;
+    height: 175px;
+    box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #e2e2e2;
+    object-fit: cover;
+  }
+  .flex-container .detailed .select-overlay {
+    position: absolute;
+    height: 175px;
+    opacity: 0;
+    transition: .5s ease;
+    border: 5px solid rgba(0, 147, 190, 0.75);
+    text-align: center;
+    left: 0;
+    top: 0;
+    margin: auto;
+  }
+  .flex-container .detailed .circle-container {
+    width: 30px;
+    height: 30px;
+    top: 0;
+    left: 0;
+    position: relative;
+    background: rgba(0, 147, 190, 0.75);
+  }
+  .flex-container .detailed .select-circle {
+    width: 20px;
+    height: 20px;
+    border: 1px solid white;
+    border-radius: 50%;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    ccursor: pointer;
+  }
+  .flex-container .detailed .item {
+    /* float: left; */
+    position: absolute;
+    vertical-align: middle;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 175px;
+  }
+  .flex-container .detailed .selected {
+    background: white;
+    background-clip: content-box;
+    padding: 2px;
+  }
+  .flex-container .detailed .select-hover {
+    opacity: 1;
+  }
 }
 div#search-bottom-bar {
   float: left;

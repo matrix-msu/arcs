@@ -26,8 +26,10 @@
     margin-top: 3em;
     margin-left: auto;
     flex-wrap: wrap;
-
-		.resource-thumb{
+    .detailed{
+      width: 100% !important;
+    }
+		.simple{
 	    padding: 0px;
 	    height: 200px;
 	    width: 150px;
@@ -39,7 +41,7 @@
 	    transition: 0.1s linear background-image;
       text-align: center;
 
-			a img {
+			div img {
 			    margin: 0 auto;
 			    box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
 			    max-width: 115px;
@@ -48,7 +50,9 @@
 			    height: 120px;
           text-align: center;
 			}
-
+      // a:hover img{
+      //   border: 5px solid rgba(0, 147, 190, 0.75);
+      // }
       .select-overlay {
         position: absolute;
         height: 120px;
@@ -69,10 +73,11 @@
         border-radius: 50%;
         position: absolute;
         top: -3px;
-        bottom: 0;
-        right: 0;
         left: -3px;
-        margin: auto;
+        right: 0;
+        bottom: 0;
+        margin: auto;c
+        cursor: pointer;
     }
     .selected{
       background: white;
@@ -104,4 +109,79 @@
         opacity: 1;
       }
 	}
+
+  .result_a{
+    display: inline-block;
+    position: relative;
+  }
+
+  @media screen and (min-width: 1500px){
+
+    .detailed {
+      width: 100% !important;
+      height: 200px;
+      margin: 25px 0;
+      position: relative;
+      div img {
+        vertical-align: middle;
+        height: 175px;
+        box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
+        border: 1px solid #e2e2e2;
+        object-fit: cover;
+    }
+
+    .select-overlay {
+      position: absolute;
+      height: 175px;
+      opacity: 0;
+      transition: .5s ease;
+      // background-color: rgba(0, 147, 190, 0.5);
+      border: 5px solid rgba(0, 147, 190, 0.75);
+      text-align: center;
+      left: 0;
+      top: 0;
+      margin: auto;
+    }
+    .circle-container{
+        width: 30px;
+        height: 30px;
+        top: 0;
+        left: 0;
+        position: relative;
+        background: rgba(0, 147, 190, 0.75);
+    }
+    .select-circle {
+        width: 20px;
+        height: 20px;
+        border: 1px solid white;
+        border-radius: 50%;
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: 0;
+        bottom: 0;
+        margin: auto;c
+        cursor: pointer;
+    }
+    .item{
+      /* float: left; */
+      position: absolute;
+      vertical-align: middle;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      height: 175px;
+  }
+    .selected{
+      background: white;
+      background-clip: content-box;
+      padding: 2px;
+    }
+    .select-hover{
+      opacity: 1;
+    }
+  }
+  }
+
+
 }
