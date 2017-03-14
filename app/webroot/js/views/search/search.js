@@ -10,6 +10,8 @@
     "selected": []
   };
 
+  titleOrTime = false;
+
   selectedCount = 0;
 
   selected = [];
@@ -516,7 +518,7 @@
         return;
       }
       totalResults.sort(function(a, b) {
-        return sortBy('Title', a, b, sortDirection);
+        return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
       });
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
@@ -1063,10 +1065,28 @@
           return adjustPage(totalResults, 1);
         }
       });
-      if (results.length === 0) {
-        return $results.html("<div id='no-results'>No Results</div>");
+
+    $('.sorter').unbind().click(function() {
+      var id;
+      if ($(this).hasClass('active')) {
+
+      } else {
+        $('.sorter').removeClass('active');
+        $(this).addClass('active');
+        if ($(this).attr("id") === "sort-title-btn"){
+          titleOrTime = false;
+        }
+        else{
+          titleOrTime = true;
+        }
+        return adjustPage(totalResults, 1);
       }
-    };
+    });
+
+    if (results.length === 0) {
+      return $results.html("<div id='no-results'>No Results</div>");
+    }
+  };
 
     return Search;
 

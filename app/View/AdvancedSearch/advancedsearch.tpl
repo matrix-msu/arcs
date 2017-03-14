@@ -253,10 +253,9 @@ is from here to ...
 		        <span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="sort-title-btn">title&nbsp;
+		        <li><a class="sort-btn active sorter" id="sort-title-btn">title&nbsp;
 		          <i class="icon-ok"></i></a></li>
-		        <li><a class="sort-btn" id="sort-modified-btn">modified&nbsp;</a></li>
-		        <li><a class="sort-btn" id="sort-created-btn">created&nbsp;</a></li>
+		        <li><a class="sort-btn sorter" id="sort-modified-btn">modified&nbsp;</a></li>
 		        <li class="divider"></li>
 		        <li><a class="dir-btn active" id="dir-asc-btn">ascending&nbsp;
 		          <i class="icon-ok"></i></a></li>

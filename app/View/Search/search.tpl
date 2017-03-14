@@ -81,10 +81,10 @@
 	<div class="SearchBar">
 		<div id="search-actions" class="search-toolbar">
 			<div id="sites-buttons" class="btn-group actions-left">
-		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+		      <!-- <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Projects
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
+		      </button> -->
 		      <ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
 		      </ul>
 		    </div>
@@ -168,12 +168,11 @@
 		        <span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="sort-title-btn">title&nbsp;
+		        <li><a class="sort-btn active sorter" id="sort-title-btn">title&nbsp;
 		          <i class="icon-ok"></i></a></li>
-		        <li><a class="sort-btn" id="sort-modified-btn">modified&nbsp;</a></li>
-		        <li><a class="sort-btn" id="sort-created-btn">created&nbsp;</a></li>
+		        <li><a class="sort-btn sorter" id="sort-modified-btn">modified&nbsp;</a></li>
 		        <li class="divider"></li>
-		        <li><a class="dir-btn active" id="dir-asc-btn">ascending&nbsp;
+		        <li><a class="dir-btn active " id="dir-asc-btn">ascending&nbsp;
 		          <i class="icon-ok"></i></a></li>
 		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
 		      </ul>

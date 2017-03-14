@@ -8594,7 +8594,6 @@ ul.pagination .selected {
   opacity: 1;
 }
 .flex-container .result_a {
-  display: inline-block;
   position: relative;
 }
 @media screen and (min-width: 1500px) {
