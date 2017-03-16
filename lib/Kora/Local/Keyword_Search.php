@@ -395,7 +395,10 @@ class Keyword_Search extends Kora
             "Accession Number",
             "Creator",
             "Creator2",
-            "systimestamp"
+            "systimestamp",
+            "recordowner",
+            "Earliest Date",
+            "Latest Date"
             );
         } else {
             $this->fields = $fields;

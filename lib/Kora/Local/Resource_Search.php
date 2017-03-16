@@ -23,7 +23,10 @@ class Resource_Search extends Keyword_Search {
         "Accession Number",
         "Creator",
         "Creator2",
-        "systimestamp"
+        "systimestamp",
+        "recordowner",
+        "Earliest Date",
+        "Latest Date"
       );
 
     //print_r($array);
