@@ -653,7 +653,8 @@ class ResourcesController extends AppController {
 
     //view muitiple resources in a viewer
     public function multi_viewer($id=''){
-
+		
+	
         $resources = array();
         $projectsArray = array();
         $seasons = array();
@@ -719,17 +720,25 @@ class ResourcesController extends AppController {
             $this->pushToArray($info_array, $resources);
 
         }
+		if( !isset($this->request->query['ajax'] )){
+			$metadataedits = $this->getEditMetadata();
 
-        $metadataedits = $this->getEditMetadata();
-
-        $this->set("resources", $resources);
-        $this->set("projectsArray", $projectsArray);
-        ksort($seasons);
-        $this->set("seasons", $seasons);
-        ksort($excavations);
-        $this->set("excavations", $excavations);
-        $this->set("subjects", $subjects);
-        $this->set("metadataEdits", $metadataedits);
+			$this->set("resources", $resources);
+			$this->set("projectsArray", $projectsArray);
+			ksort($seasons);
+			$this->set("seasons", $seasons);
+			ksort($excavations);
+			$this->set("excavations", $excavations);
+			$this->set("subjects", $subjects);
+			$this->set("metadataEdits", $metadataedits);
+		}else{
+			echo json_encode([$projectsArray, 
+								$seasons,
+								$excavations,
+								$resources,
+								$subjects]);
+			die;
+		}
 
     }
     protected function pushToArray($value, &$array){
