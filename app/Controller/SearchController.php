@@ -84,6 +84,7 @@ class SearchController extends AppController {
 
       if($project != "all")
         parent::verifyGlobals($project);
+    
 
       $title = 'Search';
 
@@ -100,22 +101,22 @@ class SearchController extends AppController {
 
         $this->autoRender = false;
 
-        $preFilter = $this->getResourcesFromKeyword($project, $query);
-
         if ($project === "all") {
-
+  
           $projects = array_keys($GLOBALS['PID_ARRAY']);
-          // Kora Search
-          $keySearch = new Keyword_Search($preFilter);
           $results = array();
 
           foreach ($projects as $project) {
+            // Kora Search
+            $preFilter = $this->getResourcesFromKeyword($project, $query);
+            $keySearch = new Keyword_Search($preFilter);
             $keySearch->execute($query,$project);
             $results[$project] = $keySearch->getResultsAsArray();
           }
           echo json_encode($results);
 
         } else {
+          $preFilter = $this->getResourcesFromKeyword($project, $query);
           // Kora Search
           $keySearch = new Keyword_Search($preFilter);
           $keySearch->execute($query,$project);
