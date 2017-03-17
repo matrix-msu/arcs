@@ -1,6 +1,10 @@
 // search.less
 // -----------
 
+
+
+
+
 @ArcsBlue: rgb(0, 147, 190);
 div#searchButtonMobile{
 	display: none;
@@ -16,6 +20,7 @@ a.search-type {
 	margin-bottom: 4em;
 	color: #444444;
     h1 {
+				position: relative;
         margin-bottom: 25px;
         font-size: 25px;
     }
@@ -280,6 +285,143 @@ div#searchCriteria ul {
     }
 
 }
+
+
+//advancedSewarch
+.advanced-search-container {
+	width: 70%;
+	margin: auto;
+}
+#backToSearch {
+	font-size: 12px;
+	color: #0094BC;
+	margin-bottom: 16px;
+}
+#search-box{
+	margin-bottom: 140px;
+}
+#page-title {
+	color: #3F3F3F;
+	font-size: 24px;
+}
+#page-description {
+	color: #686868;
+	font-size: 12px;
+	line-height: 24px;
+	margin-top: 16px;
+}
+#page-help{
+	font-family: Montserrat;
+	font-size: 14px;
+	text-align: center;
+	color: #686868;
+	width: 25px;
+	height: 25px;
+	background-color: #FFFFFF;
+	border: 1px solid #686868;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	margin-left: 18px;
+	line-height: 24px;
+}
+.search-btn {
+	width: 70%;
+	height: 44px;
+	background: #0094BC;
+	border: 1px solid #0094BC;
+	color: white;
+	position: fixed;
+	bottom: 60px;
+	margin: auto;
+}
+.page-info header {
+	position: relative;
+}
+.search-info {
+	margin-bottom: 80px;
+}
+.search-options {
+	margin-top: 48px;
+}
+.search-options header {
+	color: #3F3F3F;
+	font-size: 20px;
+	line-height: 24px;
+}
+.search-options header p{
+	margin-bottom: 22px;
+}
+.section-search-box option {
+
+}
+.section-search-box input, .section-search-box select {
+	width: 100%;
+	height: 44px;
+	border: 1px solid #E2E2E2 !important;
+	background: white !important;
+	font-size: 14px;
+	padding-left: 20px;
+	color: #3F3F3F;
+}
+.section-search-box {
+	margin-bottom: 20px;
+}
+.section-search-box p {
+	font-size: 12px;
+	line-height: 14px;
+	color: #3F3F3F;
+}
+.date-select {
+	font-size: 0;
+}
+.date-select select{
+	width: 33.33333%;
+	margin-left: -1px;
+}
+#pageHelpModal {
+	display: none;
+	position: fixed;
+	margin: 0;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+}
+#pageHelpModal div {
+	width: 60%;
+	margin: auto;
+	max-height: ~"calc(100vh - 100px)";
+	text-align: left;
+	background: grey;
+	display: initial;
+	position: absolute;
+	z-index: 200;
+	overflow-y: scroll;
+	top: 100px;
+	left: 0;
+	padding: 80px;
+	right: 0;
+	color: white;
+	font-size: 14px;
+	line-height: 25px;
+	padding-top: 24px;
+}
+#pageHelpModal p {
+	margin-top: 30px;
+}
+#pageHelpModal .modal-title {
+	margin-bottom: 30px;
+	font-size: 24px;
+}
+#pageHelpModal:target {
+	display: block;
+}
+//endadvanced
+
 
 @media screen and (min-width: 1500px){
 

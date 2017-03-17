@@ -16,6 +16,79 @@
   color:#337ab7;
 }
 </style>
+
+<article id="pageHelpModal">
+  <div>
+
+    <p class="modal-title">Advanced Search</p>
+    This Search Text has yet to be supplied. Basic Search conducts a keyword
+    search over words included in the Title, Creator, Description, Subject, and
+    Transcript fields of materials in the repository.
+    <p>
+      Basic Search works best for whole words. It is not case sensitive, so the search
+      terms can be entered in upper or lower case.
+    </p>
+    <p>
+      Multi-word Basic Searches
+      Entering more than one word in the Basic Search box results in a search where
+      ALL words in the query are present in ANY of the Basic Search fields. A search
+      for Wesley Fishel will return records where both "Wesley" AND "Fishel" appear
+      in the Title OR Creator OR Description OR Subject OR Transcript field.
+    </p>
+    <p>
+      To speed up searches, punctuation and common short function words have been
+      removed from the search. These stop words include:
+    </p>
+    <p>
+      a, about, above, above, across, after, afterwards, again, against, all,
+      almost, alone, along, already, also, although, always, am, among, amongst,
+      amoungst, amount, an, and, another, any, anyhow, anyone, anything, anyway,
+      anywhere, are, around, as, at, back, be, became, because, become, becomes,
+      becoming, been, before, beforehand, behind, being, below, beside, besides,
+      between, beyond, bill, both, bottom, but, by, call, can, cannot, cant, co,
+      con, could, couldn't, cry, de, describe, detail, do, done, down, due,
+      during, each, eg, eight, either, eleven, else, elsewhere, empty, enough,
+      etc, even, ever, every, everyone, everything, everywhere, except, few,
+      fifteen, fifty, fill, find, fire, first, five, for, former, formerly,
+      forty, found, four, from, front, full, further, get, give, go, had, has,
+      hasn't, have, he, hence, her, here, hereafter, hereby, herein, hereupon, hers,
+      herself, him, himself, his, how, however, hundred, ie, if, in, inc, indeed,
+      interest, into, is, it, its, itself, keep, last, latter, latterly, least,
+      less, ltd, made, many, may, me, meanwhile, might, mill, mine, more, moreover,
+      most, mostly, move, much, must, my, myself, name, namely, neither, never, nevertheless,
+      next, nine, no, nobody, none, no one, nor, not, nothing, now, nowhere, of, off, often,
+      on, once, one, only, onto, or, other, others, otherwise, our, ours, ourselves, out, over,
+      own, part, per, perhaps, please, put, rather, re, same, see, seem, seemed, seeming,
+      seems, serious, several, she, should, show, side, since, sincere, six, sixty, so,
+      some, somehow, someone, something, sometime, sometimes, somewhere, still, such,
+    </p>
+    <p>
+      a, about, above, above, across, after, afterwards, again, against, all,
+      almost, alone, along, already, also, although, always, am, among, amongst,
+      amoungst, amount, an, and, another, any, anyhow, anyone, anything, anyway,
+      anywhere, are, around, as, at, back, be, became, because, become, becomes,
+      becoming, been, before, beforehand, behind, being, below, beside, besides,
+      between, beyond, bill, both, bottom, but, by, call, can, cannot, cant, co,
+      con, could, couldn't, cry, de, describe, detail, do, done, down, due,
+      during, each, eg, eight, either, eleven, else, elsewhere, empty, enough,
+      etc, even, ever, every, everyone, everything, everywhere, except, few,
+      fifteen, fifty, fill, find, fire, first, five, for, former, formerly,
+      forty, found, four, from, front, full, further, get, give, go, had, has,
+      hasn't, have, he, hence, her, here, hereafter, hereby, herein, hereupon, hers,
+      herself, him, himself, his, how, however, hundred, ie, if, in, inc, indeed,
+      interest, into, is, it, its, itself, keep, last, latter, latterly, least,
+      less, ltd, made, many, may, me, meanwhile, might, mill, mine, more, moreover,
+      most, mostly, move, much, must, my, myself, name, namely, neither, never, nevertheless,
+      next, nine, no, nobody, none, no one, nor, not, nothing, now, nowhere, of, off, often,
+      on, once, one, only, onto, or, other, others, otherwise, our, ours, ourselves, out, over,
+      own, part, per, perhaps, please, put, rather, re, same, see, seem, seemed, seeming,
+      seems, serious, several, she, should, show, side, since, sincere, six, sixty, so,
+      some, somehow, someone, something, sometime, sometimes, somewhere, still, such,
+    </p>
+  </div>
+</article>
+<a id="removeModal" href="#"></a>
+
 <div class="viewers-container">
 	<div class="collectionModalBackground" id="collectionModalBackground">
 		<div class="collectionWrap" style="margin-top:9em;">
@@ -57,7 +130,10 @@
 	</div>
 
 <div class='searchIntro'>
-    <h1>Search</h1>
+    <h1>
+      Search
+      <a id="page-help" href="#pageHelpModal">?</a>
+    </h1>
 
     <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.</p>
 </div>
@@ -267,6 +343,13 @@
   arcs.searchView = new arcs.views.search.Search({
     el: $('.wrap')
   });
+  $(document).ready(function() {
+    $("#pageHelpModal").click(function(e) {
+      if (e.target.nodeName === "ARTICLE") {
+        $("#removeModal")[0].click()
+      }
+    })
+  })
 //   function toggle_search_visibility() {
 //       var e = document.getElementById("search-results-wrapper");
 //       if(e.style.visibility == 'hidden')
