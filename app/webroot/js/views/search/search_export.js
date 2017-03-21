@@ -9,7 +9,7 @@
         }
         isExporting = 1;
         $('#options-btn').html('<img class="icon-export" src="/'+BASE_URL+'img/arcs-preloader.gif" style="height:inherit;margin-top:-6px;" />');
-        
+
 		//get all resource kids
 		var resourceKidResults = [];
 		arcs.views.search.exportResults.forEach(function(e){
@@ -178,14 +178,50 @@
         xmlString = objects2xmlString(subjectsObjectsArray);
         xmlArray.push(xmlString);
 
+        $('<iframe />')
+            //.hide()
+            .attr({ id : 'exportIframe' })
+            .attr({ name : 'exportIframe' })
+            //.attr({ onload : 'exportIframe' })
+            .appendTo($('body'));
+
+        console.log(document.getElementById('exportIframe'));
+        document.getElementById('exportIframe').onload = function(){
+            alert('iframe loaded');
+        }
+        var exportIframe = function(){
+            alert('iframe loaded');
+        }
+
+		$('<form />')
+                .hide()
+                .attr({ method : "post" })
+                .attr({ action : arcs.baseURL + "resources/export"})
+                .attr({ target : "exportIframe"})
+                .append($('<input />')
+                    .attr("type","hidden")
+					.attr({ "name" : "xmls" })
+                    .val(JSON.stringify(xmlArray))
+                ).append($('<input />')
+                    .attr("type","hidden")
+					.attr({ "name" : "picUrls" })
+                    .val(JSON.stringify(pageUrls))
+                )
+                .append('<input type="submit" />')
+                .appendTo($("body"))
+                .submit();
+
         //go to php for the pictures and zipping
-        $.ajax({
+        /*$.ajax({
             url: arcs.baseURL + "resources/export",
             type: "POST",
-            data: {'xmls': xmlArray, 'picUrls': pageUrls},
+            data: {'xmls': JSON.stringify(xmlArray), 'picUrls': JSON.stringify(pageUrls)},
             statusCode: {
                 200: function (data) {
-                    var blob = b64toBlob(data, 'application/zip'); //convert base64 to blob
+                    console.log('donwload done');
+					//window.location = data;
+					//console.log(data);
+                    /*var blob = b64toBlob(data, 'application/zip'); //convert base64 to blob
                     var blobUrl = URL.createObjectURL(blob);    //create url
 
                     //add the blob url to and an a tag and click it
@@ -209,7 +245,8 @@
             //done exporting successful or not..
             $('#options-btn').html('Export');
             isExporting = 0;
-        });
+        });*/
+
 
 
         function b64toBlob(b64Data, contentType, sliceSize) {

@@ -13,6 +13,8 @@
  require_once(KORA_LIB . "General_Search.php");
  require_once(KORA_LIB . "Advanced_Search.php");
  require_once(KORA_LIB . "Resource_Search.php");
+ require_once(KORA_LIB . "../Class/Benchmark.php");
+ use mb\Benchmark;
 
 
 class ResourcesController extends AppController {
@@ -606,34 +608,49 @@ class ResourcesController extends AppController {
     public function export(){
         # create new zip opbject
         ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        //$benchmark = new Benchmark();
+
         $zip = new ZipArchive();
 
         # create a temp file & open it
-        $tmp_file = tempnam('.','Resouce_Data.zip');
-        $zip->open($tmp_file, ZipArchive::CREATE);
+        $tmp_file = tempnam('.','Resouce_Data_');
+        $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
 
         $count = 0;
         $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
             'Pages_data.xml', 'Subject_Of_Observation_data.xml'];
-        foreach ($this->request->data['xmls'] as $xml) {
+        foreach (json_decode($this->request->data['xmls']) as $xml) {
             $zip->addFromString($xmlNames[$count], $xml);
             $count++;
         }
+        if( isset($this->request->data['picUrls']) ){
 
-        foreach($this->request->data['picUrls'] as $url){
-            # download file
-            $pid = hexdec( explode('-', $url)[0] );
-            $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-            $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+            foreach(json_decode($this->request->data['picUrls']) as $url){
+                # download file
+                $pid = hexdec( explode('-', $url)[0] );
+                $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+                $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
 
-            $string = KORA_FILES_URI.$pid.'/'.$sid.'/'.$url;
-            $download_file = file_get_contents( $string );
-            $zip->addFromString('images/'.basename($url),$download_file);
+                $string = KORA_FILES_URI.$pid.'/'.$sid.'/'.$url;
+                $download_file = @file_get_contents( $string );
+                $zip->addFromString('images/'.basename($url),$download_file);
+            }
         }
+		$yourfile = $zip->filename;
         $zip->close();
-        //send back base64 format of a zip file
-        $data = file_get_contents($tmp_file);
-        $this->json(200, base64_encode($data) );
+		
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.'Resource_Data.zip'.'"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($yourfile));
+		readfile($yourfile);
+
+        unlink($yourfile);
+        unlink($tmp_file);
     }
 
     public function viewtype($projectName){
@@ -713,7 +730,11 @@ class ResourcesController extends AppController {
             $info_array[$resource]["page"] =  $page;
 
             //get SOO
-            $soo = $this->getSubjectOfObservation($pageKids);
+            if( !empty($pageKids) ){
+                $soo = $this->getSubjectOfObservation($pageKids);
+            }else{
+                $soo = array();
+            }
             $this->pushToArray($soo, $subjects);
 
             //push to array

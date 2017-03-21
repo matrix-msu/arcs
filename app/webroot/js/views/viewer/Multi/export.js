@@ -23,11 +23,11 @@ $(document).ready(function(){
 		var projectsObject = scheme2json(PROJECTS);
 
 		var seasonsObject = [];
-        if( seasons.length > 0 ) {
+        if( !jQuery.isEmptyObject(seasons) ) {
             seasonsObject = scheme2json(seasons);
         }
 		var excavationsObject = [];
-        if( excavations.length > 0 ) {
+        if( !jQuery.isEmptyObject(excavations) ) {
             excavationsObject = scheme2json(excavations);
         }
 		var resourcesObject = scheme2json(resources);
@@ -42,7 +42,7 @@ $(document).ready(function(){
         })
         var pageUrls = [];
 		var subjectsObjectsArray = [];
-        if( subjects.length > 0 ) {
+        if( !jQuery.isEmptyObject(subjects) ) {
             subjectsObjectsArray = scheme2json(subjects);
         }
 
@@ -162,8 +162,25 @@ $(document).ready(function(){
         xmlString = objects2xmlString(subjectsObjectsArray);
         xmlArray.push(xmlString);
 
+        $('<form />')
+            .hide()
+            .attr({ method : "post" })
+            .attr({ action : arcs.baseURL + "resources/export"})
+            .append($('<input />')
+                .attr("type","hidden")
+                .attr({ "name" : "xmls" })
+                .val(JSON.stringify(xmlArray))
+            ).append($('<input />')
+            .attr("type","hidden")
+            .attr({ "name" : "picUrls" })
+            .val(JSON.stringify(pageUrls))
+        )
+            .append('<input type="submit" />')
+            .appendTo($("body"))
+            .submit();
+
         //go to php for the pictures and zipping
-        $.ajax({
+        /*$.ajax({
             url: arcs.baseURL + "resources/export",
             type: "POST",
             data: {'xmls': xmlArray, 'picUrls': pageUrls},
@@ -194,7 +211,7 @@ $(document).ready(function(){
             console.log('export is done');
             $('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
             isExporting = 0;
-        });
+        });*/
 
 
         function b64toBlob(b64Data, contentType, sliceSize) {
