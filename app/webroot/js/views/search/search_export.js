@@ -199,6 +199,21 @@
 							.append('<input type="submit" />')
 							.appendTo($("body"))
 							.submit();
+
+						//check when the export finishes
+						setTimeout(function(){ //give time for jquery form click
+							$.ajax({
+								url: arcs.baseURL + "resources/checkExportDone",
+								type: "POST",
+								data: {'filename': data},
+								statusCode: {
+									200: function () {
+										$('#options-btn').html('Export');
+										isExporting = 0;
+									}
+								}
+							});
+						}, 50);
 					},
 					400: function () {
 						console.log("Bad Request");
@@ -207,10 +222,6 @@
 						console.log("Method Not Allowed");
 					}
 				}
-			}).done(function(){
-				//done exporting successful or not..
-				$('#options-btn').html('Export');
-				isExporting = 0;
 			});
 			return;
 		}

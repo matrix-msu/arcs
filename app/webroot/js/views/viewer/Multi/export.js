@@ -163,39 +163,50 @@ $(document).ready(function(){
         xmlArray.push(xmlString);
 
         //create file
-		$.ajax({
-			url: arcs.baseURL + "resources/createExportFile",
-			type: "POST",
-			data: {'xmls': JSON.stringify(xmlArray), 'picUrls': JSON.stringify(pageUrls)},
-			statusCode: {
-				200: function (data) {
-					//download created file
-					$('<form />')
-						.hide()
-						.attr({ method : "post" })
-						.attr({ action : arcs.baseURL + "resources/downloadExportFile"})
-						.append($('<input />')
-							.attr("type","hidden")
-							.attr({ "name" : "filename" })
-							.val(data)
-						)
-						.append('<input type="submit" />')
-						.appendTo($("body"))
-						.submit();
-				},
-				400: function () {
-					console.log("Bad Request");
-				},
-				405: function () {
-					console.log("Method Not Allowed");
-				}
-			}
-		}).done(function(){
-			//done exporting successful or not..
-			$('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
-			isExporting = 0;
-		});
-		return;
+        $.ajax({
+            url: arcs.baseURL + "resources/createExportFile",
+            type: "POST",
+            data: {'xmls': JSON.stringify(xmlArray), 'picUrls': JSON.stringify(pageUrls)},
+            statusCode: {
+                200: function (data) {
+                    //download created file
+                    $('<form />')
+                        .hide()
+                        .attr({ method : "post" })
+                        .attr({ action : arcs.baseURL + "resources/downloadExportFile"})
+                        .append($('<input />')
+                            .attr("type","hidden")
+                            .attr({ "name" : "filename" })
+                            .val(data)
+                        )
+                        .append('<input type="submit" />')
+                        .appendTo($("body"))
+                        .submit();
+
+                    //check when the export finishes
+                    setTimeout(function(){ //give time for jquery form click
+                        $.ajax({
+                            url: arcs.baseURL + "resources/checkExportDone",
+                            type: "POST",
+                            data: {'filename': data},
+                            statusCode: {
+                                200: function () {
+                                    $('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
+                                    isExporting = 0;
+                                }
+                            }
+                        });
+                    }, 50);
+                },
+                400: function () {
+                    console.log("Bad Request");
+                },
+                405: function () {
+                    console.log("Method Not Allowed");
+                }
+            }
+        });
+        return;
     });
 	
 	function scheme2json(scheme){

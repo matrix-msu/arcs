@@ -32,7 +32,7 @@ class ResourcesController extends AppController {
         # are allowed by default.
         $this->Auth->allow(
             'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
-            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'createExportFile', 'downloadExportFile', 'viewtype'
+            'keywords', 'complete', 'zipped', 'download', 'checkExportDone', "loadNewResource", 'createExportFile', 'downloadExportFile', 'viewtype'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -350,34 +350,6 @@ class ResourcesController extends AppController {
         $this->render('/Elements/download');
     }
 
-    //Josh- I don't think this is used. Mine is in export.
-    /**
-     * Create a zipfile of the POSTed array of resources. Responds with a JSON
-     * object containing a url to the zipfile.
-     */
-   /* public function zipped() {
-        # TO-DO: Look into streaming the zipfile, vs. making it and then providing
-        # the link...
-        if (!($this->request->is('post') && $this->request->data))
-            throw new BadRequestException();
-        $ids = $this->request->data['resources'];
-        $resources = $this->Resource->find('all', array(
-            'conditions' => array(
-                'Resource.id' => $ids
-            )
-        ));
-        $files = array();
-        foreach ($resources as $r) {
-            $files[$r['file_name']] = $r['sha'];
-        }
-        $title = str_replace(' ', '-', $resources[0]['title']);
-        $name = $title . '-and-' .
-            (count($files) - 1) . '-' .
-            (count($files) > 2 ? 'others' : 'other');
-        $sha = $this->Resource->makeZipfile($files, $name);
-        $this->json(200, array('url' => $this->Resource->url($sha, $name . '.zip')));
-    }*/
-
     /**
      * Request a re-thumbnail of a resource's thumbnail image. This is handled
      * through the Job Worker. We'll respond with a 202 status code if
@@ -605,6 +577,7 @@ class ResourcesController extends AppController {
         return $response;
     }
 
+    //create a file to be exported.
     public function createExportFile(){
         # create new zip opbject
         ini_set('memory_limit', '-1');
@@ -639,7 +612,8 @@ class ResourcesController extends AppController {
 		echo $tmp_file;
 		die;
     }
-	
+
+    //download the created export file and delete it
 	public function downloadExportFile(){
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
@@ -654,6 +628,21 @@ class ResourcesController extends AppController {
         unlink($this->request->data['filename']);
 		die;
 	}
+
+    /*
+     * check for when the export file is done downloading
+     * This code will only run after the download either finished or crashed
+     * delete the files if download crashed.
+     */
+    public function checkExportDone(){
+        if(file_exists($this->request->data['filename'].'.zip')){
+            unlink($this->request->data['filename'].'.zip');
+        }
+        if(file_exists($this->request->data['filename'])){
+            unlink($this->request->data['filename']);
+        }
+        die;
+    }
 
     public function viewtype($projectName){
 

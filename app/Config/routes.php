@@ -91,6 +91,12 @@
 	Router::connect('/resources/downloadExportFile',
         array('controller' => 'resources', 'action' => 'downloadExportFile')
     );
+    Router::connect('/resources/checkExportDone',
+        array('controller' => 'resources', 'action' => 'checkExportDone')
+    );
+    Router::connect('/resources/export',
+        array('controller' => 'resources', 'action' => 'export')
+    );
     Router::connect('/search/collection/*',
         array('controller' => 'resources', 'action' => 'viewtype')
     );
