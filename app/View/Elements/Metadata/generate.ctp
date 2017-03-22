@@ -200,7 +200,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                             if( array_key_exists( $name, $array ) ){
                                 $text = '';
                                 if( !is_string($array[$name]) ){
-                                    $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                    $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                 if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -216,7 +216,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                             if( array_key_exists( $name, $array ) ){
                                 $text = '';
                                 if( !is_string($array[$name]) ){
-                                    $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                    $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                 if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -282,7 +282,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                     if($array[$name]['prefix']){
                                         $text = $array[$name]['prefix'] . " ";
                                     }
-                                    $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                    $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                 if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -301,7 +301,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                     if($array[$name]['prefix']){
                                         $text = $array[$name]['prefix'] . " ";
                                     }
-                                    $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                    $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                 }
                                 $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                 if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -509,7 +509,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                 if( array_key_exists( $name, $array ) ){
                                     $text = '';
                                     if( !is_string($array[$name]) ){
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -525,7 +525,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                 if( array_key_exists( $name, $array ) ){
                                     $text = '';
                                     if( !is_string($array[$name]) ){
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -544,7 +544,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                         if($array[$name]['prefix']){
                                             $text = $array[$name]['prefix'] . " ";
                                         }
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -563,7 +563,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                         if($array[$name]['prefix']){
                                             $text = $array[$name]['prefix'] . " ";
                                         }
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -958,7 +958,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                 if( array_key_exists( $name, $array ) ){
                                     $text = '';
                                     if( !is_string($array[$name]) ){
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -974,7 +974,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                 if( array_key_exists( $name, $array ) ){
                                     $text = '';
                                     if( !is_string($array[$name]) ){
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -993,7 +993,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                         if($array[$name]['prefix']){
                                             $text = $array[$name]['prefix'] . " ";
                                         }
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -1012,7 +1012,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                         if($array[$name]['prefix']){
                                             $text = $array[$name]['prefix'] . " ";
                                         }
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -1221,7 +1221,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                 if( array_key_exists( $name, $array ) ){
                                     $text = '';
                                     if( !is_string($array[$name]) ){
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="date">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -1412,7 +1412,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                         if($array[$name]['prefix']){
                                             $text = $array[$name]['prefix'] . " ";
                                         }
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
@@ -1431,7 +1431,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
                                         if($array[$name]['prefix']){
                                             $text = $array[$name]['prefix'] . " ";
                                         }
-                                        $text = $text . $array[$name]['month'] . "/" . $array[$name]['day'] . "/" . $array[$name]['year'] . " ". $array[$name]['era'];
+                                        $text = $text . $array[$name]['year'] . "-" . $array[$name]['month'] . "-" . $array[$name]['day'] . " ". $array[$name]['era'];
                                     }
                                     $string =' class="metadataEdit"><div class="icon-meta-flag">&nbsp;</div><div id="'.$name.'" data-control="terminus">'.$text.'</div>';
                                     if( array_key_exists($array['kid'], $metadataEdits) && in_array($name, $metadataEdits[$array['kid']], true) ){
