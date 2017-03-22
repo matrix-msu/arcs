@@ -85,8 +85,11 @@
     Router::connect('/resources/loadNewResource/*',
         array('controller' => 'resources', 'action' => 'loadNewResource')
     );
-    Router::connect('/resources/export',
-        array('controller' => 'resources', 'action' => 'export')
+    Router::connect('/resources/createExportFile',
+        array('controller' => 'resources', 'action' => 'createExportFile')
+    );
+	Router::connect('/resources/downloadExportFile',
+        array('controller' => 'resources', 'action' => 'downloadExportFile')
     );
     Router::connect('/search/collection/*',
         array('controller' => 'resources', 'action' => 'viewtype')

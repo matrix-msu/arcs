@@ -162,81 +162,40 @@ $(document).ready(function(){
         xmlString = objects2xmlString(subjectsObjectsArray);
         xmlArray.push(xmlString);
 
-        $('<form />')
-            .hide()
-            .attr({ method : "post" })
-            .attr({ action : arcs.baseURL + "resources/export"})
-            .append($('<input />')
-                .attr("type","hidden")
-                .attr({ "name" : "xmls" })
-                .val(JSON.stringify(xmlArray))
-            ).append($('<input />')
-            .attr("type","hidden")
-            .attr({ "name" : "picUrls" })
-            .val(JSON.stringify(pageUrls))
-        )
-            .append('<input type="submit" />')
-            .appendTo($("body"))
-            .submit();
-
-        //go to php for the pictures and zipping
-        /*$.ajax({
-            url: arcs.baseURL + "resources/export",
-            type: "POST",
-            data: {'xmls': xmlArray, 'picUrls': pageUrls},
-            statusCode: {
-                200: function (data) {
-                    var blob = b64toBlob(data, 'application/zip'); //convert base64 to blob
-                    var blobUrl = URL.createObjectURL(blob);    //create url
-
-                    //add the blob url to and an a tag and click it
-                    var a = document.createElement("a");
-                    document.body.appendChild(a);
-                    a.style = "display: none";
-                    a.href = blobUrl;
-                    a.download = 'Resource_data.zip'; //set file name
-                    a.click();
-                    window.URL.revokeObjectURL(blobUrl);
-                    document.body.removeChild(a);   //remove the a tag
-                },
-                400: function () {
-                    console.log("Bad Request");
-                },
-                405: function () {
-                    console.log("Method Not Allowed");
-                }
-            }
-        }).done(function(){
-            //done exporting successful or not..
-            console.log('export is done');
-            $('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
-            isExporting = 0;
-        });*/
-
-
-        function b64toBlob(b64Data, contentType, sliceSize) {
-          contentType = contentType || '';
-          sliceSize = sliceSize || 512;
-
-          var byteCharacters = atob(b64Data);
-          var byteArrays = [];
-
-          for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-              byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            var byteArray = new Uint8Array(byteNumbers);
-
-            byteArrays.push(byteArray);
-          }
-
-          var blob = new Blob(byteArrays, {type: contentType});
-          return blob;
-        }
+        //create file
+		$.ajax({
+			url: arcs.baseURL + "resources/createExportFile",
+			type: "POST",
+			data: {'xmls': JSON.stringify(xmlArray), 'picUrls': JSON.stringify(pageUrls)},
+			statusCode: {
+				200: function (data) {
+					//download created file
+					$('<form />')
+						.hide()
+						.attr({ method : "post" })
+						.attr({ action : arcs.baseURL + "resources/downloadExportFile"})
+						.append($('<input />')
+							.attr("type","hidden")
+							.attr({ "name" : "filename" })
+							.val(data)
+						)
+						.append('<input type="submit" />')
+						.appendTo($("body"))
+						.submit();
+				},
+				400: function () {
+					console.log("Bad Request");
+				},
+				405: function () {
+					console.log("Method Not Allowed");
+				}
+			}
+		}).done(function(){
+			//done exporting successful or not..
+			$('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
+			isExporting = 0;
+		});
+		return;
     });
 	
 	function scheme2json(scheme){

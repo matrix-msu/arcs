@@ -32,7 +32,7 @@ class ResourcesController extends AppController {
         # are allowed by default.
         $this->Auth->allow(
             'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
-            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'export', 'viewtype'
+            'keywords', 'complete', 'zipped', 'download', "loadNewResource", 'createExportFile', 'downloadExportFile', 'viewtype'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -605,12 +605,10 @@ class ResourcesController extends AppController {
         return $response;
     }
 
-    public function export(){
+    public function createExportFile(){
         # create new zip opbject
         ini_set('memory_limit', '-1');
         set_time_limit(0);
-        //$benchmark = new Benchmark();
-
         $zip = new ZipArchive();
 
         # create a temp file & open it
@@ -637,21 +635,25 @@ class ResourcesController extends AppController {
                 $zip->addFromString('images/'.basename($url),$download_file);
             }
         }
-		$yourfile = $zip->filename;
         $zip->close();
-		
+		echo $tmp_file;
+		die;
+    }
+	
+	public function downloadExportFile(){
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="'.'Resource_Data.zip'.'"');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate');
 		header('Pragma: public');
-		header('Content-Length: ' . filesize($yourfile));
-		readfile($yourfile);
+		header('Content-Length: ' . filesize($this->request->data['filename'].'.zip'));
+		readfile($this->request->data['filename'].'.zip');
 
-        unlink($yourfile);
-        unlink($tmp_file);
-    }
+        unlink($this->request->data['filename'].'.zip');
+        unlink($this->request->data['filename']);
+		die;
+	}
 
     public function viewtype($projectName){
 
