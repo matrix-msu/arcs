@@ -2,6 +2,7 @@ var waitingId = 0;
 var waits = [];
 var _NewResource = {};
 function GetNewResource(id) {
+    
     if(id == null)
       return;
     image = document.getElementById('PageImage')
@@ -9,6 +10,7 @@ function GetNewResource(id) {
     //image.style.height = '100%';
     //image.style.width = '100%';
     waitingId++;
+    
     setTimeout(function () {
     }, 10000);
     $.ajax({
@@ -20,6 +22,7 @@ function GetNewResource(id) {
         },
         success: function (res) {
           if(waits[this.url] >= waitingId){
+              
               res = JSON.parse(res);
 
               kid = res['kid'];
@@ -107,55 +110,6 @@ $(document).ready(function () {
     }
 
 
-//  $('.expandedArrowBoxLeft').click(previousImage);
-//  $('.expandedArrowBoxRight').click(nextImage);
-//  function previousImage(){
-//    event.preventDefault();
-//    if(current > 0){
-//      $('.numberOverResources').removeClass('selectedResource');
-//      $pics[current].style.borderWidth = "0px";
-//      $selected[current].style.background =""
-//      current--;
-//      $pics[current].style.borderWidth = "5px";
-//      $selected[current].style.background ="#0094bc"
-//      $selected[current].className += ' selectedResource';
-//      var kid = keys[current];
-//
-//      $('.other-resources').each( function () {
-//        if($(this).find('.numberOverResources').hasClass('selectedResource')){
-//          $(this).trigger('click');
-//
-//        }
-//
-//      });
-//      $(".fullscreenImage").attr('src', kora_url + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
-//    }
-//
-//  }
-//
-//  function nextImage(){
-//
-//    event.preventDefault();
-//    if(current < keys.length-1){
-//      $('.numberOverResources').removeClass('selectedResource');
-//      $pics[current].style.borderWidth = "0px";
-//      $selected[current].style.background =""
-//      current++;
-//      $pics[current].style.borderWidth = "5px";
-//      $selected[current].style.background ="#0094bc"
-//      $selected[current].className += ' selectedResource';
-//      var kid = keys[current];
-//      $('.other-resources').each( function () {
-//        if($(this).find('.numberOverResources').hasClass('selectedResource')){
-//          $(this).trigger('click');
-//        }
-//
-//      });
-////
-//      $(".fullscreenImage").attr('src',kora_url + $pics[current].src.slice((($pics[current].src.indexOf('largeThumbs'))+12),$pics[current].src.length-1)+'eg');
-//
-//    }
-//  }
     $('#zoom-out').click(function(event){
         event.preventDefault();
         var zoomrange = document.getElementById("zoom-range");

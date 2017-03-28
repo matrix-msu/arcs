@@ -51,6 +51,7 @@ _resource.selectPage = function(pageNum) {
     return pageEvent;
 }
 _resource.selectResource = function(pageNum) {
+    console.log('new resource');
     var rEvent = $(_resource.resourceSlider)
         .find(".numberOverResources:" + "contains('" + pageNum + "')")
         .first().parent()
@@ -211,18 +212,21 @@ $(document).ready(function() {
     var zoomOption = 1;
 
     // trigger img if number clicked insteads
-    $(".numberOverResources").click(function() {
+    $(".numberOverResources").click(function(e) {
         $(this).parent().find("img").trigger("click");
+        e.stopPropagation();
     });
     $('.other-resources').click(function() {
 
         if ($(this).parent().length && $(this).parent().attr("class") == "other-page") {
             return;
         }
-
+        
         var id = $(this).find("img").attr("id");
         id = id.replace("identifier-", "");
-
+        CM_R_ID = id //sets the global Resource ID
+        getComments()
+            
 
         //initialize scroll
         $(_resource.pageSlider).parent().scrollLeft(0);
