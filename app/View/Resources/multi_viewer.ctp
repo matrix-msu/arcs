@@ -1,5 +1,4 @@
 
-
 <script src="<?php  echo Router::url('/', true);  ?>js/vendor/chosen.jquery.js"></script>
 <script>
 //PAGE GLOBALS
@@ -9,6 +8,8 @@ var RESOURCES = <?php echo json_encode($resources);?>;
 var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
 
+
+
 var resourceKid = "";//"<?php  ?> ";
  var ADMIN = 0;//"<?php  ?> ";
 // var kora_url = "<?php  ?> ";
@@ -16,7 +17,7 @@ var resourceKid = "";//"<?php  ?> ";
 // var kid = "<?php  ?> "; // needs to stay
 // var resourceName = "<?php  ?> ";
  var JSON_KEYS = {};//<?php  ?> ;
-  var LEN = 0;<?php // $length = count($pages); echo "$length";  ?> ;
+  var LEN = 0;
 // var SCHEMES = ['<?php  ?> ',
 //                 '<?php  ?> ',
 //                 '<?php  ?> ',
@@ -26,6 +27,10 @@ var resourceKid = "";//"<?php  ?> ";
 //
  //var PAGESOBJECT = <?php  ?> ;
 // var PROJECT_KID = "<?php  ?> "
+///comments.js variables
+var CM_URL = "<?php echo Router::url('/', true); ?>comments/findall"
+var CM_R_ID = "<?= !empty($resources)? array_keys($resources)[0] : null?>"
+var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 </script>
 <?php
 //var_dump($resources);
@@ -41,7 +46,8 @@ var resourceKid = "";//"<?php  ?> ";
 
 <?=  $this->Html->script("views/viewer/Multi/annotation.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/temp_file.js") ?>
-<?=  $this->Html->script("views/viewer/Multi/collection.js")  ?>
+<?=  $this->Html->script("views/viewer/Multi/collection.js") ?>
+<?=  $this->Html->script("views/viewer/Multi/comments.js") ?>
 
 
 <div class="viewers-container">
@@ -271,14 +277,15 @@ var resourceKid = "";//"<?php  ?> ";
               </ul>
               <div id="tabs-1" class="metadata-content">
                   <div class="accordion metadata-accordion">
-                <?= $this->element("Metadata/generate"); ?>
-                <?php
-                    Generate_Metadata("project",$projectsArray, $metadataEdits);
-                    Generate_Metadata("Seasons",$seasons, $metadataEdits);
-                    Generate_Metadata("excavations",$excavations, $metadataEdits);
-                    Generate_Metadata("archival objects",$resources, $metadataEdits);
-                    Generate_Metadata("subjects",$subjects, $metadataEdits);
-                ?>
+                    <?= $this->element("Metadata/generate"); ?>
+                    <?php
+                        Generate_Metadata("project",$projectsArray, $metadataEdits);
+                        Generate_Metadata("Seasons",$seasons, $metadataEdits);
+                        Generate_Metadata("excavations",$excavations, $metadataEdits);
+                        Generate_Metadata("archival objects",$resources, $metadataEdits);
+                        Generate_Metadata("subjects",$subjects, $metadataEdits);
+                    ?>
+                  </div>
                 </div>
               </div>
 
