@@ -9,7 +9,7 @@
     function DiscussionTab() {
       return DiscussionTab.__super__.constructor.apply(this, arguments);
     }
-
+    
     DiscussionTab.prototype.events = {
       'click #comment-btn': 'saveComment'
     };
@@ -91,4 +91,6 @@
 
   })(Backbone.View);
 
-}).call(this);
+})
+
+
