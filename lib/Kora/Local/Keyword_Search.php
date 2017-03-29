@@ -128,7 +128,7 @@ class Keyword_Search extends Kora
         $terms = explode(" ", trim($query));
         $terms = self::queryFilter($terms);
         $terms = self::dateFilter($terms);
-
+        
         $resourcesFromSOO = $this->_searchSOO($terms, $project);
 
         $clause = $this->_clauseGen(
@@ -613,7 +613,7 @@ class Keyword_Search extends Kora
         // Look for YYYY/YY/YY format
         for ($i = 0; $i < count($query); $i++) {
             $date = array();
-            preg_match("/(....)-(..)-(..)/", $query[$i], $date);
+            $matched = preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $query[$i], $date);
 
             if (!empty($date)) {
                 $query[$i] = preg_replace(
