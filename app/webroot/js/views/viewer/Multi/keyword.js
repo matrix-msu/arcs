@@ -1,62 +1,175 @@
 $(document).ready(function(){
 	
-	var keywordArray = [];
-	
-	$('#keyword-edit-btn').click(function(e){
-		e.stopPropagation();
-		$(this).parent().click();
-		$(this).attr('id', 'keyword-save-btn')
-			.attr('class', 'save-btn')
-			.html('SAVE')
-			.css("color",'rgb(0, 147, 190)');
-		$('#keyword-search-links').html('');
-		setTimeout(function(){
-			getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 1);
-		},25);
-    });
+	var keywordArray = []; //an array of the edited keywords
+	var keywordOriginalArray = []; //keep an array of the stored keywords
+	var keywordPageKid; //keep of the editing page kid
+	var keywordProjectKid; //keep of the editing project kid
+    var deletingKeywords = 0; //currently deleting keywords=1
+    var addingKeywords = 0; //currently adding keywords=1
+
+    Array.prototype.diff = function(a) {
+        return this.filter(function(i) {return a.indexOf(i) < 0;});
+    };
     $(".level-tab").click(function (e) {
-		if (e.target.getAttribute("class") == 'save-btn') {
-            console.log("keywords level tab save btn click");
+		if ( $(this).find('#keyword-save-btn').length >0 ) { //save the keywords
             e.stopPropagation();
-            
-        }else if( $(this).find('#keyword-edit-btn').length >0 ){
+            var deleteArray = keywordOriginalArray.diff( keywordArray ); //delete these
+            var addArray = keywordArray.diff( keywordOriginalArray ); //add these keywords
+            if( deleteArray.length > 0 ){
+                deletingKeywords = 1;
+                deleteKeywords(deleteArray);
+            }
+            if( addArray.length > 0 ){
+                addingKeywords = 1;
+                addKeywords(addArray);
+            }
+        }else if( $(this).find('#keyword-edit-btn').length >0 ){ //edit keyword was pressed. Handled above
 			return;
-        }else if (e.target.getAttribute("aria-expanded") == 'true') {
+        }else if (e.target.getAttribute("aria-expanded") == 'true') { //drawer pressed but open
             return;
-        }else{
-			$("#urlform").css('display','none');
-			getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 0);
-			$(".save-btn").removeClass("save-btn")
-				.html("EDIT")
-				.addClass("edit-btn")
-				.css("color", '')
-				.attr('id', 'keyword-edit-btn');
+        }else{ //close the keywords drawer.
+            saveBackToEdit();
 		}
     });
-	$(".details").click(function () {
+    function saveBackToEdit(){
+        $("#urlform").css('display','none');
         getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 0);
-		console.log(keywordArray);
+        $(".save-btn").removeClass("save-btn")
+            .html("EDIT")
+            .addClass("edit-btn")
+            .css("color", '')
+            .attr('id', 'keyword-edit-btn');
+    }
+    $('#keyword-edit-btn').click(function(e){ //edit keywords pressed.
+        if($(this).attr('id') == 'keyword-edit-btn') {
+            e.stopPropagation();
+            $(this).parent().click();
+            $(this).attr('id', 'keyword-save-btn')
+                .attr('class', 'save-btn')
+                .html('SAVE')
+                .css("color", 'rgb(0, 147, 190)');
+            $('#keyword-search-links').html('');
+            setTimeout(function () {
+                getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 1);
+            }, 25);
+        }
     });
+	$(".details").click(function () { //details tab clicked. load keywords
+        getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 0);
+    });
+    function addDeleteListener(){ //must add the delete listener everytime a new keyword is added.
+        //delete with a click
+        $(".search-choice-close").one('click', function (e) {
+            var keyword = $(e.target).prev().html();
+            //delete the keyword from array
+            var index = keywordArray.indexOf(keyword);
+            if (index > -1) {
+                keywordArray.splice(index, 1);
+            }
+        });
+    }
+    function addKeywords(addArray){
+        $.ajax({
+            url: arcs.baseURL + "keywords/add",
+            type: "POST",
+            data: {
+                page_kid: keywordPageKid,
+                project_kid: keywordProjectKid,
+                keywords: addArray
+            },
+            success: function (data) {
+                //update search links
+                addingKeywords = 0;
+                if( addingKeywords == 0 && deletingKeywords == 0) {
+                    saveBackToEdit();
+                }
+            }
+        });
+    }
+    function deleteKeywords(deleteArray){
+        $.ajax({
+            url: arcs.baseURL + "keywords/deleteKeyword",
+            type: "POST",
+            data: {
+                page_kid: keywordPageKid,
+                project_kid: keywordProjectKid,
+                keywords: deleteArray
+            },
+            success: function (data) {
+                //update search links
+                deletingKeywords = 0;
+                if( addingKeywords == 0 && deletingKeywords == 0) {
+                    saveBackToEdit();
+                }
+            }
+        });
+    }
+    function getCommonKeywords(){
+        //project_kid does not support multi-projects. Change here if that is needed-
+        keywordProjectKid = $('.resource-slider').find('.other-resources').eq(0).attr('data-projectKid');
+        //get the common keywords for the current project and update the chosen select thing
+        var html5 = '<fieldset class="users-fieldset">';
+        html5 += '<select id ="urlAuthor2" data-placeholder="Keywords" multiple class="chosen-select2" style="width:90%;">';
+        $.ajax({
+            url: arcs.baseURL + "keywords/common",
+            type: "POST",
+            data: {
+                project_kid: keywordProjectKid
+            },
+            success: function (data) {
+                var commonKeywordArray = data;
 
+                if( commonKeywordArray instanceof Array ) {
+                    commonKeywordArray.forEach(function (keyword) {
+                        html5 += '<option selected="selected" data-id="' + keyword + '">' + keyword + '</option>';
+                    })
+                }
+                html5 += '</select></fieldset>';
+
+                //fill in the select
+                $("#urlform2").css('display', 'block');
+                $("#urlform2").html(html5);
+
+                /////uses the chosen.js to turn the select into a fancy thingy
+                $(".chosen-select2").chosen();
+
+                //add a keyword by the common keyword list
+                $('.search-choice').on('click', function(e) {
+                    var id = $(this).text();
+                    var alreadyExists = keywordArray.indexOf( id );
+                    if( alreadyExists != -1 ){
+                        alert("You can only add a keyword once.");
+                        return;
+                    }
+                    keywordArray.push( id );
+                    $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
+                    $(".chosen-select").trigger("chosen:updated");
+                    addDeleteListener();
+                });
+            }
+        })
+    }
 	//get the keywords a page is associated to. How it is displayed is based on edit.
     function getKeywords(pageKid, edit=0) {
         var html4 = '<fieldset class="users-fieldset">';
         html4 += '<select id ="urlAuthor" data-placeholder="Keywords" multiple class="chosen-select" style="width:90%;">';
 
-        var PAGE_KID = pageKid;
-        //project_kid does not support multi-projects. Change here if that is needed-
-        var PROJECT_KID = $('.resource-slider').find('.other-resources').eq(0).attr('data-projectKid');
+        keywordPageKid = pageKid;
 
         $.ajax({
             url: arcs.baseURL + "keywords/get",
             type: "POST",
             data: {
-                page_kid: PAGE_KID
+                page_kid: keywordPageKid
             },
             success: function (data) {
                 keywordArray = data;
+                keywordOriginalArray = keywordArray.slice();
 
                 if (edit == 0) { //display the keywords as search links
+                    $('#keyword-text').html('Click on the keyword links below to search for other resources with the same keyword.');
+                    $('#keyword-common').css('display', 'none');
+                    $('#urlform2').css('display', 'none');
                     var pName = $('#project1').find("[id='Persistent Name']").html();
                     pName = pName.replace(/ /g, '_').toLowerCase();
                     var keywordHtml = '';
@@ -69,10 +182,11 @@ $(document).ready(function(){
                     }
                     $('#keyword-search-links').html(keywordHtml);
                 } else { //display the keywords as editing
-					//use the chosen select thing for editing.
+                    $('#keyword-text').html('Enter keywords below. Use commas to separate keywords.');
+                    $('#keyword-common').css('display', 'block');
+                    //use the chosen select thing for editing.
                     if (keywordArray instanceof Array) {
                         keywordArray.forEach(function (keyword) {
-                            //html4 += '<option data-id="'+keyword+'">'+keyword+'</option>';
                             html4 += '<option selected="selected" data-id="' + keyword + '">' + keyword + '</option>';
                         })
                     }
@@ -84,12 +198,13 @@ $(document).ready(function(){
 
                     /////uses the chosen.js to turn the select into a fancy thingy
                     $(".chosen-select").chosen();
+                    addDeleteListener();
 
                     //add new keyword with a comma
                     $(".search-field").on('keyup', "input", function (e) {
                         var id = $(this).val();
                         if ((id == "" || id == ',') && e.key == 'Backspace') {
-                            //$(".chosen-select").trigger("chosen:updated");
+                            //backspace will do nothing if no keyword
 
                         } else if (e.key == ',') {
                             id = id.substring(0, id.length - 1);  //remove comma
@@ -103,131 +218,18 @@ $(document).ready(function(){
                                 alert("You can only add a keyword once.");
                                 return;
                             }
-                            //pageIndex = $(".selectedResource").text().replace(/^\s+|\s+$/g, '') - 1;
                             keywordArray.push(id);
-                            $.ajax({
-                                url: arcs.baseURL + "keywords/add",
-                                type: "POST",
-                                data: {
-                                    //resource_id: resourceKid,
-                                    page_kid: PAGE_KID,
-                                    project_kid: PROJECT_KID,
-                                    keyword: id
-                                },
-                                success: function (data) {
-                                    $("#urlAuthor").append('<option selected="selected" data-id="' + id + '">' + id + '</option>');
-                                    $(".chosen-select").trigger("chosen:updated");
-                                    //delete with a click
-                                    $(".search-choice-close").one('click', function (e) {
-                                        $.ajax({
-                                            url: arcs.baseURL + "keywords/deleteKeyword",
-                                            type: "POST",
-                                            data: {
-                                                page_kid: PAGE_KID,
-                                                project_kid: PROJECT_KID,
-                                                keyword: $(e.target).prev().html()
-                                            },
-                                            success: function (data) {
-                                                //console.log("keyword delete ajax success");
-                                            }
-                                        })
-                                    });
-                                }
-                            })
 
-                        }
-                    });
-
-                    //delete with a click
-                    $(".search-choice-close").one('click', function (e) {
-                        $.ajax({
-                            url: arcs.baseURL + "keywords/deleteKeyword",
-                            type: "POST",
-                            data: {
-                                page_kid: PAGE_KID,
-                                project_kid: PROJECT_KID,
-                                keyword: $(e.target).prev().html()
-                            },
-                            success: function (data) {
-                                //console.log("keyword delete ajax success");
-                            }
-                        })
-                    });
-                }
-            }
-        })
-
-        //get the common keywords for the current project and update the chosen select thing
-
-        var html5 = '<fieldset class="users-fieldset">';
-        html5 += '<select id ="urlAuthor2" data-placeholder="Keywords" multiple class="chosen-select2" style="width:90%;">';
-
-        $.ajax({
-            url: arcs.baseURL + "keywords/common",
-            type: "POST",
-            data: {
-                project_kid: PROJECT_KID
-            },
-            success: function (data) {
-                //console.log("common keyword ajax success");
-                //console.log(data);
-
-                var commonKeywordArray = data;
-
-                if( commonKeywordArray instanceof Array ) {
-                    commonKeywordArray.forEach(function (keyword) {
-                        //html5 += '<option data-id="'+keyword+'">'+keyword+'</option>';
-                        html5 += '<option selected="selected" data-id="' + keyword + '">' + keyword + '</option>';
-                    })
-                }
-                html5 += '</select></fieldset>';
-
-                //fill in the select
-                $("#urlform2").html(html5);
-
-                /////uses the chosen.js to turn the select into a fancy thingy
-                $(".chosen-select2").chosen();
-
-                //add a common keyword
-                $('.search-choice').on('click', function(e) {
-                    var id = $(this).text();
-                    var alreadyExists = keywordArray.indexOf( id );
-                    if( alreadyExists != -1 ){
-                        alert("You can only add a keyword once.");
-                        return;
-                    }
-                    keywordArray.push( id );
-                    $.ajax({
-                        url: arcs.baseURL + "keywords/add",
-                        type: "POST",
-                        data: {
-                            //resource_id: resourceKid,
-                            page_kid: PAGE_KID,
-                            project_kid: PROJECT_KID,
-                            keyword: id
-                        },
-                        success: function (data) {
-                            $("#urlAuthor").append( '<option selected="selected" data-id="'+id+'">'+id+'</option>');
+                            $("#urlAuthor").append('<option selected="selected" data-id="' + id + '">' + id + '</option>');
                             $(".chosen-select").trigger("chosen:updated");
-                            //delete with a click
-                            $(".search-choice-close").one('click', function(e) {
-                                $.ajax({
-                                    url: arcs.baseURL + "keywords/deleteKeyword",
-                                    type: "POST",
-                                    data: {
-                                        page_kid: PAGE_KID,
-                                        project_kid: PROJECT_KID,
-                                        keyword: $(e.target).prev().html()
-                                    },
-                                    success: function (data) {
-                                        //console.log("keyword delete ajax success");
-                                    }
-                                })
-                            });
+                            addDeleteListener();
                         }
-                    })
-                });
+                    });
+                }
             }
-        })
+        });
+        if( edit != 0){
+            getCommonKeywords();
+        }
     }
 });

@@ -327,11 +327,11 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     <h3 class="level-tab">Keywords<span id="keyword-edit-btn" class="edit-btn">Edit</span></h3>
 
                     <div class="level-content">
-                        <p style="text-transform:none;padding-left:11px;padding-top:16px;">Enter keywords below. Use commas to seperate keywords.</p>
+                        <p id="keyword-text" style="text-transform:none;padding-left:11px;padding-top:16px;">Enter keywords below. Use commas to seperate keywords.</p>
                         <form class="keywords-uploadForm" id="urlform" method="post" enctype="multipart/form-data"></form>
                         <div id="keyword-search-links" style="width:90%;margin-left:auto;margin-right:auto;"></div>
 
-                        <p style="text-transform:none;padding-left:11px;padding-top:20px;">
+                        <p id="keyword-common" style="text-transform:none;padding-left:11px;padding-top:20px;">
                             Commonly used keywords are featured below. Select any to add to the keyword list above.
                         </p>
 
