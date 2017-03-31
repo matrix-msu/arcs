@@ -52,7 +52,7 @@
 ////////////////////////////////////////////////////////////////////////
     # Home page
     Router::connect('/',
-        array('controller' => 'projects', 'action' => 'display', 'index')
+        array('controller' => 'projects', 'action' => 'index')
     );
     Router::connect("/projects/single_project/*",
         array('controller' => 'projects', 'action' => 'single_project')

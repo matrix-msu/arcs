@@ -21,13 +21,26 @@ class ProjectsController extends AppController {
 	public function beforeFilter() {
 
       parent::beforeFilter();
-          $this->Auth->allow('display', 'search',"single_project");
+      $this->Auth->allow("index", 'display', 'search',"single_project");
   		$this->set(array(
   		'toolbar' => true,
           'footer' => false
   		));
 
+  }
+  public function getUser() {
+    $user = array();
+    $user = [];
+    $user["loggedIn"] = $this->Session->read('Auth.User.name');
+    $user["name"] = $this->Session->read('Auth.User.name');
+    $user["username"] = $this->Session->read('Auth.User.username');
+    if( $this->Session->read('Auth.User.isAdmin') === 1 ){
+      $user["role"] = 'Admin';
+    } else {
+      $user["role"] = 'Not';
     }
+    return $user;
+  }
 	public function getProjects() {
 
         $projectstemp = array();
@@ -42,7 +55,13 @@ class ProjectsController extends AppController {
         }
 		$this->set('projects', $projects);
 	}
+  public function index() {
+    $this->getProjects();
 
+    $user = $this->getUser();
+    $this->set("user", $user);
+    $this->render("index");
+  }
 	/**
      * Displays a view
      *
@@ -51,8 +70,8 @@ class ProjectsController extends AppController {
      */
 	public function display() {
 
-        // intialize kora session
-        $kora = new \Lib\Kora();
+    // intialize kora session
+    $kora = new \Lib\Kora();
 
 		$path = func_get_args();
 		$this->getProjects();
@@ -120,7 +139,7 @@ class ProjectsController extends AppController {
                 $kora->add_clause("Resource Associator", "=", $result['kid']);
             }
             $page = json_decode($kora->search(), true);
-    
+
             $picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
                      array_values($page)[0]['Image Upload']['localName'] : null;
 

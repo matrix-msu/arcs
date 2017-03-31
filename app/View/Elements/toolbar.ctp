@@ -12,9 +12,6 @@
 	<h1 id= "hamburger" class='hamburger'></h1>
 
     <?php endif ?>
-
-	<!--Check if it is index page or not, display accordingly-->
-	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
 		<!--Display login button for other pages-->
 	<div id='log' >
 		<?php if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
@@ -35,9 +32,9 @@
 					<div id='signOut'> <?php echo $this->Html->link('Sign Out',
 						'/logout') ?></div>
 				</div>
-
-
 			</div>
+      <!--Display search bar for index page. Placeholder, require backend programming.-->
+
 		<?php else: ?>
 
 			<a id='menu' class="btn btn-grey toolbar-btn"
@@ -45,13 +42,13 @@
 
 		<?php endif ?>
 	</div>
-	<?php else: ?>
-		<!--Display search bar for index page. Placeholder, require backend programming.-->
-		<div class="search-bar">
-			<input data-project-kid="all" type="text" id="searchBar" class="search-bar indexSearchBox search-bar-js" placeholder="|&nbsp;&nbsp;Search">
-			<div class="indexSearchIcon"></div>
-		</div>
-	<?php endif ?>
+  <?php if (isset($index_toolbar) && $index_toolbar) :?>
+    <div class="search-bar">
+      <input data-project-kid="all" type="text" id="searchBar" class="search-bar indexSearchBox search-bar-js" placeholder="|&nbsp;&nbsp;Search">
+      <div class="indexSearchIcon"></div>
+    </div>
+  <?php endif ?>
+
 	<?php echo $this->Html->script('searchBox.js');?>
 
 	<?php if (!isset($index_toolbar) || !$index_toolbar) :?>
