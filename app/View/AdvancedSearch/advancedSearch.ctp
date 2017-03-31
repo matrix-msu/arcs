@@ -323,40 +323,29 @@
 
       <div class="section-search-box">
         <p>Terminus Ante Quem</p>
-        <div class="date-select" data-name="terminus_ante_quem">
-          <select name="year" >
-            <option value="default">Select Year</option>
-            <?php $this->Search->printYearOptions($min,$max,$step); ?>
-          </select>
-          <select name="month">
-            <option value="default">Select Month</option>
-            <?php $this->Search->printMonthOptions(); ?>
-          </select>
-          <select name="day">
-            <option value="default">Select Day</option>
-            <?php $this->Search->printDayOptions(); ?>
+        <div class="double-select" data-name="terminus_ante_quem">
+          <input type="text" name="title" placeholder="Enter Date">
+          <select name="period">
+            <option value="default">Select Period</option>
+            <option value="BCE">BC</option>
+            <option value="CE">AC</option>
+            <option value="BP">BP</option>
           </select>
         </div>
       </div>
 
       <div class="section-search-box">
         <p>Terminus Post Quem</p>
-        <div class="date-select" data-name="terminus_post_quem">
-          <select name="year">
-            <option value="default">Select Year</option>
-              <?php $this->Search->printYearOptions($min,$max,$step); ?>
-          </select>
-          <select name="month">
-            <option value="default">Select Month</option>
-            <?php $this->Search->printMonthOptions(); ?>
-          </select>
-          <select name="day">
-            <option value="default">Select Day</option>
-            <?php $this->Search->printDayOptions(); ?>
+        <div class="double-select" data-name="terminus_post_quem">
+          <input type="text" name="title" placeholder="Enter Date">
+          <select name="period">
+            <option value="default">Select Period</option>
+            <option value="BCE">BC</option>
+            <option value="CE">AC</option>
+            <option value="BP">BP</option>
           </select>
         </div>
       </div>
-
     </section>
 
     <section id="subject-detailed-search" class="search-options" data-prefix="subject-detailed-">
@@ -404,19 +393,23 @@
   ];
   AdvancedSearch.display = {
 
-    getQuery : function (inputs, selects, dates) {
+    getQuery : function (inputs, selects, dates, eras) {
       var query = "";
       inputs.each(function() {
-        var val = $(this).val()
-        var placeholder = $(this).attr("placeholder")
-        var prefix = $(this).parent().parent().data("prefix")
-        var name = $(this).attr("name")
-        if (val.length && val != placeholder) {
-            query += prefix + name + "=" + val + "&"
+        var parentClass = $(this).parent().attr("class")
+        if ( parentClass !== "date-select" && parentClass !== "double-select") {
+            var val = $(this).val()
+            var placeholder = $(this).attr("placeholder")
+            var prefix = $(this).parent().parent().data("prefix")
+            var name = $(this).attr("name")
+            if (val.length && val != placeholder) {
+                query += prefix + name + "=" + val + "&"
+            }
         }
       })
       selects.each(function() {
-        if ($(this).parent().attr("class") !== "date-select") {
+        var parentClass = $(this).parent().attr("class")
+        if ( parentClass !== "date-select" && parentClass !== "double-select") {
           var val = $(this).val()
           var prefix = $(this).parent().parent().data("prefix");
           var name = $(this).attr("name")
@@ -447,6 +440,28 @@
           query += prefix + name + "=" + val + "&"
 
       })
+      eras.each(function() {
+          var elem = $(this)
+          var date = elem.find("input")
+          var era  = elem.find("select")
+          var prefix = elem.parent().parent().data("prefix");
+          var name = elem.data("name")
+          if (
+              date.length && era.length && 
+              date.attr("placeholder") !== date.val() && 
+              era.val() !== "default"
+             )
+          {
+             var year = parseInt(date.val()) || false
+             if (era.val() === "BP" && year){
+                 query += prefix + name + "=" + (year + 1950) + "-00-00" + "&"    
+             }
+             else if (year) {
+                 query += prefix + name + "=" + year + "-00-00-" + era.val() + "&"    
+             }
+          }
+          
+      })
       return query;
     },
     search : function (baseURL, query, project) {
@@ -465,8 +480,9 @@
       var inputs = sections.find("input")
       var selects = sections.find("select")
       var dateSelects = sections.find(".date-select")
+      var doubleSelects = sections.find(".double-select")
 
-      var query = AdvancedSearch.display.getQuery(inputs, selects, dateSelects)
+      var query = AdvancedSearch.display.getQuery(inputs, selects, dateSelects, doubleSelects)
       AdvancedSearch.display.search(baseURL, query, project)
 
     })

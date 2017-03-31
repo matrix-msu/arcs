@@ -22,11 +22,13 @@ class AdvancedFieldDataStructure {
             "year"  => "",
             "month" => "",
             "day"   => "",
+            "era"   => "",
         ),
         "latest_date"   =>  array(
             "year"  => "",
             "month" => "",
             "day"   => "",
+            "era"   => "",
         ),
         "languages"     => "",
         "transcription" => "",
@@ -36,6 +38,7 @@ class AdvancedFieldDataStructure {
             "year"  => "",
             "month" => "",
             "day"   => "",
+            "era"   => "",
         ),
         "scan_creator" => ""
     );
@@ -49,11 +52,13 @@ class AdvancedFieldDataStructure {
             "year"  => "",
             "month" => "",
             "day"   => "",
+            "era"   => "",
         ),
         "terminus_post_quem" => array(
             "year"  => "",
             "month" => "",
             "day"   => "",
+            "era"   => "",
         )
     );
     public $subjectDetailed = array(
@@ -113,17 +118,27 @@ class AFDSFactory {
 
   public static function getDateFromQuery($date) {
     $comp = explode("-",$date);
-    if(count($comp) == 3){
+    if(count($comp) === 3){
       return array(
         "year"  => $comp[0] == "00" ? "%" : (int) $comp[0],
         "month" => $comp[1] == "00" ? "%" : (int) $comp[1],
-        "day"   => $comp[2] == "00" ? "%" : (int) $comp[2]
+        "day"   => $comp[2] == "00" ? "%" : (int) $comp[2],
+        "era"   => ""
+      );
+    }
+    else if(count($comp) === 4){
+      return array(
+        "year"  => $comp[0] == "00" ? "%" : (int) $comp[0],
+        "month" => $comp[1] == "00" ? "%" : (int) $comp[1],
+        "day"   => $comp[2] == "00" ? "%" : (int) $comp[2],
+        "era"   => $comp[3] 
       );
     }
     return array(
       "year"  => "",
       "month" => "",
-      "day"   => ""
+      "day"   => "",
+      "era"   => ""
     );
   }
   public static function isEmptyDataStructure($ds) {

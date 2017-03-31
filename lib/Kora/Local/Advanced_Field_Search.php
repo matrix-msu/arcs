@@ -67,7 +67,7 @@ class Advanced_Field_Search extends Kora
         $this->_project        = $project;
         $this->_ds             = $fields;
         $this->token           = parent::getTokenFromProjectName($project);
-        $this->projectMapping = parent::getPIDFromProjectName($project);
+        $this->projectMapping  = parent::getPIDFromProjectName($project);
 
     }
     /**
@@ -203,7 +203,6 @@ class Advanced_Field_Search extends Kora
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
             $this->fields        = array("Pages Associator");
             $subjects = parent::search();
-            // print_r($subjects);exit();
 
             if (!empty($subjects)) {
 
@@ -214,14 +213,12 @@ class Advanced_Field_Search extends Kora
                 $pages = parent::search();
 
                 if (!empty($pages)) {
-                    // print_r($pages);exit();
                     $associators = self::getAssociatorLinks($pages, "Resource Associator");
 
                     $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
                     $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
                     $this->fields        = array("Title");
                     $resources = parent::search();
-                    //print_r($resources);exit();
                     return array_keys($resources);
 
                 }
@@ -465,6 +462,10 @@ class Advanced_Field_Search extends Kora
                 $month = $value["month"];
                 $day   = $value["day"];
                 $query = "<month>$month</month><day>$day</day><year>$year</year>";
+                $era = $value["era"];
+                if (!empty($era)) {
+                    $query .= "<era>$era</era>";
+                }
                 $clauses[++$i] = new KORA_Clause($map[$key], "LIKE", "%$query%");
             }
         }
