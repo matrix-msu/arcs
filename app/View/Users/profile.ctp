@@ -182,12 +182,13 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
             summary[0].click();
 
         //drawer is open but there is a show all button. Click that and end.
-        }else if( $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0).hasClass("btn-show-all") ) {
+        }
+        //else if( $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0).hasClass("btn-show-all") ) {
             //console.log("edit btn click: there is a show all button");
-            $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0)[0].click();
-
+        //    $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0)[0].click();
+        //}
         //drawer is open with loading icon
-        }else if( $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0).hasClass("show-all-loading-icon") ) {
+        else if( $(e.target).parent().nextAll(".results").children().eq(0).children().last().children().eq(0).hasClass("show-all-loading-icon") ) {
             //do nothing
 
         //drawer is open. Add in the edit collections stuffs
@@ -344,7 +345,6 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
 
                 //////update the permission and members for the collection
                 var col_permission = $('input[name='+$(e.target).parent().parent().data('id')+']:checked').val()
-                console.log(col_permission);
 
                 //get the chosen user indexs
                 var selectedUsers = [];
@@ -363,9 +363,11 @@ $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
                     stringUserIds += $(e.target).parent().nextAll(".uploadForm").children().eq(0).children().eq(0).children().eq(index).attr("data-id");
                     stringUserIds += ";";
                 });
-                console.log(selectedUserIds);
                 $(e.target).attr("data-members", stringUserIds); //update the attr data-members for next time.
 
+                console.log('collection id');
+                console.log($(e.target).parent().parent().data('id'));
+                console.log($(e.target));
                 //submit collection edits
                 var formdata = {
                     id: $(e.target).parent().parent().data('id'),

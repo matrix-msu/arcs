@@ -150,12 +150,13 @@
       query = encodeURIComponent('collection_id:"' + id + '"');
       query2 = arcs.baseURL + "resources/search?";
       if (limit === 1) {
-        query2 += "n=25&";
+        query2 += "n=-2&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
         if(typeof response.results[0] == "object" ) {
           return $el.children('.results').html(arcs.tmpl('home/details', {
             resources: response.results,
+            noShowAll: 1,
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
         }else{

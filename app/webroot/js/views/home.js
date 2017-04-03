@@ -92,6 +92,7 @@
           var html;
           html = arcs.tmpl('home/details', {
             resources: response.results,
+            noShowAll: 0,
             searchURL: arcs.baseURL + "collection/"
           });
           $el.children('div').html(html);

@@ -19,7 +19,7 @@ JST["home/details"] = "<ul class=\"resource-thumbs\">"+
       "</li>",
     "<% }) %><% if (!resources.length) { %>",
       "<li><i class=\"icon-exclamation-sign\"></i> No Results Found  </li>",
-    "<% } else if (1) { %>",
+    "<% } else if (noShowAll != 1) { %>",
       "<li class=\"resource-thumb\">",
       "<% if (typeof searchURL != \"undefined\") { %>",
       "<div class=\"btn-show-all\"><a><img src=\"<%= arcs.baseURL + 'img/SeeAll.svg' %>\" alt=\"SeeAll.svg\"/></a>",

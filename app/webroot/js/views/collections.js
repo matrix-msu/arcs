@@ -197,6 +197,7 @@
 
           html=$el.children('.results').html(arcs.tmpl('home/details', {
             resources: response.results,
+            noShowAll: 0,
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
           adjustResultsCenter();

@@ -393,31 +393,17 @@ class CollectionsController extends AppController {
             die('Connect Error (' . $mysqli->connect_errno . ') '
                 . $mysqli->connect_error);
         }
-        //get the collection id from the id
-        $sql = "SELECT collections.collection_id
-                    FROM arcs_dev.collections
-                    WHERE collections.id ='".$_POST['id']."';";
-        $result = $mysqli->query($sql);
-        $row = mysqli_fetch_assoc($result);
-        //$collection_id2[] = $row;
-        //$results['colid1'] = $row;
-        //$results['colid2'] = $row[0];
-        $collection_id = $row{collection_id};
-        //$collection_id = $collection_id->collection_id;
-        //$results['colid2'] = $collection_id;
-
-
         //Update the collections permissions by collection_id
         $sql = "UPDATE collections
                     SET collections.public = '".$_POST['permission']."',
                         collections.members = '".$_POST['viewUsers']."'
-                    WHERE collections.collection_id ='".$collection_id."';";
+                    WHERE collections.collection_id ='".$_POST['id']."';";
         $result = $mysqli->query($sql);
         //while($row = mysqli_fetch_assoc($result))
             //$collections[] = $row;
         $results['id'] = $_POST['id'];
         $results['permission'] = $_POST['permission'];
-        $results['sql'] = $sql;
+        //$results['sql'] = $sql;
         $results['result'] = $result;
         $this->json(200, $results);
     }
