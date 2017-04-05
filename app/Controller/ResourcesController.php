@@ -706,8 +706,8 @@ class ResourcesController extends AppController {
           $search = new Resource_Search($resourceKids, $pName);
           $results = $search->getResultsAsArray();
           echo "<script>var results_to_display = ".json_encode($results)."</script>";
+          $this->set("projectName", $pName);
       }
-      $this->set("projectName", $pName);
       $this->render("../Search/search");
     }
 
