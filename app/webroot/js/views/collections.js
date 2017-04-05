@@ -212,11 +212,6 @@
               .hide()
               .attr({method: "get"})
               .attr({action: url})
-              .append($('<input />')
-                  .attr("type", "hidden")
-                  .attr({"name": "collection_id"})
-                  .val('true')
-              )
               .append('<input type="submit" />')
               .appendTo($("body"))
               .submit();
