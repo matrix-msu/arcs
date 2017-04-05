@@ -100,6 +100,9 @@
                         $pKid = explode('/', $pKid);
                         $pKid = array_pop($pKid);
                         $pKid = '/' .explode('?', $pKid)[0];
+                        if( isset($projectName) ){
+                            $pKid = '/'.$projectName;
+                        }
 
                         //make multi-resources' resource link blue
                         $resourceBlue = '';

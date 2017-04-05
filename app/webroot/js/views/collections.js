@@ -207,7 +207,19 @@
           var project = window.location.href
             .split("/")
             .reverse()[0];
-          window.location.href = "../search/collection/" + id;
+          var url = "../search/collection/" + id;
+          $('<form />')
+              .hide()
+              .attr({method: "get"})
+              .attr({action: url})
+              .append($('<input />')
+                  .attr("type", "hidden")
+                  .attr({"name": "collection_id"})
+                  .val('true')
+              )
+              .append('<input type="submit" />')
+              .appendTo($("body"))
+              .submit();
          }
       });
 

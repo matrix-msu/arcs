@@ -655,7 +655,59 @@ class ResourcesController extends AppController {
       }
       else if(isset($this->request->data['orphaned_kids'])){
         $pKids = $this->request->data['orphaned_kids'];
+      }else{
+          $this->Collection->recursive = -1;
+          $user_id =  $this->Session->read('Auth.User.id');
+          $collections = '';
+          if( $user_id !== null ) { //signed in
+              $collections = $this->Collection->find('all', array(
+                  'order' => 'Collection.modified DESC',
+                  'conditions' => array('OR' => array(
+                      array( 'Collection.public' => '1'),
+                      array( 'Collection.public' => '2'),
+                      array( 'Collection.public' => '3'),
+                      array( 'Collection.user_id' => $user_id)
+                  ),'Collection.collection_id' => $projectName)
+              ));
+              //remove all the public 3 collections that the user isn't a part of
+              $count = 0;
+              foreach( $collections as $collection ){
+                  $bool_delete = 1;
+                  if( array_values($collection)[0]['public'] == '3'){
+                      $members =  explode(';', array_values($collection)[0]['members'] );
+                      foreach( $members as $member ){
+                          if( $member == $user_id){
+                              $bool_delete = 0;
+                          }
+                      }
+                      if( $bool_delete == 1 ){
+                          array_splice($collections, $count, 1);
+                      }
+                  }
+                  $count++;
+              }
+          }else { //not signed in
+              $collections = $this->Collection->find('all', array(
+                  'order' => 'Collection.modified DESC',
+                  'conditions' => array(
+                      'Collection.public' => '1',
+                      'Collection.collection_id' => $projectName
+                  )//,  //only get public collections
+                  //'group' => 'collection_id'
+              ));
+          }
+          $resourceKids = array();
+          foreach( $collections as $temp ){ //only keep the resource_kids.
+              $resourceKids[] = $temp['Collection']['resource_kid'];
+          }
+          $pid = hexdec( explode('-', $resourceKids[0])[0] );
+          $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+
+          $search = new Resource_Search($resourceKids, $pName);
+          $results = $search->getResultsAsArray();
+          echo "<script>var results_to_display = ".json_encode($results)."</script>";
       }
+      $this->set("projectName", $pName);
       $this->render("../Search/search");
     }
 
