@@ -27,7 +27,6 @@
     </head>
     <body>
 	<div class="wrap aa">
-	    <?=Configure::version();?>
 
             <div class="page doc-page fluid-container">
                 <?php echo $this->element('toolbar', $toolbar) ?>
