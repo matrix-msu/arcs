@@ -589,13 +589,13 @@ class SearchController extends AppController {
 
             $response['results'] = array();
             $first = 1;
-            foreach( $test as $row){
+            foreach( $test as $row){ //foreach collection result
                 $temp_array = array();
-                if( $first == 1 ) {
+                if( $first == 1 ) { //include a more results flag with the first return value.
                     $temp_array['more_results'] = $more_results;
                     $first = 0;
                 }
-                $temp_kid = $row['resource_kid'];
+                $temp_kid = $row['resource_kid']; //resource kid of the current result
 
                 $pid = hexdec(explode('-', $temp_kid)[0]);
                 $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
@@ -604,13 +604,23 @@ class SearchController extends AppController {
 
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
-
-                $fields = array('Title','Type','Resource Identifier');
+                $fields = array('Title','Type','Resource Identifier', 'Permissions');
                 $query_array = explode(",", $query);
                 $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
-
                 $r = $resource[$temp_kid];
+
+                //handle resource permissions
+                $permission = $r['Permissions']; //the individual resource permission in kora
+                $temp_array['Permissions'] = 'false'; //false by default
+				$temp_array['kid'] = ''; //don't give a kid unless they have permissions
+                if( $permission == 'Public' ){
+                    $temp_array['Permissions'] = 'true';
+					$temp_array['kid'] = $temp_kid;
+                }elseif( $permission == 'Member' && $this->Session->read('Auth.User.id') !== null ) { //signed in
+                    $temp_array['Permissions'] = 'true';
+					$temp_array['kid'] = $temp_kid;
+                }
 
                 //Handle resource title
                 $resource_title = $r['Title'];
@@ -620,7 +630,7 @@ class SearchController extends AppController {
                     $temp_array['title'] = 'Unknown Title';
                 }
 
-                $temp_array['orphan'] = 'false';
+                $temp_array['orphan'] = 'false'; //not an orphan
 
                 //Handle resource type
                 $resource_type = $r['Type'];
@@ -629,10 +639,10 @@ class SearchController extends AppController {
                 }else{
                     $temp_array['type'] = 'Unknown Type';
                 }
-                $temp_array['kid'] = $temp_kid;
 
                 $temp_array['collection_id'] = $row['id'];
 
+                //todo -resource identifer should not be used.
                 $resource_identifier = $r['Resource Identifier'];
 
                 //grab all pages with the resource identifier
@@ -733,7 +743,7 @@ class SearchController extends AppController {
 			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
 
             //search for the resources by type
-            $fields = array('Title','Resource Identifier');
+            $fields = array('Title','Type','Resource Identifier');
             $query_array = explode(",", $query);
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($pid, $sid, $fields, 0, $limit+1);
@@ -797,6 +807,10 @@ class SearchController extends AppController {
                 $temp['title'] = 'Unknown Title';
                 if (array_key_exists('Title', $item) && $item['Title'] != '' ) {
                     $temp['title'] = $item['Title'];
+                }
+                $temp['type'] = 'Unknown Type';
+                if (array_key_exists('Type', $item) && $item['Type'] != '' ) {
+                    $temp['type'] = $item['Type'];
                 }
 
                 //Get the Images

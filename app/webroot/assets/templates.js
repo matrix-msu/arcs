@@ -13,8 +13,14 @@ JST["collections/list"] = "<% _.each(collections, function(c, i) { %><% if (i ==
 JST["home/details"] = "<ul class=\"resource-thumbs\">"+
     "<% _.each(resources, function(r, i) { %>" + [
       "<li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">",
-        "<% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/'+ r.kid }else{ temp = arcs.baseURL + 'resource/'+ r.kid } %>",
-        "<a href=\"<%= temp %>\"> <img src=\"<%= r.thumb %>\" alt=\"resource\" />   </a>",
+        "<% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/'+ r.kid }else if(r.kid==''){temp='#'}else{ temp = arcs.baseURL + 'resource/'+ r.kid } %>",
+        "<a href=\"<%= temp %>\" style='position:relative;'>",
+            "<% if( typeof r.Permissions !== 'undefined' && r.Permissions == 'false' ){ %>",
+				"<div id='resourceLockedDarkBackground'></div>",
+                "<img src=\"<%= arcs.baseURL + 'img/Locked.svg' %>\" alt='' id='resourceLocked' />",
+            "<% } %>",
+            "<img src=\"<%= r.thumb %>\" alt=\"resource\" />",
+        "</a>",
         "<a class=\"resource-title\" href=\"<%= temp %>\"><%= r.title %><br /><span class='resource-type'><%= r.type %></a>",
       "</li>",
     "<% }) %><% if (!resources.length) { %>",
