@@ -163,165 +163,157 @@ is from here to ...
 
 
 <div id="search-results-wrapper">
-	<div class="SearchBar">
-		<div id="search-actions" class="search-toolbar">
-			<div id="sites-buttons" class="btn-group actions-left">
-		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Projects
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
-		      </ul>
-		    </div>
+		<div class="SearchBar">
+			<div class="mobile-filter-opt"> open filter options</div>
+			<div id="search-actions" class="search-toolbar">
+				<div class="tool-bar-results">
+					<div id="sites-buttons" class="btn-group actions-left">
+						<!-- <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+                            Projects
+                            <span class="pointerDown sort-arrow pointerSearch"></span>
+                        </button> -->
+						<ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
+						</ul>
+					</div>
 
-		    <div id="seasons-buttons" class="btn-group actions-left" >
-		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Season
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu seasonsMenu" data-id="Season Name">
-		      </ul>
-		    </div>
+					<div id="seasons-buttons" class="btn-group actions-left" >
+						<button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							Season
+							<span class="pointerDown sort-arrow pointerSearch"></span>
+						</button>
+						<ul class="dropdown-menu seasonsMenu" data-id="Season Name">
+						</ul>
+					</div>
 
-		    <div id="resources-buttons" class="btn-group actions-left">
-		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Resource Type
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu resourcesMenu" data-id="Type">
+					<div id="resources-buttons" class="btn-group actions-left">
+						<button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							Resource Type
+							<span class="pointerDown sort-arrow pointerSearch"></span>
+						</button>
+						<ul class="dropdown-menu resourcesMenu" data-id="Type">
 
-		      </ul>
-		    </div>
+						</ul>
+					</div>
 
 
-			<div id="excavation-buttons" class="btn-group actions-left">
-				<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-					Excavation Units
-					<span class="pointerDown sort-arrow pointerSearch"></span>
-				</button>
-				<ul class="dropdown-menu excavationMenu" data-id="Excavation Type">
+					<div id="excavation-buttons" class="btn-group actions-left">
+						<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							Excavation Units
+							<span class="pointerDown sort-arrow pointerSearch"></span>
+						</button>
+						<ul class="dropdown-menu excavationMenu" data-id="Excavation Type">
 
-				</ul>
+						</ul>
+					</div>
+
+					<div id="author-buttons" class="btn-group actions-left">
+						<!--				need to adjust these on search -->
+						<button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							Creator
+							<span class="pointerDown sort-arrow pointerSearch"></span>
+						</button>
+						<ul class="dropdown-menu creatorMenu" data-id="Creator">
+
+						</ul>
+					</div>
+					<div id="options-buttons" class="btn-group actions-right">
+						<button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							Export
+						</button>
+					</div>
+
+					<div id="view-buttons" class="btn-group actions-right">
+						<button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							<span id="sort-by">view</span>
+							<span class="pointerDown sort-arrow pointerSearch"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a class="sort-btn active" id="grid-btn">simple&nbsp;
+									<i class="icon-ok"></i></a></li>
+							<li><a class="sort-btn" id="list-btn">detailed&nbsp;</a></li>
+						</ul>
+					</div>
+
+					<div id="sorting-buttons" class="btn-group actions-right">
+						<button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+							Sort by
+							<span class="pointerDown sort-arrow pointerSearch"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a class="sort-btn active sorter" id="sort-title-btn">title&nbsp;
+									<i class="icon-ok"></i></a></li>
+							<li><a class="sort-btn sorter" id="sort-modified-btn">modified&nbsp;</a></li>
+							<li class="divider"></li>
+							<li><a class="dir-btn active " id="dir-asc-btn">ascending&nbsp;
+									<i class="icon-ok"></i></a></li>
+							<li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
+						</ul>
+					</div>
+
+				</div>
 			</div>
-
-		    <div id="author-buttons" class="btn-group actions-left">
-<!--				need to adjust these on search -->
-		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Creator
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu creatorMenu" data-id="Creator">
-
-		      </ul>
-		    </div>
-
-		    <!--
-			<div id="data-buttons" class="btn-group actions-left">
-		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Data
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
-		      </ul>
-		    </div>
-		    -->
-
-			<div id="options-buttons" class="btn-group actions-right">
-		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Export
-		      </button>
-		  </div>
-
-		    <div id="view-buttons" class="btn-group actions-right">
-		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		        <span id="sort-by">view</span>
-		        <span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="grid-btn">simple&nbsp;
-		          <i class="icon-ok"></i></a></li>
-		        <li><a class="sort-btn" id="list-btn">detailed&nbsp;</a></li>
-		      </ul>
-		    </div>
-
-		    <div id="sorting-buttons" class="btn-group actions-right">
-		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		        Sort by
-		        <span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active sorter" id="sort-title-btn">title&nbsp;
-		          <i class="icon-ok"></i></a></li>
-		        <li><a class="sort-btn sorter" id="sort-modified-btn">modified&nbsp;</a></li>
-		        <li class="divider"></li>
-		        <li><a class="dir-btn active" id="dir-asc-btn">ascending&nbsp;
-		          <i class="icon-ok"></i></a></li>
-		        <li><a class="dir-btn" id="dir-desc-btn">descending&nbsp;</a></li>
-		      </ul>
-		    </div>
-
 		</div>
-	</div>
-	<div class='search-pagination'>
-		<div id="search-results">
+		<div class='search-pagination'>
+			<div id="search-results">
 
-			<div class='toolbar-fixed'>
-				<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
-				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <div class="icon-collection"></div></a>
-				<div id="selected-resource-ids" style="display: none;"></div>
-        <form id="open-colview-form" method="POST">
-          <div id="open-colview-btn">Open in Collection View</div>
-          <input type="hidden" name="resources" value="">
-        </form>
-			</div>
+				<div class='toolbar-fixed'>
+					<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
+					<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <div class="icon-collection"></div></a>
+					<div id="selected-resource-ids" style="display: none;"></div>
+					<form id="open-colview-form" method="POST">
+						<div id="open-colview-btn">Open in Collection View</div>
+						<input type="hidden" name="resources" value="">
+					</form>
+				</div>
 
-			<ul class="flex-container">
-
-			</ul>
-		</div>
-	</div>
-
-
-	<div id='search-bottom-bar'>
-		<div id="search-actions" class="search-toolbar">
-			<div id="items-per-pages-buttons" class="btn-group actions-left">
-				  <button id='items-per-page-btn' class='btn dropdown-toggle' data-toggle='dropdown'>20 Items per Page
-					<span class='pointerDown sort-arrow pointerSearch'></span>
-				  </button>
-				  <ul class="dropdown-menu">
-					<li><a class="sort-btn perpage-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
-					<li><a class="sort-btn perpage-btn" id="open-btn">40 Items per Page&nbsp;</a></li>
-					<li><a class="sort-btn perpage-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
-				  </ul>
-			</div>
-			<div id="pagination">
-				<ul class="pagination">
-					<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
-
-					<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
-					<div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
-					<li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
-					<li><a class='pageNumber' id='2'style="display:none" ></a></li>
-					<li><a class='pageNumber' id='3' style="display:none"></a></li>
-					<li><a class='pageNumber' id='4' style="display:none"></a></li>
-					<li><a class='pageNumber' id='5' style="display:none"></a></li>
-					<div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
-					<li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
-					<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
-				</ul>
-			</div>
-
-			<div id="search-again">
-				<a class="search-again-link" id='top-btn'>Search again</a>
+				<ul class="flex-container">
 			</div>
 		</div>
 
 
+		<div id='search-bottom-bar'>
+			<div id="search-actions" class="search-toolbar">
+				<div id="items-per-pages-buttons" class="btn-group actions-left">
+					<button id='items-per-page-btn' class='btn dropdown-toggle' data-toggle='dropdown'>20 Items per Page
+						<span class='pointerDown sort-arrow pointerSearch'></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a class="sort-btn perpage-btn" id="open-btn">20 Items per Page&nbsp;</a></li>
+						<li><a class="sort-btn perpage-btn" id="open-btn">40 Items per Page&nbsp;</a></li>
+						<li><a class="sort-btn perpage-btn" id="open-btn">60 Items per Page&nbsp;</a></li>
+					</ul>
+				</div>
+				<div id="pagination">
+					<ul class="pagination">
+						<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+
+						<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
+						<div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
+						<li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
+						<li><a class='pageNumber' id='2'style="display:none" ></a></li>
+						<li><a class='pageNumber' id='3' style="display:none"></a></li>
+						<li><a class='pageNumber' id='4' style="display:none"></a></li>
+						<li><a class='pageNumber' id='5' style="display:none"></a></li>
+						<div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
+						<li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
+						<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+					</ul>
+				</div>
+
+				<div id="search-again">
+					<a class="search-again-link" id='top-btn'>Search again</a>
+				</div>
+			</div>
+
+
+
+		</div>
+
+		<div class="mobile-search-reroutes">
+			<p class="searchAgain">Search Again</p>
+			<p class="advSearch">Go to Advanced Search</p>
+		</div>
 	</div>
-</div>
 <script>
   arcs.searchView = new arcs.views.search.Search({
     el: $('.wrap')

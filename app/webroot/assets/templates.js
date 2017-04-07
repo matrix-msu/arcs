@@ -32,7 +32,7 @@ JST["home/details"] = "<ul class=\"resource-thumbs\">"+
 
 JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
   "<li class='resource-thumb simple'data-id='<%= r.kid %>'> ",
-    " <div> <div class='select-overlay'><div class='circle-container'><div class='select-circle'><div class='i-circle'></div></div></div></div> <img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'></div>",
+    " <div> <div class='select-overlay'><div class='circle-container'><div class='select-circle'><div class='i-circle'></div></div></div></div> <img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? arcs.baseURL + 'img/DefaultResourceImage.svg' : r.thumb %>'></div>",
     "<a class='result_a' href='../resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>",
     "<div class='resource-type'><%= r.Type %></div> </a>",
     "<div class='icon-flag'></div>",
@@ -45,10 +45,43 @@ JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
 
 JST["search/list"] = "<% _.each(results, function(r, i) { %>" +  [
   "<li class='resource-thumb detailed'data-id='<%= r.kid %>'> ",
-    " <div class='item'> <div class='select-overlay'><div class='circle-container'><div class='select-circle'><div class='i-circle'></div></div></div></div> <img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'></div><a class='result_a' href='../resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>",
-
+    "<div class='img-tooltip'>",
+    " <div class='item'> <div class='select-overlay'><div class='circle-container'><div class='select-circle'><div class='i-circle'></div></div></div></div> <a class='result_a' href='../resource/<%= r.kid %>'><img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? arcs.baseURL + 'img/DefaultResourceImage.svg' : r.thumb %>'></a>",
+    "<div class='tooltip'>",
+    "<div class='search-icon-edit'></div>",
+    " <div class='icon-in-collection'></div>",
+    "<div class='icon-discussed'></div>",
+    "<div class='icon-tagged'></div>",
+    "</div>",
+    "</div>",
+    "</div>",
+    "<div class='detailed-text'>",
+      "<ul class='resourceInfo'>",
+        "<% if (r['Accession Number']) { %>",
+          " <li> <p> <b> <%= r['Accession Number']  %> </b></p></li>",
+        "<% } %> ",
+        "<% if (r['Resource Identifier']) { %>",
+          " <li> <p>Resource Identifier: <b> <%= r['Resource Identifier']  %></b></p></li>",
+        "<% } %> ",
+        "<% if (r.Type) { %>",
+          "<li> <p><%= r.Type %></p> </li>",
+        "<% } %> ",
+        "<% if (r.Creator) { %>",
+          "<li> <p>By <b><%= r.Creator %> </b></p>  </li>",
+        "<% } %> ",
+        "<% if (r['Earliest Date'] ) { %>",
+          "<li> <p>Date Created: <%= r['Earliest Date']['month'] %>-<%= r['Earliest Date']['day'] %>-<%= r['Earliest Date']['year'] %> <%= r['Earliest Date']['era'] %> </p>  </li>",
+        "<% } %> ",
+        "<% if ( r['Project Name'] ) { %>",
+          "<li> <p>Associated Project <b><%= r['Project Name'] %> </b></p>  </li>",
+        "<% } %> ",
+        "<li> <p>Recently Edited By: <b><%= r['recordowner'] %> </b></p>  </li>",
+      "</ul>",
+      "</div>",
   "</li>"
 ].join("\n") + "<% }) %>";
+
+
 // JST["search/grid"] = "<% _.each(results, function(r, i) { %>  <div class='resource-item-container result' data-id='<%= r.kid %>'>  <li class='flex-item img-wrapper'><img class='flex-img' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? '../img/DefaultResourceImage.svg' : r.thumb %>'></li>  <span class='select-button' style='display:none;'>SELECT</span>  <a href='../resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>  <div class='resource-type'><%= r.Type %></div></a>  <div class='icon-flag'></div>  <div class='search-icon-edit'></div>  <div class='icon-in-collection'></div>  <div class='icon-discussed'></div>  <div class='icon-tagged'></div>  </div>  <% }) %>";
 
 JST["search/help-toggle"] = "<i class=\"search-help-btn icon-info-sign\" rel=\"tooltip\"   data-placement=\"top\" data-original-title=\"Show Search Help\"></i>";

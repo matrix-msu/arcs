@@ -154,13 +154,15 @@
 
 
 <div id="search-results-wrapper">
-	<div class="SearchBar">
+	<div class="SearchBar ">
+		<div class="mobile-filter-opt"> open filter options</div>
 		<div id="search-actions" class="search-toolbar">
-			<div id="sites-buttons" class="btn-group actions-left">
-		      <!-- <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+			<div class="tool-bar-results hideSearchBars">
+			<div id="sites-buttons" class="btn-group actions-left hiddenProject">
+		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Projects
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button> -->
+		      </button>
 		      <ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
 		      </ul>
 		    </div>
@@ -205,21 +207,6 @@
 
 		      </ul>
 		    </div>
-
-		    <!--
-			<div id="data-buttons" class="btn-group actions-left">
-		      <button id="data-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Data
-		      	<span class="pointerDown sort-arrow pointerSearch"></span>
-		      </button>
-		      <ul class="dropdown-menu">
-		        <li><a class="sort-btn active" id="open-btn">Option 1&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-colview-btn">Option 2&nbsp;</a></li>
-		        <li><a class="sort-btn" id="open-btn">...&nbsp;</a></li>
-		      </ul>
-		    </div>
-		    -->
-
 			<div id="options-buttons" class="btn-group actions-right">
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Export
@@ -255,6 +242,7 @@
 		    </div>
 
 		</div>
+		</div>
 	</div>
 	<div class='search-pagination'>
 		<div id="search-results">
@@ -270,32 +258,6 @@
 			</div>
 
 			<ul class="flex-container">
-				<!--
-				<div class="resource-item-container">
-					<li class="flex-item">1</li>
-					<div class="resource-title">Resource Title</div>
-					<div class="resource-type">Resource Type</div>
-					<div class="icon-annotate"></div>
-				</div>
-				<div class="resource-item-container">
-					<li class="flex-item">2</li>
-					<div class="resource-title">Resource Title</div>
-					<div class="resource-type">Resource Type</div>
-					<div class="icon-annotate"></div>
-					<div class="icon-flag"></div>
-				</div>
-				<div class="resource-item-container">
-					<li class="flex-item">3</li>
-					<div class="resource-title">Resource Title</div>
-					<div class="resource-type">Resource Type</div>
-					<div class="icon-flag"></div>
-					<div class="search-icon-edit"></div>
-					<div class="icon-in-collection"></div>
-					<div class="icon-discussed"></div>
-					<div class="icon-tagged"></div>
-				</div>
-				-->
-			</ul>
 		</div>
 	</div>
 
@@ -335,6 +297,12 @@
 		</div>
 
 
+
+	</div>
+
+	<div class="mobile-search-reroutes">
+		<p class="searchAgain">Search Again</p>
+		<p class="advSearch">Go to Advanced Search</p>
 	</div>
 </div>
 

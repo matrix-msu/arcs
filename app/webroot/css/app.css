@@ -7493,12 +7493,12 @@ input.indexSearchBox {
   right: 12px;
   top: 6px;
 }
-@media screen and (max-width: 930px) {
+@media screen and (max-width: 960px) {
   div#toolbar {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 9999999;
     background: #F4F4F4;
     height: 60px;
     border-bottom: 1px solid #e9e9e9;
@@ -8217,6 +8217,12 @@ div#searchCriteria ul {
   width: 50%;
   border-left: none !important;
 }
+.hiddenProject {
+  display: none !important;
+}
+.hideSearchBars {
+  display: none;
+}
 @media screen and (min-width: 1500px) {
   div.searchIntro {
     width: 1200px;
@@ -8304,7 +8310,6 @@ div#search-results-wrapper div#search-results table {
   border-collapse: separate;
 }
 div#search-results-wrapper div#search-actions {
-  padding: 5px;
   width: 90%;
   margin: auto;
 }
@@ -8314,7 +8319,7 @@ div#search-results-wrapper div#search-actions .btn {
   outline: none;
   box-shadow: none;
   text-transform: uppercase;
-  padding-left: 35px;
+  height: 60px;
 }
 div#search-results-wrapper div#search-actions .notactive {
   color: rgba(68, 68, 68, 0.25);
@@ -8397,7 +8402,7 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu {
   box-shadow: none !important;
   border-radius: 0 !important;
   width: auto !important;
-  left: 15px;
+  left: 10px;
   max-height: 400px;
   overflow: auto;
 }
@@ -8458,10 +8463,15 @@ div#search-again {
 }
 a.search-again-link {
   float: right;
+  height: 60px;
   text-transform: uppercase;
   color: #6f6f6f !important;
-  margin-bottom: 4em;
+  /* margin-bottom: 4em; */
   font-size: 12px;
+  vertical-align: middle;
+  justify-content: center;
+  text-align: center;
+  line-height: 60px;
 }
 a.search-again-link:hover {
   cursor: pointer;
@@ -8526,7 +8536,7 @@ ul.pagination .selected {
 .pagination > li > span {
   position: relative;
   float: left;
-  margin: 8px 3px !important;
+  margin: 8px 2px !important;
   /*line-height: 50px !important;*/
   text-decoration: none;
   color: #6f6f6f;
@@ -8651,7 +8661,128 @@ ul.pagination .selected {
   transform: translate(-50%, -50%);
   position: absolute;
 }
-.flex-container {
+.mobile-filter-opt {
+  display: none;
+}
+.mobile-search-reroutes {
+  display: none;
+}
+@media screen and (max-width: 960px) {
+  div#search-results-wrapper {
+    background: #fefefe;
+  }
+  .toolbar-fixed {
+    display: none;
+  }
+  #items-per-pages-buttons {
+    display: none;
+  }
+  #search-again {
+    display: none;
+  }
+  #sites-buttons,
+  #seasons-buttons,
+  #resources-buttons,
+  #excavation-buttons,
+  #author-buttons,
+  #view-buttons,
+  #options-buttons,
+  #sorting-buttons {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  div#search-bottom-bar {
+    background: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    bottom: 190px !important;
+  }
+  .grid-list {
+    margin-bottom: 19em !important;
+  }
+  .mobile-filter-opt {
+    text-transform: uppercase;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    line-height: 14px;
+    color: #686868;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 60px;
+  }
+  div#search-results-wrapper div#search-actions {
+    padding: 0;
+    width: 100%;
+    margin: 0;
+  }
+  .tool-bar-results {
+    display: none;
+    height: 240px;
+    position: absolute;
+    z-index: 1;
+    opacity: 0.95;
+    border-bottom: 1px solid #E2E2E2;
+    background: #f4f4f4;
+    width: 100%;
+    top: 60px;
+  }
+  #view-buttons,
+  #options-buttons,
+  #sorting-buttons {
+    display: none;
+  }
+  .dropdown-menu {
+    min-width: 100%;
+    opacity: 0.95;
+    background: #f4f4f4;
+    left: 0 !important;
+    border: none;
+    text-align: center;
+    top: 95%;
+  }
+  ul.dropdown-menu {
+    left: 0;
+  }
+  .flex-container .simple {
+    width: 114px !important;
+  }
+  .mobile-search-reroutes {
+    float: left;
+    position: absolute;
+    height: 60px;
+    width: 100%;
+    /* margin-top: 60px; */
+    /* float: left; */
+    bottom: 0;
+    text-align: center;
+    height: 160px;
+    display: block;
+  }
+  .mobile-search-reroutes p.searchAgain {
+    color: #0094BC;
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
+  .mobile-search-reroutes p.advSearch {
+    color: #0094BC;
+    font-family: "Helvetica Neue";
+    font-size: 12px;
+    line-height: 14px;
+    text-transform: uppercase;
+    margin-top: 50px;
+  }
+}
+.grid-list {
   display: block;
   padding-left: 10px;
   padding-bottom: 10px;
@@ -8672,6 +8803,20 @@ ul.pagination .selected {
   margin-top: 3em;
   margin-left: auto;
   flex-wrap: wrap;
+}
+.detailed-list {
+  columns: 500px 3;
+  -webkit-columns: 500px 3;
+  -moz-columns: 500px 3;
+  margin: 90px 0;
+  -webkit-column-gap: 40px;
+  /* Chrome, Safari, Opera */
+  -moz-column-gap: 40px;
+  /* Firefox */
+  column-gap: 40px;
+}
+.search-pagination {
+  min-height: 400px;
 }
 .flex-container .detailed {
   width: 100% !important;
@@ -8740,69 +8885,83 @@ ul.pagination .selected {
 .flex-container .result_a {
   position: relative;
 }
-@media screen and (min-width: 1500px) {
-  .flex-container .detailed {
-    width: 100% !important;
-    height: 200px;
-    margin: 25px 0;
-    position: relative;
-  }
-  .flex-container .detailed div img {
-    vertical-align: middle;
-    height: 175px;
-    box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
-    border: 1px solid #e2e2e2;
-    object-fit: cover;
-  }
-  .flex-container .detailed .select-overlay {
-    position: absolute;
-    height: 175px;
-    opacity: 0;
-    transition: .5s ease;
-    border: 5px solid rgba(0, 147, 190, 0.75);
-    text-align: center;
-    left: 0;
-    top: 0;
-    margin: auto;
-  }
-  .flex-container .detailed .circle-container {
-    width: 30px;
-    height: 30px;
-    top: 0;
-    left: 0;
-    position: relative;
-    background: rgba(0, 147, 190, 0.75);
-  }
-  .flex-container .detailed .select-circle {
-    width: 20px;
-    height: 20px;
-    border: 1px solid white;
-    border-radius: 50%;
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    ccursor: pointer;
-  }
-  .flex-container .detailed .item {
-    /* float: left; */
-    position: absolute;
-    vertical-align: middle;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: 175px;
-  }
-  .flex-container .detailed .selected {
-    background: white;
-    background-clip: content-box;
-    padding: 2px;
-  }
-  .flex-container .detailed .select-hover {
-    opacity: 1;
-  }
+.flex-container .detailed {
+  height: 200px;
+  margin: 25px auto;
+  position: relative;
+  display: inline-block;
+}
+.flex-container .detailed div img {
+  vertical-align: middle;
+  height: 175px;
+  max-width: 221px;
+  box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
+  border: 1px solid #e2e2e2;
+  object-fit: cover;
+}
+.flex-container .detailed .select-overlay {
+  position: absolute;
+  height: 175px;
+  opacity: 0;
+  transition: .5s ease;
+  z-index: 999;
+  border: 5px solid rgba(0, 147, 190, 0.75);
+  text-align: center;
+  left: 0;
+  top: 0;
+  margin: auto;
+}
+.flex-container .detailed .circle-container {
+  width: 30px;
+  height: 30px;
+  top: 0;
+  left: 0;
+  position: relative;
+  background: rgba(0, 147, 190, 0.75);
+}
+.flex-container .detailed .select-circle {
+  width: 20px;
+  height: 20px;
+  border: 1px solid white;
+  border-radius: 50%;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  ccursor: pointer;
+}
+.flex-container .detailed .item {
+  vertical-align: middle;
+  top: 0;
+  bottom: 0;
+  height: 175px;
+  display: inline-block;
+}
+.flex-container .detailed .tooltip {
+  margin-top: 15px;
+  opacity: 1;
+}
+.flex-container .detailed .selected {
+  background: white;
+  background-clip: content-box;
+  padding: 2px;
+}
+.flex-container .detailed .select-hover {
+  opacity: 1;
+}
+.flex-container .detailed .detailed-text {
+  height: 200px;
+  /* width: 75%; */
+  /* right: 0; */
+  text-align: left;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.flex-container .img-tooltip {
+  display: inline-block;
 }
 div#search-bottom-bar {
   float: left;
@@ -8840,6 +8999,13 @@ div#search-bottom-bar {
   position: relative;
   top: 6px;
   vertical-align: top;
+}
+#search-pagination .btn-group,
+#search-pagination .btn-group-vertical {
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
 }
 .select-pointer {
   position: absolute;
