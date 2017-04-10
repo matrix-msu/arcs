@@ -11,7 +11,7 @@
 class UsersController extends AppController
 {
     public $name = 'Users';
-
+    public $uses = array('User');
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -19,7 +19,16 @@ class UsersController extends AppController
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
-
+    public function getUser(&$auth){
+        if ($auth->loggedIn()){
+            $user = $this->User->find('first', array(
+                'conditions' => array("User.id" => $auth->user("id"))
+            ));
+            if (!empty($user))
+                return $user;
+        }
+        return false; 
+    }
     /**
      * Display a user's bookmarks.
      *
@@ -35,7 +44,8 @@ class UsersController extends AppController
         $this->set('bookmarks', $this->User->Bookmark->find('all', array(
             'conditions' => array(
                 'Bookmark.user_id' => $id
-            ))));
+            )
+        )));
     }
 
     /**

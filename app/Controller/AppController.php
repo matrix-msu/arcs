@@ -68,6 +68,30 @@ class AppController extends Controller
 
 
     }
+
+    /**
+     * Converts a KID to A Project Name from the bootstrap
+     *
+     * @param string $kid the kid to search for
+     *
+     * @return the Project Name or false
+     */
+    public static function convertKIDtoProjectName($kid) { 
+        if (!empty(explode('-', $kid))) {
+            $pid = hexdec( explode('-', $kid)[0] );
+            $projects = static::getPIDArray();
+            // array search returns false if not found
+            return array_search($pid, $projects);
+        }        
+        return false;
+    }
+    public static function getPIDArray() {
+        if (!isset($GLOBALS['PID_ARRAY'])) {
+            throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound); 
+        }
+        return $GLOBALS['PID_ARRAY'];
+    }
+    
     public static function verifyGlobals($project)
     {
         self::getPIDFromProjectName($project);

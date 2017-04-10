@@ -398,7 +398,8 @@ class Keyword_Search extends Kora
             "systimestamp",
             "recordowner",
             "Earliest Date",
-            "Latest Date"
+            "Latest Date",
+            "Permissions",
             );
         } else {
             $this->fields = $fields;

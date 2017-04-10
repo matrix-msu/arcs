@@ -16,18 +16,24 @@
  require_once(KORA_LIB . "../Class/Benchmark.php");
  use mb\Benchmark;
 
+// Enum class for Permissions
+abstract class Permissions {
+    const R_Public  = "Public";
+    const R_Member  = "Member";
+    const R_Special = "Special";
+}
+
 
 class ResourcesController extends AppController {
 
     public $name = 'Resources';
-    public $uses = array('Resource', 'Collection', 'MetadataEdit');
+    public $uses = array('Resource', 'Collection', 'MetadataEdit', 'User');
 
     public function beforeFilter() {
         # The App Controller will set some common view variables (namely a
         # user array), so the parent's beforeFilter is run in this and most
         # other controllers.
         parent::beforeFilter();
-
         # Read-only actions, such as viewing resources and associated comments
         # are allowed by default.
         $this->Auth->allow(
@@ -39,7 +45,106 @@ class ResourcesController extends AppController {
             $this->Resource->flatten = true;
         }
     }
+    /**
+     * Filters a kora return by permissions
+     *
+     * @param string $userName  is the username tied to the search
+     * @param array  $resources is a reference to the results returned from a kora search
+     *
+     */ 
+     public static function filterByPermission($userName, &$resources) {
+        
+        
+        if (empty($userName)) {
+            static::lockResourcesByPermission(Permissions::R_Member, $resources);
+            static::lockResourcesByPermission(Permissions::R_Special, $resources);
+        } else {
 
+            $KIDs = array();
+            $i = 0;
+            foreach($resources as $resource) {
+                if(isset($resource['kid'])) {
+                    $KIDs[$i++] = $resource['kid'];
+                }
+            }
+
+            $projects = array();
+            foreach($KIDs as $kid) {
+                $name = parent::convertKIDtoProjectName($kid);
+                $projects[$name] = "";
+            }
+
+            $projects = array_keys($projects);
+            foreach($projects as $project) {
+                $pid = parent::getPIDFromProjectName($project);
+                $sid = parent::getResourceSIDFromProjectName($project);
+                $fields = array('Special User', 'Permissions', 'Type','Title');
+                $kora = new Advanced_Search($pid, $sid, $fields);
+                $kora->add_clause("kid", "IN", $KIDs);
+                $res = json_decode($kora->search(), true);
+                foreach($res as $resource) {
+                    // Permissions is Special User, but the user is not on
+                    // the special user list
+                    if (
+                        isset($resource['Permissions']) &&
+                        $resource['Permissions'] === Permissions::R_Special &&
+                        !static::isSpecial($resource['Special User'], $userName)
+                       )
+                            static::lockResource($kid,$resources);
+                }
+            }    
+        }  
+    }
+    /**
+     * Checks if a username is in the special field
+     *
+     * @param string $specialFieldString  is the string from the special user field from kora
+     * @param string $username            is the username to look for
+     *
+     */ 
+    public static function isSpecial($specialFieldString, $username) {
+        $users = explode('|',$specialFieldString);
+        foreach($users as $user){
+            if (trim($user) === $username) {
+                return false;
+            }
+        }
+        return false;
+    }
+    /**
+     * Locks a resource in a kora result by removing all the fields except,
+     * kid, permission, type, title, thumb
+     *
+     * @param string $kid        kid you want to lock
+     * @param array  $resources  kora results returned to lock on. (pass by reference)
+     *
+     */ 
+    public static function lockResource($kid, &$resources) {
+        if (isset($resources[$kid])) {
+            $resources[$kid] = array(
+                  "kid"         => $resources[$kid]['kid'],
+                  "Permissions" => $resources[$kid]['Permissions'],
+                  "Type"        => $resources[$kid]['Type'],
+                  "Title"       => $resources[$kid]['Title'],
+                  "thumb"       => $resources[$kid]['thumb'],
+                  "Locked"      => true,
+            );
+        }
+    }
+    /**
+     * Locks all resources by a given permission
+     *
+     * @param string $permission permission you want to lock
+     * @param array  $resources  kora results returned to lock on. (modifies the original array / pass by reference)
+     *
+     */ 
+    public static function lockResourcesByPermission($permission, &$resources){
+        foreach($resources as $kid => $resource){
+            if (isset($resource['Permissions']) && $resource['Permissions'] === $permission) {
+                static::lockResource($kid, $resources); 
+            }
+        } 
+    }
     /**
      * Create a resource.
      *

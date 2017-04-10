@@ -15,20 +15,6 @@ class Resource_Search extends Keyword_Search {
     $time_start = microtime(true);
     $mem_start =  memory_get_usage();
 
-     $this->fields = array(
-        "Excavation - Survey Associator",
-        "Title",
-        "Type",
-        "Resource Identifier",
-        "Accession Number",
-        "Creator",
-        "Creator2",
-        "systimestamp",
-        "recordowner",
-        "Earliest Date",
-        "Latest Date"
-      );
-
     //print_r($array);
     $this->token = parent::getTokenFromProjectName($projectName);
     $this->projectMapping = parent::getPIDFromProjectName($projectName);

@@ -10,6 +10,8 @@ use kora\local\Advanced_Field_Search;
 use kora\classes\AdvancedFieldDataStructure as AdvancedDS;
 use kora\classes\AFDSFactory;
 
+App::import('Controller', 'Users');
+App::import('Controller', 'Resources');
 
 class AdvancedSearchController extends AppController
 {
@@ -34,6 +36,14 @@ class AdvancedSearchController extends AppController
     public function viewer($project = null) {
         $title = 'Advanced Search';
         // check bootstrap configuration
+
+        $username = NULL;
+        $usersC = new UsersController();
+
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
+
         try {
           parent::getPIDFromProjectName($project);
         } catch (Exception $e) {
@@ -55,6 +65,9 @@ class AdvancedSearchController extends AppController
 
         $search = new Resource_Search($resources, $project);
         $results = $search->getResultsAsArray();
+
+        ResourcesController::filterByPermission($username, $results['results']);
+
         echo "<script>var results_to_display = ".json_encode($results).";</script>";
 
         $this->render("/AdvancedSearch/advancedsearch");
