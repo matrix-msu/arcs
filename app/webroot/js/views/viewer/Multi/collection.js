@@ -262,7 +262,7 @@ function collectionsSearch() {
 function getCollections( resourceKid='' ) {
     if( resourceKid == '' ) {
         var currentPage = $('.resource-slider').find('img').filter(function () { //by border
-            return $(this).css('border-width') == '5px';
+            return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
         });
         currentPage = currentPage.attr('id').split('-');
         currentPage.shift();
