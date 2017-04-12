@@ -122,11 +122,11 @@ class ResourcesController extends AppController {
     public static function lockResource($kid, &$resources) {
         if (isset($resources[$kid])) {
             $resources[$kid] = array(
-                  "kid"         => $resources[$kid]['kid'],
-                  "Permissions" => $resources[$kid]['Permissions'],
-                  "Type"        => $resources[$kid]['Type'],
-                  "Title"       => $resources[$kid]['Title'],
-                  "thumb"       => $resources[$kid]['thumb'],
+                  "kid"         => isset($resources[$kid]['kid'])         ? $resources[$kid]['kid']         : "",
+                  "Permissions" => isset($resources[$kid]['Permissions']) ? $resources[$kid]['Permissions'] : "",
+                  "Type"        => isset($resources[$kid]['Type'])        ? $resources[$kid]['Type']        : "",
+                  "Title"       => isset($resources[$kid]['Title'])       ? $resources[$kid]['Title']       : "",
+                  "thumb"       => isset($resources[$kid]['thumb'])       ? $resources[$kid]['thumb']       : "",
                   "Locked"      => true,
             );
         }

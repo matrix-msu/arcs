@@ -770,7 +770,7 @@ class SearchController extends AppController {
 			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
 
             //search for the resources by type
-            $fields = array('Title','Resource Identifier');
+            $fields = array('Title','Resource Identifier', 'Permissions', 'Special User', 'Type');
             $query_array = explode(",", $query);
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($pid, $sid, $fields, 0, $limit+1);
@@ -779,6 +779,15 @@ class SearchController extends AppController {
             }
 			$kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
+
+            $username = NULL;
+            $usersC = new UsersController();
+            if ($user = $usersC->getUser($this->Auth)) {
+                $username = $user['User']['username'];
+            }
+
+            ResourcesController::filterByPermission($username, $resources);
+
 
             if( empty( $resources ) ) { //return now, there are no resources.
                 $return = array('results'=> 'No Results' );
@@ -792,7 +801,7 @@ class SearchController extends AppController {
 
             //grab all pages with the resource associator
 			$sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
-            $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
+            $fields = array('Image Upload', 'Resource Associator', 'Scan Number');
             $kora = new Advanced_Search($pid, $sid, $fields);
 
             //get a accepted resource associator array for kora,
@@ -831,6 +840,13 @@ class SearchController extends AppController {
 
                 $temp['kid'] = $key;
 
+
+                if( isset($item['Locked']) ){
+                    $temp['Locked'] = $item['Locked'];
+                }
+
+
+
                 $temp['title'] = 'Unknown Title';
                 if (array_key_exists('Title', $item) && $item['Title'] != '' ) {
                     $temp['title'] = $item['Title'];
@@ -838,7 +854,7 @@ class SearchController extends AppController {
 
                 //Get the Images
                 $temp['thumb'] = '';
-                $resource_identifier = $item['Resource Identifier'];
+                //$resource_identifier = $item['Resource Identifier'];
 
                 //find the page by resource linkers and use the kid as the key.
                 if( !empty($item['linkers']) ){
@@ -852,7 +868,7 @@ class SearchController extends AppController {
                 //if the page wasn't found by key, then search through all pages manually.
                 if ($temp['thumb'] == '') {
                     foreach ($pages as $key2 => $item2) {
-                        if ($resource_identifier == $pages[$key2]['Resource Identifier']) {
+                        if ($temp["kid"] == $pages[$key2]['Resource Associator']) {
                             $temp['thumb'] = $pages[$key2]['Image Upload']['localName'];
                             unset($pages[$key2]); //delete that page to optimize
                             break;
@@ -867,9 +883,14 @@ class SearchController extends AppController {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
                 }
                 array_push($returnResults, $temp);
+                $temp = array();
             }
+
             $response['countpages'] = count($pages);
+
         }
+
+
         //Test if there are more results for the show all button
         if( $limit == -1 ){
             $returnResults[0]['more_results'] = 0;
