@@ -201,7 +201,19 @@
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
           adjustResultsCenter();
-          return html;
+
+          //readjust the resource permissions css
+          $('.resource-thumb').each(function(){
+            var atag = $(this).children().eq(0);
+            var darkBackground = $(atag).children().eq(0);
+            var resourcePicture = $(atag).children().eq(2);
+            $(resourcePicture).load(function(){ //wait for each picture to finish loading
+              var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
+              darkBackground.width(pictureWidth); //background same as picture width
+              darkBackground.css('left',(115-pictureWidth)/2); //recenter the darkbackground
+            });
+          });
+		  return;
         }else{
           //show all button goes to search.
           var project = window.location.href
@@ -274,26 +286,26 @@
     };
 
     adjustPage = function(results, currentPage) {
-      var currentCollectionList, i, lastPage, numberPerPage, pageNum, skip, temp;
-      $('.pageNumber').removeClass('currentPage');
-      $('.pageNumber').removeClass('selected');
-      pageNum = currentPage;
-      numberPerPage = parseInt($('#items-per-page-btn').html().substring(0, 2));
-      lastPage = Math.ceil(results.length / numberPerPage);
-      temp = fillArray(pageNum, lastPage);
-      pagination(temp, pageNum, lastPage);
-      skip = (pageNum - 1) * numberPerPage;
-      $('#lastPage').html(lastPage);
-      currentCollectionList = [];
-      i = skip;
-      while (i < (skip + numberPerPage) && i < results.length) {
+        var currentCollectionList, i, lastPage, numberPerPage, pageNum, skip, temp;
+        $('.pageNumber').removeClass('currentPage');
+        $('.pageNumber').removeClass('selected');
+        pageNum = currentPage;
+        numberPerPage = parseInt($('#items-per-page-btn').html().substring(0, 2));
+        lastPage = Math.ceil(results.length / numberPerPage);
+        temp = fillArray(pageNum, lastPage);
+        pagination(temp, pageNum, lastPage);
+        skip = (pageNum - 1) * numberPerPage;
+        $('#lastPage').html(lastPage);
+        currentCollectionList = [];
+        i = skip;
+        while (i < (skip + numberPerPage) && i < results.length) {
         currentCollectionList.push(results[i]);
         i++;
-      }
-      adjustResultsCenter();
-      return $('#all-collections').html(arcs.tmpl('collections/list', {
+        }
+        adjustResultsCenter();
+        $('#all-collections').html(arcs.tmpl('collections/list', {
         collections: currentCollectionList
-      }));
+        }));
     };
 
     fillArray = function(page, lastPage) {

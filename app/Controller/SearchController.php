@@ -624,12 +624,32 @@ class SearchController extends AppController {
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
 
-                $fields = array('Title','Type','Resource Identifier');
+                $fields = array('Title','Type','Resource Identifier','Permissions','Special User');
                 $query_array = explode(",", $query);
                 $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
+                $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
+                //print_r($resource);
+
+                //permissions stuffs.
+                $username = NULL;
+                $usersC = new UsersController();
+                if ($user = $usersC->getUser($this->Auth)) {
+                    $username = $user['User']['username'];
+                }
+                //print_r($username);
+
+                ResourcesController::filterByPermission($username, $resource);
+
+                //print_r($resource);
+                //die;
 
                 $r = $resource[$temp_kid];
+
+                //handle permissions sent to frontent
+                if( isset($r['Locked']) ){
+                    $temp_array['Locked'] = $r['Locked'];
+                }
 
                 //Handle resource title
                 $resource_title = $r['Title'];
@@ -652,18 +672,16 @@ class SearchController extends AppController {
 
                 $temp_array['collection_id'] = $row['id'];
 
-                $resource_identifier = $r['Resource Identifier'];
-
-                //grab all pages with the resource identifier
-                $fields = array('Image Upload', 'Resource Identifier', 'Scan Number');
+                //grab all pages with the resource associator
+                $fields = array('Image Upload', 'Resource Associator', 'Scan Number');
                 $kora = new Advanced_Search($pid, $pageSid, $fields);
 
                 if( $resource_type == 'Field journal' ) {
                     $temp_array['resource-type'] = $resource_type;
-                    $kora->add_double_clause("Resource Identifier", "=", $resource_identifier,
+                    $kora->add_double_clause("Resource Associator", "=", $temp_kid,
                         "Scan Number", "=", "1");
                 }else {
-                    $kora->add_clause("Resource Identifier", "=", $resource_identifier);
+                    $kora->add_clause("Resource Associator", "=", $temp_kid);
                 }
 
                 $page2 = json_decode($kora->search(), true);

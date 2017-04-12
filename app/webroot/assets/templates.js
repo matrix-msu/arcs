@@ -15,9 +15,9 @@ JST["home/details"] = "<ul class=\"resource-thumbs\">"+
       "<li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">",
         "<% var temp = ''; if(r.orphan=='true'){ temp = arcs.baseURL + 'orphan/'+ r.kid }else if(r.kid==''){temp='#'}else{ temp = arcs.baseURL + 'resource/'+ r.kid } %>",
         "<a href=\"<%= temp %>\" style='position:relative;'>",
-            "<% if( typeof r.Permissions !== 'undefined' && r.Permissions == 'false' ){ %>",
-				"<div id='resourceLockedDarkBackground'></div>",
-                "<img src=\"<%= arcs.baseURL + 'img/Locked.svg' %>\" alt='' id='resourceLocked' />",
+            "<% if( typeof r.Locked !== 'undefined' && r.Locked == '1' ){ %>",
+				"<div class='resourceLockedDarkBackground'></div>",
+                "<img src=\"<%= arcs.baseURL + 'img/Locked.svg' %>\" alt='' class='resourceLocked' />",
             "<% } %>",
             "<img src=\"<%= r.thumb %>\" alt=\"resource\" />",
         "</a>",
@@ -36,9 +36,15 @@ JST["home/details"] = "<ul class=\"resource-thumbs\">"+
     "<% } %>  </li>"
     ].join("\n") + "<% } %></ul>";
 
-JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
+JST["search/grid"] = "<% _.each(results, function(r, i) { console.log(r);%>" + [
   "<li class='resource-thumb simple'data-id='<%= r.kid %>'> ",
-    " <div><div class='lock-overlay'></div> <div class='select-overlay'><div class='circle-container'><div class='select-circle'><div class='i-circle'></div></div></div></div> <img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? arcs.baseURL + 'img/DefaultResourceImage.svg' : r.thumb %>'></div>",
+    "<div><div class='lock-overlay'></div>",
+    "<div class='select-overlay'>",
+      "<div class='circle-container'>",
+      "<div class='select-circle'>",
+      "<div class='i-circle'></div></div></div>",
+    "</div>",
+    "<img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? arcs.baseURL + 'img/DefaultResourceImage.svg' : r.thumb %>'></div>",
     "<a class='result_a' href='../resource/<%= r.kid %>'><div class='resource-title'><%= r.Title %></div>",
     "<div class='resource-type'><%= r.Type %></div> </a>",
     "<div class='icon-flag'></div>",
