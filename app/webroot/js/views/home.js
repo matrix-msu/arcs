@@ -97,6 +97,17 @@
           });
           $el.children('div').html(html);
           adjustResultsCenter();
+          //readjust the resource permissions css
+          $('.resource-thumb').each(function(){
+            var atag = $(this).children().eq(0);
+            var darkBackground = $(atag).children().eq(0);
+            var resourcePicture = $(atag).children().eq(2);
+            $(resourcePicture).load(function(){ //wait for each picture to finish loading
+              var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
+              darkBackground.width(pictureWidth); //background same as picture width
+              darkBackground.css('left',(115-pictureWidth)/2); //recenter the darkbackground
+            });
+          });
           return; //$el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
           var project = window.location.href
