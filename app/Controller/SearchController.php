@@ -629,7 +629,6 @@ class SearchController extends AppController {
                 $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
-                //print_r($resource);
 
                 //permissions stuffs.
                 $username = NULL;
@@ -637,12 +636,7 @@ class SearchController extends AppController {
                 if ($user = $usersC->getUser($this->Auth)) {
                     $username = $user['User']['username'];
                 }
-                //print_r($username);
-
                 ResourcesController::filterByPermission($username, $resource);
-
-                //print_r($resource);
-                //die;
 
                 $r = $resource[$temp_kid];
 
@@ -762,8 +756,6 @@ class SearchController extends AppController {
 
         }else {     // Resource type search - resources page
             //Get the Resources
-            $user = "";
-            $pass = "";
             $query = $this->request->query['q'];
 
 			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
@@ -854,7 +846,6 @@ class SearchController extends AppController {
 
                 //Get the Images
                 $temp['thumb'] = '';
-                //$resource_identifier = $item['Resource Identifier'];
 
                 //find the page by resource linkers and use the kid as the key.
                 if( !empty($item['linkers']) ){
@@ -868,7 +859,7 @@ class SearchController extends AppController {
                 //if the page wasn't found by key, then search through all pages manually.
                 if ($temp['thumb'] == '') {
                     foreach ($pages as $key2 => $item2) {
-                        if ($temp["kid"] == $pages[$key2]['Resource Associator']) {
+                        if (in_array($temp["kid"],$pages[$key2]['Resource Associator'])) {
                             $temp['thumb'] = $pages[$key2]['Image Upload']['localName'];
                             unset($pages[$key2]); //delete that page to optimize
                             break;
@@ -883,6 +874,7 @@ class SearchController extends AppController {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
                 }
                 array_push($returnResults, $temp);
+
                 $temp = array();
             }
 
