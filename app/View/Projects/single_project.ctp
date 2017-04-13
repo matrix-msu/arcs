@@ -32,8 +32,8 @@
                   </a>
                   </span>
                   <br><br>
-                  <h class="resource-title"><?php echo $r['title'] ?></h><br>
-                  <p class="resource-type"><?php echo $r['type'] ?></p>
+                  <h class="resource-title"><?php echo $r['Title'] ?></h><br>
+                  <p class="resource-type"><?php echo $r['Type'] ?></p>
                 </li>
 			    <?php endforeach ?>
 			</ul>

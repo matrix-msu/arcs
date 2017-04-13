@@ -14,6 +14,9 @@
 
  use Lib\Kora\Project;
 
+App::import('Controller', 'Users');
+App::import('Controller', 'Resources');
+
 class ProjectsController extends AppController {
     public $name = 'Projects';
 
@@ -103,7 +106,7 @@ class ProjectsController extends AppController {
 
         $pid = $GLOBALS['PID_ARRAY'][strtolower($proj)];
         $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($proj)];
-        $fields = array("Title","Type","Resource Identifier", "systimestamp");
+        $fields = array("Title","Type","Resource Identifier", "systimestamp", "Permissions", "Special User");
         $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
         $kora->add_clause("kid", "!=", '0');
@@ -158,10 +161,21 @@ class ProjectsController extends AppController {
 				$tempTitle = $result['Title'];
 			}
 
-            $temp_array = ['kid' => $result['kid'], 'type' => $tempType, 'title' => $tempTitle, 'thumb' => $thumb];
+            $temp_array = ['kid' => $result['kid'], 'Type' => $tempType, 'Title' => $tempTitle,
+                           'thumb' => $thumb, "Permissions" => $result['Permissions']];
             $resources[] = $temp_array;
 		}
-		$this->set('resources', $resources);
+
+		// get user for permissions filter
+        $username = NULL;
+        $usersC = new UsersController();
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
+        // filter resources on user
+        ResourcesController::filterByPermission($username, $resources);
+
+        $this->set('resources', $resources);
 
 		//create a temporary user since the toolbar was broken on the single_project page.
 		//not sure why the actual user isn't being sent to the toolbar on this one page though...
