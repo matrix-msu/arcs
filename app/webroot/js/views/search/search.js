@@ -527,10 +527,11 @@
         $(".flex-container").find("li").each(function(el){
          var kid = $(this).data("id");
          console.log(results);
-         // if(results[kid]['Locked'])
-         //   $(this).addClass("Locked")
+         if(results[kid]['Locked'])
+           $(this).addClass("Locked")
        })
     }
+
     adjustPage = function(results, currentPage) {
       var lastPage, numberPerPage, pageNum, skip, temp;
       if (waiting) {
@@ -556,8 +557,20 @@
       select_selected()
       setIndicators();
       calculateMargins();
-      insertLocks();
+      // insertLocks();
       searching = false;
+        $('.resource-thumb').each(function(){
+            var atag = $(this).children().eq(0);
+            var darkBackground = $(atag).children().eq(0);
+            var resourcePicture = $(atag).children().eq(2);
+            $(resourcePicture).load(function(){ //wait for each picture to finish loading
+                var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
+                darkBackground.width(pictureWidth); //background same as picture width
+                darkBackground.css('left',0); //recenter the darkbackground
+                darkBackground.css('right',0);
+                darkBackground.css('margin',"auto");
+            });
+        });
     };
 
     setCreators = function() {
