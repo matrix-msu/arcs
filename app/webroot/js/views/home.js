@@ -81,6 +81,10 @@
       var kid = '';
       kid = url.pop();
       if(kid != '' && kid != 'resources' ){
+        var lastChar = kid.substr(kid.length - 1);
+        if( lastChar == '#' ){
+          kid = kid.substring(0, kid.length - 1); //remove trailing '#'
+        }
         query2 += "pKid=" + kid + "&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
