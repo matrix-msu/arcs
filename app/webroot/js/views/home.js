@@ -109,7 +109,9 @@
             $(resourcePicture).load(function(){ //wait for each picture to finish loading
               var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
               darkBackground.width(pictureWidth); //background same as picture width
-              darkBackground.css('left',(115-pictureWidth)/2); //recenter the darkbackground
+              darkBackground.css('left',0); //recenter the darkbackground
+              darkBackground.css('right',0);
+              darkBackground.css('margin',"auto");
             });
           });
           return; //$el.find('.show-all-btn-text').html('SHOW MORE');
