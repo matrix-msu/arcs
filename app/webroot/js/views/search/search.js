@@ -961,7 +961,8 @@
         }
         else{
           var href = $(this).parent().parent().find(".result_a").attr('href')
-          window.location.href = href
+          if(href !== undefined )
+            window.location.href = href
           console.log(href);
         }
       })

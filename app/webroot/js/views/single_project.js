@@ -89,6 +89,16 @@
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
           adjustResultsCenter();
+          //readjust the resource permissions css
+          $('.resource-thumb').each(function(){
+            var atag = $(this).children().eq(0);
+            var darkBackground = $(atag).children().eq(0);
+            var resourcePicture = $(atag).children().eq(2);
+            $(resourcePicture).load(function(){ //wait for each picture to finish loading
+              var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
+              darkBackground.width(pictureWidth); //background same as picture width
+            });
+          });
           return
         }else{
           $('<form />')

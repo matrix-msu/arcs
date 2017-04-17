@@ -25,16 +25,22 @@
 		<div class="pic-display">
 			<ul class="recent-resource">
 			    <?php foreach($resources as $r): ?>
-                <li class="resource-pic">
-                  <span style="cursor:pointer">
-                  <a href="<?php echo $this->Html->url('/resource/').$r['kid'] ?>">
-                  <img class="resource_imginfo_1" src="<?php echo $r['thumb'] ?>">
-                  </a>
-                  </span>
-                  <br><br>
-                  <h class="resource-title"><?php echo $r['Title'] ?></h><br>
-                  <p class="resource-type"><?php echo $r['Type'] ?></p>
-                </li>
+                    <li class="resource-pic">
+                      <span style="cursor:pointer">
+                      <a <?php
+                        if(!isset($r['Locked'])){ //not locked
+                            echo 'href="'.$this->Html->url('/resource/').$r['kid'].'">';
+                        }else{ //locked
+                            echo '>';//'<div class="resourceLockedDarkBackground"></div>';
+                            //echo '<img src="/'.BASE_URL.'img/Locked.svg" class="resourceLocked">';
+                        }?>
+                      <img class="resource_imginfo_1" src="<?php echo $r['thumb'] ?>">
+                      </a>
+                      </span>
+                      <br><br>
+                      <h class="resource-title"><?php echo $r['Title'] ?></h><br>
+                      <p class="resource-type"><?php echo $r['Type'] ?></p>
+                    </li>
 			    <?php endforeach ?>
 			</ul>
 		</div>
