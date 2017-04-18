@@ -99,6 +99,8 @@
       if(window.globalproject == "all"){
         //remove export button
         $("#options-btn").css("display","none");
+        // remove advanced search link
+        $(".advancedSearch").remove();
       }
 
       this.changeDisplay();
