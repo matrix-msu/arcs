@@ -27,12 +27,12 @@
 			    <?php foreach($resources as $r): ?>
                     <li class="resource-pic">
                       <span style="cursor:pointer">
-                      <a <?php
+                      <a style='position:relative;'<?php
                         if(!isset($r['Locked'])){ //not locked
                             echo 'href="'.$this->Html->url('/resource/').$r['kid'].'">';
                         }else{ //locked
-                            echo '>';//'<div class="resourceLockedDarkBackground"></div>';
-                            //echo '<img src="/'.BASE_URL.'img/Locked.svg" class="resourceLocked">';
+                            echo '><div class="resourceLockedDarkBackground" style="height:150px!important;"></div>';
+                            echo '<img src="/'.BASE_URL.'img/Locked.svg" class="resourceLocked">';
                         }?>
                       <img class="resource_imginfo_1" src="<?php echo $r['thumb'] ?>">
                       </a>
