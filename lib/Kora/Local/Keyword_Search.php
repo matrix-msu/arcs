@@ -134,7 +134,7 @@ class Keyword_Search extends Kora
         $clause = $this->_clauseGen(
             "OR", "LIKE",
             array(
-            "Resource Identifier","Type","Earliest Date","Latest Date",
+            "Resource Identifier","Title","Type","Earliest Date","Latest Date",
             "Accession Number"
             ), $terms
         );
