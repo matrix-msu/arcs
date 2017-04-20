@@ -578,7 +578,7 @@ $( document ).ready(function() {
         }
         //find the current page
         var currentPage = $('.other-page').find('img').filter(function () { //by border
-            return $(this).css('border-width') == '5px';
+            return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
         });
         if( currentPage.length == 0 ){ //if not border, then first page
             currentPage = $('.other-page').find('a:visible').first().find('img');
@@ -644,7 +644,7 @@ $( document ).ready(function() {
             return;
         }
         var currentPage = $('.other-page').find('img').filter(function () {
-            return $(this).css('border-width') == '5px';
+            return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
         });
         if( currentPage.length == 0 ){
             currentPage = $('.other-page').find('a:visible').first().find('img');
