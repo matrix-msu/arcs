@@ -26,17 +26,21 @@
 			<ul class="recent-resource">
 			    <?php foreach($resources as $r): ?>
                     <li class="resource-pic">
+                    <div>
                       <span style="cursor:pointer">
                       <a style='position:relative;'<?php
                         if(!isset($r['Locked'])){ //not locked
                             echo 'href="'.$this->Html->url('/resource/').$r['kid'].'">';
                         }else{ //locked
-                            echo '><div class="resourceLockedDarkBackground" style="height:150px!important;"></div>';
+                            echo '><div class="resourceLockedDarkBackgroundSP" style="height:150px;"></div>';
                             echo '<img src="/'.BASE_URL.'img/Locked.svg" class="resourceLocked">';
                         }?>
+
                       <img class="resource_imginfo_1" src="<?php echo $r['thumb'] ?>">
+
                       </a>
                       </span>
+                      </div>
                       <br><br>
                       <h class="resource-title"><?php echo $r['Title'] ?></h><br>
                       <p class="resource-type"><?php echo $r['Type'] ?></p>
