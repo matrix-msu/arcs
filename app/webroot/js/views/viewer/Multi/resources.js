@@ -51,7 +51,6 @@ _resource.selectPage = function(pageNum) {
     return pageEvent;
 }
 _resource.selectResource = function(pageNum) {
-    console.log('new resource');
     var rEvent = $(_resource.resourceSlider)
         .find(".numberOverResources:" + "contains('" + pageNum + "')")
         .first().parent()
@@ -108,7 +107,6 @@ _resource.SetWidths = function(container) {
         _resource.currWidth = parseInt(
             $(container).width()
         );
-        console.log(_resource.currWidth);
         _resource.btnWidth = parseInt(
             $(container).find(".button-left").css("width")
         );
@@ -217,6 +215,16 @@ $(document).ready(function() {
         e.stopPropagation();
     });
     $('.other-resources').click(function() {
+        //add a selected class to any clicked page or resource
+        if($(this).parents('.page-slider').length > 0) {
+            $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
+            $(this).addClass('selectedCurrentPage')
+        }
+        if($(this).parents('.resource-slider').length > 0) {
+            $('.resource-slider').find('.other-resources').removeClass('selectedCurrentResource');
+            $(this).addClass('selectedCurrentResource')
+        }
+
 
         if ($(this).parent().length && $(this).parent().attr("class") == "other-page") {
             return;

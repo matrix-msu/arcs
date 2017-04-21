@@ -81,9 +81,7 @@ $(document).ready(function () {
             page_sid = parseInt(page_sid, 16);
 
             //get current resourceKid
-            var currentPage = $('.resource-slider').find('img').filter(function () { //by border
-                return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
-            });
+            var currentPage = $('.selectedCurrentResource').find('img');
             currentPage = currentPage.attr('id').split('-');
             currentPage.shift();
             resourceKid = currentPage.join('-');

@@ -261,9 +261,7 @@ function collectionsSearch() {
 //for the details tab, what collections the resource is a part of.
 function getCollections( resourceKid='' ) {
     if( resourceKid == '' ) {
-        var currentPage = $('.resource-slider').find('img').filter(function () { //by border
-            return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
-        });
+        $('.selectedCurrentResource').find('img');
         currentPage = currentPage.attr('id').split('-');
         currentPage.shift();
         var resource_kid = currentPage.join('-');

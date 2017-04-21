@@ -577,13 +577,7 @@ $( document ).ready(function() {
             return;
         }
         //find the current page
-        var currentPage = $('.other-page').find('img').filter(function () { //by border
-            return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
-        });
-        if( currentPage.length == 0 ){ //if not border, then first page
-            currentPage = $('.other-page').find('a:visible').first().find('img');
-        }
-        currentPage = $(currentPage).parent();
+        var currentPage = $('.selectedCurrentPage');
         var inView = isElementInViewport($(currentPage)); //test page is shown
         if( !inView && prev_view_tested == 0 ){ //not shown and not already tested
             prev_view_tested = 1;  //tested
@@ -643,13 +637,7 @@ $( document ).ready(function() {
         if( $("#other-resources-container").is(':animated') ){
             return;
         }
-        var currentPage = $('.other-page').find('img').filter(function () {
-            return Math.ceil(parseFloat($(this).css('border-width')) ) === 5;
-        });
-        if( currentPage.length == 0 ){
-            currentPage = $('.other-page').find('a:visible').first().find('img');
-        }
-        currentPage = $(currentPage).parent();
+        var currentPage = $('.selectedCurrentPage');
         var inView = isElementInViewport($(currentPage)); //test page is shown
         if( !inView && next_view_tested == 0 ){ //not shown and not already tested
             next_view_tested = 1;  //tested
