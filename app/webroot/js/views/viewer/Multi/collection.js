@@ -261,7 +261,7 @@ function collectionsSearch() {
 //for the details tab, what collections the resource is a part of.
 function getCollections( resourceKid='' ) {
     if( resourceKid == '' ) {
-        $('.selectedCurrentResource').find('img');
+        var currentPage = $('.selectedCurrentResource').find('img');
         currentPage = currentPage.attr('id').split('-');
         currentPage.shift();
         var resource_kid = currentPage.join('-');
