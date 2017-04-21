@@ -9129,6 +9129,7 @@ input[type=range]:focus::-ms-fill-upper {
   width: 30%;
   height: 100%;
   border-left: 1px solid #cdcdcd;
+  overflow: hidden;
 }
 .icon-edit {
   width: 19px;

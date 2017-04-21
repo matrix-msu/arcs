@@ -276,7 +276,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                   <li class="metadata-tab discussion"><a href="#tabs-3">Discussions</a></li>
               </ul>
               <div id="tabs-1" class="metadata-content">
-                  <div class="accordion metadata-accordion">
+                  <div class="accordion metadata-accordion" style="width:100%;">
                     <?= $this->element("Metadata/generate"); ?>
                     <?php
                         Generate_Metadata("project",$projectsArray, $metadataEdits);
@@ -290,7 +290,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
               </div>
 
 
-            <div id="tabs-2" class="metadata-content">
+            <div id="tabs-2" class="metadata-content" style="display:none;">
                 <div class="accordion metadata-accordion">
                     <h3 class="level-tab transcriptionTab">
                         Transcriptions
@@ -487,5 +487,9 @@ var href = $('#search').attr('href');
 href = href.split('/'); href.pop(); href = href.join('/');
 var href = href+'/'+pName;
 $('#search').attr('href', href);
+
+$('#soo').ready(function(){
+    $('.selectedCurrentPage').find('img')[0].click();
+});
 
 </script>

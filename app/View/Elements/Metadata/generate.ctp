@@ -5,10 +5,10 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $counter = 0){
     //exit();
 ?>
 
-    <h3 class="level-tab" ><?= $schemename ?>
+    <h3 class="level-tab <?= $schemename ?>" ><?= $schemename ?>
         <span class="edit-btn">Edit</span>
     </h3>
-    <div class="level-content">
+    <div class="level-content" style="display:none;">
         <div class="accordion metadata-accordion excavation-div">
     <?php
 
