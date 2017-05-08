@@ -7,7 +7,7 @@ var SEASONS = <?php echo json_encode($seasons);?>;
 var RESOURCES = <?php echo json_encode($resources);?>;
 var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
-
+var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 
 
 var resourceKid = "";//"<?php  ?> ";
@@ -140,6 +140,13 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                         <input class="annotateSearch" placeholder="SEARCH"/>
                     </form>
                     <div class="resultsContainer"></div>
+                    <div class="annotation_pagination">
+                        <span class="annotation_begin"><img src="../app/webroot/assets/img/arrowLeft-White.svg"><img src="../app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_prev"><img src="../app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_numbers"></span>
+                        <span class="annotation_next"><img src="../app/webroot/assets/img/arrowRight-White.svg"></span>
+                        <span class="annotation_end"><img src="../app/webroot/assets/img/arrowRight-White.svg"><img src="../app/webroot/assets/img/arrowRight-White.svg"></span>
+                    </div>
                 </div>
                 <!--<div class="annotateTranscriptContainer">-->
                     <!--<textarea class="annotateTranscript" placeholder="ENTER TRANSCRIPT"></textarea>-->

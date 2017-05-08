@@ -826,8 +826,11 @@ class ResourcesController extends AppController {
         $excavations = array();
         $subjects = array();
         $resources_array = array();
-
-        if($this->request->method() === "POST"){
+        if($this->request->method() === "POST" && isset($this->request->data['pageSet'])){
+            $pageIndex = $this->request->data['pageSet'];
+            $this->set("pageSet", $pageIndex);
+            $resources_array = array( $id );
+        }elseif($this->request->method() === "POST" && isset($this->request->data['resources'])){
             $post_data = $this->request->data;
             $resources_array = json_decode($post_data["resources"]);
         }elseif($this->request->method() === "GET"){

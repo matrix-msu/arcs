@@ -16,8 +16,8 @@ class Advanced_Search extends Kora{
         parent::__construct();
         $this->pid = $pid;
         $this->sid = $sid;
-        $this->fields = $fields;
         $this->start = $start;
+        $this->fields = $fields;
         $this->end = $limit;
         $this->sortFields = $sort;
     }
@@ -58,8 +58,8 @@ class Advanced_Search extends Kora{
 
 
         //$this->formulatedResult = parent::search();
-        $this->formulatedResult = parent::search_limited();
+        parent::search_limited();
 
-        return json_encode($this->formulatedResult);
+        return json_encode($this->comprehensive_results);
     }
 }

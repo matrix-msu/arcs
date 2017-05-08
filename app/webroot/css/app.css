@@ -9975,6 +9975,7 @@ input[type=range]:focus::-ms-fill-upper {
 .resultsContainer {
   max-height: 50vh;
   overflow: auto;
+  background-color: #565656;
 }
 #annotateModal .annotateModalHeader {
   color: #fff;

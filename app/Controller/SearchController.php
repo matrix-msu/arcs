@@ -897,11 +897,14 @@ class SearchController extends AppController {
      * Search resources with advanced search.
      */
     public function advanced_resources() {
+
         $options = $this->parseParams();
         $this->autoRender = false;
-
+        //print_r($this->request->data);exit();
         if (!isset($this->request->data['q']))
             return $this->emptySearch($options);
+
+
         $pid = hexdec($this->request->data['pid']);
         $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
         if( $this->request->data['sid'] == 'resource' ){
@@ -919,6 +922,7 @@ class SearchController extends AppController {
         }
 
         $results = $kora->search();
+
         echo ($results);
     }
 

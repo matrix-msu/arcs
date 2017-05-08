@@ -1,6 +1,7 @@
 jQuery.fn.outerHTML = function() {
     return jQuery('<div />').append(this.eq(0).clone()).html();
 };
+var pageSet = PAGESET || false;
 //global resource
 var _resource = {};
 
@@ -60,12 +61,13 @@ _resource.selectResource = function(pageNum) {
 
 }
 
-_resource.sliderMove = function(obj) {
+_resource.sliderMove = function(obj, movementMultiplier=1) {
 
     var accelorator = 1;
     var slider = obj.slider;
     var element = slider.find("img");
-    var movement = parseInt($(element).prop("width"))
+    var movement = parseInt($(element).prop("width")) * movementMultiplier
+    console.log(movement)
 
     obj.direction == "left" ? movement *= -1 : movement;
 
@@ -244,10 +246,29 @@ $(document).ready(function() {
         _resource.currentResource = parseInt(
             $(this).find(".numberOverResources").html()
         );
+
         _resource.SwapResource(id);
         _resource.setPointer(id);
         _resource.page_increment();
         _resource.selectPage(1);
+        if(pageSet) {
+            var page = $(_resource.pageSlider).find("#"+pageSet);
+            if(page.length) {
+                var index = page.parent().find(".numberOverResources").html();
+                index = parseInt(index,10) || 0
+                _resource.selectPage(index);
+                _resource.sliderMove({
+                    direction: "right",
+                    slider: $(_resource.pageSlider).parent(),
+                    multiplier: 1,
+                    speed: 1000
+                }, (index-3)/2);
+            }
+        
+        else {
+            console.log("no Page SEt")
+        }
+
 
     });
 
@@ -324,6 +345,7 @@ $(document).ready(function() {
                 $('.fullscreenInner , .fullscreenOuter').css('transform', 'scale(' + zoomOption + ')');
             }
     })
+    //GOTO
     function setExpand() {
         var imageSrc = $("#PageImage").attr('src');
 
