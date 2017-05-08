@@ -264,7 +264,7 @@ $(document).ready(function() {
                     speed: 1000
                 }, (index-3)/2);
             }
-        
+        }
         else {
             console.log("no Page SEt")
         }
