@@ -923,6 +923,23 @@ class SearchController extends AppController {
 
         $results = $kora->search();
 
+        // Get the Resource Type
+        if (!empty($results)) {
+            $temp = json_decode($results);
+            $associator = (array)array_values((array)$temp)[0];
+            $associator = isset($associator['Resource Associator'][0])
+                          ? $associator['Resource Associator'][0]
+                          : false;
+           if ($associator) {
+               $sid = parent::getResourceSIDFromProjectName($pName);
+               $kora = new General_Search($pid, $sid, "kid", "=", $associator, array("Type"));
+               $tempRes = (array)json_decode($results);
+               $tempRes2 = json_decode($kora->return_json());
+               $tempRes["resource"] = $tempRes2;
+               echo json_encode($tempRes);
+               return;
+           }
+        }
         echo ($results);
     }
 

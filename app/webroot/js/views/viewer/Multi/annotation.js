@@ -284,7 +284,6 @@ $(document).ready(function () {
                 // SetData(globalData, "resource", pid);
                 var q = addResourcesToQueue(globalData)
                 mapping = {}
-                console.log(globalData);
                 for (var resource in globalData) {
                     mapping[resource] = {
                         title: globalData[resource].Title,
@@ -335,9 +334,13 @@ $(document).ready(function () {
 
             if (scheme == "resource") {
                 $.each(data, function (key, value) {
-
+                    if (value['Resource Identifier'] === undefined) {
+                        //skip pages without a resource Identifier
+                        return;
+                    }
                     if (result_ids.indexOf(value.kid) == -1 && value['Resource Identifier'] != "") {
                         result_ids.push(value.kid);
+
                         $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
                         q.push(['Resource Identifier', '=', value['Resource Identifier']]);
 
@@ -368,7 +371,6 @@ $(document).ready(function () {
             var counter = 0;
 
             //Get related pages
-            console.log(data);
             $.each(data, function (kid,v) {
 
                 var tempPid = parseInt(pid, 16);
@@ -930,7 +932,10 @@ $(document).ready(function () {
                                 sid: 'page'
                             },
                             success: function (pageData) {
-                                var page = JSON.parse(pageData)[paramKid];
+
+                                var data = JSON.parse(pageData);
+                                var page = data[paramKid]
+                                var resource = data['resource'] || false
 
                                 if(redirect) {
                                     var kid = page["Resource Associator"][0] || "INVALID_KID";
@@ -952,11 +957,12 @@ $(document).ready(function () {
                                 // Resource.Identifier
                                 // Resource.Type
                                 // Page.Scan Number
-
                                 $(".annotationImage").attr('src', image);
                                 $(".annotationData").append("<p>Relation</p>");
                                 $(".annotationData").append("<p>" + page["Resource Identifier"] + "</p>");
-                                $(".annotationData").append("<p>" + page["Type"] + "</p>");
+                                if (resource) {
+                                    $(".annotationData").append("<p>" + resource[Object.keys(resource)[0]]["Type"] + "</p>");
+                                }
                                 $(".annotationData").append("<p>" + (page["Scan Number"] || "N/A") + "</p>");
                             }
                         });
