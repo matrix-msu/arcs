@@ -1052,7 +1052,7 @@ $(document).ready(function () {
             });
     });
     // Details tab
-    $(".details").unbind().click(function () {
+    $(".details").click(function () {
         GetDetails();
     });
 
