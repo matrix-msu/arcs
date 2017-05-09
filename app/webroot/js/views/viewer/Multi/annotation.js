@@ -244,14 +244,16 @@ $(document).ready(function () {
         spinner = $(".annoteSpinner")
         return {
             show: function () {
-                //$(".annotateRelationContainer").css("text-align", "center")
+                $(".annotateRelationContainer").css("text-align", "center")
                 obj.css("display","inherit")
             },
             hide: function () {
+                $(".annotateRelationContainer").css("text-align", "initial")
                 obj.css("display","none")
             },
             remove: function () {
                 spinner.remove()
+                $(".annotateRelationContainer").css("text-align", "initial")
             }
         }
     }
@@ -316,6 +318,11 @@ $(document).ready(function () {
         var q = Array();
 
         $.each(data, function (key, value) {
+            if (value['Resource Identifier'] === undefined) {
+                //skip pages without a resource Identifier
+                return;
+            }
+
             if (result_ids.indexOf(value.kid) == -1 && value['Resource Identifier'] != "") {
                 result_ids.push(value.kid);
                 $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
@@ -396,7 +403,6 @@ $(document).ready(function () {
                      Resource.Title
                      Page.Page Indentifier
                      */
-
                     var ResourceTitle = mapping[v['Resource Associator']].title || "No Title"
                     var surveyTitle = mapping[v['Resource Associator']].survey || "No Survey Name"
                     pageDisplay.append(
@@ -1048,7 +1054,6 @@ $(document).ready(function () {
     // Details tab
     $(".details").unbind().click(function () {
         GetDetails();
-
     });
 
 
