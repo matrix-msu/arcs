@@ -7827,6 +7827,113 @@ input.indexSearchBox {
 .hotkeys-modal .modal-body table th {
   font-weight: bold;
 }
+#resource_permission_model {
+  transition: .5s opacity;
+  transition-delay: inherit;
+}
+#resource_permission_model {
+  background: rgba(0, 0, 0, 0.25);
+  opacity: 0;
+}
+#resource_permission_model {
+  top: 0;
+}
+.permissionModal {
+  position: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 99999;
+  pointer-events: none;
+}
+#resource_permission_model .permission-content {
+  width: 500px;
+  height: 255px;
+}
+#resource_permission_model .permission-modal-content {
+  width: 72%;
+}
+.permissionModal {
+  background: rgba(0, 0, 0, 0.25);
+}
+.permissionModal a:hover {
+  text-decoration: none;
+}
+.permissionModal .modal-exit {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  height: 25px;
+  width: 25px;
+  -webkit-filter: invert(70%);
+  filter: invert(70%);
+}
+.permissionModal .permission-content {
+  width: 500px;
+  height: 300px;
+  background-color: white;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 99999;
+  text-align: center;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
+}
+.permissionModal .permission-modal-header {
+  color: #808080;
+  width: 75%;
+  margin: auto;
+  margin-top: 60px;
+}
+.permissionModal .permission-modal-header h1 {
+  font-size: 24px;
+}
+.permissionModal .permission-modal-content {
+  width: 62%;
+  margin: auto;
+  margin-top: 30px;
+}
+.permissionModal .permission-modal-content p {
+  color: #808080;
+}
+.permissionModal .permission-modal-responseButtons {
+  margin-top: 30px;
+}
+.permissionModal .permission-modal-responseButtons p button {
+  padding: 0 20px;
+  outline: 0;
+  border: 0;
+  font-family: 'helvetica', sans-serif;
+  color: #808080;
+  font-size: 12px;
+  cursor: pointer;
+  margin: -2px 0 0 0;
+  background: white;
+}
+.permissionModal .permission-modal-responseButtons p .request {
+  color: #0093be;
+}
+.permissionModal .permission-modal-responseButtons p .login {
+  color: #0093be;
+}
+@media screen and (max-width: 740px) {
+  #resource_permission_model .permission-content {
+    width: 300px;
+    height: 280px;
+  }
+}
+@media screen and (max-width: 960px) {
+  #resource_permission_model .permission-content {
+    width: 450px;
+    height: 270px;
+  }
+}
 div#searchButtonMobile {
   display: none;
 }
@@ -7847,6 +7954,7 @@ a.search-type {
 }
 .searchIntro p {
   line-height: 200%;
+  font-size: medium;
 }
 div#searchBox {
   margin: auto;
@@ -8223,11 +8331,24 @@ div#searchCriteria ul {
 .hideSearchBars {
   display: none;
 }
+.search-all-info {
+  padding-top: 55px;
+  margin: auto;
+  width: 90%;
+  margin-bottom: 4em;
+  color: #444444;
+  font-size: medium;
+}
 @media screen and (min-width: 1500px) {
   div.searchIntro {
     width: 1200px;
     margin: auto;
     margin-bottom: 4em;
+  }
+  .search-all-info {
+    width: 1200px;
+    margin: 4em auto;
+    font-size: medium;
   }
 }
 @media screen and (max-width: 930px) {
@@ -8508,11 +8629,12 @@ img.search-results-thumbnall {
   max-width: 160px;
   margin-top: 12px;
   color: #6f6f6f;
+  margin: 5px 0;
 }
 .resource-type {
   color: #6f6f6f;
   font-size: 13px;
-  margin-top: 2px;
+  margin: 7px 0;
 }
 .resource-item-container {
   margin: 20px;
@@ -8787,7 +8909,6 @@ ul.pagination .selected {
   padding-left: 10px;
   padding-bottom: 10px;
   -ms-box-orient: horizontal;
-  display: -moz-flex;
   flex-flow: row wrap;
   justify-content: flex-start;
   padding: 0;
@@ -8822,7 +8943,7 @@ ul.pagination .selected {
   width: 100% !important;
 }
 .flex-container .simple {
-  height: 200px;
+  height: 230px;
   width: 150px;
   position: relative;
   padding: 0px;
@@ -8864,7 +8985,7 @@ ul.pagination .selected {
   right: 0;
   bottom: 0;
   margin: auto;
-  ccursor: pointer;
+  cursor: pointer;
 }
 .flex-container .simple .selected {
   background: white;
@@ -8930,7 +9051,7 @@ ul.pagination .selected {
   right: 0;
   bottom: 0;
   margin: auto;
-  ccursor: pointer;
+  cursor: pointer;
 }
 .flex-container .detailed .item {
   vertical-align: middle;
@@ -8962,6 +9083,11 @@ ul.pagination .selected {
 }
 .flex-container .img-tooltip {
   display: inline-block;
+}
+.flex-container .text-box {
+  text-align: left;
+  padding-left: 12px;
+  margin-top: 10px;
 }
 div#search-bottom-bar {
   float: left;
@@ -9747,7 +9873,7 @@ input[type=range]:focus::-ms-fill-upper {
 #resources-nav {
   white-space: nowrap;
   background: #efefef;
-  height: 228px;
+  height: 114px;
 }
 #resources-nav div {
   display: inline-block;
@@ -9755,10 +9881,10 @@ input[type=range]:focus::-ms-fill-upper {
 }
 #resources-nav #other-resources-container {
   width: calc(100% - 120px);
-  height: 200px;
-  margin: -2px 6px;
+  height: 100px;
+  margin: 7px 6px;
   overflow: hidden;
-  padding-top: 16px;
+  padding-top: 5px;
 }
 #resources-nav #other-resources-container a {
   position: relative;
@@ -9769,7 +9895,7 @@ input[type=range]:focus::-ms-fill-upper {
 #resources-nav #button-left,
 #resources-nav #button-right {
   width: 54px;
-  height: 228px;
+  height: 114px;
   background-color: rgba(0, 0, 0, 0.1);
   cursor: pointer;
   z-index: 200;
@@ -10491,17 +10617,17 @@ input[type=range]:focus::-ms-fill-upper {
   margin: auto;
   background: black;
   border-radius: 50%;
-  height: 60px;
-  width: 60px;
+  height: 30px;
+  width: 30px;
   left: 0;
   right: 0;
   bottom: 0;
-  top: 15px;
+  top: 2px;
   color: white;
   text-align: center;
-  font-size: 40px;
+  font-size: 14px;
   opacity: .7;
-  line-height: 57px;
+  line-height: 30px;
 }
 .selectedResource {
   background: #0094bc;
@@ -10565,8 +10691,8 @@ input[type=range]:focus::-ms-fill-upper {
 img.other-resource {
   margin-left: 15px;
   margin-right: 15px;
-  margin-top: 9px;
-  height: 175px;
+  margin-top: 1px;
+  height: 87.5px;
   border-radius: 2px;
   box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.2);
 }

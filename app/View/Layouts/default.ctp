@@ -48,6 +48,7 @@
             <?php
 
                 echo $this->element('toolbar');
+                echo $this->element('Permissions/resource_permission');
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
                 echo $this->fetch('content');
