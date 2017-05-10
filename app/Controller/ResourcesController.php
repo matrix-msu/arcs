@@ -16,6 +16,8 @@
  require_once(KORA_LIB . "../Class/Benchmark.php");
  use mb\Benchmark;
 
+App::import('Controller', 'Users');
+
 // Enum class for Permissions
 abstract class Permissions {
     const R_Public  = "Public";
@@ -842,13 +844,27 @@ class ResourcesController extends AppController {
             //Not a post or get method
             throw new NotFoundException();
         }
+        
+        $username = NULL;
+        $usersC = new UsersController();
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }    
+
         foreach($resources_array as $resource){
 
             //get resource information
             $info_array = $this->getResource($resource);
             //$identifier = $info_array[$resource]['Resource Identifier'];
+            
+            static::filterByPermission($username, $info_array);
+            $permission = array_values($info_array)[0];
+            //skip resources with insufficent permissions
+            if(isset($permission['Locked']) && (bool)$permission['Locked']) {
+                continue;   
+            }
 
-			if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
+            if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
                 $exc_kids = $this->getFromKey($info_array, "Excavation - Survey Associator");
 
                 //get Season data
@@ -891,6 +907,9 @@ class ResourcesController extends AppController {
             //push to array
             $this->pushToArray($info_array, $resources);
 
+        }
+        if (empty($resources)) {
+            $this->set("access", false); 
         }
 		if( !isset($this->request->query['ajax'] )){
 			$metadataedits = $this->getEditMetadata();

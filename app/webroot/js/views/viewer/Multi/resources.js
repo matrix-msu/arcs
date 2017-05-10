@@ -184,6 +184,14 @@ $(window).resize(function() {
     _resource.sliderMove.adjust($(_resource.resourceSlider).parent());
 });
 $(document).ready(function() {
+    var permModal = $("#request_permission_model")
+    if (permModal.length && permModal.css("opacity") == 1) {
+        permModal.find(".permission-modal-responseButtons")
+            .find("button")
+            .first()
+            .remove()
+        permModal.find(".modal-exit").remove()
+    }
     $(".button-right").click(function(e) {
 
         var element = $(this).parent().find("#other-resources-container");

@@ -49,6 +49,8 @@
 
                 echo $this->element('toolbar');
                 echo $this->element('Permissions/resource_permission');
+                if (isset($access) && !(bool)$access)
+                    echo $this->element('Permissions/request_permission'); 
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
                 echo $this->fetch('content');
