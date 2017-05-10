@@ -1,0 +1,124 @@
+@ArcsBlue: rgb(0, 147, 190);
+@Font-Color: #808080;
+
+#resource_permission_model {
+  transition: .5s opacity;
+  transition-delay: inherit;
+}
+#resource_permission_model {
+  background: rgba(0, 0, 0, 0.25);
+  opacity: 0;
+}
+#resource_permission_model {
+  top: 0;
+}
+
+.permissionModal{
+  position: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 99999;
+  //opacity: 0;
+  pointer-events: none;
+}
+
+#resource_permission_model{
+  .permission-content {
+    width: 500px;
+    height: 255px;}
+  .permission-modal-content{
+    width: 72%;
+  }
+
+}
+.permissionModal {
+  background: rgba(0, 0, 0, 0.25);
+  a:hover{
+    text-decoration: none;
+  }
+
+  .modal-exit {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    height: 25px;
+    width: 25px;
+    -webkit-filter: invert(70%);
+    filter: invert(70%);
+  }
+  .permission-content {
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 99999;
+    text-align: center;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
+  }
+  .permission-modal-header{
+    color: @Font-Color;
+    width: 75%;
+    margin: auto;
+    margin-top:60px;
+    h1{
+      font-size: 24px;
+    }
+  }
+
+  .permission-modal-content{
+    width: 62%;
+    margin: auto;
+    margin-top:30px;
+    p{
+      color: @Font-Color;
+    }
+  }
+
+  .permission-modal-responseButtons{
+    margin-top:30px;
+    p {
+      button {
+
+        padding: 0 20px;
+        outline: 0;
+        border: 0;
+        font-family: 'helvetica', sans-serif;
+        color: @Font-Color;
+        font-size: 12px;
+        cursor: pointer;
+        margin: -2px 0 0 0;
+        background: white;
+      }
+
+      .request{
+        color: @ArcsBlue;
+      }
+      .login{
+        color: @ArcsBlue;
+      }
+    }
+  }
+
+}
+@media screen and (max-width: 740px) {
+  #resource_permission_model .permission-content {
+    width: 300px;
+    height: 280px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  #resource_permission_model .permission-content {
+    width: 450px;
+    height: 270px;
+  }
+}
