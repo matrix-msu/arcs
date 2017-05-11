@@ -9,7 +9,6 @@ var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
 var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 
-
 var resourceKid = "";//"<?php  ?> ";
  var ADMIN = 0;//"<?php  ?> ";
 // var kora_url = "<?php  ?> ";
@@ -333,7 +332,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 						</div>
                     </div>
 
-                    <h3 class="level-tab">Keywords<span id="keyword-edit-btn" class="edit-btn">Edit</span></h3>
+                    <h3 class="level-tab" id="keyword-tab">Keywords<span id="keyword-edit-btn" class="keyword-edit-btn">Edit</span></h3>
 
                     <div class="level-content">
                         <p id="keyword-text" style="text-transform:none;padding-left:11px;padding-top:16px;">Enter keywords below. Use commas to seperate keywords.</p>

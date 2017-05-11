@@ -23,20 +23,24 @@ $(document).ready(function(){
                 addingKeywords = 1;
                 addKeywords(addArray);
             }
-        }else if( $(this).find('#keyword-edit-btn').length >0 ){ //edit keyword was pressed. Handled above
-			return;
+        }else if( $(this).find('#keyword-edit-btn').length >0 ) { //edit keyword was pressed. Handled above
+            return;
         }else if (e.target.getAttribute("aria-expanded") == 'true') { //drawer pressed but open
             return;
-        }else{ //close the keywords drawer.
-            saveBackToEdit();
+        }else if ( //close keyword drawer by from other tab click
+                    $(this).parents('#tabs-2').length > 0 &&
+                    e.target.getAttribute("aria-expanded") == 'false' &&
+                    $('#keyword-tab')[0].getAttribute("aria-expanded") == 'true'
+                ) {
+                    saveBackToEdit();
 		}
     });
     function saveBackToEdit(){
         $("#urlform").css('display','none');
         getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 0);
-        $(".save-btn").removeClass("save-btn")
+        $(".keyword-save-btn").removeClass("keyword-save-btn")
             .html("EDIT")
-            .addClass("edit-btn")
+            .addClass("keyword-edit-btn")
             .css("color", '')
             .attr('id', 'keyword-edit-btn');
     }
@@ -45,7 +49,7 @@ $(document).ready(function(){
             e.stopPropagation();
             $(this).parent().click();
             $(this).attr('id', 'keyword-save-btn')
-                .attr('class', 'save-btn')
+                .attr('class', 'keyword-save-btn')
                 .html('SAVE')
                 .css("color", 'rgb(0, 147, 190)');
             $('#keyword-search-links').html('');
@@ -54,7 +58,7 @@ $(document).ready(function(){
             }, 25);
         }
     });
-	$(".details").click(function () { //details tab clicked. load keywords
+	$(".details").one("click", function () { //details tab first click. load keywords
         getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 0);
     });
     function addDeleteListener(){ //must add the delete listener everytime a new keyword is added.

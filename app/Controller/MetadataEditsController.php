@@ -11,22 +11,34 @@ App::uses('MetaResourcesController', 'Controller');
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
-require_once(KORA_LIB . "General_Search.php");
+//require_once(KORA_LIB . "General_Search.php");
+require_once(KORA_LIB . "Advanced_Search.php");
 
-class MetadataEditsController extends MetaResourcesController {
+class MetadataEditsController extends AppController {
     public $name = 'MetadataEdits';
 
     public function beforeFilter() {
         parent::beforeFilter();
-        // if (!$this->request->is('ajax')) {
-            // return $this->redirect('/400');
-        // }
     }
 
-    //I'm calling this from addMetadataEdits() on the single resource page- on page load.
+    //I'm calling this from addMetadataEdits() in edit_metadata.js
     public function add() {
         if (!$this->request->is('post')) return $this->json(400);
         $this->request->data['user_id'] = $this->Session->read('Auth.User.id');
+
+        $pName = parent::convertKIDtoProjectName($this->request->data['resource_kid']);
+
+        if($this->request->data['scheme_id'] == 'project'){
+            $this->request->data['scheme_id'] = parent::getProjectSIDFromProjectName($pName);
+        }elseif($this->request->data['scheme_id'] == 'Seasons'){
+            $this->request->data['scheme_id'] = parent::getSeasonSIDFromProjectName($pName);
+        }elseif($this->request->data['scheme_id'] == 'excavations'){
+            $this->request->data['scheme_id'] = parent::getSurveySIDProjectName($pName);
+        }elseif($this->request->data['scheme_id'] == 'archival objects'){
+            $this->request->data['scheme_id'] = parent::getResourceSIDFromProjectName($pName);
+        }elseif($this->request->data['scheme_id'] == 'subjects'){
+            $this->request->data['scheme_id'] = parent::getSubjectSIDFromProjectName($pName);
+        }
         if ($this->MetadataEdit->save($this->request->data)){
             $response['aftersave'] = 'true';
             return $this->json(201);
@@ -34,6 +46,7 @@ class MetadataEditsController extends MetaResourcesController {
         else
             return $this->json(400);
     }
+
     private function _modelExists($modelName){
         $models = App::objects('model');
         return in_array($modelName,$models);
@@ -51,8 +64,7 @@ class MetadataEditsController extends MetaResourcesController {
     /**
      * Find all metadata edits associated with user id
      */
-    public function findAllByUser()
-    {
+    public function findAllByUser(){
         $model = $this->modelClass;
         $results = $this->$model->find('all', array(
             'conditions' => array('user_id' => $this->request->data['id'])
@@ -61,68 +73,46 @@ class MetadataEditsController extends MetaResourcesController {
     }
 
     //single resource frontend edit associators
-    public function getAllKidsByScheme()
-    {
-        //require_once(KORA_LIB . "Metadata_Associator_Search.php");
-        if( $this->request->data['scheme_name'] ) {
+    public function getAllKidsByScheme(){
+
+        $this->autoRender = false;
+        //todo- add pagination
+        if( $this->request->data['scheme_name'] && $this->request->data['meta_kid'] ) {
+
+            $pName = parent::convertKIDtoProjectName($this->request->data['meta_kid']);
             $sid = '';
             $fields = '';
             if( $this->request->data['scheme_name'] == 'Project Associator' ){
-                $sid = PROJECT_SID;
+                $sid = parent::getProjectSIDFromProjectName($pName);
                 $fields = array('Name','Country','Persistent Name','Modern Name');
 
             }elseif( $this->request->data['scheme_name'] == 'Season Associator' ){
-                $sid = SEASON_SID;
+                $sid = parent::getSeasonSIDFromProjectName($pName);
                 $fields = array('Title','Type','Director','Registrar');
 
             }elseif( $this->request->data['scheme_name'] == 'Excavation - Survey Associator' ){
-                $sid = SURVEY_SID;
+                $sid = parent::getSurveySIDProjectName($pName);
                 $fields = array('Name','Type');
 
             }elseif( $this->request->data['scheme_name'] == 'Resource Associator' ){
-                $sid = RESOURCE_SID;
+                $sid = parent::getResourceSIDFromProjectName($pName);
                 $fields = array('Resource Identifier','Type','Title');
 
             }elseif( $this->request->data['scheme_name'] == 'Pages Associator' ){
-                $sid = PAGES_SID;
+                $sid = parent::getPageSIDFromProjectName($pName);
                 $fields = array('Format','Type','Image Upload');
 
             }elseif( $this->request->data['scheme_name'] == 'Subject of Observation Associator' ){
-                $sid = SUBJECT_SID;
+                $sid = parent::getSubjectSIDFromProjectName($pName);
                 $fields = array('Resource Identifier','Artifact - Structure Location','Artifact - Structure Description');
             }
 
             //Get the Resources from Kora
-            $query = "kid,!=,1";
-            
-            //$temp_array['resource_query'] = $query;
-            /*
-            $user = "";
-            $pass = "";
-            $display = "json";
-            $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".
-                urlencode($query)."&fields=".urlencode($fields);
-            //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".$sid."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-            //$temp_array['resource_url'] = $url;
-            ///initialize post request to KORA API using curl
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-            //capture results and map to array
-            $scheme = json_decode(curl_exec($ch), true);
-            */
+            $pid = parent::getPIDFromProjectName($pName);
+            $kora = new Advanced_Search($pid, $sid, $fields, 0, 10);
+            $kora->add_clause("kid", "!=", "1");
 
-            $query_array = explode(",", $query);
-            $kora = new General_Search($sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-            $scheme = json_decode($kora->return_json(), true);
-
-            //TODO get the search working.
-            //$kora = new Metadata_Associator_Search($sid);
-            //$results['kora'] = $kora;
-            //$kora->print_json();
-
-            //$this->json(200);
-            $this->json(200, $scheme);
+            return $kora->search();
         }
     }
 }

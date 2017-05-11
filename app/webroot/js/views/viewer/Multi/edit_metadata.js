@@ -1,48 +1,17 @@
 $( document ).ready(function() {
 
-    /*
-            Metadata edits
-     ****************************************************/
-
-    //addMetadataEdits();
-    //console.log($session);
     function addMetadataEdits() {
-        //console.log('add metadata');
-        //console.log(meta_scheme_name);
-        switch (meta_scheme_name) {
-            case "project":
-                meta_scheme_id = PROJECT_SID;
-                //meta_resource_kid = "<?php  ?> ";
-                break;
-            case "Seasons":
-                meta_scheme_id = SEASON_SID;
-                //meta_resource_kid = "<?php  ?> ";
-                break;
-            case "excavations":
-                meta_scheme_id = SURVEY_SID;
-                //finds the kid somewhere else.
-                break;
-            case "archival objects":
-                meta_scheme_id = RESOURCE_SID;
-                //meta_resource_kid = resourceKid;
-                break;
-            case "subjects":
-                meta_scheme_id = SUBJECT_SID;
-                //finds the kid somewhere else
-                break;
-        }
-        //console.log(meta_scheme_id);
+
         $.ajax({
             url: arcs.baseURL + "metadataedits/add",
             type: "post",
             data: {
                 resource_kid: resource_kid,
                 resource_name: resource_name,
-                scheme_id: meta_scheme_id,
-                //scheme_name: meta_scheme_name, //no longer used
+                scheme_id: meta_scheme_name,
                 control_type: meta_control_type,
                 field_name: meta_field_name,
-                user_id: "idk",   //this is set somewhere else
+                user_id: "user_not_set",   //this is set in the controller
                 value_before: meta_value_before,
                 new_value: meta_new_value,
                 approved: 0,
@@ -51,8 +20,8 @@ $( document ).ready(function() {
                 metadata_kid: meta_resource_kid
             },
             success: function (data) {
-                //console.log("MetadataEditsHere");
-                //console.log(data);
+                console.log(data);
+                return;
                 window.location.reload();
             }
         })
@@ -75,7 +44,6 @@ $( document ).ready(function() {
     var associator_selected = new Array();
 
     $(".metadataEdit").click(function () {
-        //console.log("metadataEdit click");
         $(this).each(
             function () {
                 // if the td elements contain any input tag
@@ -321,9 +289,11 @@ $( document ).ready(function() {
                             url: arcs.baseURL + "metadataedits/getAllKidsByScheme",
                             type: "POST",
                             data: {
-                                scheme_name: meta_field_name
+                                scheme_name: meta_field_name,
+                                meta_kid: meta_resource_kid
                             },
                             success: function (data) {
+                                data = JSON.parse(data);
                                 associator_full_array = new Array();
                                 for (var key in data) {
                                     if (data.hasOwnProperty(key)) {
@@ -333,7 +303,7 @@ $( document ).ready(function() {
                                         associator_full_array.push(obj);
                                     }
                                 }
-                                //console.log(associator_full_array);
+                                console.log(associator_full_array);
                                 populateAssociatorCheckboxes();
                             }
                         });
@@ -372,7 +342,7 @@ $( document ).ready(function() {
         } else {
             $('#associatorSearchObjects').html('');
             $(".associatorModalBackground").hide();
-            $(".save-btn").removeClass("save-btn").text("EDIT").addClass("edit-btn").css("color", '');
+            $(".metadata-save-btn").removeClass("metadata-save-btn").text("EDIT").addClass("metadata-edit-btn").css("color", '');
             metadataIsSelected = 0;
             editBtnClick = 0;
         }
@@ -427,26 +397,25 @@ $( document ).ready(function() {
 
     }
 
-    $(document).on("click", ".edit-btn", function () {
-        //console.log("edit-btn clicked");
+    $(document).on("click", ".metadata-edit-btn", function () {
         $('.metadataEdit').css('cursor', 'default');
         if (editBtnClick != 1) {
             $(this).text("SAVE");
             $(this).css({'color': '#0093be'});
-            $(this).addClass("save-btn").removeClass("edit-btn");
+            $(this).addClass("metadata-save-btn").removeClass("metadata-edit-btn");
         }
         editBtnClick = 1;
         $(this).parent().next().find('.metadataEdit').css('cursor', 'pointer');
     });
 
 
-    $(".level-tab span .save-btn").click(function () {
+    $(".level-tab span .metadata-save-btn").click(function () {
         //console.log("level tab save btn click");
     });
 
     $(".soo-click").click(function () {
         //console.log("sso click change");
-        $(".save-btn").removeClass("save-btn").text("EDIT").addClass("edit-btn").css("color", '');
+        $(".metadata-save-btn").removeClass("metadata-save-btn").text("EDIT").addClass("metadata-edit-btn").css("color", '');
         var id = $("#meta_textarea").parent().children("div").eq(0).text();
         var text = $("#meta_textarea").text();
         if (meta_options == '') {
@@ -468,14 +437,12 @@ $( document ).ready(function() {
     });
 
     $(".level-tab").click(function (e) {
-        //console.log("clicked thingy");
-        //console.log(e);
         $('.metadataEdit').css('cursor', 'default');
-        if (e.target.getAttribute("class") == 'save-btn') {
-            //console.log("level tab save btn click");
+        if (e.target.getAttribute("class") == 'metadata-save-btn') {
             e.stopPropagation();
+            console.log('in save btn: ' + metadataIsSelected);
             if (metadataIsSelected == 1) {
-                $(".save-btn").removeClass("save-btn");
+                $(".metadata-save-btn").removeClass("metadata-save-btn");
                 meta_new_value = '';
                 if (meta_control_type == 'text') {
                     meta_new_value = $("#meta_textarea").val();
@@ -533,7 +500,7 @@ $( document ).ready(function() {
             //console.log("already expanded");
             return;
         }
-        $(".save-btn").removeClass("save-btn").text("EDIT").addClass("edit-btn").css("color", '');
+        $(".metadata-save-btn").removeClass("metadata-save-btn").text("EDIT").addClass("metadata-edit-btn").css("color", '');
         var id = $("#meta_textarea").parent().children("div").eq(0).text();
         var text = $("#meta_textarea").text();
         if (meta_options == '') {
