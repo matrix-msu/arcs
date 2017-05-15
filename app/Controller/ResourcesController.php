@@ -53,10 +53,10 @@ class ResourcesController extends AppController {
      * @param string $userName  is the username tied to the search
      * @param array  $resources is a reference to the results returned from a kora search
      *
-     */ 
+     */
      public static function filterByPermission($userName, &$resources) {
-        
-        
+
+
         if (empty($userName)) {
             static::lockResourcesByPermission(Permissions::R_Member, $resources);
             static::lockResourcesByPermission(Permissions::R_Special, $resources);
@@ -94,8 +94,8 @@ class ResourcesController extends AppController {
                        )
                             static::lockResource($kid,$resources);
                 }
-            }    
-        }  
+            }
+        }
     }
     /**
      * Checks if a username is in the special field
@@ -103,7 +103,7 @@ class ResourcesController extends AppController {
      * @param string $specialFieldString  is the string from the special user field from kora
      * @param string $username            is the username to look for
      *
-     */ 
+     */
     public static function isSpecial($specialFieldString, $username) {
         $users = explode('|',$specialFieldString);
         foreach($users as $user){
@@ -120,7 +120,7 @@ class ResourcesController extends AppController {
      * @param string $kid        kid you want to lock
      * @param array  $resources  kora results returned to lock on. (pass by reference)
      *
-     */ 
+     */
     public static function lockResource($kid, &$resources) {
         if (isset($resources[$kid])) {
             $resources[$kid] = array(
@@ -139,13 +139,13 @@ class ResourcesController extends AppController {
      * @param string $permission permission you want to lock
      * @param array  $resources  kora results returned to lock on. (modifies the original array / pass by reference)
      *
-     */ 
+     */
     public static function lockResourcesByPermission($permission, &$resources){
         foreach($resources as $kid => $resource){
             if (isset($resource['Permissions']) && $resource['Permissions'] === $permission) {
-                static::lockResource($kid, $resources); 
+                static::lockResource($kid, $resources);
             }
-        } 
+        }
     }
     /**
      * Create a resource.
@@ -820,8 +820,7 @@ class ResourcesController extends AppController {
 
     //view muitiple resources in a viewer
     public function multi_viewer($id=''){
-		
-	
+
         $resources = array();
         $projectsArray = array();
         $seasons = array();
@@ -839,29 +838,33 @@ class ResourcesController extends AppController {
             if($id == '' ){
                 throw new NotFoundException();
             }
+            if(isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
+              $pageIndex = $this->request->query['pageSet'];
+              $this->set("pageSet", $pageIndex);
+            }
             $resources_array = array( $id );
         }else{
             //Not a post or get method
             throw new NotFoundException();
         }
-        
+
         $username = NULL;
         $usersC = new UsersController();
         if ($user = $usersC->getUser($this->Auth)) {
             $username = $user['User']['username'];
-        }    
+        }
 
         foreach($resources_array as $resource){
 
             //get resource information
             $info_array = $this->getResource($resource);
             //$identifier = $info_array[$resource]['Resource Identifier'];
-            
+
             static::filterByPermission($username, $info_array);
             $permission = array_values($info_array)[0];
             //skip resources with insufficent permissions
             if(isset($permission['Locked']) && (bool)$permission['Locked']) {
-                continue;   
+                continue;
             }
 
             if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
@@ -909,7 +912,7 @@ class ResourcesController extends AppController {
 
         }
         if (empty($resources)) {
-            $this->set("access", false); 
+            $this->set("access", false);
         }
 		if( !isset($this->request->query['ajax'] )){
 			$metadataedits = $this->getEditMetadata();
@@ -923,7 +926,7 @@ class ResourcesController extends AppController {
 			$this->set("subjects", $subjects);
 			$this->set("metadataEdits", $metadataedits);
 		}else{
-			echo json_encode([$projectsArray, 
+			echo json_encode([$projectsArray,
 								$seasons,
 								$excavations,
 								$resources,

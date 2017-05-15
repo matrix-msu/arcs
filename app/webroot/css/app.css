@@ -7833,7 +7833,6 @@ input.indexSearchBox {
 }
 #resource_permission_model {
   background: rgba(0, 0, 0, 0.25);
-  opacity: 0;
 }
 #resource_permission_model {
   top: 0;
@@ -7846,8 +7845,7 @@ input.indexSearchBox {
   bottom: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.8);
-  z-index: 99999;
-  pointer-events: none;
+  z-index: 99998;
 }
 #resource_permission_model .permission-content {
   width: 500px;
@@ -7921,6 +7919,7 @@ input.indexSearchBox {
 }
 .permissionModal .permission-modal-responseButtons p .login {
   color: #0093be;
+  cursor: pointer;
 }
 @media screen and (max-width: 740px) {
   #resource_permission_model .permission-content {
@@ -10435,6 +10434,7 @@ input[type=range]:focus::-ms-fill-upper {
   position: relative;
   display: inline-block;
   font-size: 10px;
+  cursor: pointer;
 }
 .transcript_display {
   text-transform: none;
