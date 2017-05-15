@@ -212,7 +212,7 @@ $(document).ready(function () {
         event.preventDefault();
         SubmitSearch(0);
 
-        
+
     });
 
     // Search pagination
@@ -693,25 +693,25 @@ $(document).ready(function () {
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
+                    $("." + value.id).find(".annotateLabel").click(function() {
+                      $.ajax({
+                          url: arcs.baseURL + "api/annotations/" + value.id + ".json",
+                          type: "POST",
+                          data: {
+                              x1: null,
+                              x2: null,
+                              y1: null,
+                              y2: null
+                          },
+                          success: function () {
+                              DrawBoxes(kid);
+                              GetDetails();
+                          }
+                      });
+                    })
                     $("." + value.id).click(function () {
                         if (!value.x1) {
                             Draw(false, value.id);
-                        }
-                        else {
-                            $.ajax({
-                                url: arcs.baseURL + "api/annotations/" + value.id + ".json",
-                                type: "POST",
-                                data: {
-                                    x1: null,
-                                    x2: null,
-                                    y1: null,
-                                    y2: null
-                                },
-                                success: function () {
-                                    DrawBoxes(kid);
-                                    GetDetails();
-                                }
-                            });
                         }
                     });
 
@@ -768,18 +768,10 @@ $(document).ready(function () {
                 });
 
                 //Mouse over annotation
-                $(".relationName").unbind().mouseenter(function () {
+                $(".relationName").unbind().click(function () {
                     mouseOn = true;
                     ShowDetailsAnnotation($(this));
                 })
-                    .mouseleave(function () {
-                        mouseOn = false;
-                        $(".annotationPopup").remove();
-                    })
-                    // .dblclick(function () {
-                    //     var kid = $(this).find(".annotationPopup").data("kid")
-                    //     window.location.href = arcs.baseURL + "resource/" + kid
-                    // })
             }
         })
 
@@ -797,8 +789,6 @@ $(document).ready(function () {
                 $(".annotationPopup").remove();
                 if (mouseOn) {
 
-                    t.append("<div class='annotationPopup detailsPopup' data-kid=\""+data.relation_resource_kid+"\"><img class='annotationImage'/><div class='annotationData'></div></div>");
-                    $(".annotationPopup").css("left", t.width() + 30);
                     if (data.relation_page_kid != "") {
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
                         var localPid = paramKid.split('-')[0];
@@ -815,13 +805,9 @@ $(document).ready(function () {
                                 sid: 'page'
                             },
                             success: function (pageData) {
-                                var page = JSON.parse(pageData)[paramKid];
-                                var image = KORA_FILES_URI + pid + '/' + page_sid + '/' + page['Image Upload'].localName;
-                                $(".annotationImage").attr('src', image);
-                                $(".annotationData").append("<p>Relation</p>");
-                                $(".annotationData").append("<p>Name: " + data.relation_resource_name + "</p>");
-                                $(".annotationData").append("<p>Type: " + page.Type + "</p>");
-                                $(".annotationData").append("<p>Scan #: " + page["Scan Number"] + "</p>");
+                              var data = JSON.parse(pageData)[paramKid]
+                              var associator = data["Resource Associator"][0] || "INVALID_ASSOCIATOR"
+                              window.location.href = arcs.baseURL + "resource/" + associator + "?pageSet=" + data["kid"]
                             }
                         });
                     }
@@ -852,9 +838,6 @@ $(document).ready(function () {
                     if (v.x1) {
                         $(".canvas").append('<div class="gen_box"  data-kid="'+pageKid+'" id="' + v.id + '"></div>');
                         gen_box = $('#' + v.id);
-                        gen_box.unbind().dblclick(function (e) {
-                            ShowAnnotation($(this).attr('id'),true);
-                        })
                         //add css to generated div and make it resizable & draggable
                         $(gen_box).css({
                             'width': $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,

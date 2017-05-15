@@ -1,54 +1,56 @@
-<div class="tab-pane" id="achievements-tab">        		
-<?php if(empty($user_info['Achievement'])): ?>
-    <h3>This user hasn't had any achievements yet</h3>
-<?php else: ?>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>For</th>
-                <th>Content <i class="icon icon-question-sign" rel="tooltip" title="This will either be a link to another resource, a transcription of a section of a resource, or a link to a page outside ARCS "</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody><?php foreach($user_info['Achievement'] as $a): ?>
-              <tr>
-              <!-- TO DO: CORRECT THIS TO ACTUALLY MATCH WHAT AN ACHIEVEMENT CORRESPONDS TO -->
-                  <td>
-                    <i class="<?php if(isset($a['relation']))
-                                      echo 'icon-retweet" rel="tooltip" title="Relation';
-                                    else if(isset($a['transcript']))
-                                      echo 'icon-align-left" rel="tooltip" title="Transcript';
-                                    else if(isset($a['url']))
-                                      echo 'icon-share" rel="tooltip" title="Outside URL';
-                                    else
-                                      echo 'icon-question-sign" rel="tooltip" title="Type Unknown" target="_blank';
-                              ?>"></i>
-                  </td>
-                  
-                  <td><?php echo $this->Html->link($a['resource_id'], 
-                      '/resource/' . $a['resource_id']); ?></td>
-                  <td>
-                    <?php if(isset($a['relation'])) : ?>
-                          <?php echo $this->Html->link($a['relation'], 
-                      '/resource/' . $a['relation']); ?>
-                           
-                    <?php elseif(isset($a['transcript'])) : ?>
-                        
-                            <p><?php echo $a['transcript']; ?></p>
-                            
-                        <?php elseif(isset($a['url'])) : ?>
-                        
-                          <a href="<?php echo $a['url']; ?>"
-                            ><?php echo $a['url']; ?></a>
-                           
-                    <?php endif; ?>
-                    
-                  </td>
-                  
-                  <!-- date --><td><?php echo $a['created']; ?></td>
-              </tr>
-          <?php endforeach; ?></tbody>
-    </table>
-<?php endif ?>
+<style media="screen">
+.badges ul {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+.badges li {
+  width: 200px;
+  height: 200px;
+  display: inline-table;
+  position: relative;
+  margin: 26px;
+}
+.badges .a-value{
+  position: absolute;
+  font-size: 40px;
+  width: 56px;
+  height: 56px;
+  text-align: center;
+  top: 16px;
+  left: 16px;
+  color: white;
+}
+.a-info{
+  text-align: center;
+  margin-top: 20px;
+}
+.a-name{
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.a-description {
+  font-size: 14px;
+}
+</style>
+<div class="tab-pane" id="achievements-tab">
+  <article class="badges">
+    <ul>
+      <?php
+      for ($i=0; $i < (int)$user_info['commentsInitiatedBadges']; $i++) {
+        echo $this->Achievement->getAchievement(Achievement::InitiatedDiscustion, 10);
+      }
+      for ($i=0; $i < (int)$user_info['commentsRepliedBadges']; $i++) {
+        echo $this->Achievement->getAchievement(Achievement::DiscussionResponse, 10);
+      }
+      for ($i=0; $i < (int)$user_info['annotationsInBadges']; $i++) {
+        echo $this->Achievement->getAchievement(Achievement::AnnotationInSystem, 10);
+      }
+      for ($i=0; $i < (int)$user_info['annotationsOutBadges']; $i++) {
+        echo $this->Achievement->getAchievement(Achievement::AnnotationOutSystem, 10);
+      }
+      ?>
+    </ul>
+  </article>
+
 </div><!-- #achievements-tab -->

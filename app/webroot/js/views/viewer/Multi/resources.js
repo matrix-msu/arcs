@@ -185,13 +185,23 @@ $(window).resize(function() {
 });
 $(document).ready(function() {
     var permModal = $("#request_permission_model")
-    if (permModal.length && permModal.css("opacity") == 1) {
-        permModal.find(".permission-modal-responseButtons")
-            .find("button")
-            .first()
-            .remove()
-        permModal.find(".modal-exit").remove()
+    var resourcePermModal = $("#resource_permission_model")
+
+    if (permModal.length && permModal.css("opacity") == 1 ||
+        resourcePermModal.length  && resourcePermModal.css("opacity") == 1) {
+      var modal
+      if (permModal.length) {
+        modal = permModal
+      } else {
+        modal = resourcePermModal
+      }
+      modal.find(".permission-modal-responseButtons")
+          .find("button")
+          .first()
+          .remove()
+      modal.find(".modal-exit").remove()
     }
+
     $(".button-right").click(function(e) {
 
         var element = $(this).parent().find("#other-resources-container");
@@ -239,12 +249,12 @@ $(document).ready(function() {
         if ($(this).parent().length && $(this).parent().attr("class") == "other-page") {
             return;
         }
-        
+
         var id = $(this).find("img").attr("id");
         id = id.replace("identifier-", "");
         CM_R_ID = id //sets the global Resource ID
         getComments()
-            
+
 
         //initialize scroll
         $(_resource.pageSlider).parent().scrollLeft(0);
