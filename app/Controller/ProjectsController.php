@@ -172,8 +172,16 @@ class ProjectsController extends AppController {
         if ($user = $usersC->getUser($this->Auth)) {
             $username = $user['User']['username'];
         }
+        // convert the array to resemble a kora response.
+        $tmp_array = array();
+        foreach ($resources as $resource) {
+          $tmp_array[$resource["kid"]] = $resource;
+        }
+        $resources = $tmp_array;
         // filter resources on user
+        // filterByPermission ONLY TAKES A KORA RESPONSE AS PARAM 2
         ResourcesController::filterByPermission($username, $resources);
+        //echo json_encode($resources);die;
 
         $this->set('resources', $resources);
 

@@ -84,15 +84,16 @@ class ResourcesController extends AppController {
                 $kora = new Advanced_Search($pid, $sid, $fields);
                 $kora->add_clause("kid", "IN", $KIDs);
                 $res = json_decode($kora->search(), true);
-                foreach($res as $resource) {
+                foreach($res as $kid => $resource) {
                     // Permissions is Special User, but the user is not on
                     // the special user list
                     if (
                         isset($resource['Permissions']) &&
                         $resource['Permissions'] === Permissions::R_Special &&
                         !static::isSpecial($resource['Special User'], $userName)
-                       )
-                            static::lockResource($kid,$resources);
+                      ) {
+                        static::lockResource($kid, $resources);
+                      }
                 }
             }
         }
