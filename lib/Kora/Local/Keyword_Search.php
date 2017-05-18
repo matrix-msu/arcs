@@ -24,7 +24,7 @@ namespace Lib\Kora;
 
 require_once "Kora.php";
 require_once "Resource.php";
-
+require_once("Advanced_Search.php");
 //require_once "../../app/Controller/SearchController.php";
 
 use Lib\Kora;
@@ -34,6 +34,7 @@ use Lib\KORA_Clause;
 use arcs_e\ArcsException;
 use \App;
 use \Exception;
+use \Advanced_Search;
 /**
  * Keyword search performs searches by keyword on the kora database
  *
@@ -153,11 +154,16 @@ class Keyword_Search extends Kora
         //do the keyword search
         $resourcesFromResource = parent::search();
 
-        $this->formulatedResult = array_merge($resourcesFromResource, $resourcesFromSOO);
+        $this->formulatedResult = $this->koraSort(
+            array_merge($resourcesFromResource, $resourcesFromSOO),
+            "Resource Identifier",
+            $pid,
+            $rid
+        );
 
         $extra_data = array(
-        "Return_Count_SOO"=>count($resourcesFromSOO),
-        "Return_Count_Resource"=>count($resourcesFromResource),
+            "Return_Count_SOO"=>count($resourcesFromSOO),
+            "Return_Count_Resource"=>count($resourcesFromResource),
         );
 
         // traverse the database to include excavation,
@@ -180,6 +186,39 @@ class Keyword_Search extends Kora
 
         //format and prepare for a json response
         $this->format_results($time, $total_mem, $filters, $indicators, $extra_data);
+
+    }
+    private function koraSort($result, $field, $pid, $sid) {
+        $result_keys = array_keys($result);
+        if (empty($result_keys)) {
+            $result_keys = array("empty");
+        }
+
+        $sort = array(
+            array(
+                'field' => $field,
+                'direction' => SORT_ASC
+            )
+        );
+        $fields = array(
+            "Excavation - Survey Associator",
+            "Title",
+            "Type",
+            "Resource Identifier",
+            "Accession Number",
+            "Creator",
+            "Creator2",
+            "systimestamp",
+            "recordowner",
+            "Earliest Date",
+            "Latest Date",
+            "Permissions",
+         );
+
+        $kora = new Advanced_Search($pid, $sid, $fields,0,0,$sort);
+        $kora->add_clause("kid", "IN", $result_keys);
+        $kora->search();
+        return $kora->getResultsAsArray();
 
     }
     /**
