@@ -29,6 +29,7 @@ class MetaResourcesController extends AppController
         }
     }
 
+
     /**
      * Add a meta-resource
      */
@@ -70,8 +71,9 @@ class MetaResourcesController extends AppController
         if (!$this->request->data)
             throw new BadRequestException();
         // return $this->json(400);
-        if (!$this->$model->add($this->request->data))
+        if (!$this->$model->save($this->request->data))
             throw new InternalErrorException();
+
         // return $this->json(500);
         $this->json(200, $this->$model->findById($this->$model->id));
     }
@@ -94,7 +96,7 @@ class MetaResourcesController extends AppController
                 )
             )
         ));
-        //if (!$result) throw new NotFoundException(); 
+        //if (!$result) throw new NotFoundException();
         $this->json(200, $result);
     }
 
@@ -117,13 +119,18 @@ class MetaResourcesController extends AppController
      */
     public function delete($id)
     {
-        //if (!$this->request->is('delete')) throw new MethodNotAllowedException();
+
+        if (!$this->request->is('delete')) throw new MethodNotAllowedException();
         $model = $this->modelClass;
         $this->$model->flatten = true;
         $result = $this->$model->findById($id);
+
+        $related_id = $result['relation_id'];
+        //echo json_encode($result);
+
         if (!$result) $this->json(404);
         else if (!($this->Access->isSrResearcher() || $this->Access->isCreator($result) || $this->Auth->user('isAdmin') != 1)) $this->json(403);
-        else if (!$this->$model->delete($id)) $this->json(500);
+        else if (!$this->$model->delete($id) || !$this->$model->delete($related_id)) $this->json(500);
         else $this->json(204);
     }
 }
