@@ -1,26 +1,96 @@
 // flag
-$(function () {
-    $("#flag").click(function () {
-        $(".modalBackground").show();
-    });
+$( document ).ready(function() {
 
     var metadata_info = {};
     metadata_info.field = '';
     metadata_info.target = '';
-    $(".icon-meta-flag").click(function () {
-        $(".modalBackground").show();
-        metadata_info.field = $(this).next().html();
-        metadata_info.target = 'Metadata';
+    metadata_info.metadata_kid = '';
+    var detailsTarget = '';
+    var currentId = '';
+
+    //click on an annotation flag
+    $(document).on('click', ".flagAnnotation", function () {
+        var el = $(this);
+        el.find('img').attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
+            .removeClass('icon-meta-flag')
+            .addClass('icon-meta-flag-blue')
+            .addClass('icon-meta-flag-blue-annotation');
+        $(".flagModalBackground").show();
+        var imgEl = el.find('img');
+        if( imgEl.hasClass('annotationOutgoing') ){
+            detailsTarget = 'Outgoing Relation';
+        }else if( imgEl.hasClass('annotationIncoming') ){
+            detailsTarget = 'Incoming Relation';
+        }else if( imgEl.hasClass('annotationUrl') ){
+            detailsTarget = 'URL';
+        }
+        $('#flagAnnotation_id').val($(this).parent().attr("id"));
+        currentId = $(this).find('.flagAnnotationId').attr('data-annid');
     });
 
-    $(".modalClose").click(function () {
-        $(".modalBackground").hide();
+    //click on a metadata flag
+    $(".icon-meta-flag").click(function () {
+        var flag = $(this);
+        flag.css('background-image', 'url('+arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg)')
+            .removeClass('icon-meta-flag').addClass('icon-meta-flag-blue');
+        $(".flagModalBackground").show();
+        metadata_info.field = flag.next().attr('id');
+        metadata_info.target = 'Metadata';
+        metadata_info.metadata_kid = flag.closest('table').attr('data-kid');
+        return false; //you need this to prevent a metadata edit click
+    });
+
+    //click on a details-tab flag
+    $(document).on('click', ".flagTranscript", function () {
+        $(".flagModalBackground").show();
+        var el = $(this);
+        el.attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
+            .removeClass('icon-meta-flag').addClass('icon-meta-flag-blue');
+        if( el.hasClass('details-transcript') ){ //is transcript
+            detailsTarget = 'Transcript';
+            currentId = $(this).closest('.transcript_display').attr("id");
+            $('#flagAnnotation_id').val(currentId);
+
+        }else if( el.hasClass('details-outgoing') ){ //is outgoing annotation
+            detailsTarget = 'Outgoing Relation';
+            currentId = $(this).closest('.annotation_display').attr("id");
+            $('#flagAnnotation_id').val(currentId);
+
+        }else if( el.hasClass('details-incoming') ){ //is incoming annotation
+            detailsTarget = 'Incoming Relation';
+            currentId = $(this).closest('.annotation_display').attr("id");
+            $('#flagAnnotation_id').val(currentId);
+
+        }else if( el.hasClass('details-url') ){ //is url annotation
+            detailsTarget = 'URL';
+            currentId = $(this).closest('.annotation_display').attr("id");
+            $('#flagAnnotation_id').val(currentId);
+
+        }
+
+    });
+
+    //close the flags modal
+    $(".flagModalClose").click(function () {
+        if( detailsTarget != '' ) { //it was a details tab or annotation flag, so apply image this way
+            $('.icon-meta-flag-blue').removeClass('icon-meta-flag-blue')
+                .addClass('icon-meta-flag')
+                .attr('src', arcs.baseURL + 'app/webroot/img/FlagTooltip.svg');
+        }else { //metadata flag
+            $('.icon-meta-flag-blue').removeClass('icon-meta-flag-blue')
+                .addClass('icon-meta-flag')
+                .css('background-image', 'url(' + arcs.baseURL + 'app/webroot/img/FlagTooltip.svg)');
+        }
+        $(".flagModalBackground").hide();
         $(".flagSuccess").hide();
-        $("#flagTarget").hide();
-        $("#flagReason").val('');
-        $("#flagExplanation").val('');
-        $("#flagTarget").val('');
+        $("#flagReason").val('').show();
+        $("#flagExplanation").val('').show();
+        $("#flagTarget").val('').hide();
         $("#flagAnnotation_id").val('');
+        $(".flagSubmit").show();
+        metadata_info.field = '';
+        metadata_info.target = '';
+        detailsTarget = '';
     });
 
     $("#flagForm").submit(function (event) {
@@ -49,13 +119,8 @@ $(function () {
         }
 
         if ($("#flagReason").val() != '' && $("#flagExplanation").val() != '' && (($("#flagTarget").val() != '' && $("#flagTarget").is(":visible")) || !$("#flagTarget").is(":visible"))) {
-            var pageKid = $("#PageImage").attr('src');
-            pageKid = pageKid.split('/');
-            pageKid = pageKid.pop();
-            pageKid = pageKid.split('-');
-            pageKid = pageKid[0]+'-'+pageKid[1]+'-'+pageKid[2];
-            var resource_kid = $('.resource-container-level').find('.selectedResource').prev().attr('id');
-            resource_kid = resource_kid.replace('identifier-', '');
+            var pageKid = $(".selectedCurrentPage").find('img').attr('id');
+            var resource_kid = $(".selectedCurrentPage").attr('id');
             var resource_name = RESOURCES[resource_kid]['Resource Identifier'];
             var formdata = {
                 page_kid: pageKid,
@@ -67,26 +132,48 @@ $(function () {
                 explanation: $("#flagExplanation").val(),
                 status: "pending"
             };
-            if( metadata_info.field != '' ){
-                formdata.metadata_field = metadata_info.field;
-                metadata_info.field = '';
-            }
-            if( metadata_info.target != '' ){
+            formdata.metadata_field = metadata_info.field;
+            formdata.metadata_kid = metadata_info.metadata_kid;
+            if( metadata_info.target != '' ) {
                 formdata.annotation_target = metadata_info.target;
-                metadata_info.target = '';
+            }else if( detailsTarget != '' ) {
+                formdata.annotation_target = detailsTarget;
             }
 
+            //turn the flags red before the submit
+            if(  metadata_info.target != '' ){ //metadata flag turns red
+                $('.icon-meta-flag-blue')
+                    .removeClass('icon-meta-flag-blue')
+                    .addClass('icon-meta-flag-red')
+                    .css('background-image', 'url('+arcs.baseURL+'app/webroot/img/flagToolTip_Red.svg)')
+                    .unbind();
+            }else{ //is a annotation or details tab flag
+                annotationFlags.push(currentId);
+                $('.flagAnnotationId').each(function(){
+                    if( $(this).attr('data-annid') == currentId ){
+                        $(this).attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Red.svg')
+                            .removeClass('icon-meta-flag-blue')
+                            .addClass('icon-meta-flag-red');
+                    }
+                });
+            }
+            metadata_info.field = '';
+            metadata_info.metadata_kid = '';
+            metadata_info.target = '';
+
             $.ajax({
-                url: arcs.baseURL + "resources/flags/add",
+                url: arcs.baseURL + "flags/add",
                 type: "POST",
                 data: formdata,
                 statusCode: {
                     201: function () {
-                        $("#flagReason").val('');
-                        $("#flagExplanation").val('');
-                        $("#flagTarget").val('');
-                        $(".flagSuccess").show();
+                        $("#flagReason").val('').hide();
+                        $("#flagExplanation").val('').hide();
+                        $("#flagTarget").val('').hide();
                         $("#flagAnnotation_id").val('');
+                        $(".flagSubmit").hide();
+                        $(".flagSuccess").show();
+
                     }
                 }
 

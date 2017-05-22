@@ -295,27 +295,56 @@
     </div>
 
     <div class="associatorModalBackground">
-            <div class="collectionWrap" style="margin-top:9em;">
+            <div class="collectionWrap" id="associatorSelectModal" style="margin-top:9em;">
                 <div id="collectionModal" style="width:35em;">
                     <div class="collectionModalHeader">
                         <p id="associatorTitle" style='display:inline-block'>Add Associators</p>
-                        <img src="../app/webroot/assets/img/Close.svg" class="modalCloseAssociator"/>
+                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="modalCloseAssociatorSelect" class="modalCloseAssociator"/>
                     </div>
                     <hr>
-                    <!-- p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
-                    <p class="collectionTab collectionTabNew">Add to a new collection</p -->
                     <div class="collectionSearchContainer">
-                        <form id="associatorSearchBarForm" onsubmit="associatorSearch(); return false;">
-                            <input type="text" class="associatorSearchBar first" placeholder="Search for records by exact KID values">
+                        <form id="associatorSearchBarForm" onsubmit="event.preventDefault();">
+                            <input id="associatorSearchInput" type="text" class="associatorSearchBar first" placeholder="Search for records by exact KID values">
                         </form>
                         <div id="associatorSearchForm">
                             <div id="associatorSearchObjects">
                             </div>
-                            <button class="associatorSearchSubmit">SAVE ASSOCIATORS</button>
+                            <div class="associator_pagination" style="display: block;cursor:default;">
+                            	<span class="associator_begin" style="display: inline;cursor:pointer;">
+                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg">
+                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:10px;">
+                                </span>
+                            	<span class="associator_prev" style="display: inline;cursor:pointer;">
+                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:3px;">
+                                </span>
+                            	<span class="associator_numbers">
+
+                            	</span>
+                            	<span class="associator_next" style="display: inline;cursor:pointer;">
+                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:3px;">
+                            	</span>
+                            	<span class="associator_end" style="display: inline;cursor:pointer;">
+                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:10px;">
+                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg">
+                            	</span>
+                            </div>
+                            <button class="associatorSearchSubmit" id="associatorSearchSubmitFirst">SAVE ASSOCIATORS</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="collectionWrap" id="associatorSubmitConfirm" style="margin-top:9em;display:none;">
+                <div id="collectionModal" style="width:35em;">
+                    <div class="collectionModalHeader">
+                        <p id="associatorTitle" style='display:inline-block'></p>
+                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="closeAssociatorConfirm" class="modalCloseAssociator"/>
+                    </div>
+                    <hr>
+                    <p id="associatorTitle" style='text-align: center;vertical-align: middle;'>Are you sure you want to save the following associators?</p>
+                    <p id="associatorsToSubmit" style="text-align: center;vertical-align: middle;"></p>
+                    <button class="associatorSearchSubmit" id="associatorSearchSubmitConfirm">CONFIRM SUBMISSION</button>
+                </div>
+             </div>
         </div>
 
     <div id="viewer-left">

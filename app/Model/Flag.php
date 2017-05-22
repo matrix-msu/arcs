@@ -9,6 +9,20 @@
  */
 class Flag extends AppModel {
     public $name = 'Flag';
-    public $belongsTo = array('User', 'Resource');
-    public $whitelist = array('resource_id', 'resource_kid', 'page_kid', 'resource_name', 'user_id', 'user_name', 'user_email', 'user_username', 'reason', 'explanation', 'status', "annotation_id", "metadata_kid", "metadata_field", "annotation_target");
+    //public $belongsTo = array('User', 'Resource');
+    public $whitelist = array('resource_id',
+                                'resource_kid',
+                                'page_kid',
+                                'resource_name',
+                                'user_id',
+                                'user_name',
+                                'user_email',
+                                'user_username',
+                                'reason',
+                                'explanation',
+                                'status',
+                                "annotation_id",
+                                "metadata_kid",
+                                "metadata_field",
+                                "annotation_target");
 }

@@ -76,7 +76,6 @@ class MetadataEditsController extends AppController {
     public function getAllKidsByScheme(){
 
         $this->autoRender = false;
-        //todo- add pagination
         if( $this->request->data['scheme_name'] && $this->request->data['meta_kid'] ) {
 
             $pName = parent::convertKIDtoProjectName($this->request->data['meta_kid']);
@@ -109,10 +108,13 @@ class MetadataEditsController extends AppController {
 
             //Get the Resources from Kora
             $pid = parent::getPIDFromProjectName($pName);
-            $kora = new Advanced_Search($pid, $sid, $fields, 0, 10);
+            $kora = new Advanced_Search($pid, $sid, $fields, 0);
             $kora->add_clause("kid", "!=", "1");
 
-            return $kora->search();
+            //do this nonsense so that php will return an array of objects and
+            //not an object of objects.
+            return json_encode(array_values(json_decode($kora->search(), True)));
         }
+        return false;
     }
 }

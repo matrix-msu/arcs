@@ -455,7 +455,7 @@ input[type=range]:focus::-ms-fill-upper {
 					}
 
 					tr {
-
+						cursor: default;
 						td {
 							padding: 12px;
 							text-transform: none;
@@ -483,6 +483,32 @@ input[type=range]:focus::-ms-fill-upper {
 						background-position: top right;
 						background-size: contain;
 						cursor: pointer;
+						background-repeat: no-repeat;
+						float: right;
+						margin-right: -14px;
+						top: 0;
+					}
+
+					.icon-meta-flag-blue {
+						width: 8px;
+						height: 11px;
+						opacity: 1;
+						background-position: top right;
+						background-size: contain;
+						cursor: pointer;
+						background-repeat: no-repeat;
+						float: right;
+						margin-right: -14px;
+						top: 0;
+					}
+					.icon-meta-flag-red {
+						width: 8px;
+						height: 11px;
+						opacity: 1;
+						background-image: url("../img/flagToolTip_Red.svg");
+						background-position: top right;
+						background-size: contain;
+						cursor: default;
 						background-repeat: no-repeat;
 						float: right;
 						margin-right: -14px;
@@ -1220,7 +1246,7 @@ img.resource-reset-icon{
 	margin-right: 15px;
 }
 
-.annotation_pagination {
+.annotation_pagination, .associator_pagination {
 	display: none;
 	padding: 15px;
 	background-color: #565656;
@@ -1228,11 +1254,11 @@ img.resource-reset-icon{
 	text-align: center;
 }
 
-.annotation_next, .annotation_prev, .annotation_begin, .annotation_end {
+.annotation_next, .annotation_prev, .annotation_begin, .annotation_end, .associator_next, .associator_prev, .associator_begin, .associator_end {
 	display: none;
 }
 
-.annotation_next img, .annotation_prev img, .annotation_begin img, .annotation_end img {
+.annotation_next img, .annotation_prev img, .annotation_begin img, .annotation_end img, .associator_next img, .associator_prev img, .associator_begin img, .associator_end img {
 	position: relative;
 	height: 15px;
 	bottom: 2px;
@@ -1253,7 +1279,14 @@ img.resource-reset-icon{
 	padding-right: 5px;
 }
 
-.page_active {
+.aso_page_number {
+	margin-left: 1px;
+	margin-right: 1px;
+	width: 35px;
+	display:none;
+	cursor:pointer;
+}
+.page_active, .aso_page_active {
 	background-color: #2A9FD8;
 }
 

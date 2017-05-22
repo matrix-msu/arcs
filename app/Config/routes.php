@@ -306,7 +306,7 @@
   Router::connect('/comments/findall',
       array('controller' => 'comments', 'action' => 'findall')
   );
-   Router::connect('/resources/flags/add',
+   Router::connect('/flags/add',
         array('controller' => 'flags', 'action' => 'add')
     );
 

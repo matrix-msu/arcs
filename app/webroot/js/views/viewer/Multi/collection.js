@@ -9,7 +9,7 @@ $( document ).ready(function() {
     });
 
     //close the modal. unselect and get the collections list again
-    $(".modalClose").click(function () {
+    $(".collectionModalClose").click(function () {
         $(".collectionSearchBar").addClass("first");
         $(".collectionModalBackground").hide();
         $("#collectionModal").show();
@@ -26,7 +26,7 @@ $( document ).ready(function() {
     });
     //close the collection added modal
     $(".backToSearch").click(function () {
-        $(".modalClose").trigger("click");
+        $(".collectionModalClose").trigger("click");
     });
 
     //new collection submit

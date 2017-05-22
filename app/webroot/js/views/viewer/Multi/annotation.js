@@ -676,20 +676,65 @@ $(document).ready(function () {
 
                 $.each(data, function (key, value) {
                     var trashButton = isAdmin == 1 ? "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
-                    if (value.page_kid == kid && value.transcript != "") {
-                        $(".content_transcripts").append("<div class='transcript_display' id='" + value.id + "'>" + value.transcript + "<div class='thumbResource'> <img src='/"+BASE_URL+"app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/><img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton + "</div></div>");
+
+                    var flagType = "FlagTooltip";
+                    if( annotationFlags.indexOf(value.id) != -1 ){
+                        flagType = "flagToolTip_Red";
                     }
-                    else {
+                    var flagString1 = "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+                        "class='flagTranscript";
+                    var flagString2 = " flagAnnotationId' data-annid='"+value.id+"' "+
+                        "/>" ;
+                    var trashString = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton;
+                    if (value.page_kid == kid && value.transcript != "") { //add in the flags for a transcription
+                        $(".content_transcripts").append(
+                            "<div class='transcript_display' id='" + value.id + "'>" +
+                                value.transcript +
+                                "<div class='thumbResource'> " +
+                                    flagString1 + ' details-transcript ' + flagString2 +
+                                    trashString +
+                                "</div>" +
+                            "</div>"
+                        );
+                    }
+                    else { //add in the flags in the details tab for the annotations
+                        //outgoing
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-                            $(".outgoing_relations").append("<div class='annotation_display' id='" + value.id + "'><div class='relationName'>" + value.relation_resource_name + "</div><img src='/"+BASE_URL+"app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "</div>");
+                            $(".outgoing_relations").append(
+                                "<div class='annotation_display' id='" + value.id + "'>" +
+                                    "<div class='relationName'>" +
+                                        value.relation_resource_name +
+                                    "</div>" +
+                                    flagString1 + ' details-outgoing ' + flagString2 +
+                                    trashString +
+                                "</div>"
+                            );
                         }
-                        else if (value.relation_page_kid != "" && value.incoming == "true") {
+                        else if (value.relation_page_kid != "" && value.incoming == "true") {//incoming
                             var text = value.x1 ? "Revert to whole resource" : "Define space";
-                            $(".incoming_relations").append("<div class='annotation_display " + value.id + "' id='" + value.id + "'><div class='relationName'>" + value.relation_resource_name + "</div><img src='/"+BASE_URL+"app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + trashButton + "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/><div class='annotateLabel'>" + text + "</div></div>");
+                            $(".incoming_relations").append(
+                                "<div class='annotation_display " + value.id + "' id='" + value.id + "'>" +
+                                    "<div class='relationName'>" +
+                                        value.relation_resource_name +
+                                    "</div>" +
+                                    flagString1 + ' details-incoming ' + flagString2 +
+                                    trashString +
+                                    "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>" +
+                                    "<div class='annotateLabel'>" +
+                                        text +
+                                    "</div>" +
+                                "</div>"
+                            );
                         }
                     }
-                    if (value.url != "") {
-                        $(".urls").append("<div class='annotation_display' id='" + value.id + "'>" + value.url + "<img src='/"+BASE_URL+"app/webroot/assets/img/FlagTooltip.svg' class='flagTranscript'/> <img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashAnnotation'/>" + "</div>");
+                    if (value.url != "") { //add a url flag
+                        $(".urls").append(
+                            "<div class='annotation_display' id='" + value.id + "'>" +
+                                value.url +
+                                flagString1 + ' details-url ' + flagString2 +
+                                trashString +
+                            "</div>"
+                        );
                     }
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
@@ -717,11 +762,6 @@ $(document).ready(function () {
 
                 });
 
-                $(".flagTranscript").click(function () {
-                    $(".modalBackground").show();
-                    $("#flagTarget").val("Transcript");
-                    $('#flagAnnotation_id').val($(this).parent().attr("id"));
-                });
                 $(".trashAnnotation").click(function () {
                     $('.deleteBody').html('Are you sure you want to delete this annotation?')
                     $('.deleteWrap').css('display', 'block');
@@ -846,13 +886,30 @@ $(document).ready(function () {
                             'top': $(".canvas").height() * v.y1
                         });
 
+                        var annotationHtml = '';
+                        var flagType = "FlagTooltip-White";
+                        if( annotationFlags.indexOf(v.id) != -1 ){
+                            flagType = "flagToolTip_Red";
+                        }
+                        var annotationType = 'annotationOutgoing';
+                        if( v.url != '' ){
+                            annotationType = 'annotationUrl';
+                        }else if( v.incoming != null ){
+                            annotationType = 'annotationIncoming';
+                        }
                         if (isAdmin == 1) {
-                            $(gen_box).html("<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'><img src='/"+BASE_URL+"app/webroot/assets/img/Trash-White.svg'/></div>");
-                            $(gen_box).append("<div class='flagAnnotation'><img src='/"+BASE_URL+"app/webroot/assets/img/FlagTooltip-White.svg'/></div>");
+                            annotationHtml =
+                                "<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'>" +
+                                    "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-White.svg'/>" +
+                                "</div>";
                         }
-                        else {
-                            $(gen_box).html("<div class='flagAnnotation notAdmin'><img src='/"+BASE_URL+"app/webroot/assets/img/FlagTooltip-White.svg'/></div>");
-                        }
+                        annotationHtml +=
+                            "<div class='flagAnnotation notAdmin'>" +
+                                "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+                                    "class='flagAnnotationId "+annotationType+"' data-annid='"+v.id+"' "+
+                                "/>" +
+                            "</div>";
+                        $(gen_box).html(annotationHtml);
 
                         $("#deleteAnnotation_" + v.id).click(function () {
                             var box = $(this).parent();
@@ -872,12 +929,6 @@ $(document).ready(function () {
                             })
                         });
                     }
-                });
-
-                $(".flagAnnotation").click(function () {
-                    $(".modalBackground").show();
-                    $("#flagTarget").show();
-                    $('#flagAnnotation_id').val($(this).parent().attr("id"));
                 });
 
                 //Mouse over annotation

@@ -14,7 +14,10 @@
  require_once(KORA_LIB . "Advanced_Search.php");
  require_once(KORA_LIB . "Resource_Search.php");
  require_once(KORA_LIB . "../Class/Benchmark.php");
+ require_once(KORA_LIB . "Kora.php");
+
  use mb\Benchmark;
+ use Lib\Kora;
 
 App::import('Controller', 'Users');
 
@@ -29,7 +32,7 @@ abstract class Permissions {
 class ResourcesController extends AppController {
 
     public $name = 'Resources';
-    public $uses = array('Resource', 'Collection', 'MetadataEdit', 'User');
+    public $uses = array('Resource', 'Collection', 'MetadataEdit', 'User', 'Flag');
 
     public function beforeFilter() {
         # The App Controller will set some common view variables (namely a
@@ -248,165 +251,6 @@ class ResourcesController extends AppController {
         $this->json(202);
     }
 
-    /**
-     * The current sinlge-Resource viewer.
-     *
-     * @param string $id            resource kid
-     * @param bool   $ignore_ctx    if true, the action will not redirect to the
-     *                              collection view when the resource has a
-     *                              non-null context attribute.
-     */
-    public function viewer($id, $page=0, $ignore_ctx=false) {
-
-        $pid = hexdec( explode('-', $id)[0] );
-        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-
-        //resource
-        $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
-        $query = "kid,=,".$id;
-        $fields = array('ALL');
-        $query_array = explode(",", $query);
-        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-        $resource = json_decode($kora->return_json(), true);
-        $resource = $resource[$id];
-
-        //grab all pages with the resource identifier
-        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
-        $pageSid = $sid;
-        $fields = array('ALL');
-        $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
-        $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
-        $kora->add_clause("Resource Associator", "=", $id);
-        $pages = json_decode($kora->search(), true);
-
-        // get the first entry in $pages
-        $firstPage = array_values($pages)[0]['kid'];
-
-        // Shifting to create thumbnails for every page
-        $pageKids = array();
-        foreach($pages as $page) {
-            $pageKids[] = $page['kid'];
-            $pages[$page['kid']]['thumbnail'] = $this->largeThumb($page['Image Upload']['localName']);
-            $pages[$page['kid']]['thumb'] = KORA_FILES_URI.$pid."/".$sid."/".$pages[$page['kid']]['Image Upload']['localName'];
-        }
-
-        //survey
-        $surveys = array();
-        $seasonKID = '';
-        $sid = $GLOBALS['SURVEY_SID_ARRAY'][strtolower($pName)];
-        if(is_array($resource['Excavation - Survey Associator'])){
-          foreach ($resource['Excavation - Survey Associator'] as $kid) {
-              $query = "kid,=,".$kid;
-              $fields = array('ALL');
-              $query_array = explode(",", $query);
-              $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-              $survey = json_decode($kora->return_json(), true);
-
-              $survey = $survey[$kid];
-              array_push($surveys, $survey);
-              //If no seasons for a resource, use resource season associator
-              if ($seasonKID == '') {
-                 $seasonKID = $survey['Season Associator'][0];
-              }
-            }
-          }
-
-        //If no seasons for a resource, use resource season associator
-        if ($seasonKID == '') {
-            $seasonKID = $resource['Season Associator'][0];
-        }
-
-        // SOO - Subject of Observation
-        $sid = $GLOBALS['SUBJECT_SID_ARRAY'][strtolower($pName)];
-        $query = "Pages Associator,IN"; // use this particular resource identifier
-        $fields = array('ALL');
-        $query_array = explode(",", $query);
-        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $pageKids, $fields);
-        $subject = json_decode($kora->return_json(), true);
-
-        //season
-        $projectKid = '';
-        $sid = $GLOBALS['SEASON_SID_ARRAY'][strtolower($pName)];
-        $query = "kid,=,".$seasonKID;
-        $fields = array('ALL');
-        $query_array = explode(",", $query);
-        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-        $season = json_decode($kora->return_json(), true);
-        $season = $season[$seasonKID];
-
-        if ($projectKid == '') {
-            $projectKid = $season['Project Associator'][0];
-        }
-
-        //project
-        $sid = $GLOBALS['PROJECT_SID_ARRAY'][strtolower($pName)];
-        $query = "kid,=,".$projectKid;
-        $fields = array('ALL');
-        $query_array = explode(",", $query);
-        $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-        $project = json_decode($kora->return_json(), true);
-
-        $project = $project[$projectKid];
-        $resource['thumb'] = $pages[$firstPage]['thumb'];
-
-        $public = isset($resource['Resource']['public']) ? $resource['Resource']['public'] : false;
-        $allowed = true; // $public || $this->Auth->loggedIn();
-
-        if (!$resource) return $this->redirect('/404');
-        if (!$allowed) {
-            $this->Session->setFlash("Oops. You'll need to login to view that.",
-                'flash_error');
-            $this->Session->write('redirect', '/resource/' . $id);
-            return $this->redirect($this->Auth->redirect('#loginModal'));
-        }
-
-        # Redirect if the resource's context is non-null.
-        $resourceContext = isset($resource['Resource']['context']) ?$resource['Resource']['context'] : "";
-        if ($resourceContext && !$ignore_ctx) {
-            return $this->redirect('/collection/' .
-                $resource['Resource']['context'] . '/' . $id
-            );
-        }
-
-        $collections = json_encode($this->Collection->find('all', array(
-            'fields'    => array('DISTINCT collection_id', 'title', 'user_name'),
-            'order'     => 'created DESC',
-            'recursive' => -1
-        )));
-
-
-        //edit metadata stuffs
-        $metadataedits = $this->getEditMetadata();
-
-        $this->set(array(
-            'kid' =>$pages[$firstPage]['kid'],
-            'pages' => $pages,
-            'resource' => $resource,
-            'subject' => $subject,
-            'surveys' => $surveys,
-            'season' => $season,
-            'project' => $project,
-            'collections' => $collections,
-            'metadataEdits' => $metadataedits,
-            'toolbar' => array('actions' => true),
-            'footer' => false,
-            'body_class' => 'viewer standalone',
-            'kora_url' => KORA_FILES_URI.$pid."/".$pageSid."/",
-            //'kora_url' => KORA_FILES_URI.PID."/".PAGES_SID."/",
-            'admin' => $this->Auth->user('isAdmin') == 1
-        ));
-
-
-        # On the first request of a particular resource (usually directly
-        # after upload), we might prompt the user for additional
-        # actions/information. Here we're turning that off for future
-        # requests. (Note that the first_req will still be true within the
-        # $resource var.)
-        $resourceFirstReq = isset($resource['Resource']['first_req']) ?$resource['Resource']['first_req'] : false ;
-        if ($resourceFirstReq)
-            $this->Resource->firstRequest($resource['Resource']['id']);
-    }
-
     //get all the edit metadata in the table.
     protected function getEditMetadata(){
         $db = new DATABASE_CONFIG;
@@ -425,7 +269,7 @@ class ResourcesController extends AppController {
         $metadataedits = [];
         while($row = mysqli_fetch_assoc($result)) {
 
-            //update and existing array.
+            //update an existing array.
             if( array_key_exists($row['metadata_kid'], $metadataedits) ){
                 $valueArray = $metadataedits[$row['metadata_kid']];
                 $valueArray[] = $row['field_name'];
@@ -434,8 +278,9 @@ class ResourcesController extends AppController {
             }else{//create new array.
                 $metadataedits[$row['metadata_kid']] = array($row['field_name']);
             }
-
         }
+        //print_r($metadataedits);
+        //die;
         return $metadataedits;
     }
 
@@ -612,77 +457,6 @@ class ResourcesController extends AppController {
         $page['kora_url'] = KORA_FILES_URI.$pid."/".$sid."/";
 
 		return json_encode($page);
-    }
-
-    /**
-     * View a resource
-     * Josh- I'm not really sure what this is for... It isn't single resource.
-     *
-     * @param string $id
-     */
-    public function viewKid($id)
-    {
-        $response = ['kid' => $id];
-
-        //resource
-        $query = "kid,=,".$id;
-        $user = "";
-        $pass = "";
-        $display = "json";
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".RESOURCE_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query);
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        //capture results and map to array
-        $resource = json_decode(curl_exec($ch), true);
-        //echo $resource;
-        $resource = $resource[$id];
-        //$this->json(200, $resource);
-        //return $resource;
-        $response['type'] = $resource['Type'];
-        $response['title'] = $resource['Title'];
-
-        $resource_identifier = $resource['Resource Identifier'];
-
-        //Get the Pages from Kora
-        //$new_temp = array('7B-2E0-1');
-        $query = "Resource Identifier,=,".$resource_identifier;
-        //$response['query'] = $query;
-        $user = "";
-        $pass = "";
-        $display = "json";
-        //no query
-        //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display;
-        //query
-        //$url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".$query;
-        $url = KORA_RESTFUL_URL."?request=GET&pid=".PID."&sid=".PAGES_SID."&token=".TOKEN."&display=".$display."&query=".urlencode($query)."&count=1";
-
-        ///initialize post request to KORA API using curl
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-        //capture results and map to array
-        $page2 = json_decode(curl_exec($ch), true);
-
-        //Get the picture URL from the page results
-        $temp_array['page_search'] = $page2;
-        $picture_url = array_values($page2)[0]['Image Upload']['localName'];
-
-        //Decide if there is a picture..
-        if( !empty($picture_url) ){
-            $temp_array['pic_url'] = $picture_url;
-            //$kora_pic_url = "http://kora.matrix.msu.edu/files/123/738/";
-            //$response['thumb'] = $kora_pic_url.$picture_url;
-            $response['thumb'] = $this->smallThumb($temp_array['pic_url']);
-            $response['largethumb'] = $this->largeThumb($temp_array['pic_url']);
-        }else{
-            $response['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
-            $response['largethumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
-        }
-
-        $this->json(200, $response);
-        return $response;
     }
 
     //create a file to be exported.
@@ -887,6 +661,7 @@ class ResourcesController extends AppController {
 
             $project_kid = $this->getFromKey($season_array,"Project Associator")[0];
             $info_array[$resource]['project_kid'] = $project_kid;
+            $pName = parent::convertKIDtoProjectName($project_kid);
 
             //get project array
             $project_array = $this->getProject($project_kid);
@@ -915,9 +690,14 @@ class ResourcesController extends AppController {
         if (empty($resources)) {
             $this->set("access", false);
         }
-		if( !isset($this->request->query['ajax'] )){
+		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
 			$metadataedits = $this->getEditMetadata();
-
+            if($pName != '') {
+                $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
+            }else{
+                $metadataeditsControlOptions = array();
+            }
+            $flags = $this->getFlags($resources_array);
 			$this->set("resources", $resources);
 			$this->set("projectsArray", $projectsArray);
 			ksort($seasons);
@@ -926,7 +706,9 @@ class ResourcesController extends AppController {
 			$this->set("excavations", $excavations);
 			$this->set("subjects", $subjects);
 			$this->set("metadataEdits", $metadataedits);
-		}else{
+			$this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
+			$this->set("flags", $flags);
+		}else{  //this is for getting the data for a export data
 			echo json_encode([$projectsArray,
 								$seasons,
 								$excavations,
@@ -935,6 +717,128 @@ class ResourcesController extends AppController {
 			die;
 		}
 
+    }
+
+    //grab all flags that apply to the resources being shown
+    public function getFlags($resources_array){
+        $flags = $this->Flag->find('all', array(
+            'conditions' => array('resource_kid'=>$resources_array)
+        ));
+        $metadataFlags = array();
+        $annotationFlags = array();
+
+        foreach($flags as $flag){
+            $target = $flag['Flag']['annotation_target'];
+            if( $target == 'Metadata' ){
+                if( isset($metadataFlags[$flag['Flag']['metadata_kid']]) ){
+                    array_push($metadataFlags[$flag['Flag']['metadata_kid']], $flag['Flag']['metadata_field']);
+                }else{
+                    $metadataFlags[$flag['Flag']['metadata_kid']] = array($flag['Flag']['metadata_field']);
+                }
+
+            }else{
+                array_push($annotationFlags, $flag['Flag']['annotation_id']);
+            }
+        }
+
+        return array(
+            'metadataFlags'=>$metadataFlags,
+            'annotationFlags' => $annotationFlags
+        );
+    }
+
+    /**
+     * Get all the control options for metadataEdits
+     *
+     */
+    public function getMetadataEditsControlOptions($project = null)
+    {
+        // check bootstrap configuration
+        try {
+            parent::getPIDFromProjectName($project);
+        } catch (Exception $e) {
+            throw new NotFoundException("Project \"$project\" was not found!");
+        }
+        $pid = parent::getPIDFromProjectName($project);
+
+        $sid = parent::getProjectSIDFromProjectName($project);
+        $query = "name = 'Country' OR 
+                  name = 'Region' OR 
+                  name = 'Modern Name' OR 
+                  name = 'Records Archive' OR
+                  name = 'Period' OR
+                  name = 'Archaeological Culture' OR
+                  name = 'Permitting Heritage Body'";
+        $pCid = $this->getControls($pid, $sid, $query);
+
+        $sid = parent::getSeasonSIDFromProjectName($project);
+        $query = "name = 'Type' OR 
+                  name = 'Director' OR
+                  name = 'Registrar' OR
+                  name = 'Sponsor' OR
+                  name = 'Contributor' OR
+                  name = 'Contributor Role'";
+        $sCid = $this->getControls($pid, $sid, $query);
+
+        $sid = parent::getSurveySIDProjectName($project);
+        $query = "name = 'Type' OR 
+                  name = 'Supervisor'";
+        $eCid = $this->getControls($pid, $sid, $query);
+
+        $sid = parent::getResourceSIDFromProjectName($project);
+        $query = "name = 'Type' OR
+                  name = 'Creator' OR 
+                  name = 'Creator Role' OR 
+                  name = 'Condition' OR
+                  name = 'Access Level' OR
+                  name = 'Language'";
+        $rCid = $this->getControls($pid, $sid, $query);
+
+        $sid = parent::getSubjectSIDFromProjectName($project);
+        $query = "name = 'Artifact - Structure Classification' OR
+                  name = 'Artifact - Structure Type' OR
+                  name = 'Artifact - Structure Excavation Unit' OR
+                  name = 'Artifact - Structure Location'";
+        $sooCid = $this->getControls($pid, $sid, $query);
+
+        return  array(
+            'project' => $this->htmlifyControls($pCid),
+            'Seasons' => $this->htmlifyControls($sCid),
+            'excavations' => $this->htmlifyControls($eCid),
+            'archival objects' => $this->htmlifyControls($rCid),
+            'subjects' => $this->htmlifyControls($sooCid)
+        );
+    }
+    private function htmlifyControls($controlArray){
+
+        foreach($controlArray as $control => $optionsArray){
+            $optionsString = '';
+            foreach($optionsArray as $option){
+                $optionsString .= '<option value=&quot;'. $option. '&quot;>'. $option. '</option>';
+            }
+            $controlArray[$control] = $optionsString;
+        }
+        return $controlArray;
+    }
+    private function getControls($pid,$sid,$query) {
+        // require symlink to the kora db
+        $kora = new Kora();
+
+        global $db;
+        $controls = array();
+
+        $object = $db->query("SELECT * FROM p$pid" .
+            "Control WHERE schemeid = '$sid' " . "AND ($query)");
+        if (!$object){
+            return array();
+        }
+        while ($res = $object->fetch_assoc()) {
+            $cid = $res["cid"];
+            $list = new ListControl($pid, $cid);
+            $settings = $list->GetControlOptions();
+            $controls[$res['name']] =   (array)$settings->option;
+        }
+        return $controls;
     }
     protected function pushToArray($value, &$array){
         foreach($value as $key => $v){

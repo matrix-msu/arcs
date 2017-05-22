@@ -9,6 +9,9 @@ var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
 var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 
+
+var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
+
 var resourceKid = "";//"<?php  ?> ";
  var ADMIN = 0;//"<?php  ?> ";
 // var kora_url = "<?php  ?> ";
@@ -35,7 +38,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 //var_dump($resources);
 
 ?>
-<!-- <?=  $this->Html->script("views/viewer/Multi/flag.js") ?> -->
+<?=  $this->Html->script("views/viewer/Multi/flag.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/accordion.js") ?>
 <!-- <?=  $this->Html->script("views/viewer/Multi/details.js")  ?> -->
 <?=  $this->Html->script("views/viewer/Multi/resources.js")  ?>
@@ -53,11 +56,12 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 <div class="viewers-container">
 
-    <div class="modalBackground">
+    <div class="flagModalBackground">
         <div class="flagWrap">
             <div id="flagModal">
-                <div class="flagModalHeader">NEW FLAG <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
-                                                           class="modalClose"/></div>
+                <div class="flagModalHeader">NEW FLAG
+                    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose flagModalClose"/>
+                </div>
                 <hr>
                 <form id="flagForm" action="/">
                     <p class="flagSuccess">Flag submitted successfully.</p>
@@ -73,7 +77,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     <select class="formInput" id="flagTarget">
                         <option value="">SELECT TARGET</option>
                         <option value="Outgoing Relation">Outgoing Relation</option>
-                        <option value="Transcript">Transcript</option>
+                        <option value="Incoming Relation">Incoming Relation</option>
                         <option value="URL">URL</option>
                     </select>
                     <p class="formError explanationError">Give an explanation for this flag.</p>
@@ -164,8 +168,9 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
     <div class="collectionModalBackground">
         <div class="collectionWrap" style="margin-top:9em;">
             <div id="collectionModal" style="width:35em;">
-                <div class="collectionModalHeader">Add to Collection <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
-                                                                          class="modalClose"/></div>
+                <div class="collectionModalHeader">Add to Collection
+                    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
+                </div>
                 <hr>
                 <p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
                 <p class="collectionTab collectionTabNew">Add to a new collection</p>
@@ -188,8 +193,9 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                 </div>
             </div>
             <div id="addedCollectionModal" style="width:35em;display:none;">
-                <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
-                                                                          class="modalClose"/></div>
+                <div class="collectionModalHeader">ADDED TO COLLECTION!
+                    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
+                </div>
                 <hr>
                 <div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
                 <br>
@@ -200,27 +206,56 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
     </div>
 
     <div class="associatorModalBackground">
-            <div class="collectionWrap" style="margin-top:9em;">
+            <div class="collectionWrap" id="associatorSelectModal" style="margin-top:9em;">
                 <div id="collectionModal" style="width:35em;">
                     <div class="collectionModalHeader">
                         <p id="associatorTitle" style='display:inline-block'>Add Associators</p>
-                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalCloseAssociator"/>
+                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="modalCloseAssociatorSelect" class="modalCloseAssociator"/>
                     </div>
                     <hr>
-                    <!-- p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
-                    <p class="collectionTab collectionTabNew">Add to a new collection</p -->
                     <div class="collectionSearchContainer">
-                        <form id="associatorSearchBarForm" onsubmit="associatorSearch(); return false;">
-                            <input type="text" class="associatorSearchBar first" placeholder="Search for records by exact KID values">
+                        <form id="associatorSearchBarForm" onsubmit="event.preventDefault();">
+                            <input id="associatorSearchInput" type="text" class="associatorSearchBar first" placeholder="Search for records by exact KID values">
                         </form>
                         <div id="associatorSearchForm">
                             <div id="associatorSearchObjects">
                             </div>
-                            <button class="associatorSearchSubmit">SAVE ASSOCIATORS</button>
+                            <div class="associator_pagination" style="display: block;cursor:default;">
+                            	<span class="associator_begin" style="display: inline;cursor:pointer;">
+                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg">
+                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:10px;">
+                                </span>
+                            	<span class="associator_prev" style="display: inline;cursor:pointer;">
+                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:3px;">
+                                </span>
+                            	<span class="associator_numbers">
+
+                            	</span>
+                            	<span class="associator_next" style="display: inline;cursor:pointer;">
+                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:3px;">
+                            	</span>
+                            	<span class="associator_end" style="display: inline;cursor:pointer;">
+                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:10px;">
+                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg">
+                            	</span>
+                            </div>
+                            <button class="associatorSearchSubmit" id="associatorSearchSubmitFirst">SAVE ASSOCIATORS</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="collectionWrap" id="associatorSubmitConfirm" style="margin-top:9em;display:none;">
+                <div id="collectionModal" style="width:35em;">
+                    <div class="collectionModalHeader">
+                        <p id="associatorTitle" style='display:inline-block'></p>
+                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="closeAssociatorConfirm" class="modalCloseAssociator"/>
+                    </div>
+                    <hr>
+                    <p id="associatorTitle" style='text-align: center;vertical-align: middle;'>Are you sure you want to save the following associators?</p>
+                    <p id="associatorsToSubmit" style="text-align: center;vertical-align: middle;"></p>
+                    <button class="associatorSearchSubmit" id="associatorSearchSubmitConfirm">CONFIRM SUBMISSION</button>
+                </div>
+             </div>
         </div>
 
     <div id="viewer-left">
@@ -287,11 +322,12 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                   <div class="accordion metadata-accordion" style="width:100%;">
                     <?= $this->element("Metadata/generate"); ?>
                     <?php
-                        Generate_Metadata("project",$projectsArray, $metadataEdits);
-                        Generate_Metadata("Seasons",$seasons, $metadataEdits);
-                        Generate_Metadata("excavations",$excavations, $metadataEdits);
-                        Generate_Metadata("archival objects",$resources, $metadataEdits);
-                        Generate_Metadata("subjects",$subjects, $metadataEdits);
+                        $metadataFlags = $flags['metadataFlags'];
+                        Generate_Metadata("project",$projectsArray,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                        Generate_Metadata("Seasons",$seasons,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                        Generate_Metadata("excavations",$excavations,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                        Generate_Metadata("archival objects",$resources,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                        Generate_Metadata("subjects",$subjects,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
                     ?>
                   </div>
                 </div>
