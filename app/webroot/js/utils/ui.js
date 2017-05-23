@@ -35,3 +35,43 @@
   });
 
 }).call(this);
+
+$(document).ready(function() {
+  $("#registerModal .selectDiv").click(function() {
+    $("#projectDropdown").toggle();
+    var value = "";
+    $("#projectDropdown .selected").each(function(i, e) {
+      if (value == "") {
+        value = $(e).attr("id");
+      }
+      else {
+        value += ", " + $(e).attr("id");
+      }
+    });
+    $("#UserProject").val(value);
+  });
+
+  $("#projectDropdown > p").click(function(e) {
+    var target = $(e.target);
+    var selectDiv = $(".selectDiv");
+    target.toggleClass('selected');
+    if (target.hasClass('selected')) {
+      console.log(selectDiv.text());
+      if (selectDiv.text().includes("Select Project(s) to Register In *")) {
+        selectDiv.text(target.text());
+      }
+      else {
+        selectDiv.text(selectDiv.text() + ", " + target.text());
+      }
+    }
+    else {
+      var temp = selectDiv.text();
+      temp = temp.replace(", " + target.text, "");
+      temp = temp.replace(target.text, "");
+      selectDiv.text(temp);
+    }
+    if ($("#projectDropdown .selected").length == 0) {
+      selectDiv.text("Select Project(s) to Register In *");
+    }
+  });
+});

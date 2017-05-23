@@ -9,7 +9,7 @@
         <div class="left">
             <div class="registerContainer">
 
-                <h1>Register</h1>
+                <h1>Register</h1><span class="requiredfield">Required Field *</span>
 
                 <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
 
@@ -21,7 +21,18 @@
 
                 <?php echo $this->Form->input('passwd', array('label' => false, 'placeholder' => 'Password *'));?>
 
-                <span class="requiredfield">* Required Field</span>
+                <?php //echo $this->Form->input('project', array('label' => false, 'options' => $projectsList, 'placeholder' => 'Select Project(s) to Register In *'));?>
+                <input type="hidden" name="data[User][project]" id="UserProject">
+                <div class="selectDiv">
+                    Select Project(s) to Register In *
+                </div>
+                <div id="projectDropdown" style="display: none;">
+                    <?php foreach($projects as $p): ?>
+                    <p id="<?php echo $p['pid']; ?>"><?php echo $p['Persistent Name']; ?></p>
+                    <?php endforeach ?>
+                </div>
+
+                <!-- <span class="requiredfield">* Required Field</span> -->
 
                 <?php echo $this->Form->submit('Register', array('class' => 'btn btn-success mobile-only', 'id' => 'registerMobile')); ?>
                 <a class="login-link mobile-only" id="login-mobile" href="#loginModal">Login</a>
@@ -32,7 +43,7 @@
         <div class="right">
 	    <div class="registerContainer2">
 		<div class='login-link-back desktop-only'>
-	  	  <a href='#loginModal'>Back To Login</a>
+	  	  <a href='#loginModal'></a>
 		</div>
                 <h1>&nbsp;</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>

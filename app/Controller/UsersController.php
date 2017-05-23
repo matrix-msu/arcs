@@ -27,7 +27,7 @@ class UsersController extends AppController
             if (!empty($user))
                 return $user;
         }
-        return false; 
+        return false;
     }
     /**
      * Display a user's bookmarks.
@@ -344,6 +344,7 @@ class UsersController extends AppController
      */
     public function register()
     {
+        $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
                 $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
@@ -359,7 +360,20 @@ class UsersController extends AppController
                         'last_login' => null,
                         'status' => 'unconfirmed'
                     ))) {
-
+                        $allDat = $this->User->findByRef($this->request->data['User']['usernameReg']);
+                        $id = $allDat['id'];
+                        $projects = explode(", ", $this->request->data['User']['project']);
+                        $mappingArray = [];
+                        foreach ($projects as $project) {
+                            $mappingArray[] = array(
+                                'id_user' => $id,
+                                'role' => 'Researcher',
+                                'pid' => $project,
+                                'status' => 'unconfirmed',
+                                'activation' => $this->Mapping->getToken()
+                            );
+                        }
+                        $this->Mapping->saveAll($mappingArray);
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         $this->confirmUserEmail($user);
                         $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
