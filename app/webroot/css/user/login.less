@@ -2,45 +2,45 @@
 // ----------
 
 #login {
-  .arcs-form();
-  margin-top: 0px;
-  margin-bottom: 10px;
-  input[type="text"],
-  input[type="password"] {
-    width: 290px;
-  }
-  .login-link {
-    .arcs-form-link();
-  }
+    .arcs-form();
+    margin-top: 0px;
+    margin-bottom: 10px;
+    input[type="text"],
+    input[type="password"] {
+        width: 290px;
+    }
+    .login-link {
+        .arcs-form-link();
+    }
 }
 
 #login-header {
-  width: 300px;
-  margin-top: 10%;
-  .centered();
-  position: relative;
-  left: 30px;
-  img {
-    margin-bottom: 15px;
-  }
-  h1 {
-    font-family: 'Pontano Sans', sans-serif;
-    display: inline;
-    font-weight: 100;
-    .text-shadow(#fff);
-  }
+    width: 300px;
+    margin-top: 10%;
+    .centered();
+    position: relative;
+    left: 30px;
+    img {
+        margin-bottom: 15px;
+    }
+    h1 {
+        font-family: 'Pontano Sans', sans-serif;
+        display: inline;
+        font-weight: 100;
+        .text-shadow(#fff);
+    }
 }
 
 #login-footer {
-  width: 300px;
-  .centered();
-  .text-shadow(#fff);
-  a {
-    color: #444;
-  }
-  span {
-    margin-left: 50px;
-  }
+    width: 300px;
+    .centered();
+    .text-shadow(#fff);
+    a {
+        color: #444;
+    }
+    span {
+        margin-left: 50px;
+    }
 }
 
 // login modal styling
@@ -226,6 +226,21 @@
                 position: absolute;
                 bottom: 58px;
                 right: 53px;
+            }
+
+            #projectDropdown {
+                border: 1px solid white;
+                background-color: @ArcsBlue;
+            }
+
+            #projectDropdown > p {
+                padding-left: 2em;
+                cursor: pointer;
+            }
+
+            #projectDropdown > .selected {
+                color: @ArcsBlue;
+                background-color: white;
             }
 
             input::-webkit-input-placeholder {

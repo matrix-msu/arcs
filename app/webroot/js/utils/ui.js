@@ -37,7 +37,8 @@
 }).call(this);
 
 $(document).ready(function() {
-  $("#registerModal .selectDiv").click(function() {
+  $("#registerModal .selectDiv").click(function(e) {
+    e.stopPropagation();
     $("#projectDropdown").toggle();
     var value = "";
     $("#projectDropdown .selected").each(function(i, e) {
@@ -52,6 +53,7 @@ $(document).ready(function() {
   });
 
   $("#projectDropdown > p").click(function(e) {
+    e.stopPropagation();
     var target = $(e.target);
     var selectDiv = $(".selectDiv");
     target.toggleClass('selected');
@@ -72,6 +74,16 @@ $(document).ready(function() {
     }
     if ($("#projectDropdown .selected").length == 0) {
       selectDiv.text("Select Project(s) to Register In *");
+    }
+  });
+
+  $("#register").click(function() {
+    $("#registerModal .selectDiv").click();
+  });
+
+  $("#registerModal").click(function() {
+    if ($("#projectDropdown").is(":visible")) {
+      $("#registerModal .selectDiv").click();
     }
   });
 });
