@@ -2,45 +2,45 @@
 // ----------
 
 #login {
-  .arcs-form();
-  margin-top: 0px;
-  margin-bottom: 10px;
-  input[type="text"],
-  input[type="password"] {
-    width: 290px;
-  }
-  .login-link {
-    .arcs-form-link();
-  }
+    .arcs-form();
+    margin-top: 0px;
+    margin-bottom: 10px;
+    input[type="text"],
+    input[type="password"] {
+        width: 290px;
+    }
+    .login-link {
+        .arcs-form-link();
+    }
 }
 
 #login-header {
-  width: 300px;
-  margin-top: 10%;
-  .centered();
-  position: relative;
-  left: 30px;
-  img {
-    margin-bottom: 15px;
-  }
-  h1 {
-    font-family: 'Pontano Sans', sans-serif;
-    display: inline;
-    font-weight: 100;
-    .text-shadow(#fff);
-  }
+    width: 300px;
+    margin-top: 10%;
+    .centered();
+    position: relative;
+    left: 30px;
+    img {
+        margin-bottom: 15px;
+    }
+    h1 {
+        font-family: 'Pontano Sans', sans-serif;
+        display: inline;
+        font-weight: 100;
+        .text-shadow(#fff);
+    }
 }
 
 #login-footer {
-  width: 300px;
-  .centered();
-  .text-shadow(#fff);
-  a {
-    color: #444;
-  }
-  span {
-    margin-left: 50px;
-  }
+    width: 300px;
+    .centered();
+    .text-shadow(#fff);
+    a {
+        color: #444;
+    }
+    span {
+        margin-left: 50px;
+    }
 }
 
 // login modal styling
@@ -170,7 +170,7 @@
 
     .register-content {
         width: 60em;
-        height: 30em;
+        height: 36em; /*Was 30em*/
         padding: 0;
         box-shadow: 0px 0px 100px rgba(0, 0, 0, .25);
 
@@ -189,17 +189,58 @@
             background: @ArcsBlue;
             color: #fff;
 
-            input[type="text"], input[type="password"] {
+            input[type="text"], input[type="password"], select, .selectDiv {
                 margin-top: 5.8%;
                 padding: 1em 2em 1em 2em;
                 width: 360px;
                 height: 60px;
                 background: @ArcsBlue;
                 color: #fff;
-                border: 2px;
+                border: 1px; // border: 2px;
                 border-style: solid;
                 border-color: #fff;
                 font-size: 100%;
+                appearance: none;
+                -moz-appearance: none; /* Firefox */
+                -webkit-appearance: none; /* Safari and Chrome */
+            }
+
+            .selectDiv {
+                overflow: hidden;
+                padding: 0 2em;
+                line-height: 60px;
+                cursor: pointer;
+            }
+
+            .selectDiv:after {
+                content: ' ';
+                display: inline-block;
+                color: @ArcsBlue;
+                padding: 4px;
+                border-bottom: 1px solid white;
+                border-right: 1px solid white;
+                -webkit-transform: rotate(45deg);
+                -moz-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+                position: absolute;
+                bottom: 58px;
+                right: 53px;
+            }
+
+            #projectDropdown {
+                border: 1px solid white;
+                background-color: @ArcsBlue;
+            }
+
+            #projectDropdown > p {
+                padding-left: 2em;
+                cursor: pointer;
+            }
+
+            #projectDropdown > .selected {
+                color: @ArcsBlue;
+                background-color: white;
             }
 
             input::-webkit-input-placeholder {
@@ -225,7 +266,8 @@
 
             .requiredfield {
                 float: right;
-                padding-top: 5px;
+                // padding-top: 5px;
+                margin-top: -19px;
                 font-size: 80%;
                 color: rgba(255, 255, 255, .5);
             }
@@ -247,6 +289,7 @@
                 text-transform: uppercase;
                 font-size: 120%;
                 line-height: 50px;
+                font-weight: bold;
             }
         }
 
@@ -305,6 +348,7 @@
                 text-transform: uppercase;
                 font-size: 120%;
                 line-height: 50px;
+                font-weight: bold;
             }
         }
     }

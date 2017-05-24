@@ -9,7 +9,7 @@
         <div class="left">
             <div class="registerContainer">
 
-                <h1>Register</h1>
+                <h1>Register</h1> <span class="requiredfield">* Required Field</span>
 
                 <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
 
@@ -20,8 +20,15 @@
                 <?php echo "<p id='getEmail' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getEmail'))."</p>";?>
 
                 <?php echo $this->Form->input('passwd', array('label' => false, 'placeholder' => 'Password *'));?>
-
-                <span class="requiredfield">* Required Field</span>
+                <input type="hidden" id="UserProject" name="data[User][project]">
+                <div class="selectDiv">
+                    Select Project(s) to Register In *
+                </div>
+                <div id="projectDropdown" style="display: none;">
+                    <?php foreach($projects as $p) { ?>
+                        <p id="<?php echo $p['Persistent Name'] ?>"><?php echo ucwords($p['Persistent Name']) ?></p>
+                    <?php } ?>
+                </div>
 
                 <?php echo $this->Form->submit('Register', array('class' => 'btn btn-success mobile-only', 'id' => 'registerMobile')); ?>
                 <a class="login-link mobile-only" id="login-mobile" href="#loginModal">Login</a>

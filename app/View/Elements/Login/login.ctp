@@ -3,7 +3,7 @@
     position: absolute;
     right: 60px;
     font-size: 14px;
-    top: 28px; 
+    top: 28px;
   }
   .login-link-back a{
     color:white;
@@ -16,10 +16,10 @@
   .registerContainer input{
       color:white !important;
   }
-  
+
   .loginContainer .input input{
     color:#0093be !important;
-  }  
+  }
   #register-mobile{
     display: none;
     text-transform: uppercase;
@@ -60,9 +60,9 @@
     text-transform: UPPERCASE;
 
   }
-  #registerModal .register-content .left{
+  /*#registerModal .register-content .left{
     height: auto;
-  }
+  }*/
   #registerModal .register-content .left .btn{
     position: relative;
     margin: auto;
@@ -71,7 +71,7 @@
     background: white;
     color: #0093be !important;
     line-height: 48px;
-  
+
   }
   @media screen and (max-width: 1000px) {
     .mobile-only{
@@ -79,7 +79,7 @@
     }
     .desktop-only{
        display: none;
-    }    
+    }
     .login-link{
       position: absolute;
       bottom: 20%;
@@ -152,9 +152,9 @@
     #registerModal .register-content{
       width: 30em;
     }
-    #registerModal .register-content .left{
+    /*#registerModal .register-content .left{
       width: 100%;
-    }
+    }*/
     .reverse-filter-desktop img{
       filter: invert(60%) !important;
       -webkit-filter: invert(60%) !important;
