@@ -112,7 +112,7 @@ class ResourcesController extends AppController {
         $users = explode('|',$specialFieldString);
         foreach($users as $user){
             if (trim($user) === $username) {
-                return false;
+                return true;
             }
         }
         return false;
@@ -762,9 +762,9 @@ class ResourcesController extends AppController {
         $pid = parent::getPIDFromProjectName($project);
 
         $sid = parent::getProjectSIDFromProjectName($project);
-        $query = "name = 'Country' OR 
-                  name = 'Region' OR 
-                  name = 'Modern Name' OR 
+        $query = "name = 'Country' OR
+                  name = 'Region' OR
+                  name = 'Modern Name' OR
                   name = 'Records Archive' OR
                   name = 'Period' OR
                   name = 'Archaeological Culture' OR
@@ -772,7 +772,7 @@ class ResourcesController extends AppController {
         $pCid = $this->getControls($pid, $sid, $query);
 
         $sid = parent::getSeasonSIDFromProjectName($project);
-        $query = "name = 'Type' OR 
+        $query = "name = 'Type' OR
                   name = 'Director' OR
                   name = 'Registrar' OR
                   name = 'Sponsor' OR
@@ -781,14 +781,14 @@ class ResourcesController extends AppController {
         $sCid = $this->getControls($pid, $sid, $query);
 
         $sid = parent::getSurveySIDProjectName($project);
-        $query = "name = 'Type' OR 
+        $query = "name = 'Type' OR
                   name = 'Supervisor'";
         $eCid = $this->getControls($pid, $sid, $query);
 
         $sid = parent::getResourceSIDFromProjectName($project);
         $query = "name = 'Type' OR
-                  name = 'Creator' OR 
-                  name = 'Creator Role' OR 
+                  name = 'Creator' OR
+                  name = 'Creator Role' OR
                   name = 'Condition' OR
                   name = 'Access Level' OR
                   name = 'Language'";
