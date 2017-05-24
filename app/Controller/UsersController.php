@@ -15,9 +15,33 @@ class UsersController extends AppController
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow('crop', 'signup', 'special_login', 'register', 'confirm_user', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite');
+        $this->Auth->allow(
+          'crop', 'signup', 'special_login', 'register', 'confirm_user',
+          'register_no_invite', 'reset_password', 'display', 'getEmail',
+          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite',
+          "requestPermission"
+          );
         $this->User->flatten = true;
         $this->User->recursive = -1;
+    }
+    public function requestPermission($project) {
+      $this->autoRender = false;
+      if ($user = $this->getUser($this->Auth)) {
+        //print_r($user);die;
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail();
+        $Email->viewVars(array('user' => $user, 'project' => $project))
+            ->template('requestAccess', 'default')
+            ->emailFormat('html')
+            ->subject('User Access Request')
+            ->to($user['email'])
+            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        //$Email->send();
+
+
+      } else {
+        echo "Not logged in";
+      }
     }
     public function getUser(&$auth){
         if ($auth->loggedIn()){
@@ -27,7 +51,7 @@ class UsersController extends AppController
             if (!empty($user))
                 return $user;
         }
-        return false;
+        return false; 
     }
     /**
      * Display a user's bookmarks.
@@ -192,7 +216,6 @@ class UsersController extends AppController
                     $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
                     foreach ($admins as $admin) {
                         $this->pendingUserEmail($admin, $user);
-
                     }
                     $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
                     $this->redirect('/');
@@ -344,7 +367,6 @@ class UsersController extends AppController
      */
     public function register()
     {
-        $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
                 $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
@@ -360,20 +382,7 @@ class UsersController extends AppController
                         'last_login' => null,
                         'status' => 'unconfirmed'
                     ))) {
-                        $allDat = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        $id = $allDat['id'];
-                        $projects = explode(", ", $this->request->data['User']['project']);
-                        $mappingArray = [];
-                        foreach ($projects as $project) {
-                            $mappingArray[] = array(
-                                'id_user' => $id,
-                                'role' => 'Researcher',
-                                'pid' => $project,
-                                'status' => 'unconfirmed',
-                                'activation' => $this->Mapping->getToken()
-                            );
-                        }
-                        $this->Mapping->saveAll($mappingArray);
+
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         $this->confirmUserEmail($user);
                         $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
@@ -402,6 +411,7 @@ class UsersController extends AppController
             $this->redirect($this->referer());
         }
     }
+
 
     /**
      * Register an invited user

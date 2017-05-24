@@ -18,6 +18,15 @@
 
 <script>
 
-
+  $(document).ready(function() {
+    $("#request_permission_model").find(".request").click(function(e){
+      $.ajax({
+        url: arcs.baseURL + "users/request_permission/7B-2E0-0",
+        success: function(result){
+          console.log(result);
+        }
+      });
+    })
+  })
 
 </script>
