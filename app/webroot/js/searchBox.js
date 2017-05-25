@@ -4,20 +4,24 @@ $(document).ready(function(){
     $(".search-bar").keyup(function(e){
        var val = $('#searchBar').val();
        if(e.keyCode == 13){
-           console.log(val);
            url= arcs.baseURL + 'search/'+projectKid+"/"+ val;
            window.location.replace(url);
        }
    });
-});
+  var linked = $(".searchBoxInput").data("searchlink") || false
+  if (linked) {
+    $(".searchBoxInput").unbind().keyup(function(e){
 
-$(".searchBoxInput").keyup(function(e){
-	$("#advancedSearchLink").attr("href","advanced/" + globalproject)
-    var val = $('.searchBoxInput').val();
-    if(e.keyCode == 13){
-        console.log(val);
-        url= arcs.baseURL + 'search/'+projectKid+"/"+ val;
-        window.location.replace(url);
-    }
-});
+      $("#advancedSearchLink").attr("href","advanced/" + window.globalproject)
+        var val = $('.searchBoxInput').val();
+        if(e.keyCode == 13){
+            url= arcs.baseURL + 'search/' + window.globalproject + "/"+ val;
+            window.location.replace(url);
+        }
+        e.stopPropagation()
 
+    });
+  }
+
+
+});

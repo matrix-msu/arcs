@@ -80,7 +80,7 @@
       <a name="searchJump"></a>
       <div id="searchBox">
         <div class="searchIcon"></div>
-        <input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+        <input data-searchlink="true" type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
       </div><br>
      <div class="proper-width">
   <div class="asearch"><span style="cursor:pointer"><a>ADVANCED SEARCH</a></span></div>

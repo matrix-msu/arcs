@@ -87,7 +87,7 @@ class SearchController extends AppController {
 
       if($project != "all")
         parent::verifyGlobals($project);
-    
+
 
       $title = 'Search';
 
@@ -104,15 +104,15 @@ class SearchController extends AppController {
 
         $this->autoRender = false;
         $username = NULL;
-        
+
         $usersC = new UsersController();
-        
+
         if ($user = $usersC->getUser($this->Auth)) {
             $username = $user['User']['username'];
-        }   
+        }
 
         if ($project === "all") {
-  
+
           $projects = array_keys($GLOBALS['PID_ARRAY']);
           $results = array();
 
@@ -121,9 +121,9 @@ class SearchController extends AppController {
             $preFilter = $this->getResourcesFromKeyword($project, $query);
             $keySearch = new Keyword_Search($preFilter);
             $keySearch->execute($query,$project);
-            
+
             $result = $keySearch->getResultsAsArray();
-            
+
             ResourcesController::filterByPermission($username, $result['results']);
 
             $results[$project] = $result;
@@ -638,6 +638,7 @@ class SearchController extends AppController {
                 }
                 ResourcesController::filterByPermission($username, $resource);
 
+
                 $r = $resource[$temp_kid];
 
                 //handle permissions sent to frontent
@@ -779,7 +780,6 @@ class SearchController extends AppController {
             }
 
             ResourcesController::filterByPermission($username, $resources);
-
 
             if( empty( $resources ) ) { //return now, there are no resources.
                 $return = array('results'=> 'No Results' );

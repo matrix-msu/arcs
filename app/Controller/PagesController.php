@@ -30,8 +30,6 @@ class PagesController extends AppController {
 	public function display() {
 
 		$path = func_get_args();
-		//print_r($path);
-		//exit();
 
 		$count = count($path);
 		if (!$count) {
@@ -47,9 +45,12 @@ class PagesController extends AppController {
 					$this->redirect('/');
 				}
 				$pName = array_pop($path);
+				echo "<script>globalproject=\"$pName\"</script>";
+				$this->set("pName", $pName);
 				$count = count($path);
-				
-				if( !array_key_exists(strtolower($pName), $GLOBALS['PID_ARRAY']) ){  //make sure bootstrap has this project info
+				try {
+					static::verifyGlobals($pName);
+				} catch (Exception $e) {
 					$this->redirect('/');
 				}
 			}

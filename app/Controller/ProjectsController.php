@@ -104,8 +104,8 @@ class ProjectsController extends AppController {
 
 	public function single_project($proj) {
 
-        $pid = $GLOBALS['PID_ARRAY'][strtolower($proj)];
-        $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($proj)];
+        $pid = static::getPIDFromProjectName($proj);
+        $sid = static::getResourceSIDFromProjectName($proj);
         $fields = array("Title","Type","Resource Identifier", "systimestamp", "Permissions", "Special User");
         $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
@@ -117,7 +117,7 @@ class ProjectsController extends AppController {
         $allResources = json_decode($kora->return_json(), true);
         $projectResourceKids = array_keys($allResources); //all resource kids in the project. for collections
 
-        $sid = $GLOBALS['PROJECT_SID_ARRAY'][strtolower($proj)];
+        $sid = static::getProjectSIDFromProjectName($proj);
         $fields = array('ALL');
         $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
         $project = json_decode($kora->return_json(), true);
@@ -131,7 +131,7 @@ class ProjectsController extends AppController {
         // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
 		foreach($server_output as $result) {
-            $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($proj)];
+            $sid = static::getPageSIDFromProjectName($proj);
             $fields = array("Image Upload");
             $sort = array();
             $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);

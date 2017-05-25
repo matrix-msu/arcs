@@ -692,7 +692,7 @@ class ResourcesController extends AppController {
         }
 		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
 			$metadataedits = $this->getEditMetadata();
-            if($pName != '') {
+            if(isset($pName) && $pName != '') {
                 $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
             }else{
                 $metadataeditsControlOptions = array();

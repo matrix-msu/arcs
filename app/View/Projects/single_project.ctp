@@ -6,10 +6,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>ARCS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
-
+        <script type="text/javascript">globalproject = "<?=$pName?>"</script>
     </head>
     <body>
-
 		<div class="intro">
            <h1><?php echo $name; ?></h1>
            <br>
@@ -122,17 +121,17 @@
 						</li>
 					</ul>
 				</details>
-				
 
-				
-				
+
+
+
 				<div class="proper-width" id="show-min">
 					<div class="more-info">
 						<span style="cursor:pointer"><a>EXPLORE MORE COLLECTIONS</a></span>
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="more-info">
 				<span style="cursor:pointer"><a href="<?php
 			            //grab the current url, take off the end and add resources.
@@ -157,7 +156,7 @@
           <a name="searchJump"></a>
           <div id="searchBox">
           	<div class="searchIcon"></div>
-		<input data-project-Kid="<?=$kid?>" type="text" class="searchBoxInput search-bar-js" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+		          <input data-searchLink='true' data-project-Kid="<?=$kid?>" type="text" class="searchBoxInput search-bar-js" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
           </div><br>
           <?php echo $this->Html->script('searchBox.js');?>
          <div class="proper-width">
