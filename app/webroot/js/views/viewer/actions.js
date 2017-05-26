@@ -20,15 +20,15 @@
         };
       })(this));
       this.onNavKeyup = _.debounce(this.setNav, 1000);
-      arcs.keys.map(this, {
-        'ctrl+e': arcs.user.isLoggedIn() ? this.edit : function() {},
-        '-': this.zoomOut,
-        '+': this.zoomIn,
-        '0': function() {
-          return this.zoomTo(1);
-        },
-        p: this.onNavClick
-      });
+    //   arcs.keys.map(this, {
+    //     'ctrl+e': arcs.user.isLoggedIn() ? this.edit : function() {},
+    //     '-': this.zoomOut,
+    //     '+': this.zoomIn,
+    //     '0': function() {
+    //       return this.zoomTo(1);
+    //     },
+    //     p: this.onNavClick
+    //   });
       if (screenfull) {
         return screenfull.onchange = _.bind(this.onFullScreenChange, this);
       }

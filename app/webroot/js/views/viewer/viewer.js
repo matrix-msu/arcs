@@ -28,11 +28,11 @@
         };
       })(this));
       arcs.bus.on('resourceResize', this.throttledResize, this);
-      arcs.keys.map(this, {
-        left: this.prev,
-        right: this.next,
-        '?': this.showHotkeys
-      });
+    //   arcs.keys.map(this, {
+    //     left: this.prev,
+    //     right: this.next,
+    //     '?': this.showHotkeys
+    //   });
       this.actions = new arcs.views.ViewerActions({
         el: $('#viewer-controls'),
         collection: this.collection,

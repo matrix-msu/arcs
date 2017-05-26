@@ -22,10 +22,10 @@
       }
       this.el = this.$el = $('#modal');
       this.$el.modal();
-      arcs.keys.map(this, {
-        left: this.prev,
-        right: this.next
-      });
+    //   arcs.keys.map(this, {
+    //     left: this.prev,
+    //     right: this.next
+    //   });
       return this.set(this.options.index, true);
     };
 

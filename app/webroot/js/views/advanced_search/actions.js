@@ -29,11 +29,11 @@
         },
         context: this
       });
-      return arcs.keys.map(this, {
-        'ctrl+o': this.openSelected,
-        'ctrl+e': arcs.user.isLoggedIn() ? this.editSelected : function() {},
-        space: this.previewSelected
-      });
+    //   return arcs.keys.map(this, {
+    //     'ctrl+o': this.openSelected,
+    //     'ctrl+e': arcs.user.isLoggedIn() ? this.editSelected : function() {},
+    //     space: this.previewSelected
+    //   });
     };
 
     Actions.prototype.events = {
