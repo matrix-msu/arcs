@@ -63,7 +63,8 @@ class ResourcesController extends AppController {
         if (empty($userName)) {
             static::lockResourcesByPermission(Permissions::R_Member, $resources);
             static::lockResourcesByPermission(Permissions::R_Special, $resources);
-        } else {
+
+        } else if (is_array($resources)) {
 
             $KIDs = array();
             $i = 0;
@@ -528,16 +529,27 @@ class ResourcesController extends AppController {
 
     public function viewtype($projectName){
 
+      $username = NULL;
+      $usersC = new UsersController();
+      if ($user = $usersC->getUser($this->Auth)) {
+          $username = $user['User']['username'];
+      }
+
       if(isset($this->request->data['resource_kids'])){
         $json =  $this->request->data['resource_kids'];
         $rKids = json_decode($json);
         $search = new Resource_Search($rKids, $projectName);
         $results = $search->getResultsAsArray();
+        static::filterByPermission($username, $results['results']);
+
         echo "<script>var results_to_display = ".json_encode($results).";</script>";
-      }
-      else if(isset($this->request->data['orphaned_kids'])){
+
+        // this else if is not doing anything. Orphans doesn't work
+        // with the viewtype html.
+      } else if(isset($this->request->data['orphaned_kids'])) {
         $pKids = $this->request->data['orphaned_kids'];
-      }else{
+
+      } else {
           $this->Collection->recursive = -1;
           $user_id =  $this->Session->read('Auth.User.id');
           $collections = '';
@@ -568,7 +580,7 @@ class ResourcesController extends AppController {
                   }
                   $count++;
               }
-          }else { //not signed in
+          } else { //not signed in
               $collections = $this->Collection->find('all', array(
                   'order' => 'Collection.modified DESC',
                   'conditions' => array(
@@ -587,6 +599,7 @@ class ResourcesController extends AppController {
 
           $search = new Resource_Search($resourceKids, $pName);
           $results = $search->getResultsAsArray();
+          static::filterByPermission($username, $results['results']);
           echo "<script>var results_to_display = ".json_encode($results)."</script>";
           $this->set("projectName", $pName);
       }
