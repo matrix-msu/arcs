@@ -401,13 +401,13 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                         <form class="newCommentForm"><textarea name="comment" class="commentTextArea"
                                                                placeholder="Enter discussion here ..."></textarea><br>
                             <button type="submit">ADD NEW DISCUSSION</button>
-                            <?php  ?>
+              
                         </form>
 
                         <form class="newReplyForm"><textarea name="comment" class="replyTextArea"
                                                              placeholder="Enter reply here..."></textarea><br>
                             <button type="submit">ADD NEW REPLY</button>
-                            <?php  ?>
+
                         </form>
                     </div>
                 </div>

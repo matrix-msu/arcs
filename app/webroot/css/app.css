@@ -10535,11 +10535,9 @@ input[type=range]:focus::-ms-fill-upper {
 }
 /*Discussion*/
 #discussionTab {
-  overflow: auto;
   /*height: 743px;*/
 }
 .commentContainer {
-  height: 729px;
   overflow: overlay;
   text-transform: none;
   border-bottom: 1px solid #cdcdcd !important;

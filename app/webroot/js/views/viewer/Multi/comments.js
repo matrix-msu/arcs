@@ -1,12 +1,14 @@
-    
+parent = null
+
 $(document).ready(function(){
       getComments();
 
-      var parent;
-
-
 
       $(".discussion").click(function () {
+          var viewer = $("#ImageWrap"),
+              submit = $(".submitContainer"),
+              toolbar = $("#resource-tools")
+          $(".commentContainer").css("height", viewer.height() + toolbar.height() + 1 - submit.height());
           getComments();
       });
 
@@ -51,7 +53,6 @@ $(document).ready(function(){
               });
           }
           else if ($(".replyTextArea").val() != "") {
-
               $.ajax({
                   url: NEW_COM_URL,
                   type: "POST",
@@ -68,6 +69,7 @@ $(document).ready(function(){
                       getComments();
                   }
               });
+              parent = null;
           }
       });
 
