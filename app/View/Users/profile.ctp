@@ -85,10 +85,10 @@
 
 <script type='text/javascript'>
     // edit user
-    arcs.profileView = new arcs.views.Profile({
-        el: $('#user-profile'),
-        model: new arcs.models.User(<?php echo json_encode($user); ?>)
-    });
+    // arcs.profileView = new arcs.views.users.Profile({
+    //     el: $('#user-profile'),
+    //     model: new arcs.models.User(<?php echo json_encode($user); ?>)
+    // });
 
     // Score bubble tooltip
     $(document).ready(function() {

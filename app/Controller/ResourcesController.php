@@ -209,6 +209,26 @@ class ResourcesController extends AppController {
     }
 
     /**
+     * Return resource info from kid.
+     *
+     * @param string $id    resource kid
+     */
+    public function viewKid($kid=null) {
+        if (!$this->request->is('get')) throw new MethodNotAllowedException();
+        if (!$kid) throw new BadRequestException();
+        $resource = $this->getResource($kid)[$kid];
+        $pages = $this->getPages($kid);
+        $page1 = reset($pages);
+        if (!empty($page1['Image Upload']['localName'])) {
+            $resource['thumb'] = $this->smallThumb($page1['Image Upload']['localName']);
+        }
+        else {
+            $resource['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
+        }
+        $this->json(200, $resource);
+    }
+
+    /**
      * Delete the resource, if authorized.
      *
      * @param string $id    resource id
@@ -705,7 +725,7 @@ class ResourcesController extends AppController {
         }
 		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
 			$metadataedits = $this->getEditMetadata();
-            if(isset($pName) && $pName != '') {
+            if($pName != '') {
                 $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
             }else{
                 $metadataeditsControlOptions = array();

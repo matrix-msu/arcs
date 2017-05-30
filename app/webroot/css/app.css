@@ -12327,7 +12327,8 @@ ul.annotations li.annotation:hover {
 }
 #registerModal .register-content {
   width: 60em;
-  height: 30em;
+  height: 36em;
+  /*Was 30em*/
   padding: 0;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
 }
@@ -12346,17 +12347,57 @@ ul.annotations li.annotation:hover {
   color: #fff;
 }
 #registerModal .register-content .left input[type="text"],
-#registerModal .register-content .left input[type="password"] {
+#registerModal .register-content .left input[type="password"],
+#registerModal .register-content .left select,
+#registerModal .register-content .left .selectDiv {
   margin-top: 5.8%;
   padding: 1em 2em 1em 2em;
   width: 360px;
   height: 60px;
   background: #0093be;
   color: #fff;
-  border: 2px;
+  border: 1px;
   border-style: solid;
   border-color: #fff;
   font-size: 100%;
+  appearance: none;
+  -moz-appearance: none;
+  /* Firefox */
+  -webkit-appearance: none;
+  /* Safari and Chrome */
+}
+#registerModal .register-content .left .selectDiv {
+  overflow: hidden;
+  padding: 0 2em;
+  line-height: 60px;
+  cursor: pointer;
+}
+#registerModal .register-content .left .selectDiv:after {
+  content: ' ';
+  display: inline-block;
+  color: #0093be;
+  padding: 4px;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  bottom: 58px;
+  right: 53px;
+}
+#registerModal .register-content .left #projectDropdown {
+  border: 1px solid white;
+  background-color: #0093be;
+}
+#registerModal .register-content .left #projectDropdown > p {
+  padding-left: 2em;
+  cursor: pointer;
+}
+#registerModal .register-content .left #projectDropdown > .selected {
+  color: #0093be;
+  background-color: white;
 }
 #registerModal .register-content .left input::-webkit-input-placeholder {
   color: #fff;
@@ -12378,7 +12419,7 @@ ul.annotations li.annotation:hover {
 }
 #registerModal .register-content .left .requiredfield {
   float: right;
-  padding-top: 5px;
+  margin-top: -19px;
   font-size: 80%;
   color: rgba(255, 255, 255, 0.5);
 }
@@ -12398,6 +12439,7 @@ ul.annotations li.annotation:hover {
   text-transform: uppercase;
   font-size: 120%;
   line-height: 50px;
+  font-weight: bold;
 }
 #registerModal .register-content .right {
   position: relative;
@@ -12451,6 +12493,7 @@ ul.annotations li.annotation:hover {
   text-transform: uppercase;
   font-size: 120%;
   line-height: 50px;
+  font-weight: bold;
 }
 .exit {
   position: absolute;

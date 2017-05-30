@@ -34,6 +34,7 @@
 
     Profile.prototype.initialize = function(vars) {
       var annoReady, flagsReady, metaReady, that, usersReady;
+      console.log(vars);
       info.id = vars.id;
       that = this;
       annoReady = $.ajax({
@@ -72,14 +73,14 @@
                     success: function(aresult) {
                       var div, resType, thumb;
                       thumb = aresult['thumb'];
-                      resType = aresult['type'];
+                      resType = aresult['Type'];
                       if (resType === null) {
                         resType = 'Unknown Type';
                       }
                       if (!(count >= 15)) {
                         div = $('#annotations-tab .cont')[count];
                         $(div).find('img').attr('src', thumb);
-                        $(div).find('.type').html(resType);
+                        $(div).find('.type').text(resType);
                         if (aresult['title'] !== null) {
                           $(div).find('span.name').html(aresult['title']);
                         }
@@ -133,14 +134,14 @@
                     success: function(tresult) {
                       var div, resType, thumb;
                       thumb = tresult['thumb'];
-                      resType = tresult['type'];
+                      resType = tresult['Type'];
                       if (resType === null) {
                         resType = 'Unknown Type';
                       }
                       if (!(tcount >= 15)) {
                         div = $('#transcriptions-tab .cont')[tcount];
                         $(div).find('img').attr('src', thumb);
-                        $(div).find('.type').html(resType);
+                        $(div).find('.type').text(resType);
                         if (tresult['title'] !== null) {
                           $(div).find('span.name').html(tresult['title']);
                         }
@@ -194,6 +195,7 @@
           id: info.id
         },
         success: function(ddata) {
+          console.log(ddata)
           var dcontents, dcount;
           if (!ddata.length) {
             $('#discussion-tab #contents').html('<h3>No discussion items</h3>');
@@ -212,16 +214,16 @@
                   success: function(dresult) {
                     var div, resType, thumb;
                     thumb = dresult['thumb'];
-                    resType = dresult['type'];
+                    resType = dresult['Type'];
                     if (resType === null) {
                       resType = 'Unknown Type';
                     }
                     if (!(dcount >= 15)) {
                       div = $('#discussion-tab .cont')[dcount];
                       $(div).find('img').attr('src', thumb);
-                      $(div).find('.type').html(resType);
+                      $(div).find('.type').text(resType);
                       if (dresult['title'] !== null) {
-                        $(div).find('span.name').html(dresult['title']);
+                        $(div).find('span.name').text(dresult['title']);
                       }
                     }
                     if (dresult['title'] !== null) {
@@ -242,7 +244,7 @@
                 content: a['content']
               });
               if (!(dcount >= 15)) {
-                dcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>Resource Name</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['content'] + '</p></div>';
+                dcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['transcript'] + '</p></div>';
               }
               dcount++;
             });
