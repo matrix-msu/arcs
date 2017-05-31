@@ -48,7 +48,7 @@
             <?php
 
                 echo $this->element('toolbar');
-                if (isset($access) && !(bool)$access) {
+                if (isset($resourceAccess) && !(bool)$resourceAccess) {
                     if (isset($user['loggedIn']) && $user['loggedIn'] != '' ) {
                         echo $this->element('Permissions/request_permission');
                     } else {

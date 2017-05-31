@@ -62,6 +62,7 @@ class UsersController extends AppController
     {
         $user = $this->User->findByRef($ref);
         if (!$user) {
+
             $this->redirect('404');
         }
         $id = $user['User']['id'];

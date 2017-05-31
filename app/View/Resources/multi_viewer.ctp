@@ -197,9 +197,11 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
                 </div>
                 <hr>
-                <div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
+                <div id="collectionMessage" style="margin-left:6px;">1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>.</div>
                 <br>
-                <button class="viewCollection" type="submit">VIEW COLLECTION</button>
+                <div id="collectionWarning" style="margin-left:6px;"></div>
+                <br>
+                <a id="viewCollectionLink" ><button class="viewCollection" type="submit">VIEW COLLECTION</button></a>
                 <button class="backToSearch" type="submit">BACK TO RESOURCE</button>
             </div>
         </div>

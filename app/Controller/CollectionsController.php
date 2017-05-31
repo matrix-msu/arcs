@@ -210,20 +210,45 @@ class CollectionsController extends AppController {
 
         $collection = $this->Collection->findByCollection_id($this->request->data['collection']);
 
-        if (isset($collection)) {
-            $collection = $collection['Collection'];
+        //find all resource kids already in the collection
+        $collectionResources = $this->Collection->find('all', array(
+            'order' => 'Collection.modified DESC',
+            'conditions' => array('collection_id' => $collection['Collection']['collection_id']),
+            'fields' => array('resource_kid')
+        ));
+        $existingResourceKids = array();
+        foreach( $collectionResources as $exc ){
+            array_push($existingResourceKids, $exc['Collection']['resource_kid']);
+        }
 
+        //filter out any duplicate resource kids
+        $duplicates = false;
+        $newResources = array_diff( $this->request->data['resource_kids'], $existingResourceKids );
+        if( sizeof($newResources) < sizeof($this->request->data['resource_kids']) ){
+            $duplicates = true;
+        }
+
+        if (isset($collection)) {
+
+            $collection = $collection['Collection'];
             $object = array(
                 'collection_id' => $collection['collection_id'],
-                'resource_kid'  => $this->request->data['resource_kid'],
-                'user_id'       => $this->Auth->user('id'),
-                'user_name'     => $this->Auth->user('name'),
-                'title'         => $collection['title'],
-                'description'   => $collection['description'],
-                'public'        => $collection['public']
+                'user_id' => $this->Auth->user('id'),
+                'user_name' => $this->Auth->user('name'),
+                'title' => $collection['title'],
+                'description' => $collection['description'],
+                'public' => $collection['public']
             );
 
-            $this->Collection->add($object);
+            $dataArray = array();
+            foreach( $newResources as $resource_kid ) {
+                $object['resource_kid'] = $resource_kid;
+                array_push($dataArray, $object);
+            }
+            $this->Collection->saveMany($dataArray); //save the actual data
+
+            $object['duplicates'] = $duplicates; //send if there were any duplicate kids to the view
+            $object['new_resources'] = sizeof($newResources); //send if there were any duplicate kids to the view
             $this->json(201, $object);
             return;
         }
@@ -295,12 +320,9 @@ class CollectionsController extends AppController {
         //if (!$this->request->is('get')) throw new MethodNotAllowedException();
         $user_id =  $this->Session->read('Auth.User.id');
 
-        if (isset($this->request->query['pKid'])) {
+        if (isset($this->request->query['pName'])) {
 
-            $pid = hexdec( explode('-', $this->request->query['pKid'])[0] );
-            $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-
-            $projectResourceKids = $this->getProjectResources($pName);
+            $projectResourceKids = $this->getProjectResources($this->request->query['pName']);
 
             if ($user_id !== null) { //signed in
                 $collections = $this->Collection->find('all', array(

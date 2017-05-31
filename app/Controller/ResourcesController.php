@@ -720,8 +720,10 @@ class ResourcesController extends AppController {
             $this->pushToArray($info_array, $resources);
 
         }
+        //echo json_encode($projectsArray);
+        //die;
         if (empty($resources)) {
-            $this->set("access", false);
+            $this->set("resourceAccess", false);
         }
 		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
 			$metadataedits = $this->getEditMetadata();

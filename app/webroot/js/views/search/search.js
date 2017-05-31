@@ -973,13 +973,14 @@
           console.log(href);
         }
       })
+
+      //clicked on a individual resource, either select or unselect
       $('.select-circle').click(function(e) {
         e.stopPropagation();
-        makeSelect = false;
+        var makeSelect = false;
         if($(this).hasClass("selected")){
           $(this).removeClass('selected')
           $(this).closest(".circle-container").css('background', '')
-          // console.log($(this).parent().parent().find('.select-overlay'));
           $(this).closest('.select-overlay').css('background', '')
           $(this).closest('.select-overlay').css('opacity', '')
           makeSelect = false;
@@ -988,35 +989,34 @@
           $(this).addClass('selected')
           $(this).closest(".circle-container").css('background', 'transparent')
           $(this).closest('.select-overlay').css('opacity', 1)
-          // console.log($(this).closest('.select-overlay'));
-
           $(this).closest('.select-overlay').css('background', 'rgba(0, 147, 190, 0.75)')
           makeSelect = true;
         }
-        var index;
         var data_id = $(this).closest(".resource-thumb")
         data_id = data_id[0]
         data_id = data_id.getAttribute('data-id');
-        // console.log(makeSelect);
-        if (makeSelect){
+        if (makeSelect){ //selecting the clicked resource
           Search.selected.push(data_id)
           selectedMap['selected'] = Search.selected
-          $("#selected-resource-ids").html(Search.selected)
-          $('#selected-count').html(Search.selected.length);
-          // console.log("add to array");
-        }
-        else{
+        }else{ //deselecting the resource
           var index = Search.selected.indexOf(data_id)
           Search.selected.splice(index,1)
           selectedMap['selected'] = Search.selected
-          console.log(selectedMap['selected'])
-          $("#selected-resource-ids").html(Search.selected)
-          $('#selected-count').html(Search.selected.length);
-          // console.log("delete from array");
         }
-
-
+        //update the add to collections button informations
+        $("#selected-resource-ids").html(JSON.stringify(Search.selected))
+        $('#selected-count').html(Search.selected.length)
+        if( Search.selected.length == 0 ){ //not clickable
+          $('#selected-all').css({
+            color: '#C1C1C1'
+          });
+        } else { //clickable
+          $('#selected-all').css({
+            color: 'black'
+          });
+        }
       });
+
       $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
         $('.pageNumber').removeClass('selected');
@@ -1040,7 +1040,7 @@
           }
           arcs.searchView.selectAll();
           $('#toggle-select').html('DE-SELECT');
-          $('#selected-resource-ids').html(selectedMap["selected"]);
+          $('#selected-resource-ids').html(JSON.stringify(selectedMap["selected"]));
           return $('#selected-count').html(selectedMap["selected"].length);
         } else {
           $('#selected-all').css({
@@ -1050,7 +1050,7 @@
           this.id = 'select-all';
           arcs.searchView.unselectAll();
           $('#toggle-select').html('SELECT');
-          $('#selected-resource-ids').html(selectedMap["selected"]);
+          $('#selected-resource-ids').html(JSON.stringify(selectedMap["selected"]));
           return $('#selected-count').html(selectedMap["selected"].length);
         }
       });
