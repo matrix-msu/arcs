@@ -1,5 +1,7 @@
 $( document ).ready(function() {
 
+    //todo - make associators do the update without reloading thing.
+
     //data sent to arcs kora plugin---
     var metadataIsSelected = 0;     //0 or 1 to know if there is one selected
     var editBtnClick = 0;           //0 or 1
@@ -19,6 +21,7 @@ $( document ).ready(function() {
 
     //the main submission function for when
     function addMetadataEdits() {
+        $('#meta_textarea').addClass('meta_ajaxwait').removeAttr('id');
         $.ajax({
             url: arcs.baseURL + "metadataedits/add",
             type: "post",
@@ -37,7 +40,13 @@ $( document ).ready(function() {
                 metadata_kid: meta_resource_kid
             },
             success: function (data) {
-                window.location.reload(); //reload the page on a success.
+                var fill = '<td>' +
+                        '<div class="icon-meta-lock">&nbsp;</div>' +
+                        '<div>Pending Approval</div>' +
+                    '</td>';
+                $(".meta_ajaxwait").parent().parent().replaceWith(fill);
+                metadataIsSelected = 0;
+                editBtnClick = 0;
             }
         })
     }
@@ -285,6 +294,7 @@ $( document ).ready(function() {
                             $('#meta_textarea option[value="' + meta_value_before + '"]').prop('selected', true);
                         }
                     } else if (meta_control_type == 'associator') {
+                        $(this).children('div').eq(1).append('<div id="meta_textarea"></div>');
                         $('#associatorTitle').html('Edit ' + meta_field_name + ' Metadata');
                         $('.associatorModalBackground').show();
                         $('.associator_numbers').html(''); //clear out the pagination numbers
@@ -345,7 +355,12 @@ $( document ).ready(function() {
                 meta_new_value += "\n";
             }
         }
+        $(".metadata-save-btn").removeClass("metadata-save-btn") //change back to edit button
+            .text("EDIT")
+            .addClass("metadata-edit-btn")
+            .css("color", '');
         addMetadataEdits();
+        $('#closeAssociatorConfirm').click();
     });
 
     //closing the edit associator confirm modal
@@ -376,6 +391,7 @@ $( document ).ready(function() {
 
     });
     $('#modalCloseAssociatorSelect').click(function () {
+        $('#meta_textarea').remove();
         metadataIsSelected = 0;
 		$('#associatorSearchObjects').html('');
 		$(".associatorModalBackground").hide();
@@ -480,6 +496,10 @@ $( document ).ready(function() {
         if (e.target.getAttribute("class") == 'metadata-save-btn') {
             e.stopPropagation();
             if (metadataIsSelected == 1) {
+                $(".metadata-save-btn").removeClass("metadata-save-btn") //change back to edit button
+                    .text("EDIT")
+                    .addClass("metadata-edit-btn")
+                    .css("color", '');
                 getMetadataForSubmit();  //get data
                 addMetadataEdits();     //submit the data
             }
@@ -519,7 +539,6 @@ $( document ).ready(function() {
 
     //save was clicked. this is just a helper function that is run to grab the data before submit.
     function getMetadataForSubmit(){
-        $(".metadata-save-btn").removeClass("metadata-save-btn");
         meta_new_value = '';
         if (meta_control_type == 'text') {
             meta_new_value = checkForNbsp( $("#meta_textarea").val() );
