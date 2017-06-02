@@ -100,7 +100,10 @@ _resource.sliderMove.adjust = function(element) {
         _resource.SliderEndCSS(container, true);
     }
 }
+
 _resource.currWidth = null;
+_resource.containerWidth = null;
+
 _resource.SetWidths = function(container) {
     if (_resource.currWidth == null) {
         $(container).css({
@@ -112,6 +115,9 @@ _resource.SetWidths = function(container) {
         _resource.btnWidth = parseInt(
             $(container).find(".button-left").css("width")
         );
+        _resource.containerWidth = parseInt(
+            $(_resource.resourceContainer).width()
+        );
     }
 }
 _resource.SliderStartCSS = function(container, reset) {
@@ -122,7 +128,10 @@ _resource.SliderStartCSS = function(container, reset) {
             display: "none"
         })
         $(container).css({
-            width: _resource.currWidth + _resource.btnWidth
+            width: _resource.currWidth
+        });
+        $(_resource.resourceContainer).css({
+            width: _resource.containerWidth + _resource.btnWidth
         });
     } else {
         $(container).find(".button-left").css({
@@ -131,6 +140,9 @@ _resource.SliderStartCSS = function(container, reset) {
         $(container).css({
             width: _resource.currWidth
         });
+        $(_resource.resourceContainer).css({
+            width: _resource.containerWidth 
+        })
     }
 }
 _resource.SliderEndCSS = function(container, reset) {
@@ -140,8 +152,11 @@ _resource.SliderEndCSS = function(container, reset) {
             display: "none"
         })
         $(container).css({
-            width: _resource.currWidth + _resource.btnWidth
+            width: _resource.currWidth
         });
+        $(_resource.resourceContainer).css({
+            width: _resource.containerWidth + _resource.btnWidth
+        })
     } else {
         $(container).find(".button-right").css({
             display: "initial"
