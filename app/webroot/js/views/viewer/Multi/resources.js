@@ -130,7 +130,7 @@ _resource.SliderStartCSS = function(container, reset) {
         $(container).css({
             width: _resource.currWidth
         });
-        $(_resource.resourceContainer).css({
+        $(_resource.resourceContainer, container).css({
             width: _resource.containerWidth + _resource.btnWidth
         });
     } else {
@@ -140,7 +140,7 @@ _resource.SliderStartCSS = function(container, reset) {
         $(container).css({
             width: _resource.currWidth
         });
-        $(_resource.resourceContainer).css({
+        $(_resource.resourceContainer, container).css({
             width: _resource.containerWidth 
         })
     }
@@ -154,7 +154,7 @@ _resource.SliderEndCSS = function(container, reset) {
         $(container).css({
             width: _resource.currWidth
         });
-        $(_resource.resourceContainer).css({
+        $(_resource.resourceContainer, container).css({
             width: _resource.containerWidth + _resource.btnWidth
         })
     } else {
