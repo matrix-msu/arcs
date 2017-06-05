@@ -13834,12 +13834,15 @@ input.user-reg-btn.btn.btn-success:focus {
   text-align: center;
   width: 300px;
   margin: auto;
-  margin-top: 20%;
+  margin-top: 10%;
 }
 .new-passwd-box {
-  width: 600px;
   margin: auto;
+  margin-bottom: 15%;
   text-align: center;
+}
+.new-passwd-box input[type="password"] {
+  width: 300px !important;
 }
 .new-passwd-box .change-passwd-btn {
   color: #ffffff;
