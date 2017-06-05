@@ -183,9 +183,6 @@
     Router::connect('/users/request_permission/*',
         array('controller' => 'users', 'action' => 'requestPermission')
     );
-///////
-//toolbar
-//////
     Router::connect('/users/getAllUsers',
         array('controller' => 'users', 'action' => 'getAllUsers')
     );

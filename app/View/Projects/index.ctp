@@ -1,7 +1,6 @@
 
 <?php echo $this->Session->flash();
 echo $this->Session->flash('flash_success'); ?>
-<!--?php print_r( $this->Session ); ? -->
 <?php $this->set('index_toolbar', true); ?>
 
 <div class="intro">
@@ -86,7 +85,7 @@ echo $this->Session->flash('flash_success'); ?>
 		}
 	?>
 	window.map.removeLayer(window.polygon);
-	
+
 	var group = new L.featureGroup(marker_array);
 
 	map.fitBounds(group.getBounds()).setZoom(7);

@@ -55,6 +55,11 @@
                         echo $this->element('Permissions/resource_permission');
                     }
                 }
+                if (isset($this->request->data["flashSet"])) {
+                  echo $this->element("flash_success", array(
+                    "message" => $this->request->data["flashSet"]
+                  ));
+                }
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
                 echo $this->fetch('content');

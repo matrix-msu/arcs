@@ -2,7 +2,7 @@
     <div class="permission-content">
         <div class="modal-exit"><p><a id="#close" href="#"><?= $this->Html->image('close.svg');?></a></p></div>
         <div class="permission-modal-header">
-            <h1>Request User Access for this Project</h1>
+            <h1>Request User Access</h1>
         </div>
 
         <div class="permission-modal-content">
@@ -20,12 +20,26 @@
 
   $(document).ready(function() {
     $("#request_permission_model").find(".request").click(function(e){
-      $.ajax({
-        url: arcs.baseURL + "users/request_permission/7B-2E0-0",
-        success: function(result){
-          console.log(result);
-        }
-      });
+      if (window.locked_array.length) {
+        var param = locked_array[0]
+        $.ajax({
+          url: arcs.baseURL + "users/request_permission/" + param,
+          success: function(response){
+            $('<form />')
+                .hide()
+                .attr({ method : "post" })
+                .attr({ action : arcs.baseURL})
+                .append($('<input />')
+                    .attr("type","hidden")
+                    .attr({ "name" : "flashSet" })
+                    .val(response)
+                )
+                .append('<input type="submit" />')
+                .appendTo($("body"))
+                .submit();
+          }
+        });
+      }
     })
   })
 

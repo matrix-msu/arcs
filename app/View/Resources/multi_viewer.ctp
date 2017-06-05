@@ -9,7 +9,7 @@ var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
 var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 
-
+var locked_array = <?=json_encode($locked_array)?>;
 var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
 
 var resourceKid = "";//"<?php  ?> ";
@@ -403,7 +403,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                         <form class="newCommentForm"><textarea name="comment" class="commentTextArea"
                                                                placeholder="Enter discussion here ..."></textarea><br>
                             <button type="submit">ADD NEW DISCUSSION</button>
-              
+
                         </form>
 
                         <form class="newReplyForm"><textarea name="comment" class="replyTextArea"

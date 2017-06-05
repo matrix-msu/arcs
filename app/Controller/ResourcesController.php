@@ -627,14 +627,15 @@ class ResourcesController extends AppController {
     }
 
     //view muitiple resources in a viewer
-    public function multi_viewer($id=''){
-
+    public function multi_viewer($id='') {
+        $pName = NULL;
         $resources = array();
         $projectsArray = array();
         $seasons = array();
         $excavations = array();
         $subjects = array();
         $resources_array = array();
+        $locked_array = array();
         if($this->request->method() === "POST" && isset($this->request->data['pageSet'])){
             $pageIndex = $this->request->data['pageSet'];
             $this->set("pageSet", $pageIndex);
@@ -672,6 +673,7 @@ class ResourcesController extends AppController {
             $permission = array_values($info_array)[0];
             //skip resources with insufficent permissions
             if(isset($permission['Locked']) && (bool)$permission['Locked']) {
+                array_push($locked_array, $permission['kid']);
                 continue;
             }
 
@@ -720,37 +722,37 @@ class ResourcesController extends AppController {
             $this->pushToArray($info_array, $resources);
 
         }
-        //echo json_encode($projectsArray);
-        //die;
+
         if (empty($resources)) {
             $this->set("resourceAccess", false);
         }
-		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
-			$metadataedits = $this->getEditMetadata();
-            if($pName != '') {
-                $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
-            }else{
-                $metadataeditsControlOptions = array();
-            }
-            $flags = $this->getFlags($resources_array);
-			$this->set("resources", $resources);
-			$this->set("projectsArray", $projectsArray);
-			ksort($seasons);
-			$this->set("seasons", $seasons);
-			ksort($excavations);
-			$this->set("excavations", $excavations);
-			$this->set("subjects", $subjects);
-			$this->set("metadataEdits", $metadataedits);
-			$this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
-			$this->set("flags", $flags);
-		}else{  //this is for getting the data for a export data
-			echo json_encode([$projectsArray,
-								$seasons,
-								$excavations,
-								$resources,
-								$subjects]);
-			die;
-		}
+    		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
+    			$metadataedits = $this->getEditMetadata();
+                if($pName != '') {
+                    $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
+                }else{
+                    $metadataeditsControlOptions = array();
+                }
+                $flags = $this->getFlags($resources_array);
+    			$this->set("resources", $resources);
+    			$this->set("projectsArray", $projectsArray);
+    			ksort($seasons);
+    			$this->set("seasons", $seasons);
+    			ksort($excavations);
+    			$this->set("excavations", $excavations);
+    			$this->set("subjects", $subjects);
+    			$this->set("metadataEdits", $metadataedits);
+    			$this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
+    			$this->set("flags", $flags);
+          $this->set('locked_array', $locked_array);
+    		}else{  //this is for getting the data for a export data
+    			echo json_encode([$projectsArray,
+    								$seasons,
+    								$excavations,
+    								$resources,
+    								$subjects]);
+    			die;
+    		}
 
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Users Controller
  *
@@ -11,38 +12,143 @@
 class UsersController extends AppController
 {
     public $name = 'Users';
-    public $uses = array('User');
+    public $uses = array('User', 'Mapping');
     public function beforeFilter()
     {
         parent::beforeFilter();
         $this->Auth->allow(
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
-          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite',
-          "requestPermission"
+          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite'
           );
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
-    public function requestPermission($project) {
+    /**
+      * Takes a parameter which can be either (KID, PID, project name)
+      * and resolves a project.
+      *
+      * @param $param either (KID, PID, project name)
+      *
+      * @return a map with project name and a bool value for $param type
+      */
+    public static function resolveProject($param) {
+      $project = NULL;
+      $isResource = false;
+      // test for project name
+      try {
+        parent::getPIDFromProjectName($param);
+        $project = $param;
+
+      } catch (Exception $e) {
+        // test for a KID
+        if ($tmp = parent::convertKIDtoProjectName($param)) {
+          $project = $tmp;
+          $isResource = true;
+
+        } else {
+          // test for a pid
+            try {
+              $projects = parent::getPIDArray();
+              if ($tmp = array_search($param, $projects)) {
+                  $project = $tmp;
+              }
+            } catch (Exception $e){}
+        }
+      }
+      return array(
+        "project" => $project,
+        "isResource" => $isResource
+      );
+    }
+    /**
+      * Takes a project name and finds the corresponding admins
+      *
+      * @param $project is the project name
+      *
+      * @return array of admin emails
+      */
+    public function getAdmins($project) {
+      $pid;
+      $ids = array();
+      $mapping = array();
+
+      try {
+        $pid = parent::getPIDFromProjectName($project);
+      } catch (Exception $e) {
+        // indicate no admins
+        return array();
+      }
+
+      // sql query on admins on the project
+      $res = $this->Mapping->find('all', array(
+        'fields' => array('Mapping.id_user'),
+        'conditions' => array(
+          'Mapping.role' => 'Admin',
+          'Mapping.pid'  => $pid
+        )
+      ));
+
+      // push the ID's to an array
+      foreach ($res as $key => $value) {
+        array_push($ids, $value['Mapping']['id_user']);
+      }
+
+      // Find the ID's in the user table
+      $res = $this->User->findAllById($ids);
+
+      // push the emails to an array
+      foreach ($res as $key => $value) {
+        array_push($mapping, $value['email']);
+      }
+      // return the admin emails
+      return $mapping;
+    }
+    /**
+      * Takes a parameter which can be either (KID, PID, project name)
+      * sends a permission request to the admins
+      *
+      * @param $project is the project name
+      *
+      * @return array of admin emails
+      */
+    public function requestPermission($param) {
+      $template; $viewVars; $admins;
+
+      $resolve = static::resolveProject($param);
+      $admins = $this->getAdmins($resolve["project"]);
+      // don't render a view
       $this->autoRender = false;
-      if ($user = $this->getUser($this->Auth)) {
-        //print_r($user);die;
+
+      // assert email dependencies
+      if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
+        // Set the template and view vars based on type
+        if ($resolve["isResource"]) {
+          $template = 'requestAccessResource';
+          $viewVars = array('user' => $user, 'project' => $resolve["project"], 'resource' => $param);
+          // else is project permissions
+        } else {
+          $template = 'requestAccessProject';
+          $viewVars = array('user' => $user, 'project' => $resolve["project"]);
+        }
+        // Send emails to admins
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
-        $Email->viewVars(array('user' => $user, 'project' => $project))
-            ->template('requestAccess', 'default')
-            ->emailFormat('html')
-            ->subject('User Access Request')
-            ->to($user['email'])
-            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        //$Email->send();
+        $Email->viewVars($viewVars)
+              ->template($template, 'default')
+              ->emailFormat('html')
+              ->subject('User Access Request')
+              ->to($admins)
+              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        $Email->send();
 
-
-      } else {
-        echo "Not logged in";
+        // return the flash message for frontend
+        return "Success, the request has been sent.";
       }
+      // return the flash message for frontend
+      return "Error, Request was not set";
     }
+
     public function getUser(&$auth){
         if ($auth->loggedIn()){
             $user = $this->User->find('first', array(
@@ -62,7 +168,6 @@ class UsersController extends AppController
     {
         $user = $this->User->findByRef($ref);
         if (!$user) {
-
             $this->redirect('404');
         }
         $id = $user['User']['id'];
