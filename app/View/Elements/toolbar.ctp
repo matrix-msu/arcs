@@ -1,5 +1,14 @@
 <meta id="viewport" name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"/>
-
+<?php
+	if( isset($this->request->params['pass'][0]) && $this->request->params['pass'][0] == 'index') {
+		$index_toolbar = 1;
+	}
+	$helpBlue = '';
+	if( //is a help page make help link blue
+		$this->request->params['controller'] == 'help' &&
+		$this->request->params['action'] == 'display'
+	){$helpBlue = ' btn-blue';}
+?>
 <div id="toolbar" class="row">
     <?php if (!isset($logo) || $logo): ?>
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
@@ -77,10 +86,12 @@
 		</div>
 		<div id= 'belowProjects'>
 		    <?php
-		        if( $this->request->params['action'] == 'search' &&
+		        if( ($this->request->params['action'] == 'search' &&
                        $this->request->params['action'] == 'search' &&
                        isset($this->request->params['pass'][0]) &&
-                       $this->request->params['pass'][0] == 'all' )
+                       $this->request->params['pass'][0] == 'all') ||
+						(isset($this->request->params['pass'][0]) &&
+						 $this->request->params['pass'][0] == 'index')  )
                 {
                     $param1 = '';
                     if( isset($this->request->params['pass'][1]) ){
@@ -96,22 +107,20 @@
                         $this->request->params['controller'] != 'user' &&
                         $this->request->params['action'] != 'profile'
                    ){
-		                $pKid = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                        $pKid = explode('/', $pKid);
-                        $pKid = array_pop($pKid);
-                        $pKid = '/' .explode('?', $pKid)[0];
-                        if( isset($projectName) ){
-                            $pKid = '/'.$projectName;
-                        }
-
-                        //make multi-resources' resource link blue
-                        $resourceBlue = '';
-                        if(
-                            $this->request->params['controller'] == 'resources' &&
-                            $this->request->params['action'] == 'multi_viewer'
-                        ){
-                            $resourceBlue = ' btn-blue';
-                        }
+					$resourceBlue = '';
+					if( //is multi-resource, so make the link blue
+						$this->request->params['controller'] == 'resources' &&
+						$this->request->params['action'] == 'multi_viewer'
+					){
+						$resourceBlue = ' btn-blue';
+						$pKid = '/temp';
+					}else{ //everything else
+						$pKid = $this->request->params['pass'][0];
+						if( $pKid === 'resources' ){
+							$pKid = $this->request->params['pass'][1];
+						}
+						$pKid = '/'. $pKid;
+					}
             ?>
 			 <a id="resources" class="btn btn-grey<?php echo $resourceBlue ?>"
 				href="<?php echo $this->Html->url('/resources').$pKid ?>">
@@ -129,8 +138,8 @@
 
 			<?php } ?>
 
-			<a id="help" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/help/')?>">
+			<a id="help" class="btn btn-grey<?php echo $helpBlue ?>"
+				href="<?php echo $this->Html->url('/help')?>">
 				<i class="icon-white icon-book"></i> Help
 			</a>
 
@@ -161,13 +170,15 @@
 			 </div>
 			<div id="projectsMenu" class="projects-menu homeProject">
 				<?php foreach($projects as $p): ?>
-                <a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent Name'])) )?>"><?php echo $p['Persistent Name'] ?></a>
+                	<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent Name'])) )?>">
+						<?php echo $p['Persistent Name'] ?>
+					</a>
                 <?php endforeach ?>
 			</div>
 		</div>
 		<div id='helpSearch'>
-		<a id="help" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/help/')?>">
+		<a id="help" class="btn btn-grey<?php echo $helpBlue ?>"
+			href="<?php echo $this->Html->url('/help')?>">
 			<i class="icon-white icon-book"></i> Help
 		</a>
 		<a id="searchHeader" class="btn btn-grey"

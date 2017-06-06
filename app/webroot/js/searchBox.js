@@ -4,8 +4,10 @@ $(document).ready(function(){
     $(".search-bar").keyup(function(e){
        var val = $('#searchBar').val();
        if(e.keyCode == 13){
-           url= arcs.baseURL + 'search/'+projectKid+"/"+ val;
-           window.location.replace(url);
+           var getUrl = window.location;
+           var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+           url= baseUrl + '/arcs/search/'+projectKid+"/"+ val;
+           window.location.href = url;
        }
    });
   var linked = $(".searchBoxInput").data("searchlink") || false
@@ -16,7 +18,7 @@ $(document).ready(function(){
         var val = $('.searchBoxInput').val();
         if(e.keyCode == 13){
             url= arcs.baseURL + 'search/' + window.globalproject + "/"+ val;
-            window.location.replace(url);
+            window.location.href = url;
         }
         e.stopPropagation()
 
