@@ -50,6 +50,7 @@ $(document).ready(function () {
         }
         else {
             $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/AnnotationsOff.svg")
+            $('.annotationHelpOk').click();
         }
 
         if (showAnnotations) {
@@ -204,6 +205,8 @@ $(document).ready(function () {
     }
 
     $(".annotate").click(function () {
+        $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/annotationsProfile.svg");
+        showAnnotations = true;
         Draw(true, null);
     });
 
