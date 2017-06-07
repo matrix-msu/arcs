@@ -393,7 +393,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                 </div>
             </div>
 
-            <div id="tabs-3" class="metadata-content">
+            <div id="tabs-3" class="metadata-content" style="display:none;">
                 <div id="discussionTab">
                     <div class="commentContainer"></div>
 
