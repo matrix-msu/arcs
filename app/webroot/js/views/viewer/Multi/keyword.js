@@ -10,6 +10,16 @@ $(document).ready(function(){
     Array.prototype.diff = function(a) {
         return this.filter(function(i) {return a.indexOf(i) < 0;});
     };
+    $('.page-slider').find('.other-resource').click(function() {
+        var pageKid = $(this).attr('id');
+        $("#urlform").css('display','none');
+        getKeywords(pageKid, 0);
+        $(".keyword-save-btn").removeClass("keyword-save-btn")
+            .html("EDIT")
+            .addClass("keyword-edit-btn")
+            .css("color", '')
+            .attr('id', 'keyword-edit-btn');
+    });
     $(".level-tab").click(function (e) {
 		if ( $(this).find('#keyword-save-btn').length >0 ) { //save the keywords
             e.stopPropagation();
@@ -37,7 +47,8 @@ $(document).ready(function(){
     });
     function saveBackToEdit(){
         $("#urlform").css('display','none');
-        getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 0);
+        var pageKid = $('.selectedCurrentPage').find('img').attr('id');
+        getKeywords(pageKid, 0);
         $(".keyword-save-btn").removeClass("keyword-save-btn")
             .html("EDIT")
             .addClass("keyword-edit-btn")
@@ -53,9 +64,11 @@ $(document).ready(function(){
                 .html('SAVE')
                 .css("color", 'rgb(0, 147, 190)');
             $('#keyword-search-links').html('');
-            setTimeout(function () {
-                getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 1);
-            }, 25);
+            var pageKid = $('.selectedCurrentPage').find('img').attr('id');
+            getKeywords(pageKid, 1);
+            //setTimeout(function () {
+            //    getKeywords($('.page-slider').find('.other-resource').eq(0).attr('id'), 1);
+            //}, 25);
         }
     });
 	$(".details").one("click", function () { //details tab first click. load keywords
@@ -174,15 +187,24 @@ $(document).ready(function(){
                     $('#keyword-text').html('Click on the keyword links below to search for other resources with the same keyword.');
                     $('#keyword-common').css('display', 'none');
                     $('#urlform2').css('display', 'none');
+                    $('#urlform').find('.chosen-choices').html();
+                    $('#urlform').css('display', 'none');
                     var pName = $('#project1').find("[id='Persistent Name']").html();
                     pName = pName.replace(/ /g, '_').toLowerCase();
                     var keywordHtml = '';
                     if (keywordArray instanceof Array) {
+                        var check = 0;
                         keywordArray.forEach(function (keyword) {
                             keywordHtml += '<a href="' + arcs.baseURL + 'search/' + pName + '/' + keyword + '" style="display:inline-block;margin-right:5px;color:#0093be;text-decoration: underline;">' +
                                 keyword +
                                 '</a>';
+                            check = 1;
                         })
+                        if( check == 0 ){
+                            $('#keyword-text').html('There are no keywords associated with this page.');
+                        }else{
+                            $('#keyword-text').html('Click on the keyword links below to search for other resources with the same keyword.');
+                        }
                     }
                     $('#keyword-search-links').html(keywordHtml);
                 } else { //display the keywords as editing
