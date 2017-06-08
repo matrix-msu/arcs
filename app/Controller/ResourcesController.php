@@ -467,9 +467,9 @@ class ResourcesController extends AppController {
     public function loadNewResource($id) {
         $this->autoRender = false;
 
-        $pid = hexdec( explode('-', $id)[0] );
-        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+        $pName = parent::convertKIDtoProjectName($id);
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getPageSIDFromProjectName($pName);
 
         $fields = array('ALL');
         $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
@@ -502,9 +502,9 @@ class ResourcesController extends AppController {
 
             foreach(json_decode($this->request->data['picUrls']) as $url){
                 # download file
-                $pid = hexdec( explode('-', $url)[0] );
-                $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-                $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+                $pName = parent::convertKIDtoProjectName($url);
+                $pid = parent::getPIDFromProjectName($pName);
+                $sid = parent::getPageSIDFromProjectName($pName);
 
                 $string = KORA_FILES_URI.$pid.'/'.$sid.'/'.$url;
                 $download_file = @file_get_contents( $string );
@@ -549,81 +549,80 @@ class ResourcesController extends AppController {
 
     public function viewtype($projectName){
 
-      $username = NULL;
-      $usersC = new UsersController();
-      if ($user = $usersC->getUser($this->Auth)) {
-          $username = $user['User']['username'];
-      }
+        $username = NULL;
+        $usersC = new UsersController();
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
 
-      if(isset($this->request->data['resource_kids'])){
-        $json =  $this->request->data['resource_kids'];
-        $rKids = json_decode($json);
-        $search = new Resource_Search($rKids, $projectName);
-        $results = $search->getResultsAsArray();
-        static::filterByPermission($username, $results['results']);
+        if(isset($this->request->data['resource_kids'])){
+            $json =  $this->request->data['resource_kids'];
+            $rKids = json_decode($json);
+            $search = new Resource_Search($rKids, $projectName);
+            $results = $search->getResultsAsArray();
+            static::filterByPermission($username, $results['results']);
 
-        echo "<script>var results_to_display = ".json_encode($results).";</script>";
+            echo "<script>var results_to_display = ".json_encode($results).";</script>";
 
         // this else if is not doing anything. Orphans doesn't work
         // with the viewtype html.
-      } else if(isset($this->request->data['orphaned_kids'])) {
-        $pKids = $this->request->data['orphaned_kids'];
+        } else if(isset($this->request->data['orphaned_kids'])) {
+            $pKids = $this->request->data['orphaned_kids'];
 
-      } else {
-          $this->Collection->recursive = -1;
-          $user_id =  $this->Session->read('Auth.User.id');
-          $collections = '';
-          if( $user_id !== null ) { //signed in
-              $collections = $this->Collection->find('all', array(
-                  'order' => 'Collection.modified DESC',
-                  'conditions' => array('OR' => array(
+        } else {
+            $this->Collection->recursive = -1;
+            $user_id =  $this->Session->read('Auth.User.id');
+            $collections = '';
+            if( $user_id !== null ) { //signed in
+                $collections = $this->Collection->find('all', array(
+                    'order' => 'Collection.modified DESC',
+                    'conditions' => array('OR' => array(
                       array( 'Collection.public' => '1'),
                       array( 'Collection.public' => '2'),
                       array( 'Collection.public' => '3'),
                       array( 'Collection.user_id' => $user_id)
-                  ),'Collection.collection_id' => $projectName)
-              ));
-              //remove all the public 3 collections that the user isn't a part of
-              $count = 0;
-              foreach( $collections as $collection ){
-                  $bool_delete = 1;
-                  if( array_values($collection)[0]['public'] == '3'){
-                      $members =  explode(';', array_values($collection)[0]['members'] );
-                      foreach( $members as $member ){
+                    ),'Collection.collection_id' => $projectName)
+                ));
+                //remove all the public 3 collections that the user isn't a part of
+                $count = 0;
+                foreach( $collections as $collection ){
+                    $bool_delete = 1;
+                    if( array_values($collection)[0]['public'] == '3'){
+                        $members =  explode(';', array_values($collection)[0]['members'] );
+                        foreach( $members as $member ){
                           if( $member == $user_id){
                               $bool_delete = 0;
                           }
-                      }
-                      if( $bool_delete == 1 ){
+                        }
+                        if( $bool_delete == 1 ){
                           array_splice($collections, $count, 1);
-                      }
-                  }
-                  $count++;
-              }
-          } else { //not signed in
-              $collections = $this->Collection->find('all', array(
-                  'order' => 'Collection.modified DESC',
-                  'conditions' => array(
-                      'Collection.public' => '1',
-                      'Collection.collection_id' => $projectName
-                  )//,  //only get public collections
-                  //'group' => 'collection_id'
-              ));
-          }
-          $resourceKids = array();
-          foreach( $collections as $temp ){ //only keep the resource_kids.
-              $resourceKids[] = $temp['Collection']['resource_kid'];
-          }
-          $pid = hexdec( explode('-', $resourceKids[0])[0] );
-          $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+                        }
+                    }
+                    $count++;
+                }
+            } else { //not signed in
+                $collections = $this->Collection->find('all', array(
+                    'order' => 'Collection.modified DESC',
+                    'conditions' => array(
+                        'Collection.public' => '1',
+                        'Collection.collection_id' => $projectName
+                    )//,  //only get public collections
+                    //'group' => 'collection_id'
+                ));
+            }
+            $resourceKids = array();
+            foreach( $collections as $temp ){ //only keep the resource_kids.
+                $resourceKids[] = $temp['Collection']['resource_kid'];
+            }
+            $pName = parent::convertKIDtoProjectName($resourceKids[0]);
 
-          $search = new Resource_Search($resourceKids, $pName);
-          $results = $search->getResultsAsArray();
-          static::filterByPermission($username, $results['results']);
-          echo "<script>var results_to_display = ".json_encode($results)."</script>";
-          $this->set("projectName", $pName);
-      }
-      $this->render("../Search/search");
+            $search = new Resource_Search($resourceKids, $pName);
+            $results = $search->getResultsAsArray();
+            static::filterByPermission($username, $results['results']);
+            echo "<script>var results_to_display = ".json_encode($results)."</script>";
+            $this->set("projectName", $pName);
+        }
+        $this->render("../Search/search");
     }
 
     //view muitiple resources in a viewer
@@ -886,58 +885,58 @@ class ResourcesController extends AppController {
 
     }
     protected function getFromKey($array, $key){
-      return array_values($array)[0][$key];
+        return array_values($array)[0][$key];
     }
     protected function getProject($kid){
-	  $pid = hexdec( explode('-', $kid)[0] );
-	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-	  $sid = parent::getProjectSIDFromProjectName($pName);
-      $query_array = array("kid","=",$kid);
-      $fields = "ALL";
-      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-      return $result->return_array();
+        $pName = parent::convertKIDtoProjectName($kid);
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getProjectSIDFromProjectName($pName);
+        $query_array = array("kid","=",$kid);
+        $fields = "ALL";
+        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        return $result->return_array();
     }
     protected function getSeason($kids){
-      $pid = hexdec( explode('-', $kids[0])[0] );
-	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-	  $sid = parent::getSeasonSIDFromProjectName($pName);
-      $query_array = array("kid","IN",$kids);
-      $fields = "ALL";
-      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-      return $result->return_array();
+        $pName = parent::convertKIDtoProjectName($kids[0]);
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getSeasonSIDFromProjectName($pName);
+        $query_array = array("kid","IN",$kids);
+        $fields = "ALL";
+        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        return $result->return_array();
     }
     protected function getExcavation($kids){
-      $pid = hexdec( explode('-', $kids[0])[0] );
-	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-	  $sid = parent::getSurveySIDProjectName($pName);
-      $query_array = array("kid","IN",$kids);
-      $fields = "ALL";
-      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-      return $result->return_array();
+        $pName = parent::convertKIDtoProjectName($kids[0]);
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getSurveySIDProjectName($pName);
+        $query_array = array("kid","IN",$kids);
+        $fields = "ALL";
+        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        return $result->return_array();
     }
     protected function getResource($kid){
-      $pid = hexdec( explode('-', $kid)[0] );
-	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-	  $sid = parent::getResourceSIDFromProjectName($pName);
-      $query_array = array("kid","=",$kid);
-      $fields = "ALL";
-      $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-      return $result->return_array();
+        $pName = parent::convertKIDtoProjectName($kid);
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getResourceSIDFromProjectName($pName);
+        $query_array = array("kid","=",$kid);
+        $fields = "ALL";
+        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        return $result->return_array();
     }
     protected function getPages($resource_kid){
-      //grab all pages with the resource associator
-	  $pid = hexdec( explode('-', $resource_kid)[0] );
-	  $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-	  $sid = parent::getPageSIDFromProjectName($pName);
-      $fields = array('ALL');
-      $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
-      $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
-      $kora->add_clause("Resource Associator", "=", $resource_kid);
-      return json_decode($kora->search(), true);
+        //grab all pages with the resource associator
+        $pName = parent::convertKIDtoProjectName($resource_kid);
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getPageSIDFromProjectName($pName);
+        $fields = array('ALL');
+        $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
+        $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
+        $kora->add_clause("Resource Associator", "=", $resource_kid);
+        return json_decode($kora->search(), true);
     }
     protected function getSubjectOfObservation($pageKids){
-        $pid = hexdec(explode('-', $pageKids[0])[0]);
-        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        $pName = parent::convertKIDtoProjectName($pageKids[0]);
+        $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSubjectSIDFromProjectName($pName);
         $query_array = array("Pages Associator", "IN", $pageKids);
         $fields = "ALL";

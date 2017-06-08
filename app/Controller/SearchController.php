@@ -113,7 +113,7 @@ class SearchController extends AppController {
 
         if ($project === "all") {
 
-          $projects = array_keys($GLOBALS['PID_ARRAY']);
+          $projects = array_keys(parent::getPIDArray());
           $results = array();
 
           foreach ($projects as $project) {
@@ -560,7 +560,7 @@ class SearchController extends AppController {
         }
 
         if (isset($this->request->query['pKid'])) {
-            $pKid = $this->request->query['pKid'];
+            $pName = $this->request->query['pKid'];
         }
 
         //Collections search
@@ -616,10 +616,10 @@ class SearchController extends AppController {
                 }
                 $temp_kid = $row['resource_kid'];
 
-                $pid = hexdec(explode('-', $temp_kid)[0]);
-                $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-                $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
-                $pageSid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+                $pName = parent::convertKIDtoProjectName($temp_kid);
+                $pid = parent::getPIDFromProjectName($pName);
+                $sid = parent::getResourceSIDFromProjectName($pName);
+                $pageSid = parent::getPageSIDFromProjectName($pName);
 
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
@@ -704,8 +704,9 @@ class SearchController extends AppController {
         if ( $this->request->query['q'] == 'Orphan,=,true' ){
 
             //search for the orphaned pages with a limit.
-			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
-			$sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
+            $pid = parent::getPIDFromProjectName($pName);
+            $sid = parent::getPageSIDFromProjectName($pName);
+
             $fields = array('Image Upload');
             $query_array = explode(",", $this->request->query['q']);
             if( $limit != -1 ) {
@@ -759,8 +760,8 @@ class SearchController extends AppController {
             //Get the Resources
             $query = $this->request->query['q'];
 
-			$pid = $GLOBALS['PID_ARRAY'][strtolower($pKid)];
-			$sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pKid)];
+            $pid = parent::getPIDFromProjectName($pName);
+            $sid = parent::getResourceSIDFromProjectName($pName);
 
             //search for the resources by type
             $fields = array('Title','Resource Identifier', 'Permissions', 'Special User', 'Type');
@@ -792,7 +793,7 @@ class SearchController extends AppController {
             }
 
             //grab all pages with the resource associator
-			$sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pKid)];
+            $sid = parent::getPageSIDFromProjectName($pName);
             $fields = array('Image Upload', 'Resource Associator', 'Scan Number');
             $kora = new Advanced_Search($pid, $sid, $fields);
 
@@ -904,15 +905,14 @@ class SearchController extends AppController {
         if (!isset($this->request->data['q']))
             return $this->emptySearch($options);
 
-
-        $pid = hexdec($this->request->data['pid']);
-        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
+        $pName = parent::convertKIDtoProjectName($this->request->data['pid']);
+        $pid = parent::getPIDFromProjectName($pName);
         if( $this->request->data['sid'] == 'resource' ){
-            $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+            $sid = parent::getResourceSIDFromProjectName($pName);
         }elseif( $this->request->data['sid'] == 'subject' ){
-            $sid = $GLOBALS['SUBJECT_SID_ARRAY'][strtolower($pName)];
+            $sid = parent::getSubjectSIDFromProjectName($pName);
         }elseif( $this->request->data['sid'] == 'page' ){
-            $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+            $sid = parent::getPageSIDFromProjectName($pName);
         }
 
         $kora = new Advanced_Search($pid,$sid);

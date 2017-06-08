@@ -115,8 +115,8 @@ class CollectionsController extends AppController {
      */
     protected function getProjectResources($pName){
 
-        $pid = $GLOBALS['PID_ARRAY'][strtolower($pName)];
-        $sid = $GLOBALS['RESOURCE_SID_ARRAY'][strtolower($pName)];
+        $pid = parent::getPIDFromProjectName(strtolower($pName));
+        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
         $fields = array('Title');
         $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
         $allResources = json_decode($kora->return_json(), true);

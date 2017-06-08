@@ -33,6 +33,7 @@
     const PageSIDNotFound            =  444014;
     const SubjectSIDNotFound         =  444015;
     const TokenNotFound              =  444016;
+    const ProjectNameNotFound        =  444017;
   }
   class ArcsException extends Exception implements ArcsErrors {
     public function getArcsMessage()
