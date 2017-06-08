@@ -59,28 +59,6 @@ class Project extends Kora{
       }
       return "";
     }
-
-    //Get recent resources associated with a single project, for single-project page
-    //takes an array of (8) kids and returns the info
-    public function getRecent($recent){
-        $this->schemeMapping = RESOURCE_SID;
-        $this->fields = array("Title","Type","Resource Identifier");
-        $this->The_Clause = new KORA_Clause("kid", "IN", $recent);
-        $results = parent::search();
-        usort($results, function($a, $b){
-            if ($a == $b) {
-                return 0;
-            }
-            $atest = explode('-', $a['kid']);
-            $atest = array_pop($atest);
-            $atest = hexdec($atest);
-            $btest = explode('-', $b['kid']);
-            $btest = array_pop($btest);
-            $btest = hexdec($btest);
-            return ($atest > $btest) ? -1 : 1;
-        });
-        return $results;
-    }
     
     public function getProjectResources(){
         if($this->is_valid){
