@@ -278,10 +278,10 @@ class AppController extends Controller
     {
 		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
 		$KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
-		
-        $pid = hexdec(explode('-', $name)[0]);
-        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+
+        $pName = self::convertKIDtoProjectName($name);
+        $pid = self::getPIDFromProjectName($pName);
+        $sid = self::getPageSIDFromProjectName($pName);
 
         $path = THUMBS . "smallThumbs/";
         $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
@@ -309,10 +309,10 @@ class AppController extends Controller
     {
         $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
         $KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
-		
-        $pid = hexdec(explode('-', $name)[0]);
-        $pName = array_search($pid, $GLOBALS['PID_ARRAY']);
-        $sid = $GLOBALS['PAGES_SID_ARRAY'][strtolower($pName)];
+
+        $pName = self::convertKIDtoProjectName($name);
+        $pid = self::getPIDFromProjectName($pName);
+        $sid = self::getPageSIDFromProjectName($pName);
 
         $path = THUMBS . "largeThumbs/";
         $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
