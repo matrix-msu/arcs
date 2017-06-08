@@ -106,7 +106,7 @@ is from here to ...
 		<div class="collectionWrap" style="margin-top:9em;">
 			<div id="collectionModal" style="width:35em;">
 				<div class="collectionModalHeader">Add to collection <img src="../app/webroot/assets/img/Close.svg"
-																		  class="modalClose"/></div>
+																		  class="modalClose collectionModalClose"/></div>
 				<hr>
 				<p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
 				<p class="collectionTab collectionTabNew">Add to a new collection</p>
@@ -130,12 +130,15 @@ is from here to ...
 
 			</div>
 			<div id="addedCollectionModal" style="width:35em;display:none;">
-				<div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../app/webroot/assets/img/Close.svg"
-																			 class="modalClose"/></div>
+				<div class="collectionModalHeader">ADDED TO COLLECTION!
+					<img src="../app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
+				</div>
 				<hr>
-				<div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>
+				<div id="collectionMessage" style="margin-left:6px;">1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>.</div>
 				<br>
-				<button class="viewCollection" type="submit">VIEW COLLECTION</button>
+				<div id="collectionWarning" style="margin-left:6px;"></div>
+				<br>
+				<a id="viewCollectionLink" ><button class="viewCollection" type="submit">VIEW COLLECTION</button></a>
 				<button class="backToSearch" type="submit">BACK TO SEARCH</button>
 			</div>
 		</div>
@@ -315,9 +318,18 @@ is from here to ...
 		</div>
 	</div>
 <script>
-  arcs.searchView = new arcs.views.search.Search({
-    el: $('.wrap')
-  });
+	arcs.searchView = new arcs.views.search.Search({
+		el: $('.wrap')
+	});
+
+	//load in the collections.js.. the same one as multi_view
+	var imported = document.createElement('script');
+	imported.src = arcs.baseURL + "js/views/viewer/Multi/collection.js";
+	document.head.appendChild(imported);
+
+	//fix the relative image references.
+	$('.collectionModalClose').attr('src', arcs.baseURL + 'app/webroot/assets/img/Close.svg');
+
 
 </script>
 <!--advanced search script-->
@@ -399,239 +411,3 @@ is from here to ...
 
   })
 </script>
-
-
-
-<!--TO HERE-->
-	<script>
-		// collection
-		$("#selected-all").click(function () {
-			var e = document.getElementById("selected-all");
-			if(e.style.color == "rgb(0, 0, 0)")
-				$(".collectionModalBackground").show();
-		});
-		$(".modalClose").click(function () {
-			$(".collectionModalBackground").hide();
-			$("#collectionModal").show();
-			$("#addedCollectionModal").hide();
-			unselect(null);
-			collectionList();
-		});
-		var isAnyChecked = 0;
-		var lastCheckedId = '';
-		function checkSearchSubmitBtn() {
-			// Hide add to collection button in collection modal when no collections are selected
-			var checkboxes = $("#collectionSearchObjects > input");
-			var submitButt = $(".collectionSearchSubmit");
-			if(checkboxes.is(":checked")) {
-				submitButt.show();
-				isAnyChecked = 1;
-			}
-			else {
-				submitButt.hide();
-				isAnyChecked = 0;
-			}
-		}
-		function collectionsSearch() {
-			var query = "";
-			if( $(".collectionSearchBar").hasClass("first") ){
-				query = "";
-				$(".collectionSearchBar").removeClass("first");
-			}else {
-				query = $(".collectionSearchBar").val();
-			}
-			// only put collections in between the div if they include the query.
-			// I.E. "" is in every collection title and user_name
-			var populateCheckboxes = "<hr>";
-			for (var i = 0; i < collectionArray.length; i++) {
-				if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
-						(collectionArray[i][2].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
-					populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='item-" + i + "' id='item-" + i + "' value='" + collectionArray[i][1] + "' />"
-							+ "<label for='item-" + i + "'><div style='float:left'>" + collectionArray[i][0] + " </div><div style='float:right'>" + collectionArray[i][2]+ "</div></label><br />";
-				}
-			}
-			$("#collectionSearchObjects").html(populateCheckboxes);
-			// Hide add to collection button in collection modal when no collections are selected
-			var checkboxes = $("#collectionSearchObjects > input");
-			var submitButt = $(".collectionSearchSubmit");
-			console.log(checkboxes);
-			checkboxes.click(function() {
-				if(isAnyChecked == 1){
-					$('#'+lastCheckedId).prop("checked", false);
-				}
-				lastCheckedId = $(this).attr('id');
-				checkSearchSubmitBtn();
-			});
-			$('#collectionTitle').bind('input propertychange', function() {
-				if(this.value != ""){
-					$(".collectionNewSubmit").show();
-				}else{
-					$(".collectionNewSubmit").hide();
-				}
-			});
-		}
-		$(".viewCollection").click(function () {
-			var href = $('#resources').attr('href');
-			href = href.split('/');
-			href = href.pop();
-			window.location.href=arcs.baseURL+"collections/"+href+"?"+$('.viewCollection').attr('data-colId');
-		});
-		$(".backToSearch").click(function () {
-			$(".modalClose").trigger("click");
-		});
-		$(".collectionNewSubmit").click(function () {
-			// creates a single, new collection entry based on the resource it is viewing
-			var selected_resources = [];
-			$('.resource-item-container.result.selected').each(function(){
-				selected_resources.push($(this).attr('data-id'));
-			});
-			var formdata = {
-				title: $('#collectionTitle').val(),
-				resource_kid: selected_resources[0],
-				description: ""//,
-				//public: 1
-			};
-			$.ajax({
-				url: arcs.baseURL + "collections/add",
-				type: "POST",
-				data: formdata,
-				statusCode: {
-					201: function (data) {
-						selected_resources.shift();
-						var new_col_id = data['collection_id'];
-						$('.viewCollection').attr('data-colId', data.collection_id);
-						selected_resources.forEach(function(resource){
-							var resource_kid = resource;
-							var formdata = {
-								collection: new_col_id,
-								resource_kid: resource_kid
-							};
-							$.ajax({
-								url: arcs.baseURL + "collections/addToExisting",
-								type: "POST",
-								data: formdata,
-								statusCode: {
-									201: function () {
-									},
-									400: function () {
-										console.log("Bad Request");
-										$(".collectionModalBackground").hide();
-									},
-									405: function () {
-										console.log("Method Not Allowed");
-										$(".collectionModalBackground").hide();
-									}
-								}
-							});
-						})
-						$("#collectionName").text($('#collectionTitle').val());
-						$("#collectionModal").hide();
-						$("#addedCollectionModal").show();
-						unselect(null);
-					},
-					400: function () {
-						console.log("Bad Request");
-						$(".collectionModalBackground").hide();
-					},
-					405: function () {
-						console.log("Method Not Allowed");
-						$(".collectionModalBackground").hide();
-					}
-				}
-			});
-		});
-		$(".collectionSearchSubmit").click(function () {
-			// creates 1+ collection entries based on the resource (IE adds the resource to old collections)
-			var selected_resources = [];
-			$('.resource-item-container.result.selected').each(function(){
-				selected_resources.push($(this).attr('data-id'));
-			});
-			selected_resources.forEach(function(resource){
-				var resource_kid = resource;
-				$('#collectionSearchObjects input:checked').each(function () {
-					var formdata = {
-						collection: $(this).val(),
-						resource_kid: resource_kid
-					}
-					// TODO: sometimes returns an error but it will always upload to the sql database
-					$.ajax({
-						url: arcs.baseURL + "collections/addToExisting",
-						type: "POST",
-						data: formdata,
-						statusCode: {
-							201: function (data) {
-								$('.viewCollection').attr('data-colId', data.collection_id);
-							},
-							400: function () {
-								console.log("Bad Request");
-							},
-							405: function () {
-								console.log("Method Not Allowed");
-							}
-						}
-					});
-				});
-			})
-			var text = $("label[for="+lastCheckedId+"]").children(":first").text();
-			$("#collectionName").text(text);
-			$("#collectionModal").hide();
-			$("#addedCollectionModal").show();
-			unselect(null);
-		});
-		// collection tabs
-		$(".collectionTabSearch").click(function () {
-			$(".collectionSearchContainer").show();
-			$(".collectionNewContainer").hide();
-			$(".collectionTabSearch").addClass("activeTab");
-			$(".collectionTabNew").removeClass("activeTab");
-		});
-		$(".collectionTabNew").click(function () {
-			$(".collectionNewContainer").show();
-			$(".collectionSearchContainer").hide();
-			$(".collectionTabNew").addClass("activeTab");
-			$(".collectionTabSearch").removeClass("activeTab");
-		});
-		// run on page load
-		$(".collectionNewContainer").hide();
-		function unselect(trigger){
-			if(trigger==null){
-				trigger=true
-			}
-			this.$(".result").removeClass("selected");
-			this.$(".select-button").removeClass("de-select");
-			this.$(".select-button, #toggle-select").html("SELECT");
-			this.$("#deselect-all").attr({id:"select-all"});
-			this.$('#selected-all').css('color','rgb(193, 193, 193)');
-			this.$('#selected-count').html('');
-			this.$(".checkedboxes").prop("checked", false);
-			this.$("#collectionTitle").val('');
-			this.$(".collectionTabSearch").trigger("click");
-			collectionList();
-			collectionsSearch();
-			if(trigger){
-				return arcs.bus.trigger("selection")
-			}
-		};
-		var collectionArray = [];
-		function collectionList() {
-			collectionArray = [];
-			var href = $('#resources').attr('href');
-			href = href.split('/');
-			var projectKid = href.pop();
-			$.ajax({
-				url: arcs.baseURL + "collections/titlesAndIds",
-				type: "get",
-				data: {pKid: projectKid},
-				success: function (data) {
-					data.forEach(function (tempdata) {
-						var temparray = $.map(tempdata, function(value, index) {
-							return [value];
-						});
-						collectionArray.push(temparray);
-					})
-					collectionsSearch();
-				}
-			});
-		}
-		collectionList();
-	</script>

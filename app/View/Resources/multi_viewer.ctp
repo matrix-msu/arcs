@@ -109,13 +109,13 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 					<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
 				    <div class='leftHalf'>
 						<div class='expandedArrowBoxLeft'>
-							<img class='leftExpandedArrow' src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="220px" width="10px" />
+							<img class='leftExpandedArrow' src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
 					</div>
 					<div class="rightHalf">
 						<div class='expandedArrowBoxRight'>
-							<img class='rightExpandedArrow' src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="220px" width="10px" />
+							<img class='rightExpandedArrow' src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
 					</div>
@@ -146,11 +146,11 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     </form>
                     <div class="resultsContainer"></div>
                     <div class="annotation_pagination">
-                        <span class="annotation_begin"><img src="../app/webroot/assets/img/arrowLeft-White.svg"><img src="../app/webroot/assets/img/arrowLeft-White.svg"></span>
-                        <span class="annotation_prev"><img src="../app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_begin"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_prev"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
                         <span class="annotation_numbers"></span>
-                        <span class="annotation_next"><img src="../app/webroot/assets/img/arrowRight-White.svg"></span>
-                        <span class="annotation_end"><img src="../app/webroot/assets/img/arrowRight-White.svg"><img src="../app/webroot/assets/img/arrowRight-White.svg"></span>
+                        <span class="annotation_next"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
+                        <span class="annotation_end"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
                     </div>
                 </div>
                 <!--<div class="annotateTranscriptContainer">-->
@@ -422,7 +422,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <div id="resources-nav">
     <div class="button-left" id="button-left">
         <a id="left-button">
-            <img src="/<?php echo BASE_URL; ?>img/arrowLeft-White.svg" height="110px" width="10px">
+            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px">
         </a>
     </div>
 
@@ -451,7 +451,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
   <div class="button-right" id="button-right">
       <a  id="right-button">
-          <img src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="110px" width="10px">
+          <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px">
       </a>
   </div>
 </div>
@@ -459,7 +459,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
-            <img src="/<?php echo BASE_URL; ?>img/arrowLeft-White.svg" height="110px" width="10px" />
+            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px" />
         </a>
     </div>
 
@@ -501,7 +501,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 <div class="button-right" id="button-right">
     <a id="right-button">
-        <img src="/<?php echo BASE_URL; ?>img/arrowRight-White.svg" height="110px" width="10px" />
+        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px" />
     </a>
 </div>
 </div>

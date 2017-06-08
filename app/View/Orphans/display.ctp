@@ -160,7 +160,7 @@
     <div class="modalBackground">
         <div class="flagWrap">
             <div id="flagModal">
-                <div class="flagModalHeader">NEW FLAG<img src="../app/webroot/assets/img/Close.svg"
+                <div class="flagModalHeader">NEW FLAG<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                            class="modalClose"/></div>
                 <hr>
                 <form id="flagForm" action="/">
@@ -193,7 +193,7 @@
 
 	<div class="deleteWrap">
 		<div id="deleteModel">
-			<div class="deleteModalHeader"><img src="../app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
+			<div class="deleteModalHeader"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
 			<div class="deleteBody"> Are you sure you want to delete this annotation?</div>
 			<div class="deleteFooter">
 				<div class='deleteCancel'>cancel</div>
@@ -211,19 +211,19 @@
 			</div>
       <ul class="fullscreen-toolbar">
         <li class="full-tool-btns">
-          <img  class="fullscreen-prev" src="../img/ArrowLeft.svg">
+          <img  class="fullscreen-prev" src="/<?php echo BASE_URL; ?>app/img/ArrowLeft.svg">
         </li>
         <li class="full-tool-btns">
-          <img class="resources-rotate-icon rotate-overlay" src="../img/Rotate.svg">
+          <img class="resources-rotate-icon rotate-overlay" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Rotate.svg">
         </li>
         <li class="full-tool-btns">
-          <img class="fullscreen-next" src="../img/ArrowRight.svg">
+          <img class="fullscreen-next" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/ArrowRight.svg">
         </li>
       </ul>
 
 
 			<div class='fullscreenClose'>
-				<img src="../app/webroot/assets/img/Close.svg"class="closeExpand"/>
+				<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="closeExpand"/>
 			</div>
 		</div>
 	</div>
@@ -231,7 +231,7 @@
     <div class="annotateModalBackground">
         <div class="annotateWrap">
             <div id="annotateModal">
-                <div class="annotateModalHeader">NEW ANNOTATION<img src="../app/webroot/assets/img/Close.svg"
+                <div class="annotateModalHeader">NEW ANNOTATION<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                     class="modalClose annotationClose"/></div>
                 <hr class="annotateHeaderDivider">
                 <p class="annotateTab annotateTabRelation activeTab">RELATION</p>
@@ -242,9 +242,9 @@
                     </form>
                     <div class="resultsContainer"></div>
                     <div class="annotation_pagination">
-                        <span class="annotation_prev"><img src="../app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_prev"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
                         <span class="annotation_numbers"></span>
-                        <span class="annotation_next"><img src="../app/webroot/assets/img/arrowRight-White.svg"></span>
+                        <span class="annotation_next"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
                     </div>
                 </div>
                 <div class="annotateUrlContainer">
@@ -259,7 +259,7 @@
     <div class="collectionModalBackground">
         <div class="collectionWrap" style="margin-top:9em;">
             <div id="collectionModal" style="width:35em;">
-                <div class="collectionModalHeader">Add to Collection <img src="../app/webroot/assets/img/Close.svg"
+                <div class="collectionModalHeader">Add to Collection <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
                 <p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
@@ -283,7 +283,7 @@
                 </div>
             </div>
             <div id="addedCollectionModal" style="width:35em;display:none;">
-                <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="../app/webroot/assets/img/Close.svg"
+                <div class="collectionModalHeader">ADDED TO COLLECTION! <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                           class="modalClose"/></div>
                 <hr>
                 <div>1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>!</div>

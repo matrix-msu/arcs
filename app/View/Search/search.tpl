@@ -311,20 +311,23 @@
 
 
 <script>
-  arcs.searchView = new arcs.views.search.Search({
-    el: $('.wrap')
-  });
-  $(document).ready(function() {
-    $("#pageHelpModal").click(function(e) {
-      if (e.target.nodeName === "ARTICLE") {
-        $("#removeModal")[0].click()
-      }
-    })
-  });
+    arcs.searchView = new arcs.views.search.Search({
+        el: $('.wrap')
+    });
+    $(document).ready(function() {
+        $("#pageHelpModal").click(function(e) {
+            if (e.target.nodeName === "ARTICLE") {
+                $("#removeModal")[0].click()
+            }
+        })
+    });
 
-  //load in the collections.js.. the same one as multi_view
-  var imported = document.createElement('script');
-  imported.src = arcs.baseURL + "js/views/viewer/Multi/collection.js";
-  document.head.appendChild(imported);
+    //load in the collections.js.. the same one as multi_view
+    var imported = document.createElement('script');
+    imported.src = arcs.baseURL + "js/views/viewer/Multi/collection.js";
+    document.head.appendChild(imported);
+
+	//fix the relative image references.
+    $('.collectionModalClose').attr('src', arcs.baseURL + 'app/webroot/assets/img/Close.svg');
 
 </script>
