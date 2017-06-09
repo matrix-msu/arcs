@@ -47,8 +47,7 @@ $( document ).ready(function() {
         $('.project-table[data-kid="'+projectKid+'"]').css('display', 'table');
         //display correct resource
         var resourceKid = $(this).find('img').attr('id');
-        resourceKid = resourceKid.split('-');
-        resourceKid = resourceKid[1]+'-'+resourceKid[2]+'-'+resourceKid[3];
+        resourceKid = resourceKid.replace('identifier-', '');
         $('.archival.objects-table').css('display', 'none');
         $('.archival.objects-table[data-kid="'+resourceKid+'"]').css('display', 'table');
         //find the excavations

@@ -156,9 +156,8 @@ $( document ).ready(function() {
 
     //new resource click.. update the details tab collections
     $('.resource-slider').find('.other-resource').click(function() {
-        var resourceKid = $(this).attr('id').split('-');
-        resourceKid.shift();
-        resourceKid = resourceKid.join('-');
+        var resourceKid = $(this).attr('id');
+        resourceKid = resourceKid.replace('identifier-', '');
         getCollections(resourceKid);
     });
 
@@ -266,14 +265,12 @@ function collectionsSearch() {
 //for the details tab, what collections the resource is a part of.
 function getCollections( resourceKid='' ) {
     if( resourceKid == '' ) {
-        var currentPage = $('.selectedCurrentResource').find('img');
+        var currentResource = $('.selectedCurrentResource').find('img');
 
-        if( currentPage.length == 0 ){//This mean we are on the search page..just stop here
+        if( currentResource.length == 0 ){//This mean we are on the search page..just stop here
             return;
         }
-        currentPage = currentPage.attr('id').split('-');
-        currentPage.shift();
-        var resource_kid = currentPage.join('-');
+        var resource_kid = currentResource.attr('id').replace('identifier-', '');
     }else{
         var resource_kid = resourceKid;
     }

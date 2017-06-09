@@ -39,8 +39,9 @@ $(document).ready(function () {
     //get annotate to support multi-pages.
     $('.page-slider').find('.other-resource').click(function(){
         $('#canvas').html('');
+        var waitPageKid = $(this).attr('id');
         setTimeout(function () {
-            waitForElement();
+            waitForElement(waitPageKid);
         }, 2);
     });
 
@@ -66,38 +67,29 @@ $(document).ready(function () {
     var selected = false;
 
     //on document load. wait for page image and trigger drawboxes.
-    waitForElement();
-    function waitForElement() {
+    function waitForElement(currentPageKid) {
         if ($("#PageImage").height() !=0 &&
             $("#PageImage").attr('src') != '/'+BASE_URL+'img/arcs-preloader.gif' &&
-            $("#PageImage")[0].complete != false ) {
+            $("#PageImage")[0].complete != false
+        ) {
             $(".canvas").height($("#PageImage").height());
             $(".canvas").width($("#PageImage").width());
             $(".canvas").css({bottom: $("#PageImage").height()});
-
-            //get current page kid.
-            var pageKid = $("#PageImage").attr('src');
-            pageKid = pageKid.split('/');
-            pageKid = pageKid.pop();
-            pageKid = pageKid.split('-');
-            pageKid = pageKid[0]+'-'+pageKid[1]+'-'+pageKid[2];
-
-
-            page_sid = pageKid.split('-')[1];
+            
+            //TODO - splitting is bad.
+            page_sid = currentPageKid.split('-')[1];
             page_sid = parseInt(page_sid, 16);
 
             //get current resourceKid
-            var currentPage = $('.selectedCurrentResource').find('img');
-            currentPage = currentPage.attr('id').split('-');
-            currentPage.shift();
-            resourceKid = currentPage.join('-');
+            var currentPage = $('.selectedCurrentResource').find('img').attr('id');
+            resourceKid = currentPage.replace('identifier-', '');
             resourceIdentifier = RESOURCES[resourceKid]['Resource Identifier'];
-            DrawBoxes(pageKid);
+            DrawBoxes(currentPageKid);
             GetDetails();
         }
         else {
             setTimeout(function () {
-                waitForElement();
+                waitForElement(currentPageKid);
             }, 250);
         }
     }
