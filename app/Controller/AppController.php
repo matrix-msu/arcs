@@ -279,6 +279,9 @@ class AppController extends Controller
 		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
 		$KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
 
+        if($name == ''){
+            return '';
+        }
         $pName = self::convertKIDtoProjectName($name);
         $pid = self::getPIDFromProjectName($pName);
         $sid = self::getPageSIDFromProjectName($pName);
@@ -310,6 +313,9 @@ class AppController extends Controller
         $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
         $KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
 
+        if($name == ''){
+            return '';
+        }
         $pName = self::convertKIDtoProjectName($name);
         $pid = self::getPIDFromProjectName($pName);
         $sid = self::getPageSIDFromProjectName($pName);
