@@ -16,10 +16,8 @@ $this->set([
 ?>
 
 
-<div>
+<div class="errormsg">
   <h2>We are very sorry!</h2>
-  <p>The page you are trying to view does not exist, please check back later?</p>
+  <p>Unfortunately, the page you are trying to view does not exist.</p>
+  <p>Please double check your URL or head to the <a href="<?= "//" . $_SERVER["HTTP_HOST"] . "/" . BASE_URL; ?>">Home Page</a>.</p>
 </div>
-
-
-
