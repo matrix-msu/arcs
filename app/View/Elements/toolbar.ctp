@@ -17,11 +17,15 @@
             </h1>
         </a>
 
-
 	<h1 id= "hamburger" class='hamburger'></h1>
 
-    <?php endif ?>
-		<!--Display login button for other pages-->
+  <?php endif ?>
+
+  <?php
+    // Check if $nobutton is set and its value
+    if (!isset($nobutton) || !$nobutton) :
+  ?>
+	<!--Display login button for other pages-->
 	<div id='log' >
 		<?php if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
 			<div id="menu" class="btn btn-grey toolbar-btn">
@@ -190,6 +194,9 @@
 
 	<?php endif ?>
 
+  <?php 
+    endif // The endif for $nobutton settings
+  ?>
 </div>
   <?= $this->element("Login/login");?>
   <?= $this->element("Login/register");?>
