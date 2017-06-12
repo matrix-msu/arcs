@@ -26,6 +26,18 @@
 
     discussions = [];
 
+    // Badge numbers
+    var resourcesUploaded = 0;
+    var resourcesEdited = 0;
+    var resourceKeywords = 0;
+    var resourcesFlagged = 0;
+    var annotationsIn = 0;
+    var annotationsOut = 0;
+    var transcriptionCount = 0;
+    var commentsInit = 0;
+    var commentsReply = 0;
+    var collectionsMade = 0;
+
     page = 15;
 
     info = {
@@ -97,10 +109,12 @@
                 monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                 date = monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
                 if (a['url'] === null || a['url'] === '') {
+                  annotationsIn++;
                   type = 'Relation';
                   url = arcs.baseURL + 'resource/' + a['relation_resource_kid'];
                   linkText = a['relation_resource_name'];
                 } else {
+                  annotationsOut++;
                   type = 'URL';
                   url = a['url'];
                   linkText = a['url'];
@@ -117,6 +131,7 @@
                 }
                 count++;
               } else {
+                transcriptionCount++;
                 activity.push({
                   time: a['created'],
                   type: 'transcription',
@@ -204,6 +219,12 @@
             dcount = 0;
             ddata.forEach(function(a) {
               var d, date, monthNames;
+              if (a.parent_id == "") {
+                commentsInit++;
+              }
+              else {
+                commentsReply++;
+              }
               (function(dcount) {
                 $.ajax({
                   url: info.url + 'resources/viewkid/' + a['resource_kid'] + '.json',
@@ -262,8 +283,9 @@
           id: info.id
         },
         success: function(fdata) {
-            console.log('fdata');
-            console.log(fdata);
+          console.log('fdata');
+          console.log(fdata);
+          var byResource = [];
           fdata.forEach(function(flag) {
             activity.push({
               time: flag['created'],
@@ -272,6 +294,9 @@
               name: flag['resource_name'],
               text: 'Created New Flag'
             });
+            if (byResource.indexOf(flag.resource_id) == -1) {
+              byResource.push(flag.resource_id);
+            }
           });
         }
       });
@@ -283,6 +308,7 @@
         },
         success: function(mdata) {
           console.log(mdata);
+          var byResource = [];
           mdata.forEach(function(edit) {
             activity.push({
               time: edit['modified'],
@@ -291,6 +317,9 @@
               name: edit['resource_name'],
               text: 'Edited Metadata'
             });
+            if (byResource.indexOf(edit.resource_id) == -1) {
+              byResource.push(edit.resource_id);
+            }
           });
         }
       });
@@ -306,6 +335,37 @@
             type: 'log',
             text: 'Logged In'
           });
+        }
+      });
+      var keywordsReady = $.ajax({
+        url: info.url + 'keywords/findallbyuser',
+        type: 'POST',
+        data: {
+          id: info.id
+        },
+        success: function(keywords) {
+          console.log('keywords');
+          console.log(keywords);
+          // keywords in total, or resources given keywords? I'm going with the latter for now
+          var byResource = [];
+          for (var i = 0; i < keywords.length; i++) {
+            if (byResource.indexOf(keywords[i]["resource_id"]) == -1) {
+              byResource.push(keywords[i]["resource_id"]);
+            }
+          }
+          resourceKeywords = byResource.length;
+        }
+      });
+      var collectionsReady = $.ajax({
+        url: info.url + 'collections/findallbyuser',
+        type: 'POST',
+        data: {
+          id: info.id
+        },
+        success: function(collections) {
+          console.log('collections');
+          console.log(collections);
+          collectionsMade = collections.length;
         }
       });
       $.when(usersReady, flagsReady, annoReady, metaReady).then(function() {
@@ -359,6 +419,50 @@
         $('#activity-tab #contents').html(content);
         if (count >= 15) {
           that.pagination('activity', 0);
+        }
+      });
+
+      $.when(usersReady, flagsReady, annoReady, metaReady, keywordsReady, collectionsReady).then(function() {
+        var badgeNum;
+        if (resourcesUploaded >= 10) {
+          badgeNum = parseInt((resourcesUploaded-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesUploaded+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of resources uploaded'+badgeNum+'.png"><h3>Resources Uploaded</h3><p>Achievement Description</p></div>');
+        }
+        if (resourcesEdited >= 10) {
+          badgeNum = parseInt((resourcesEdited-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesEdited+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of resources edited for metadata'+badgeNum+'.png"><h3>Resources Edited</h3><p>Achievement Description</p></div>');
+        }
+        if (resourceKeywords >= 10) {
+          badgeNum = parseInt((resourceKeywords-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourceKeywords+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/keywords'+badgeNum+'.png"><h3>Keywords</h3><p>Achievement Description</p></div>');
+        }
+        if (resourcesFlagged >= 10) {
+          badgeNum = parseInt((resourcesFlagged-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesFlagged+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of flagged resources'+badgeNum+'.png"><h3>Resources Flagged</h3><p>Achievement Description</p></div>');
+        }
+        if (annotationsIn >= 10) {
+          badgeNum = parseInt((annotationsIn-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+annotationsIn+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/annotations in the system'+badgeNum+'.png"><h3>Internal Annotations</h3><p>Achievement Description</p></div>');
+        }
+        if (annotationsOut >= 10) {
+          badgeNum = parseInt((annotationsOut-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+annotationsOut+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/annotations outside the system'+badgeNum+'.png"><h3>External Annotations</h3><p>Achievement Description</p></div>');
+        }
+        if (transcriptionCount >= 10) {
+          badgeNum = parseInt((transcriptionCount-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+transcriptionCount+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/transcriptions'+badgeNum+'.png"><h3>Transcriptions Made</h3><p>Achievement Description</p></div>');
+        }
+        if (commentsInit >= 10) {
+          badgeNum = parseInt((commentsInit-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+commentsInit+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/initiated discussions'+badgeNum+'.png"><h3>Discussions Started</h3><p>Achievement Description</p></div>');
+        }
+        if (commentsReply >= 10) {
+          badgeNum = parseInt((commentsReply-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+commentsReply+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/responded to discussions'+badgeNum+'.png"><h3>Discussion Replies</h3><p>Achievement Description</p></div>');
+        }
+        if (collectionsMade >= 10) {
+          badgeNum = parseInt((collectionsMade-10) / 10) % 4 + 1;
+          $("#achievements-tab").append('<div class="badgeDiv"><span>'+collectionsMade+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/collections created'+badgeNum+'.png"><h3>Collections Created</h3><p>Achievement Description</p></div>');
         }
       });
     };

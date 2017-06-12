@@ -37,18 +37,18 @@
   <article class="badges">
     <ul>
       <?php
-      for ($i=0; $i < (int)$user_info['commentsInitiatedBadges']; $i++) {
-        echo $this->Achievement->getAchievement(Achievement::InitiatedDiscustion, 10);
-      }
-      for ($i=0; $i < (int)$user_info['commentsRepliedBadges']; $i++) {
-        echo $this->Achievement->getAchievement(Achievement::DiscussionResponse, 10);
-      }
-      for ($i=0; $i < (int)$user_info['annotationsInBadges']; $i++) {
-        echo $this->Achievement->getAchievement(Achievement::AnnotationInSystem, 10);
-      }
-      for ($i=0; $i < (int)$user_info['annotationsOutBadges']; $i++) {
-        echo $this->Achievement->getAchievement(Achievement::AnnotationOutSystem, 10);
-      }
+    //   for ($i=0; $i < (int)$user_info['commentsInitiatedBadges']; $i++) {
+    //     echo $this->Achievement->getAchievement(Achievement::InitiatedDiscustion, 10);
+    //   }
+    //   for ($i=0; $i < (int)$user_info['commentsRepliedBadges']; $i++) {
+    //     echo $this->Achievement->getAchievement(Achievement::DiscussionResponse, 10);
+    //   }
+    //   for ($i=0; $i < (int)$user_info['annotationsInBadges']; $i++) {
+    //     echo $this->Achievement->getAchievement(Achievement::AnnotationInSystem, 10);
+    //   }
+    //   for ($i=0; $i < (int)$user_info['annotationsOutBadges']; $i++) {
+    //     echo $this->Achievement->getAchievement(Achievement::AnnotationOutSystem, 10);
+    //   }
       ?>
     </ul>
   </article>

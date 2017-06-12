@@ -210,4 +210,16 @@ class KeywordsController extends MetaResourcesController {
         }
         $this->json(201, 'success');
     }
+
+    /**
+	 * Find all keywords associated with user id
+	 */
+	public function findAllByUser()
+	{
+		$model = $this->modelClass;
+		$results = $this->$model->find('all', array(
+			'conditions' => array('user_id' => $this->request->data['id'])
+		));
+		$this->json(200, $results);
+	}
 }

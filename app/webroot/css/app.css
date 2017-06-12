@@ -7933,15 +7933,6 @@ input.indexSearchBox {
     height: 270px;
   }
 }
-.errormsg {
-  margin: auto;
-  margin-top: 10%;
-  margin-bottom: 15%;
-  text-align: center;
-}
-.errormsg h2 {
-  margin-bottom: 1em;
-}
 div#searchButtonMobile {
   display: none;
 }
@@ -12777,6 +12768,24 @@ th.user-tabs-header {
   width: 18px;
   background-image: url(../img/pencil.svg);
   background-size: contain;
+}
+#user-actions .tab-content #achievements-tab .badgeDiv {
+  width: 240px;
+  height: 235px;
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 50px;
+}
+#user-actions .tab-content #achievements-tab .badgeDiv .badgeImg {
+  max-width: 160px;
+  margin-right: 20px;
+}
+#user-actions .tab-content #achievements-tab .badgeDiv span {
+  position: relative;
+  bottom: 55px;
+  left: 32px;
+  color: white;
+  font-size: 16px;
 }
 #user-actions .tab-content #uploads-tab i {
   max-width: 20px;

@@ -1,7 +1,7 @@
 <?php
 /**
  * Collections Controller
- * 
+ *
  * @package    ARCS
  * @link       http://github.com/calmsu/arcs
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
@@ -395,7 +395,8 @@ class CollectionsController extends AppController {
     {
         $model = $this->modelClass;
         $results = $this->$model->find('all', array(
-            'conditions' => array('user_id' => $this->request->data['id'])
+            'conditions' => array('user_id' => $this->request->data['id']),
+            'group' => array('collection_id')
         ));
         $this->json(200, $results);
     }
