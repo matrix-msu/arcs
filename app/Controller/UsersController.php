@@ -660,8 +660,22 @@ class UsersController extends AppController
         if ($ref == "" || !$user)
             throw new NotFoundException();
 
-        $this->loadModel('Comment');
+        $mappings = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.role', 'Mapping.pid'),
+            'conditions' => array(
+                'AND' => array('Mapping.id_user' => $user['id'], 'Mapping.status' => 'confirmed'),
+            )
+        ));
 
+        $user['mappings'] = array();
+        foreach($mappings as $mapping) {
+            $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
+            $role = $mapping["Mapping"]['role'];
+            $user['mappings'][] = array("project" => $project,
+                                        "role" => $role);
+        }
+
+        $this->loadModel('Comment');
         $user['commentsCount'] = $this->Comment->find('count', array(
             'conditions' => array('Comment.user_id' => $user['id']),
             'recursive' => -1
