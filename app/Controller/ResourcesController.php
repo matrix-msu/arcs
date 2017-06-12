@@ -474,6 +474,7 @@ class ResourcesController extends AppController {
         $fields = array('ALL');
         $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
         $page = json_decode($kora->return_json(), true);
+
         $page = $page[$id];
         $page['kora_url'] = KORA_FILES_URI.$pid."/".$sid."/";
 
@@ -625,7 +626,7 @@ class ResourcesController extends AppController {
         $this->render("../Search/search");
     }
 
-    //view muitiple resources in a viewer
+    // view multiple resources in a viewer
     public function multi_viewer($id='') {
         $pName = NULL;
         $resources = array();
@@ -704,10 +705,15 @@ class ResourcesController extends AppController {
             //get pages and add to resource array
             $page = $this->getPages($resource);
             $pageKids = array_keys($page);
-            //var_dump($page);
-            //$page[] = $project_kid;
 
-            $info_array[$resource]["page"] =  $page;
+            if(empty($page)) {
+                // creates a hacky solution to display a default page
+                // when there are no pages associated with the resource
+                // missing a lot of other information typically associated with a page
+                $page["DefaultPage"] = array();
+            }
+
+            $info_array[$resource]["page"] = $page;
 
             //get SOO
             if( !empty($pageKids) ){
@@ -725,34 +731,34 @@ class ResourcesController extends AppController {
         if (empty($resources)) {
             $this->set("resourceAccess", false);
         }
-    		if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
-    			$metadataedits = $this->getEditMetadata();
-                if($pName != '') {
-                    $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
-                }else{
-                    $metadataeditsControlOptions = array();
-                }
-                $flags = $this->getFlags($resources_array);
-    			$this->set("resources", $resources);
-    			$this->set("projectsArray", $projectsArray);
-    			ksort($seasons);
-    			$this->set("seasons", $seasons);
-    			ksort($excavations);
-    			$this->set("excavations", $excavations);
-    			$this->set("subjects", $subjects);
-    			$this->set("metadataEdits", $metadataedits);
-    			$this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
-    			$this->set("flags", $flags);
-          $this->set('locked_array', $locked_array);
-    		}else{  //this is for getting the data for a export data
-    			echo json_encode([$projectsArray,
-    								$seasons,
-    								$excavations,
-    								$resources,
-    								$subjects]);
-    			die;
-    		}
-
+        if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
+            $metadataedits = $this->getEditMetadata();
+            if($pName != '') {
+                $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
+            }else{
+                $metadataeditsControlOptions = array();
+            }
+            $flags = $this->getFlags($resources_array);
+            $this->set("resources", $resources);
+            $this->set("projectsArray", $projectsArray);
+            ksort($seasons);
+            $this->set("seasons", $seasons);
+            ksort($excavations);
+            $this->set("excavations", $excavations);
+            $this->set("subjects", $subjects);
+            $this->set("metadataEdits", $metadataedits);
+            $this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
+            $this->set("flags", $flags);
+            $this->set('locked_array', $locked_array);
+        }
+        else {  //this is for getting the data for a export data
+            echo json_encode([$projectsArray,
+                                $seasons,
+                                $excavations,
+                                $resources,
+                                $subjects]);
+            die;
+        }
     }
 
     //grab all flags that apply to the resources being shown

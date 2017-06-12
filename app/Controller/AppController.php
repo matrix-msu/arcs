@@ -276,6 +276,10 @@ class AppController extends Controller
      */
     public static function smallThumb($name)
     {
+        if ($name === "") {
+            return '/' . BASE_URL . DEFAULT_THUMB;
+        }
+
 		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
 		$KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
 
@@ -310,6 +314,9 @@ class AppController extends Controller
      */
     public function largeThumb($name)
     {
+        if ($name === "") {
+            return '/' . BASE_URL . DEFAULT_THUMB;
+        }
         $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
         $KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
 

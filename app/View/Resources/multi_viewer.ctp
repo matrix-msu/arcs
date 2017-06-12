@@ -303,7 +303,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                 <div class="annotationHelpOk">OK</div>
             </div>
             <div id="ImageWrap">
-                <img src="<?php  ?> " id="PageImage">
+                <img src="<?php ?> " id="PageImage">
                 <div id="canvas" class='canvas'></div>
             </div>
         </div>
@@ -430,14 +430,25 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
         <div id="other-resources" class = "other-page" style="min-width:  px">
               <?php
               $cnt = 0;
+
               foreach($resources as $r){
+
+
                   $page = $r['page'];
 
                   foreach ($page as $p) {
 
-                      $img = isset($p['Image Upload']['localName'])?
-                      $p['Image Upload']['localName'] : "";
-                      echo "<a class = 'other-resources' id = '".$r['kid']."'><img class = 'other-resource' id = '".$p['kid']."' src = '" . AppController::smallThumb($img) . "'  />";
+                      $img = isset($p['Image Upload']['localName']) ? $p['Image Upload']['localName'] : "";
+                      echo "<a class = 'other-resources' id = '".$r['kid']."'><img class = 'other-resource'";
+                      if(isset($p['kid'])) {
+                          echo "id = '" . $p['kid'] . "'";
+                      }
+                      else {
+                          // When we don't have a page, it sets id to resource_kid-default-page
+                          // For setting pageImage in newResource.js
+                          echo "id = '" . $r['kid'] . "-default-page'";
+                      }
+                      echo "src = '" . AppController::smallThumb($img) . "'  />";
                       echo "<div  class='numberOverResources'>";
                       echo ++$cnt;
                       echo "</div></a>";

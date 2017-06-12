@@ -2,44 +2,49 @@ var waitingId = 0;
 var waits = [];
 var _NewResource = {};
 function GetNewResource(id) {
-    
-    if(id == null)
-      return;
-    image = document.getElementById('PageImage')
-    image.src = '/'+BASE_URL+'img/arcs-preloader.gif';
-    //image.style.height = '100%';
-    //image.style.width = '100%';
-    waitingId++;
-    
-    setTimeout(function () {
-    }, 10000);
-    $.ajax({
+    image = document.getElementById('PageImage');
+    if(id == null) {
+        return;
+    }
+    else if(id.includes("default-page")) {
+        // if there are no pages, and the id contains default-page then set image to default resource
+        image.src = '/' + BASE_URL + 'img/DefaultResourceImage.svg';
+    }
+    else {
+        image.src = '/'+BASE_URL+'img/arcs-preloader.gif';
+        //image.style.height = '100%';
+        //image.style.width = '100%';
+        waitingId++;
 
-        url: arcs.baseURL + "resources/loadNewResource/" + id,
-        type: 'GET',
-        beforeSend: function(){
-            waits[this.url] = waitingId;
-        },
-        success: function (res) {
-          if(waits[this.url] >= waitingId){
-              
-              res = JSON.parse(res);
+        setTimeout(function () {
+        }, 10000);
+        $.ajax({
+            url: arcs.baseURL + "resources/loadNewResource/" + id,
+            type: 'GET',
+            beforeSend: function () {
+                waits[this.url] = waitingId;
+            },
+            success: function (res) {
+                if (waits[this.url] >= waitingId) {
 
-              kid = res['kid'];
+                    res = JSON.parse(res);
 
-              kids = [];
+                    kid = res['kid'];
 
-              //display obervatoins that apply to the selected page
-              var cnt=0;
-              var pageNum=1;
+                    kids = [];
 
-              document.getElementById('PageImage').src = res["kora_url"] + res['Image Upload']['localName'];
+                    //display obervatoins that apply to the selected page
+                    var cnt = 0;
+                    var pageNum = 1;
 
-              document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
+                    image.src = res["kora_url"] + res['Image Upload']['localName'];
+                    document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
+                }
             }
-        }
-    });
+        });
+    }
 }
+
 _NewResource.DeselectCSS = function(element){
   $(element).find(".numberOverResources").css({background :"black"});
   $(element).find("img").css("borderWidth","0px");
