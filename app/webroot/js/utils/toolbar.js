@@ -11,7 +11,6 @@ function checkMobile(){
 }
 $(document).ready(function(){
 
-	console.log($('#projectMenu').height());
 	//mobile display drop down
 	$( '#hamburger' ).click(function(){
 			

@@ -1226,7 +1226,7 @@ $(document).ready(function() {
 
     var dynamic = $('.resource-thumb a img');
     var static = $('.select-overlay');
-    console.log(dynamic);
+    // console.log(dynamic);
     static.height(dynamic.height());
 
     var url = window.location.href;
