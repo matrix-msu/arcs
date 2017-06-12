@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Users Controller
  *
@@ -12,153 +11,15 @@
 class UsersController extends AppController
 {
     public $name = 'Users';
-    public $uses = array('User', 'Mapping');
+
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow(
-          'crop', 'signup', 'special_login', 'register', 'confirm_user',
-          'register_no_invite', 'reset_password', 'display', 'getEmail',
-          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite'
-          );
+        $this->Auth->allow('crop', 'signup', 'special_login', 'register', 'confirm_user', 'register_no_invite', 'reset_password', 'display', 'getEmail', 'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite');
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
-    /**
-      * Takes a parameter which can be either (KID, PID, project name)
-      * and resolves a project.
-      *
-      * @param $param either (KID, PID, project name)
-      *
-      * @return a map with project name and a bool value for $param type
-      */
-    public static function resolveProject($param) {
-      $project = NULL;
-      $isResource = false;
-      // test for project name
-      try {
-        parent::getPIDFromProjectName($param);
-        $project = $param;
 
-      } catch (Exception $e) {
-        // test for a KID
-        if ($tmp = parent::convertKIDtoProjectName($param)) {
-          $project = $tmp;
-          $isResource = true;
-
-        } else {
-          // test for a pid
-            try {
-              $projects = parent::getPIDArray();
-              if ($tmp = array_search($param, $projects)) {
-                  $project = $tmp;
-              }
-            } catch (Exception $e){}
-        }
-      }
-      return array(
-        "project" => $project,
-        "isResource" => $isResource
-      );
-    }
-    /**
-      * Takes a project name and finds the corresponding admins
-      *
-      * @param $project is the project name
-      *
-      * @return array of admin emails
-      */
-    public function getAdmins($project) {
-      $pid;
-      $ids = array();
-      $mapping = array();
-
-      try {
-        $pid = parent::getPIDFromProjectName($project);
-      } catch (Exception $e) {
-        // indicate no admins
-        return array();
-      }
-
-      // sql query on admins on the project
-      $res = $this->Mapping->find('all', array(
-        'fields' => array('Mapping.id_user'),
-        'conditions' => array(
-          'Mapping.role' => 'Admin',
-          'Mapping.pid'  => $pid
-        )
-      ));
-
-      // push the ID's to an array
-      foreach ($res as $key => $value) {
-        array_push($ids, $value['Mapping']['id_user']);
-      }
-
-      // Find the ID's in the user table
-      $res = $this->User->findAllById($ids);
-
-      // push the emails to an array
-      foreach ($res as $key => $value) {
-        array_push($mapping, $value['email']);
-      }
-      // return the admin emails
-      return $mapping;
-    }
-    /**
-      * Takes a parameter which can be either (KID, PID, project name)
-      * sends a permission request to the admins
-      *
-      * @param $project is the project name
-      *
-      * @return array of admin emails
-      */
-    public function requestPermission($param) {
-      $template; $viewVars; $admins;
-
-      $resolve = static::resolveProject($param);
-      $admins = $this->getAdmins($resolve["project"]);
-      // don't render a view
-      $this->autoRender = false;
-
-      // assert email dependencies
-      if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
-        // Set the template and view vars based on type
-        if ($resolve["isResource"]) {
-          $template = 'requestAccessResource';
-          $viewVars = array('user' => $user, 'project' => $resolve["project"], 'resource' => $param);
-          // else is project permissions
-        } else {
-          $template = 'requestAccessProject';
-          $viewVars = array('user' => $user, 'project' => $resolve["project"]);
-        }
-        // Send emails to admins
-        App::uses('CakeEmail', 'Network/Email');
-        $Email = new CakeEmail();
-        $Email->viewVars($viewVars)
-              ->template($template, 'default')
-              ->emailFormat('html')
-              ->subject('User Access Request')
-              ->to($admins)
-              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        $Email->send();
-
-        // return the flash message for frontend
-        return "Success, the request has been sent.";
-      }
-      // return the flash message for frontend
-      return "Error, Request was not set";
-    }
-
-    public function getUser(&$auth){
-        if ($auth->loggedIn()){
-            $user = $this->User->find('first', array(
-                'conditions' => array("User.id" => $auth->user("id"))
-            ));
-            if (!empty($user))
-                return $user;
-        }
-        return false;
-    }
     /**
      * Display a user's bookmarks.
      *
@@ -174,8 +35,7 @@ class UsersController extends AppController
         $this->set('bookmarks', $this->User->Bookmark->find('all', array(
             'conditions' => array(
                 'Bookmark.user_id' => $id
-            )
-        )));
+            ))));
     }
 
     /**
@@ -322,6 +182,7 @@ class UsersController extends AppController
                     $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
                     foreach ($admins as $admin) {
                         $this->pendingUserEmail($admin, $user);
+
                     }
                     $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
                     $this->redirect('/');
@@ -473,7 +334,6 @@ class UsersController extends AppController
      */
     public function register()
     {
-        $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
                 $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
@@ -489,20 +349,7 @@ class UsersController extends AppController
                         'last_login' => null,
                         'status' => 'unconfirmed'
                     ))) {
-                        $allDat = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        $id = $allDat['id'];
-                        $projects = explode(", ", $this->request->data['User']['project']);
-                        $mappingArray = [];
-                        foreach ($projects as $project) {
-                            $mappingArray[] = array(
-                                'id_user' => $id,
-                                'role' => 'Researcher',
-                                'pid' => $this->getPIDFromProjectName(strtolower(str_replace(" ","_",$project))),
-                                'status' => 'unconfirmed',
-                                'activation' => $this->Mapping->getToken()
-                            );
-                        }
-                        $this->Mapping->saveAll($mappingArray);
+
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         $this->confirmUserEmail($user);
                         $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
