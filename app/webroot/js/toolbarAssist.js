@@ -1,6 +1,7 @@
 
-
+//JOSH- I don't think this is used......
 /*Keep as global*/
+
 //
 var temp = window.location.href;
 var tempArray = temp.split("/").reverse();

@@ -215,9 +215,8 @@
 		  return;
         }else{
           //show all button goes to search.
-          var project = window.location.href
-            .split("/")
-            .reverse()[0];
+          var project = $('#resources').attr('href').split('/').reverse()[0];
+
           var url = "../search/collection/" + id;
           $('<form />')
               .hide()

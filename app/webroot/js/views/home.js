@@ -77,9 +77,8 @@
       if (limit !== 0) {
         query2 += "n=" + limit + "&";
       }
-      var url = window.location.href.split('/');
-      var kid = '';
-      kid = url.pop();
+      var url = $('#resources').attr('href').split('/');
+      var kid = url.pop();
       if(kid != '' && kid != 'resources' ){
         var lastChar = kid.substr(kid.length - 1);
         if( lastChar == '#' ){
@@ -113,7 +112,7 @@
           });
           return; //$el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
-          var project = window.location.href
+          var project = $('#resources').attr('href')
             .split("/")
             .reverse()[0]
           if (type === 'Orphaned') {
