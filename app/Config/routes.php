@@ -103,6 +103,9 @@
 	Router::connect('/resources/viewkid/*',
         array('controller' => 'resources', 'action' => 'viewKid')
     );
+    Router::connect('/resources/findallbyuser',
+        array('controller' => 'resources', 'action' => 'findAllByUser')
+    );
     # We can access the JSON search through either /api/search or this:
     Router::connect('/resources/search',
         array('controller' => 'search', 'action' => 'resources')
@@ -143,6 +146,9 @@
     Router::connect('/collections/deleteResource',
         array('controller' => 'collections', 'action' => 'deleteResource')
     );
+    Router::connect('/collections/findallbyuser',
+        array('controller' => 'collections', 'action' => 'findAllByUser')
+    );
     # Collections page
     Router::connect('/collections/*',
         array('controller' => 'collections', 'action' => 'index')
@@ -168,6 +174,12 @@
     Router::connect('/api/users/invite',
         array('controller' => 'users', 'action' => 'ajaxInvite')
     );
+    Router::connect('/users/getUsername',
+        array('controller' => 'users', 'action' => 'getEmail')
+    );
+    Router::connect('/users/getEmail',
+        array('controller' => 'users', 'action' => 'getUsername')
+    );
     # Signup
     Router::connect('/register/*',
         array('controller' => 'users', 'action' => 'register')
@@ -183,6 +195,9 @@
     Router::connect('/users/request_permission/*',
         array('controller' => 'users', 'action' => 'requestPermission')
     );
+///////
+//toolbar
+//////
     Router::connect('/users/getAllUsers',
         array('controller' => 'users', 'action' => 'getAllUsers')
     );
@@ -299,6 +314,9 @@
     );
     Router::connect('/keywords/deleteKeyword',
         array('controller' => 'keywords', 'action' => 'deleteKeyword')
+    );
+    Router::connect('/keywords/findallbyuser',
+        array('controller' => 'keywords', 'action' => 'findAllByUser')
     );
 ////////////////////////////////////////////////////////////////////////
 # comments controller
