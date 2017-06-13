@@ -7933,6 +7933,15 @@ input.indexSearchBox {
     height: 270px;
   }
 }
+.errormsg {
+  margin: auto;
+  margin-top: 10%;
+  margin-bottom: 15%;
+  text-align: center;
+}
+.errormsg h2 {
+  margin-bottom: 1em;
+}
 div#searchButtonMobile {
   display: none;
 }

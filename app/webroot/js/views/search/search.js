@@ -569,6 +569,9 @@
         $('.resource-thumb').each(function(){
             var atag = $(this).children().eq(0);
             var darkBackground = $(atag).children().eq(0);
+            if ($(this).find('.resourceLockedDarkBackgroundSearch').length > 0) {
+              $(this).find('.circle-container').hide();
+            }
             var resourcePicture = $(atag).children().eq(2);
             $(resourcePicture).load(function(){ //wait for each picture to finish loading
                 var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
