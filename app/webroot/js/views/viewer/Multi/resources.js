@@ -66,7 +66,8 @@ _resource.sliderMove = function(obj, movementMultiplier=1) {
     var accelorator = 1;
     var slider = obj.slider;
     var element = slider.find("img");
-    var movement = parseInt($(element).prop("width")) * movementMultiplier;
+    var movement = parseInt($(element).prop("width")) * movementMultiplier
+    console.log(movement)
 
     obj.direction == "left" ? movement *= -1 : movement;
 
@@ -108,6 +109,10 @@ _resource.SetWidths = function(container) {
         $(container).css({
             width: "initial"
         })
+        $(container).find(".button-left").css({
+            display: "initial"
+        })
+        $(_resource.resourceContainer).css('width', '')
         _resource.currWidth = parseInt(
             $(container).width()
         );
@@ -176,14 +181,9 @@ _resource.getObjFromKid = function(kid) {
 
 _resource.setPointer = function(id) {
     var resource = _resource.getObjFromKid(id);
-    var sliderOffset = Math.abs($(_resource.resourceSlider).position().left);
-    var offset = resource.offset().left + sliderOffset;
-
-    if (sliderOffset != 60) {
-        offset += 90;
-    } else {
-        offset -= 20;
-    }
+    var sliderOffset = $(_resource.resourceSlider).position().left;
+    // Magic number 26 is actually the pointer's left margin
+    var offset = resource.offset().left + resource.outerWidth() / 2.0 - sliderOffset - 26;
 
     $(_resource.pointer).children().each(function() {
         $(this).css({
