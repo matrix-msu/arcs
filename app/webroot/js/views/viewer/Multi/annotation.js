@@ -75,10 +75,9 @@ $(document).ready(function () {
             $(".canvas").height($("#PageImage").height());
             $(".canvas").width($("#PageImage").width());
             $(".canvas").css({bottom: $("#PageImage").height()});
-            
-            //TODO - splitting is bad.
-            page_sid = currentPageKid.split('-')[1];
-            page_sid = parseInt(page_sid, 16);
+
+            //getSidFromKid is defined in bootstrap.php
+            page_sid = getSidFromKid(currentPageKid);
 
             //get current resourceKid
             var currentPage = $('.selectedCurrentResource').find('img').attr('id');
@@ -258,8 +257,7 @@ $(document).ready(function () {
     function SubmitSearch(offset) {
         $(".annotateSearch ").hide()
         var pKid = $('#PageImage').attr('src').split('/').pop();
-        pKid = pKid.split('-');
-        pid = pKid[0];
+        pid = getPidFromKid(pKid);
         result_ids = [];
         current_offset = offset;
         index = 0;
@@ -293,7 +291,7 @@ $(document).ready(function () {
                     url: arcs.baseURL + "resources/advanced_search",
                     type: "POST",
                     data: {
-                        pid: pid,
+                        pid: pKid,
                         sid: 'page',
                         q: q
                     },
@@ -376,7 +374,7 @@ $(document).ready(function () {
             //Get related pages
             $.each(data, function (kid,v) {
 
-                var tempPid = parseInt(pid, 16);
+                var tempPid = pid;
                 // could not find mapping
                 if (mapping[v['Resource Associator']] === undefined) {
                     return;
@@ -567,15 +565,15 @@ $(document).ready(function () {
                             url: annotateData.url
                         },
                         success: function (data) {
-                          // save the relation_id to first reference
-                          $.ajax({
-                              url: arcs.baseURL + "api/annotations/" +annotateData.relation_id+".json",
-                              type: "POST",
-                              data: {
-                                relation_id: data.id
-                              },
-                              success: function (data) {
-                              }
+                            // save the relation_id to first reference
+                            $.ajax({
+                                url: arcs.baseURL + "api/annotations/" +annotateData.relation_id+".json",
+                                type: "POST",
+                                data: {
+                                    relation_id: data.id
+                                },
+                                success: function (data) {
+                                }
                             });
                             GetDetails();
                         }
@@ -750,20 +748,20 @@ $(document).ready(function () {
 
                     // Set incoming coordinates or reset incoming annotation coordinates to null
                     $("." + value.id).find(".annotateLabel").click(function() {
-                      $.ajax({
-                          url: arcs.baseURL + "api/annotations/" + value.id + ".json",
-                          type: "POST",
-                          data: {
-                              x1: null,
-                              x2: null,
-                              y1: null,
-                              y2: null
-                          },
-                          success: function () {
-                              DrawBoxes(kid);
-                              GetDetails();
-                          }
-                      });
+                        $.ajax({
+                            url: arcs.baseURL + "api/annotations/" + value.id + ".json",
+                            type: "POST",
+                            data: {
+                                x1: null,
+                                x2: null,
+                                y1: null,
+                                y2: null
+                            },
+                            success: function () {
+                                DrawBoxes(kid);
+                                GetDetails();
+                            }
+                        });
                     })
                     $("." + value.id).click(function () {
                         if (!value.x1) {
@@ -837,48 +835,15 @@ $(document).ready(function () {
 
     }
 
-    // Annotation popup in details tab
+    // clicked on annotaion in the details tab
     function ShowDetailsAnnotation(t) {
         var id = t.parent().attr('id');
-
         $.ajax({
             url: arcs.baseURL + "api/annotations/" + id + ".json",
             type: "GET",
             success: function (data) {
-
-                $(".annotationPopup").remove();
-                if (mouseOn) {
-
-                    if (data.relation_page_kid != "") {
-                        var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
-                        var localPid = paramKid.split('-')[0];
-                        var pid = parseInt(localPid, 16);
-
-                        $.ajax({
-                            url: arcs.baseURL + "resources/advanced_search",
-                            type: "POST",
-                            data: {
-                                q: [
-                                    ['kid', '=', paramKid]
-                                ],
-                                pid: localPid,
-                                sid: 'page'
-                            },
-                            success: function (pageData) {
-                              var data = JSON.parse(pageData)[paramKid]
-                              var associator = data["Resource Associator"][0] || "INVALID_ASSOCIATOR"
-                              window.location.href = arcs.baseURL + "resource/" + associator + "?pageSet=" + data["kid"]
-                            }
-                        });
-                    }
-                    if (data.transcript != "") {
-                        $(".annotationData").append("<p>Transcript: " + data.transcript + "</p>");
-                    }
-
-                    if (data.url != "") {
-                        $(".annotationData").append("<p>URL: " + data.url + "</p>");
-                    }
-                }
+                window.location.href = arcs.baseURL + "resource/" + data.relation_resource_kid +
+                    "?pageSet=" + data.relation_page_kid;
             }
         });
     }
@@ -978,8 +943,6 @@ $(document).ready(function () {
             url: arcs.baseURL + "api/annotations/" + id + ".json",
             type: "GET",
             success: function (data) {
-                var pid = data.page_kid.split('-')[0];
-                var unHexPid = parseInt(pid, 16);
                 $(".annotationPopup").remove();
                 if (mouseOn) {
                     $("#" + id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
@@ -994,7 +957,7 @@ $(document).ready(function () {
                                 q: [
                                     ['kid', '=', paramKid]
                                 ],
-                                pid: pid,
+                                pid: data.page_kid,
                                 sid: 'page'
                             },
                             success: function (pageData) {
@@ -1019,7 +982,7 @@ $(document).ready(function () {
                                         .appendTo($("body"))
                                         .submit();
                                 }
-                                var image = KORA_FILES_URI + unHexPid + '/' + page_sid + '/' + page['Image Upload'].localName;
+                                var image = page['constructed_image'];
                                 // Resource.Identifier
                                 // Resource.Type
                                 // Page.Scan Number

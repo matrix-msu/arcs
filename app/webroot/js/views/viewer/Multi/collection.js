@@ -49,7 +49,7 @@ $( document ).ready(function() {
             statusCode: {
                 201: function (data) {
                     var collection_id = data['collection_id'];
-					$('.viewCollection').attr('data-colId', data.collection_id);
+                    $('.viewCollection').attr('data-colId', data.collection_id);
                     var formdata = {
                         collection: collection_id,  //a collection_id
                         resource_kids: resource_kids
@@ -171,8 +171,27 @@ var lastCheckedId = '';
 //get collection list for search modal
 function collectionList() {
     var href = $('#resources').attr('href');
-    href = href.split('/');
-    href = href.pop();
+
+    //this is a all project search.. so hide the collections button and return
+    if( typeof href == 'undefined' ){
+        $('#selected-all').css('display', 'none');
+        return;
+    }
+
+    var hrefTemp = href.split('/');
+    href = hrefTemp.pop();
+
+    if( href == '' ){ //there was a trailing '/'
+        href = hrefTemp.pop();
+    }
+
+    if( href.length == 36 ){
+        $('#resources').css('display', 'none');
+        $('#collections').css('display', 'none');
+        $('#selected-all').css('display', 'none');
+        return;
+    }
+
     collectionArray = [];
     $.ajax({
         url: arcs.baseURL + "collections/titlesAndIds",

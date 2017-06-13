@@ -64,7 +64,6 @@
 
     Search.prototype.changeDisplay = function() {
       if(typeof results_to_display != "undefined"){
-        console.log(results_to_display);
         var data = results_to_display
         $(".searchIntro").css("display","none")
         $("#searchBox").css("display","none")
@@ -656,8 +655,6 @@
     };
 
     setSites = function() {
-
-      console.log("Set the projects");
       var a, key, li, ref, results1, val;
       $('.sitesMenu').empty();
       $('.sitesMenu').append(createAllFilter());
@@ -972,8 +969,7 @@
         else{
           var href = $(this).parent().parent().find(".result_a").attr('href')
           if(href !== undefined )
-            window.location.href = href
-          console.log(href);
+            window.location.href = href;
         }
       })
 
@@ -1229,17 +1225,18 @@ $(document).ready(function() {
 
     var dynamic = $('.resource-thumb a img');
     var static = $('.select-overlay');
-    // console.log(dynamic);
     static.height(dynamic.height());
 
+    //don't split like this.. but seems to be okay for here
     var url = window.location.href;
     var split = url.split("/").reverse()[0];
+
     if(split != "search" && window.globalquery != undefined){
         if (split != "advanced_search") {
-            $(".searchBoxInput").val(globalquery);
-            var e = $.Event("keyup");
-            e.keyCode = 13; // # Some key code value
-            $(".searchBoxInput").trigger(e);
+          $(".searchBoxInput").val(globalquery);
+          var e = $.Event("keyup");
+          e.keyCode = 13; // # Some key code value
+          $(".searchBoxInput").trigger(e);
         }
     }
     if(split == "advanced_search"){
@@ -1265,7 +1262,4 @@ function calculateMargins() {
         $(".resource-thumb").css("margin", "15px " + (newMargin) + "px");
     }
 
-
-
-    // console.log((w-resourceWidth)/4);
 }
