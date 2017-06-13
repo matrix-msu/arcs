@@ -52,7 +52,7 @@
 ////////////////////////////////////////////////////////////////////////
     # Home page
     Router::connect('/',
-        array('controller' => 'projects', 'action' => 'display', 'index')
+        array('controller' => 'projects', 'action' => 'index')
     );
     Router::connect("/projects/single_project/*",
         array('controller' => 'projects', 'action' => 'single_project')
@@ -65,7 +65,7 @@
     );
     # Resource, collection and user singular aliases
     Router::connect('/resource/*',
-        array('controller' => 'resources', 'action' => 'viewer')
+        array('controller' => 'resources', 'action' => 'multi_viewer')
     );
     # Non-RESTful API routes
     Router::connect('/api/search',
@@ -85,10 +85,19 @@
     Router::connect('/resources/loadNewResource/*',
         array('controller' => 'resources', 'action' => 'loadNewResource')
     );
+    Router::connect('/resources/createExportFile',
+        array('controller' => 'resources', 'action' => 'createExportFile')
+    );
+	Router::connect('/resources/downloadExportFile',
+        array('controller' => 'resources', 'action' => 'downloadExportFile')
+    );
+    Router::connect('/resources/checkExportDone',
+        array('controller' => 'resources', 'action' => 'checkExportDone')
+    );
     Router::connect('/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
-    Router::connect('/search/collection',
+    Router::connect('/search/collection/*',
         array('controller' => 'resources', 'action' => 'viewtype')
     );
 	Router::connect('/resources/viewkid/*',
@@ -171,9 +180,6 @@
     Router::connect('/users/getEmail',
         array('controller' => 'users', 'action' => 'getUsername')
     );
-    Router::connect('/api/users/add',
-        array('controller' => 'users', 'action' => 'ajaxAdd')
-    );
     # Signup
     Router::connect('/register/*',
         array('controller' => 'users', 'action' => 'register')
@@ -186,9 +192,9 @@
     Router::connect('/logout',
         array('controller' => 'users', 'action' => 'logout')
     );
-///////
-//toolbar
-//////
+    Router::connect('/users/request_permission/*',
+        array('controller' => 'users', 'action' => 'requestPermission')
+    );
 ///////
 //toolbar
 //////
@@ -196,8 +202,25 @@
         array('controller' => 'users', 'action' => 'getAllUsers')
     );
 ////////////////////////////////////////////////////////////////////////
+# advancedSearch controller
+////////////////////////////////////////////////////////////////////////
+    // order matters here! do not move this below search.
+    Router::connect('/search/advanced/view/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'viewer')
+    );
+    Router::connect('/search/advanced/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'display')
+    );
+    Router::connect('/api/search/advanced/*',
+        array('controller' => 'AdvancedSearch', 'action' => 'searchAPI')
+    );
+
+////////////////////////////////////////////////////////////////////////
 # search controller
 ////////////////////////////////////////////////////////////////////////
+    Router::connect('/search/keyword/*',
+        array('controller' => 'search', 'action' => 'keywordSearch')
+    );
     Router::connect('/simple_search/*',
         array('controller' => 'search', 'action' => 'simple_search')
     );
@@ -218,15 +241,6 @@
     );
 	   Router::connect('/search/paginate',
         array('controller' => 'search', 'action' => 'paginate')
-    );
-////////////////////////////////////////////////////////////////////////
-# advancedSearch controller
-////////////////////////////////////////////////////////////////////////
-    Router::connect('/advanced_search',
-        array('controller' => 'AdvancedSearch', 'action' => 'display')
-    ); 
-    Router::connect('/api/search/advanced/*',
-        array('controller' => 'AdvancedSearch', 'action' => 'search')
     );
 ////////////////////////////////////////////////////////////////////////
 # redirects
@@ -310,7 +324,7 @@
   Router::connect('/comments/findall',
       array('controller' => 'comments', 'action' => 'findall')
   );
-   Router::connect('/resources/flags/add',
+   Router::connect('/flags/add',
         array('controller' => 'flags', 'action' => 'add')
     );
 
@@ -319,7 +333,7 @@
 ///////////////////////////////////////////////////////////////////////
 Router::connect('/orphan/*',
     array('controller' => 'orphans', 'action' => 'display')
-); 
+);
 ////////////////////////////////////////////////////////////////////////
 ##################
 ////////////////////////////////////////////////////////////////////////
