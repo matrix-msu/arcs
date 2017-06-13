@@ -174,6 +174,9 @@
     Router::connect('/api/users/invite',
         array('controller' => 'users', 'action' => 'ajaxInvite')
     );
+    Router::connect('/api/users/add',
+        array('controller' => 'users', 'action' => 'ajaxAdd')
+    );
     Router::connect('/users/getUsername',
         array('controller' => 'users', 'action' => 'getEmail')
     );
