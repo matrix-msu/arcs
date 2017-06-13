@@ -149,4 +149,6 @@ define("globaljsvars",
     "var SURVEY_SID_ARRAY ='".json_encode($GLOBALS['SURVEY_SID_ARRAY'])."';" .
     "var PAGES_SID_ARRAY ='".json_encode($GLOBALS['PAGES_SID_ARRAY'])."';" .
     "var KORA_FILES_URI ='".KORA_FILES_URI."';".
+    "function getSidFromKid(kid){var bootstrapSid = kid.split('-')[1];return parseInt(bootstrapSid, 16);}".
+    "function getPidFromKid(kid){var bootstrapPid = kid.split('-')[0];return parseInt(bootstrapPid, 16);}".
     "</script>");
