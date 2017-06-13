@@ -506,7 +506,7 @@ class UsersController extends AppController
 
         if ($ref == "" || !$user)
             throw new NotFoundException();
-
+        $this->loadModel('Mapping');
         $mappings = $this->Mapping->find('all', array(
             'fields' => array('Mapping.role', 'Mapping.pid'),
             'conditions' => array(
