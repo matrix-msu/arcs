@@ -17,18 +17,10 @@ class CollectionsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $pKid = explode('/', $this->request->query['url']);
-        //print_r($pKid);
-        //exit();
-        if( isset($pKid[1]) && sizeof( explode('-', $pKid[1]) ) == 3 ){
-            $pKid = $pKid[1];
-
-            //make sure it is a real project
-            $fields = array('Name');
-            $kora = new General_Search(PROJECT_SID, "kid", "=", $pKid, $fields);
-            $project = json_decode($kora->return_json(), true);
-
-            if(empty($project)){    //not a real project to redirect.
+        $pName = explode('/', $this->request->query['url']);
+        if( isset($pName[1]) ){
+            $isRealProject = parent::isRealProject($pName[1]);
+            if(!$isRealProject){    //not a real project to redirect.
                 $this->redirect('/');
             }
         }

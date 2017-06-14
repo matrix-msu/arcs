@@ -91,7 +91,12 @@ class AppController extends Controller
         }
         return $GLOBALS['PID_ARRAY'];
     }
-    
+    public static function isRealProject($project) {
+        if (!isset($GLOBALS['PID_ARRAY'])) {
+            throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound);
+        }
+        return isset($GLOBALS['PID_ARRAY'][$project]);
+    }
     public static function verifyGlobals($project)
     {
         self::getPIDFromProjectName($project);
