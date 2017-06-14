@@ -59,61 +59,6 @@ class Project extends Kora{
       }
       return "";
     }
-    
-    public function getProjectResources(){
-        if($this->is_valid){
-            $projectKid = $this->get_kid(); //get project kid
-
-            //get all seasons based on project kid
-            $this->schemeMapping = SEASON_SID;
-            $this->fields = array("Project Associator");
-            $this->The_Clause = new KORA_Clause("Project Associator", "=", $projectKid);
-            $seasons = parent::search();
-
-            //get an array of the seasons
-            $seasonArray = array_keys($seasons);
-            //get a season clause for excavations
-            $this->The_Clause = new KORA_Clause("Season Associator", "IN", $seasonArray);
-
-            //get all excavations based on the seasons.
-            $this->schemeMapping = SURVEY_SID;
-            $this->fields = array("Season Associator");
-            $surveys = parent::search();
-
-            //get an excavation array.
-            $surveyArray = array_keys($surveys);
-            //make clauses for the 2 ways resources can be linked.
-            $tempClause1 = new KORA_Clause("Excavation - Survey Associator", "IN", $surveyArray);
-            $tempClause2 = new KORA_Clause("Season Associator", "IN", $seasonArray);
-
-            //get 8 newest resources based on the excavations and seasons.
-            $this->schemeMapping = RESOURCE_SID;
-            //$this->fields = array("Title","Type","Resource Identifier", 'systimestamp');
-            $this->fields = array("Title");
-            $this->The_Clause = new KORA_Clause($tempClause1, 'OR', $tempClause2);
-            //$this->sortFields= array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
-            $this->sortFields= array();
-            $this->start = 0;
-            $this->end = 0;
-            $results = array_keys(parent::search_limited());
-
-            usort($results, function($a, $b){
-                if ($a == $b) {
-                    return 0;
-                }
-                $atest = explode('-', $a);
-                $atest = array_pop($atest);
-                $atest = hexdec($atest);
-                $btest = explode('-', $b);
-                $btest = array_pop($btest);
-                $btest = hexdec($btest);
-                return ($atest < $btest) ? -1 : 1;
-            });
-            return $results;
-        }
-    return "";
-
-    }
 
 
     //project controller to get individual pages.
@@ -146,6 +91,3 @@ class Project extends Kora{
       return "";
     }
 }
-
-
-/////////////////////////////////////////
