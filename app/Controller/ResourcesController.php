@@ -615,6 +615,9 @@ class ResourcesController extends AppController {
             foreach( $collections as $temp ){ //only keep the resource_kids.
                 $resourceKids[] = $temp['Collection']['resource_kid'];
             }
+            if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
+                $resourceKids[0] = 'explode';
+            }
             $pName = parent::convertKIDtoProjectName($resourceKids[0]);
 
             $search = new Resource_Search($resourceKids, $pName);

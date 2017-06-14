@@ -83,16 +83,19 @@ class SearchController extends AppController {
     /**
      * Display the search page
      */
-    public function search($project, $query=null) {
+    public function search($project=null, $query=null) {
 
-      if($project != "all")
-        parent::verifyGlobals($project);
+        if($project === null) { // If no project, throw exception to give error page without showing users the php errors
+            parent::verifyGlobals('explode');
+        }
 
+        if($project != "all")
+            parent::verifyGlobals($project);
 
-      $title = 'Search';
+        $title = 'Search';
 
-      if ($query) $title .= ' - ' . urldecode($query);
-        $this->set('title_for_layout', $title);
+        if ($query) $title .= ' - ' . urldecode($query);
+            $this->set('title_for_layout', $title);
 
 	    if(!empty($query)){
 		   echo "<script type='text/javascript'>var globalquery = '".$query."';</script>";
