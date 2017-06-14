@@ -9918,9 +9918,9 @@ input[type=range]:focus::-ms-fill-upper {
 #resources-nav #other-resources-container {
   width: calc(100% - 120px);
   height: 100px;
-  margin: 7px 6px;
+  margin: 0 6px 7px 6px;
   overflow: hidden;
-  padding-top: 5px;
+  padding-top: 12px;
 }
 #resources-nav #other-resources-container a {
   position: relative;
