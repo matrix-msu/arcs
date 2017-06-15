@@ -10,8 +10,6 @@ var SUBJECTS = <?php echo json_encode($subjects);?>;
 var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 
 var showButNoEditArray = <?=json_encode($showButNoEditArray)?>;
-console.log('show no edit:');
-console.log(showButNoEditArray);
 var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
 
 var resourceKid = "";//"<?php  ?> ";
