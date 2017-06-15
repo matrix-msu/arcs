@@ -954,7 +954,7 @@ $(document).ready(function () {
 
                 $(".gen_box").mouseleave(function () {
                     mouseOn = false;
-                    //$(".annotationPopup").remove();
+                    $(".annotationPopup").remove();
                 });
 
             }
