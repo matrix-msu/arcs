@@ -91,10 +91,10 @@
 
 <script type='text/javascript'>
     // edit user
-    // arcs.profileView = new arcs.views.users.Profile({
-    //     el: $('#user-profile'),
-    //     model: new arcs.models.User(<?php echo json_encode($user); ?>)
-    // });
+    arcs.profileView = new arcs.views.Profile({
+        el: $('#user-profile'),
+        model: new arcs.models.User(<?php echo json_encode($user); ?>)
+    });
 
     // Score bubble tooltip
     $(document).ready(function() {
@@ -123,7 +123,7 @@
 </script>
 
 <script type='text/javascript'>
-arcs.profileView = new arcs.views.users.Profile({id: '<?php echo $user_info['id']; ?>'});
+arcs.profileView2 = new arcs.views.users.Profile({id: '<?php echo $user_info['id']; ?>'});
 
 //Start Edit Collections area
 
@@ -167,9 +167,6 @@ $(document).ready(function() {
         }
     });
 });
-
-
-
 
 
 $(".edit-btn").parent().on('click', ".edit-btn", function (e) {
