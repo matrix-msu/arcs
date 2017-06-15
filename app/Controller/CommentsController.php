@@ -19,6 +19,7 @@ class CommentsController extends MetaResourcesController {
         $user = $this->Auth->User();
         $this->request->data['user_id'] = $user['id'];
         $this->request->data['name'] = $user['name'];
+        $this->Auth->allow( 'findAll' );
     }
 
     /**

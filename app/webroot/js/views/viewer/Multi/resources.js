@@ -67,7 +67,6 @@ _resource.sliderMove = function(obj, movementMultiplier=1) {
     var slider = obj.slider;
     var element = slider.find("img");
     var movement = parseInt($(element).prop("width")) * movementMultiplier
-    console.log(movement)
 
     obj.direction == "left" ? movement *= -1 : movement;
 

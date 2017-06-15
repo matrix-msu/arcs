@@ -19,6 +19,7 @@ $(document).ready(function () {
     var page_nums = 0;
     var resourceKid = '';
     var resourceIdentifier = '';
+    var resourceHasPermissions = false; //determines whether to show the flags and trash.
     var page_sid = '';
     var annotateData = {
         transcript: "",
@@ -79,11 +80,13 @@ $(document).ready(function () {
             //getSidFromKid is defined in bootstrap.php
             page_sid = getSidFromKid(currentPageKid);
 
-            //get current resourceKid
-            var currentPage = $('.selectedCurrentResource').find('img').attr('id');
-            resourceKid = currentPage.replace('identifier-', '');
+            //get info about the current resource
+            var currentResource = $('.selectedCurrentResource').find('img');
+            resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
+            resourceKid = currentResource.attr('id').replace('identifier-', '');
             resourceIdentifier = RESOURCES[resourceKid]['Resource Identifier'];
-            DrawBoxes(currentPageKid);
+
+            DrawBoxes(currentPageKid); //kick it off
             GetDetails();
         }
         else {
@@ -257,7 +260,7 @@ $(document).ready(function () {
     function SubmitSearch(offset) {
         $(".annotateSearch ").hide()
         var pKid = $('#PageImage').attr('src').split('/').pop();
-        pid = getPidFromKid(pKid);
+        pid = getPidFromKid(pKid); //defined in bootstrap.php
         result_ids = [];
         current_offset = offset;
         index = 0;
@@ -684,7 +687,8 @@ $(document).ready(function () {
                 $(".annotation_display").remove()
 
                 $.each(data, function (key, value) {
-                    var trashButton = isAdmin == 1 ? "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
+                    var trashButton = ( isAdmin == 1 ) ?
+                        "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
 
                     var flagType = "FlagTooltip";
                     if( annotationFlags.indexOf(value.id) != -1 ){
@@ -695,12 +699,21 @@ $(document).ready(function () {
                     var flagString2 = " flagAnnotationId' data-annid='"+value.id+"' "+
                         "/>" ;
                     var trashString = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton;
+
+                    if( resourceHasPermissions == false ){
+                        flagString1 = '';
+                        flagString2 = '';
+                        trashString = '';
+                    }
+
                     if (value.page_kid == kid && value.transcript != "") { //add in the flags for a transcription
+                        var flagTypeClass = ' details-transcript ';
+                        if( resourceHasPermissions == false ) flagTypeClass = '';
                         $(".content_transcripts").append(
                             "<div class='transcript_display' id='" + value.id + "'>" +
                             value.transcript +
                             "<div class='thumbResource'> " +
-                            flagString1 + ' details-transcript ' + flagString2 +
+                            flagString1 + flagTypeClass + flagString2 +
                             trashString +
                             "</div>" +
                             "</div>"
@@ -709,38 +722,47 @@ $(document).ready(function () {
                     else { //add in the flags in the details tab for the annotations
                         //outgoing
                         if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
+                            var flagTypeClass = ' details-outgoing ';
+                            if( resourceHasPermissions == false ) flagTypeClass = '';
                             $(".outgoing_relations").append(
                                 "<div class='annotation_display' id='" + value.id + "'>" +
                                 "<div class='relationName'>" +
                                 value.relation_resource_name +
                                 "</div>" +
-                                flagString1 + ' details-outgoing ' + flagString2 +
+                                flagString1 + flagTypeClass + flagString2 +
                                 trashString +
                                 "</div>"
                             );
                         }
                         else if (value.relation_page_kid != "" && value.incoming == "true") {//incoming
                             var text = value.x1 ? "Revert to whole resource" : "Define space";
+                            var flagTypeClass = ' details-incoming ';
+                            var defineSpaceStuff =
+                                "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>"+
+                                "<div class='annotateLabel'>" + text + "</div>";
+                            if( resourceHasPermissions == false ){
+                                flagTypeClass = '';
+                                defineSpaceStuff = '';
+                            }
                             $(".incoming_relations").append(
                                 "<div class='annotation_display " + value.id + "' id='" + value.id + "'>" +
-                                "<div class='relationName'>" +
-                                value.relation_resource_name +
-                                "</div>" +
-                                flagString1 + ' details-incoming ' + flagString2 +
-                                trashString +
-                                "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>" +
-                                "<div class='annotateLabel'>" +
-                                text +
-                                "</div>" +
+                                    "<div class='relationName'>" +
+                                        value.relation_resource_name +
+                                    "</div>" +
+                                    flagString1 + flagTypeClass + flagString2 +
+                                    trashString +
+                                    defineSpaceStuff +
                                 "</div>"
                             );
                         }
                     }
                     if (value.url != "") { //add a url flag
+                        var flagTypeClass = ' details-url ';
+                        if( resourceHasPermissions == false ) flagTypeClass = '';
                         $(".urls").append(
                             "<div class='annotation_display' id='" + value.id + "'>" +
                             value.url +
-                            flagString1 + ' details-url ' + flagString2 +
+                            flagString1 + flagTypeClass + flagString2 +
                             trashString +
                             "</div>"
                         );
@@ -882,19 +904,21 @@ $(document).ready(function () {
                         }else if( v.incoming != null ){
                             annotationType = 'annotationIncoming';
                         }
-                        if (isAdmin == 1) {
-                            annotationHtml =
-                                "<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'>" +
-                                "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-White.svg'/>" +
-                                "</div>";
-                        }
+
+                        //annotationHtml +=
+                        //    "<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'>" +
+                        //    "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-White.svg'/>" +
+                        //    "</div>";
+
                         annotationHtml +=
                             "<div class='flagAnnotation notAdmin'>" +
                             "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
                             "class='flagAnnotationId "+annotationType+"' data-annid='"+v.id+"' "+
                             "/>" +
                             "</div>";
-                        $(gen_box).html(annotationHtml);
+                        if( resourceHasPermissions == true ) {
+                            $(gen_box).html(annotationHtml);
+                        }
 
                         $("#deleteAnnotation_" + v.id).click(function () {
                             var box = $(this).parent();

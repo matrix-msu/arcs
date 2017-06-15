@@ -9,7 +9,9 @@ var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
 var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 
-var locked_array = <?=json_encode($locked_array)?>;
+var showButNoEditArray = <?=json_encode($showButNoEditArray)?>;
+console.log('show no edit:');
+console.log(showButNoEditArray);
 var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
 
 var resourceKid = "";//"<?php  ?> ";
@@ -38,6 +40,8 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 //var_dump($resources);
 
 ?>
+
+<?=  $this->Html->script("views/viewer/Multi/dynamic_accordion.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/flag.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/accordion.js") ?>
 <!-- <?=  $this->Html->script("views/viewer/Multi/details.js")  ?> -->
@@ -47,7 +51,6 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?>
 
 <?=  $this->Html->script("views/viewer/Multi/annotation.js") ?>
-<?=  $this->Html->script("views/viewer/Multi/dynamic_accordion.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/slider_helpers.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/edit_metadata.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/collection.js") ?>
@@ -265,7 +268,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
             <div class="container1">
                 <h3><?php  ?> </h3>
 
-                <div class="tools">
+                <div class="tools" style="visibility:hidden;" >
                     <a id="collection-modal-btn" href="#">
                                         <span class="content">
                                                 Add To Collection
@@ -492,7 +495,9 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
          ?>
         <a class='other-resources' href="#" data-projectKid="<?=$r['project_kid']?>" >
 
-            <img id="identifier-<?=$r['kid']?>" class="other-resource" src="<?php echo AppController::smallThumb($p); ?> " height="200px"/>
+            <img id="identifier-<?=$r['kid']?>" class="other-resource<?php if ( in_array($r['kid'], $showButNoEditArray) ){echo ' showButNoEdit'; }  ?>"
+                src="<?php echo AppController::smallThumb($p); ?> " height="200px"/>
+
 			<?php if ($cnt ==1) :  ?>
 				<div class='numberOverResources selectedResource'>
 					<?php  echo $cnt;   ?>

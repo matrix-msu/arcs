@@ -6,6 +6,9 @@ $( document ).ready(function() {
 
     //new page click show/hide the correct metadata
     $('.other-page').find('img').click(function(){  //page click
+
+        $('.resource-reset-icon').click(); //reset the image position
+
         //subject of observation stuffs.
         $('.subjects-table').each(function(){  //hide all tables
             $(this).css('display','none');
@@ -41,6 +44,7 @@ $( document ).ready(function() {
     })
     //new resource clicked. show/hide metadata based on the resource.
     $('.resource-slider').find('a.other-resources').click(function(){
+
         //display correct project
         var projectKid = $(this).attr('data-projectKid');
         $('.project-table').css('display', 'none');
@@ -48,6 +52,37 @@ $( document ).ready(function() {
         //display correct resource
         var resourceKid = $(this).find('img').attr('id');
         resourceKid = resourceKid.replace('identifier-', '');
+
+        //decide if you are allowed to edit
+        if( showButNoEditArray.includes(resourceKid) ){
+            //not allowed to edit
+            $('.tools').css('visibility', 'hidden');
+            $('.metadata-edit-btn').css('visibility', 'hidden');
+            $('.trashTranscript').css('visibility', 'hidden');
+            $('.flagAnnotation').css('visibility', 'hidden');
+            $('.flagTranscript').css('visibility', 'hidden');
+            $('.submitContainer').css('height', '0px').css('visibility', 'hidden');
+            $('.editTranscriptions').css('visibility', 'hidden');
+            $('#keyword-edit-btn').css('visibility', 'hidden');
+            $('.annotateRelation').css('visibility', 'hidden');
+            $('.annotateLabel').css('visibility', 'hidden');
+        }else{
+            $('.tools').css('visibility', 'visible');
+            $('.metadata-edit-btn').css('visibility', 'visible');
+            $('.trashTranscript').css('visibility', 'visible');
+            $('.flagAnnotation').css('visibility', 'visible');
+            $('.flagTranscript').css('visibility', 'visible');
+            $('.submitContainer').css('height', '60px').css('visibility', 'visible');
+            $('.editTranscriptions').css('visibility', 'visible');
+            $('#keyword-edit-btn').css('visibility', 'visible');
+            $('.annotateRelation').css('visibility', 'visible');
+            $('.annotateLabel').css('visibility', 'visible');
+        }
+        var viewer = $("#ImageWrap"),
+            submit = $(".submitContainer"),
+            toolbar = $("#resource-tools");
+        $(".commentContainer").css("height", viewer.height() + toolbar.height() + 1 - submit.height());
+
         $('.archival.objects-table').css('display', 'none');
         $('.archival.objects-table[data-kid="'+resourceKid+'"]').css('display', 'table');
         //find the excavations

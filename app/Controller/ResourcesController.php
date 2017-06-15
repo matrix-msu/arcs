@@ -32,7 +32,7 @@ abstract class Permissions {
 class ResourcesController extends AppController {
 
     public $name = 'Resources';
-    public $uses = array('Resource', 'Collection', 'MetadataEdit', 'User', 'Flag');
+    public $uses = array('Resource', 'Collection', 'MetadataEdit', 'User', 'Flag', 'Mapping');
 
     public function beforeFilter() {
         # The App Controller will set some common view variables (namely a
@@ -638,7 +638,8 @@ class ResourcesController extends AppController {
         $excavations = array();
         $subjects = array();
         $resources_array = array();
-        $locked_array = array();
+        $showButNoEditArray = array();
+
         if($this->request->method() === "POST" && isset($this->request->data['pageSet'])){
             $pageIndex = $this->request->data['pageSet'];
             $this->set("pageSet", $pageIndex);
@@ -666,18 +667,54 @@ class ResourcesController extends AppController {
             $username = $user['User']['username'];
         }
 
+        $isSignedIn = ( $user == false )? false : true;
+
+        //grab all the projects a user has permissions for--
+        $mappings = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.role', 'Mapping.pid', 'Mapping.id_user', 'Mapping.status'),
+            'conditions' => array(
+                'AND' => array('Mapping.id_user' => $user['User']['id'], 'Mapping.status' => 'confirmed'),
+            )
+        ));
+        $projectPermissionArray = array();
+        foreach( $mappings as $mapping ){
+            array_push($projectPermissionArray, $mapping['Mapping']['pid']);
+        }
+
         foreach($resources_array as $resource){
 
             //get resource information
             $info_array = $this->getResource($resource);
-            //$identifier = $info_array[$resource]['Resource Identifier'];
+
+            //check the resource for project permissions
+            if( array_search($info_array[$resource]['pid'], $projectPermissionArray) === false ){
+                $hasProjectPermission = false;
+            }else{
+                $hasProjectPermission = true;
+            }
+
+            $isPublicResource = ( $info_array[$resource]['Permissions'] == 'Public' )? true:false;
 
             static::filterByPermission($username, $info_array);
             $permission = array_values($info_array)[0];
-            //skip resources with insufficent permissions
-            if(isset($permission['Locked']) && (bool)$permission['Locked']) {
-                array_push($locked_array, $permission['kid']);
-                continue;
+
+            //filter by project permissions
+            if( $hasProjectPermission ) {
+                if( $isPublicResource ){ //public resources are allowed
+                    if( !$isSignedIn ){ //can only edit if signed in
+                        array_push( $showButNoEditArray, $resource );
+                    }
+                }else{ //not a public resource so check resource permissions
+                    if (isset($permission['Locked']) && (bool)$permission['Locked']) { //no show, resouce modal
+                        continue;
+                    }
+                }
+            }else{
+                if( $isPublicResource ){ //no project and public means show no edit
+                    array_push( $showButNoEditArray, $resource );
+                }else{ //no project and not public means no show, project modal
+                    continue;
+                }
             }
 
             if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
@@ -731,7 +768,7 @@ class ResourcesController extends AppController {
 
         }
 
-        if (empty($resources)) {
+        if ( empty($resources) ) {
             $this->set("resourceAccess", false);
         }
         if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
@@ -752,7 +789,7 @@ class ResourcesController extends AppController {
             $this->set("metadataEdits", $metadataedits);
             $this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
             $this->set("flags", $flags);
-            $this->set('locked_array', $locked_array);
+            $this->set("showButNoEditArray", $showButNoEditArray);
         }
         else {  //this is for getting the data for a export data
             echo json_encode([$projectsArray,
