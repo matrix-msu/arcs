@@ -8,7 +8,7 @@ $(document).ready(function(){
           var viewer = $("#ImageWrap"),
               submit = $(".submitContainer"),
               toolbar = $("#resource-tools")
-          $(".commentContainer").css("height", viewer.height() + toolbar.height() + 1 - submit.height());
+          $(".commentContainer").css("height", viewer.height() + toolbar.height() + 2 - submit.height());
           getComments();
       });
 
