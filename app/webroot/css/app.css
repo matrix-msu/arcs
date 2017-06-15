@@ -9633,7 +9633,6 @@ input[type=range]:focus::-ms-fill-upper {
   height: calc(100% - 100px);
   background: #fff;
   border-bottom: 1px solid #cdcdcd;
-  overflow: hidden !important;
 }
 #viewer-window #ImageWrap {
   width: 100%;
@@ -9654,6 +9653,7 @@ input[type=range]:focus::-ms-fill-upper {
   margin-right: auto;
   margin-left: auto;
   cursor: move;
+  z-index: 1;
 }
 #resource-tools {
   float: left;
@@ -10359,7 +10359,6 @@ input[type=range]:focus::-ms-fill-upper {
   color: #0093be !important;
 }
 .annotationPopup {
-  width: 160px;
   background: #333333;
   position: relative;
   color: #fff;
@@ -10375,8 +10374,8 @@ input[type=range]:focus::-ms-fill-upper {
   margin: 5px;
 }
 .annotationImage {
+  max-width: 150px !important;
   max-height: 135px !important;
-  max-width: 150px;
 }
 .deleteAnnotation {
   display: inline-block;

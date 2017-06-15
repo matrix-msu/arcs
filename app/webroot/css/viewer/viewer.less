@@ -558,7 +558,7 @@ input[type=range]:focus::-ms-fill-upper {
 	height: ~"calc(100% - 100px)";//89.7%;
 	background: #fff;
 	border-bottom: 1px solid #cdcdcd;
-    overflow: hidden !important;
+    //overflow: hidden !important;
 
 	#ImageWrap{
     width: 100%;
@@ -580,6 +580,7 @@ input[type=range]:focus::-ms-fill-upper {
 		margin-right: auto;
 		margin-left: auto;
 		cursor: move;
+		z-index: 1;
 	}
 }
 
@@ -1351,7 +1352,6 @@ img.resource-reset-icon{
 // }
 
 .annotationPopup {
-	width: 160px;
  	background: rgba(51, 51, 51, 1);
 	position: relative;
 	color: #fff;
@@ -1370,8 +1370,8 @@ img.resource-reset-icon{
 }
 
 .annotationImage {
+	max-width: 150px !important;
 	max-height: 135px !important;
-	max-width: 150px;
 }
 
 .deleteAnnotation {

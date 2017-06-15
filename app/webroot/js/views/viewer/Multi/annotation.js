@@ -954,7 +954,7 @@ $(document).ready(function () {
 
                 $(".gen_box").mouseleave(function () {
                     mouseOn = false;
-                    $(".annotationPopup").remove();
+                    //$(".annotationPopup").remove();
                 });
 
             }
@@ -970,7 +970,7 @@ $(document).ready(function () {
                 $(".annotationPopup").remove();
                 if (mouseOn) {
                     $("#" + id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
-                    $(".annotationPopup").css("left", $("#" + id).width() + 10);
+                    $(".annotationPopup").css("left", $("#" + id).width() + 10).css('display', 'inline-block');
                     if (data.relation_page_kid != "") {
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
 
