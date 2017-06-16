@@ -7846,6 +7846,7 @@ input.indexSearchBox {
   left: 0;
   background: rgba(0, 0, 0, 0.8);
   z-index: 99998;
+  display: none;
 }
 #resource_permission_model .permission-content {
   width: 500px;

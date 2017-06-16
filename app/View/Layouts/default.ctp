@@ -50,6 +50,14 @@
                 echo $this->element('toolbar');
                 if (isset($resourceAccess) && !(bool)$resourceAccess) {
                     if (isset($user['loggedIn']) && $user['loggedIn'] != '' ) {
+                        // echo $this->element('Permissions/request_permission');
+                    } else {
+                        // echo $this->element('Permissions/resource_permission');
+                    }
+                    echo "<script>var resourceAccess = false;</script>";
+                }
+                if ($title_for_layout == 'Collections' || $title_for_layout == 'Resources' || $title_for_layout == 'Search' || $title_for_layout == 'AdvancedSearch' || $title_for_layout == 'Users') {
+                    if (isset($user['loggedIn']) && $user['loggedIn'] != '' ) {
                         echo $this->element('Permissions/request_permission');
                     } else {
                         echo $this->element('Permissions/resource_permission');

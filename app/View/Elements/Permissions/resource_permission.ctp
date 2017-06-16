@@ -17,23 +17,26 @@
   $(document).ready(function(){
     var permissions = function(){
 
-          $(".resourceLockedDarkBackgroundSP, .resourceLockedDarkBackground, .needToLogIn").on("click", function (){
+          $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn", function (){
             console.log("clicked");
-             $("#resource_permission_model").css("opacity", 1);
-              $("#resource_permission_model").css("pointer-events", "all");
+            //  $("#resource_permission_model").css("opacity", 1);
+            $("#resource_permission_model").show();
+            $("#resource_permission_model").css("pointer-events", "all");
           });
           $(".modal-exit").click(function () {
               console.log("close");
-              $("#resource_permission_model").css("opacity", 0);
+              // $("#resource_permission_model").css("opacity", 0);
+              $("#resource_permission_model").hide();
               $("#resource_permission_model").css("pointer-events", "none");
           });
           $(".logModalBtn, .reg").click(function () {
              $(".modal-exit").click();
           });
-          $(".resourceLockedDarkBackground").on("click", function () {
-             console.log("Testing")
-          });
 
+    }
+
+    if (!resourceAccess) {
+      $("#resource_permission_model").show();
     }
 
     permissions();

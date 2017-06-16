@@ -1,6 +1,6 @@
 <div id="request_permission_model" class="permissionModal">
     <div class="permission-content">
-        <div class="modal-exit"><p><a id="#close" href="#"><?= $this->Html->image('close.svg');?></a></p></div>
+        <div class="modal-exit"><p><a id="#close" href="#"><?= $this->Html->image('Close.svg');?></a></p></div>
         <div class="permission-modal-header">
             <h1>Request User Access</h1>
         </div>
@@ -10,7 +10,7 @@
         </div>
 
         <div class="permission-modal-responseButtons">
-            <p><button>CANCEL</button> <button class="request">REQUEST USER ACCESS</button></p>
+            <p><button class="modal-cancel">CANCEL</button> <button class="request">REQUEST USER ACCESS</button></p>
         </div>
     </div>
 
@@ -41,6 +41,23 @@
         });
       }
     })
+
+    $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn", function (){
+        console.log("clicked");
+        //  $("#resource_permission_model").css("opacity", 1);
+        $("#request_permission_model").show();
+        $("#request_permission_model").css("pointer-events", "all");
+        });
+        $(".modal-exit, .modal-cancel").click(function () {
+        console.log("close");
+        // $("#resource_permission_model").css("opacity", 0);
+        $("#request_permission_model").hide();
+        $("#request_permission_model").css("pointer-events", "none");
+    });
+
+    if (!resourceAccess) {
+      $("#request_permission_model").show();
+    }
   })
 
 </script>
