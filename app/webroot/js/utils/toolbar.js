@@ -12,7 +12,7 @@ function checkMobile(){
 $(document).ready(function(){
 
 	//mobile display drop down
-	$( '#hamburger' ).click(function(){
+	function toggleMobileToolbar (){
 			
 			if($( '.toolbar-btn' ).css('display') === 'none'){
 				
@@ -27,8 +27,12 @@ $(document).ready(function(){
 				$('#hamburger').toggleClass('hamburger');
 				$( '.toolbar-btn' ).css('display', 'none');
 			}
-	});
-	var mouseoverHandler = function(){
+	}
+	
+  $( '#hamburger' ).click(toggleMobileToolbar)
+  $( '#log #menu[href="#loginModal"]' ).click(toggleMobileToolbar)
+
+  var mouseoverHandler = function(){
 		$('#dropArrow').addClass( 'pointerUp' );
 		$( '.projects-menu' ).css('display', 'block');
 		
@@ -54,7 +58,7 @@ $(document).ready(function(){
 		console.log(logMove);
 //		console.log(belowProjectsMove);
 		if(checkMobile()) {
-				if(($( '#log' ).css('top') === '245px') ){
+				if(($( '#log' ).css('top') === '208px') ){
 					$('#dropArrow').addClass( 'pointerUp' );
 					$( '#log' ).css('top',logMove+'px');
 					$( '#belowProjects' ).css('top',belowProjectsMove+'px');
@@ -62,7 +66,7 @@ $(document).ready(function(){
 			}
 				else{
 					$('#dropArrow').removeClass( 'pointerUp' );
-					$( '#log' ).css('top','245px');
+					$( '#log' ).css('top','208px');
 					$( '#belowProjects' ).css('top','-40px');
 					$( '.projects-menu' ).css('display', 'none');
 				}
@@ -112,7 +116,7 @@ $(document).ready(function(){
 		else{
 			$( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');
-			$( '#log' ).css('top','245px');
+			$( '#log' ).css('top','208px');
 			$( '#belowProjects' ).css('top','-40px');
 			$( '#helpSearch').css('top','22px');
 			$('#projects').unbind('mouseout mouseover');
@@ -162,7 +166,7 @@ $(document).ready(function(){
 			}
 			$( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');
-			$( '#log' ).css('top','245px');
+			$( '#log' ).css('top','208px');
 			$( '#belowProjects' ).css('top','-40px');
 			$( '#helpSearch').css('top','22px');
 			$('#projects').unbind('mouseout mouseover');

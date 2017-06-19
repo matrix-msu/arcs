@@ -95,6 +95,7 @@ $( document ).ready(function() {
         setTimeout(function () {//wasn't hiding all if not in this..
             $('.excavation-tab-head').css('display', 'none'); //hide all
             $('.excavation-tab-content').css('display', 'none');
+            $('.excavation-tab-content').css('height', 'auto');
             var firstDrawer = 0;
             var firstDrawer2 = 0;
             for(var i=0;i<excavationKids.length;i++){ //show each excavation

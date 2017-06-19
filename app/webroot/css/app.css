@@ -7719,6 +7719,12 @@ input.indexSearchBox {
     position: absolute;
     width: 100%;
   }
+  #log #menu {
+    line-height: 66px;
+  }
+  #log #menu .pointerDown {
+    margin-top: 27px;
+  }
   #searchHeader {
     display: block;
     height: 75px!important;
