@@ -17,14 +17,6 @@ class CollectionsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $pName = explode('/', $this->request->query['url']);
-        if( isset($pName[1]) ){
-            $isRealProject = parent::isRealProject($pName[1]);
-            if(!$isRealProject){    //not a real project to redirect.
-                $this->redirect('/');
-            }
-        }
-
         $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers');
     }
 
@@ -32,6 +24,14 @@ class CollectionsController extends AppController {
      * Display all collections. Main collection page, initial collection list.
      */
     public function index() {
+
+        $pName = explode('/', $this->request->query['url']);
+        if( isset($pName[1]) ){
+            $isRealProject = parent::isRealProject($pName[1]);
+            if(!$isRealProject){    //not a real project to redirect.
+                $this->redirect('/');
+            }
+        }
 
         $path = func_get_args();
 
