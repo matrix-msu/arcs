@@ -42,7 +42,7 @@
       }
     })
 
-    $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn", function (){
+    $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
         console.log("clicked");
         //  $("#resource_permission_model").css("opacity", 1);
         $("#request_permission_model").show();

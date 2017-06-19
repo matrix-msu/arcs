@@ -962,7 +962,9 @@
         }
       })
       $('.select-overlay').click(function (e) {
-        e.stopPropagation();
+        if ($(this).parent().find('.resourceLockedDarkBackgroundSearch').length == 0) {
+          e.stopPropagation();
+        }
         if ($(this).find(".select-circle").hasClass("selected")){
           return;
         }
