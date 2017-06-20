@@ -316,7 +316,7 @@ $( document ).ready(function() {
                             success: function (data) {
                                 associator_full_array = JSON.parse(data);
 								associator_current_showing = associator_full_array;
-								
+
 								//add the current associators to the selected array
 								if (meta_value_before != '') {
 									var valueArray = meta_value_before.split("\n");
@@ -369,7 +369,7 @@ $( document ).ready(function() {
         $('#associatorSelectModal').css('display', 'block');
         $('#modalCloseAssociatorSelect').click();
     });
-	
+
 	//clicked on one of the kids in the associator search box.
     $('#associatorSearchObjects').on('click', 'label', function (evt) {
         var sel = getSelection().toString(); //grab any highlighted text on the page
@@ -424,12 +424,12 @@ $( document ).ready(function() {
         }
         $("#associatorSearchObjects").scrollTop(0); //scroll back to top of the checkboxes on page change.
         $('#associatorSearchObjects').html(populateCheckboxes); //new page of content
-        
+
 		associator_selected.forEach(function (tempdata) {  //check checkboxes that have already been selected
 			$('#associatorSearchObjects input[value="' + tempdata + '"]').prop("checked", 'checked');
 		});
     }
-	
+
 	//edit associator modal - search bar submit
 	$('#associatorSearchInput').keypress(function (e) {
 		if (e.which == 13) { //enter button

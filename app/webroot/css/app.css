@@ -9606,6 +9606,9 @@ input[type=range]:focus::-ms-fill-upper {
   margin-right: -14px;
   top: 0;
 }
+.metadata .metadata-content .metadata-accordion .level-content table input[type="text"] {
+  padding: 0;
+}
 .metadata .metadata-content .metadata-accordion .soo {
   border-left: none;
   background: #f9f9f9;
@@ -14245,11 +14248,6 @@ ul.resource-thumbs li.resource-thumb a img {
   border: 1px solid #e2e2e2;
   object-fit: cover;
   height: 95px;
-}
-ul.resource-thumbs li.resource-thumb:hover {
-  background-color: #bbb;
-  border: 1px solid #999;
-  padding: 8px 9px;
 }
 ul.resource-thumbs li.resource-thumb:hover a {
   text-decoration: underline;

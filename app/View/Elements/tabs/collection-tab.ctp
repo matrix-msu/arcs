@@ -47,7 +47,7 @@
                         <h4></h4>
                         <h5><?php echo $collection['date']; ?></h5>
 
-                        <h4 class="edit-btn" data-permission="<?php echo $collection['public']; ?>" data-members="<?php echo $collection['members']; ?>" data-delete-resources="" style="float:right;padding-right:10px">EDIT COLLECTION</h3>
+                        <h4 class="edit-btn <?php if ($user['id'] != $user_info['id']) {echo "hide";} ?>" data-permission="<?php echo $collection['public']; ?>" data-members="<?php echo $collection['members']; ?>" data-delete-resources="" style="float:right;padding-right:10px">EDIT COLLECTION</h4>
                     </summary>
 
                     <div class="results">
