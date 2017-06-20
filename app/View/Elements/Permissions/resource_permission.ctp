@@ -1,6 +1,6 @@
 <div id="resource_permission_model" class="permissionModal">
     <div class="permission-content">
-        <div class="modal-exit"><p><a id="#close" href="#"><?= $this->Html->image('Close.svg');?></a></p></div>
+        <div class="modal-exit"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
         <div class="permission-modal-header">
             <h1>Oh no! This resource is locked!</h1>
         </div>
@@ -18,14 +18,10 @@
     var permissions = function(){
 
           $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
-            console.log("clicked");
-            //  $("#resource_permission_model").css("opacity", 1);
             $("#resource_permission_model").show();
             $("#resource_permission_model").css("pointer-events", "all");
           });
           $(".modal-exit").click(function () {
-              console.log("close");
-              // $("#resource_permission_model").css("opacity", 0);
               $("#resource_permission_model").hide();
               $("#resource_permission_model").css("pointer-events", "none");
           });
