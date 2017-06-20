@@ -89,7 +89,7 @@
 
 		</div>
 		<div id= 'belowProjects'>
-		    	<?php
+		    <?php
 		        if( ($this->request->params['action'] == 'search' &&
                        $this->request->params['action'] == 'search' &&
                        isset($this->request->params['pass'][0]) &&
@@ -101,46 +101,44 @@
                     if( isset($this->request->params['pass'][1]) ){
                         $param1 = $this->request->params['pass'][1];
                     }
-            	?>
-                <a id="search" class="btn btn-grey"
-                    href="<?php echo $this->Html->url('/search').'/all/'.$param1 ?>">
-                    <i class="icon-white icon-search"></i> Search
-                </a>
+            ?>
+                    <a id="search" class="btn btn-grey"
+                        href="<?php echo $this->Html->url('/search').'/all/'.$param1 ?>">
+                        <i class="icon-white icon-search"></i> Search
+                    </a>
 
             <?php }elseif(   //skip links if in profile or all project search
                         $this->request->params['controller'] != 'user' &&
-                        $this->request->params['action'] != 'profile' &&
-						$this->request->params['controller'] != 'admin'
+                        $this->request->params['action'] != 'profile'
                    ){
-					   print_r($this->request->params['controller']);
-						$resourceBlue = '';
-						if( //is multi-resource, so make the link blue
-							$this->request->params['controller'] == 'resources' &&
-							$this->request->params['action'] == 'multi_viewer'
-						){
-							$resourceBlue = ' btn-blue';
-							$pKid = '/temp';
-						}else{ //everything else
-							$pKid = $this->request->params['pass'][0];
-							if( $pKid === 'resources' ){
-								$pKid = $this->request->params['pass'][1];
-							}
-							$pKid = '/'. $pKid;
+					$resourceBlue = '';
+					if( //is multi-resource, so make the link blue
+						$this->request->params['controller'] == 'resources' &&
+						$this->request->params['action'] == 'multi_viewer'
+					){
+						$resourceBlue = ' btn-blue';
+						$pKid = '/temp';
+					}else{ //everything else
+						$pKid = $this->request->params['pass'][0];
+						if( $pKid === 'resources' ){
+							$pKid = $this->request->params['pass'][1];
 						}
-						?>
-						 <a id="resources" class="btn btn-grey<?php echo $resourceBlue ?>"
-							href="<?php echo $this->Html->url('/resources').$pKid ?>">
-							<i class="icon-white icon-folder-open"></i> Resources
+						$pKid = '/'. $pKid;
+					}
+            ?>
+			 <a id="resources" class="btn btn-grey<?php echo $resourceBlue ?>"
+				href="<?php echo $this->Html->url('/resources').$pKid ?>">
+				<i class="icon-white icon-folder-open"></i> Resources
 
-						</a>
-						<a id="collections" class="btn btn-grey"
-							href="<?php echo $this->Html->url('/collections').$pKid ?>">
-							<i class="icon-white icon-folder-open"></i> Collections
-						</a>
-						<a id="search" class="btn btn-grey"
-							href="<?php echo $this->Html->url('/search').$pKid ?>">
-							<i class="icon-white icon-search"></i> Search
-						</a>
+			</a>
+			<a id="collections" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/collections').$pKid ?>">
+				<i class="icon-white icon-folder-open"></i> Collections
+			</a>
+			<a id="search" class="btn btn-grey"
+				href="<?php echo $this->Html->url('/search').$pKid ?>">
+				<i class="icon-white icon-search"></i> Search
+			</a>
 
 			<?php } ?>
 
