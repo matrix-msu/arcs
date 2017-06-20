@@ -160,6 +160,26 @@
       -webkit-filter: invert(60%) !important;
     }
 
+    #registerModal .left {
+      width: 100% !important;
+    }
+
+    #registerModal .left .requiredfield {
+      margin-top: -15px !important;
+    }
+
+    #registerModal .left #projectDropdown {
+      position: relative;
+    }
+
+    #registerModal .left .selectDiv:after {
+      bottom: 158px !important;
+      /*
+      position: initial !important;
+      margin-bottom: 3px;
+      margin-left: 80px;
+      */
+    }
 
   }
 
