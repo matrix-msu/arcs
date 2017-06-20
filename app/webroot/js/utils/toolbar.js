@@ -88,9 +88,8 @@ $(document).ready(function(){
 		var helpSearchMove = parseInt($( '#helpSearch' ).css('top')) + parseInt($('#projectsMenu').css('height'));
 		if(checkMobile()){
       $('#searchHeader').toggle();
-      var profileTab = $('#log')
-      profileTab.css({
-        top: profileTab.css('top') === '208px' ? '244px' : '208px'
+      $('#log').css({
+        top: $('#searchHeader').css('display') === 'none' ? '244px' : '208px'
       })
 			if(($('#helpSearch').css('top') == '22px')){
 				$('#dropArrow').addClass( 'pointerUp' );
