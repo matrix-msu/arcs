@@ -154,11 +154,21 @@
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
         if(typeof response.results[0] == "object" ) {
-          return $el.children('.results').html(arcs.tmpl('home/details', {
+          $el.children('.results').html(arcs.tmpl('home/details', {
             resources: response.results,
             noShowAll: 1,
             searchURL: arcs.baseURL + ("collection/" + id)
           }));
+          //readjust the resource permissions css
+          $('.resource-thumb').each(function(){
+            var atag = $(this).children().eq(0);
+            var darkBackground = $(atag).children().eq(0);
+            var resourcePicture = $(atag).children().eq(2);
+            $(resourcePicture).load(function(){ //wait for each picture to finish loading
+              var pictureWidth = resourcePicture[0].getBoundingClientRect().width;
+              darkBackground.width(pictureWidth); //background same as picture width
+            });
+          });
         }else{
           //collection show all goes to search
           window.location.href = "../../search/collection/" + id;
