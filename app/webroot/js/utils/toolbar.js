@@ -87,6 +87,11 @@ $(document).ready(function(){
 	$('#projectsHeader').on('click',function(event){
 		var helpSearchMove = parseInt($( '#helpSearch' ).css('top')) + parseInt($('#projectsMenu').css('height'));
 		if(checkMobile()){
+      $('#searchHeader').toggle();
+      var profileTab = $('#log')
+      profileTab.css({
+        top: profileTab.css('top') === '208px' ? '244px' : '208px'
+      })
 			if(($('#helpSearch').css('top') == '22px')){
 				$('#dropArrow').addClass( 'pointerUp' );
 				$( '#helpSearch' ).css('top', helpSearchMove+'px');
