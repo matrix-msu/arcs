@@ -63,9 +63,6 @@
                         echo $this->element('Permissions/resource_permission');
                     }
                 }
-                else {
-                    echo $title_for_layout;
-                }
                 if (isset($this->request->data["flashSet"])) {
                   echo $this->element("flash_success", array(
                     "message" => $this->request->data["flashSet"]
