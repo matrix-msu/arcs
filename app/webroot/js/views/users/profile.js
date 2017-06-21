@@ -93,12 +93,12 @@
                         div = $('#annotations-tab .cont')[count];
                         $(div).find('img').attr('src', thumb);
                         $(div).find('.type').text(resType);
-                        if (aresult['title'] !== null) {
-                          $(div).find('span.name').html(aresult['title']);
+                        if (aresult['Title'] != null) {
+                          $(div).find('span.name').html(aresult['Title']);
                         }
                       }
-                      if (aresult['title'] !== null) {
-                        annotations[count].name = aresult['title'];
+                      if (aresult['Title'] != null) {
+                        annotations[count].name = aresult['Title'];
                       }
                       annotations[count].thumb = thumb;
                       annotations[count].resType = resType;
@@ -157,12 +157,12 @@
                         div = $('#transcriptions-tab .cont')[tcount];
                         $(div).find('img').attr('src', thumb);
                         $(div).find('.type').text(resType);
-                        if (tresult['title'] !== null) {
-                          $(div).find('span.name').html(tresult['title']);
+                        if (tresult['title'] != null) {
+                          $(div).find('span.name').html(tresult['Title']);
                         }
                       }
-                      if (tresult['title'] !== null) {
-                        transcriptions[tcount].name = tresult['title'];
+                      if (tresult['Title'] != null) {
+                        transcriptions[tcount].name = tresult['Title'];
                       }
                       transcriptions[tcount].thumb = thumb;
                       transcriptions[tcount].resType = resType;
@@ -195,10 +195,10 @@
               $('#transcriptions-tab #contents').html('<h3>This user hasn\'t made any transcriptions yet</h3>');
             }
             if (count >= 15) {
-              that.pagination('annotations', 0);
+              that.pagination('annotations', 1);
             }
             if (tcount >= 15) {
-              that.pagination('transcriptions', 0);
+              that.pagination('transcriptions', 1);
             }
           }
         }
@@ -243,12 +243,12 @@
                       div = $('#discussion-tab .cont')[dcount];
                       $(div).find('img').attr('src', thumb);
                       $(div).find('.type').text(resType);
-                      if (dresult['title'] !== null) {
-                        $(div).find('span.name').text(dresult['title']);
+                      if (dresult['Title'] != null) {
+                        $(div).find('span.name').text(dresult['Title']);
                       }
                     }
-                    if (dresult['title'] !== null) {
-                      discussions[dcount].name = dresult['title'];
+                    if (dresult['Title'] != null) {
+                      discussions[dcount].name = dresult['Title'];
                     }
                     discussions[dcount].thumb = thumb;
                     discussions[dcount].resType = resType;
@@ -265,13 +265,13 @@
                 content: a['content']
               });
               if (!(dcount >= 15)) {
-                dcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['transcript'] + '</p></div>';
+                dcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['content'] + '</p></div>';
               }
               dcount++;
             });
             $('#discussion-tab #contents').html(dcontents);
             if (dcount >= 15) {
-              that.pagination('discussions', 0);
+              that.pagination('discussions', 1);
             }
           }
         }
@@ -384,6 +384,7 @@
           date = new Date(a['time']);
           date.setMinutes(-new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset() + 300);
           date = relativeDate(date);
+          activity[count].date = date;
           extra = '';
           if (a['type'] !== 'log') {
             extra = '<a href=\'' + arcs.baseURL + 'resource/' + a['kid'] + '\'><span class=\'name\'>' + a['name'] + '</span></a><img>';
@@ -399,12 +400,12 @@
                   if (!(count >= 15)) {
                     div = $('#activity-tab .cont')[count];
                     $(div).find('img').attr('src', result['thumb']);
-                    if (result['title'] !== null) {
-                      $(div).find('span.name').html(result['title']);
+                    if (result['Title'] != null) {
+                      $(div).find('span.name').html(result['Title']);
                     }
                   }
-                  if (result['title'] !== null) {
-                    activity[count].name = result['title'];
+                  if (result['Title'] != null) {
+                    activity[count].name = result['Title'];
                   }
                   activity[count].thumb = result['thumb'];
                 }
@@ -418,7 +419,7 @@
         });
         $('#activity-tab #contents').html(content);
         if (count >= 15) {
-          that.pagination('activity', 0);
+          that.pagination('activity', 1);
         }
       });
 
@@ -493,6 +494,7 @@
 
     Profile.prototype.pagination = function(target, currentPage) {
       var arr, div, i, j, lastPage, pageArray;
+      var that = this;
       console.log('pagination ' + target);
       if (target === 'activity') {
         arr = activity;
@@ -507,47 +509,69 @@
         arr = discussions;
         div = $('#discussion-tab');
       }
+      $(div).find('#paginate').find().unbind("click");
       lastPage = Math.ceil(arr.length / page);
       pageArray = fillArray(currentPage, lastPage);
-      console.log($(div).find('#firstPage'));
       if (indexOf.call(pageArray, 1) >= 0) {
         $(div).find('#firstPage').css('display', 'none');
         $(div).find('.fDots').css('display', 'none');
       } else {
         $(div).find('#firstPage').css('display', 'block');
+        $(div).find('#firstPage').click(function() {
+          that.setPage(target, 1);
+          that.pagination(target, 1);
+        });
         $(div).find('.fDots').css('display', 'block');
       }
-      if (1 === currentPage) {
+      if (1 == currentPage) {
         $(div).find('#rightArrow').css('display', 'none');
       } else {
         $(div).find('#rightArrow').css('display', 'block');
+        $(div).find('#rightArrow').click(function() {
+          that.setPage(target, currentPage - 1);
+          that.pagination(target, currentPage - 1);
+        });
       }
       if (indexOf.call(pageArray, lastPage) >= 0) {
         $(div).find('#lastPage').css('display', 'none');
         $(div).find('.dots').css('display', 'none');
-        $(div).find('#leftArrow').css('display', 'none');
+        // $(div).find('#leftArrow').css('display', 'none');
       } else {
         $(div).find('#lastPage').css('display', 'block');
+        $(div).find('#lastPage').click(function() {
+          that.setPage(target, lastPage);
+          that.pagination(target, lastPage);
+        });
         $(div).find('.dots').css('display', 'block');
-        $(div).find('#leftArrow').css('display', 'block');
+        // $(div).find('#leftArrow').css('display', 'block');
       }
-      if (currentPage === lastPage) {
-        $(div).find('#lefttArrow').css('display', 'none');
+      if (currentPage == lastPage) {
+        $(div).find('#leftArrow').css('display', 'none');
       } else {
         $(div).find('#leftArrow').css('display', 'block');
+        $(div).find('#leftArrow').click(function() {
+          that.setPage(target, currentPage + 1);
+          that.pagination(target, currentPage + 1);
+        });
       }
-      if (2 === pageArray[0]) {
+      if (2 == pageArray[0]) {
         $(div).find('.fDots').css('display', 'none');
       }
-      if (lastPage - 1 === pageArray[4]) {
+      if (lastPage - 1 == pageArray[4]) {
         $(div).find('.dots').css('display', 'none');
       }
+      $(div).find('.pageNumber').removeClass('selected');
       for (i = j = 1; j <= 5; i = ++j) {
         if (pageArray[i - 1] <= 0) {
           $(div).find('#' + i).css('display', 'none');
         } else {
           $(div).find('#' + i).css('display', 'block');
           $(div).find('#' + i).html(pageArray[i - 1]);
+          var temp = pageArray[i-1];
+          $(div).find('#' + i).click(function() {
+            that.setPage(target, temp);
+            that.pagination(target, temp);
+          });
           if (parseInt($(div).find('#' + i).html()) === currentPage) {
             $(div).find('#' + i).addClass('selected');
             $(div).find('#' + i).addClass('currentPage');
@@ -556,7 +580,46 @@
       }
     };
 
-    Profile.prototype.setPage = function(num) {};
+    Profile.prototype.setPage = function(target, pageNum) {
+      var arr;
+      if (target === 'activity') {
+        arr = activity;
+        div = $('#activity-tab');
+      } else if (target === 'annotations') {
+        arr = annotations;
+        div = $('#annotations-tab');
+      } else if (target === 'transcriptions') {
+        arr = transcriptions;
+        div = $('#transcriptions-tab');
+      } else if (target === 'discussions') {
+        arr = discussions;
+        div = $('#discussion-tab');
+      }
+      console.log(arr);
+      var first = (pageNum - 1) * page;
+      var last = pageNum * page;
+      if (last > arr.length) {
+        last = arr.length;
+      }
+      var html = "";
+      for (var i = first; i < last; i++) {
+        var item = arr[i];
+        if (target === 'activity') {
+          var extra = '';
+          if (item['type'] != 'log') {
+            extra = '<a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><img src="'+item['thumb']+'">';
+          }
+          html += '<div class=\'cont\'><p><span class=\'time\'>' + item['date'] + '</span><span class=\'' + item['type'] + '\'></span>' + '<span class=\'text\'>' + item['text'] + '</span>' + extra + '</p></div>';
+        } else if (target === 'annotations') {
+          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img src="'+item["thumb"]+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item["resType"]+'</span><span class=\'date\'>' + item["date"] + '</span></p><p class=\'annotationType\'>' + item["type"] + '</p><a href=' + item["url"] + '>' + item["linkText"] + '</a></div>';
+        } else if (target === 'transcriptions') {
+          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['transcript'] + '</p></div>';
+        } else if (target === 'discussions') {
+          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['content'] + '</p></div>';
+        }
+      }
+      div.find('#contents').html(html);
+    };
 
     return Profile;
 

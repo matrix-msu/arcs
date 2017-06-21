@@ -295,7 +295,7 @@
         array('controller' => 'annotations', 'action' => 'findallbyuser')
     );
     Router::connect('/comments/findallbyuser',
-        array('controller' => 'annotations', 'action' => 'findallbyuser')
+        array('controller' => 'comments', 'action' => 'findallbyuser')
     );
     Router::connect('/flags/findallbyuser',
         array('controller' => 'flags', 'action' => 'findAllByUser')
