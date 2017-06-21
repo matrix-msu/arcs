@@ -493,7 +493,7 @@ class SearchController extends AppController {
 
             //Test if there are more results--
             $more_results = 0;
-            if ( $count > $limit && $limit != -1 ){
+            if ( $count > $limit && $limit > -1 ){
                 $more_results = 1;
                 array_pop($test);
             }
