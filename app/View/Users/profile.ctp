@@ -16,40 +16,31 @@
                     <?php echo $user_info['email'];?>
                 </dd>
                 <dd>
-                	<?php echo $user_info['username'];?></dd>
-                <dd><span class="bolded">Role: </span><?php
-                    $roles = array();
-                    foreach($user_info['mappings'] as $mapping) {
-                        $roles[] = ucwords($mapping['role']);
-                    }
-                    echo implode(', ', $roles);
-                    ?></dd>
+                	<?php echo $user_info['username'];?>
                 </dd>
-                <dd><span class="bolded">Projects: </span><?php
+                <dd>
+                    <?php
                     $projects = array();
                     foreach($user_info['mappings'] as $mapping) {
-                        $projects[] = ucwords(str_replace('_', ' ', $mapping['project']));
+                        $projectString = ucwords(str_replace('_', ' ', $mapping['project']));
+                        $string = '<span class="bolded">'.$projectString.'</span>: '.$mapping['role'];
+                        $projects[] = $string;
                     }
-                    echo implode(', ', $projects);
-                    ?></dd>
-                <dd><span class="bolded">Active Since: </span><?php echo $user_info['activeSince']; ?></dd>
+                    echo implode(',<br /> ', $projects);
+                    ?>
+                </dd>
+                <dd>
+                    <span class="bolded">Active Since: </span><?php echo $user_info['activeSince']; ?>
+                </dd>
                 <?php if ($user['id'] == $user_info['id']): ?>
-                    <dd><a href="#" id="edit-profile" onclick="return false;">Edit Profile</a></dd>
+                    <dd>
+                        <a href="#" id="edit-profile" onclick="return false;">Edit Profile</a>
+                    </dd>
                     <form method="post" enctype="multipart/form-data">
                         <dd><input type="file" name="user_image" value="Upload Profile Image" /></dd>
                         <dd><input type="submit" value="Upload Profile Image"></dd>
                     </form>
                 <?php endif ?>
-<!--                --><?php //if ($role == 0): ?>
-<!--                    --><?php
-//                        $User = new User();
-//                        $User->id = $user_info['id'];
-//                        if($user_info['status'] == 'pending'){
-//                            $User->saveField('status', "active");
-//                            echo "User Confirmed";
-//                        }
-//                        ?>
-<!--                --><?php //endif ?>
             </dl>
 
             <dl class="score-description-list">
