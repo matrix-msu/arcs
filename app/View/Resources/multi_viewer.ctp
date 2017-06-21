@@ -420,7 +420,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     </div>
 </div>
-<div id="resources-nav">
+<div id="resources-nav" class="pages-resource-nav" style="display:none;">
     <div class="button-left" id="button-left">
         <a id="left-button">
             <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px">
@@ -467,7 +467,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
       </a>
   </div>
 </div>
-<div id="resources-nav" class = "resource-nav-level top-border">
+<div id="resources-nav" class = "resource-nav-level top-border" style="display:none;">
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
