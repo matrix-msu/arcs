@@ -3,7 +3,7 @@
 </div>
 <div class="container"><div id="paginate">
 	<ul class="pagination">
-		<div id='rightArrowBox'><li id='rightArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+		<div id='rightArrowBox' style="display:none"><li id='rightArrow' class='pointerDown pointerNum'></li></div>
 
 		<li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
 		<div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
@@ -14,7 +14,7 @@
 		<li><a class='pageNumber' id='5' style="display:none"></a></li>
 		<div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
 		<li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
-		<div id="leftArrowBox" ><li id='leftArrow' class='pointerDown pointerNum' style="display:none"></li></div>
+		<div id="leftArrowBox" style="display:none"><li id='leftArrow' class='pointerDown pointerNum'></li></div>
 	</ul>
 </div></div>
 </div>

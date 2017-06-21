@@ -124,7 +124,8 @@
                   name: a['resource_name'],
                   date: date,
                   url: url,
-                  linkText: linkText
+                  linkText: linkText,
+                  type: type
                 });
                 if (!(count >= 15)) {
                   contents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p>' + '<a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'annotationType\'>' + type + '</p><a href=' + url + '>' + linkText + '</a></div>';
@@ -509,7 +510,9 @@
         arr = discussions;
         div = $('#discussion-tab');
       }
-      $(div).find('#paginate').find().unbind("click");
+      $(div).find('.pageNumber').unbind("click");
+      $(div).find('#leftArrowBox').unbind("click");
+      $(div).find('#rightArrowBox').unbind("click");
       lastPage = Math.ceil(arr.length / page);
       pageArray = fillArray(currentPage, lastPage);
       if (indexOf.call(pageArray, 1) >= 0) {
@@ -524,10 +527,10 @@
         $(div).find('.fDots').css('display', 'block');
       }
       if (1 == currentPage) {
-        $(div).find('#rightArrow').css('display', 'none');
+        $(div).find('#rightArrowBox').css('display', 'none');
       } else {
-        $(div).find('#rightArrow').css('display', 'block');
-        $(div).find('#rightArrow').click(function() {
+        $(div).find('#rightArrowBox').css('display', 'block');
+        $(div).find('#rightArrowBox').click(function() {
           that.setPage(target, currentPage - 1);
           that.pagination(target, currentPage - 1);
         });
@@ -535,7 +538,7 @@
       if (indexOf.call(pageArray, lastPage) >= 0) {
         $(div).find('#lastPage').css('display', 'none');
         $(div).find('.dots').css('display', 'none');
-        // $(div).find('#leftArrow').css('display', 'none');
+        // $(div).find('#leftArrowBox').css('display', 'none');
       } else {
         $(div).find('#lastPage').css('display', 'block');
         $(div).find('#lastPage').click(function() {
@@ -543,13 +546,13 @@
           that.pagination(target, lastPage);
         });
         $(div).find('.dots').css('display', 'block');
-        // $(div).find('#leftArrow').css('display', 'block');
+        // $(div).find('#leftArrowBox').css('display', 'block');
       }
       if (currentPage == lastPage) {
-        $(div).find('#leftArrow').css('display', 'none');
+        $(div).find('#leftArrowBox').css('display', 'none');
       } else {
-        $(div).find('#leftArrow').css('display', 'block');
-        $(div).find('#leftArrow').click(function() {
+        $(div).find('#leftArrowBox').css('display', 'block');
+        $(div).find('#leftArrowBox').click(function() {
           that.setPage(target, currentPage + 1);
           that.pagination(target, currentPage + 1);
         });
@@ -567,10 +570,9 @@
         } else {
           $(div).find('#' + i).css('display', 'block');
           $(div).find('#' + i).html(pageArray[i - 1]);
-          var temp = pageArray[i-1];
           $(div).find('#' + i).click(function() {
-            that.setPage(target, temp);
-            that.pagination(target, temp);
+            that.setPage(target, parseInt($(this).html()));
+            that.pagination(target, parseInt($(this).html()));
           });
           if (parseInt($(div).find('#' + i).html()) === currentPage) {
             $(div).find('#' + i).addClass('selected');
