@@ -181,6 +181,8 @@ class CollectionsController extends AppController {
         $this->Collection->permit('resource_kid');
         $this->request->data['user_id'] = $this->Auth->user('id');
         $this->Collection->permit('user_id');
+        $this->request->data['username'] = $this->Auth->user('username');
+        $this->Collection->permit('username');
         $this->request->data['user_name'] = $this->Auth->user('name');
         $this->Collection->permit('user_name');
         $this->Collection->add($this->request->data);
@@ -198,6 +200,7 @@ class CollectionsController extends AppController {
         $this->Collection->permit('collection_id');
         $this->Collection->permit('resource_kid');
         $this->Collection->permit('user_id');
+        $this->Collection->permit('username');
         $this->Collection->permit('user_name');
 
         $collection = $this->Collection->findByCollection_id($this->request->data['collection']);
@@ -227,6 +230,7 @@ class CollectionsController extends AppController {
                 'collection_id' => $collection['collection_id'],
                 'user_id' => $this->Auth->user('id'),
                 'user_name' => $this->Auth->user('name'),
+                'username' => $this->Auth->user('username'),
                 'title' => $collection['title'],
                 'description' => $collection['description'],
                 'public' => $collection['public']

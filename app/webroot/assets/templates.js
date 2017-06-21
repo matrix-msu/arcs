@@ -4,7 +4,19 @@ JST["admin/jobs"] = "<table class=\"table table-striped table-bordered\">  <tr> 
 JST["admin/show_job"] = "<dl>  <dt>Job</dt>  <dd><%= name %></dd>  <dt>Status</dt>  <dd><%= status %></dd>  <dt>Created</dt>  <dd><%= created %></dd>  <dt>Lock</dt>  <dd><%= locked_at %></dd>  <dt>Data</dt>  <dd><pre><%= data %></pre></dd>  <dt>Error</dt>  <dd><pre><%= error %></pre></dd></dl>";
 JST["admin/users"] = "<table class=\"table table-striped table-bordered\">  <tr>    <th>Name</th>    <th>Username</th>    <th>Email</th>    <th>Role</th>    <th>Actions</th>  </tr><% _.each(users, function(u, i) { %>  <tr>    <td><%= u.name %></td>    <td><%= u.username %></td>    <td><%= u.email %></td>    <td><%= u.role %></td>      <button id=\"delete-btn\" class=\"btn btn-danger btn-mini \"        data-id=\"<%= u.id %>\">Delete</button>      <button id=\"edit-btn\" class=\"btn btn-info btn-mini\"        data-id=\"<%= u.id %>\">Edit</button>    </td>  </tr><% }) %></table>";
 
-JST["collections/list"] = "<% _.each(collections, function(c, i) { %><% if (i == -1) { %>  <details data-id=\"<%= c.collection_id %>\" class=\"open back-color\" open=\"open\"><% } else { %>  <details data-id=\"<%= c.collection_id %>\" class=\"closed back-color\"><% } %>    <summary>      <h3><%= c.title %></h3>      <h4><%= c.user_name %></h4>      <h5><%= relativeDate(new Date(c.modified)) %></h5>    </summary>    <div class=\"results\"></div>  </details><% }) %>";
+JST["collections/list"] = "<% _.each(collections, function(c, i) { %>" +
+    "<% if (i == -1) { %>  "+
+        "<details data-id=\"<%= c.collection_id %>\" class=\"open back-color\" open=\"open\">" +
+    "<% } else { %>  " +
+        "<details data-id=\"<%= c.collection_id %>\" class=\"closed back-color\">" +
+    "<% } %>" +
+    "<summary>" +
+        "<h3><%= c.title %></h3>" +
+        "<h4><a href=\"<%= arcs.baseURL + 'user/'+ c.username %>\"><%= c.user_name %></a></h4>" +
+        "<h5><%= relativeDate(new Date(c.modified)) %></h5>" +
+    "</summary>" +
+    "<div class=\"results\"></div>" +
+    "</details><% }) %>";
 
 JST["home/details"] = "<ul class=\"resource-thumbs\">"+
     "<% _.each(resources, function(r, i) { %>" + [

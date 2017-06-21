@@ -24,14 +24,16 @@
 
 		<div class="collection-list" id="all-collections"></div>
 	</div>
-  <script>
-    //fill in the collections list
-    arcs.user_viewer = new arcs.views.CollectionList({
-      model: arcs.models.Collection,
-      collection: new arcs.collections.CollectionList({{ collections|json_encode }}),
-      el: $('#all-collections')
-    });
-  </script>
+    <script>
+        //fill in the collections list
+        console.log('collections');
+        console.log({{ collections|json_encode }});
+        arcs.user_viewer = new arcs.views.CollectionList({
+            model: arcs.models.Collection,
+            collection: new arcs.collections.CollectionList({{ collections|json_encode }}),
+            el: $('#all-collections')
+        });
+    </script>
 
 <!-- Collections Pagination -->
 		<div id='collection-bottom-bar'>

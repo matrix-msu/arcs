@@ -946,10 +946,10 @@ $(document).ready(function () {
                     $('#flagAnnotation_id').val($(this).parent().attr("id"));
                 });
 
-                //Mouse over annotation
+                //Mouse over (hover) annotation
                 $(".gen_box").mouseenter(function () {
                     mouseOn = true;
-                    ShowAnnotation($(this).attr('id'));
+                    //ShowAnnotation($(this).attr('id'));
                 });
 
                 $(".gen_box").mouseleave(function () {

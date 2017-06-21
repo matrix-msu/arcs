@@ -15546,13 +15546,6 @@ footer#standard-MSU-footer {
 .collection-list-wrapper .collection-list details summary h3 {
   text-shadow: none;
 }
-.collection-list-wrapper .collection-list details summary a {
-  float: right;
-  text-transform: uppercase;
-  margin-right: 30px;
-  margin-left: auto;
-  margin-top: 8px;
-}
 .collection-list-wrapper .collection-list details summary.large {
   padding: 15px 25px;
   font-size: 16px;
