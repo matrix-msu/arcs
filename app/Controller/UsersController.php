@@ -19,7 +19,7 @@ class UsersController extends AppController
         $this->Auth->allow(
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
-          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite'
+          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate'
           );
         $this->User->flatten = true;
         $this->User->recursive = -1;
@@ -207,6 +207,28 @@ class UsersController extends AppController
             return $this->json(400, ($response));
         }
         $this->json(201, $response);
+    }
+
+    /**
+     * Add a new user through ajax.
+     */
+    public function ajaxUpdate()
+    {
+        if (!($this->request->is('post') && $this->request->data))
+            return $this->json(400);
+
+        $id = $this->request->data['id'];
+        $user = $this->User->read(null, $id);
+
+        if (!$user)
+            return $this->json(404);
+
+        if (!$this->User->save($this->request->data)) {
+            // throw new InternalErrorException();
+            return $this->json(500);
+        }
+
+        $this->json(200, $this->User->findById($id));
     }
 
     /**

@@ -177,6 +177,9 @@
     Router::connect('/api/users/add',
         array('controller' => 'users', 'action' => 'ajaxAdd')
     );
+    Router::connect('/api/users/update',
+        array('controller' => 'users', 'action' => 'ajaxUpdate')
+    );
     Router::connect('/users/getUsername',
         array('controller' => 'users', 'action' => 'getEmail')
     );
