@@ -216,15 +216,17 @@ class ResourcesController extends AppController {
      */
     public function viewKid($kid=null) {
         if (!$this->request->is('get')) throw new MethodNotAllowedException();
-        if (!$kid) throw new BadRequestException();
-        $resource = $this->getResource($kid)[$kid];
-        $pages = $this->getPages($kid);
-        $page1 = reset($pages);
-        if (!empty($page1['Image Upload']['localName'])) {
-            $resource['thumb'] = $this->smallThumb($page1['Image Upload']['localName']);
-        }
-        else {
-            $resource['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
+        $resource['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
+        if ($kid == "null") {
+            $resource['Title'] = 'Unknown Title';
+            $resource['Type'] = 'Unknown Type';
+        }else{
+            $resource = $this->getResource($kid)[$kid];
+            $pages = $this->getPages($kid);
+            $page1 = reset($pages);
+            if (!empty($page1['Image Upload']['localName'])) {
+                $resource['thumb'] = $this->smallThumb($page1['Image Upload']['localName']);
+            }
         }
         $this->json(200, $resource);
     }

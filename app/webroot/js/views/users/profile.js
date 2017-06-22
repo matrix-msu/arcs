@@ -86,7 +86,7 @@
                       var div, resType, thumb;
                       thumb = aresult['thumb'];
                       resType = aresult['Type'];
-                      if (resType === null) {
+                      if (resType === null || resType == "null") {
                         resType = 'Unknown Type';
                       }
                       if (!(count >= 15)) {
