@@ -634,3 +634,23 @@
   })(Backbone.View);
 
 }).call(this);
+
+$(document).ready(function(){
+  $(document).on('click', '.pageNumber', function(){
+    scrollUp();
+  });
+  $(document).on('click', '#leftArrowBox', function(){
+    scrollUp();
+  });
+  $(document).on('click', '#rightArrowBox', function(){
+    scrollUp();
+  });
+});
+
+function scrollUp(){
+  var time;
+  time = ($(window).scrollTop() / $(document).height()) * 1000;
+  return $('html, body').animate({
+    scrollTop: 0
+  }, time);
+}
