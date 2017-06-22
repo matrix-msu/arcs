@@ -1,7 +1,14 @@
 <!-- Main Collections page. -->
 
 <div class="collection-list-wrapper" >
-    <h1>Collections</h1><br>
+    <h1 class="rsc-title">Collections</h1>
+	{% if not user.loggedIn %}
+	<p class="login_msg">You're viewing publicly available collections.
+        You'll need to <a href=#loginModal>log in</a> to see the rest.
+	</p>
+    {% else %}
+    <br />
+	{% endif %}
 
 	<div id='collections-filter' class="dropdown">
 		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Filter By

@@ -1,8 +1,8 @@
 <div class="collection-list-wrapper">
-    <h1 class="rsc-title">Publicly Avaliable Resources</h1>
+    <h1 class="rsc-title">Resources</h1>
     {% if not user.loggedIn %}
-    <p class="login_msg">You're viewing publicly available resources.
-        You'll need to <a href=#loginModal>log in</a> to see the rest.
+    <p class="login_msg">Some resources require you to
+        <a href=#loginModal>log in</a>, or have specific permissions to view.
     </p>
     {% endif %}
 
