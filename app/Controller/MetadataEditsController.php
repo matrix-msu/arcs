@@ -72,6 +72,10 @@ class MetadataEditsController extends AppController {
                 'AND' => array('user_id' => $this->request->data['id'], 'MetadataEdit.approved' => '1'),
             )
         ));
+        foreach( $results as $key => $edit ){
+            $results[$key]['MetadataEdit']['kid'] = $edit['MetadataEdit']['resource_kid'];
+            $results[$key] = $results[$key]['MetadataEdit'];
+        }
         $this->json(200, $results);
     }
 

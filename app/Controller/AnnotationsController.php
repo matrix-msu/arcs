@@ -32,6 +32,7 @@ class AnnotationsController extends MetaResourcesController {
 	{
 		$model = $this->modelClass;
 		$results = $this->$model->find('all', array(
+            'order' => 'Annotation.created DESC',
 			'conditions' => array('user_id' => $this->request->data['id'])
 		));
 		$this->json(200, $results);

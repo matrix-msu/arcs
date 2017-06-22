@@ -377,7 +377,6 @@
           dateB = new Date(b.time);
           return dateB - dateA;
         });
-        console.log(activity);
         content = '';
         count = 0;
         activity.forEach(function(a) {
@@ -388,7 +387,9 @@
           activity[count].date = date;
           extra = '';
           if (a['type'] !== 'log') {
-            extra = '<a href=\'' + arcs.baseURL + 'resource/' + a['kid'] + '\'><span class=\'name\'>' + a['name'] + '</span></a><img>';
+            extra = '<a href=\'' + arcs.baseURL + 'resource/' + a['kid'] + '\'>' +
+                      '<span class=\'name\'>' + a['name'] + '</span>' +
+                    '</a><img>';
             (function(count) {
               $.ajax({
                 url: info.url + 'resources/viewkid/' + a['kid'] + '.json',
@@ -414,7 +415,12 @@
             })(count);
           }
           if (!(count >= 15)) {
-            content += '<div class=\'cont\'><p><span class=\'time\'>' + date + '</span><span class=\'' + a['type'] + '\'></span>' + '<span class=\'text\'>' + a['text'] + '</span>' + extra + '</p></div>';
+            content += '<div class=\'cont\'>' +
+                '<p><span class=\'time\'>' + date + '</span>' +
+                    '<span class=\'' + a['type'] + '\'></span>' +
+                    '<span class=\'text\'>' + a['text'] + '</span>' +
+                    extra +
+                '</p></div>';
           }
           count++;
         });
