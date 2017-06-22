@@ -51,7 +51,7 @@
         $("#request_permission_model").css("pointer-events", "none");
     });
 
-    if (typeof resouceAccess !== 'undefined' && !resourceAccess) {
+    if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
       $("#request_permission_model").show();
     }
   })

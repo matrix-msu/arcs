@@ -31,7 +31,7 @@
 
     }
 
-    if (typeof resouceAccess !== 'undefined' && !resourceAccess) {
+    if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
       $("#resource_permission_model").show();
     }
 
