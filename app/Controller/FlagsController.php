@@ -13,6 +13,7 @@ class FlagsController extends MetaResourcesController {
 	
 	public function beforeFilter() {
         parent::beforeFilter();
+        $this->Auth->allow('findAllByUser');
         $this->loadModel('Resources');
 
         $resource = '';

@@ -14,7 +14,7 @@ class KeywordsController extends MetaResourcesController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow(
-            'get', 'common'
+            'get', 'common', 'findallbyuser'
         );
     }
 

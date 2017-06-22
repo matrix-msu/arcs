@@ -19,7 +19,8 @@ class UsersController extends AppController
         $this->Auth->allow(
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
-          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate'
+          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate',
+          'profile', 'getAllUsers', 'findById'
           );
         $this->User->flatten = true;
         $this->User->recursive = -1;

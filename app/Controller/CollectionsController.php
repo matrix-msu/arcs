@@ -17,7 +17,7 @@ class CollectionsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers');
+        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers', 'findallbyuser');
     }
 
     /**

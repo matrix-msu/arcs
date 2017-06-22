@@ -17,6 +17,7 @@ class CommentsController extends MetaResourcesController {
         parent::beforeFilter();
 
         $user = $this->Auth->User();
+        $this->Auth->allow('findAllByUser');
         $this->request->data['user_id'] = $user['id'];
         $this->request->data['name'] = $user['name'];
         $this->Auth->allow( 'findAll' );

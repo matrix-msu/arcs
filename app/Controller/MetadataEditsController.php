@@ -19,6 +19,7 @@ class MetadataEditsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
+        $this->Auth->allow('findAllByUser');
     }
 
     //I'm calling this from addMetadataEdits() in edit_metadata.js

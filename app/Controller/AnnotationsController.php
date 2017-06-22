@@ -15,6 +15,7 @@ class AnnotationsController extends MetaResourcesController {
         parent::beforeFilter();
 
 		$user = $this->Auth->User();
+		$this->Auth->allow('findAllByUser');
 
 		$this->request->data['user_id'] = $user['id'];
 		$this->request->data['user_name'] = $user['name'];
