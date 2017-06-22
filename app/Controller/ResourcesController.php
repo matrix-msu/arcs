@@ -288,8 +288,12 @@ class ResourcesController extends AppController {
                 . $mysqli->connect_error);
         }
         //Get a collection_id from the id
-        $sql = "SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = '".decbin(0)."'";
-        $result = $mysqli->query($sql);
+        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = ?");
+        $temp = decbin(0);
+        $sql->bind_param("s", $temp);
+        $sql->execute();
+        $result = $sql->get_result();
+        // $result = $mysqli->query($sql);
         $metadataedits = [];
         while($row = mysqli_fetch_assoc($result)) {
 

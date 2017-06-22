@@ -471,11 +471,17 @@ class SearchController extends AppController {
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
-                $sql = "SELECT resource_kid, id FROM collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
+                // $sql = "SELECT resource_kid, id FROM collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
+                $sql = $mysqli->prepare("SELECT resource_kid, id FROM collections WHERE collections.collection_id = ? LIMIT ?");
+                $temp = $limit+1;
+                $sql->bind_param("ss", $collection_id, $temp);
             }else {
-                $sql = "SELECT resource_kid, id FROM collections WHERE collections.collection_id ='" . $collection_id."'";
+                $sql = $mysqli->prepare("SELECT resource_kid, id FROM collections WHERE collections.collection_id = ?");
+                $sql->bind_param("s", $collection_id);
             }
-            $result = $mysqli->query($sql);
+            $sql->execute();
+            $result = $sql->get_result();
+            // $result = $mysqli->query($sql);
             $count = 0;
             $test = [];
             while($row = mysqli_fetch_assoc($result)) {

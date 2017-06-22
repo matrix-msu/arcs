@@ -102,13 +102,16 @@ class User extends AppModel {
                 //Get a collection_id from the id
                 //Get the title
                 //Get the oldest created date.
-                $sql = "SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
+                $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
                         FROM collections
-                        WHERE user_id ='" . $r['id'] . "'
+                        WHERE user_id = ?
                         GROUP BY collection_id
-                        ORDER BY min(created) DESC;";
+                        ORDER BY min(created) DESC;");
                 //WHERE title = '".$file_name."'";
-                $result = $mysqli->query($sql);
+                $sql->bind_param("s", $r['id']);
+                $sql->execute();
+                $result = $sql->get_result();
+                // $result = $mysqli->query($sql);
                 while ($row = mysqli_fetch_assoc($result)) {
 
                     //Set the collection's last modified date

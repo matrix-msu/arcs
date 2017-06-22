@@ -52,12 +52,15 @@ class KeywordsController extends MetaResourcesController {
 
         foreach($keywords as $keyword ) {
             //get the current count fo the keyword project_kid combo
-            $sql = "SELECT keywords.count
+            $sql = $mysqli->prepare("SELECT keywords.count
                     FROM arcs_dev.keywords
-                    WHERE keywords.project_kid ='" . $this->request->data['project_kid'] . "'
-                        AND keywords.keyword = '" . $keyword . "'
-                    LIMIT 1;";
-            $result = $mysqli->query($sql);
+                    WHERE keywords.project_kid = ?
+                        AND keywords.keyword = ?
+                    LIMIT 1;");
+            $sql->bind_param("ss", $this->request->data['project_kid'], $keyword);
+            $sql->execute();
+            $result = $sql->get_result();
+            // $result = $mysqli->query($sql);
             $row = mysqli_fetch_assoc($result);
             $count = intval($row{'count'});
             $retval['first count'] = $count;
@@ -76,11 +79,14 @@ class KeywordsController extends MetaResourcesController {
             $this->Keyword->add($this->request->data);
 
             //update the count for all the keyword, project_kid combos
-            $sql = "UPDATE keywords
+            $sql = $mysqli->prepare("UPDATE keywords
                     SET keywords.count = keywords.count + 1
-                    WHERE keywords.project_kid ='" . $this->request->data['project_kid'] . "'
-                        AND keywords.keyword = '" . $keyword . "';";
-            $result = $mysqli->query($sql);
+                    WHERE keywords.project_kid = ?
+                        AND keywords.keyword = ?;");
+            $sql->bind_param("ss", $this->request->data['project_kid'], $keyword);
+            $sql->execute();
+            // $result = $sql->get_result();
+            // $result = $mysqli->query($sql);
         }
         //$retval['keyword'] = $result;
         $this->json(201, 'success');

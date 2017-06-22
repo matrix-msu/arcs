@@ -17,7 +17,7 @@ class CollectionsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers', 'findallbyuser');
+        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers');
     }
 
     /**
@@ -142,13 +142,16 @@ class CollectionsController extends AppController {
             //where is fancy to get min created of each collection
             //group by collection_id to only get one of each
             //order by created
-            $sql = "SELECT collection_id, title, user_name, min(created) AS DATE
+            $sql = $mysqli->prepare("SELECT collection_id, title, user_name, min(created) AS DATE
                     FROM  collections
-                    WHERE resource_kid ='".$resource_id."'
+                    WHERE resource_kid = ?
                     GROUP BY collection_id
-                    ORDER BY created";
+                    ORDER BY created");
 
-            $result = $mysqli->query($sql);
+            $sql->bind_param("s", $resource_id);
+            $sql->execute();
+            $result = $sql->get_result();
+            // $result = $mysqli->query($sql);
             $collections = array();
             while($row = mysqli_fetch_assoc($result))
               $collections[] = $row;
@@ -181,8 +184,6 @@ class CollectionsController extends AppController {
         $this->Collection->permit('resource_kid');
         $this->request->data['user_id'] = $this->Auth->user('id');
         $this->Collection->permit('user_id');
-        $this->request->data['username'] = $this->Auth->user('username');
-        $this->Collection->permit('username');
         $this->request->data['user_name'] = $this->Auth->user('name');
         $this->Collection->permit('user_name');
         $this->Collection->add($this->request->data);
@@ -200,7 +201,6 @@ class CollectionsController extends AppController {
         $this->Collection->permit('collection_id');
         $this->Collection->permit('resource_kid');
         $this->Collection->permit('user_id');
-        $this->Collection->permit('username');
         $this->Collection->permit('user_name');
 
         $collection = $this->Collection->findByCollection_id($this->request->data['collection']);
@@ -230,7 +230,6 @@ class CollectionsController extends AppController {
                 'collection_id' => $collection['collection_id'],
                 'user_id' => $this->Auth->user('id'),
                 'user_name' => $this->Auth->user('name'),
-                'username' => $this->Auth->user('username'),
                 'title' => $collection['title'],
                 'description' => $collection['description'],
                 'public' => $collection['public']
@@ -413,11 +412,14 @@ class CollectionsController extends AppController {
                 . $mysqli->connect_error);
         }
         //Update the collections permissions by collection_id
-        $sql = "UPDATE collections
-                    SET collections.public = '".$_POST['permission']."',
-                        collections.members = '".$_POST['viewUsers']."'
-                    WHERE collections.collection_id ='".$_POST['id']."';";
-        $result = $mysqli->query($sql);
+        $sql = $mysqli->prepare("UPDATE collections
+                    SET collections.public = ?,
+                        collections.members = ?
+                    WHERE collections.collection_id = ?");
+        $sql->bind_param("sss", $_POST['permission'], $_POST['viewUsers'], $_POST['id']);
+        $sql->execute();
+        $result = $sql->get_result();
+        // $result = $mysqli->query($sql);
         //while($row = mysqli_fetch_assoc($result))
             //$collections[] = $row;
         $results['id'] = $_POST['id'];
@@ -443,10 +445,13 @@ class CollectionsController extends AppController {
                 . $mysqli->connect_error);
         }
         //get the collection id from the id
-        $sql = "SELECT collections.collection_id
+        $sql = $mysqli->prepare("SELECT collections.collection_id
                     FROM arcs_dev.collections
-                    WHERE collections.id ='".$_POST['id']."';";
-        $result = $mysqli->query($sql);
+                    WHERE collections.id = ?");
+        $sql->bind_param("s", $_POST['id']);
+        $sql->execute();
+        $result = $sql->get_result();
+        // $result = $mysqli->query($sql);
         $row = mysqli_fetch_assoc($result);
         //$collection_id2[] = $row;
         //$results['colid1'] = $row;
@@ -490,9 +495,12 @@ class CollectionsController extends AppController {
                 . $mysqli->connect_error);
         }
         //Delete the resource with the id
-        $sql = "DELETE FROM collections
-                    WHERE collections.id ='".$_POST['id']."';";
-        $result = $mysqli->query($sql);
+        $sql = $mysqli->prepare("DELETE FROM collections
+                    WHERE collections.id = ?");
+        $sql->bind_param("s", $_POST['id']);
+        $sql->execute();
+        $result = $sql->get_result();
+        // $result = $mysqli->query($sql);
         //while($row = mysqli_fetch_assoc($result))
         //$collections[] = $row;
         $results['id'] = $_POST['id'];
