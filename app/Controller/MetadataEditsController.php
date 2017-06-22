@@ -68,7 +68,9 @@ class MetadataEditsController extends AppController {
     public function findAllByUser(){
         $model = $this->modelClass;
         $results = $this->$model->find('all', array(
-            'conditions' => array('user_id' => $this->request->data['id'])
+            'conditions' => array(
+                'AND' => array('user_id' => $this->request->data['id'], 'MetadataEdit.approved' => '1'),
+            )
         ));
         $this->json(200, $results);
     }

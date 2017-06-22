@@ -709,9 +709,11 @@ class UsersController extends AppController
             'conditions' => array('Annotation.user_username' => $user['username'])
         ));
 
-        $this->loadModel('Metadatum');
-        $user['metadataCount'] = $this->Metadatum->find('count', array(
-            'conditions' => array('Metadatum.user_username' => $user['username'])
+        $this->loadModel('MetadataEdit');
+        $user['metadataCount'] = $this->MetadataEdit->find('count', array(
+            'conditions' => array(
+                'AND' => array('MetadataEdit.user_id' => $user['id'], 'MetadataEdit.approved' => '1'),
+            )
         ));
         $now = new Datetime();
         $created = new Datetime($user['created']);
