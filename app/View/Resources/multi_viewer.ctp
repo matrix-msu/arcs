@@ -12,32 +12,16 @@ var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 var showButNoEditArray = <?=json_encode($showButNoEditArray)?>;
 var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
 
-var resourceKid = "";//"<?php  ?> ";
- var ADMIN = 0;//"<?php  ?> ";
-// var kora_url = "<?php  ?> ";
+var resourceKid = "";
+ var ADMIN = 0;
 // // preloader image and images
-// var kid = "<?php  ?> "; // needs to stay
-// var resourceName = "<?php  ?> ";
- var JSON_KEYS = {};//<?php  ?> ;
+ var JSON_KEYS = {};
   var LEN = 0;
-// var SCHEMES = ['<?php  ?> ',
-//                 '<?php  ?> ',
-//                 '<?php  ?> ',
-//                 '<?php  ?> '];
-// var SUBJECTS = [ <?php  ?>  ];
-// var PAGES = [ <?php  ?>  ];
-//
- //var PAGESOBJECT = <?php  ?> ;
-// var PROJECT_KID = "<?php  ?> "
 ///comments.js variables
 var CM_URL = "<?php echo Router::url('/', true); ?>comments/findall"
 var CM_R_ID = "<?= !empty($resources)? array_keys($resources)[0] : null?>"
 var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 </script>
-<?php
-//var_dump($resources);
-
-?>
 
 <?=  $this->Html->script("views/viewer/Multi/dynamic_accordion.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/flag.js") ?>
