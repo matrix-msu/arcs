@@ -151,7 +151,7 @@ $(document).ready(function () {
 
     });
 
-    $('#zoom-range').click(function(event){
+    $('#zoom-range').on('change', function(event){
         event.preventDefault();
         var zoomrange = document.getElementById("zoom-range");
         var canvas = $('.canvas');
