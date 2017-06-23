@@ -3,19 +3,19 @@ var viewportScale = 1 / window.devicePixelRatio;
 $("#viewport").attr("content","user-scalable=no, initial-scale="+viewportScale+", minimum-scale=0.2, maximum-scale=2, width=device-width");
 
 function checkMobile(){
-    if(window.matchMedia("(max-width: 930px)").matches){     
-        return true;        
+    if(window.matchMedia("(max-width: 960px)").matches){
+        return true;
     }
     return false;
-    
+
 }
 $(document).ready(function(){
 
 	//mobile display drop down
 	function toggleMobileToolbar (){
-			
+
 			if($( '.toolbar-btn' ).css('display') === 'none'){
-				
+
 				//switch to blue hamburger
 				$('#hamburger').toggleClass('hamburgerActive');
 				$('#hamburger').toggleClass('hamburger');
@@ -27,15 +27,17 @@ $(document).ready(function(){
 				$('#hamburger').toggleClass('hamburger');
 				$( '.toolbar-btn' ).css('display', 'none');
 			}
+
+			$( '#log' ).css('top',$('#belowProjects').height()+"px");
 	}
-	
+
   $( '#hamburger' ).click(toggleMobileToolbar)
   $( '#log #menu[href="#loginModal"]' ).click(toggleMobileToolbar)
 
   var mouseoverHandler = function(){
 		$('#dropArrow').addClass( 'pointerUp' );
 		$( '.projects-menu' ).css('display', 'block');
-		
+
 	}
 	var mouseoutHandler = function(){
 		$('#dropArrow').removeClass( 'pointerUp' );
@@ -49,27 +51,34 @@ $(document).ready(function(){
 		$('#logDrop').removeClass( 'pointerUp' ),
 		$( '#droppedMenu' ).hide();
 	}
-	
+
 
 	$('#projects').on('click',function(event){
 		console.log($('#projectsMenu').css('height'));
 		var belowProjectsMove = parseInt($( '#belowProjects' ).css('top')) + parseInt($('#projectsMenu').css('height'));
-		var logMove =  parseInt($( '#log' ).css('top')) + parseInt($('#projectsMenu').css('height'));
-		console.log(logMove);
-//		console.log(belowProjectsMove);
+		// var logMove =  parseInt($( '#log' ).css('top')) + parseInt($('#projectsMenu').css('height'));
+		// console.log(logMove);
 		if(checkMobile()) {
-				if(($( '#log' ).css('top') === '208px') ){
-					$('#dropArrow').addClass( 'pointerUp' );
-					$( '#log' ).css('top',logMove+'px');
-					$( '#belowProjects' ).css('top',belowProjectsMove+'px');
-					$( '.projects-menu' ).css('display', 'block');
+			console.log($('#belowProjects'));
+			if(!$( '#projectsMenu' ).is(":visible")){
+				$('#dropArrow').addClass( 'pointerUp' );
+				// var logMove =  parseInt($( '#log' ).css('top')) + parseInt($('#projectsMenu').css('height'));
+				// console.log(logMove);
+				// $( '#log' ).css('top',logMove+'px');
+				$( '#belowProjects' ).css('top',belowProjectsMove+'px');
+				$( '.projects-menu' ).css('display', 'block');
+				$( '#log' ).css('top',$('#belowProjects').height()+$('#projectsMenu').height()+"px");
 			}
-				else{
-					$('#dropArrow').removeClass( 'pointerUp' );
-					$( '#log' ).css('top','208px');
-					$( '#belowProjects' ).css('top','-40px');
-					$( '.projects-menu' ).css('display', 'none');
-				}
+			else{
+				$('#dropArrow').removeClass( 'pointerUp' );
+				// var logMove =  parseInt($( '#log' ).css('top')) - parseInt($('#projectsMenu').css('height'));
+				// console.log(logMove);
+				// $( '#log' ).css('top',logMove+'px');
+				// $( '#log' ).css('top','208px');
+				$( '#belowProjects' ).css('top','-40px');
+				$( '.projects-menu' ).css('display', 'none');
+				$( '#log' ).css('top',$('#belowProjects').height()+"px");
+			}
 		}
 	});
 	$('#menu').on('click',function(event){
@@ -102,25 +111,25 @@ $(document).ready(function(){
 				$( '.projects-menu' ).css('display', 'none');
 			}
 		}
-		
+
 	});
-	
+
 	$( window ).load(function(){
 		if(!checkMobile()){
-			$( '.toolbar-btn' ).css('display', 'block');
+			// $( '.toolbar-btn' ).css('display', 'block');
 			$( '.projects-menu' ).css('display', 'none');
-			$('#projects').bind('mouseover', mouseoverHandler); 
-			$('#projects').bind('mouseout', mouseoutHandler); 
-			$('#projectsHeader').bind('mouseover', mouseoverHandler); 
+			$('#projects').bind('mouseover', mouseoverHandler);
+			$('#projects').bind('mouseout', mouseoutHandler);
+			$('#projectsHeader').bind('mouseover', mouseoverHandler);
 			$('#projectsHeader').bind('mouseout', mouseoutHandler);
 			$('#menu').bind('mouseover', logMouseover);
 			$('#menu').bind('mouseout', logMouseout);
-			
+
 		}
 		else{
-			$( '.toolbar-btn' ).css('display', 'none');
+			// $( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');
-			$( '#log' ).css('top','208px');
+			// $( '#log' ).css('top','208px');
 			$( '#belowProjects' ).css('top','-40px');
 			$( '#helpSearch').css('top','22px');
 			$('#projects').unbind('mouseout mouseover');
@@ -134,18 +143,18 @@ $(document).ready(function(){
 			$( '#menu' ).css('background', '')
 			$( '#menu' ).css('color', '')
 		}
-		
-	});
-	
 
-	
+	});
+
+
+
 	$( window ).resize(function(){
 		if(!checkMobile()){
 			$( '.toolbar-btn' ).css('display', 'block');
 			$( '.projects-menu' ).css('display', 'none');
-			$('#projects').bind('mouseover', mouseoverHandler); 
-			$('#projects').bind('mouseout', mouseoutHandler); 
-			$('#projectsHeader').bind('mouseover', mouseoverHandler); 
+			$('#projects').bind('mouseover', mouseoverHandler);
+			$('#projects').bind('mouseout', mouseoutHandler);
+			$('#projectsHeader').bind('mouseover', mouseoverHandler);
 			$('#projectsHeader').bind('mouseout', mouseoutHandler);
 			$('#menu').bind('mouseover', logMouseover);
 			$('#menu').bind('mouseout', logMouseout);
@@ -170,7 +179,7 @@ $(document).ready(function(){
 			}
 			$( '.toolbar-btn' ).css('display', 'none');
 			$( '.projects-menu' ).css('display', 'none');
-			$( '#log' ).css('top','208px');
+			// $( '#log' ).css('top','208px');
 			$( '#belowProjects' ).css('top','-40px');
 			$( '#helpSearch').css('top','22px');
 			$('#projects').unbind('mouseout mouseover');
@@ -188,14 +197,14 @@ $(document).ready(function(){
 			$( '#droppedMenu' ).hide();
 		}
 	});
-	
+
 	var pathname = window.location.pathname;
 	if (pathname.includes( 'arcs/upload' )) {
 		$( '#upload' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( '/resource' )) {
 		$( '#resources' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/about' )) {
-		$( '#about' ).addClass( 'btn-blue' ); 
+		$( '#about' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/collections' )) {
 		$( '#collections' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/search' )) {
@@ -213,9 +222,9 @@ $(document).ready(function(){
 		$( '#projects' ).addClass( 'btn-blue' );
 		$('#dropArrow').addClass( 'whiteArrow' );
 		$('#dropArrow').addClass( 'whiteArrow' );
-	} 
-	
-	
+	}
+
+
 	//$("#register").click(function(e) {
 	$("#UserRegisterForm").on('submit', function(e) {
 		var form = this;
@@ -228,12 +237,12 @@ $(document).ready(function(){
 			if($(this).val().length === 0) {
 				e.preventDefault();
 				empty_fields = true;
-			} 
+			}
 			if($(this).hasClass("unfocused")) {
 				e.preventDefault();
 				empty_fields = true;
 			}
-			
+
 		});
 		if(empty_fields) {
 			e.preventDefault();
@@ -254,7 +263,7 @@ $(document).ready(function(){
 			//$("#email-error").html("Invalid Email");
 			alert("Invalid Email");
 		}
-		
+
 		else { //ajax check of available username and email
 			e.preventDefault();
 			var username = $("#UserUsernameReg").val();
@@ -273,10 +282,10 @@ $(document).ready(function(){
 					}
 				},
 				error: function(error) {
-				
+
 				}
 			});
-		
+
 			var email = $("#UserEmail").val();
 			console.log(email);
 			data = {'email' : email};
@@ -295,11 +304,11 @@ $(document).ready(function(){
 					}
 				},
 				error: function(error) {
-				
+
 				}
 			});
 		}
-		
+
 	});
 	$(".exit").click(function(e) {
 		empty_fields = false;
@@ -308,7 +317,7 @@ $(document).ready(function(){
 		$("#email-error").html("&nbsp;");
 		$("#username-error").html("&nbsp;");
 	});
-	
+
 	// Focus the username field on load.
     $('#UserUsername').focus();
     // Make sure a tab within username goes to password.
@@ -318,14 +327,14 @@ $(document).ready(function(){
             $('#UserPassword').focus();
             e.preventDefault();
             return false;
-        }                                                                                                           
+        }
     });
 
     // Replace the password field with reset password instructions.
     // Note: make sure to change the text in the opposite if/else statement and $('#forgot-password').text("..");
     $('#forgot-password').click(function(e) {
         if ($('#forgot-password').text() == "Forgot your password?") {
-            $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {  
+            $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {
                 $('#UserUsername').attr('placeholder', 'Email').val("").focus().blur();
                 $('input[type=submit]').val('Send reset link');
                 $('input[name="data[User][forgot_password]"]').val('true');
@@ -356,4 +365,3 @@ function IsEmail(email) {
 
 
 // triggers login modal
-

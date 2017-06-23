@@ -7721,6 +7721,7 @@ input.indexSearchBox {
   }
   #log #menu {
     line-height: 66px;
+    z-index: 1;
   }
   #log #menu .pointerDown {
     margin-top: 27px;
