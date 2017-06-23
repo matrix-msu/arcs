@@ -26,6 +26,7 @@ class MetadataEditsController extends AppController {
     public function add() {
         if (!$this->request->is('post')) return $this->json(400);
         $this->request->data['user_id'] = $this->Session->read('Auth.User.id');
+        $this->request->data['user_name'] = $this->Session->read('Auth.User.name');
 
         $pName = parent::convertKIDtoProjectName($this->request->data['resource_kid']);
 

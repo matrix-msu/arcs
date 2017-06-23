@@ -16,7 +16,7 @@ class MetadataEdit extends AppModel {
     //public $belongsTo = array('Resource');
 
     public $whitelist = array('resource_kid', 'resource_name', 'scheme_id', 'control_type', 'user_id', 'field_name', 'value_before',
-                              'new_value', 'approved', 'rejected', 'reason_rejected', 'metadata_kid');
+                              'new_value', 'approved', 'rejected', 'reason_rejected', 'metadata_kid', 'user_name');
 
     /**
      * Store a piece of metadata for a resource.
