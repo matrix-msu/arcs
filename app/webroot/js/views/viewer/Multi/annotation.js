@@ -949,7 +949,7 @@ $(document).ready(function () {
                 //Mouse over (hover) annotation
                 $(".gen_box").mouseenter(function () {
                     mouseOn = true;
-                    //ShowAnnotation($(this).attr('id'));
+                    ShowAnnotation($(this).attr('id'));
                 });
 
                 $(".gen_box").mouseleave(function () {
