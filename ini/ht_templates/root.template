@@ -3,9 +3,4 @@
     RewriteBase     ARCS_ROOT
     RewriteRule    ^$ app/webroot/    [L]
     RewriteRule    (.*) app/webroot/$1 [L]
-    <filesMatch "\.(php)$">
-        Header set Cache-Control "no-cache, no-store, must-revalidate"
-        Header set Pragma "no-cache"
-        Header set Expires 0
-    </filesMatch>
 </IfModule>
