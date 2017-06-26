@@ -28,11 +28,11 @@
 	<!--Display login button for other pages-->
 	<div id='log' >
 		<?php if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
-			<div id="menu" class="btn btn-grey toolbar-btn">
+			<div id="menu" class="btn toolbar-btn btn-blue">
 				<div id="cage">
 				<?php echo $user['name'] ?>
 				<div id="dropBox">
-					<span id='logDrop' class="pointerDown pointerTool"></span>
+					<span id='logDrop' class="pointerDown pointerTool whiteArrow"></span>
 				</div>
 				</div>
 				<div id="droppedMenu" class="dropped-menu">

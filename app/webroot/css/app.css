@@ -7305,6 +7305,22 @@ div#toolbar .btn-grey {
   border-bottom: 1px solid #e9e9e9;
   float: left;
 }
+div#toolbar .toolbar-btn {
+  display: block;
+  right: 4px;
+  height: 60px;
+  float: right;
+  position: relative;
+  border: none;
+  border-radius: 0;
+  background: #F4F4F4;
+  color: grey;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 48px;
+  border-bottom: 1px solid #e9e9e9;
+  border-left: 1px solid #e9e9e9;
+}
 div#toolbar .btn-dark {
   background: #808080;
   border: none;
@@ -7330,22 +7346,6 @@ div#toolbar .btn-blue {
   font-size: 12px;
   line-height: 48px;
   border-bottom: 1px solid #e9e9e9;
-}
-div#toolbar .toolbar-btn {
-  display: block;
-  right: 4px;
-  height: 60px;
-  float: right;
-  position: relative;
-  border: none;
-  border-radius: 0;
-  background: #F4F4F4;
-  color: grey;
-  text-transform: uppercase;
-  font-size: 12px;
-  line-height: 48px;
-  border-bottom: 1px solid #e9e9e9;
-  border-left: 1px solid #e9e9e9;
 }
 #menuButton {
   top: 2px;
@@ -7428,7 +7428,7 @@ div#toolbar .toolbar-btn {
   color: #808080;
   margin-left: 5px;
   height: 60px;
-  width: 300px !important;
+  width: 240px !important;
   float: right;
   position: relative;
   border-bottom: 1px solid #e9e9e9 !important;
@@ -7447,7 +7447,7 @@ div#toolbar .toolbar-btn {
   display: inline-block;
   background: url("../img/SearchDark.svg") no-repeat;
   position: absolute;
-  margin-left: 255px;
+  margin-left: 195px;
   margin-top: 22px;
 }
 input.indexSearchBox {

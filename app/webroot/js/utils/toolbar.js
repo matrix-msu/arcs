@@ -13,22 +13,25 @@ $(document).ready(function(){
 
 	//mobile display drop down
 	function toggleMobileToolbar (){
+		if($( '.toolbar-btn' ).css('display') === 'none'){
 
-			if($( '.toolbar-btn' ).css('display') === 'none'){
-
-				//switch to blue hamburger
-				$('#hamburger').toggleClass('hamburgerActive');
-				$('#hamburger').toggleClass('hamburger');
-				$( '.toolbar-btn' ).css('display', 'block');
-			}
-			else{
-				//switch to grey hamburger
-				$('#hamburger').toggleClass('hamburgerActive');
-				$('#hamburger').toggleClass('hamburger');
-				$( '.toolbar-btn' ).css('display', 'none');
-			}
-
+			//switch to blue hamburger
+			$('#hamburger').toggleClass('hamburgerActive');
+			$('#hamburger').toggleClass('hamburger');
+			$( '.toolbar-btn' ).css('display', 'block');
+		}
+		else{
+			//switch to grey hamburger
+			$('#hamburger').toggleClass('hamburgerActive');
+			$('#hamburger').toggleClass('hamburger');
+			$( '.toolbar-btn' ).css('display', 'none');
+		}
+		if ($('#belowProjects').length == 0) {
+			$( '#log' ).css('top',$('#helpSearch').height()+45+"px");
+		}
+		else {
 			$( '#log' ).css('top',$('#belowProjects').height()+"px");
+		}
 	}
 
   $( '#hamburger' ).click(toggleMobileToolbar)

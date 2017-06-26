@@ -1172,7 +1172,7 @@
                 $('.tool-bar-results').css("display",'none')
             }
         });
-        $( window ).unbind().resize(function() {
+        $( window ).resize(function() {
             if($( window ).width() > 960){
                 $('.tool-bar-results').css("display",'block');
                 calculateMargins();
