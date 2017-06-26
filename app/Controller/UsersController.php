@@ -1023,7 +1023,7 @@ class UsersController extends AppController
         $model = $this->modelClass;
         $results = $this->$model->find('all', array(
             'conditions' => array('not' => array('name' => null)),
-            'fields' => array('name', 'id'),
+            'fields' => array('name', 'id', 'username'),
             'order' => 'name'
         ));
         $this->json(200, $results);

@@ -75,77 +75,14 @@ class User extends AppModel {
             });
         }
 
-
-
         $results = $this->resultsMap($results, function($r) {
             if (isset($r['email']))
                 $r['gravatar'] = md5(strtolower($r['email']));
-
-            //Josh- Find and return collections data also
-            /////////////////////////////////////////////
-
-            if ( isset($r['id']) ) {
-
-                //// Start SQL Area
-                ///////////////////
-                $db = new DATABASE_CONFIG;
-                $db_object = (object)$db;
-                $db_array = $db_object->{'default'};
-                $response['db_info'] = $db_array['host'];
-                $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
-
-                if ($mysqli->connect_error) {
-                    die('Connect Error (' . $mysqli->connect_errno . ') '
-                        . $mysqli->connect_error);
-                }
-
-                //Get a collection_id from the id
-                //Get the title
-                //Get the oldest created date.
-                $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
-                        FROM collections
-                        WHERE user_id = ?
-                        GROUP BY collection_id
-                        ORDER BY min(created) DESC;");
-                //WHERE title = '".$file_name."'";
-                $sql->bind_param("s", $r['id']);
-                $sql->execute();
-                $result = $sql->get_result();
-                // $result = $mysqli->query($sql);
-                while ($row = mysqli_fetch_assoc($result)) {
-
-                    //Set the collection's last modified date
-                    $date = $row['DATE'];
-                    $year = substr($date, 0, 4);
-                    $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-                        'September', 'October', 'November', 'December');
-                    $month = substr($date, 5, 2);
-                    $day = substr($date, 8, 2);
-                    $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
-
-
-                    $temp_array = array('id' => $row['collection_id'],
-                        'title' => $row['title'],
-                        'date' => $return_date,
-                        'public' => $row['public'],
-                        'members' => $row['members']);
-                    $test[] = $temp_array;
-                }
-                //$response['collection_table_id'] = $collection_table_id;
-                //$response['sql'] = $sql;
-                //$collections = mysqli_fetch_assoc($result);
-                //$collection_id = $collection_id['collection_id'];
-                //$r['query'] = $sql;
-                if(isset($test))
-                  $r['Collection'] = $test;
-
-                return $r;
-            }
+            return $r;
         });
 
         return $results;
     }
-
     /**
      * (Try to) find a user given a reference, which may be the
      * id or username.

@@ -81,6 +81,11 @@
     };
 
     Profile.prototype.onClick = function(e) {
+      //this file gets run before edit-collections.js..
+      // so we need to make sure this isn't a .edit-btn click.
+      if($(e.target).hasClass('edit-btn')){
+        return true;
+      }
       var $el, limit, ref, src;
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
@@ -97,6 +102,11 @@
       } else {
         if ($(e.currentTarget).children().last().hasClass('save-btn')) {
           e.preventDefault();
+          //closing a drawer that's currently being edited does not work....
+          //$(e.currentTarget).children().last().removeClass('save-btn').addClass('edit-btn');
+          //$(e.currentTarget).children().last().html('OPEN COLLECTION');
+          //$(e.currentTarget).parent().find('.editRadio').remove();
+          //$(e.currentTarget).parent().find('.uploadForm').remove();
           return;
         }
         $el = $(e.currentTarget).parent();
@@ -110,8 +120,10 @@
       }
       if ($el[0].hasAttribute("open")) {
         this.renderDetails($el, limit);
+        $el.find('.edit-btn').html('EDIT COLLECTION');
       } else {
         $el.children('div').html('');
+        $el.find('.edit-btn').html('OPEN COLLECTION');
       }
       if ((e.srcElement != null)) {
         if (((ref = e.srcElement.tagName) !== 'SPAN' && ref !== 'BUTTON' && ref !== 'I' && ref !== 'A')) {
@@ -171,7 +183,7 @@
           });
         }else{
           //collection show all goes to search
-          window.location.href = "../../search/collection/" + id;
+          //window.location.href = "../../search/collection/" + id;
         }
       });
     };

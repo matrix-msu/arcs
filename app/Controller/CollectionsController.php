@@ -17,7 +17,7 @@ class CollectionsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers');
+        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers', 'findAllByUser');
     }
 
     /**
@@ -384,16 +384,53 @@ class CollectionsController extends AppController {
     }
 
     /**
-     * Find all collections associated with user id - may or may not be used by activity tab on user profile page
+     * Find all collections associated with user id - used by activity tab on user profile page
      */
     public function findAllByUser()
     {
-        $model = $this->modelClass;
-        $results = $this->$model->find('all', array(
-            'conditions' => array('user_id' => $this->request->data['id']),
-            'group' => array('collection_id')
-        ));
-        $this->json(200, $results);
+        include_once("../Config/database.php");
+        $db = new DATABASE_CONFIG;
+        $db_object = (object)$db;
+        $db_array = $db_object->{'default'};
+        $response['db_info'] = $db_array['host'];
+        $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+        if ($mysqli->connect_error) {
+            die('Connect Error (' . $mysqli->connect_errno . ') '
+                . $mysqli->connect_error);
+        }
+
+        //Get a collection_id from the id
+        //Get the title
+        //Get the oldest created date.
+        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
+                        FROM collections
+                        WHERE user_id = ?
+                        GROUP BY collection_id
+                        ORDER BY min(created) DESC;");
+        $sql->bind_param("s", $this->request->data['id']);
+        $sql->execute();
+        $result = $sql->get_result();
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            //Set the collection's last modified date
+            $date = $row['DATE'];
+            $year = substr($date, 0, 4);
+            $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                'September', 'October', 'November', 'December');
+            $month = substr($date, 5, 2);
+            $day = substr($date, 8, 2);
+            $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
+
+            $temp_array = array('id' => $row['collection_id'],
+                'title' => $row['title'],
+                'date' => $return_date,
+                'public' => $row['public'],
+                'members' => $row['members']);
+            $test[] = $temp_array;
+        }
+        echo json_encode($test);
+        die;
     }
 
     public function editCollection()

@@ -93,11 +93,13 @@
         }
         if( typeof response.results[0] == "object" ){
           var html;
+          console.log('home tmp')
           html = arcs.tmpl('home/details', {
             resources: response.results,
             noShowAll: 0,
             searchURL: arcs.baseURL + "collection/"
           });
+          console.log(response.results);
           $el.children('div').html(html);
           adjustResultsCenter();
           //readjust the resource permissions css

@@ -18,6 +18,23 @@ JST["collections/list"] = "<% _.each(collections, function(c, i) { %>" +
     "<div class=\"results\"></div>" +
     "</details><% }) %>";
 
+JST["collections/profile"] = '<div class="profile-collection-list-wrapper">' +
+    '<div class="collection-list" id="all-collections">' +
+    "<% _.each(collections, function(c, i) { %>" +
+    "<% if (i == -1) { %>  "+
+        "<details data-id=\"<%= c.collection_id %>\" class=\"open back-color\" open=\"open\">" +
+    "<% } else { %>  " +
+        "<details data-id=\"<%= c.id %>\" class=\"closed\">" +
+    "<% } %>" +
+    "<summary>" +
+        "<h3><%= c.title %></h3>" +
+        "<h4></h4>" +
+        "<h5><%= c.date %></h5>" +
+        '<h4 class="edit-btn " data-permission="<%= c.public %>" data-members="<%= c.members %>" data-delete-resources="" style="float:right;padding-right:10px">OPEN COLLECTION</h4>' +
+    "</summary>" +
+    "<div class=\"results\"></div>" +
+    "</details><% }) %> </div></div>";
+
 JST["home/details"] = "<ul class=\"resource-thumbs\">"+
     "<% _.each(resources, function(r, i) { %>" + [
         "<li class=\"resource-thumb\" data-colid=\"<%= r.collection_id %>\" data-resource-kid=\"<%= r.kid %>\">",

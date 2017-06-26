@@ -1,77 +1,20 @@
 <div class="tab-pane" id="collections-tab">
-<!-- pre>
-<?php print_r($user_info);//var_dump($user_info); ?>
-</pre -->
-<?php if (empty($user_info['Collection'])): ?>
-    <h3>No collections</h3>
-<?php else: ?>
-    <table class="user-tabs-table">
-        <!-- <thead>
-            <tr>
-                <th class="user-tabs-header">Public?</th>
-                <th class="user-tabs-header">Title</th>
-                <th class="user-tabs-header">Description</th>
-                <th class="user-tabs-header">Date</th>
-            </tr>
-        </thead> -->
-        <tbody>
-        <!-- ?php if ($collection['temporary'] == 1) continue ?>
-                    <tr>
-                        <td>
-                        <?php if ($collection['public']): ?>
-                            <span class="label success">Public</span>
-                        <?php else: ?>
-                            <span class="label info">Private</span>
-                        <?php endif ?>
-                        <td>
-                        <?php echo $this->Html->link($collection[0]['title'],
-                            '/collection/' . $collection['title']) ?>
-                        </td>
-                        <td><?php echo $collection['description'] ?></td>
-                        <td><?php echo $collection['created'] ?></td>
-                        <td><?php echo "hello" ?></td>
-                    </tr> -->
+    <div id="collections-tab-contents">
+    </div>
+    <div class="container"><div id="paginate">
+            <ul class="pagination">
+                <div id='rightArrowBox' style="display:none"><li id='rightArrow' class='pointerDown pointerNum'></li></div>
 
-        <!-- ?php $url = $this->Html->url(array('action' => 'view', $r['Resource']['id']));
-                              $url = substr($url,1,-10);
-                              $url = KORA_BASE.$url."resource/" ? -->
-
-        <div class="profile-collection-list-wrapper">
-        <div class="collection-list" id="all-collections">
-
-            <?php foreach($user_info['Collection'] as $collection): ?>
-                <details class="closed" data-id="<?php echo $collection['id'] ?>">
-
-                    <summary>
-                        <h3><?php echo $collection['title']; ?></h3>
-                        <h4></h4>
-                        <h5><?php echo $collection['date']; ?></h5>
-
-                        <h4 class="edit-btn <?php if ($user['id'] != $user_info['id']) {echo "hide";} ?>" data-permission="<?php echo $collection['public']; ?>" data-members="<?php echo $collection['members']; ?>" data-delete-resources="" style="float:right;padding-right:10px">EDIT COLLECTION</h4>
-                    </summary>
-
-                    <div class="results">
-                        <!-- ul class="resource-thumbs">
-                            <?php foreach( $collection as $resource ): ?>
-
-                                    <li class="resource-thumb" >
-                                        <a href="<?php echo $url.$resource['id'] ?>">
-                                            <img src="<?php echo $resource['thumb'] ?>" alt="resource" >
-                                        </a>
-                                        <a class="subtle" href="<?php echo $url.$resource['id'] ?>">
-                                            <?php echo $resource['title'] ?><br /><?php echo $resource['type'] ?>
-                                        </a>
-                                    </li>
-
-                            <?php endforeach; ?>
-                        </ul -->
-                    </div>
-
-                </details>
-            <?php endforeach; ?>
-        </div>
-        </div>
-        </tbody>
-    </table>
-<?php endif; ?>
+                <li><a class='pageNumber' id='firstPage' style="display:none"> 1 </a></li>
+                <div id='fDots'><li class='fDots' style="display:none"> ... </li></div>
+                <li><a class='selected currentPage pageNumber' id='1' style="display:none"></a></li>
+                <li><a class='pageNumber' id='2'style="display:none" ></a></li>
+                <li><a class='pageNumber' id='3' style="display:none"></a></li>
+                <li><a class='pageNumber' id='4' style="display:none"></a></li>
+                <li><a class='pageNumber' id='5' style="display:none"></a></li>
+                <div id='dots'> <li class='dots' style="display:none" style="display:none"> ... </li></div>
+                <li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
+                <div id="leftArrowBox" style="display:none"><li id='leftArrow' class='pointerDown pointerNum'></li></div>
+            </ul>
+        </div></div>
 </div>

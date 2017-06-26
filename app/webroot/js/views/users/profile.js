@@ -46,7 +46,6 @@
 
     Profile.prototype.initialize = function(vars) {
       var annoReady, flagsReady, metaReady, that, usersReady;
-      console.log(vars);
       info.id = vars.id;
       that = this;
       annoReady = $.ajax({
@@ -211,7 +210,6 @@
           id: info.id
         },
         success: function(ddata) {
-          console.log(ddata)
           var dcontents, dcount;
           if (!ddata.length) {
             $('#discussion-tab #contents').html('<h3>No discussion items</h3>');
@@ -284,8 +282,6 @@
           id: info.id
         },
         success: function(fdata) {
-          console.log('fdata');
-          console.log(fdata);
           var byResource = [];
           fdata.forEach(function(flag) {
             activity.push({
@@ -308,7 +304,6 @@
           id: info.id
         },
         success: function(mdata) {
-          console.log(mdata);
           var byResource = [];
           mdata.forEach(function(edit) {
             activity.push({
@@ -345,8 +340,6 @@
           id: info.id
         },
         success: function(keywords) {
-          console.log('keywords');
-          console.log(keywords);
           // keywords in total, or resources given keywords? I'm going with the latter for now
           var byResource = [];
           for (var i = 0; i < keywords.length; i++) {
@@ -364,9 +357,12 @@
           id: info.id
         },
         success: function(collections) {
-          console.log('collections');
-          console.log(collections);
           collectionsMade = collections.length;
+          var html;
+          html = arcs.tmpl('collections/profile', {
+            collections: JSON.parse(collections)
+          });
+          $('#collections-tab-contents').html(html);
         }
       });
       $.when(usersReady, flagsReady, annoReady, metaReady).then(function() {
@@ -502,7 +498,6 @@
     Profile.prototype.pagination = function(target, currentPage) {
       var arr, div, i, j, lastPage, pageArray;
       var that = this;
-      console.log('pagination ' + target);
       if (target === 'activity') {
         arr = activity;
         div = $('#activity-tab');
@@ -603,7 +598,6 @@
         arr = discussions;
         div = $('#discussion-tab');
       }
-      console.log(arr);
       var first = (pageNum - 1) * page;
       var last = pageNum * page;
       if (last > arr.length) {

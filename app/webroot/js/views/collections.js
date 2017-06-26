@@ -118,10 +118,14 @@
         currentCollectionList.push(fullCollectionList[i]);
         i++;
       }
-      this.$el.html(arcs.tmpl('collections/list', {
+      var html = arcs.tmpl('collections/list', {
 
         collections: currentCollectionList
-      }));
+      });
+
+      this.$el.html( html );
+      //this.$el.html( html );
+      console.log('got collections render:');
       this;
       lastPage = Math.ceil(fullCollectionList.length / numPerPage);
       temp = fillArray(1, lastPage);
