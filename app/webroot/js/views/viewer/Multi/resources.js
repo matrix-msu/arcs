@@ -379,14 +379,12 @@ $(document).ready(function() {
     //GOTO
     function setExpand() {
         var imageSrc = $("#PageImage").attr('src');
-        $('#ImageWrap').css({
-          position: 'relative',
-          top: 'auto',
-          right: 'auto',
-          bottom: 'auto',
-          left: 'auto'
-        })
-        $('.zoom-div #zoom-range').val(1)
+        $('.fullscreenInner').css({
+            top: 'auto',
+            right: 'auto',
+            bottom: 'auto',
+            left: 'auto'
+        });
         $('#ImageWrap #PageImage').css({transform: 'scale(1)'})
         $('#ImageWrap #canvas').css({transform: 'scale(1)'})
         $(".fullscreenImage").attr('src', imageSrc);
