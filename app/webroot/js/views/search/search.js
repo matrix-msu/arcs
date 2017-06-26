@@ -251,11 +251,12 @@
 
 
     Search.prototype.openCollection = function(e) {
-      var form = $(e.target).parent();
-      form.find("input").attr({value: JSON.stringify(Search.selected) });
-      form.attr({action: arcs.baseURL + "view/"});
-      form.submit();
-
+      if (parseInt(this.$('#selected-count').html()) > 0) {
+        var form = $(e.target).parent();
+        form.find("input").attr({value: JSON.stringify(Search.selected) });
+        form.attr({action: arcs.baseURL + "view/"});
+        form.submit();
+      }
     };
 
     Search.prototype.setSort = function(e) {
@@ -1008,11 +1009,11 @@
         $("#selected-resource-ids").html(JSON.stringify(Search.selected))
         $('#selected-count').html(Search.selected.length)
         if( Search.selected.length == 0 ){ //not clickable
-          $('#selected-all').css({
+          $('#selected-all, #open-colview-btn').css({
             color: '#C1C1C1'
           });
         } else { //clickable
-          $('#selected-all').css({
+          $('#selected-all, #open-colview-btn').css({
             color: 'black'
           });
         }
@@ -1030,7 +1031,7 @@
       $('#select-all, #deselect-all').unbind().click(function() {
         var i;
         if (this.id === 'select-all') {
-          $('#selected-all').css({
+          $('#selected-all, #open-colview-btn').css({
             color: 'black'
           });
           selectedMap['selected'] = [];
@@ -1044,7 +1045,7 @@
           $('#selected-resource-ids').html(JSON.stringify(selectedMap["selected"]));
           return $('#selected-count').html(selectedMap["selected"].length);
         } else {
-          $('#selected-all').css({
+          $('#selected-all, #open-colview-btn').css({
             color: '#C1C1C1'
           });
           selectedMap['selected'] = [];

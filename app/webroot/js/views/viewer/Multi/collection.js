@@ -16,7 +16,9 @@ $( document ).ready(function() {
 
     //search page, open collection modal
     $('#selected-all').click(function(){
-        $(".collectionModalBackground").show();
+        if (parseInt($('#selected-count').html()) > 0) {
+            $(".collectionModalBackground").show();
+        }
     });
 
     //close the modal. unselect and get the collections list again
@@ -215,10 +217,10 @@ var unselect = function (trigger) {
         trigger = true
     }
     this.$(".result").removeClass("selected");
-    this.$(".select-button").removeClass("de-select");
-    this.$(".select-button, #toggle-select").html("SELECT");
-    this.$("#deselect-all").attr({id: "select-all"});
-    this.$(".checkedboxes").prop("checked", false);
+    // this.$(".select-button").removeClass("de-select");
+    // this.$(".select-button, #toggle-select").html("SELECT");
+    // this.$("#deselect-all").attr({id: "select-all"});
+    // this.$(".checkedboxes").prop("checked", false);
     this.$("#collectionTitle").val('');
     this.$(".collectionTabSearch").trigger("click");
     collectionList();
