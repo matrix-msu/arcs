@@ -30,7 +30,9 @@ JST["collections/profile"] = '<div class="profile-collection-list-wrapper">' +
         "<h3><%= c.title %></h3>" +
         "<h4></h4>" +
         "<h5><%= c.date %></h5>" +
-        '<h4 class="edit-btn " data-permission="<%= c.public %>" data-members="<%= c.members %>" data-delete-resources="" style="float:right;padding-right:10px">OPEN COLLECTION</h4>' +
+        "<% if (permissions == true) { %>  "+
+            '<h4 class="edit-btn " data-permission="<%= c.public %>" data-members="<%= c.members %>" data-delete-resources="" style="float:right;padding-right:10px">OPEN COLLECTION</h4>' +
+        "<% } %>" +
     "</summary>" +
     "<div class=\"results\"></div>" +
     "</details><% }) %> </div></div>";

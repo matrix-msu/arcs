@@ -357,12 +357,17 @@
           id: info.id
         },
         success: function(collections) {
-          collectionsMade = collections.length;
-          var html;
-          html = arcs.tmpl('collections/profile', {
-            collections: JSON.parse(collections)
-          });
-          $('#collections-tab-contents').html(html);
+            collectionsMade = collections.length;
+            var collections_permissions = false;
+            if( $('#edit-profile').length > 0 ){
+                collections_permissions = true;
+            }
+            var html;
+            html = arcs.tmpl('collections/profile', {
+                collections: JSON.parse(collections),
+                permissions: collections_permissions
+            });
+            $('#collections-tab-contents').html(html);
         }
       });
       $.when(usersReady, flagsReady, annoReady, metaReady).then(function() {
