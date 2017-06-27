@@ -1,5 +1,17 @@
 
 <style media="screen">
+.metadata-tab{
+    width: 100% !important;
+}
+.resources-annotate-icon:nth-child(2) {
+    display: none;
+}
+#resource-tools > .resource-icons {
+    display: none;
+}
+#resource-tools > .resource-icons ~ .resource-icons {
+    display: table-cell;
+}
 .numberOverResources{
   border: 2px solid white;
   font-size: 26px;
@@ -34,6 +46,7 @@
       position: initial !important;
     }
     .resources-annotate-icon{
+        display:none;
       position: absolute;
       right: 0;
       left: 0;
@@ -375,21 +388,19 @@
 
             <!-- TO DO: Add click events for highlighting the text on the tabs (in Arcs blue) -->
             <ul class="metadata-tabs">
-                <li class="metadata-tab"><a href="#tabs-1">Metadata</a></li>
+                <li class="metadata-tab"><a style="cursor:default;" href="#tabs-1">Metadata</a></li>
             </ul>
 
             <div id="tabs-1" class="metadata-content">
 
                 <div class="accordion metadata-accordion">
-                    <h3 class="level-tab">Page
+                    <h3 class="level-tab" style="cursor:default;">Page
                         
                     </h3>
                     <div class="level-content">
                         <table id="Project">
 <?php
                           foreach($pageMetadata as $key => $value){
-                            if(!empty($value)) {
-                             
 ?>
                             <tr>
                               <td><?=$key?></td>
@@ -401,7 +412,6 @@
                             </tr>
 
 <?php
-                            }
                           }
 
 ?>
@@ -422,27 +432,26 @@
     </div>
 </div>
 
-<!-- <pre id="preview"></pre> -->
-
-
 <script>
 	//update the single-resource's resources, collections, and search links
 	//add the project kid to the resources url.
+    var pName = '<?php echo $projectName; ?>';
+
 	var href = $('#resources').attr('href');
 	href = href.split('/'); href.pop(); href = href.join('/');
-	var href = href+'/'+PROJECT_KID;
+	var href = href+'/'+pName;
 	$('#resources').attr('href', href);
 
 	//add project kid to the collections url.
 	var href = $('#collections').attr('href');
 	href = href.split('/'); href.pop(); href = href.join('/');
-	var href = href+'/'+PROJECT_KID;
+	var href = href+'/'+pName;
 	$('#collections').attr('href', href);
 
 	//add project kid to the search url.
 	var href = $('#search').attr('href');
 	href = href.split('/'); href.pop(); href = href.join('/');
-	var href = href+'/'+PROJECT_KID;
+	var href = href+'/'+pName;
 	$('#search').attr('href', href);
 
 </script>
