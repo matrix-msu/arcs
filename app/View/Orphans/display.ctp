@@ -165,7 +165,7 @@
 </style>
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <?= $this->Html->script("views/viewer/Multi/accordion.js")?>
-<?= $this->Html->script("views/viewer/Metadata/resources.js")?>
+<?= $this->Html->script("views/viewer/Multi/resources.js")?>
 <?= $this->Html->script("views/orphan/toolbar.js")?>
 
 <div class="viewers-container">

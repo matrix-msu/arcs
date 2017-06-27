@@ -1,7 +1,7 @@
 jQuery.fn.outerHTML = function() {
     return jQuery('<div />').append(this.eq(0).clone()).html();
 };
-var pageSet = PAGESET || false;
+var pageSet = typeof PAGESET !== 'undefined' ? PAGESET : false;
 //global resource
 var _resource = {};
 
@@ -317,7 +317,7 @@ $(document).ready(function() {
       $('#ImageWrap').css('transform','');
       $("#canvas").css('transform', 'scale(1)');
       $("#PageImage").css('transform', 'scale(1)');
-      $('.zoom-bar').val(1);
+      $('#zoom-range').val(1);
       $('#ImageWrap').css('top','');
       $('#ImageWrap').css('left','');
       $(".fullscreenImage").css('transform', 'rotate(' + angle + 'deg' + ')');
@@ -379,12 +379,13 @@ $(document).ready(function() {
     //GOTO
     function setExpand() {
         var imageSrc = $("#PageImage").attr('src');
-        $('.fullscreenInner').css({
+        $('#ImageWrap, .fullscreenInner').css({
             top: 'auto',
             right: 'auto',
             bottom: 'auto',
             left: 'auto'
         });
+        $('#zoom-range').val(1)
         $('#ImageWrap #PageImage').css({transform: 'scale(1)'})
         $('#ImageWrap #canvas').css({transform: 'scale(1)'})
         $(".fullscreenImage").attr('src', imageSrc);

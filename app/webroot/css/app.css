@@ -9657,6 +9657,7 @@ input[type=range]:focus::-ms-fill-upper {
   margin-right: auto;
   margin-left: auto;
   transform: scale(1);
+  cursor: move;
   transform-origin: center;
 }
 #viewer-window #ImageWrap .canvas {

@@ -15,6 +15,7 @@ $(document).ready(function () {
   var h = $("#viewer-window").height();
   $("#ImageWrap img").css({height: h+"px"});
 
+  var oldzoom = 1;
 
   function createFunc(i){
         return function(event){
@@ -121,8 +122,9 @@ $(document).ready(function () {
 //				console.log('next image should appear');
         }
     });
-      $('.fullscreen-prev').click(previousImage);
-  $('.fullscreen-next').click(nextImage);
+  $('.fullscreen-prev, .fullscreen-next').hide();
+  // $('.fullscreen-prev').click(previousImage);
+  // $('.fullscreen-next').click(nextImage);
 
   function previousImage(){
     // event.preventDefault();
