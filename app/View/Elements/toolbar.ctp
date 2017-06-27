@@ -113,8 +113,10 @@
                    ){
 					$resourceBlue = '';
 					if( //is multi-resource, so make the link blue
-						$this->request->params['controller'] == 'resources' &&
-						$this->request->params['action'] == 'multi_viewer'
+						($this->request->params['controller'] == 'resources' &&
+						$this->request->params['action'] == 'multi_viewer') ||
+						($this->request->params['controller'] == 'orphans' &&
+							$this->request->params['action'] == 'display')
 					){
 						$resourceBlue = ' btn-blue';
 						$pKid = '/temp';
