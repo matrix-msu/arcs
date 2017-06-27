@@ -394,7 +394,7 @@
             <div id="tabs-1" class="metadata-content">
 
                 <div class="accordion metadata-accordion">
-                    <h3 class="level-tab" style="cursor:default;">Page
+                    <h3 class="level-tab" style="cursor:default;display:none;">Page
                         
                     </h3>
                     <div class="level-content">
