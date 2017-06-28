@@ -74,7 +74,7 @@ JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
             "<div class='resourceLockedDarkBackgroundSearch' style='height:120px;width:115px;left:19px;'>",
                 "<img src=\"<%= arcs.baseURL + 'img/Locked.svg' %>\" alt='' class='resourceLocked' />",
             "</div>",
-        "<% } %>",
+        "<% }if(typeof r.orphan !== 'undefined' && r.orphan) {temp='href=\"'+arcs.baseURL+'orphan/'+r.kid+'\"'} %>",
         "<div class='select-overlay'>",
         "<div class='circle-container'>",
         "<div class='select-circle'>",

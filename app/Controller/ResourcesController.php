@@ -576,7 +576,29 @@ class ResourcesController extends AppController {
         // with the viewtype html.
         } else if(isset($this->request->data['orphaned_kids'])) {
             $pKids = $this->request->data['orphaned_kids'];
+            $pKids = json_decode($pKids);
+            $pid = parent::getPIDFromProjectName($projectName);
+            $sid = parent::getPageSIDFromProjectName($projectName);
+            $pages = new General_Search($pid, $sid, 'kid', 'IN', $pKids, 'ALL');
+            $pages = $pages->return_array();
+            $results = ['filters' => [], 'indicators' => [], 'results' => $pages];
+            static::filterByPermission($username, $results['results']);
+            foreach ($results['results'] as $key => $value) {
+                $results['results'][$key]['Title'] = $value['Page Identifier'];
+                $results['results'][$key]['orphan'] = true;
+                if (is_array($value['Image Upload'])) {
+                    $results['results'][$key]['thumb'] = $this->smallThumb($value['Image Upload']['localName']);
+                }
+                $results['indicators'][$key] = array(
+                  "hasFlags"=>false,
+                  "hasAnnotations"=>false,
+                  "hasCollections"=>false,
+                  "hasComments"=>false,
+                  "hasKeywords"=>false
+                );
+            }
 
+            echo "<script>var results_to_display = ".json_encode($results).";</script>";
         } else {
             $this->Collection->recursive = -1;
             $user_id =  $this->Session->read('Auth.User.id');
