@@ -4,12 +4,16 @@ $(document).ready(function(){
     $(".search-bar").keyup(function(e){
        var val = $('#searchBar').val();
        if(e.keyCode == 13){
-           var getUrl = window.location;
-           var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-           url= baseUrl + '/arcs/search/'+projectKid+"/"+ val;
-           window.location.href = url;
+           window.location.href = arcs.baseURL+"search/"+projectKid+"/"+val;
        }
    });
+    $('.indexSearchIcon').click(function(){
+        var val = $('#searchBar').val();
+        if( val == '|\xa0\xa0Search' ){
+            val = '';
+        }
+        window.location.href = arcs.baseURL+"search/"+projectKid+"/"+val;
+    });
   var linked = $(".searchBoxInput").data("searchlink") || false
   if (linked) {
     $(".searchBoxInput").unbind().keyup(function(e){

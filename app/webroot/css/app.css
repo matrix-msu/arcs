@@ -7439,6 +7439,7 @@ div#toolbar .btn-blue {
   line-height: 48px;
 }
 .indexSearchIcon {
+  cursor: pointer;
   background-repeat: no-repeat;
   background-position: center center;
   vertical-align: middle;
