@@ -218,6 +218,9 @@ class CollectionsController extends AppController {
 
         //filter out any duplicate resource kids
         $duplicates = false;
+        if( !isset($this->request->data['resource_kids']) ){
+            $this->request->data['resource_kids'] = array();
+        }
         $newResources = array_diff( $this->request->data['resource_kids'], $existingResourceKids );
         if( sizeof($newResources) < sizeof($this->request->data['resource_kids']) ){
             $duplicates = true;

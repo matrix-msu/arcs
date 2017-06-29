@@ -67,7 +67,7 @@ $( document ).ready(function() {
                                 href = href.pop();
                                 $('#viewCollectionLink').attr('href', arcs.baseURL+"collections/"+href+"?"+data.collection_id);
                                 $("#collectionName").text($('#collectionTitle').val());
-                                $("#collectionMessage")[0].childNodes[0].nodeValue = data.new_resources+' resource(s) were added to ';
+                                $("#collectionMessage")[0].childNodes[0].nodeValue = (data.new_resources+1)+' resource(s) were added to ';
                                 if( data.duplicates ){
                                     $('#collectionWarning').html('**Warning: At least one resource was a duplicate and skipped.');
                                 }
