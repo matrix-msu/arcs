@@ -279,6 +279,9 @@
     Router::connect('/api/annotations/findall',
           array('controller' => 'annotations', 'action' => 'findAll')
     );
+    Router::connect('/api/annotations/delete/*',
+          array('controller' => 'annotations', 'action' => 'deleteAnnotation')
+    );
 ////////////////////////////////////////////////////////////////////////
 # MetadataEdits Controller
 ////////////////////////////////////////////////////////////////////////

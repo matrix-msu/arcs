@@ -37,4 +37,29 @@ class AnnotationsController extends MetaResourcesController {
 		));
 		$this->json(200, $results);
 	}
+
+	public function deleteAnnotation($id){
+        $relatedAnn = $this->Annotation->find('all', array(
+            'conditions' => array(
+                'OR' => array(
+                    'Annotation.id' => $id,
+                    'Annotation.relation_id' => $id
+                )
+            ),
+            'fields' => array('id')
+        ));
+        $ids = array();
+        foreach( $relatedAnn as $val ){
+            array_push($ids, $val['id']);
+        }
+        $deleteAnn = $this->Annotation->deleteAll(
+            array(
+                'Annotation.id' => $ids
+            ),
+            false,
+            false
+        );
+        print_r($deleteAnn);
+        die;
+    }
 }

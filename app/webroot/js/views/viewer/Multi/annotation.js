@@ -258,6 +258,12 @@ $(document).ready(function () {
 
 
     function SubmitSearch(offset) {
+        var annotateSearch = $(".annotateSearch");
+        var search = annotateSearch.val()
+        if( search == '' ){
+            console.log('empty search');
+            return;
+        }
         $(".annotateSearch ").hide()
         var pKid = $('#PageImage').attr('src').split('/').pop();
         pid = getPidFromKid(pKid); //defined in bootstrap.php
@@ -267,19 +273,24 @@ $(document).ready(function () {
         total_pages = 0;
 
         $(".resultsContainer").empty();
-        var annotateSearch = $(".annotateSearch");
 
-        var search = annotateSearch.val()
         var loader = InjectLoader(".annotateRelationContainer");
         loader.show()
+        var pName = $('#resources').attr('href').split('/').pop();
 
         // Search Resources
         $.ajax({
-            url: arcs.baseURL + "simple_search/isthmia/" + encodeURIComponent(search) + "/1/20",
+            url: arcs.baseURL + "simple_search/"+pName+"/"+ encodeURIComponent(search) + "/1/20",
             type: "GET",
             success: function (data) {
-
                 globalData = JSON.parse(data).results
+                console.log(globalData);
+                if( globalData.length == 0 ){
+                    loader.remove()
+                    $(".annotateSearch ").show()
+                    $('.resultsContainer').html('<p style="text-align:center">No Results Found.</p>');
+                    return;
+                }
                 // SetData(globalData, "resource", pid);
                 var q = addResourcesToQueue(globalData)
                 mapping = {}
@@ -299,7 +310,6 @@ $(document).ready(function () {
                         q: q
                     },
                     success: function (data) {
-                        var array = Array();
                         var pages = JSON.parse(data)
                         globalData = pages;
                         SetData(globalData,"resource", pid)
@@ -667,9 +677,6 @@ $(document).ready(function () {
     });
 
     function GetDetails() {
-
-        var isAdmin = ADMIN;
-
         $.ajax({
             url: arcs.baseURL + "api/annotations/findall.json",
             type: "POST",
@@ -785,7 +792,7 @@ $(document).ready(function () {
                             }
                         });
                     })
-                    $("." + value.id).click(function () {
+                    $("." + value.id).on('click', ".annotateLabel", function () {
                         if (!value.x1) {
                             Draw(false, value.id);
                         }
@@ -806,10 +813,10 @@ $(document).ready(function () {
                         $('.deleteWrap').css('display', 'none');
 
                         $.ajax({
-                            url: arcs.baseURL + "api/annotations/" + parameter + ".json",
+                            url: arcs.baseURL + "api/annotations/delete/" + parameter + ".json",
                             type: "DELETE",
                             statusCode: {
-                                204: function (data) {
+                                200: function (data) {
 
                                     GetDetails();
                                     DrawBoxes(kid);
@@ -826,16 +833,21 @@ $(document).ready(function () {
                 });
 
                 $(".trashTranscript").click(function () {
-                    $('.deleteBody').html('Are you sure you want to delete this transcription?');
+                    if( $(this).parent().hasClass('annotation_display') ){
+                        $('.deleteBody').html('Are you sure you want to delete this annotation?');
+                        var parameter = $(this).parent().attr("id");
+                    }else{
+                        $('.deleteBody').html('Are you sure you want to delete this transcription?');
+                        var parameter = $(this).closest('.transcript_display').attr("id");
+                    }
                     $('.deleteWrap').css('display', 'block');
-                    var parameter = $(this).closest('.transcript_display').attr("id");
                     $('.deleteButton').unbind().click(function () {
                         $('.deleteWrap').css('display', 'none');
                         $.ajax({
-                            url: arcs.baseURL + "api/annotations/" + parameter + ".json",
+                            url: arcs.baseURL + "api/annotations/delete/" + parameter + ".json",
                             type: "DELETE",
                             statusCode: {
-                                204: function () {
+                                200: function () {
                                     GetDetails();
                                     DrawBoxes(kid);
                                 },
@@ -912,7 +924,7 @@ $(document).ready(function () {
 
                         annotationHtml +=
                             "<div class='flagAnnotation notAdmin'>" +
-                            "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+                            "<img style='cursor:pointer' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
                             "class='flagAnnotationId "+annotationType+"' data-annid='"+v.id+"' "+
                             "/>" +
                             "</div>";
@@ -923,7 +935,7 @@ $(document).ready(function () {
                         $("#deleteAnnotation_" + v.id).click(function () {
                             var box = $(this).parent();
                             $.ajax({
-                                url: arcs.baseURL + "api/annotations/" + $(this).parent().attr("id") + ".json",
+                                url: arcs.baseURL + "api/annotations/delete/" + $(this).parent().attr("id") + ".json",
                                 type: "DELETE",
                                 statusCode: {
                                     204: function () {

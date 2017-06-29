@@ -9,13 +9,15 @@ $( document ).ready(function() {
     var currentId = '';
 
     //click on an annotation flag
-    $(document).on('click', ".flagAnnotation", function () {
+    $('#canvas').on('click', ".flagAnnotation", function () {
+        console.log('flag click');
         var el = $(this);
         el.find('img').attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
             .removeClass('icon-meta-flag')
             .addClass('icon-meta-flag-blue')
             .addClass('icon-meta-flag-blue-annotation');
         $(".flagModalBackground").show();
+        $("#flagTarget").hide();
         var imgEl = el.find('img');
         if( imgEl.hasClass('annotationOutgoing') ){
             detailsTarget = 'Outgoing Relation';
@@ -24,8 +26,14 @@ $( document ).ready(function() {
         }else if( imgEl.hasClass('annotationUrl') ){
             detailsTarget = 'URL';
         }
+        console.log('target');
+        console.log(detailsTarget);
         $('#flagAnnotation_id').val($(this).parent().attr("id"));
         currentId = $(this).find('.flagAnnotationId').attr('data-annid');
+        $('.content_annotations').find('#'+currentId).find('.flagTranscript')
+            .attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
+            .removeClass('icon-meta-flag')
+            .addClass('icon-meta-flag-blue');
     });
 
     //click on a metadata flag
@@ -65,17 +73,28 @@ $( document ).ready(function() {
             detailsTarget = 'URL';
             currentId = $(this).closest('.annotation_display').attr("id");
             $('#flagAnnotation_id').val(currentId);
-
         }
+        $('#canvas').find('#'+currentId).find('img')
+            .attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
+            .removeClass('icon-meta-flag')
+            .addClass('icon-meta-flag-blue')
+            .addClass('icon-meta-flag-blue-annotation');
 
     });
 
     //close the flags modal
     $(".flagModalClose").click(function () {
         if( detailsTarget != '' ) { //it was a details tab or annotation flag, so apply image this way
-            $('.icon-meta-flag-blue').removeClass('icon-meta-flag-blue')
-                .addClass('icon-meta-flag')
-                .attr('src', arcs.baseURL + 'app/webroot/img/FlagTooltip.svg');
+            $('.icon-meta-flag-blue').each(function(){
+                var flag = $(this);
+                var flagType = 'FlagTooltip.svg';
+                if( flag.parent().parent().hasClass('gen_box') ){
+                    flagType = "FlagTooltip-White.svg";
+                }
+                flag.removeClass('icon-meta-flag-blue')
+                    .addClass('icon-meta-flag')
+                    .attr('src', arcs.baseURL + 'app/webroot/img/'+flagType);
+            });
         }else { //metadata flag
             $('.icon-meta-flag-blue').removeClass('icon-meta-flag-blue')
                 .addClass('icon-meta-flag')
