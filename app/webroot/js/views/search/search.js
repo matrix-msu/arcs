@@ -113,15 +113,6 @@
       this.search.results.on('change remove', this.render, this);
       arcs.bus.on('selection', this.afterSelection, this);
 
-      /*Charlie- This mapping thing is weird and I can't really figure it out.
-      * It breaks the login page on search so don't use it if you don't have to.
-      * Formally -Josh's keyboard
-      * */
-      //var temp = arcs.keys.map(this, {
-      //  'ctrl+a': this.selectAll,
-      //  '?': this.showHotkeys,
-      //  t: this.scrollTop
-      //});
       return this.setupHelp();
     };
 
@@ -893,6 +884,10 @@
 				$(".flex-container").addClass("detailed-list");
 			}
       results = results.results;
+
+      if( results[0].Orphan == 'TRUE' ){
+        $('.toolbar-fixed').css('display', 'none');
+      }
 
       $results[append ? 'append' : 'html'](arcs.tmpl(template, {
         results: results

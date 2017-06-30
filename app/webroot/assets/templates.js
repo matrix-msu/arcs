@@ -70,15 +70,20 @@ JST["search/grid"] = "<% _.each(results, function(r, i) { %>" + [
         "<% } %>",
         " > ",
         "<div>",
-        "<% var temp='href=\"'+arcs.baseURL+'resource/'+r.kid+'\"';if( typeof r.Locked !== 'undefined' && r.Locked == '1' ){ temp=''; %>",
-            "<div class='resourceLockedDarkBackgroundSearch' style='height:120px;width:115px;left:19px;'>",
-                "<img src=\"<%= arcs.baseURL + 'img/Locked.svg' %>\" alt='' class='resourceLocked' />",
-            "</div>",
-        "<% }if(typeof r.orphan !== 'undefined' && r.orphan) {temp='href=\"'+arcs.baseURL+'orphan/'+r.kid+'\"'} %>",
-        "<div class='select-overlay'>",
-        "<div class='circle-container'>",
-        "<div class='select-circle'>",
-        "<div class='i-circle'></div></div></div>",
+            "<% var temp='href=\"'+arcs.baseURL+'resource/'+r.kid+'\"';if( typeof r.Locked !== 'undefined' && r.Locked == '1' ){ temp=''; %>",
+                "<div class='resourceLockedDarkBackgroundSearch' style='height:120px;width:115px;left:19px;'>",
+                    "<img src=\"<%= arcs.baseURL + 'img/Locked.svg' %>\" alt='' class='resourceLocked' />",
+                "</div>",
+            "<% }if(typeof r.orphan !== 'undefined' && r.orphan) {" +
+                "temp='href=\"'+arcs.baseURL+'orphan/'+r.kid+'\"';" +
+                "var select='<div>'" +
+            "}else{" +
+                "var select='<div class=\"select-overlay\">"+
+                "<div class=\"circle-container\">"+
+                "<div class=\"select-circle\">"+
+                "<div class=\"i-circle\"></div></div></div>';" +
+            "} %>",
+        "<%= select %>",
         "</div>",
         "<img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? arcs.baseURL + 'img/DefaultResourceImage.svg' : r.thumb %>'></div>",
         "<a class='result_a' <%= temp %>>",

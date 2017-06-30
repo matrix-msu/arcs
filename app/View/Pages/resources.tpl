@@ -58,7 +58,7 @@
 
         <details class="back-color" data-type="Orphaned">
             <summary class="rsc-sum">
-                <p class="rsc-name">ORPHANED</p>
+                <p class="rsc-name">ORPHANED (Digitized Resources Without Metadata)</p>
             </summary>
             <div></div>
         </details>
