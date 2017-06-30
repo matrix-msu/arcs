@@ -20,6 +20,7 @@
     font-size: 25px;
     margin-top: -15px;
     margin-left: -10px;
+    z-index: 10;
 }
 
 .tooltipster-custom {
@@ -116,14 +117,25 @@ th.user-tabs-header {
         }
     }
 
-    .profile-image {
-	    float: left;
-		  margin-right: 4em;
-		  border-radius: 50%;
-		  border: 2px solid #ccc !important;
-		  height: 205px;
-		  width: 205px;
-		  padding: 0;
+    .profile-image-container {
+	      float: left;
+  		  margin-right: 4em;
+		    border-radius: 50%;
+		    border: 2px solid #ccc !important;
+	  	  height: 205px;
+  		  width: 205px;
+        overflow: hidden;
+        display: inline-block;
+      .profile-image {
+	  	  min-width: 205px;
+	  	  min-height: 205px;
+        max-width: 300px;
+        max-height: 300px;
+		    padding: 0;
+        margin-left: 50%;
+        margin-top: 50%;
+        transform: translateY(-50%) translateX(-50%);
+      }
     }
     #edit-btn {
         display: inline;
@@ -150,14 +162,15 @@ th.user-tabs-header {
     }
 
     .nav {
-        margin: 0 0 20px 5em;
+      margin: 0 0 20px 5em;
+      transition: margin 0.5s;
 
-        .active {
-            background: #F4F4F4;
-			border-top: 1px solid #ccc !important;
-			border-left: 1px solid #ccc !important;
-			border-right: 1px solid #ccc !important;
-			max-height: 39px;
+      .active {
+        background: #F4F4F4;
+		  	border-top: 1px solid #ccc !important;
+			  border-left: 1px solid #ccc !important;
+			  border-right: 1px solid #ccc !important;
+		  	max-height: 39px;
             border-bottom: 1px solid #F4F4F4;
 
             a {
@@ -793,6 +806,16 @@ span.view-collection {
     }
 }
 
+@media screen and (max-width: 1030px) {
+  #user-actions .nav {
+    margin: 0 0 20px 1em;
+    transition: margin 0.5s;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  
+}
 
 
 .uploadForm {

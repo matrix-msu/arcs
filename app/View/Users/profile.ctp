@@ -6,7 +6,9 @@
         <div>
             <div class="score-bubble"><?php echo $user_info['totalCount']; ?></div>
 
-            <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
+            <div class="profile-image-container">
+              <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
+            </div>
 
             <dl>
                 <dd>

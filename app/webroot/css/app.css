@@ -12550,6 +12550,7 @@ ul.annotations li.annotation:hover {
   font-size: 25px;
   margin-top: -15px;
   margin-left: -10px;
+  z-index: 10;
 }
 .tooltipster-custom {
   border-radius: 0px;
@@ -12628,14 +12629,25 @@ th.user-tabs-header {
   border-radius: 50%;
   margin-bottom: 1em;
 }
-#user-info .profile-image {
+#user-info .profile-image-container {
   float: left;
   margin-right: 4em;
   border-radius: 50%;
   border: 2px solid #ccc !important;
   height: 205px;
   width: 205px;
+  overflow: hidden;
+  display: inline-block;
+}
+#user-info .profile-image-container .profile-image {
+  min-width: 205px;
+  min-height: 205px;
+  max-width: 300px;
+  max-height: 300px;
   padding: 0;
+  margin-left: 50%;
+  margin-top: 50%;
+  transform: translateY(-50%) translateX(-50%);
 }
 #user-info #edit-btn {
   display: inline;
@@ -12659,6 +12671,7 @@ th.user-tabs-header {
 }
 #user-actions .nav {
   margin: 0 0 20px 5em;
+  transition: margin 0.5s;
 }
 #user-actions .nav .active {
   background: #F4F4F4;
@@ -13233,6 +13246,12 @@ span.view-collection {
   transform: rotate(135deg);
   margin: 10px 0 0 5px;
   content: "";
+}
+@media screen and (max-width: 1030px) {
+  #user-actions .nav {
+    margin: 0 0 20px 1em;
+    transition: margin 0.5s;
+  }
 }
 .uploadForm {
   /*!
