@@ -12575,7 +12575,6 @@ span.description-text {
 }
 dl.score-description-list {
   color: #1C95BA;
-  margin-left: 2em;
 }
 table.user-tabs-table {
   width: 100%;
@@ -12635,6 +12634,7 @@ th.user-tabs-header {
   border-radius: 50%;
   border: 2px solid #ccc !important;
   height: 205px;
+  width: 205px;
   padding: 0;
 }
 #user-info #edit-btn {
