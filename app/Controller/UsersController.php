@@ -1,5 +1,7 @@
 <?php
 
+require_once(KORA_LIB . "General_Search.php");
+
 
 /**
  * Users Controller
@@ -1027,6 +1029,22 @@ class UsersController extends AppController
             'order' => 'name'
         ));
         $this->json(200, $results);
+    }
+
+    public function createThumbnails(){
+        set_time_limit(0);
+        $projectName = 'isthmia';
+        $pid = parent::getPIDFromProjectName($projectName);
+        $pageSid = parent::getPageSIDFromProjectName($projectName);
+
+        $search = new General_Search($pid, $pageSid, 'kid', '!=', '0',['Image Upload']);
+        $results = $search->return_array();
+        foreach( $results as $page ){
+            $localName = @$page['Image Upload']['localName'];
+            $this->smallThumb($localName,$pid,$pageSid);
+        }
+        print_r('All thumbnails have been successfully created!');
+        die;
     }
 }
 ?>

@@ -98,6 +98,9 @@
         array('controller' => 'resources', 'action' => 'export')
     );
     Router::connect('/search/collection/*',
+        array('controller' => 'resources', 'action' => 'viewcollection')
+    );
+    Router::connect('/search/resource_type/*',
         array('controller' => 'resources', 'action' => 'viewtype')
     );
 	Router::connect('/resources/viewkid/*',
@@ -337,15 +340,15 @@
         array('controller' => 'flags', 'action' => 'add')
     );
 
- ////////////////////////////////////////////////////////////////////////
 # Orphans controller
-///////////////////////////////////////////////////////////////////////
 Router::connect('/orphan/*',
     array('controller' => 'orphans', 'action' => 'display')
 );
-////////////////////////////////////////////////////////////////////////
-##################
-////////////////////////////////////////////////////////////////////////
+
+#create thumbnails
+Router::connect('/admin/createThumbnails',
+    array('controller' => 'users', 'action' => 'createThumbnails')
+);
 
     $restful = array(
         'resources',

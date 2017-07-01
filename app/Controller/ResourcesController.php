@@ -10,14 +10,15 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
- require_once(KORA_LIB . "General_Search.php");
  require_once(KORA_LIB . "Advanced_Search.php");
+ require_once(KORA_LIB . "Resource.php");
  require_once(KORA_LIB . "Resource_Search.php");
  require_once(KORA_LIB . "../Class/Benchmark.php");
  require_once(KORA_LIB . "Kora.php");
 
  use mb\Benchmark;
  use Lib\Kora;
+ use Lib\Resource;
 
 App::import('Controller', 'Users');
 
@@ -44,7 +45,7 @@ class ResourcesController extends AppController {
         $this->Auth->allow(
             'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
             'keywords', 'complete', 'zipped', 'download','checkExportDone', "loadNewResource",
-            'createExportFile', 'downloadExportFile', 'viewtype', 'viewKid'
+            'createExportFile', 'downloadExportFile', 'viewtype', 'viewKid', 'viewcollection'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -555,7 +556,8 @@ class ResourcesController extends AppController {
         die;
     }
 
-    public function viewtype($projectName){
+    //collections show all button.. get all and send to search
+    public function viewcollection($projectName){
 
         $username = NULL;
         $usersC = new UsersController();
@@ -563,18 +565,117 @@ class ResourcesController extends AppController {
             $username = $user['User']['username'];
         }
 
-        if(isset($this->request->data['resource_kids'])){
-            $json =  $this->request->data['resource_kids'];
-            $rKids = json_decode($json);
-            $search = new Resource_Search($rKids, $projectName);
-            $results = $search->getResultsAsArray();
+        $this->Collection->recursive = -1;
+        $user_id =  $this->Session->read('Auth.User.id');
+        $collections = '';
+        if( $user_id !== null ) { //signed in
+            $collections = $this->Collection->find('all', array(
+                'order' => 'Collection.modified DESC',
+                'conditions' => array('OR' => array(
+                    array( 'Collection.public' => '1'),
+                    array( 'Collection.public' => '2'),
+                    array( 'Collection.public' => '3'),
+                    array( 'Collection.user_id' => $user_id)
+                ),'Collection.collection_id' => $projectName)
+            ));
+            //remove all the public 3 collections that the user isn't a part of
+            $count = 0;
+            foreach( $collections as $collection ){
+                $bool_delete = 1;
+                if( array_values($collection)[0]['public'] == '3'){
+                    $members =  explode(';', array_values($collection)[0]['members'] );
+                    foreach( $members as $member ){
+                        if( $member == $user_id){
+                            $bool_delete = 0;
+                        }
+                    }
+                    if( $bool_delete == 1 ){
+                        array_splice($collections, $count, 1);
+                    }
+                }
+                $count++;
+            }
+        } else { //not signed in
+            $collections = $this->Collection->find('all', array(
+                'order' => 'Collection.modified DESC',
+                'conditions' => array(
+                    'Collection.public' => '1',
+                    'Collection.collection_id' => $projectName
+                )//,  //only get public collections
+                //'group' => 'collection_id'
+            ));
+        }
+        $resourceKids = array();
+        foreach( $collections as $temp ){ //only keep the resource_kids.
+            $resourceKids[] = $temp['Collection']['resource_kid'];
+        }
+        if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
+            $resourceKids[0] = 'explode';
+        }
+        $pName = parent::convertKIDtoProjectName($resourceKids[0]);
+
+        $search = new Resource_Search($resourceKids, $pName);
+        $results = $search->getResultsAsArray();
+        static::filterByPermission($username, $results['results']);
+        echo "<script>var results_to_display = ".json_encode($results)."</script>";
+        $this->set("projectName", $pName);
+        $this->render("../Search/search");
+    }
+
+    public function viewtype($projectName, $resource_type){
+        $resource_type = ucfirst(strtolower($resource_type));
+        $resource_type = str_replace('_', ' ', $resource_type);
+
+        $username = NULL;
+        $usersC = new UsersController();
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
+
+        if( $resource_type != 'Orphaned' ) {
+            $pid = parent::getPIDFromProjectName($projectName);
+            $sid = parent::getResourceSIDFromProjectName($projectName);
+            $pageSid = parent::getPageSIDFromProjectName($projectName);
+
+            //get resources
+            $search = new General_Search($pid, $sid, 'Type', '=', $resource_type,['Type','Resource Identifier']);
+            $results = $search->return_array();
+            $rKids = array_keys($results);
+
+            //get indicators
+            $indicators = Resource::flag_analysis($results);
+
+            //get pages
+            $fields = array('Image Upload','Resource Associator','Scan Number');
+            $kora = new Advanced_Search($pid, $pageSid, $fields);
+            if( $resource_type == 'Field journal' ) {
+                $kora->add_double_clause("Resource Associator", "IN", $rKids,
+                    "Scan Number", "=", "1");
+            }else {
+                $kora->add_clause("Resource Associator", "IN", $rKids);
+            }
+            $allPages = json_decode($kora->search(), true);
+
+            //link in the pages to the resources
+            foreach( $allPages as $page ){
+                $resourceAssociator = $page['Resource Associator'][0];
+                $thumb = $page['Image Upload']['localName'];
+                $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb);
+            }
+
+            //take care of resources without pages and data formatting
+            foreach( $results as $key => $v ){
+                if( !isset($v['thumb']) ) {
+                    $results[$key]['thumb'] = $this->smallThumb('');
+                }
+                $results[$key]['Title'] = $v['Resource Identifier'];
+            }
+
+            $results = ['filters' => [], 'indicators' => $indicators, 'results' => $results];
             static::filterByPermission($username, $results['results']);
+            echo "<script>var results_to_display = " . json_encode($results) . ";</script>";
 
-            echo "<script>var results_to_display = ".json_encode($results).";</script>";
-
-        // this else if is not doing anything. Orphans doesn't work
-        // with the viewtype html.
-        } else if(isset($this->request->data['orphaned_kids'])) {
+        }elseif( $resource_type == 'Orphaned' ) {
             $pKids = $this->request->data['orphaned_kids'];
             $pKids = json_decode($pKids);
             $pid = parent::getPIDFromProjectName($projectName);
@@ -582,7 +683,7 @@ class ResourcesController extends AppController {
             $pages = new General_Search($pid, $sid, 'kid', 'IN', $pKids, 'ALL');
             $pages = $pages->return_array();
             $results = ['filters' => [], 'indicators' => [], 'results' => $pages];
-            static::filterByPermission($username, $results['results']);
+            //static::filterByPermission($username, $results['results']);
             foreach ($results['results'] as $key => $value) {
                 $results['results'][$key]['Title'] = $value['Page Identifier'];
                 $results['results'][$key]['orphan'] = true;
@@ -599,61 +700,6 @@ class ResourcesController extends AppController {
             }
 
             echo "<script>var results_to_display = ".json_encode($results).";</script>";
-        } else {
-            $this->Collection->recursive = -1;
-            $user_id =  $this->Session->read('Auth.User.id');
-            $collections = '';
-            if( $user_id !== null ) { //signed in
-                $collections = $this->Collection->find('all', array(
-                    'order' => 'Collection.modified DESC',
-                    'conditions' => array('OR' => array(
-                      array( 'Collection.public' => '1'),
-                      array( 'Collection.public' => '2'),
-                      array( 'Collection.public' => '3'),
-                      array( 'Collection.user_id' => $user_id)
-                    ),'Collection.collection_id' => $projectName)
-                ));
-                //remove all the public 3 collections that the user isn't a part of
-                $count = 0;
-                foreach( $collections as $collection ){
-                    $bool_delete = 1;
-                    if( array_values($collection)[0]['public'] == '3'){
-                        $members =  explode(';', array_values($collection)[0]['members'] );
-                        foreach( $members as $member ){
-                          if( $member == $user_id){
-                              $bool_delete = 0;
-                          }
-                        }
-                        if( $bool_delete == 1 ){
-                          array_splice($collections, $count, 1);
-                        }
-                    }
-                    $count++;
-                }
-            } else { //not signed in
-                $collections = $this->Collection->find('all', array(
-                    'order' => 'Collection.modified DESC',
-                    'conditions' => array(
-                        'Collection.public' => '1',
-                        'Collection.collection_id' => $projectName
-                    )//,  //only get public collections
-                    //'group' => 'collection_id'
-                ));
-            }
-            $resourceKids = array();
-            foreach( $collections as $temp ){ //only keep the resource_kids.
-                $resourceKids[] = $temp['Collection']['resource_kid'];
-            }
-            if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
-                $resourceKids[0] = 'explode';
-            }
-            $pName = parent::convertKIDtoProjectName($resourceKids[0]);
-
-            $search = new Resource_Search($resourceKids, $pName);
-            $results = $search->getResultsAsArray();
-            static::filterByPermission($username, $results['results']);
-            echo "<script>var results_to_display = ".json_encode($results)."</script>";
-            $this->set("projectName", $pName);
         }
         $this->render("../Search/search");
     }

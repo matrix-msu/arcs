@@ -21,3 +21,8 @@ $this->set([
   <p>Unfortunately, the page you are trying to view does not exist.</p>
   <p>Please double check your URL or head to the <a href="<?= "//" . $_SERVER["HTTP_HOST"] . "/" . BASE_URL; ?>">Home Page</a>.</p>
 </div>
+
+<script type="text/javascript">
+  var icon = arcs.baseURL + '/favicon.ico';
+  $('head').append('<link rel="shortcut icon" href="'+icon+'" />');
+</script>

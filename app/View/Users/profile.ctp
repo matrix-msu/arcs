@@ -42,6 +42,7 @@
                         <dd><input type="file" name="user_image" value="Upload Profile Image" /></dd>
                         <dd><input type="submit" value="Upload Profile Image"></dd>
                     </form>
+                    <dd><input id="createThumbnails" type="submit" value="Create All Thumbnails"></dd>
                 <?php endif ?>
             </dl>
 
@@ -122,4 +123,10 @@
 
 <script type='text/javascript'>
 arcs.profileView2 = new arcs.views.users.Profile({id: '<?php echo $user_info['id']; ?>'});
+</script>
+
+<script type="text/javascript">
+    $('#createThumbnails').click(function(){
+        window.location.href = arcs.baseURL+'admin/createThumbnails';
+    });
 </script>

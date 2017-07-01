@@ -267,11 +267,6 @@ class AppController extends Controller
         }
     }
 
-
-    // So I don't know if this is the best place to put it, but unfortunately the thumbnail code is needed by both
-    // the resource controller and the search controller, and calling anything from the resource controller from the
-    // search controller or vice versa appears to cause an error
-
     /**
      * Get a small thumb of a resource (240x200), will create thumb if it doesn't already exist
      *
@@ -279,21 +274,19 @@ class AppController extends Controller
      *
      * @return string the url to the thumb
      */
-    public static function smallThumb($name)
+    public static function smallThumb($name, $pid='', $sid='')
     {
         if ($name === "") {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
 
 		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
-		$KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
-
-        if($name == ''){
-            return '';
+        $KoraUrlName = urlencode($name);
+        if($pid=='' || $sid == '') {
+            $pName = self::convertKIDtoProjectName($name);
+            $pid = self::getPIDFromProjectName($pName);
+            $sid = self::getPageSIDFromProjectName($pName);
         }
-        $pName = self::convertKIDtoProjectName($name);
-        $pid = self::getPIDFromProjectName($pName);
-        $sid = self::getPageSIDFromProjectName($pName);
 
         $path = THUMBS . "smallThumbs/";
         $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
@@ -301,7 +294,11 @@ class AppController extends Controller
         $url = THUMBS_URL . "smallThumbs/" . $thumb;
         if (!file_exists($path)) {
             $imgpath = KORA_FILES_URI . $pid . "/" . $sid . "/" . $KoraUrlName;
-            $image = imagecreatefromstring(file_get_contents($imgpath));
+            $image = @file_get_contents($imgpath);
+            if( $image == '' || $image == FALSE ){
+                return '/' . BASE_URL . DEFAULT_THUMB;
+            }
+            $image = @imagecreatefromstring($image);
             $result = AppController::resize($image, 240, 200);
             imagedestroy($image);
             imagejpeg($result, $path);
@@ -323,7 +320,7 @@ class AppController extends Controller
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
         $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
-        $KoraUrlName = str_replace(' ', '%20', $name); //url can't have spaces so replace
+        $KoraUrlName = urlencode($name);
 
         if($name == ''){
             return '';
@@ -338,7 +335,11 @@ class AppController extends Controller
         $url = THUMBS_URL . "largeThumbs/" . $thumb;
         if (!file_exists($path)) {
             $imgpath = KORA_FILES_URI . $pid . "/" . $sid . "/" . $KoraUrlName;
-            $image = imagecreatefromstring(file_get_contents($imgpath));
+            $image = file_get_contents($imgpath);
+            if( $image == '' || $image == FALSE ){
+                return '/' . BASE_URL . DEFAULT_THUMB;
+            }
+            $image = imagecreatefromstring($image);
             $result = $this->resize($image, 400, 400);
             imagedestroy($image);
             imagejpeg($result, $path);

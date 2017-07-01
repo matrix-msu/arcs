@@ -83,32 +83,30 @@ class Resource {
 
     return $results;
   }
-  private static function getResourcesWith($kids,$table,&$return_array){
+    private static function getResourcesWith($kids,$table,&$return_array){
 
-      $mysqli = Resource::getConnection();
-      $attribute = "has".ucfirst($table);
-      if($mysqli){
-        $params = implode(',', array_fill(0,count($kids),'?'));
-        $paramtypes = implode('', array_fill(0,count($kids),'s'));
-        $idAr = [];
-        $idAr[] = $paramtypes;
-        foreach ($kids as $kid) {
-          $idAr[] = &$kid;
+        $mysqli = Resource::getConnection();
+        $attribute = "has".ucfirst($table);
+        if($mysqli){
+            $params = implode(',', array_fill(0,count($kids),'?'));
+            $paramtypes = implode('', array_fill(0,count($kids),'s'));
+            $idAr = [];
+            $idAr[] = $paramtypes;
+            foreach ($kids as $k => $kid) {
+                $idAr[] = &$kids[$k];
+            }
+            $statement = $mysqli->prepare("SELECT * FROM $table WHERE resource_kid IN ($params)");
+            call_user_func_array(array($statement, "bind_param"), $idAr);
+            $statement->execute();
+            $result = $statement->get_result();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $kid = $row["resource_kid"];
+                    $return_array[$kid][$attribute] = true;
+                }
+            }
+            $mysqli->close();
         }
-        //$kidString = join("','",$kids);
-        $statement = $mysqli->prepare("SELECT * FROM $table WHERE resource_kid IN ($params)");
-        call_user_func_array(array($statement, "bind_param"), $idAr);
-        $statement->execute();
-        $result = $statement->get_result();
-        //$result = $mysqli->query($statement);
-        if ($result->num_rows > 0) {
-          while($row = $result->fetch_assoc()) {
-            $kid = $row["resource_kid"];
-            $return_array[$kid][$attribute] = true;
-          }
-        }
-        $mysqli->close();
-      }
     }
 
   public static function getConnection(){

@@ -46,14 +46,16 @@
           $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
         }
       } else if (e.currentTarget.className === 'btn-show-all') {
-        $el = $(e.currentTarget).parent().parent().parent().parent();
+        //Show all was pressed to go to the resource_type search page
+        var resource_type = $(e.currentTarget).closest('details').attr('data-type');
         $(e.currentTarget).removeClass('btn-show-all');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
-        $(e.currentTarget).find("img:first").attr('src', src);
-        //limit = $el.find('.resource-thumb').length + 14;
-        limit = -1;
-        //console.log('resources show more redirect here');
-        //return;
+        $(e.currentTarget).find("img:first").attr('src', arcs.baseURL + 'img/arcs-preloader.gif');
+        var project = $('#resources').attr('href')
+            .split("/")
+            .reverse()[0];
+        resource_type = resource_type.replace(/ /g, '_');
+        window.location.href = arcs.baseURL+"search/resource_type/"+project+'/'+resource_type;
+        return;
       } else {
         $el = $(e.currentTarget).parent();
         $el.toggleAttr('open');
@@ -114,36 +116,7 @@
           });
           return; //$el.find('.show-all-btn-text').html('SHOW MORE');
         }else {
-          var project = $('#resources').attr('href')
-            .split("/")
-            .reverse()[0]
-          if (type === 'Orphaned') {
-            $('<form />')
-                .hide()
-                .attr({ method : "post" })
-                .attr({ action : "../search/collection/" + project})
-                .append($('<input />')
-                    .attr("type","hidden")
-                    .attr({ "name" : "orphaned_kids" })
-                    .val(JSON.stringify(response.results))
-                )
-                .append('<input type="submit" />')
-                .appendTo($("body"))
-                .submit();
-          }else {
-            $('<form />')
-                .hide()
-                .attr({method: "post"})
-                .attr({action: "../search/collection/" + project})
-                .append($('<input />')
-                    .attr("type", "hidden")
-                    .attr({"name": "resource_kids"})
-                    .val(JSON.stringify(response.results))
-                )
-                .append('<input type="submit" />')
-                .appendTo($("body"))
-                .submit();
-          }
+
           return;
         }
       });

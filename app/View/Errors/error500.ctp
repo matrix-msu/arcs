@@ -3,6 +3,10 @@
  * The MissingControllerView
  */
 
+echo $this->Html->meta ( 'favicon.ico', '/favicon.ico', array (
+    'type' => 'icon'
+) );
+
 // Set up environment, like beforeFilter()
 // function call in a controller.
 $debug = Configure::read('debug');
@@ -22,3 +26,8 @@ $this->set([
   <p>Please double check your URL or head to the <a href="<?= "//" . $_SERVER["HTTP_HOST"] . "/" . BASE_URL; ?>">Home Page</a>.</p>
   <p>It's possible that your configuration is incorrect.</p>
 </div>
+
+<script type="text/javascript">
+  var icon = arcs.baseURL + '/favicon.ico';
+  $('head').append('<link rel="shortcut icon" href="'+icon+'" />');
+</script>

@@ -327,6 +327,9 @@
     imported.src = arcs.baseURL + "js/views/viewer/Multi/collection.js";
     document.head.appendChild(imported);
 
+	var icon = arcs.baseURL + '/favicon.ico';
+	$('head').append('<link rel="shortcut icon" href="'+icon+'" />');
+
 	//fix the relative image references.
     $('.collectionModalClose').attr('src', arcs.baseURL + 'app/webroot/assets/img/Close.svg');
 
