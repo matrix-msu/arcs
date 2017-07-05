@@ -31,8 +31,7 @@
 		$profileBlue = '';
 		if( //is a help page make help link blue
 			$this->request->params['controller'] == 'users' &&
-			$this->request->params['action'] == 'profile' &&
-			isset($user['loggedIn']) && $user['loggedIn'] != ''
+			$this->request->params['action'] == 'profile'
 		){$profileBlue = ' btn-blue';}
 		if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
 			<div id="menu" class="btn toolbar-btn<?php echo $profileBlue ?>">
@@ -57,7 +56,7 @@
 
 		<?php else: ?>
 
-			<a id='menu' class="btn btn-grey toolbar-btn"
+			<a id='menu' class="btn btn-grey toolbar-btn<?php echo $profileBlue ?>"
 				href="#loginModal">Login / Register</a>
 
 		<?php endif ?>
