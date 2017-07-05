@@ -27,8 +27,15 @@
   ?>
 	<!--Display login button for other pages-->
 	<div id='log' >
-		<?php if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
-			<div id="menu" class="btn toolbar-btn btn-blue">
+		<?php
+		$profileBlue = '';
+		if( //is a help page make help link blue
+			$this->request->params['controller'] == 'users' &&
+			$this->request->params['action'] == 'profile' &&
+			isset($user['loggedIn']) && $user['loggedIn'] != ''
+		){$profileBlue = ' btn-blue';}
+		if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
+			<div id="menu" class="btn toolbar-btn<?php echo $profileBlue ?>">
 				<div id="cage">
 				<?php echo $user['name'] ?>
 				<div id="dropBox">
