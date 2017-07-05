@@ -676,11 +676,9 @@ class ResourcesController extends AppController {
             echo "<script>var results_to_display = " . json_encode($results) . ";</script>";
 
         }elseif( $resource_type == 'Orphaned' ) {
-            $pKids = $this->request->data['orphaned_kids'];
-            $pKids = json_decode($pKids);
             $pid = parent::getPIDFromProjectName($projectName);
             $sid = parent::getPageSIDFromProjectName($projectName);
-            $pages = new General_Search($pid, $sid, 'kid', 'IN', $pKids, 'ALL');
+            $pages = new General_Search($pid, $sid, 'Orphan', '=', 'TRUE', 'ALL');
             $pages = $pages->return_array();
             $results = ['filters' => [], 'indicators' => [], 'results' => $pages];
             //static::filterByPermission($username, $results['results']);
@@ -698,7 +696,6 @@ class ResourcesController extends AppController {
                   "hasKeywords"=>false
                 );
             }
-
             echo "<script>var results_to_display = ".json_encode($results).";</script>";
         }
         $this->render("../Search/search");

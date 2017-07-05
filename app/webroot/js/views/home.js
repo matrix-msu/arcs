@@ -53,7 +53,7 @@
         var project = $('#resources').attr('href')
             .split("/")
             .reverse()[0];
-        resource_type = resource_type.replace(/ /g, '_');
+        resource_type = resource_type.replace(/ /g, '_').toLowerCase();
         window.location.href = arcs.baseURL+"search/resource_type/"+project+'/'+resource_type;
         return;
       } else {
@@ -95,7 +95,6 @@
         }
         if( typeof response.results[0] == "object" ){
           var html;
-          console.log('home tmp')
           html = arcs.tmpl('home/details', {
             resources: response.results,
             noShowAll: 0,
