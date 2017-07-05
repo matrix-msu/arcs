@@ -29,7 +29,7 @@ class Keyword extends AppModel {
      *
      * @param string $check
      * @return bool
-     */
+
     public function uniqueToResource($check) {
         return !!$this->find('all', array(
             'conditions' => array(
@@ -46,7 +46,7 @@ class Keyword extends AppModel {
      * @param array $data     A template save array, that will be extended with
      *                        each keyword. Use this to include `user_id`, etc.
      * @return bool           Result of `saveMany`
-     */
+
     public function saveFromString($string, $data=array()) {
         $keywords = array();
         foreach(explode(',', $string) as $k) {
@@ -56,4 +56,5 @@ class Keyword extends AppModel {
         }
         return $this->saveMany($keywords);
     }
+    */
 }

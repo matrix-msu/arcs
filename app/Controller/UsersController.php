@@ -162,24 +162,6 @@ class UsersController extends AppController
         }
         return false;
     }
-    /**
-     * Display a user's bookmarks.
-     *
-     * @param string $ref
-     */
-    public function bookmarks($ref)
-    {
-        $user = $this->User->findByRef($ref);
-        if (!$user) {
-            $this->redirect('404');
-        }
-        $id = $user['User']['id'];
-        $this->set('bookmarks', $this->User->Bookmark->find('all', array(
-            'conditions' => array(
-                'Bookmark.user_id' => $id
-            )
-        )));
-    }
 
     /**
      * Add a new user.
@@ -402,15 +384,13 @@ class UsersController extends AppController
         $user = $this->User->findByRef($username);
 
         if($user['status'] == 'pending' ){  //user clicked the confirm link a second time.
-            $this->Session->setFlash("hello blach blacklaccount is confirmed, the admins will be notified of your request.", 'flash_success');
+            $this->Session->setFlash("Your account is confirmed, the admins will be notified of your request.", 'flash_success');
             //TODO - this session message won't work on the main page.
             $this->redirect('/');
             return;
         }
 
         if ($username == null || !$user || $user['status'] != 'unconfirmed') throw new BadRequestException();
-
-
 
         // change status of user
         $this->User->id = $user['id'];
@@ -453,14 +433,6 @@ class UsersController extends AppController
             'isAdmin' => $data['isAdmin'],
             'activation' => $token
         ));
-        /* $this->Job->enqueue('email', array(
-             'to' => $data['email'],
-             'subject' => 'Welcome to ARCS',
-             'template' => 'welcome',
-             'vars' => array(
-                 'activation' => $this->baseURL() . '/register/' . $token
-             )
-         ));*/
         $this->sendInviteEmail($data, $token);
         $this->json(202);
 
@@ -478,9 +450,7 @@ class UsersController extends AppController
         $token = $this->User->getToken();
         $this->User->permit('activation');
         $this->User->permit('isAdmin');
-
-                $name = $data['firstName'] . " " . $data['lastName'];
-
+        $name = $data['firstName'] . " " . $data['lastName'];
         $response["message"] = [];
         $response["status"] = $this->User->add(array('name' => $name, 'isAdmin' => $data['isAdmin'], 'email' => $data['email'], 'activation' => $token, 'status' => "invited"));
         if ($response["status"] == false) {
@@ -669,10 +639,11 @@ class UsersController extends AppController
      *
      * @param string $ref username or id of an existing user
      */
-    public function profile($ref)
-    {
+    public function profile($ref){
         $this->User->flatten = false;
         $this->User->recursive = 1;
+
+        $signedIn = $this->getUser($this->Auth);
 
         /*** Begin Getting User Information ***/
         $user = $this->User->find('first', array(
@@ -692,12 +663,20 @@ class UsersController extends AppController
             )
         ));
 
+        $thumbnails = '';
         $user['mappings'] = array();
         foreach($mappings as $mapping) {
             $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
             $role = $mapping["Mapping"]['role'];
             $user['mappings'][] = array("project" => $project,
                                         "role" => $role);
+            $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" ".
+                    "type=\"submit\" value=\"Create All $project Thumbnails\"></dd>";
+        }
+        if( $signedIn == FALSE ){
+            $user['thumbnails'] = '';
+        }else {
+            $user['thumbnails'] = $thumbnails;
         }
 
         $this->loadModel('Comment');
@@ -728,11 +707,11 @@ class UsersController extends AppController
         $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
-        // For reference:
-        // $uploads_path = '/matrix/dev/public_html/arcs/app/webroot/uploads/profileImages/'
-        // $uploads_url = 'http://dev2.matrix.msu.edu/arcs/uploads/profileImages/'
-
-        if ($this->request->is("post")) {
+        //authenticate---
+        if( isset($signedIn['User']['username']) ){
+            $signedIn = $signedIn['User']['username'];
+        }
+        if ($this->request->is("post") && $user['username'] == $signedIn ) {
             if (isset($_FILES['user_image'])) {
                 $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
                 $file_ext = strtolower(end(explode('.',$_FILES['user_image']['name'])));
@@ -1031,12 +1010,33 @@ class UsersController extends AppController
         $this->json(200, $results);
     }
 
-    public function createThumbnails(){
+    public function createThumbnails($projectName){
         set_time_limit(0);
-        $projectName = 'isthmia';
+        $signedIn = $this->getUser($this->Auth);
+
+        if( $signedIn == FALSE ){
+            echo 'You must be signed-in to do this.';
+            die;
+        }
+        $mappings = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.role', 'Mapping.pid'),
+            'conditions' => array(
+                'AND' => array('Mapping.id_user' => $signedIn['id'], 'Mapping.status' => 'confirmed'),
+            )
+        ));
         $pid = parent::getPIDFromProjectName($projectName);
         $pageSid = parent::getPageSIDFromProjectName($projectName);
 
+        $permissions = false;
+        foreach($mappings as $mapping) {
+            if( $pid == $mapping["Mapping"]['pid'] ){
+                $permissions = true;
+            }
+        }
+        if( $permissions == false ){
+            echo "You don't have the project permissions necessary to do this.";
+            die;
+        }
         $search = new General_Search($pid, $pageSid, 'kid', '!=', '0',['Image Upload']);
         $results = $search->return_array();
         foreach( $results as $page ){

@@ -346,7 +346,7 @@ Router::connect('/orphan/*',
 );
 
 #create thumbnails
-Router::connect('/admin/createThumbnails',
+Router::connect('/admin/createthumbnails/*',
     array('controller' => 'users', 'action' => 'createThumbnails')
 );
 

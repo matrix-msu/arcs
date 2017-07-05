@@ -47,12 +47,6 @@ class User extends AppModel {
     );
 
     public $hasMany = array(
-        'Resource',
-        'Keyword',
-        'Comment',
-        'Bookmark',
-        'Annotation',
-        'Collection'
     );
 
     public $whitelist = array(
