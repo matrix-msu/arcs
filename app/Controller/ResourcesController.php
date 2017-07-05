@@ -714,7 +714,8 @@ class ResourcesController extends AppController {
 
         if($this->request->method() === "POST" && isset($this->request->data['resources'])){
             $post_data = $this->request->data;
-            //$resources_array = json_decode($post_data["resources"]);
+            //create a new session variable and forward to a get request
+            //the array index is used as a new url
             $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
             end($_SESSION['multi_viewer_resources']);
             $key = key($_SESSION['multi_viewer_resources']);
@@ -725,10 +726,12 @@ class ResourcesController extends AppController {
             if( $id == '' ){
                 throw new NotFoundException();
             }
+            //check first if this is a multi-resource session url
             $id = (string)$id;
             foreach( $_SESSION['multi_viewer_resources'] as $key => $rKids ){
                 if( $id === (string)$key ){
                     $resources_array = $_SESSION['multi_viewer_resources'][$key];
+                    $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
                     break;
                 }
             }
