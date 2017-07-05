@@ -4,6 +4,9 @@ $( document ).ready(function() {
     $('.pages-resource-nav').css('display', 'block');
     if($('.resource-slider').find('.other-resources').length > 1){
         $('.resource-nav-level').css('display', 'block');
+        var resource_kid = $('.selectedCurrentResource').find('img').attr('id');
+        resource_kid = resource_kid.replace('identifier-', '');
+        _resource.setPointer(resource_kid);
     }
     $(window).trigger('resize');
 
