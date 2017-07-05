@@ -281,7 +281,8 @@ class AppController extends Controller
         }
 
 		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
-        $KoraUrlName = urlencode($name);
+        $KoraUrlName = rawurlencode($name);
+
         if($pid=='' || $sid == '') {
             $pName = self::convertKIDtoProjectName($name);
             $pid = self::getPIDFromProjectName($pName);
@@ -320,7 +321,7 @@ class AppController extends Controller
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
         $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
-        $KoraUrlName = urlencode($name);
+        $KoraUrlName = rawurlencode($name);
 
         if($name == ''){
             return '';

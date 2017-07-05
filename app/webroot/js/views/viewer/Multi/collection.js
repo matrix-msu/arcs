@@ -41,7 +41,6 @@ $( document ).ready(function() {
         var formdata = {
             title: $('#collectionTitle').val(),
             resource_kid: resource_kids.shift(),
-            description: "",
             public: 1
         };
         $.ajax({
