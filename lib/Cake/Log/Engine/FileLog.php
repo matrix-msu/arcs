@@ -66,6 +66,6 @@ class FileLog implements CakeLogInterface {
 			$filename = $this->_path . $type . '.log';
 		}
 		$output = date('Y-m-d H:i:s') . ' ' . ucfirst($type) . ': ' . $message . "\n";
-		return file_put_contents($filename, $output, FILE_APPEND);
+		return @file_put_contents($filename, $output, FILE_APPEND);
 	}
 }

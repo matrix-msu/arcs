@@ -712,22 +712,36 @@ class ResourcesController extends AppController {
         $resources_array = array();
         $showButNoEditArray = array();
 
-        if($this->request->method() === "POST" && isset($this->request->data['pageSet'])){
-            $pageIndex = $this->request->data['pageSet'];
-            $this->set("pageSet", $pageIndex);
-            $resources_array = array( $id );
-        }elseif($this->request->method() === "POST" && isset($this->request->data['resources'])){
+        if($this->request->method() === "POST" && isset($this->request->data['resources'])){
             $post_data = $this->request->data;
-            $resources_array = json_decode($post_data["resources"]);
+            //$resources_array = json_decode($post_data["resources"]);
+            $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
+            end($_SESSION['multi_viewer_resources']);
+            $key = key($_SESSION['multi_viewer_resources']);
+            $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
+            header("Location:".$actual_link);
+            die();
         }elseif($this->request->method() === "GET"){
-            if($id == '' ){
+            if( $id == '' ){
                 throw new NotFoundException();
             }
-            if(isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
-              $pageIndex = $this->request->query['pageSet'];
-              $this->set("pageSet", $pageIndex);
+            $id = (string)$id;
+            foreach( $_SESSION['multi_viewer_resources'] as $key => $rKids ){
+                if( $id === (string)$key ){
+                    $resources_array = $_SESSION['multi_viewer_resources'][$key];
+                    break;
+                }
             }
-            $resources_array = array( $id );
+            if (isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
+                $pageIndex = $this->request->query['pageSet'];
+                $this->set("pageSet", $pageIndex);
+            }
+            if( count($resources_array) < 1 ) {
+                $resources_array = array($id);
+            }
+            if( count($resources_array) == 0 ) {
+                throw new NotFoundException();
+            }
         }else{
             //Not a post or get method
             throw new NotFoundException();
@@ -757,6 +771,10 @@ class ResourcesController extends AppController {
 
             //get resource information
             $info_array = $this->getResource($resource);
+
+            if( empty($info_array) ){ //check if a real resource
+                continue;
+            }
 
             //check the resource for project permissions
             if( array_search($info_array[$resource]['pid'], $projectPermissionArray) === false ){
