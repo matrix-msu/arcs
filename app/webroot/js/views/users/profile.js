@@ -212,7 +212,7 @@
         success: function(ddata) {
           var dcontents, dcount;
           if (!ddata.length) {
-            $('#discussion-tab #contents').html('<h3>No discussion items</h3>');
+            $('#discussion-tab #contents').html('<h3>This user hasn\'t made any discussions yet</h3>');
           } else {
             dcontents = '';
             dcount = 0;
@@ -357,6 +357,10 @@
           id: info.id
         },
         success: function(collections) {
+          if( collections == 'none' ){
+            $('#collections-tab-contents').html('<h3>This user hasn\'t made any collections yet</h3>');
+            return;
+          }
             collectionsMade = collections.length;
             var collections_permissions = false;
             if( $('#edit-profile').length > 0 ){
@@ -472,6 +476,10 @@
         if (collectionsMade >= 10) {
           badgeNum = parseInt((collectionsMade-10) / 10) % 4 + 1;
           $("#achievements-tab").append('<div class="badgeDiv"><span>'+collectionsMade+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/collections created'+badgeNum+'.png"><h3>Collections Created</h3><p>Achievement Description</p></div>');
+        }
+        console.log('profile badge');
+        if( $('.badgeImg').length == 0 ){
+          $("#achievements-tab").append('<h3>This user hasn\'t earned any achievements yet</h3>');
         }
       });
     };

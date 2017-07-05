@@ -453,7 +453,11 @@ class CollectionsController extends AppController {
                 'members' => $row['members']);
             $test[] = $temp_array;
         }
-        echo json_encode($test);
+        if( isset($test) ) {
+            echo json_encode($test);
+        }else{
+            echo 'none';
+        }
         die;
     }
 

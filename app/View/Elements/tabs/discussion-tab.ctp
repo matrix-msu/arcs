@@ -1,7 +1,7 @@
 <div class="tab-pane" id="discussion-tab">
 <?php if(empty($user_info['Comment'])): ?>
 <div id="contents">
-    <h3>No discussion items</h3>
+    <h3>This user hasn't made any discussions yet</h3>
 </div>
 <?php else: ?>
     <table class="table table-striped">
