@@ -24,7 +24,6 @@ $this->set([
   <h2>We are very sorry!</h2>
   <p>Unfortunately, the page you are trying to view does not exist.</p>
   <p>Please double check your URL or head to the <a href="<?= "//" . $_SERVER["HTTP_HOST"] . "/" . BASE_URL; ?>">Home Page</a>.</p>
-  <p>It's possible that your configuration is incorrect.</p>
 </div>
 
 <script type="text/javascript">
