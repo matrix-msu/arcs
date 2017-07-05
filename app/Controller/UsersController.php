@@ -670,8 +670,10 @@ class UsersController extends AppController
             $role = $mapping["Mapping"]['role'];
             $user['mappings'][] = array("project" => $project,
                                         "role" => $role);
-            $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" ".
+            if( $role == 'Admin' ) {
+                $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" " .
                     "type=\"submit\" value=\"Create All $project Thumbnails\"></dd>";
+            }
         }
         if( $signedIn == FALSE ){
             $user['thumbnails'] = '';
@@ -1021,7 +1023,11 @@ class UsersController extends AppController
         $mappings = $this->Mapping->find('all', array(
             'fields' => array('Mapping.role', 'Mapping.pid'),
             'conditions' => array(
-                'AND' => array('Mapping.id_user' => $signedIn['id'], 'Mapping.status' => 'confirmed'),
+                'AND' => array(
+                    'Mapping.id_user' => $signedIn['id'],
+                    'Mapping.status' => 'confirmed',
+                    'Mapping.role' => 'Admin'
+                ),
             )
         ));
         $pid = parent::getPIDFromProjectName($projectName);
