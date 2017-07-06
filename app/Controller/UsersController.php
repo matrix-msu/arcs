@@ -716,7 +716,8 @@ class UsersController extends AppController
         if ($this->request->is("post") && $user['username'] == $signedIn ) {
             if (isset($_FILES['user_image'])) {
                 $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
-                $file_ext = strtolower(end(explode('.',$_FILES['user_image']['name'])));
+                $nameEnd = explode('.',$_FILES['user_image']['name']);
+                $file_ext = strtolower(end($nameEnd));
 
                 if ($_FILES['user_image']['error'] > 0 ) {
                     // check if php finds any errors
@@ -753,13 +754,16 @@ class UsersController extends AppController
 
                     if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
                         $this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
-                        $this->redirect('/users/crop/' . $user["username"] . '/');
+                        $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$user["username"];
+                        $this->redirect($actual_link);
                     } else {
                         $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
-                        $this->redirect(["controller" => "user", "action" => "profile", $user["username"]]);
+                        $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$user["username"];
+                        $this->redirect($actual_link);
                     }
                 }
             }
+            die;
         }
 
         $user['profileImage'] = NULL;
