@@ -453,10 +453,25 @@ class CollectionsController extends AppController {
                 'members' => $row['members']);
             $test[] = $temp_array;
         }
+
+        $sql = $mysqli->prepare("SELECT COUNT(DISTINCT collection_id)
+                                FROM  collections
+                                WHERE user_id = ?;");
+        $sql->bind_param("s", $this->request->data['id']);
+        $sql->execute();
+        $result = $sql->get_result();
+
+        $count = 0;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $count = json_encode($row['COUNT(DISTINCT collection_id)']);
+            break;
+        }
+
         if( isset($test) ) {
-            echo json_encode($test);
+            $return = array( 'count'=>$count, 'data'=>json_encode($test) );
+            echo json_encode($return);
         }else{
-            echo 'none';
+            echo json_encode( array( 'count'=>$count) );
         }
         die;
     }
