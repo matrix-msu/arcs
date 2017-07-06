@@ -728,11 +728,13 @@ class ResourcesController extends AppController {
             }
             //check first if this is a multi-resource session url
             $id = (string)$id;
-            foreach( $_SESSION['multi_viewer_resources'] as $key => $rKids ){
-                if( $id === (string)$key ){
-                    $resources_array = $_SESSION['multi_viewer_resources'][$key];
-                    $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
-                    break;
+            if( isset($_SESSION['multi_viewer_resources']) ) {
+                foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
+                    if ($id === (string)$key) {
+                        $resources_array = $_SESSION['multi_viewer_resources'][$key];
+                        $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
+                        break;
+                    }
                 }
             }
             if (isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
