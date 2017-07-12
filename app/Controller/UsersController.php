@@ -713,14 +713,13 @@ class UsersController extends AppController
         if( isset($signedIn['User']['username']) ){
             $signedIn = $signedIn['User']['username'];
         }
+        //upload the profile picture function
         if ($this->request->is("post") && $user['username'] == $signedIn ) {
             if (isset($_FILES['user_image'])) {
                 $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
                 $nameEnd = explode('.',$_FILES['user_image']['name']);
                 $file_ext = strtolower(end($nameEnd));
-
                 if ($_FILES['user_image']['error'] > 0 ) {
-                    // check if php finds any errors
                     $error    = $_FILES['user_image']['error'];
                     $errorOut = "Unknown upload error.";
                     if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
@@ -730,7 +729,6 @@ class UsersController extends AppController
                     elseif ($error == 6) $errorOut = "Missing a temporary folder";
                     elseif ($error == 7) $errorOut = "Failed to write file to disk";
                     elseif ($error == 8) $errorOut = "File upload stopped by extension";
-
                     $this->Session->setFlash("Error: " . $errorOut, 'flash_error');
                 } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
                     // check if image file exists
@@ -751,7 +749,6 @@ class UsersController extends AppController
                             unlink($file);
                         }
                     }
-
                     if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
                         $this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
                         $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$user["username"];
@@ -766,25 +763,28 @@ class UsersController extends AppController
             die;
         }
 
+        //get the user profile picture
         $user['profileImage'] = NULL;
         $profileImage = glob($uploads_path . $user['username'] . '.*');
         if (count($profileImage) == 1) {
-            $user['profileImage'] = $uploads_url . explode('/', $profileImage[0])[9];
-            // explode seperates the url on '/', we want the 'username.ext' part
+            $filename = explode('/', $profileImage[0]);
+            $filename = array_pop($filename);
+            $user['profileImage'] = $uploads_url . $filename;
+        }else{
+            $gravatar = 'http://gravatar.com/avatar/'.md5(strtolower($user['email'])).'?d=404';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,$gravatar);
+            // don't download content
+            curl_setopt($ch, CURLOPT_NOBODY, 1);
+            curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            if(curl_exec($ch)!==FALSE){
+                $user['profileImage'] = $gravatar;
+            }
         }
-
-        // user has no profile image on the site so check gravatar
-        // might not be a good idea because the image will be incredibly blurry due to how gravatar saves images
-        // if ($user['profileImage'] == NULL && getimagesize("http://gravatar.com/avatar/" . $user["gravatar"] . "/?s=500&d=404")) {
-        //     $user['profileImage'] = "http://gravatar.com/avatar/" . $user["gravatar"] . "/?d=404";
-        // }
-
-        // user has no profile image on the site nor an image on gravatar so give default image
         if ($user['profileImage'] == NULL) {
-            $user['profileImage'] = $this->webroot . "app/webroot/img/DefaultProfilePic.svg";
+            $user['profileImage'] = $this->webroot."app/webroot/img/DefaultProfilePic.svg";
         }
-
-        /*** End Profile Picture ***/
 
         // set user and admin status
         $this->set('isAdmin', $this->Access->isAdmin());
