@@ -77,7 +77,7 @@ th.user-tabs-header {
         float:left;
         position: relative;
         top: -20px;
-        margin-top: 16px;
+        margin-top: 40px;
         margin-right: 42px;
 
         dd {
@@ -167,17 +167,17 @@ th.user-tabs-header {
 
       .active {
         background: #F4F4F4;
-		  	border-top: 1px solid #ccc !important;
-			  border-left: 1px solid #ccc !important;
-			  border-right: 1px solid #ccc !important;
-		  	max-height: 39px;
-            border-bottom: 1px solid #F4F4F4;
+        border-top: 1px solid #ccc !important;
+        border-left: 1px solid #ccc !important;
+        border-right: 1px solid #ccc !important;
+        max-height: 39px;
+        border-bottom: 1px solid #F4F4F4;
 
-            a {
-               color: #777;
-			   background: transparent;
-			   border: 0;
-            }
+          a {
+             color: #777;
+             background: transparent;
+             border: 0;
+          }
         }
 
         li {
@@ -814,7 +814,64 @@ span.view-collection {
 }
 
 @media screen and (max-width: 960px) {
-  
+    .user-project-info {
+        clear: left;
+    }
+    .user-actions {
+        cursor: pointer;
+        background-image: url(../img/Hamburger.svg);
+        height: 11px;
+        width: 20px;
+        top: 14.5px;
+        right: 17px;
+        margin: auto;
+        position: absolute;
+        display: inline-block;
+    }
+    .active-menu {
+        background-image: url(../img/Hamburger-Active.svg);
+    }
+    .toolbar {
+        height: 4rem;
+        text-align: center;
+        background: #F4F4F4;
+        position: relative;
+    }
+    .tab-name {
+        margin: auto;
+        margin-top: 8.5px;
+        text-transform: uppercase;
+        color: @ArcsBlue;
+        font-size: 1.5em;
+        display: inline-block;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    #user-actions .nav {
+        padding: 0;
+        display: none;
+        height: 100%;
+        margin: 0;
+        transition: margin 0.5s;
+        background: #F4F4F4;
+
+        .active {
+            display: none;
+        }
+    }
+    .nav-tabs > li {
+        float: none;
+        border-bottom: 2px solid #EBEBEB !important;
+    }
+}
+
+@media screen and (min-width: 961px) {
+    .toolbar {
+        display: none;
+    }
+    #user-actions .nav {
+        display: inline-block !important;
+    }
 }
 
 

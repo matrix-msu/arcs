@@ -10,7 +10,7 @@
               <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
             </div>
 
-            <dl>
+            <dl class="user-project-info">
                 <dd>
                     <h2><?php echo $user_info['name'];?></h2>
                 </dd>
@@ -68,14 +68,30 @@
     </div>
 
     <div class="row tabbable" id="user-actions">
+        <div class="toolbar">
+            <h2 class="tab-name"></h2>
+            <div class="user-actions"></div>
+        </div>
         <ul class="nav nav-tabs">
-            <li id='annotations' class=''><a href="#" onclick="changeTab('annotations'); return false;">Annotations</a></li>
-            <li id='transcriptions' class=''><a href="#" onclick="changeTab('transcriptions'); return false;">Transcriptions</a></li>
-            <li id='discussion' class=''><a href="#" onclick="changeTab('discussion'); return false;">Discussions</a></li>
-            <li id='collections' class=''><a href="#" onclick="changeTab('collections'); return false;">Collections</a></li>
-            <li id='achievements' class=''><a href="#" onclick="changeTab('achievements'); return false;">Achievements</a></li>
-            <li id='activity' class=''><a href="#" onclick="changeTab('activity'); return false;">Activity</a></li>
-            <li id='testingEdit' class='' style="visibility:hidden;">test</li>
+            <li id='annotations' class=''>
+                <a href="#">Annotations</a>
+            </li>
+            <li id='transcriptions' class=''>
+                <a href="#">Transcriptions</a>
+            </li>
+            <li id='discussion' class=''>
+                <a href="#">Discussions</a>
+            </li>
+            <li id='collections' class=''>
+                <a href="#">Collections</a>
+            </li>
+            <li id='achievements' class=''>
+                <a href="#">Achievements</a>
+            </li>
+            <li id='activity' class=''>
+                <a href="#">Activity</a>
+            </li>
+<!--            <li id='testingEdit' class='' style="display:none;">test</li>-->
         </ul>
         <div class="tab-content">
             <?php echo $this->element('tabs/annotations-tab') ?>
@@ -105,20 +121,38 @@
             position: 'right',
             theme: 'tooltipster-custom'
         });
-    });
 
-    // change tab
-    var currentTab = 'annotations';
-    $('li[id=annotations]').addClass('active');
-    function changeTab(tab) {
-        if (currentTab != tab) {
-            $("li[id="+currentTab+"]").removeClass('active');
-            $("#" + currentTab + '-tab').removeClass('active');
-            $("li[id="+tab+"]").addClass('active');
-            $("#" + tab + '-tab').addClass('active');
-            currentTab = tab;
-        }
-    }
+        // initialize the annotations tab
+        var currentTab = "annotations";
+        $("#" + currentTab).addClass("active");
+        $("#" + currentTab + "-tab").addClass("active");
+        $(".tab-name").html(currentTab);
+
+        // changing tabs click listener
+        $("#user-actions .nav-tabs li a").click(function(event) {
+            event.preventDefault();
+            var tab = $(this).parent().attr("id");
+            if (currentTab !== tab) {
+                $("#" + currentTab).removeClass('active');
+                $("#" + currentTab + '-tab').removeClass('active');
+                $("#" + tab).addClass('active');
+                $("#" + tab + '-tab').addClass('active');
+                $(".tab-name").html(tab);
+
+                if($(window).width() <= 960){
+                    $("#user-actions .nav").slideToggle("slow");
+                    $(".user-actions").toggleClass("active-menu");
+                }
+
+                currentTab = tab;
+            }
+        });
+
+        $(".user-actions").click(function() {
+            $("#user-actions .nav").slideToggle("slow");
+            $(".user-actions").toggleClass("active-menu");
+        });
+    });
 </script>
 
 <script type='text/javascript'>
