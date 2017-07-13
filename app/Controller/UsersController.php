@@ -22,7 +22,7 @@ class UsersController extends AppController
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
           'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate',
-          'profile', 'getAllUsers', 'findById'
+          'profile', 'getAllUsers', 'findById', 'pluginAuthentication'
           );
         $this->User->flatten = true;
         $this->User->recursive = -1;
@@ -1016,6 +1016,7 @@ class UsersController extends AppController
         $this->json(200, $results);
     }
 
+    //create all thumbnails for a project in kora
     public function createThumbnails($projectName){
         set_time_limit(0);
         $signedIn = $this->getUser($this->Auth);
@@ -1054,6 +1055,42 @@ class UsersController extends AppController
             $this->smallThumb($localName,$pid,$pageSid);
         }
         print_r('All thumbnails have been successfully created!');
+        die;
+    }
+
+    //authenticate a plugin user
+    public function pluginAuthentication(){
+        if( !isset($this->request->data['username']) || !isset($this->request->data['password']) ){
+            echo false;
+            die;
+        }
+        $model = $this->modelClass;
+        $results = $this->$model->find('first', array(
+            'conditions' => array(
+                'and' => array(
+                    'username' => $this->request->data['username'],
+                    'password' => $this->request->data['password']
+                )
+            )
+        ));
+        if( $results ){
+            $mappings = $this->Mapping->find('all', array(
+                'conditions' => array(
+                    'Mapping.status' => 'confirmed',
+                    'Mapping.id_user' => $results['id']
+                )
+            ));
+            if( count($mappings) <= 0 ){
+                return false;
+            }
+            $mapreturn = array();
+            foreach( $mappings as $mapping ){
+                $mapreturn[$mapping['Mapping']['pid']] = $mapping['Mapping']['role'];
+            }
+            echo json_encode($mapreturn);
+        }else{
+            echo false;
+        }
         die;
     }
 }

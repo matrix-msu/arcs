@@ -204,6 +204,9 @@
     Router::connect('/users/request_permission/*',
         array('controller' => 'users', 'action' => 'requestPermission')
     );
+    Router::connect('/users/pluginAuthentication',
+        array('controller' => 'users', 'action' => 'pluginAuthentication')
+    );
 ///////
 //toolbar
 //////
