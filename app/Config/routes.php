@@ -180,6 +180,9 @@
     Router::connect('/api/users/add',
         array('controller' => 'users', 'action' => 'ajaxAdd')
     );
+    Router::connect('/api/users/delete',
+        array('controller' => 'users', 'action' => 'ajaxDelete')
+    );
     Router::connect('/api/users/update',
         array('controller' => 'users', 'action' => 'ajaxUpdate')
     );
@@ -203,9 +206,6 @@
     );
     Router::connect('/users/request_permission/*',
         array('controller' => 'users', 'action' => 'requestPermission')
-    );
-    Router::connect('/users/pluginAuthentication',
-        array('controller' => 'users', 'action' => 'pluginAuthentication')
     );
 ///////
 //toolbar

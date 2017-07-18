@@ -22,7 +22,7 @@ class UsersController extends AppController
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
           'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate',
-          'profile', 'getAllUsers', 'findById', 'pluginAuthentication'
+          'profile', 'getAllUsers', 'findById', 'ajaxDelete'
           );
         $this->User->flatten = true;
         $this->User->recursive = -1;
@@ -177,43 +177,153 @@ class UsersController extends AppController
         $this->json(201, $this->User->findById($this->User->id));
     }
 
-    /**
-     * Add a new user through ajax.
-     */
-    public function ajaxAdd()
-    {
+    public function ajaxDelete(){
+        $this->autoRender = false;
         if (!($this->request->is('post') && $this->request->data))
             return $this->json(400);
-        $this->User->permit('isAdmin');
-        $response["message"] = [];
-        $response["status"] = $this->User->add($this->request->data);
-        if ($response["status"] == false) {
-            $response["message"] = $this->User->invalidFields();
-            return $this->json(400, ($response));
+        $results = $this->Mapping->find('all', array(
+            'conditions' => array(
+                'AND' => array(
+                    'id_user' => $this->request->data['id'],
+                    'status'=>'confirmed'
+                )
+            )
+        ));
+        $projects = array();
+        foreach($results as $map){
+            array_push($projects, array('project'=>array('pid'=>$map['Mapping']['pid'])));
         }
+        //make sure the admin has permissions for every project the delete is a part of
+        $authenticated = $this->pluginAuthentication(
+            $this->request->data['user'],
+            $this->request->data['pass'],
+            $projects
+        );
+        $response["message"] = '';
+        if( !$authenticated ){
+            $response['message'] = 'You need to be an admin for every project the user is a part of to be able to delete.';
+            echo json_encode($response); die;
+        }
+        $conditionArray = array( 'id_user' => $this->request->data['id'] );
+        if( !$this->Mapping->deleteAll($conditionArray, false) ){
+            $response['message'] = 'There was an error deleting the user project permissions.';
+            echo json_encode($response); die;
+        }
+        $conditionArray = array( 'id' => $this->request->data['id'] );
+        if( !$this->User->deleteAll($conditionArray, false) ){
+            $response['message'] = 'There was an error deleting the user.';
+            echo json_encode($response); die;
+        }
+        $response['message'] = 'success';
         $this->json(201, $response);
     }
 
     /**
      * Add a new user through ajax.
      */
-    public function ajaxUpdate()
-    {
+    public function ajaxAdd(){
+        $this->autoRender = false;
+        if (!$this->request->is('post') || !isset($this->request->data['form']['projects']) )
+            return $this->json(400);
+        $mappingProjects = array();
+        foreach( $this->request->data['form']['projects'] as $p ){
+            array_push($mappingProjects, array('project'=>$p['project'], 'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+        }
+        $authenticated = $this->pluginAuthentication(
+            $this->request->data['user'],
+            $this->request->data['pass'],
+            $this->request->data['form']['projects']
+        );
+        $this->request->data = $this->request->data['form'];
+        unset($this->request->data['projects']);
+        $response["message"] = [];
+        $response['auth'] = $authenticated;
+        if( !$authenticated ){
+            $response["status"]["credentials"] = "Invalid Arcs Credentials";
+            return $this->json(400, ($response));
+        }
+        $response["status"] = $this->User->add($this->request->data);
+        if ($response["status"] == false) {
+            $response["message"] = $this->User->invalidFields();
+            return $this->json(400, ($response));
+        }
+        $this->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
+        $this->json(201, $response);
+    }
+
+    /**
+     * update user through ajax.
+     */
+    public function ajaxUpdate(){
+        $this->autoRender = false;
         if (!($this->request->is('post') && $this->request->data))
             return $this->json(400);
 
-        $id = $this->request->data['id'];
+        $id = $this->request->data['form']['id'];
         $user = $this->User->read(null, $id);
-
-        if (!$user)
-            return $this->json(404);
-
-        if (!$this->User->save($this->request->data)) {
-            // throw new InternalErrorException();
-            return $this->json(500);
+        $current = $this->request->data['form']['projects'];
+        $add = array();
+        if( isset($this->request->data['addProjects']) ) {
+            $add = $this->request->data['addProjects'];
         }
-
+        $delete = array();
+        if( isset($this->request->data['deleteProjects']) ) {
+            $delete = $this->request->data['deleteProjects'];
+        }
+        $all = $current;
+        foreach($add as $a){
+            array_push($all, array('project'=>array('pid'=>$a['project']['pid'])));
+        }foreach($delete as $d){
+            array_push($all, array('project'=>array('pid'=>$d['project']['pid'])));
+        }
+        $authenticated = $this->pluginAuthentication(
+            $this->request->data['user'],
+            $this->request->data['pass'],
+            $all
+        );
+        $this->request->data = $this->request->data['form'];
+        if( !$authenticated ){
+            echo 'notValid';
+            die;
+        }
+        if (!$user){
+            return $this->json(404);
+        }
+        $this->editMappings($add, $delete, $id);
+        if( $this->request->data['password'] == '' ){
+            unset( $this->request->data['password'] );
+        }
+        if (!$this->User->save($this->request->data)) {
+            $response["status"] = null;
+            return $this->json(400, ($response));
+        }
         $this->json(200, $this->User->findById($id));
+    }
+
+    //Update the mappings table for the plugin edit user
+    public function editMappings($add, $delete, $userId){
+        foreach($delete as $d){
+            $conditionArray = array( 'AND' => array(
+                'id_user' => $userId,
+                'role' => $d['role'],
+                'pid'=> $d['pid'],
+                'status'=>'confirmed'
+            ));
+            if( !$this->Mapping->deleteAll($conditionArray, false) ){
+                return $this->json(404);
+            }
+        }
+        foreach($add as $a){
+            $map = array(
+                'id_user' => $userId,
+                'role' => $a['role']['name'],
+                'pid'=> $a['project']['pid'],
+                'status'=>'confirmed'
+            );
+            if( !$this->Mapping->save($map) ){
+                return $this->json(404);
+            }
+        }
     }
 
     /**
@@ -1059,17 +1169,13 @@ class UsersController extends AppController
     }
 
     //authenticate a plugin user
-    public function pluginAuthentication(){
-        if( !isset($this->request->data['username']) || !isset($this->request->data['password']) ){
-            echo false;
-            die;
-        }
+    public function pluginAuthentication($username, $password, $projects){
         $model = $this->modelClass;
         $results = $this->$model->find('first', array(
             'conditions' => array(
                 'and' => array(
-                    'username' => $this->request->data['username'],
-                    'password' => $this->request->data['password']
+                    'username' => $username,
+                    'password' => $password
                 )
             )
         ));
@@ -1083,15 +1189,20 @@ class UsersController extends AppController
             if( count($mappings) <= 0 ){
                 return false;
             }
-            $mapreturn = array();
-            foreach( $mappings as $mapping ){
-                $mapreturn[$mapping['Mapping']['pid']] = $mapping['Mapping']['role'];
+            foreach($projects as $project){
+                $projectAuth = false;
+                foreach( $mappings as $mapping ){
+                    if($mapping['Mapping']['pid'] == $project['project']['pid']){
+                        $projectAuth = true;
+                    }
+                }
+                if($projectAuth == false){
+                    return false;
+                }
             }
-            echo json_encode($mapreturn);
-        }else{
-            echo false;
+            return true;
         }
-        die;
+        return false;
     }
 }
 ?>
