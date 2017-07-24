@@ -210,10 +210,14 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
                                 $flagged = "<div class='icon-meta-flag-red'>&nbsp;</div>";
                             }
 
-                            $string =" class='metadataEdit'>
+                            $string = " class='metadataEdit'>
                                         $flagged
                                         <div id='$control' data-control='$type'$options>$text</div>";
-
+                            if( $control == 'Persistent Name' ){
+                                $string = " >
+                                        $flagged
+                                        <div id='$control' data-control='$type'$options>$text</div>";
+                            }
                             //there is an edited metadata, so string is this
                             if(
                                 array_key_exists($array['kid'], $metadataEdits) &&

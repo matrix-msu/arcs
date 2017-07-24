@@ -260,7 +260,6 @@ class UsersController extends AppController
             return $this->json(400);
 
         $id = $this->request->data['form']['id'];
-        $user = $this->User->read(null, $id);
         $current = $this->request->data['form']['projects'];
         $add = array();
         if( isset($this->request->data['addProjects']) ) {
@@ -285,9 +284,6 @@ class UsersController extends AppController
         if( !$authenticated ){
             echo 'notValid';
             die;
-        }
-        if (!$user){
-            return $this->json(404);
         }
         $this->editMappings($add, $delete, $id);
         if( $this->request->data['password'] == '' ){
@@ -551,9 +547,27 @@ class UsersController extends AppController
     /**
      * Send an invite email and set up a skeleton account.
      */
-    public function ajaxInvite()
-    {
-        if (!$this->request->is('post')) throw new MethodNotAllowedException();
+    public function ajaxInvite(){
+        $this->autoRender = false;
+        if (!$this->request->is('post') || !isset($this->request->data['form']['projects']) )
+            return $this->json(400);
+        $mappingProjects = array();
+        foreach( $this->request->data['addProjects'] as $p ){
+            array_push($mappingProjects, array('project'=>$p['project'], 'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+        }
+        $authenticated = $this->pluginAuthentication(
+            $this->request->data['user'],
+            $this->request->data['pass'],
+            $mappingProjects
+        );
+        $this->request->data = $this->request->data['form'];
+        $response["message"] = [];
+        $response['auth'] = $authenticated;
+        if( !$authenticated ){
+            $response["status"]["credentials"] = "Invalid Arcs Credentials";
+            return $this->json(400, ($response));
+        }
+
         $data = $this->request->data;
         if (!($data && $data['email']))
             throw new BadRequestException();
@@ -568,6 +582,7 @@ class UsersController extends AppController
             return $this->json(400, ($response));
         } else {
             $this->ajaxSendInviteEmail($data, $token);
+            $this->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
             $this->json(202, ($response));
         }
     }

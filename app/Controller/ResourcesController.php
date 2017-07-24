@@ -45,7 +45,8 @@ class ResourcesController extends AppController {
         $this->Auth->allow(
             'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
             'keywords', 'complete', 'zipped', 'download','checkExportDone', "loadNewResource",
-            'createExportFile', 'downloadExportFile', 'viewtype', 'viewKid', 'viewcollection'
+            'createExportFile', 'downloadExportFile', 'viewtype', 'viewKid', 'viewcollection',
+            'getMetadataEditsControlOptions'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -289,9 +290,7 @@ class ResourcesController extends AppController {
                 . $mysqli->connect_error);
         }
         //Get a collection_id from the id
-        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = ?");
-        $temp = decbin(0);
-        $sql->bind_param("s", $temp);
+        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = 0 AND approved = 0");
         $sql->execute();
         $result = $sql->get_result();
         // $result = $mysqli->query($sql);
@@ -928,13 +927,19 @@ class ResourcesController extends AppController {
      * Get all the control options for metadataEdits
      *
      */
-    public function getMetadataEditsControlOptions($project = null)
-    {
+    public function getMetadataEditsControlOptions($project = null){
+        $ajax = false;
+        if( isset($this->request->data) && isset($this->request->data['project']) ){
+            $project = $this->request->data['project'];
+            $project = strtolower($project);
+            $project = str_replace(' ', '_', $project);
+            $ajax = true;
+        }
         // check bootstrap configuration
         try {
             parent::getPIDFromProjectName($project);
         } catch (Exception $e) {
-            throw new NotFoundException("Project \"$project\" was not found!");
+            //throw new NotFoundException("Project \"$project\" was not found!");
         }
         $pid = parent::getPIDFromProjectName($project);
 
@@ -978,13 +983,19 @@ class ResourcesController extends AppController {
                   name = 'Artifact - Structure Location'";
         $sooCid = $this->getControls($pid, $sid, $query);
 
-        return  array(
+        $return = array(
             'project' => $this->htmlifyControls($pCid),
             'Seasons' => $this->htmlifyControls($sCid),
             'excavations' => $this->htmlifyControls($eCid),
             'archival objects' => $this->htmlifyControls($rCid),
             'subjects' => $this->htmlifyControls($sooCid)
         );
+        if( $ajax ){
+            echo json_encode($return);
+            die;
+        }else{
+            return $return;
+        }
     }
     private function htmlifyControls($controlArray){
 

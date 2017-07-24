@@ -80,6 +80,9 @@
     Router::connect('/api/resources/export',
         array('controller' => 'resources', 'action' => 'export')
     );
+    Router::connect('/api/getMetadataEditsControlOptions',
+        array('controller' => 'resources', 'action' => 'getMetadataEditsControlOptions')
+    );
 
     # Accepted resources/ subpaths.
     Router::connect('/resources/loadNewResource/*',
