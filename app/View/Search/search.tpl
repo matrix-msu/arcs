@@ -134,7 +134,7 @@
 
 <div class='searchIntro'>
     <h1>
-      Search
+      Keyword Search
       <a id="page-help" href="#pageHelpModal">?</a>
     </h1>
 
