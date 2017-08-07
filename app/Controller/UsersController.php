@@ -791,6 +791,11 @@ class UsersController extends AppController
         $thumbnails = '';
         $user['mappings'] = array();
         foreach($mappings as $mapping) {
+            try {
+                $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
+            } catch (Exception $e) {
+               continue;
+            }
             $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
             $role = $mapping["Mapping"]['role'];
             $user['mappings'][] = array("project" => $project,
@@ -800,6 +805,7 @@ class UsersController extends AppController
                     "type=\"submit\" value=\"Create All $project Thumbnails\"></dd>";
             }
         }
+
         if( $signedIn == FALSE ){
             $user['thumbnails'] = '';
         }else {
