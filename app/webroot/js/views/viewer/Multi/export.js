@@ -8,14 +8,14 @@ $(document).ready(function(){
         isExporting = 1;
         $('.icon-export').css('background-image','url(/'+BASE_URL+'img/arcs-preloader.gif)');
         //load data in variables
-		
+
 		//var projects = PROJECTS;
         var seasons = SEASONS;
         var excavations = EXCAVATIONS;
         var resources = RESOURCES;
         var pages = {};
         var subjects = SUBJECTS;
-		
+
         //build xmls for all the single records
         var xmlArray = [];
         var xmlString = '';
@@ -64,49 +64,79 @@ $(document).ready(function(){
         })
         xmlString = objects2xmlString(projectsObject);
         xmlArray.push(xmlString);
+        console.log('project done:');
+        console.log(xmlString);
+        console.log(xmlArray);
+        //return;
 
+        var firstPass = true;
         // handle season
         seasonsObject.forEach(function (tempdata) {
             if( 'linkers' in tempdata ) {
                 tempdata.linkers.forEach(function (linker) {
                     excavationsObject.forEach(function (record) {
+                        if( firstPass ){
+                            record['Season Associator'] = '';
+                        }
                         if (linker == record.kid) {
                             var data = '';
                             if ('Title' in tempdata) {
                                 data = tempdata.Title;
                             }
-                            record['Season Associator'] = data;
+                            if( typeof record['Season Associator'] == 'string' ){
+                                record['Season Associator'] = [data];
+                            }else{
+                                record['Season Associator'].push(data);
+                            }
                         }
                     })
                     resourcesObject.forEach(function (record) {
+                        if( firstPass ){
+                            record['Season Associator'] = '';
+                        }
                         if (linker == record.kid) {
                             var data = '';
                             if ('Title' in tempdata) {
                                 data = tempdata.Title;
                             }
-                            record['Season Associator'] = data;
+                            if( typeof record['Season Associator'] == 'string' ){
+                                record['Season Associator'] = [data];
+                            }else{
+                                record['Season Associator'].push(data);
+                            }
                         }
                     })
+                    firstPass = false;
                 })
             }
         })
+        console.log('ex');
+        console.log(excavationsObject);
         xmlString = '';
         xmlString = objects2xmlString(seasonsObject);
         xmlArray.push(xmlString);
-
+        firstPass = true;
         // handle excavation
         excavationsObject.forEach(function (tempdata) {
             if( 'linkers' in tempdata ) {
                 tempdata.linkers.forEach(function (linker) {
                     resourcesObject.forEach(function (record) {
+                        if( firstPass ){
+                            record['Excavation - Survey Associator'] = '';
+                        }
                         if (linker == record.kid) {
                             var data = '';
                             if ('Name' in tempdata) {
                                 data = tempdata.Name;
                             }
-                            record['Excavation - Survey Associator'] = data;
+                            if( typeof record['Excavation - Survey Associator'] == 'string' ){
+                                record['Excavation - Survey Associator'] = [data];
+                            }else{
+                                record['Excavation - Survey Associator'].push(data);
+                            }
                         }
                     })
+                    firstPass = false;
                 })
             }
         })
@@ -208,7 +238,7 @@ $(document).ready(function(){
         });
         return;
     });
-	
+
 	function scheme2json(scheme){
 		//build the all the records into a json encoded array.
             var schemeString = '[';
@@ -235,7 +265,7 @@ $(document).ready(function(){
             xmlString + '</Data>';
         return xmlString;
     }
-	
+
 	function deleteTags(o){
         if( 'thumb' in o ){
             delete o.thumb;

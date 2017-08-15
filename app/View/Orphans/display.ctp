@@ -397,7 +397,7 @@
                     <!-- h3 class="level-tab" style="cursor:default;display:none;">Page
                         
                     </h3 -->
-                    <div class="level-content" style="height:100%!important;">
+                    <div class="level-content" style="overflow-y: scroll;height:100%!important;">
                         <table id="Project">
 <?php
                           foreach($pageMetadata as $key => $value){
@@ -415,20 +415,11 @@
                           }
 
 ?>
-
                         </table>
-
                     </div>
-
-
-
                 </div>
-
             </div>
-
-
         </div>
-
     </div>
 </div>
 
