@@ -197,8 +197,21 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
                             }
 
                             $options = '';  //decide if there are options
-                            if( isset($controlOptions[$schemename][$control]) ){
-                                $options = ' data-options="'.$controlOptions[$schemename][$control].'"';
+                            $tmpControl = $control;
+                            if( fnmatch("Contributor Role *",$tmpControl) ){
+                                $tmpControl = "Contributor Role";
+                                if( $text == '' ){
+                                    continue;
+                                }
+                            }elseif( fnmatch("Contributor *",$tmpControl) && $tmpControl != 'Contributor Role' ){
+                                $tmpControl = "Contributor";
+                                if( $text == '' ){
+                                    continue;
+                                }
+                            }
+
+                            if( isset($controlOptions[$schemename][$tmpControl]) ){
+                                $options = ' data-options="'.$controlOptions[$schemename][$tmpControl].'"';
                             }
 
                             //check if the metadata has been flagged
