@@ -29,6 +29,22 @@ _resource.SwapResource = function(kid) {
         }
     });
 
+    //trigger resize to fix the left/right arrows faster
+    $(window).trigger('resize');
+
+    //take care of the pages slider for scroll_bar.js
+    setTimeout(function(){
+        if(
+            $('.pages-resource-nav .button-left').css('display') == 'none' &&
+            $('.pages-resource-nav .button-right').css('display') == 'none'
+        ){
+            setTimeout(function(){$('#scroll').slideUp(300);}, 1)
+
+        }else{
+            setTimeout(function(){$('#scroll').slideDown(300);}, 1)
+        }
+    }, 1)
+
 };
 _resource.page_increment = function(page_link = $(_resource.pageSlider).find("a")) {
 
@@ -62,7 +78,6 @@ _resource.selectResource = function(pageNum) {
 }
 
 _resource.sliderMove = function(obj, movementMultiplier=1) {
-
     var accelorator = 1;
     var slider = obj.slider;
     var element = slider.find("img");
@@ -79,91 +94,72 @@ _resource.sliderMove = function(obj, movementMultiplier=1) {
             scrollLeft: slider.scrollLeft() + movement * obj.multiplier * accelorator
         }, obj.speed + accelorator,
         function() {
-            _resource.sliderMove.adjust(slider);
+            $(window).trigger('resize');
         }
     );
 }
 _resource.sliderMove.adjust = function(element) {
     var slider = $(element).parent().find("#other-resources-container");
     var container = $(element).parent();
+    var checkBoth = 0;
+    var fullSlider = $(slider).find('#other-resources');
+    var width = parseInt( $(window).width() );
+    var btnWidth = parseInt( $(container).find(".button-left").width() );
 
+
+    //handle showing the left, right arrows
     if (slider.scrollLeft() == 0) {
-        _resource.SliderStartCSS(container, false);
+        $(container).find(".button-left").css({display: "none"});
     } else {
-        _resource.SliderStartCSS(container, true);
+        $(container).find(".button-left").css({display: "block"});
+        checkBoth++;
     }
 
-    if (slider.scrollLeft() >= slider[0].scrollWidth - $(document).width())
-        _resource.SliderEndCSS(container, false);
-    else {
-        _resource.SliderEndCSS(container, true);
-    }
-}
 
-_resource.currWidth = null;
-_resource.containerWidth = null;
 
-_resource.SetWidths = function(container) {
-    if (_resource.currWidth == null) {
-        $(container).css({
-            width: "initial"
-        })
-        $(container).find(".button-left").css({
-            display: "initial"
-        })
-        $(_resource.resourceContainer).css('width', '')
-        _resource.currWidth = parseInt(
-            $(container).width()
-        );
-        _resource.btnWidth = parseInt(
-            $(container).find(".button-left").css("width")
-        );
-        _resource.containerWidth = parseInt(
-            $(_resource.resourceContainer).width()
-        );
+    var tmpBtnWidth = 0;
+    if( $(container).find(".button-right").css('display') == 'block' ){
+        tmpBtnWidth = btnWidth;
     }
-}
-_resource.SliderStartCSS = function(container, reset) {
-    _resource.SetWidths(container);
-    if (!reset) {
 
-        $(container).find(".button-left").css({
-            display: "none"
-        })
-        $(container).css({
-            width: _resource.currWidth
-        });
-        $(_resource.resourceContainer, container).css({
-            width: _resource.containerWidth + _resource.btnWidth
-        });
-    } else {
-        $(container).find(".button-left").css({
-            display: "initial"
-        })
-        $(container).css({
-            width: _resource.currWidth
-        });
-        $(_resource.resourceContainer, container).css({
-            width: _resource.containerWidth 
-        })
+    if( slider.scrollLeft() + slider.width() +12 +tmpBtnWidth >= fullSlider.width() ){
+        $(container).find(".button-right").css({display: "none"});
+    }else{
+        $(container).find(".button-right").css({display: "block"});
+        checkBoth++;
     }
-}
-_resource.SliderEndCSS = function(container, reset) {
-    _resource.SetWidths(container);
-    if (!reset) {
-        $(container).find(".button-right").css({
-            display: "none"
-        })
-        $(container).css({
-            width: _resource.currWidth
-        });
-        $(_resource.resourceContainer, container).css({
-            width: _resource.containerWidth + _resource.btnWidth
-        })
-    } else {
-        $(container).find(".button-right").css({
-            display: "initial"
-        })
+
+
+    // if (slider.scrollLeft() >= slider[0].scrollWidth - width) {
+    //     $(container).find(".button-right").css({display: "none"});
+    // }else {
+    //     $(container).find(".button-right").css({display: "block"});
+    //     checkBoth++;
+    // }
+
+    //set the width of the container
+    $(container).width(width);
+    width = width - 12;
+    if( checkBoth == 2 ){
+        width = width - btnWidth*2;
+    }else if( checkBoth == 1 ){
+        width = width - btnWidth;
+    }
+    $(slider).css('width', width);
+    //$(container).css('width', width);
+
+    if( $(element).hasClass('resource-container-level') ){
+        if( checkBoth == 0 ){
+            setTimeout(function(){$('#scroll2').slideUp(300);}, 1)
+        }else{
+            setTimeout(function(){$('#scroll2').slideDown(300);}, 1)
+        }
+    }if( $(element).hasClass('page-slider') ){
+        if( checkBoth == 0 ){
+            setTimeout(function(){$('#scroll').slideUp(300);}, 1)
+        }else{
+            setTimeout(function(){$('#scroll').slideDown(300);}, 1)
+        }
     }
 }
 
@@ -299,8 +295,6 @@ $(document).ready(function() {
         else {
             console.log("no Page SEt")
         }
-
-
     });
 
     var angle = 0

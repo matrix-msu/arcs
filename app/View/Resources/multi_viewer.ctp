@@ -37,6 +37,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?=  $this->Html->script("views/viewer/Multi/edit_metadata.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/collection.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/comments.js") ?>
+<?=  $this->Html->script("views/viewer/Multi/scroll_bar.js") ?>
 
 
 <div class="viewers-container">
@@ -451,6 +452,14 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
       </a>
   </div>
 </div>
+
+<div id="scroll" class="scroll">
+    <div id="scrollLine" class="scroll-line ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+        <span id="scroll-handle" class="ui-slider-handle ui-state-default ui-corner-all">
+        </span>
+    </div>
+</div>
+
 <div id="resources-nav" class = "resource-nav-level top-border" style="display:none;">
 
     <div class="button-left" id="button-left">
@@ -475,7 +484,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
             $p = isset(array_values($p)[0]['Image Upload']['localName'])?
             array_values($p)[0]['Image Upload']['localName'] : "";
          ?>
-        <a class='other-resources' href="#" data-projectKid="<?=$r['project_kid']?>" >
+        <a class='other-resources' data-projectKid="<?=$r['project_kid']?>" >
 
             <img id="identifier-<?=$r['kid']?>" class="other-resource<?php if ( in_array($r['kid'], $showButNoEditArray) ){echo ' showButNoEdit'; }  ?>"
                 src="<?php echo AppController::smallThumb($p); ?> " height="200px"/>
@@ -496,12 +505,18 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
     </div> <!--#other-resources-contain -->
 </div> <!--#other-resources-container -->
 
-
 <div class="button-right" id="button-right">
     <a id="right-button">
         <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px" />
     </a>
 </div>
+</div>
+
+<div id="scroll2" class="scroll" style="background-color: #D2D2D2;">
+    <div id="scrollLine2" class="scroll-line ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+    <span id="scroll-handle2" class="ui-slider-handle ui-state-default ui-corner-all">
+    </span>
+    </div>
 </div>
 
 
