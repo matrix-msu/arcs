@@ -75,7 +75,7 @@
 			</p>
 			<div class="collection-list" id="all-collections">
 
-				<details class="back-color">
+				<div class="back-color">
 					<summary>
 						<h3>Collection Title</h3>
 						<h4>Author Name</h4>
@@ -120,7 +120,7 @@
 						  <br>
 						</li>
 					</ul>
-				</details>
+				</div>
 
 
 

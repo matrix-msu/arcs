@@ -12838,7 +12838,7 @@ th.user-tabs-header {
 }
 #user-actions .tab-content #activity-tab .cont span {
   position: relative;
-  top: 30px;
+  bottom: -15px;
   display: inline-block;
   width: 22%;
 }
@@ -16008,6 +16008,8 @@ div.resourceLockedDarkBackgroundSP {
   background: rgba(1, 1, 1, 0.5) !important;
   left: 0;
   right: 0;
+  top: 0;
+  bottom: 0;
   margin: auto;
 }
 div.resourceLockedDarkBackgroundSearch {
@@ -16341,7 +16343,7 @@ a.view-colc {
   text-decoration: none;
 }
 .collection-list-wrapper .collection-list .back-color summary {
-  padding: 13px 15px 13px 20px;
+  padding: 0;
 }
 .collection-list-wrapper summary:after {
   margin: 10px 0px 0px 5px;
@@ -16356,6 +16358,8 @@ a.view-colc {
   min-height: 20px;
   margin: 25px 0 0;
   border: 1px solid #e2e2e2;
+  background: #f4f4f4;
+  padding: 13px 15px 13px 20px;
 }
 .back-color[open] ul.resource-thumbs li.resource-thumb:hover {
   background-color: transparent;
