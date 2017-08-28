@@ -68,6 +68,7 @@
                     "message" => $this->request->data["flashSet"]
                   ));
                 }
+                echo $this->element('missing_picture_modal');
                 echo $this->Session->flash();
                 echo $this->Session->flash('auth');
                 echo $this->fetch('content');

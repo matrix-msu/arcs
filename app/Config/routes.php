@@ -195,6 +195,9 @@
     Router::connect('/users/getEmail',
         array('controller' => 'users', 'action' => 'getUsername')
     );
+    Router::connect('/users/missingPictureNotifyAdmin',
+        array('controller' => 'users', 'action' => 'sendMissingImageEmail')
+    );
     # Signup
     Router::connect('/register/*',
         array('controller' => 'users', 'action' => 'register')

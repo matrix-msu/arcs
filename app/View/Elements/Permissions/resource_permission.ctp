@@ -8,7 +8,14 @@
             <p>You will need to login in order to view this private resource</p>
         </div>
         <div class="permission-modal-responseButtons">
-            <p> <a href="#registerModal"><button class="reg">REGISTER</button></a>  <a href="#loginModal"><button class="request logModalBtn">LOGIN</button></a> </p>
+            <p>
+                <a href="#registerModal">
+                    <button class="reg">REGISTER</button>
+                </a>
+                <a href="#loginModal">
+                    <button class="request logModalBtn">LOGIN</button>
+                </a>
+            </p>
         </div>
     </div>
 </div>

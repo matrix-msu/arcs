@@ -2,7 +2,7 @@
 
 $(window).resize(function(){
   var h = $("#viewer-window").height();
-  $("#ImageWrap img").css({height: h+"px"});
+  $("#PageImage").css({height: h+"px"});
 
 });
 

@@ -119,7 +119,7 @@
   .accordion{
     min-height: 500px;
   }
-  #ImageWrap img{
+  #ImageWrap #PageImage{
     max-width: 90% !important;
     position: initial !important;
     right: initial !important;

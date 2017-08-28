@@ -290,7 +290,13 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
             </div>
             <div id="ImageWrap">
                 <img src="<?php ?> " id="PageImage">
-                <div id="canvas" class='canvas'></div>
+                <div>
+                    <div id="canvas" class='canvas'><div id="missingPictureIcon">
+                            <p>NOTIFY ADMIN OF MISSING IMAGE</p>
+                            <img src="/<?php echo BASE_URL?>app/webroot/img/camera-off.svg" />
+                        </div></div>
+
+                </div>
             </div>
         </div>
 

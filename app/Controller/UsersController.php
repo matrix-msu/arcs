@@ -1090,6 +1090,55 @@ class UsersController extends AppController
     }
 
     /**
+     * Send missing image email
+     */
+    public function sendMissingImageEmail(){
+        if( !isset($this->request->data['resourceKid']) ){
+            echo false; die;
+        }
+        $kid = $this->request->data['resourceKid'];
+        $content = "A user has found that the resource with the kid '$kid' either does not have".
+            " a page record associated to it, or one of the page records is missing its picture. Please fix the issue.";
+
+        $pid = parent::convertKIDtoProjectName($kid);
+        $pid = parent::getPIDFromProjectName($pid);
+        $mappings = $this->Mapping->find('list', array(
+            'fields' => array('Mapping.id_user'),
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.pid' => $pid,
+                    'Mapping.status' => 'confirmed',
+                    'Mapping.role' => 'Admin'
+                ),
+            )
+        ));
+        $mappings = array_values($mappings);
+
+        $model = $this->modelClass;
+        $adminEmails = $this->$model->find('all', array(
+            'fields' => array('User.email'),
+            'conditions' => array('id' => $mappings)
+        ));
+        $formattedAdminEmails = array();
+        foreach( $adminEmails as $k => $v ){
+            array_push( $formattedAdminEmails, $v['email'] );
+        }
+
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail();
+        $Email->emailFormat('html')
+            ->subject('Missing Image Notification')
+            ->to($formattedAdminEmails)
+            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+        if( $Email->send($content) ){
+            echo true;
+        }else{
+            echo false;
+        }
+        die;
+    }
+
+    /**
      * Displays a view
      *
      * @param mixed What page to display

@@ -189,6 +189,7 @@ _resource.setPointer = function(id) {
 
 $(window).resize(function() {
     _resource.currWidth = null;
+    //redo all of the slider sizing
     _resource.sliderMove.adjust($(_resource.pageSlider).parent());
     _resource.sliderMove.adjust($(_resource.resourceSlider).parent());
 });

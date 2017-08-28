@@ -39,7 +39,7 @@ $(document).ready(function () {
 
     //get annotate to support multi-pages.
     $('.page-slider').find('.other-resource').click(function(){
-        $('#canvas').html('');
+        $('#canvas').contents(':not(#missingPictureIcon)').remove();
         var waitPageKid = $(this).attr('id');
         setTimeout(function () {
             waitForElement(waitPageKid);
@@ -882,7 +882,9 @@ $(document).ready(function () {
         });
     }
 
-    //Load boxes
+    //get the box data
+    var boxData = false;
+    var currentPageKid;
     function DrawBoxes(pageKid) {
         $(gen_box).remove();
         $(".gen_box").remove();
@@ -893,83 +895,82 @@ $(document).ready(function () {
                 id: pageKid
             },
             success: function (data) {
-                $.each(data, function (k, v) {
-                    if (v.x1) {
-                        $(".canvas").append('<div class="gen_box"  data-kid="'+pageKid+'" id="' + v.id + '"></div>');
-                        gen_box = $('#' + v.id);
-                        //add css to generated div and make it resizable & draggable
-                        $(gen_box).css({
-                            'width': $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,
-                            'height': $(".canvas").height() * v.y2 - $(".canvas").height() * v.y1,
-                            'left': $(".canvas").width() * v.x1,
-                            'top': $(".canvas").height() * v.y1
-                        });
-
-                        var annotationHtml = '';
-                        var flagType = "FlagTooltip-White";
-                        if( annotationFlags.indexOf(v.id) != -1 ){
-                            flagType = "flagToolTip_Red";
-                        }
-                        var annotationType = 'annotationOutgoing';
-                        if( v.url != '' ){
-                            annotationType = 'annotationUrl';
-                        }else if( v.incoming != null ){
-                            annotationType = 'annotationIncoming';
-                        }
-
-                        //annotationHtml +=
-                        //    "<div class='deleteAnnotation' id='deleteAnnotation_" + v.id + "'>" +
-                        //    "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-White.svg'/>" +
-                        //    "</div>";
-
-                        annotationHtml +=
-                            "<div class='flagAnnotation notAdmin'>" +
-                            "<img style='cursor:pointer' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
-                            "class='flagAnnotationId "+annotationType+"' data-annid='"+v.id+"' "+
-                            "/>" +
-                            "</div>";
-                        if( resourceHasPermissions == true ) {
-                            $(gen_box).html(annotationHtml);
-                        }
-
-                        $("#deleteAnnotation_" + v.id).click(function () {
-                            var box = $(this).parent();
-                            $.ajax({
-                                url: arcs.baseURL + "api/annotations/delete/" + $(this).parent().attr("id") + ".json",
-                                type: "DELETE",
-                                statusCode: {
-                                    204: function () {
-                                        box.remove();
-                                        GetDetails();
-                                    },
-                                    // Make modal for this
-                                    403: function () {
-                                        alert("You don't have permission to delete this annotation");
-                                    }
-                                }
-                            })
-                        });
-                    }
-                });
-
-                $(".flagAnnotation").click(function () {
-                    $(".modalBackground").show();
-                    $("#flagTarget").show();
-                    $('#flagAnnotation_id').val($(this).parent().attr("id"));
-                });
-
-                //Mouse over (hover) annotation
-                $(".gen_box").mouseenter(function () {
-                    mouseOn = true;
-                    ShowAnnotation($(this).attr('id'));
-                });
-
-                $(".gen_box").mouseleave(function () {
-                    mouseOn = false;
-                    $(".annotationPopup").remove();
-                });
-
+                boxData = data;
+                currentPageKid = pageKid;
+                drawAndRedraw();
             }
+        });
+    }
+
+    //putting the draw in a separate function to be able to redraw without ajax
+    function drawAndRedraw(){
+        if( !boxData ){
+            return;
+        }
+        var pageKid = currentPageKid;
+        $.each(boxData, function (k, v) {
+            if (v.x1) {
+                $(".canvas").append('<div class="gen_box"  data-kid="'+pageKid+'" id="' + v.id + '"></div>');
+                gen_box = $('#' + v.id);
+                //add css to generated div and make it resizable & draggable
+                $(gen_box).css({
+                    'width': $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,
+                    'height': $(".canvas").height() * v.y2 - $(".canvas").height() * v.y1,
+                    'left': $(".canvas").width() * v.x1,
+                    'top': $(".canvas").height() * v.y1
+                });
+                var annotationHtml = '';
+                var flagType = "FlagTooltip-White";
+                if( annotationFlags.indexOf(v.id) != -1 ){
+                    flagType = "flagToolTip_Red";
+                }
+                var annotationType = 'annotationOutgoing';
+                if( v.url != '' ){
+                    annotationType = 'annotationUrl';
+                }else if( v.incoming != null ){
+                    annotationType = 'annotationIncoming';
+                }
+                annotationHtml +=
+                    "<div class='flagAnnotation notAdmin'>" +
+                    "<img style='cursor:pointer' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+                    "class='flagAnnotationId "+annotationType+"' data-annid='"+v.id+"' "+
+                    "/>" +
+                    "</div>";
+                if( resourceHasPermissions == true ) {
+                    $(gen_box).html(annotationHtml);
+                }
+                $("#deleteAnnotation_" + v.id).click(function () {
+                    var box = $(this).parent();
+                    $.ajax({
+                        url: arcs.baseURL + "api/annotations/delete/" + $(this).parent().attr("id") + ".json",
+                        type: "DELETE",
+                        statusCode: {
+                            204: function () {
+                                box.remove();
+                                GetDetails();
+                            },
+                            // Make modal for this
+                            403: function () {
+                                alert("You don't have permission to delete this annotation");
+                            }
+                        }
+                    })
+                });
+            }
+        });
+        $(".flagAnnotation").click(function () {
+            $(".modalBackground").show();
+            $("#flagTarget").show();
+            $('#flagAnnotation_id').val($(this).parent().attr("id"));
+        });
+        //Mouse over (hover) annotation
+        $(".gen_box").mouseenter(function () {
+            mouseOn = true;
+            ShowAnnotation($(this).attr('id'));
+        });
+        $(".gen_box").mouseleave(function () {
+            mouseOn = false;
+            $(".annotationPopup").remove();
         });
     }
 
@@ -1115,5 +1116,9 @@ $(document).ready(function () {
         GetDetails();
     });
 
-
+    //resize the canvas on a image width change
+    $(window).resize(function() {
+        $('#canvas').width($('#PageImage').width());
+        drawAndRedraw();
+    });
 });

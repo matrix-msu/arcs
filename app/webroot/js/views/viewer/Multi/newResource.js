@@ -9,15 +9,17 @@ function GetNewResource(id) {
     else if(id.includes("default-page")) {
         // if there are no pages, and the id contains default-page then set image to default resource
         image.src = '/' + BASE_URL + 'img/DefaultResourceImage.svg';
-    }
-    else {
+        console.log('is default pic')
+        console.log(id);
+        var resourceKid = id.replace('-default-page', '');
+        $('#missingPictureIcon').attr('data-kid', resourceKid);
+        $('#missingPictureIcon').css('display', 'block');
+
+    }else {
+        $('#missingPictureIcon').css('display', 'none');
         image.src = '/'+BASE_URL+'img/arcs-preloader.gif';
-        //image.style.height = '100%';
-        //image.style.width = '100%';
         waitingId++;
 
-        setTimeout(function () {
-        }, 10000);
         $.ajax({
             url: arcs.baseURL + "resources/loadNewResource/" + id,
             type: 'GET',
@@ -127,10 +129,10 @@ $(document).ready(function () {
             zoom = zoomrange.value;
             zoomratio = 10/(11-zoom);
             canvas.css("transform" , "scale(" + zoomratio + ")");
-    image.style.transform = "scale(" + zoomratio + ")";
-    image.style.left = "0px";
-    image.style.top = "0px";
-    }
+            image.style.transform = "scale(" + zoomratio + ")";
+            image.style.left = "0px";
+            image.style.top = "0px";
+        }
 
     });
 
