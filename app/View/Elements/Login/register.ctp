@@ -11,7 +11,7 @@
 
                 <h1>Register</h1> <span class="requiredfield">* Required Field</span>
 
-                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Name *')); ?>
+                <?php echo $this->Form->input('name', array('label' => false, 'placeholder' => 'Full Name *')); ?>
 
                 <?php echo $this->Form->input('usernameReg', array('label' => false, 'placeholder' => 'Username *')); ?>
 				<?php echo "<p id='getUsername' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getUsername'))."</p>";?>
