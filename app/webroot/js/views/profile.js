@@ -33,7 +33,8 @@
       'click summary': 'onClick',
       'click details.closed': 'onClick',
       'click #delete-btn': 'deleteCollection',
-      'click .btn-show-all': 'onClick'
+      'click .btn-show-all': 'onClick',
+      'change #newProfImg' : 'fileSelect'
     };
 
     Profile.prototype.editAccount = function() {
@@ -187,6 +188,16 @@
         }
       });
     };
+
+    Profile.prototype.fileSelect = function(e) {
+      var val = $('#enwProfImg').val();
+      if (val != "" && val != "Upload Profile Image") {
+        $('#profImgUpload').show();
+      }
+      else {
+        $('#profImgUpload').hide();
+      }
+    }
 
     return Profile;
 

@@ -12699,6 +12699,9 @@ th.user-tabs-header {
   margin-bottom: 1em;
   font-size: 85%;
 }
+#user-info dl dd #profImgUpload {
+  display: none;
+}
 #user-info dl dd #edit-profile {
   font-size: 120%;
   text-transform: uppercase;
