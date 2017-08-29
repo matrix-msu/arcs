@@ -28,17 +28,12 @@ function GetNewResource(id) {
             },
             success: function (res) {
                 if (waits[this.url] >= waitingId) {
-
                     res = JSON.parse(res);
-
                     kid = res['kid'];
-
                     kids = [];
-
                     //display obervatoins that apply to the selected page
                     var cnt = 0;
                     var pageNum = 1;
-
                     image.src = res["kora_url"] + res['Image Upload']['localName'];
                     document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
                 }
@@ -182,9 +177,6 @@ $(document).ready(function () {
 
     function drag(){
         $("#ImageWrap").draggable();
-        //$("#canvas").draggable({
-        //handle: $('#ImageWrap')
-        //});
     }
     _resource.selectResource(1);
 });

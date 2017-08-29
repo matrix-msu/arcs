@@ -198,6 +198,13 @@
     Router::connect('/users/missingPictureNotifyAdmin',
         array('controller' => 'users', 'action' => 'sendMissingImageEmail')
     );
+
+
+    Router::connect('/findUnassociatedResources',
+        array('controller' => 'resources', 'action' => 'findUnassociatedResources')
+    );
+
+
     # Signup
     Router::connect('/register/*',
         array('controller' => 'users', 'action' => 'register')

@@ -1095,4 +1095,21 @@ class ResourcesController extends AppController {
         $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         return $result->return_array();
     }
+
+    public function findUnassociatedResources(){
+        $pName = 'isthmia';
+        $pid = parent::getPIDFromProjectName($pName);
+        $sid = parent::getResourceSIDFromProjectName($pName);
+        $query_array = array("kid","!=",'');
+        $fields = "Title";
+        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        $resourcesWithNoPage = array();
+        foreach( $result->return_array() as $resource ){
+            if( empty($resource['linkers']) ){
+                array_push($resourcesWithNoPage, $resource['kid']);
+            }
+        }
+        echo json_encode( $resourcesWithNoPage );
+        die;
+    }
 }
