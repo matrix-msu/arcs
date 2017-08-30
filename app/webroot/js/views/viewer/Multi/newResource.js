@@ -88,6 +88,8 @@ $(document).ready(function () {
             var page = $(this).find(".numberOverResources").html();
             if(page ==  selected){
               _NewResource.SelectCSS(this);
+              console.log('select');
+              console.log(this);
             }
             else {
               _NewResource.DeselectCSS(this);
