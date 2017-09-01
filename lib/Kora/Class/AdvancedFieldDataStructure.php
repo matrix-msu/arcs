@@ -83,7 +83,7 @@ class AdvancedFieldMap{
         "identifier"    => "Resource Identifier",
         "type"          => "Type",
         "title"          => "Title",
-        "creators"      => "Title",
+        "creators"      =>  "Creator",
         "role"          => "Creator Role",
         "earliest_date" => "Earliest Date",
         "latest_date"   => "Latest Date",
@@ -131,7 +131,7 @@ class AFDSFactory {
         "year"  => $comp[0] == "00" ? "%" : (int) $comp[0],
         "month" => $comp[1] == "00" ? "%" : (int) $comp[1],
         "day"   => $comp[2] == "00" ? "%" : (int) $comp[2],
-        "era"   => $comp[3] 
+        "era"   => $comp[3]
       );
     }
     return array(
