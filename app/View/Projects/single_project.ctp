@@ -24,7 +24,7 @@
 		<div class="pic-display">
 			<ul class="recent-resource">
 			    <?php foreach($resources as $r): ?>
-                    <li class="resource-pic">
+                    <li class="resource-pic" data-kid="<?php echo $r['kid']?>" data-resource-kid="<?php echo $r['kid']?>">
                     <div>
                       <span style="cursor:pointer">
                       <a style='position:relative;'<?php

@@ -1,12 +1,12 @@
 <div id="request_permission_model" class="permissionModal">
     <div class="permission-content">
-        <div class="modal-exit"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
+        <div class="modal-exit" style="cursor:pointer"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
         <div class="permission-modal-header">
             <h1>Request User Access</h1>
         </div>
 
         <div class="permission-modal-content">
-            <p>Selecting "Request User Access" below will send a notification to the admin of the project, who will then provide you access</p>
+            <p>Selecting "Request User Access" below will send a notification to the admin of the project, who will then provide you access.</p>
         </div>
 
         <div class="permission-modal-responseButtons">
@@ -15,45 +15,46 @@
     </div>
 
 </div>
-
 <script>
-
-  $(document).ready(function() {
-    $("#request_permission_model").find(".request").click(function(e){
-      if (window.locked_array.length) {
-        var param = locked_array[0]
-        $.ajax({
-          url: arcs.baseURL + "users/request_permission/" + param,
-          success: function(response){
-            $('<form />')
-                .hide()
-                .attr({ method : "post" })
-                .attr({ action : arcs.baseURL})
-                .append($('<input />')
-                    .attr("type","hidden")
-                    .attr({ "name" : "flashSet" })
-                    .val(response)
-                )
-                .append('<input type="submit" />')
-                .appendTo($("body"))
-                .submit();
-          }
+    $(document).ready(function() {
+        var currentlyClickedLockedResourceKid = '';
+        $("#request_permission_model").find(".request").click(function(e){
+            if( currentlyClickedLockedResourceKid !== '' ){
+                $.ajax({
+                    url: arcs.baseURL + "users/request_permission/" + currentlyClickedLockedResourceKid,
+                    success: function(response){
+                        $('<form />')
+                            .hide()
+                            .attr({ method : "post" })
+                            .attr({ action : arcs.baseURL})
+                            .append($('<input />')
+                                .attr("type","hidden")
+                                .attr({ "name" : "flashSet" })
+                                .val(response)
+                            )
+                            .append('<input type="submit" />')
+                            .appendTo($("body"))
+                            .submit();
+                    }
+                });
+            }
         });
-      }
+        $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
+            $("#request_permission_model").show();
+            $("#request_permission_model").css("pointer-events", "all");
+            var resourceThumb = $(this).closest('.resource-thumb').attr('data-resource-kid');
+            if( resourceThumb == undefined ){
+                resourceThumb = $(this).closest('.resource-pic').attr('data-resource-kid');
+            }
+            currentlyClickedLockedResourceKid = resourceThumb;
+        });
+        $(".modal-exit, .modal-cancel").click(function () {
+            $("#request_permission_model").hide();
+            $("#request_permission_model").css("pointer-events", "none");
+        });
+        if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
+            $("#request_permission_model").show();
+        }
     })
-
-    $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
-        $("#request_permission_model").show();
-        $("#request_permission_model").css("pointer-events", "all");
-    });
-    $(".modal-exit, .modal-cancel").click(function () {
-        $("#request_permission_model").hide();
-        $("#request_permission_model").css("pointer-events", "none");
-    });
-
-    if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
-      $("#request_permission_model").show();
-    }
-  })
 
 </script>

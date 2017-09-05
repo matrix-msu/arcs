@@ -118,8 +118,12 @@ class UsersController extends AppController
     public function requestPermission($param) {
       $template; $viewVars; $admins;
 
+      echo json_encode($param);
       $resolve = static::resolveProject($param);
+      echo json_encode($resolve);
       $admins = $this->getAdmins($resolve["project"]);
+      echo json_encode($admins);
+      die;
       // don't render a view
       $this->autoRender = false;
 
