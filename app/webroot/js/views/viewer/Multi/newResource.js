@@ -9,8 +9,6 @@ function GetNewResource(id) {
     else if(id.includes("default-page")) {
         // if there are no pages, and the id contains default-page then set image to default resource
         image.src = '/' + BASE_URL + 'img/DefaultResourceImage.svg';
-        console.log('is default pic')
-        console.log(id);
         var resourceKid = id.replace('-default-page', '');
         $('#missingPictureIcon').attr('data-kid', resourceKid);
         $('#missingPictureIcon').css('display', 'block');
@@ -88,8 +86,6 @@ $(document).ready(function () {
             var page = $(this).find(".numberOverResources").html();
             if(page ==  selected){
               _NewResource.SelectCSS(this);
-              console.log('select');
-              console.log(this);
             }
             else {
               _NewResource.DeselectCSS(this);

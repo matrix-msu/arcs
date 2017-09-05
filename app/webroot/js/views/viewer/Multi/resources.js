@@ -15,14 +15,8 @@ _resource.currentResource;
 _resource.rotate = '.resources-rotate-icon';
 _resource.SwapResource = function(kid) {
 
-    console.log('page click');
-    console.log(kid);
     $(this.pageSlider).find("a").each(function() {
-
-        console.log('page');
-
         var id = $(this).attr("id");
-        console.log(id);
         if (id === kid) {
             $(this).css({
                 display: "initial"
