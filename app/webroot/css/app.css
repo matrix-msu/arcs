@@ -10592,14 +10592,16 @@ input[type=range]:focus::-ms-fill-upper {
   color: white;
 }
 .newCommentForm,
-.newReplyForm {
+.newReplyForm,
+.newEditDiscussionReplyForm {
   display: none;
   width: 100%;
   position: absolute;
   margin-top: -161px;
 }
 .newCommentForm button,
-.newReplyForm button {
+.newReplyForm button,
+.newEditDiscussionReplyForm button {
   width: 100%;
   height: 60px;
   background: #0093be;
@@ -10607,7 +10609,8 @@ input[type=range]:focus::-ms-fill-upper {
   margin-top: -4px;
 }
 .newCommentForm textarea,
-.newReplyForm textarea {
+.newReplyForm textarea,
+.newEditDiscussionReplyForm textarea {
   width: 100%;
   height: 100px;
   background: white;
@@ -10631,9 +10634,11 @@ input[type=range]:focus::-ms-fill-upper {
   padding-right: 0;
   border-top: 1px dashed #cdcdcd;
 }
-.reply {
+.reply,
+.editComment {
   text-align: right;
-  margin: 10px 0 0 60%;
+  margin-left: 10px;
+  display: inline;
   text-transform: uppercase;
 }
 .closeComment {
@@ -10646,7 +10651,11 @@ input[type=range]:focus::-ms-fill-upper {
   border: 1px solid #0093be;
   background: white;
 }
+#commentEditReplyContainer {
+  margin-left: 75%;
+}
 .reply:hover,
+.editComment:hover,
 .closeComment:hover {
   color: #0093be;
   cursor: pointer;

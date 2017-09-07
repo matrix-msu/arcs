@@ -306,108 +306,111 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
     <div id="viewer-right" style="position:relative;">
 
 
-          <div id="tabs" class="metadata">
-              <ul class="metadata-tabs">
-                  <li class="metadata-tab"><a href="#tabs-1">Metadata</a></li>
-                  <li class="metadata-tab details"><a href="#tabs-2">Details</a></li>
-                  <li class="metadata-tab discussion"><a href="#tabs-3">Discussions</a></li>
-              </ul>
-              <div id="tabs-1" class="metadata-content">
-                  <div class="accordion metadata-accordion" style="width:100%;">
-                    <?= $this->element("Metadata/generate"); ?>
-                    <?php
-                        $metadataFlags = $flags['metadataFlags'];
-                        Generate_Metadata("project",$projectsArray,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                        Generate_Metadata("Seasons",$seasons,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                        Generate_Metadata("excavations",$excavations,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                        Generate_Metadata("archival objects",$resources,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                        Generate_Metadata("subjects",$subjects,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                    ?>
-                  </div>
-                </div>
+        <div id="tabs" class="metadata">
+            <ul class="metadata-tabs">
+              <li class="metadata-tab"><a href="#tabs-1">Metadata</a></li>
+              <li class="metadata-tab details"><a href="#tabs-2">Details</a></li>
+              <li class="metadata-tab discussion"><a href="#tabs-3">Discussions</a></li>
+            </ul>
+            <div id="tabs-1" class="metadata-content">
+              <div class="accordion metadata-accordion" style="width:100%;">
+                <?= $this->element("Metadata/generate"); ?>
+                <?php
+                    $metadataFlags = $flags['metadataFlags'];
+                    Generate_Metadata("project",$projectsArray,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                    Generate_Metadata("Seasons",$seasons,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                    Generate_Metadata("excavations",$excavations,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                    Generate_Metadata("archival objects",$resources,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                    Generate_Metadata("subjects",$subjects,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                ?>
               </div>
+            </div>
+        </div>
 
 
-            <div id="tabs-2" class="metadata-content" style="display:none;">
-                <div class="accordion metadata-accordion">
-                    <h3 class="level-tab transcriptionTab">
-                        Transcriptions
-                        <div class="editTranscriptions">Edit</div>
-                        <div class="editOptions">
-                            <div class="newTranscription">Add New</div>
-                            <div class="saveTranscription">Save</div>
-                        </div>
-                    </h3>
-
-                    <div class="level-content">
-                        <div class="content_transcripts"></div>
-						<div class="editInstructions">			Drag and drop transcriptions to reorder them.</div>
-                        <form class="newTranscriptionForm">
-                            <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>
-                            <button type="submit">SUBMIT NEW TRANSCRIPTION</button>
-                        </form>
+        <div id="tabs-2" class="metadata-content" style="display:none;">
+            <div class="accordion metadata-accordion">
+                <h3 class="level-tab transcriptionTab">
+                    Transcriptions
+                    <div class="editTranscriptions">Edit</div>
+                    <div class="editOptions">
+                        <div class="newTranscription">Add New</div>
+                        <div class="saveTranscription">Save</div>
                     </div>
+                </h3>
 
-                    <h3 class="level-tab">Annotations</h3>
+                <div class="level-content">
+                    <div class="content_transcripts"></div>
+                    <div class="editInstructions">			Drag and drop transcriptions to reorder them.</div>
+                    <form class="newTranscriptionForm">
+                        <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>
+                        <button type="submit">SUBMIT NEW TRANSCRIPTION</button>
+                    </form>
+                </div>
 
-                    <div class="level-content content_annotations">
-						<div class="outgoing_relations">
-							<h4 class="annotationLabel">Outgoing Relations</h4>
-						</div>
-						<div class="incoming_relations">
-                            <h4 class="annotationLabel">Incoming Relations</h4>
-						</div>
-						<div class="urls">
-                            <h4 class="annotationLabel">URLs</h4>
-						</div>
+                <h3 class="level-tab">Annotations</h3>
+
+                <div class="level-content content_annotations">
+                    <div class="outgoing_relations">
+                        <h4 class="annotationLabel">Outgoing Relations</h4>
                     </div>
-
-                    <h3 class="level-tab" id="keyword-tab">Keywords<span id="keyword-edit-btn" class="keyword-edit-btn">Edit</span></h3>
-
-                    <div class="level-content">
-                        <p id="keyword-text" style="text-transform:none;padding-left:11px;padding-top:16px;">Enter keywords below. Use commas to seperate keywords.</p>
-                        <form class="keywords-uploadForm" id="urlform" method="post" enctype="multipart/form-data"></form>
-                        <div id="keyword-search-links" style="width:90%;margin-left:auto;margin-right:auto;"></div>
-
-                        <p id="keyword-common" style="text-transform:none;padding-left:11px;padding-top:20px;">
-                            Commonly used keywords are featured below. Select any to add to the keyword list above.
-                        </p>
-
-                        <form class="keywords-uploadForm2" id="urlform2" method="post" enctype="multipart/form-data"></form>
-
+                    <div class="incoming_relations">
+                        <h4 class="annotationLabel">Incoming Relations</h4>
                     </div>
-
-                    <h3 class="level-tab" id="collections_tab">Collections</h3>
-
-                    <div class="level-content">
-                        <div id="collections_table"></div>
+                    <div class="urls">
+                        <h4 class="annotationLabel">URLs</h4>
                     </div>
                 </div>
-            </div>
 
-            <div id="tabs-3" class="metadata-content" style="display:none;">
-                <div id="discussionTab">
-                    <div class="commentContainer"></div>
+                <h3 class="level-tab" id="keyword-tab">Keywords<span id="keyword-edit-btn" class="keyword-edit-btn">Edit</span></h3>
 
-                    <div class="submitContainer">
-                        <button class="newComment">ADD NEW DISCUSSION</button>
+                <div class="level-content">
+                    <p id="keyword-text" style="text-transform:none;padding-left:11px;padding-top:16px;">Enter keywords below. Use commas to seperate keywords.</p>
+                    <form class="keywords-uploadForm" id="urlform" method="post" enctype="multipart/form-data"></form>
+                    <div id="keyword-search-links" style="width:90%;margin-left:auto;margin-right:auto;"></div>
 
-                        <form class="newCommentForm"><textarea name="comment" class="commentTextArea"
-                                                               placeholder="Enter discussion here ..."></textarea><br>
-                            <button type="submit">ADD NEW DISCUSSION</button>
+                    <p id="keyword-common" style="text-transform:none;padding-left:11px;padding-top:20px;">
+                        Commonly used keywords are featured below. Select any to add to the keyword list above.
+                    </p>
 
-                        </form>
+                    <form class="keywords-uploadForm2" id="urlform2" method="post" enctype="multipart/form-data"></form>
 
-                        <form class="newReplyForm"><textarea name="comment" class="replyTextArea"
-                                                             placeholder="Enter reply here..."></textarea><br>
-                            <button type="submit">ADD NEW REPLY</button>
+                </div>
 
-                        </form>
-                    </div>
+                <h3 class="level-tab" id="collections_tab">Collections</h3>
+
+                <div class="level-content">
+                    <div id="collections_table"></div>
                 </div>
             </div>
         </div>
+
+        <div id="tabs-3" class="metadata-content" style="display:none;">
+            <div id="discussionTab">
+                <div class="commentContainer"></div>
+
+                <div class="submitContainer">
+                    <button class="newComment">ADD NEW DISCUSSION</button>
+
+                    <form class="newCommentForm"><textarea name="comment" class="commentTextArea"
+                                                           placeholder="Enter discussion here ..."></textarea><br>
+                        <button type="submit">SAVE NEW DISCUSSION</button>
+                    </form>
+
+                    <form class="newReplyForm"><textarea name="comment" class="replyTextArea"
+                                                         placeholder="Enter reply here..."></textarea><br>
+                        <button type="submit">SAVE NEW REPLY</button>
+                    </form>
+
+                    <form class="newEditDiscussionReplyForm"><textarea name="comment" class="editDiscussionTextArea"
+                                                         placeholder="Enter discussion edit here..."></textarea><br>
+                        <button type="submit">SAVE DISCUSSION EDIT</button>
+                    </form>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
 
     </div>
 </div>

@@ -352,6 +352,9 @@
   Router::connect('/comments/findall',
       array('controller' => 'comments', 'action' => 'findall')
   );
+  Router::connect('/comments/editComment',
+      array('controller' => 'comments', 'action' => 'editComment')
+  );
    Router::connect('/flags/add',
         array('controller' => 'flags', 'action' => 'add')
     );

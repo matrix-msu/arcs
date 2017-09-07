@@ -1620,7 +1620,8 @@ img.resource-reset-icon{
 }
 
 .newCommentForm,
-.newReplyForm {
+.newReplyForm,
+.newEditDiscussionReplyForm{
 	display: none;
 	width: 100%;
 	position: absolute;
@@ -1660,9 +1661,10 @@ img.resource-reset-icon{
 	border-top: 1px dashed #cdcdcd;
 }
 
-.reply {
+.reply, .editComment {
 	text-align: right;
-	margin: 10px 0 0 60%;
+	margin-left: 10px;
+	display: inline;
 	text-transform:	uppercase;
 }
 
@@ -1677,7 +1679,11 @@ img.resource-reset-icon{
 	background: white;
 }
 
-.reply:hover,
+#commentEditReplyContainer{
+	margin-left:75%
+}
+
+.reply:hover, .editComment:hover,
 .closeComment:hover {
 	color: #0093be;
 	cursor: pointer;

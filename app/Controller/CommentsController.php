@@ -46,4 +46,16 @@ class CommentsController extends MetaResourcesController {
         ));
         $this->json(200, $results);
     }
+
+    public function editComment(){
+        $model = $this->modelClass;
+        $comment = $this->$model->find('first', array(
+            'conditions' => array('id' => $this->request->data['id'])
+        ));
+        if( $this->Auth->User()['id'] === $comment['user_id'] ){
+            $this->$model->id = $comment['id'];
+            $this->$model->saveField('content', $this->request->data['content']);
+            die;
+        }
+    }
 }
