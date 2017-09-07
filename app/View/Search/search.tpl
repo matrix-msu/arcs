@@ -295,7 +295,7 @@
 			</div>
 
 			<div id="search-again">
-				<a class="search-again-link" id='top-btn'>Search again</a>
+				<a class="search-again-link">Search again</a>
 			</div>
 		</div>
 

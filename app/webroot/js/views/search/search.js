@@ -132,6 +132,7 @@
       'click #open-colview-form': 'openCollection',
       'click #advancedSearchLink': 'advancedRedirect',
         'click .searchAgain': 'scrollTop',
+        'click .search-again-link': 'searchAgain',
         'click .advSearch': 'advancedRedirect',
 
     };
@@ -238,6 +239,15 @@
       return $('html, body').animate({
         scrollTop: 0
       }, time);
+    };
+    Search.prototype.searchAgain = function(e) {
+      var textbox = $(".searchBoxInput").val() || ""
+      if (window.globalquery) {
+        window.location.href = textbox
+      } else {
+        window.location.href = window.globalproject + "/" + textbox
+      }
+
     };
 
 
