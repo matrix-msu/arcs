@@ -362,6 +362,9 @@ is from here to ...
       return query
     },
     pushParamsToView : function(ul, paramArray,min , max) {
+      if (max < 20) {
+        min = max
+      }
       ul = $(ul)
       ul.empty()
       ul.append(
