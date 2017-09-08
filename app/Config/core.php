@@ -175,7 +175,8 @@
  */
 	Configure::write('Session', array(
         'defaults' => 'php',
-        'cookie' => 'ARCS'
+        'cookie' => 'ARCS',
+        'timeout' => 1440000
 	));
 
 /**

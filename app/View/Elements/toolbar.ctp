@@ -35,7 +35,7 @@
 		){$profileBlue = ' btn-blue';}
 		if (isset($user['loggedIn']) && $user['loggedIn'] != '' ): ?>
 			<div id="menu" class="btn toolbar-btn<?php echo $profileBlue ?>">
-				<div id="cage" data-userId="<?php echo $user['id'] ?>">
+				<div id="cage" data-userId="<?php if(isset($user['id']))echo $user['id']; ?>">
 				<?php echo $user['name'] ?>
 				<div id="dropBox">
 					<span id='logDrop' class="pointerDown pointerTool whiteArrow"></span>
