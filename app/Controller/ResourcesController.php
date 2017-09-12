@@ -670,7 +670,7 @@ class ResourcesController extends AppController {
                 $results[$key]['Title'] = $v['Resource Identifier'];
             }
 
-            $results = ['filters' => [], 'indicators' => $indicators, 'results' => $results];
+            $results = ['filters' => [], 'indicators' => $indicators, 'results' => $results, 'total'=>count($results)];
             static::filterByPermission($username, $results['results']);
             echo "<script>var results_to_display = " . json_encode($results) . ";</script>";
 
