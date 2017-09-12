@@ -637,7 +637,7 @@ class ResourcesController extends AppController {
             $pageSid = parent::getPageSIDFromProjectName($projectName);
 
             //get resources
-            $search = new General_Search($pid, $sid, 'Type', '=', $resource_type,['Type','Resource Identifier']);
+            $search = new General_Search($pid, $sid, 'Type', '=', $resource_type,['Type','Resource Identifier', 'Permissions']);
             $results = $search->return_array();
             $rKids = array_keys($results);
 
