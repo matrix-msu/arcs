@@ -545,9 +545,11 @@
       if (waiting) {
         return;
       }
-      totalResults.sort(function(a, b) {
-        return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
-      });
+      if( !window.location.href.includes('resource_type') ) {
+          totalResults.sort(function(a, b) {
+              return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
+          });
+      }
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
       pageNum = currentPage;
