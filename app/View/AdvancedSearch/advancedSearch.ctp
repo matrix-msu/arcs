@@ -73,7 +73,7 @@
 <main class="advanced-search-container" data-project="<?=$project?>">
   <article class="search-info">
     <section id="backToSearch">
-      <a href="#">GO TO REGULAR SEARCH</a>
+      <a href="#">GO TO KEYWORD SEARCH</a>
     </section>
     <section class="page-info">
       <header>
