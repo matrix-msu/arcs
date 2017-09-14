@@ -32,10 +32,7 @@ class KeywordsController extends MetaResourcesController {
         if (!$this->request->is('post')) {$this->json(405); throw new MethodNotAllowedException();}
         if (!$this->request->data) {$this->json(400); throw new BadRequestException();}
 
-
         //increment the count for all rows with the same project_kid and keyword
-        //// Start SQL Area
-        ///////////////////
         include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
@@ -60,15 +57,12 @@ class KeywordsController extends MetaResourcesController {
             $sql->bind_param("ss", $this->request->data['project_kid'], $keyword);
             $sql->execute();
             $result = $sql->get_result();
-            // $result = $mysqli->query($sql);
             $row = mysqli_fetch_assoc($result);
             $count = intval($row{'count'});
-            $retval['first count'] = $count;
             //set count if it is a new keyword
             if (!is_int($count)) {
                 $count = 0;
             }
-            $retval['count before add'] = $count;
 
             //add the new keyword
             $this->request->data['user_id'] = $this->Auth->user('id');
@@ -76,7 +70,8 @@ class KeywordsController extends MetaResourcesController {
             $this->request->data['count'] = $count;
             $this->request->data['keyword'] = $keyword;
             $this->Keyword->permit('count');
-            $this->Keyword->add($this->request->data);
+            $this->Keyword->create();
+            $this->Keyword->save($this->request->data);
 
             //update the count for all the keyword, project_kid combos
             $sql = $mysqli->prepare("UPDATE keywords
@@ -85,10 +80,7 @@ class KeywordsController extends MetaResourcesController {
                         AND keywords.keyword = ?;");
             $sql->bind_param("ss", $this->request->data['project_kid'], $keyword);
             $sql->execute();
-            // $result = $sql->get_result();
-            // $result = $mysqli->query($sql);
         }
-        //$retval['keyword'] = $result;
         $this->json(201, 'success');
     }
 
