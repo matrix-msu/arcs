@@ -6,6 +6,7 @@ $( document ).ready(function() {
     var arrowsWidth = $('.button-right').width();
     var promiseCount = 0;
 
+    //check which tray/scroll is being changed
     function checkScroll(el){
         if( $(el).attr('id') == 'next-resource' ||
             $(el).attr('id') == 'prev-resource' ||
@@ -17,6 +18,7 @@ $( document ).ready(function() {
         return $('.resource-container-level');
     }
 
+    //chech which slider is being changed
     function checkSlider(el){
         if( $(el).attr('id') == 'next-resource' ||
             $(el).attr('id') == 'prev-resource' ||
@@ -27,20 +29,25 @@ $( document ).ready(function() {
         return $('#scrollLine2');
     }
 
+    //slide the resource and pages trays based on the slider value
     $(".ui-slider").slider({
         slide: function(event, ui){
             promiseCount = 0;
             scrollContent = checkScroll(this);
             scrollContent.stop(true, true);
+            var scrollAmount = (scrollContent.prop('scrollWidth')-$(window).width()+arrowsWidth)*(ui.value / 100);
+            if( ui.value == 100 ){
+                scrollAmount = scrollContent.prop('scrollWidth');
+            }
             scrollContent.animate({
-                scrollLeft: (scrollContent.prop('scrollWidth') - $(window).width() + arrowsWidth) * (ui.value / 100)
-            }, 20);
-            scrollContent.promise().done(function(){
+                scrollLeft: scrollAmount
+            }, 20);scrollContent.promise().done(function(){
                 $('#resources-nav').trigger('resize');
             });
         }
     });
 
+    //update the sliders based on clicks from the trays
     $('.button-right, .button-left, #prev-resource, #next-resource').click(function(){
         promiseCount = 0;
         scrollContent = checkScroll(this);
@@ -64,20 +71,21 @@ $( document ).ready(function() {
         });
     });
 
+    //update the slider when the window is resized
     $(window).resize(function() {
         var sign = function(x) {
             return 1 / x === 1 / Math.abs(x);
         }
         var val1 = $('.page-slider').scrollLeft() *100;
         var val2 = val1 / ($('.page-slider').prop('scrollWidth')-$(window).width()+arrowsWidth);
-        if( sign(val2) == false ){
+        if( val2 >= 99 || sign(val2) == false ){
             val2 = 100;
         }
         $('#scrollLine').slider('value', val2);
 
         val1 = $('.resource-container-level').scrollLeft() *100;
         val2 = val1 / ($('.resource-container-level').prop('scrollWidth')-$(window).width()+arrowsWidth);
-        if( sign(val2) == false ){
+        if( val2 >= 99 || sign(val2) == false ){
             val2 = 100;
         }
         $('#scrollLine2').slider('value', val2);
