@@ -309,13 +309,19 @@
       })
       console.log(selectedMap["selected"]);
       Search.selected = selectedMap["selected"]
-      this.$(".circle-container").css('background', 'transparent')
-      this.$('.select-circle').addClass('selected');
-      this.$('.select-overlay').css('opacity', 1)
-      this.$('.select-overlay').css('background', 'rgba(0, 147, 190, 0.75)')
-      this.$('#select-all').attr({
-        id: 'deselect-all'
-      });
+      Search.selected.forEach(function(e) {
+        var li = $('li[data-id="'+e+'"]');
+        if (li.length) {
+          li.find(".circle-container").css('background', 'transparent')
+          li.find('.select-circle').addClass('selected');
+          li.find('.select-overlay').css('opacity', 1)
+          li.find('.select-overlay').css('background', 'rgba(0, 147, 190, 0.75)')
+          li.find('#select-all').attr({
+            id: 'deselect-all'
+          });
+        }
+      })
+
       if (trigger) {
         return arcs.bus.trigger('selection');
       }
@@ -545,11 +551,9 @@
       if (waiting) {
         return;
       }
-      if( !window.location.href.includes('resource_type') ) {
-          totalResults.sort(function(a, b) {
-              return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
-          });
-      }
+      totalResults.sort(function(a, b) {
+        return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
+      });
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
       pageNum = currentPage;
@@ -1048,8 +1052,10 @@
           selectedMap['selected'] = [];
           i = 0;
           for (i in totalResults) {
-            selectedMap['selected'].push(totalResults[i]['kid']);
-            ++i;
+            if(totalResults[i]['Locked'] !== true) {
+              selectedMap['selected'].push(totalResults[i]['kid']);
+              ++i;
+            }
           }
           arcs.searchView.selectAll();
           $('#toggle-select').html('DE-SELECT');
