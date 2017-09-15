@@ -775,6 +775,10 @@
       }
       val = val.replace(/\//g,"-")
       resourcequery = encodeURIComponent(""+val);
+      // change browser state
+      var currentState = window.history.state;
+      window.history.replaceState(currentState, "Search Page", arcs.baseURL + 'search/' + globalproject + "/" + resourcequery);
+
       pageNumber = encodeURIComponent("" + pageNum);
       perPageUrl = encodeURIComponent("" + perPage);
       $('.pageNumber').removeClass('currentPage');
