@@ -1,4 +1,4 @@
-$(document).ready(function () {
+function annotationPrep() {
 
     /*--------Annotations--------*/
     var isAdmin = ADMIN; //todo- isAdmin is not working. -Josh <-- Of course it is not working, The constant was never declared -Austin
@@ -38,7 +38,7 @@ $(document).ready(function () {
     };
 
     //get annotate to support multi-pages.
-    $('.page-slider').find('.other-resource').click(function(){
+    $('.page-slider').on('click', '.other-resource', function(){
         $('#canvas').contents(':not(#missingPictureIcon)').remove();
         var waitPageKid = $(this).attr('id');
         setTimeout(function () {
@@ -1121,4 +1121,6 @@ $(document).ready(function () {
         $('#canvas').width($('#PageImage').width());
         drawAndRedraw();
     });
-});
+}
+
+// $(document).ready(annotationPrep);

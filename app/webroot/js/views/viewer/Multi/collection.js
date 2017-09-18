@@ -1,7 +1,6 @@
 // multi-resource collections
 //also, search page collections
-
-$( document ).ready(function() {
+function collectionPrep() {
 
     // run on page load
     $(".collectionNewContainer").hide();
@@ -162,7 +161,7 @@ $( document ).ready(function() {
         getCollections(resourceKid);
     });
 
-});
+};
 
 //collections globals.
 var collectionArray = [];
@@ -324,3 +323,5 @@ function getCollections( resourceKid='' ) {
         }
     })
 }
+
+// $( document ).ready(collectionPrep)

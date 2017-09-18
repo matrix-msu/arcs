@@ -1,9 +1,9 @@
 // <!-- Give the resource array to the client-side code -->
 
-$(document).ready(function(){
+function prepAccordion(delayedFire){
     $(function () {
         $("#tabs").tabs();
-        $(document).ready(function(){
+        function prepAccordionInner(){
             var cnt = 1;
             $(".soo").each(function(){
                 var display = $(this).css("display");
@@ -13,7 +13,11 @@ $(document).ready(function(){
                 cnt++;
             });
 
-        });
+        }
+        $(document).ready(prepAccordionInner);
+        if (delayedFire === true) {
+            prepAccordionInner();
+        }
     });
     $(function () {
         $(".accordion").accordion({
@@ -23,9 +27,11 @@ $(document).ready(function(){
     //height of the viewer window - the height of the tabs - 2 for the border width
     $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2);
     $('.excavation-div').height('auto');
+    $('.excavation-tab-content').height('auto');
     $(window).resize(function () {
         $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2 );
         $('.excavation-div').height('auto');
+        $('.excavation-tab-content').height('auto');
     });
     $(function () {
         $("#soo").tabs();
@@ -35,4 +41,10 @@ $(document).ready(function(){
             heightStyle: "content"
         });
     });
-});
+}
+
+// $(document).ready(prepAccordion);
+$(document).ready(function () {
+    $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2);
+    $('.excavation-div').height('auto');
+})

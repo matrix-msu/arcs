@@ -1,11 +1,11 @@
-$( document ).ready(function() {
+function dynamicPrep() {
 
     /*
           Multi-resource dynamic accordion. based on new page and resource clicks.
      *********************************************************************************/
 
     //new page click show/hide the correct metadata
-    $('.other-page').find('img').click(function(){  //page click
+    $('.other-page').on('click', 'img', function(){  //page click
 
         $('.resource-reset-icon').click(); //reset the image position
 
@@ -170,4 +170,6 @@ $( document ).ready(function() {
         }, 1);
 
     })
-});
+}
+
+// $( document ).ready(dynamicPrep);

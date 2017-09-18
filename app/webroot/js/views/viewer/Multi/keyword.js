@@ -1,5 +1,5 @@
-$(document).ready(function(){
-	
+function keywordPrep(){
+
 	var keywordArray = []; //an array of the edited keywords
 	var keywordOriginalArray = []; //keep an array of the stored keywords
 	var keywordPageKid; //keep of the editing page kid
@@ -10,7 +10,7 @@ $(document).ready(function(){
     Array.prototype.diff = function(a) {
         return this.filter(function(i) {return a.indexOf(i) < 0;});
     };
-    $('.page-slider').find('.other-resource').click(function() {
+    $('.page-slider').on('click', '.other-resource', function() {
         var pageKid = $(this).attr('id');
         $("#urlform").css('display','none');
         getKeywords(pageKid, 0);
@@ -258,4 +258,6 @@ $(document).ready(function(){
             getCommonKeywords();
         }
     }
-});
+}
+
+$(document).ready(keywordPrep);

@@ -38,6 +38,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?=  $this->Html->script("views/viewer/Multi/collection.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/comments.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/scroll_bar.js") ?>
+<?=  $this->Html->script("views/viewer/Multi/metadataLoad.js") ?>
 
 
 <div class="viewers-container">
@@ -531,6 +532,8 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 
 <script>
+//set variables for multipage delayed loading
+var multiInfo = <?php echo $multiInfo; ?>;
 
 //update the toolbar page urls with project.
 

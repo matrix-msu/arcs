@@ -239,11 +239,15 @@ $(document).ready(function() {
     var zoomOption = 1;
 
     // trigger img if number clicked insteads
-    $(".numberOverResources").click(function(e) {
+    // $(".numberOverResources").click(function(e) {
+    var numberOverResourcesClick = function (e) {
         $(this).parent().find("img").trigger("click");
         e.stopPropagation();
-    });
-    $('.other-resources').click(function() {
+    // });
+    };
+    $(".numberOverResources").click(numberOverResourcesClick);
+    // $('.other-resources').click(function() {
+    var otherResourcesClick = function () {
         //add a selected class to any clicked page or resource
         if($(this).parents('.page-slider').length > 0) {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
@@ -295,7 +299,9 @@ $(document).ready(function() {
         else {
             console.log("no Page SEt")
         }
-    });
+    // });
+    };
+    $('.other-resources').click(otherResourcesClick);
 
     var angle = 0
     var className;
@@ -317,12 +323,21 @@ $(document).ready(function() {
       $(".fullscreenImage").css('transform', 'rotate(' + angle + 'deg' + ')');
     });
 
-    $(_resource.pageSlider + " img").click(function(e) {
-        var kid = $(this).attr("id");
-        var resource_kid = $(this).parent().parent().attr("id");
+    // $(_resource.pageSlider + " img").click(function(e) {
+    //     var kid = $(this).attr("id");
+    //     var resource_kid = $(this).parent().parent().attr("id");
+    //     resource_kid = resource_kid.replace("resource-pagelevel-", "");
+    //     _resource.currentPage = parseInt(
+    //         $(this).parent().find(".numberOverResources").html()
+    //     );
+    //     GetNewResource(kid);
+    // });
+    $(_resource.pageSlider).on('click', 'img', function(e) {
+        var kid = $(e.currentTarget).attr("id");
+        var resource_kid = $(e.currentTarget).parent().parent().attr("id");
         resource_kid = resource_kid.replace("resource-pagelevel-", "");
         _resource.currentPage = parseInt(
-            $(this).parent().find(".numberOverResources").html()
+            $(e.currentTarget).parent().find(".numberOverResources").html()
         );
         GetNewResource(kid);
     });
@@ -390,5 +405,89 @@ $(document).ready(function() {
             'overflow': 'hidden',
             'height': '100%'
         });
+    }
+
+    if (multiInfo !== false) {
+        console.log('ajax here');
+        $.ajax({
+            url: arcs.baseURL + "view/" + multiInfo,
+            type: 'GET',
+            data: {
+                'getRest' : true
+            },
+            success: function (results) {
+                results = JSON.parse(results);
+                console.log(results);
+                PROJECTS = results.projectsArray;
+                SEASONS = results.seasons;
+                RESOURCES = results.resources;
+                EXCAVATIONS = results.excavations;
+                SUBJECTS = results.subjects;
+                showButNoEditArray = results.showButNoEditArray;
+                annotationFlags = results.flags['annotationFlags'];
+                var firstid = $('#other-resources.other-page a').length - 1;
+                var cnt = 1;
+                for (resource in results.resources) {
+                    // the first resource is already loaded
+                    if (cnt == 1) {
+                        cnt++;
+                        continue;
+                    }
+                    // first we add the resource to the resource slider
+                    resource = results.resources[resource];
+                    var html = "<a class='other-resources' data-projectKid='"+resource['project_kid']+"' style='opacity: 0.6'>";
+                    html += "<img id='identifier-"+resource.kid+"' class='other-resource";
+                    html += results.showButNoEditArray.indexOf(resource.kid) ? " showButNoEdit' " : "' ";
+                    html += "src='"+resource.thumbsrc+"' height='200px'/>";
+                    html += "<div class='numberOverResources'>"+cnt+"</div>";
+                    $('#other-resources.resource-slider').append(html);
+                    cnt++;
+
+                    // next we add the pages to the page slider
+                    var pagecnt = 0;
+                    for (pageid in resource.page) {
+                        var page = resource.page[pageid];
+                        html = "<a class = 'other-resources' id = '"+resource.kid+"' style='display: none; opacity: 0.6'><img class = 'other-resource' id = '";
+                        html += page.kid != undefined ? page.kid : resource.kid;
+                        html += "' src='"+page.thumbsrc+"' /><div class='numberOverResources'>";
+                        html += (++pagecnt)+"</div></a>";
+                        $('#other-resources.other-page').append(html);
+                    }
+                }
+                $('#resources-nav.resource-nav-level').show();
+                _resource.setPointer(Object.keys(results.resources)[0]);
+
+                // handle click handlers
+                $(".numberOverResources").unbind('click', numberOverResourcesClick);
+                $(".numberOverResources").click(numberOverResourcesClick);
+                $('.other-resources').unbind('click', otherResourcesClick);
+                $('.other-resources').click(otherResourcesClick);
+                pageSelectBuild(firstid);
+                var projectData = generateMetadata("project", results.projectsArray, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                var seasonsData = generateMetadata("Seasons", results.seasons, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                var excavationsData = generateMetadata("excavations", results.excavations, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                // console.log(projectData);
+                // console.log(seasonsData);
+                // console.log(excavationsData);
+                // console.log(archivalData);
+                // console.log(subjectsData);
+                // console.log($('.accordion.metadata-accordion'));
+                $('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
+                prepAccordion(true);
+                dynamicPrep();
+                editMetaPrep();
+                annotationPrep();
+                collectionPrep();
+                commentsPrep();
+                flagPrep();
+                keywordPrep();
+                scrollPrep();
+            }
+        });
+    }
+    else {
+
     }
 });

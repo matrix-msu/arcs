@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+function editMetaPrep() {
 
     //todo - make associators do the update without reloading thing.
 
@@ -672,4 +672,6 @@ $( document ).ready(function() {
         $('.associator_numbers').html(numbersHtml);
         $('.associator_begin').click();
     }
-});
+}
+
+// $( document ).ready(editMetaPrep);

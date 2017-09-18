@@ -1,5 +1,5 @@
 // flag
-$( document ).ready(function() {
+function flagPrep() {
 
     var metadata_info = {};
     metadata_info.field = '';
@@ -199,4 +199,6 @@ $( document ).ready(function() {
             });
         }
     });
-});
+}
+
+// $( document ).ready(flagPrep);

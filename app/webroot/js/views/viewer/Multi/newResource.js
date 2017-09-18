@@ -52,6 +52,61 @@ _NewResource.SelectCSS = function(element){
   $(element).css({opacity: "1"});
 }
 
+function pageSelectBuild(firstid) {
+  var $item = $('#other-resources a'),
+      $pics = $('#other-resources a img'),
+      index = 0, //Starting index
+      current = 0,
+      $selected = $('#other-resources a .numberOverResources'),
+      keys = JSON_KEYS;
+
+  for(var i=0; i <$pics.length; i++){
+    if (i < firstid) {
+      continue;
+    }
+    $pics[i].style.borderColor = "#0094BC";
+    $pics[i].style.borderStyle = "solid";
+    $item[i].onclick = createFunc(i);
+  }
+
+  $pics[0].style.borderWidth = "5px";
+
+  function createFunc(i){
+    return function(event){
+    event.preventDefault();
+    var container = $(this).parent().parent().attr("class");
+    var selected = $(this).find(".numberOverResources").html();
+    if(container == "page-slider"){
+      $(".other-page").find(".other-resources").each(function(){
+        var page = $(this).find(".numberOverResources").html();
+        if(page ==  selected){
+          _NewResource.SelectCSS(this);
+          console.log('select');
+          console.log(this);
+        }
+        else {
+          _NewResource.DeselectCSS(this);
+        }
+      });
+    }
+    else{
+    $(".resource-container-level").find(".other-resources").each(function(){
+        var resource = $(this).find(".numberOverResources").html();
+          if(resource ==  selected){
+            _NewResource.SelectCSS(this);
+          }
+          else {
+            _NewResource.DeselectCSS(this);
+          }
+      });
+    }
+    current = i;
+    var kid = keys[current];
+    GetNewResource(kid);
+    }
+  }
+}
+
 // other resources
 $(document).ready(function () {
     var $item = $('#other-resources a'),
@@ -68,47 +123,48 @@ $(document).ready(function () {
     endIndex =
     LEN / visible -1;
 
-    for(var i=0; i <$pics.length; i++){
-        $pics[i].style.borderColor = "#0094BC";
-        $pics[i].style.borderStyle = "solid";
-        $item[i].onclick = createFunc(i);
-    }
+    pageSelectBuild(0);
 
-    $pics[0].style.borderWidth = "5px";
-
-    function createFunc(i){
-        return function(event){
-        event.preventDefault();
-        var container = $(this).parent().parent().attr("class");
-        var selected = $(this).find(".numberOverResources").html();
-        if(container == "page-slider"){
-          $(".other-page").find(".other-resources").each(function(){
-            var page = $(this).find(".numberOverResources").html();
-            if(page ==  selected){
-              _NewResource.SelectCSS(this);
-            }
-            else {
-              _NewResource.DeselectCSS(this);
-            }
-          });
-        }
-        else{
-        $(".resource-container-level").find(".other-resources").each(function(){
-            var resource = $(this).find(".numberOverResources").html();
-              if(resource ==  selected){
-                _NewResource.SelectCSS(this);
-              }
-              else {
-                _NewResource.DeselectCSS(this);
-              }
-          });
-        }
-        current = i;
-        var kid = keys[current];
-        GetNewResource(kid);
-      }
-    }
-
+    // for(var i=0; i <$pics.length; i++){
+    //     $pics[i].style.borderColor = "#0094BC";
+    //     $pics[i].style.borderStyle = "solid";
+    //     $item[i].onclick = createFunc(i);
+    // }
+    //
+    // $pics[0].style.borderWidth = "5px";
+    //
+    // function createFunc(i){
+    //     return function(event){
+    //     event.preventDefault();
+    //     var container = $(this).parent().parent().attr("class");
+    //     var selected = $(this).find(".numberOverResources").html();
+    //     if(container == "page-slider"){
+    //       $(".other-page").find(".other-resources").each(function(){
+    //         var page = $(this).find(".numberOverResources").html();
+    //         if(page ==  selected){
+    //           _NewResource.SelectCSS(this);
+    //         }
+    //         else {
+    //           _NewResource.DeselectCSS(this);
+    //         }
+    //       });
+    //     }
+    //     else{
+    //     $(".resource-container-level").find(".other-resources").each(function(){
+    //         var resource = $(this).find(".numberOverResources").html();
+    //           if(resource ==  selected){
+    //             _NewResource.SelectCSS(this);
+    //           }
+    //           else {
+    //             _NewResource.DeselectCSS(this);
+    //           }
+    //       });
+    //     }
+    //     current = i;
+    //     var kid = keys[current];
+    //     GetNewResource(kid);
+    //   }
+    // }
 
     $('#zoom-out').click(function(event){
         event.preventDefault();

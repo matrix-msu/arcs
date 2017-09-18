@@ -860,12 +860,17 @@ class ResourcesController extends AppController {
             //push to array
             $this->pushToArray($info_array, $resources);
 
+            if (!isset($_GET['getRest'])) {
+                $temp = count($resources_array) > 1 ? $id : 'false';
+                $this->set("multiInfo", $temp);
+                break;
+            }
         }
 
         if ( empty($resources) ) {
             $this->set("resourceAccess", false);
         }
-        if( !isset($this->request->query['ajax'] )){ //this is for a normal multi_view
+        if( !isset($this->request->query['ajax'] ) && !isset($_GET['getRest'])){ //this is for a normal multi_view
             $metadataedits = $this->getEditMetadata();
             if($pName != '') {
                 $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
@@ -884,6 +889,37 @@ class ResourcesController extends AppController {
             $this->set("metadataEditsControlOptions", $metadataeditsControlOptions);
             $this->set("flags", $flags);
             $this->set("showButNoEditArray", $showButNoEditArray);
+        }
+        else if (isset($_GET['getRest'])) {
+            $metadataedits = $this->getEditMetadata();
+            if($pName != '') {
+                $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
+            }else{
+                $metadataeditsControlOptions = array();
+            }
+            $flags = $this->getFlags($resources_array);
+            ksort($seasons);
+            ksort($excavations);
+            foreach ($resources as $kid => $r) {
+                $p = $r['page'];
+                $p = isset(array_values($p)[0]['Image Upload']['localName'])? array_values($p)[0]['Image Upload']['localName'] : "";
+                $p = AppController::smallThumb($p);
+                $resources[$kid]['thumbsrc'] = $p;
+                foreach ($r['page'] as $key => $page) {
+                    $img = isset($page['Image Upload']['localName']) ? $page['Image Upload']['localName'] : "";
+                    $resources[$kid]['page'][$key]['thumbsrc'] = AppController::smallThumb($img);
+                }
+            }
+            echo json_encode(['resources' => $resources,
+                                'projectsArray' => $projectsArray,
+                                'seasons' => $seasons,
+                                'excavations' => $excavations,
+                                'subjects' => $subjects,
+                                'metadataedits' => $metadataedits,
+                                'metadataeditsControlOptions' => $metadataeditsControlOptions,
+                                'flags' => $flags,
+                                'showButNoEditArray' => $showButNoEditArray]);
+            die;
         }
         else {  //this is for getting the data for a export data
             echo json_encode([$projectsArray,

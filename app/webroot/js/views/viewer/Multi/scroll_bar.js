@@ -1,6 +1,5 @@
-
 //Takes care of the pages and resources slider/scroll bars
-$( document ).ready(function() {
+function scrollPrep() {
     var scrollContent = '';
     var scrollSlider = '';
     var arrowsWidth = $('.button-right').width();
@@ -90,5 +89,6 @@ $( document ).ready(function() {
         }
         $('#scrollLine2').slider('value', val2);
     });
-});
+}
 
+// $( document ).ready(scrollPrep);

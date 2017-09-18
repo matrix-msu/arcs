@@ -2,7 +2,7 @@
 parent = null;
 var editCommentOldValue = '';
 
-$(document).ready(function(){
+function commentsPrep(){
     getComments();
 
     $(".discussion").click(function () {
@@ -90,7 +90,7 @@ $(document).ready(function(){
             parent = null;
         }
     });
-});
+};
 
 function getComments() {
     var currentResource = $('#identifier-'+CM_R_ID);
@@ -186,6 +186,8 @@ function getComments() {
         }
     });
 }
+
+// $(document).ready(commentsPrep)
 
 function formatDate(input) {
     var d = new Date(Date.parse(input.replace(/-/g, "/")));
