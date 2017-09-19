@@ -904,8 +904,8 @@
 				$(".flex-container").addClass("detailed-list");
 			}
       results = results.results;
-
-      if( results[0].Orphan == 'TRUE' ){
+   
+      if(results.length && results[0].Orphan == 'TRUE' ){
         $('.toolbar-fixed').css('display', 'none');
       }
 

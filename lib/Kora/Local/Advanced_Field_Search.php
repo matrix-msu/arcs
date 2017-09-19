@@ -196,7 +196,6 @@ class Advanced_Field_Search extends Kora
         $subject  = $this->_ds->subjectGeneral;
         $map      = $this->_map->subjectGeneral;
         $clauses  = $this->generateKoraClauseFromMap($subject, $map);
-
         if (!empty($clauses)) {
 
             $this->schemeMapping = parent::getSubjectSIDFromProjectName($this->_project);
@@ -276,7 +275,7 @@ class Advanced_Field_Search extends Kora
         $excavation  = $this->_ds->excavation;
         $map         = $this->_map->excavation;
         $clauses     = $this->generateKoraClauseFromMap($excavation, $map);
-
+        // print_r($clauses);exit();
         if (!empty($clauses)) {
 
             $this->schemeMapping = parent::getSurveySIDProjectName($this->_project);
@@ -284,6 +283,7 @@ class Advanced_Field_Search extends Kora
             $this->fields        = array("Name");
 
             $excavations = parent::search();
+            // print_r(count($excavations));exit();
 
             if (!empty($excavations)) {
 
@@ -292,6 +292,7 @@ class Advanced_Field_Search extends Kora
                 // get direct resource linkers
                 $scheme = parent::getResourceSIDFromProjectName($this->_project);
                 $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
+                // print_r(count($excavations));exit();
 
                 return $resources;
 
@@ -338,14 +339,16 @@ class Advanced_Field_Search extends Kora
         $season    = $this->_ds->season;
         $map       = $this->_map->season;
         $clauses   = $this->generateKoraClauseFromMap($season, $map);
+        // print_r($clauses);exit();
 
         if (!empty($clauses)) {
 
             $this->schemeMapping = parent::getSeasonSIDFromProjectName($this->_project);
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
-            $this->fields        = array("Title");
+            $this->fields        = array("Title", "Type");
 
             $seasons = parent::search();
+            // print_r(count($seasons));exit();
             if (!empty($seasons)) {
 
                   $linkers = $this->getLinkers($seasons);
@@ -354,7 +357,7 @@ class Advanced_Field_Search extends Kora
                   $scheme = parent::getResourceSIDFromProjectName($this->_project);
                   $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
 
-                  // get excavation linkersreturn null;
+                  // get excavation linkers return null;
                   $this->schemeMapping = parent::getSurveySIDProjectName($this->_project);
                   $excavations = $this->_resolveSchemeFromLinkers($linkers, $this->schemeMapping, array("Type"), false);
                   // get the excavation linkers resource linkers
@@ -363,7 +366,8 @@ class Advanced_Field_Search extends Kora
                   // get indirect resource linkers
                   $scheme = parent::getResourceSIDFromProjectName($this->_project);
                   $resources2 = $this->_resolveSchemeFromLinkers($linkers2, $scheme, array("Title"));
-
+                  // print_r($seasons);exit();
+                  // print_r(array_unique(array_merge($resources, $resources2)));exit();
                   return array_unique(array_merge($resources, $resources2));
 
             }
