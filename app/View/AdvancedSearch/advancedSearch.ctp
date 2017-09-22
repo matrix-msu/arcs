@@ -3,75 +3,23 @@
   <div>
 
     <p class="modal-title">Advanced Search</p>
-    This Search Text has yet to be supplied. Basic Search conducts a keyword
-    search over words included in the Title, Creator, Description, Subject, and
-    Transcript fields of materials in the repository.
-    <p>
-      Basic Search works best for whole words. It is not case sensitive, so the search
-      terms can be entered in upper or lower case.
-    </p>
-    <p>
-      Multi-word Basic Searches
-      Entering more than one word in the Basic Search box results in a search where
-      ALL words in the query are present in ANY of the Basic Search fields. A search
-      for Wesley Fishel will return records where both "Wesley" AND "Fishel" appear
-      in the Title OR Creator OR Description OR Subject OR Transcript field.
-    </p>
-    <p>
-      To speed up searches, punctuation and common short function words have been
-      removed from the search. These stop words include:
-    </p>
-    <p>
-      a, about, above, above, across, after, afterwards, again, against, all,
-      almost, alone, along, already, also, although, always, am, among, amongst,
-      amoungst, amount, an, and, another, any, anyhow, anyone, anything, anyway,
-      anywhere, are, around, as, at, back, be, became, because, become, becomes,
-      becoming, been, before, beforehand, behind, being, below, beside, besides,
-      between, beyond, bill, both, bottom, but, by, call, can, cannot, cant, co,
-      con, could, couldn't, cry, de, describe, detail, do, done, down, due,
-      during, each, eg, eight, either, eleven, else, elsewhere, empty, enough,
-      etc, even, ever, every, everyone, everything, everywhere, except, few,
-      fifteen, fifty, fill, find, fire, first, five, for, former, formerly,
-      forty, found, four, from, front, full, further, get, give, go, had, has,
-      hasn't, have, he, hence, her, here, hereafter, hereby, herein, hereupon, hers,
-      herself, him, himself, his, how, however, hundred, ie, if, in, inc, indeed,
-      interest, into, is, it, its, itself, keep, last, latter, latterly, least,
-      less, ltd, made, many, may, me, meanwhile, might, mill, mine, more, moreover,
-      most, mostly, move, much, must, my, myself, name, namely, neither, never, nevertheless,
-      next, nine, no, nobody, none, no one, nor, not, nothing, now, nowhere, of, off, often,
-      on, once, one, only, onto, or, other, others, otherwise, our, ours, ourselves, out, over,
-      own, part, per, perhaps, please, put, rather, re, same, see, seem, seemed, seeming,
-      seems, serious, several, she, should, show, side, since, sincere, six, sixty, so,
-      some, somehow, someone, something, sometime, sometimes, somewhere, still, such,
-    </p>
-    <p>
-      a, about, above, above, across, after, afterwards, again, against, all,
-      almost, alone, along, already, also, although, always, am, among, amongst,
-      amoungst, amount, an, and, another, any, anyhow, anyone, anything, anyway,
-      anywhere, are, around, as, at, back, be, became, because, become, becomes,
-      becoming, been, before, beforehand, behind, being, below, beside, besides,
-      between, beyond, bill, both, bottom, but, by, call, can, cannot, cant, co,
-      con, could, couldn't, cry, de, describe, detail, do, done, down, due,
-      during, each, eg, eight, either, eleven, else, elsewhere, empty, enough,
-      etc, even, ever, every, everyone, everything, everywhere, except, few,
-      fifteen, fifty, fill, find, fire, first, five, for, former, formerly,
-      forty, found, four, from, front, full, further, get, give, go, had, has,
-      hasn't, have, he, hence, her, here, hereafter, hereby, herein, hereupon, hers,
-      herself, him, himself, his, how, however, hundred, ie, if, in, inc, indeed,
-      interest, into, is, it, its, itself, keep, last, latter, latterly, least,
-      less, ltd, made, many, may, me, meanwhile, might, mill, mine, more, moreover,
-      most, mostly, move, much, must, my, myself, name, namely, neither, never, nevertheless,
-      next, nine, no, nobody, none, no one, nor, not, nothing, now, nowhere, of, off, often,
-      on, once, one, only, onto, or, other, others, otherwise, our, ours, ourselves, out, over,
-      own, part, per, perhaps, please, put, rather, re, same, see, seem, seemed, seeming,
-      seems, serious, several, she, should, show, side, since, sincere, six, sixty, so,
-      some, somehow, someone, something, sometime, sometimes, somewhere, still, such,
-    </p>
+      Advanced Search allows users to search for words and phrases in numerous fields. Users can build complex searches by combining terms and phrases in multiple search boxes.
+        <br /><br />
+      Entering more than one word in one Advanced Search box results in a search where ALL words in the query are present in the selected field.  For example, a search for Roman Lamp in the Title field will only return records where both "Roman" AND "lamp" appear in the Title, regardless of their presence in other fields.
+      <br /><br />
+      Combining Advanced Searches<br />
+      Entering a single term or phrase in more than one search box results in a search where ALL words added to the first box are present in the first field AND ALL words added to the second box are present in the second field. For example, a search for Roman lamp in the Resource Title field and lamp in the Artifact/Structure Type field will only return records where "Roman lamp" is in the Resource Title AND "lamp" is in the Artifact/Structure Type field.
+      <br /><br />
+      To conduct a more basic search across a limited number of data fields, try a Keyword Search [provide link].
+      <br /><br />
+      For a more detailed description of search fields, logic and filters, consult the help text [provide link].
+
+      </p>
   </div>
 </article>
 
 <main class="advanced-search-container" data-project="<?=$project?>">
-  <article class="search-info">
+  <article class="search-info" style="margin-bottom:40px">
     <section id="backToSearch">
       <a href="#">GO TO KEYWORD SEARCH</a>
     </section>
@@ -82,13 +30,11 @@
       </header>
 
       <p id="page-description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        vlit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum
+          Advanced searches are designed to locate a specific resource or isolate resources according to
+          a specific type or expression in one or more fields.  You can build combined searches with terms
+          and phrases in multiple search boxes.
+        <br />
+          Because ARCS relies on user-generated content, search results may be incomplete.
       </p>
     </section>
   </article>

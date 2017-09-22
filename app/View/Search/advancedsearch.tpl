@@ -3,8 +3,11 @@
     <h1>Advanced Searchs</h1>
 
     <p>
-      Lorem ipsum dolor sit amet, ignota consetetur quo at, augue accumsan efficiendi ut usu. Dictas eripuit albucius mea in, ex officiis philosophia eum. Consul singulis ad pro, te saperet contentiones qui. Ne has reque temporibus, saepe quaerendum temporibus cum ei.
-    </p>
+		Advanced searches are designed to locate a specific resource or isolate resources according to a specific type or expression in one or more fields.  You can build combined searches with terms and phrases in multiple search boxes.
+
+		Because ARCS relies on user-generated content, search results may be incomplete.
+
+	</p>
 </div>
 
 <a name="searchJump"></a>

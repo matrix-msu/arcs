@@ -974,16 +974,23 @@ function annotationPrep() {
         });
     }
 
+    var annotationAjaxRunning = false;
     // Annotation popup on the canvas
     function ShowAnnotation(id, redirect=false) {
+        if( annotationAjaxRunning == true ){
+            return;
+        }
+        annotationAjaxRunning = true;
         $.ajax({
             url: arcs.baseURL + "api/annotations/" + id + ".json",
             type: "GET",
             success: function (data) {
+                console.log(data);
+                annotationAjaxRunning = false;
                 $(".annotationPopup").remove();
                 if (mouseOn) {
-                    $("#" + id).append("<div class='annotationPopup'><img class='annotationImage'/><div class='annotationData'></div></div>");
-                    $(".annotationPopup").css("left", $("#" + id).width() + 10).css('display', 'inline-block');
+                    $("#" + id).append("<div class='annotationPopup' style='display:none;'><img class='annotationImage'/><div class='annotationData'></div></div>");
+
                     if (data.relation_page_kid != "") {
                         var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
 
@@ -998,7 +1005,6 @@ function annotationPrep() {
                                 sid: 'page'
                             },
                             success: function (pageData) {
-
                                 var data = JSON.parse(pageData);
                                 var page = data[paramKid]
                                 var resource = data['resource'] || false
@@ -1024,12 +1030,16 @@ function annotationPrep() {
                                 // Resource.Type
                                 // Page.Scan Number
                                 $(".annotationImage").attr('src', image);
+                                $( ".annotationImage" ).load(function() {
+                                    $(".annotationPopup").css("left", $("#" + id).width() + 10).css('display', 'inline-block');
+                                });
                                 $(".annotationData").append("<p>Relation</p>");
                                 $(".annotationData").append("<p>" + page["Resource Identifier"] + "</p>");
                                 if (resource) {
                                     $(".annotationData").append("<p>" + resource[Object.keys(resource)[0]]["Type"] + "</p>");
                                 }
                                 $(".annotationData").append("<p>" + (page["Scan Number"] || "N/A") + "</p>");
+
                             }
                         });
                     }

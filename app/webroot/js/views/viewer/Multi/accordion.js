@@ -21,13 +21,15 @@ function prepAccordion(delayedFire){
     });
     $(function () {
         $(".accordion").accordion({
-            heightStyle: "fill"
+            heightStyle: "fill",
+            active: 3
         });
     });
     //height of the viewer window - the height of the tabs - 2 for the border width
     $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2);
     $('.excavation-div').height('auto');
     $('.excavation-tab-content').height('auto');
+    $('.season-tab-content').height('auto');
     $(window).resize(function () {
         $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2 );
         $('.excavation-div').height('auto');
@@ -37,9 +39,9 @@ function prepAccordion(delayedFire){
         $("#soo").tabs();
     });
     $(function () {
-        $(".survey-accordion").accordion({
-            heightStyle: "content"
-        });
+        //$(".survey-accordion").accordion({
+        //    heightStyle: "content"
+        //});
     });
 }
 

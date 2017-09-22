@@ -151,8 +151,8 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             $excavationClass = 'excavation-tab-head';
             $excavationSmallClass = 'excavation-tab-content';
             if($schemename == 'Seasons'){
-            $excavationClass = 'season-tab-head';
-            $excavationSmallClass = 'season-tab-content';
+                $excavationClass = 'season-tab-head';
+                $excavationSmallClass = 'season-tab-content';
             }
     ?>
             <h3 class="level-tab <?=$excavationClass?>" data-kid="<?=$array['kid']?>"><?= $schemename . " Level " . $counter?>

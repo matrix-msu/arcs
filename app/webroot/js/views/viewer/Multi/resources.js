@@ -483,6 +483,7 @@ $(document).ready(function() {
                 flagPrep();
                 keywordPrep();
                 scrollPrep();
+                $('.selectedCurrentResource').click();
             }
         });
     }
