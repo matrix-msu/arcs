@@ -417,7 +417,6 @@ $(document).ready(function() {
             },
             success: function (results) {
                 results = JSON.parse(results);
-                console.log(results);
                 PROJECTS = results.projectsArray;
                 SEASONS = results.seasons;
                 RESOURCES = results.resources;
@@ -488,6 +487,14 @@ $(document).ready(function() {
         });
     }
     else {
-
+        prepAccordion(true);
+        dynamicPrep();
+        editMetaPrep();
+        annotationPrep();
+        collectionPrep();
+        commentsPrep();
+        flagPrep();
+        keywordPrep();
+        scrollPrep();
     }
 });
