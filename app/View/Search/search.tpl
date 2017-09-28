@@ -120,7 +120,7 @@
 		      </ul>
 		    </div>
 
-		    <div id="seasons-buttons" class="btn-group actions-left" >
+		    <div data-field="Season Name" id="seasons-buttons" class="filter-btn btn-group actions-left" >
 		      <button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Season
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -129,7 +129,7 @@
 		      </ul>
 		    </div>
 
-		    <div id="resources-buttons" class="btn-group actions-left">
+		    <div data-field="Type" id="resources-buttons" class="filter-btn btn-group actions-left">
 		      <button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Resource Type
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -140,7 +140,7 @@
 		    </div>
 
 
-			<div id="excavation-buttons" class="btn-group actions-left">
+			<div data-field="Excavation Type" id="excavation-buttons" class="filter-btn btn-group actions-left">
 				<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 					Excavation Units
 					<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -150,7 +150,7 @@
 				</ul>
 			</div>
 
-		    <div id="author-buttons" class="btn-group actions-left">
+		    <div data-field="Creator" id="author-buttons" class="filter-btn btn-group actions-left">
 <!--				need to adjust these on search -->
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Creator
@@ -196,10 +196,16 @@
 
 		</div>
 		</div>
+
 	</div>
+    <section class="search-filter-selector" id="field-selctor">
+      <ul>
+      </ul>
+    </section>
+
 	<div class='search-pagination'>
 		<div id="search-results">
-
+            
 			<div class='toolbar-fixed'>
 				<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
 				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <div class="icon-collection"></div></a>
@@ -264,6 +270,7 @@
     arcs.searchView = new arcs.views.search.Search({
         el: $('.wrap')
     });
+    
     $(document).ready(function() {
         $("#pageHelpModal").click(function(e) {
             if (e.target.nodeName === "ARTICLE") {

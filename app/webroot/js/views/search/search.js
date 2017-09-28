@@ -92,6 +92,42 @@
             adjustPage(totalResults, 1);
       }
     }
+    var setVisualFilter = function (filters) {
+        var ul = $("#field-selctor ul")
+        ul.empty()
+        console.log(ul)
+        for (filter in filters) {
+            if (filters.hasOwnProperty(filter)) {
+                if (filters[filter]) {
+                      ul.append(
+                      "<li data-field=\"" + filter + "\">" +
+                      filter + ": \"" + filters[filter] + "\"" +
+                      "<span class=\"exit-btn\">X</span>" +
+                      "</li>"
+                    )    
+                }
+            }
+        }
+        $(".exit-btn").unbind().click(function() {
+            var e = $(this)
+            var filter = e.parent().data("field")
+            $(".filter-btn").each(function(){
+                if (filter === $(this).data("field")) {
+                    console.log($(this))
+                    filtersApplied[filter] = ""
+                    $(this).find(".filter").each(function(){
+                        if ($(this).html() == "all") {
+                            $(this).trigger("click")
+                        }
+                   })
+                }
+            })
+
+          e.parent().remove()
+        })
+
+
+    }
     /* Initialize and define events */
     Search.prototype.initialize = function(options) {
 
@@ -1153,6 +1189,7 @@
           $(this).addClass('active');
           console.log(filterKey);
           filtersApplied[filterKey] = currentFilter;
+          setVisualFilter(filtersApplied)
           console.log(filtersApplied);
           filterCnt = getCnt();
           if (filterCnt) {

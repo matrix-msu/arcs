@@ -179,7 +179,7 @@ is from here to ...
 						</ul>
 					</div>
 
-					<div id="seasons-buttons" class="btn-group actions-left" >
+					<div data-field="Season Name" id="seasons-buttons" class="btn-group actions-left" >
 						<button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Season
 							<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -188,7 +188,7 @@ is from here to ...
 						</ul>
 					</div>
 
-					<div id="resources-buttons" class="btn-group actions-left">
+					<div data-field="Type" id="resources-buttons" class="btn-group actions-left">
 						<button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Resource Type
 							<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -199,7 +199,7 @@ is from here to ...
 					</div>
 
 
-					<div id="excavation-buttons" class="btn-group actions-left">
+					<div data-field="Excavation Type" id="excavation-buttons" class="btn-group actions-left">
 						<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Excavation Units
 							<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -209,7 +209,7 @@ is from here to ...
 						</ul>
 					</div>
 
-					<div id="author-buttons" class="btn-group actions-left">
+					<div data-field="Creator" id="author-buttons" class="btn-group actions-left">
 						<!--				need to adjust these on search -->
 						<button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Creator
