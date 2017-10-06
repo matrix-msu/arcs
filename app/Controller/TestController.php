@@ -31,13 +31,12 @@ class TestController extends AppController {
         if (!isset(array_keys($this->pidArray)[0])) {
             throw new Exception("Not projects to test on");
         }
-
-        $this->project = array_keys($this->pidArray)[0];
+    }
+    private function setVars() {
         $pid = parent::getPIDFromProjectName($this->project);
         $token = parent::getTokenFromProjectName($this->project); 
         $this->kora->setToken($token);
         $this->kora->setProject($pid);
-    
     }
 
     /**
@@ -46,11 +45,12 @@ class TestController extends AppController {
      * @param mixed What page to display
      * @return void
      */
-	public function test($testNum) {
-       
+	public function test($project=null, $testNum=null) {
+        $this->project = $project;
+        $this->setVars();
+
         $this->bench->start();
-            
-        switch ($testNum) {
+                switch ($testNum) {
            
             case "pull_all_resources":
                 $this->pullResources();            
@@ -68,8 +68,12 @@ class TestController extends AppController {
                 $this->pullExcavations();
                 break;
             default:
-                echo "<p>select a test case</p>";
+                echo "<p>select a test case: url = baseURL + 'project'/'test case'</p>";
                 echo "<p> pull_all_resources - pull all records and fields from the resources scheme</p>";
+                echo "<p> pull_all_pages - pull all records and fields from the pages scheme</p>";
+                echo "<p> pull_all_projects - pull all records and fields from the projects scheme</p>";
+                echo "<p> pull_all_seasons - pull all records and fields from the seasons scheme</p>";
+                echo "<p> pull_all_excavations - pull all records and fields from the surveys scheme</p>";
                 exit();
         }
 
@@ -121,6 +125,9 @@ class TestController extends AppController {
        $this->kora->setClause($clause); 
        $this->kora->search();        
      
+    }
+    public function generalSearch() {
+    
     }
 
 
