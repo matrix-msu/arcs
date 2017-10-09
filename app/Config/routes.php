@@ -301,8 +301,8 @@
 ////////////////////////////////////////////////////////////////////////
 # annotations Controller
 ////////////////////////////////////////////////////////////////////////
-    Router::connect('/api/annotations/findall',
-          array('controller' => 'annotations', 'action' => 'findAll')
+    Router::connect('/api/annotations/findByKid',
+          array('controller' => 'annotations', 'action' => 'findByKid')
     );
     Router::connect('/api/annotations/delete/*',
           array('controller' => 'annotations', 'action' => 'deleteAnnotation')

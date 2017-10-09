@@ -1,27 +1,415 @@
+//this file handles the canvas annotations and the details tab transcriptions and annotations
 function annotationPrep() {
+    var annotationDataGlobal = null;
+    var pageKidGlobal;
+    var isAnnotating = false;
+    var resourceHasPermissions = false;
+    console.log('flags:')
+    console.log(annotationFlags)
 
-    /*--------Annotations--------*/
-    var isAdmin = ADMIN; //todo- isAdmin is not working. -Josh <-- Of course it is not working, The constant was never declared -Austin
-    var globalData;
+    //get annotate to support multi-pages.
+    $('.page-slider').on('click', '.other-resource', function(){
+        pageKidGlobal = $(this).attr('id'); //the page kid being loaded
+        $('#PageImage').unbind().one('load', function(){ //make sure this function is only called once
+            //resize the canvas
+            $(".canvas").height($("#PageImage").height());
+            $(".canvas").width($("#PageImage").width());
+            $(".canvas").css({bottom: $("#PageImage").height()});
+            //if not currently annotating, remove old stuff and prep for the new
+            if( !isAnnotating ){
+                isAnnotating = true;
+                $('#canvas').contents(':not(#missingPictureIcon)').remove();
+                $(".annotationPopup").remove();
+                $(".annotation_display").remove();
+                $(".transcript_display").remove();
+                var currentResource = $('.selectedCurrentResource').find('img');
+                resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
+                getAnnotationData();
+            }
+        });
+    });
 
-    var pid;
-    var mapping = {}
-    var showAnnotations = true;
-    var mouseOn = false;
-    var gen_box = null;
-    var disabled = true;
-    var result_ids = [];
+    //ajax function for getting annotation data, call drawboxes on finish
+    function getAnnotationData(){
+        $.ajax({
+            url: arcs.baseURL + "api/annotations/findByKid",
+            type: "POST",
+            data: {
+                kid: pageKidGlobal
+            },
+            success: function (data) {
+                annotationDataGlobal = JSON.parse(data);
+                console.log('page data')
+                console.log(annotationDataGlobal);
+                displayAnnotations();
+                isAnnotating = false;
+            }
+        });
+    }
+
+    var canvasWidth;
+    var canvasHeight;
+    //loop through all of the data and send to boxes, popups, and details
+    function displayAnnotations(boxesOnly=false){
+        $(".annotationPopup").remove();
+        canvasWidth = $('.canvas').width();
+        canvasHeight = $('.canvas').height();
+        for( var el in annotationDataGlobal['annotationData'] ){
+            annotationDataGlobal['annotationData'][el].forEach(function(current){
+                drawAnnotationBox(current);
+                if( el != "url" && el != 'transcription'){ //no popup for urls and transcriptions
+                    appendPopup(current);
+                }
+                if( boxesOnly == false ){
+                    populateDetailsDrawer(current);
+                }
+            });
+        }
+    }
+
+    //draw the blue boxes on the canvas
+    function drawAnnotationBox(current){
+        if( current.x1 == null ){ return; }
+        $(".canvas").append('<div class="gen_box"  data-kid="'+pageKidGlobal+'" id="' + current.id + '"></div>');
+        var gen_box = $('#' + current.id);
+        $(gen_box).css({
+            'width': canvasWidth * current.x2 - canvasWidth * current.x1,
+            'height': canvasHeight * current.y2 - canvasHeight * current.y1,
+            'left': canvasWidth * current.x1,
+            'top': canvasHeight * current.y1
+        });
+        var annotationHtml = '';
+        var flagType = "FlagTooltip-White";
+        var flagFlagged = "";
+        if( annotationFlags.indexOf(current.id) != -1 ){
+            flagType = "flagToolTip_Red"; flagFlagged = " flagged";
+        }
+        var annotationType = 'annotationOutgoing';
+        if( current.url != '' ){
+            annotationType = 'annotationUrl';
+        }else if( current.incoming != null ){
+            annotationType = 'annotationIncoming';
+        }
+        var flagHtml = "<div class='flagAnnotation notAdmin"+flagFlagged+"'>" +
+            "<img style='cursor:pointer' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+            "class='flagAnnotationId "+annotationType+"' data-annid='"+current.id+"' />" +
+            "</div>";
+        if(
+            ($('#menu').html() == 'Login / Register' && flagType == 'flagToolTip_Red') ||
+            $('#menu').html() != 'Login / Register'
+        ){
+            annotationHtml += flagHtml;
+        }
+        $(gen_box).html(annotationHtml);
+    }
+
+    //append the popup to the gen box
+    function appendPopup(current){
+        var resourceType = annotationDataGlobal['resource_data'][current.id]['resource'][current.relation_resource_kid]['Type'];
+        var resourceIdentifier = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Resource Identifier'];
+        var pageScanNumber = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Scan Number'];
+        var pageThumbSrc = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['constructed_image'];
+        if( pageScanNumber != "" ){
+            pageScanNumber = "Page Number: " + pageScanNumber;
+        }
+        //append in the popups
+        $("#" + current.id).append(
+            "<div class='annotationPopup' style='display:none'>"+
+                "<img class='annotationImage' src='"+pageThumbSrc+"'/>"+
+                "<div class='annotationData'>"+
+                    "<p>Relation</p>"+
+                    "<p>"+resourceIdentifier+"</p>"+
+                    "<p>"+resourceType+"</p>"+
+                    "<p>"+pageScanNumber+"</p>"+
+                "</div>"+
+            "</div>"
+        );
+        //decide if the popup should go on the left or right
+        var offset = $("#" + current.id).width()+10;
+        if( current.x1 > .5 ){
+            $("#" + current.id).find('.annotationPopup').css('right', 170+'px');
+        }else{
+            $("#" + current.id).find('.annotationPopup').css('left', offset+'px');
+        }
+        //decide if the popup should align with the bottom
+        if( current.y1 > .5 ){
+            $("#" + current.id).find('.annotationPopup').css('top', '-170px');
+        }
+    }
+
+    //show/hide the annotation popup on a mouse hover
+    $( "#canvas" ).on('mouseenter', '.gen_box', function() {
+        if( $('#canvas').hasClass('ui-selectable') ){ //don't show popups while selecting
+            return;
+        }
+        $(this).find('.annotationPopup').css('display', 'inline-block');//.css('left',leftOffset);
+    });$( "#canvas" ).on('mouseleave', '.gen_box', function() {
+        $(this).find('.annotationPopup').css('display', 'none');
+    });
+
+    //resize the canvas on a image width change
+    $(window).resize(function() {
+        $('.resource-reset-icon').click();
+        $('#canvas').width($('#PageImage').width());
+        if( annotationDataGlobal !== null && !isAnnotating ) {
+            displayAnnotations(true);
+        }
+    });
+
+    $('.content_annotations').on('click', ".relationName", function(){
+        var attr = $(this).parent().attr('data-relation-url');
+        if (typeof attr !== typeof undefined && attr !== false) {
+            var protocol = "http://";
+            if( attr.substring(0,7)=='http://' || attr.substring(0,8)=='https://' ){
+                protocol = '';
+            }
+            window.location.href = protocol + attr;
+        }else{
+            var resource = $(this).parent().attr('data-relation-resource-kid');
+            var page = $(this).parent().attr('data-relation-page-kid');
+            window.location.href = arcs.baseURL+"resource/" +resource+"?pageSet="+page;
+        }
+    });
+
+    //clear the details drawer and populate
+    function populateDetailsDrawer(current){
+        var trashButton = '';
+        // if( isAdmin == 1 ){
+        //     trashButton = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>";
+        // }
+        var flagType = "FlagTooltip";
+        var flagFlagged = '';
+        if( annotationFlags.indexOf(current.id) != -1 ){
+            flagType = "flagToolTip_Red"; flagFlagged = 'flagged';
+        }
+        var flagString1 = "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+            "class='flagTranscript";
+        var flagString2 = " flagAnnotationId' data-annid='"+current.id+"' "+
+            "/>" ;
+        var trashString = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton;
+
+        if( resourceHasPermissions == false ){
+            flagString1 = '';
+            flagString2 = '';
+            trashString = '';
+            flagFlagged = '';
+        }
+        if( current.page_kid == kid && current.transcript != "" ){ //add in the flags for a transcription
+            var flagTypeClass = ' details-transcript ';
+            if( resourceHasPermissions == false ) flagTypeClass = '';
+            $(".content_transcripts").append(
+                "<div class='transcript_display' id='" + current.id + "'>" +
+                    current.transcript +
+                    "<div class='thumbResource'> " +
+                    flagString1 + flagTypeClass + flagFlagged + flagString2 +
+                    trashString +
+                    "</div>" +
+                "</div>"
+            );
+        }else{ //add in the flags in the details tab for the annotations
+            //outgoing
+            if (current.relation_page_kid != "" && (current.incoming == "false" || !current.incoming)) {
+                var flagTypeClass = ' details-outgoing ';
+                if( resourceHasPermissions == false ) flagTypeClass = '';
+                $(".outgoing_relations").append(
+                    "<div " +
+                        "class='annotation_display' " +
+                        "id='"+current.id+"' " +
+                        "data-relation-resource-kid='"+current.relation_resource_kid+"' " +
+                        "data-relation-page-kid='"+current.relation_page_kid+"' " +
+                    ">" +
+                        "<div class='relationName'>" +
+                        current.relation_resource_name +
+                        "</div>" +
+                        flagString1 + flagTypeClass + flagFlagged + flagString2 +
+                        trashString +
+                    "</div>"
+                );
+            }else if (current.relation_page_kid != "" && current.incoming == "true") {//incoming
+                var text = current.x1 ? "Revert to whole resource" : "Define space";
+                var flagTypeClass = ' details-incoming ';
+                var defineSpaceStuff =
+                    "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>"+
+                    "<div class='annotateLabel'>" + text + "</div>";
+                if( resourceHasPermissions == false ){
+                    flagTypeClass = '';
+                    defineSpaceStuff = '';
+                }
+                $(".incoming_relations").append(
+                    "<div " +
+                        "class='annotation_display' " +
+                        "id='"+current.id+"' " +
+                        "data-relation-resource-kid='"+current.relation_resource_kid+"' " +
+                        "data-relation-page-kid='"+current.relation_page_kid+"' " +
+                    ">" +
+                        "<div class='relationName'>" +
+                        current.relation_resource_name +
+                        "</div>" +
+                        flagString1 + flagTypeClass + flagFlagged + flagString2 +
+                        trashString +
+                        defineSpaceStuff +
+                    "</div>"
+                );
+            }
+        }
+        if (current.url != "") { //add a url flag
+            var flagTypeClass = ' details-url ';
+            if( resourceHasPermissions == false ) flagTypeClass = '';
+            $(".urls").append(
+                "<div " +
+                    "class='annotation_display' " +
+                    "id='"+current.id+"' " +
+                    "data-relation-url='"+current.url+"' " +
+                ">" +
+                    "<div class='relationName'>" +
+                        current.url +
+                    "</div>" +
+                    flagString1 + flagTypeClass + flagFlagged + flagString2 +
+                    trashString +
+                "</div>"
+            );
+        }
+    }
+
+    //everything to do with edit annotations is below here
+    ///////////////////////////////////////////////////////
+    $('#annotate-new-btn').click(function(){
+        prepareAddAnnotation();
+    });
+    $('.annotationHelpOk').click(function(){
+        removeAddAnnotation();
+        resetAnnotations();
+    });
+    $('.annotationClose').click(function(){
+        resetAnnotations();
+    });
+    function removeAddAnnotation(){
+        $('.annotateHelp').hide();
+        $('#canvas').css('cursor', '').selectable('destroy');
+        $('#ImageWrap').draggable();
+    }
+    function resetAnnotations(){
+        $('.gen_box_temp').remove();
+        $('.resource-icons').css('display', 'table-cell')
+        $('#prev-resource').css('display', '')
+        $('.tools').show();
+        $(".annotateModalBackground").hide();
+        $('.other-resource, .other-resources').off('click.preventPageClicks');
+		$(".annotateSearchResult").removeClass('selectedRelation');
+        selected = false;
+        annotateData.page_kid = "";
+        annotateData.resource_kid = "";
+        annotateData.relation_resource_kid = "";
+        annotateData.relation_page_kid = "";
+        annotateData.resource_name = "";
+        annotateData.url = "";
+        annotateData.transcript = "";
+        annotateData.x1 = "";
+        annotateData.x2 = "";
+        annotateData.y1 = "";
+        annotateData.y2 = "";
+    }
+    function prepareAddAnnotation(){
+        $('.other-resource, .other-resources').on('click.preventPageClicks', preventPageClicks);
+        $('.resource-reset-icon').click();
+        $('.resource-icons').css('display', 'none')
+        $('#prev-resource').css('display', 'none')
+        $('.tools').hide();
+        $('.gen_box_temp').remove();
+        $('.annotateHelp').show();
+        $('#ImageWrap').draggable('destroy');
+        var startX,startY,endX,endY,height,width;
+        //this is where the actual user annotating code is
+        $("#canvas").css('cursor', 'move');
+        $("#canvas").selectable({
+            start: function (e) { //mousedown record the coordinates
+                startX = e.pageX;
+                startY = e.pageY;
+            },
+            stop: function (e) { //mouseup record the coordinates and draw a temp box.
+                endX = e.pageX;
+                endY = e.pageY;
+                if( endX - startX >= 1 ){
+                    width = endX - startX;
+                }else{
+                    width = startX - endX;
+                    var drag_left = true;
+                }
+                if( endY - startY >= 1 ){
+                    height = endY - startY;
+                }else{
+                    height = startY - endY;
+                    var drag_up = true;
+                }
+                $('#canvas').append('<div class="gen_box gen_box_temp"></div>');
+                $('.gen_box_temp').css({
+                    'width': width,
+                    'height': height,
+                    'left': startX,
+                    'top': startY - 120
+                });
+                //add extra offset to the temp box depending on how it was drawn
+                drag_left ? $('.gen_box_temp').offset({left: endX}) : $('.gen_box_temp').offset({left: startX});
+                drag_up ? $('.gen_box_temp').offset({top: endY}) : $('.gen_box_temp').offset({top: startY});
+				
+				var gen_box = $('.gen_box_temp');
+				
+				//Add coordinates to annotation to save
+				annotateData.x1 = parseFloat($(gen_box).css('left'), 10) / $(".canvas").width();
+				annotateData.x2 = (parseFloat($(gen_box).css('left')) + width) / $(".canvas").width();
+				annotateData.y1 = (parseFloat($(gen_box).css('top'))) / $(".canvas").height();
+				annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
+
+                removeAddAnnotation(); //remove annotate ability
+                $(".annotateModalBackground").show();
+            }
+        });
+    }
+
+    function preventPageClicks(e){
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    //new annotation modal controllers
+    $(".annotateTabRelation").click(function () {
+        $(".annotateRelationContainer").show();
+        $(".annotateTranscriptContainer").hide();
+        $(".annotateUrlContainer").hide();
+        $('.activeTab').removeClass('activeTab');
+        $(".annotateTabRelation").addClass("activeTab");
+    });
+    $(".annotateTabTranscript").click(function () {
+        $(".annotateTranscriptContainer").show();
+        $(".annotateRelationContainer").hide();
+        $(".annotateUrlContainer").hide();
+        $('.activeTab').removeClass('activeTab');
+        $(".annotateTabTranscript").addClass("activeTab");
+    });
+    $(".annotateTabUrl").click(function () {
+        $(".annotateUrlContainer").show();
+        $(".annotateTranscriptContainer").hide();
+        $(".annotateRelationContainer").hide();
+        $('.activeTab').removeClass('activeTab');
+        $(".annotateTabUrl").addClass("activeTab");
+    });
+    //Set transcript and url
+    $(".annotateTranscript, .annotateUrl").on('change keyup paste mouseup', function () {
+        if ($(this).val().length > 0) {
+            $(".annotateSubmit").show();
+        }else{
+            $(".annotateSubmit").hide();
+        }
+    });
+
+    //everything with annotate search below here-
+	var result_ids = [];
     var results_count = 0;
     var results_per_page = 10;
     var current_offset = 0;
     var total_pages = 0;
     var index = 0;
     var page_nums = 0;
-    var resourceKid = '';
-    var resourceIdentifier = '';
-    var resourceHasPermissions = false; //determines whether to show the flags and trash.
-    var page_sid = '';
-    var annotateData = {
+	var annotateData = {
         transcript: "",
         relation_id: null,
         url: "",
@@ -36,228 +424,16 @@ function annotationPrep() {
         y1: "",
         y2: ""
     };
-
-    //get annotate to support multi-pages.
-    $('.page-slider').on('click', '.other-resource', function(){
-        $('#canvas').contents(':not(#missingPictureIcon)').remove();
-        var waitPageKid = $(this).attr('id');
-        setTimeout(function () {
-            waitForElement(waitPageKid);
-        }, 2);
-    });
-
-    $(".resources-annotate-icon").click(function () {
-        if ($('.resources-annotate-icon').attr('src') === "/"+BASE_URL+"img/AnnotationsOff.svg") {
-            $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/annotationsProfile.svg")
-        }
-        else {
-            $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/AnnotationsOff.svg")
-            $('.annotationHelpOk').click();
-        }
-
-        if (showAnnotations) {
-            $(".canvas").hide();
-            showAnnotations = false;
-        }
-        else {
-            $(".canvas").show();
-            showAnnotations = true;
-        }
-    });
-
-    var selected = false;
-
-    //on document load. wait for page image and trigger drawboxes.
-    function waitForElement(currentPageKid) {
-        if ($("#PageImage").height() !=0 &&
-            $("#PageImage").attr('src') != '/'+BASE_URL+'img/arcs-preloader.gif' &&
-            $("#PageImage")[0].complete != false
-        ) {
-            $(".canvas").height($("#PageImage").height());
-            $(".canvas").width($("#PageImage").width());
-            $(".canvas").css({bottom: $("#PageImage").height()});
-
-            //getSidFromKid is defined in bootstrap.php
-            page_sid = getSidFromKid(currentPageKid);
-
-            //get info about the current resource
-            var currentResource = $('.selectedCurrentResource').find('img');
-            resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
-            resourceKid = currentResource.attr('id').replace('identifier-', '');
-            resourceIdentifier = RESOURCES[resourceKid]['Resource Identifier'];
-
-            DrawBoxes(currentPageKid); //kick it off
-            GetDetails();
-        }
-        else {
-            setTimeout(function () {
-                waitForElement(currentPageKid);
-            }, 250);
-        }
-    }
-
-    $(".annotationClose").click(function () {
-        $(".annotateModalBackground").hide();
-        ResetAnnotationModal();
-        $('.gen_box').remove();
-        DrawBoxes(kid);
-    });
-
-    function Draw(showForm, id) {
-        $("#ImageWrap").draggable( "disable" );
-        $(".annotate").addClass("annotateActive");
-        $(".canvas").show();
-        $(".annotateHelp").show();
-        $(".canvas").addClass("select");
-        //Draw box
-        var i = 0;
-        disabled = false;
-        $(".canvas").selectable({
-            disabled: false,
-            start: function (e) {
-                if (!disabled) {
-                    //get the mouse position on start
-                    x_begin = e.pageX;
-                    y_begin = e.pageY;
-                }
-            },
-            stop: function (e) {
-                if (!disabled) {
-                    //get the mouse position on stop
-                    x_end = e.pageX,
-                        y_end = e.pageY;
-
-                    /***  if dragging mouse to the right direction, calcuate width/height  ***/
-                    if (x_end - x_begin >= 1) {
-                        width = x_end - x_begin;
-
-                        /***  if dragging mouse to the left direction, calcuate width/height (only change is x) ***/
-                    } else {
-
-                        width = x_begin - x_end;
-                        var drag_left = true;
-                    }
-
-                    /***  if dragging mouse to the down direction, calcuate width/height  ***/
-                    if (y_end - y_begin >= 1) {
-                        height = y_end - y_begin;
-
-                        /***  if dragging mouse to the up direction, calcuate width/height (only change is x) ***/
-                    } else {
-
-                        height = y_begin - y_end;
-                        var drag_up = true;
-                    }
-
-                    //append a new div and increment the class and turn it into jquery selector
-                    $(this).append('<div class="gen_box gen_box_' + i + '"></div>');
-
-                    gen_box = $('.gen_box_' + i);
-
-                    //add css to generated div and make it resizable & draggable
-                    $(gen_box).css({
-                        'width': width,
-                        'height': height,
-                        'left': x_begin,
-                        'top': y_begin - 120
-                    });
-
-                    //if the mouse was dragged left, offset the gen_box position
-                    drag_left ? $(gen_box).offset({left: x_end}) : $(gen_box).offset({left: x_begin});
-                    drag_up ? $(gen_box).offset({top: y_end}) : $(gen_box).offset({top: y_begin});
-
-                    //Add coordinates to annotation to save
-                    annotateData.x1 = parseFloat($(gen_box).css('left'), 10) / $(".canvas").width();
-                    annotateData.x2 = (parseFloat($(gen_box).css('left')) + width) / $(".canvas").width();
-                    annotateData.y1 = (parseFloat($(gen_box).css('top'))) / $(".canvas").height();
-                    annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
-
-                    // Show annotation modal or update incoming annotation coordinates
-                    if (showForm) $(".annotateModalBackground").show();
-                    else {
-                        $.ajax({
-                            url: arcs.baseURL + "api/annotations/" + id + ".json",
-                            type: "POST",
-                            data: {
-                                x1: annotateData.x1,
-                                x2: annotateData.x2,
-                                y1: annotateData.y1,
-                                y2: annotateData.y2
-                            },
-                            success: function () {
-                                ResetAnnotationModal();
-                                GetDetails();
-                                DrawBoxes(kid);
-                            }
-                        });
-                    }
-
-                    i++;
-                }
-            }
-        });
-    }
-
-    $(".annotate").click(function () {
-        $('.resources-annotate-icon').attr('src', "/"+BASE_URL+"img/annotationsProfile.svg");
-        showAnnotations = true;
-        Draw(true, null);
-    });
-
-    //Annotation search
+    var resourceKid = '';
+    var resourceIdentifier = '';
+    //Annotation search for submitted
     $(".annotateSearchForm").submit(function (event) {
         event.stopPropagation();
         event.preventDefault();
-        SubmitSearch(0);
-
-
+        SubmitAnnotateSearch(0);
     });
 
-    // Search pagination
-    $(".annotation_next").click(function() {
-        current_offset += results_per_page;
-        SetData(globalData, "resource", pid);
-    });
-
-    $(".annotation_prev").click(function() {
-        current_offset -= results_per_page
-        SetData(globalData, "resource", pid);
-    });
-
-    $(".annotation_begin").click(function() {
-        current_offset = 0;
-        SetData(globalData, "resource", pid);
-    });
-
-    $(".annotation_end").click(function() {
-        current_offset = page_nums * results_per_page - results_per_page;
-        SetData(globalData, "resource", pid);
-    });
-    function InjectLoader(injectId) {
-        var obj = $(injectId)
-        var spinner = "<img class=\"annoteSpinner\" src=\"" + arcs.baseURL + "img/arcs-preloader.gif\">"
-        obj.ready(function () {
-            obj.append(spinner)
-        })
-        spinner = $(".annoteSpinner")
-        return {
-            show: function () {
-                $(".annotateRelationContainer").css("text-align", "center")
-                obj.css("display","inherit")
-            },
-            hide: function () {
-                $(".annotateRelationContainer").css("text-align", "initial")
-                obj.css("display","none")
-            },
-            remove: function () {
-                spinner.remove()
-                $(".annotateRelationContainer").css("text-align", "initial")
-            }
-        }
-    }
-
-
-    function SubmitSearch(offset) {
+    function SubmitAnnotateSearch(offset){
         var annotateSearch = $(".annotateSearch");
         var search = annotateSearch.val()
         if( search == '' ){
@@ -284,7 +460,6 @@ function annotationPrep() {
             type: "GET",
             success: function (data) {
                 globalData = JSON.parse(data).results
-                console.log(globalData);
                 if( globalData.length == 0 ){
                     loader.remove()
                     $(".annotateSearch ").show()
@@ -310,7 +485,14 @@ function annotationPrep() {
                         q: q
                     },
                     success: function (data) {
-                        var pages = JSON.parse(data)
+						try {
+							var pages = JSON.parse(data)
+						} catch(e) {
+							loader.remove()
+							$(".annotateSearch ").show()
+							$('.resultsContainer').html('<p style="text-align:center">No Results Found.</p>');
+							return;
+						}
                         globalData = pages;
                         SetData(globalData,"resource", pid)
                         loader.remove()
@@ -319,9 +501,30 @@ function annotationPrep() {
                 });
             }
         });
-
     }
-    function addResourcesToQueue(data) {
+	function InjectLoader(injectId) {
+        var obj = $(injectId)
+        var spinner = "<img class=\"annoteSpinner\" src=\"" + arcs.baseURL + "img/arcs-preloader.gif\">"
+        obj.ready(function () {
+            obj.append(spinner)
+        })
+        spinner = $(".annoteSpinner")
+        return {
+            show: function () {
+                $(".annotateRelationContainer").css("text-align", "center")
+                obj.css("display","inherit")
+            },
+            hide: function () {
+                $(".annotateRelationContainer").css("text-align", "initial")
+                obj.css("display","none")
+            },
+            remove: function () {
+                spinner.remove()
+                $(".annotateRelationContainer").css("text-align", "initial")
+            }
+        }
+    }
+	function addResourcesToQueue(data) {
         var q = Array();
 
         $.each(data, function (key, value) {
@@ -338,7 +541,7 @@ function annotationPrep() {
         });
         return q
     }
-    function SetData(data, scheme, pid) {
+	function SetData(data, scheme, pid) {
 
         if (Object.keys(data).length > 0) {
             results_count = 0;
@@ -396,7 +599,8 @@ function annotationPrep() {
                 if (index >= current_offset && index < current_offset + results_per_page) {
                     $("#" + v['Resource Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
-                    var image = KORA_FILES_URI + tempPid + '/' + page_sid + '/' + v['Image Upload'].localName;
+					var page_sid = getSidFromKid(v.kid);
+                    var image = THUMBNAIL_URL + 'smallThumbs/' + v['Image Upload'].localName;
                     var pageDisplay = $(".resultsContainer").find("#" + v.kid);
                     if (image === "") {
                         pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
@@ -531,23 +735,7 @@ function annotationPrep() {
             }
         }
     }
-
-    //Set transcript and url
-    var lastValue = '';
-    $(".annotateTranscript, .annotateUrl").on('change keyup paste mouseup', function () {
-        if ($(this).val() != lastValue) {
-            lastValue = $(this).val();
-            annotateData.url = $(".annotateUrl").val();
-            if (selected || annotateData.url.length > 0) {
-                $(".annotateSubmit").show();
-            }
-            else {
-                $(".annotateSubmit").hide();
-            }
-        }
-    });
-
-    $(".annotateSubmit").click(function () {
+	$(".annotateSubmit").click(function () {
         annotateData.page_kid = kid;
         annotateData.resource_kid = resourceKid;
         annotateData.resource_name = resourceIdentifier;
@@ -588,549 +776,41 @@ function annotationPrep() {
                                 success: function (data) {
                                 }
                             });
-                            GetDetails();
                         }
                     });
                 }
-
-                ResetAnnotationModal();
-                $(gen_box).attr("id", data.id);
-                gen_box = null;
-                DrawBoxes(kid);
-                if (annotateData.relation_resource_kid == "") {
-                    GetDetails();
-                }
+				//reset annotations and redraw
+				getAnnotationData();
+				resetAnnotations();
             }
         });
-
-
     });
+	
+	$(document).on('click', ".trashTranscript", function () {
+		if( $(this).parent().hasClass('annotation_display') ){
+			$('.deleteBody').html('Are you sure you want to delete this annotation?');
+			var parameter = $(this).parent().attr("id");
+		}else{
+			$('.deleteBody').html('Are you sure you want to delete this transcription?');
+			var parameter = $(this).closest('.transcript_display').attr("id");
+		}
+		$('.deleteWrap').css('display', 'block');
+		$('.deleteButton').unbind().click(function () {
+			$('.deleteWrap').css('display', 'none');
+			$.ajax({
+				url: arcs.baseURL + "api/annotations/delete/" + parameter + ".json",
+				type: "DELETE",
+				statusCode: {
+					200: function () {
+						GetDetails();
+						DrawBoxes(kid);
+					},
+					403: function () {
+						alert("You don't have permission to delete this annotation");
+					}
+				}
+			})
+		});
+	});
 
-    function ResetAnnotationModal() {
-        //Reset modal
-        $(".annotateSearchResult").removeClass('selectedRelation');
-        selected = false;
-        annotateData.page_kid = "";
-        annotateData.resource_kid = "";
-        annotateData.relation_resource_kid = "";
-        annotateData.relation_page_kid = "";
-        annotateData.resource_name = "";
-        annotateData.url = "";
-        annotateData.transcript = "";
-        annotateData.x1 = "";
-        annotateData.x2 = "";
-        annotateData.y1 = "";
-        annotateData.y2 = "";
-
-        disabled = true;
-        $("#ImageWrap").draggable( "enable" );
-        $(".annotateRelationContainer").show();
-        $(".annotateTranscriptContainer").hide();
-        $(".annotateUrlContainer").hide();
-        $(".annotateTabRelation").addClass("activeTab");
-        $(".annotateTabTranscript").removeClass("activeTab");
-        $(".annotateTabUrl").removeClass("activeTab");
-
-        $(".annotateModalBackground").hide();
-        $(".annotateHelp").hide();
-        $(".annotateSearch").val("");
-        $(".annotateTranscript").val("");
-        $(".annotateUrl").val("");
-        $(".resultsContainer").empty();
-        $(".canvas").selectable({disabled: true});
-        //$( ".canvas" ).removeClass("select ui-selectable ui-selectable-disabled");
-        $(".annotate").removeClass("annotateActive");
-        $(".annotation_pagination").hide();
-        $(".annotateSubmit").hide();
-    }
-
-    //Tabs
-    $(".annotateTabRelation").click(function () {
-        $(".annotateRelationContainer").show();
-        $(".annotateTranscriptContainer").hide();
-        $(".annotateUrlContainer").hide();
-        $(".annotateTabRelation").addClass("activeTab");
-        $(".annotateTabTranscript").removeClass("activeTab");
-        $(".annotateTabUrl").removeClass("activeTab");
-    });
-
-    $(".annotateTabTranscript").click(function () {
-        $(".annotateTranscriptContainer").show();
-        $(".annotateRelationContainer").hide();
-        $(".annotateUrlContainer").hide();
-        $(".annotateTabTranscript").addClass("activeTab");
-        $(".annotateTabRelation").removeClass("activeTab");
-        $(".annotateTabUrl").removeClass("activeTab");
-    });
-
-    $(".annotateTabUrl").click(function () {
-        $(".annotateUrlContainer").show();
-        $(".annotateTranscriptContainer").hide();
-        $(".annotateRelationContainer").hide();
-        $(".annotateTabUrl").addClass("activeTab");
-        $(".annotateTabTranscript").removeClass("activeTab");
-        $(".annotateTabRelation").removeClass("activeTab");
-    });
-
-    $(".annotationHelpOk").click(function () {
-        $(".annotateHelp").hide();
-    });
-
-    function GetDetails() {
-        $.ajax({
-            url: arcs.baseURL + "api/annotations/findall.json",
-            type: "POST",
-            data: {
-                id: kid
-            },
-            success: function (data) {
-                data.sort(function (a, b) {
-                    if (a.order_transcript < b.order_transcript) return -1;
-                    if (a.order_transcript > b.order_transcript) return 1;
-                });
-                // the trash button is trash - austin
-
-                $(".transcript_display").remove();
-                $(".annotation_display").remove()
-
-                $.each(data, function (key, value) {
-                    var trashButton = ( isAdmin == 1 ) ?
-                        "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>" : "";
-
-                    var flagType = "FlagTooltip";
-                    if( annotationFlags.indexOf(value.id) != -1 ){
-                        flagType = "flagToolTip_Red";
-                    }
-                    var flagString1 = "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
-                        "class='flagTranscript";
-                    var flagString2 = " flagAnnotationId' data-annid='"+value.id+"' "+
-                        "/>" ;
-                    var trashString = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton;
-
-                    if( resourceHasPermissions == false ){
-                        flagString1 = '';
-                        flagString2 = '';
-                        trashString = '';
-                    }
-
-                    if (value.page_kid == kid && value.transcript != "") { //add in the flags for a transcription
-                        var flagTypeClass = ' details-transcript ';
-                        if( resourceHasPermissions == false ) flagTypeClass = '';
-                        $(".content_transcripts").append(
-                            "<div class='transcript_display' id='" + value.id + "'>" +
-                            value.transcript +
-                            "<div class='thumbResource'> " +
-                            flagString1 + flagTypeClass + flagString2 +
-                            trashString +
-                            "</div>" +
-                            "</div>"
-                        );
-                    }
-                    else { //add in the flags in the details tab for the annotations
-                        //outgoing
-                        if (value.relation_page_kid != "" && (value.incoming == "false" || !value.incoming)) {
-                            var flagTypeClass = ' details-outgoing ';
-                            if( resourceHasPermissions == false ) flagTypeClass = '';
-                            $(".outgoing_relations").append(
-                                "<div class='annotation_display' id='" + value.id + "'>" +
-                                "<div class='relationName'>" +
-                                value.relation_resource_name +
-                                "</div>" +
-                                flagString1 + flagTypeClass + flagString2 +
-                                trashString +
-                                "</div>"
-                            );
-                        }
-                        else if (value.relation_page_kid != "" && value.incoming == "true") {//incoming
-                            var text = value.x1 ? "Revert to whole resource" : "Define space";
-                            var flagTypeClass = ' details-incoming ';
-                            var defineSpaceStuff =
-                                "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>"+
-                                "<div class='annotateLabel'>" + text + "</div>";
-                            if( resourceHasPermissions == false ){
-                                flagTypeClass = '';
-                                defineSpaceStuff = '';
-                            }
-                            $(".incoming_relations").append(
-                                "<div class='annotation_display " + value.id + "' id='" + value.id + "'>" +
-                                    "<div class='relationName'>" +
-                                        value.relation_resource_name +
-                                    "</div>" +
-                                    flagString1 + flagTypeClass + flagString2 +
-                                    trashString +
-                                    defineSpaceStuff +
-                                "</div>"
-                            );
-                        }
-                    }
-                    if (value.url != "") { //add a url flag
-                        var flagTypeClass = ' details-url ';
-                        if( resourceHasPermissions == false ) flagTypeClass = '';
-                        $(".urls").append(
-                            "<div class='annotation_display' id='" + value.id + "'>" +
-                            value.url +
-                            flagString1 + flagTypeClass + flagString2 +
-                            trashString +
-                            "</div>"
-                        );
-                    }
-
-                    // Set incoming coordinates or reset incoming annotation coordinates to null
-                    $("." + value.id).find(".annotateLabel").click(function() {
-                        $.ajax({
-                            url: arcs.baseURL + "api/annotations/" + value.id + ".json",
-                            type: "POST",
-                            data: {
-                                x1: null,
-                                x2: null,
-                                y1: null,
-                                y2: null
-                            },
-                            success: function () {
-                                DrawBoxes(kid);
-                                GetDetails();
-                            }
-                        });
-                    })
-                    $("." + value.id).on('click', ".annotateLabel", function () {
-                        if (!value.x1) {
-                            Draw(false, value.id);
-                        }
-                    });
-
-                });
-
-                $(".flagTranscript").click(function () {
-                    $(".modalBackground").show();
-                    $("#flagTarget").val("Transcript");
-                    $('#flagAnnotation_id').val($(this).parent().attr("id"));
-                });
-                $(".trashAnnotation").click(function () {
-                    $('.deleteBody').html('Are you sure you want to delete this annotation?')
-                    $('.deleteWrap').css('display', 'block');
-                    var parameter = $(this).parent().attr("id");
-                    $('.deleteButton').unbind().click(function () {
-                        $('.deleteWrap').css('display', 'none');
-
-                        $.ajax({
-                            url: arcs.baseURL + "api/annotations/delete/" + parameter + ".json",
-                            type: "DELETE",
-                            statusCode: {
-                                200: function (data) {
-
-                                    GetDetails();
-                                    DrawBoxes(kid);
-
-                                },
-                                403: function (data) {
-                                    alert("You don't have permission to delete this annotation");
-                                }
-                            },
-                            success: function(e) {
-                            }
-                        })
-                    });
-                });
-
-                $(".trashTranscript").click(function () {
-                    if( $(this).parent().hasClass('annotation_display') ){
-                        $('.deleteBody').html('Are you sure you want to delete this annotation?');
-                        var parameter = $(this).parent().attr("id");
-                    }else{
-                        $('.deleteBody').html('Are you sure you want to delete this transcription?');
-                        var parameter = $(this).closest('.transcript_display').attr("id");
-                    }
-                    $('.deleteWrap').css('display', 'block');
-                    $('.deleteButton').unbind().click(function () {
-                        $('.deleteWrap').css('display', 'none');
-                        $.ajax({
-                            url: arcs.baseURL + "api/annotations/delete/" + parameter + ".json",
-                            type: "DELETE",
-                            statusCode: {
-                                200: function () {
-                                    GetDetails();
-                                    DrawBoxes(kid);
-                                },
-                                403: function () {
-                                    alert("You don't have permission to delete this annotation");
-                                }
-                            }
-                        })
-                    });
-                });
-
-                //Mouse over annotation
-                $(".relationName").unbind().click(function () {
-                    mouseOn = true;
-                    ShowDetailsAnnotation($(this));
-                })
-            }
-        })
-
-    }
-
-    // clicked on annotaion in the details tab
-    function ShowDetailsAnnotation(t) {
-        var id = t.parent().attr('id');
-        $.ajax({
-            url: arcs.baseURL + "api/annotations/" + id + ".json",
-            type: "GET",
-            success: function (data) {
-                window.location.href = arcs.baseURL + "resource/" + data.relation_resource_kid +
-                    "?pageSet=" + data.relation_page_kid;
-            }
-        });
-    }
-
-    //get the box data
-    var boxData = false;
-    var currentPageKid;
-    function DrawBoxes(pageKid) {
-        $(gen_box).remove();
-        $(".gen_box").remove();
-        $.ajax({
-            url: arcs.baseURL + "api/annotations/findall.json",
-            type: "POST",
-            data: {
-                id: pageKid
-            },
-            success: function (data) {
-                boxData = data;
-                currentPageKid = pageKid;
-                drawAndRedraw();
-            }
-        });
-    }
-
-    //putting the draw in a separate function to be able to redraw without ajax
-    function drawAndRedraw(){
-        if( !boxData ){
-            return;
-        }
-        var pageKid = currentPageKid;
-        $.each(boxData, function (k, v) {
-            if (v.x1) {
-                $(".canvas").append('<div class="gen_box"  data-kid="'+pageKid+'" id="' + v.id + '"></div>');
-                gen_box = $('#' + v.id);
-                //add css to generated div and make it resizable & draggable
-                $(gen_box).css({
-                    'width': $(".canvas").width() * v.x2 - $(".canvas").width() * v.x1,
-                    'height': $(".canvas").height() * v.y2 - $(".canvas").height() * v.y1,
-                    'left': $(".canvas").width() * v.x1,
-                    'top': $(".canvas").height() * v.y1
-                });
-                var annotationHtml = '';
-                var flagType = "FlagTooltip-White";
-                if( annotationFlags.indexOf(v.id) != -1 ){
-                    flagType = "flagToolTip_Red";
-                }
-                var annotationType = 'annotationOutgoing';
-                if( v.url != '' ){
-                    annotationType = 'annotationUrl';
-                }else if( v.incoming != null ){
-                    annotationType = 'annotationIncoming';
-                }
-                annotationHtml +=
-                    "<div class='flagAnnotation notAdmin'>" +
-                    "<img style='cursor:pointer' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
-                    "class='flagAnnotationId "+annotationType+"' data-annid='"+v.id+"' "+
-                    "/>" +
-                    "</div>";
-                if( resourceHasPermissions == true ) {
-                    $(gen_box).html(annotationHtml);
-                }
-                $("#deleteAnnotation_" + v.id).click(function () {
-                    var box = $(this).parent();
-                    $.ajax({
-                        url: arcs.baseURL + "api/annotations/delete/" + $(this).parent().attr("id") + ".json",
-                        type: "DELETE",
-                        statusCode: {
-                            204: function () {
-                                box.remove();
-                                GetDetails();
-                            },
-                            // Make modal for this
-                            403: function () {
-                                alert("You don't have permission to delete this annotation");
-                            }
-                        }
-                    })
-                });
-            }
-        });
-        $(".flagAnnotation").click(function () {
-            $(".modalBackground").show();
-            $("#flagTarget").show();
-            $('#flagAnnotation_id').val($(this).parent().attr("id"));
-        });
-        //Mouse over (hover) annotation
-        $(".gen_box").mouseenter(function () {
-            mouseOn = true;
-            ShowAnnotation($(this).attr('id'));
-        });
-        $(".gen_box").mouseleave(function () {
-            mouseOn = false;
-            $(".annotationPopup").remove();
-        });
-    }
-
-    var annotationAjaxRunning = false;
-    // Annotation popup on the canvas
-    function ShowAnnotation(id, redirect=false) {
-        if( annotationAjaxRunning == true ){
-            return;
-        }
-        annotationAjaxRunning = true;
-        $.ajax({
-            url: arcs.baseURL + "api/annotations/" + id + ".json",
-            type: "GET",
-            success: function (data) {
-                console.log(data);
-                annotationAjaxRunning = false;
-                $(".annotationPopup").remove();
-                if (mouseOn) {
-                    $("#" + id).append("<div class='annotationPopup' style='display:none;'><img class='annotationImage'/><div class='annotationData'></div></div>");
-
-                    if (data.relation_page_kid != "") {
-                        var paramKid = (data.relation_resource_kid == data.relation_page_kid) ? data.relation_resource_kid : data.relation_page_kid;
-
-                        $.ajax({
-                            url: arcs.baseURL + "resources/advanced_search",
-                            type: "POST",
-                            data: {
-                                q: [
-                                    ['kid', '=', paramKid]
-                                ],
-                                pid: data.page_kid,
-                                sid: 'page'
-                            },
-                            success: function (pageData) {
-                                var data = JSON.parse(pageData);
-                                var page = data[paramKid]
-                                var resource = data['resource'] || false
-
-                                if(redirect) {
-                                    var kid = page["Resource Associator"][0] || "INVALID_KID";
-
-                                    $('<form />')
-                                        .hide()
-                                        .attr({ method : "post" })
-                                        .attr({ action :  arcs.baseURL + "resource/" + kid})
-                                        .append($('<input />')
-                                            .attr("type","hidden")
-                                            .attr({ "name" : "pageSet" })
-                                            .val(page.kid)
-                                        )
-                                        .append('<input type="submit" />')
-                                        .appendTo($("body"))
-                                        .submit();
-                                }
-                                var image = page['constructed_image'];
-                                // Resource.Identifier
-                                // Resource.Type
-                                // Page.Scan Number
-                                $(".annotationImage").attr('src', image);
-                                $( ".annotationImage" ).load(function() {
-                                    $(".annotationPopup").css("left", $("#" + id).width() + 10).css('display', 'inline-block');
-                                });
-                                $(".annotationData").append("<p>Relation</p>");
-                                $(".annotationData").append("<p>" + page["Resource Identifier"] + "</p>");
-                                if (resource) {
-                                    $(".annotationData").append("<p>" + resource[Object.keys(resource)[0]]["Type"] + "</p>");
-                                }
-                                $(".annotationData").append("<p>" + (page["Scan Number"] || "N/A") + "</p>");
-
-                            }
-                        });
-                    }
-
-                    if (data.transcript != "") {
-                        $(".annotationData").append("<p>Transcript: " + data.transcript + "</p>");
-                    }
-
-                    if (data.url != "") {
-                        $(".annotationData").append("<p>URL: " + data.url + "</p>");
-                    }
-                }
-            }
-        });
-
-    }
-
-
-    /*--------Transcriptions--------*/
-    $(".editTranscriptions").click(function () {
-        $(".editOptions").show();
-        $(".editTranscriptions").hide();
-
-        $(".content_transcripts").sortable({
-            disabled: false,
-            sort: function (e) {
-                $(".newTranscriptionForm").hide();
-            }
-        });
-
-        $('.transcript_display').addClass("editable");
-        $(".editInstructions").show();
-    });
-
-    $(".newTranscription").click(function () {
-        $('.content_transcripts').append($(".newTranscriptionForm"));
-        $(".newTranscriptionForm").show();
-    });
-
-    $(".saveTranscription").click(function () {
-        $(".transcriptionTextarea").val('');
-        $(".newTranscriptionForm").hide();
-        $(".editOptions").hide();
-        $(".editTranscriptions").show();
-
-        var sortedIDs = $(".content_transcripts").sortable("toArray");
-        $.each(sortedIDs, function (k, v) {
-            $.ajax({
-                url: arcs.baseURL + "api/annotations/" + v + ".json",
-                type: "POST",
-                data: {
-                    order_transcript: k
-                }
-            });
-        });
-
-        $(".content_transcripts").sortable({disabled: true});
-        $('.transcript_display').removeClass("editable");
-        $(".editInstructions").hide();
-    });
-
-    $(".newTranscriptionForm").submit(function (e) {
-        e.preventDefault();
-        annotateData.page_kid = kid;
-        annotateData.resource_kid = resourceKid;
-        annotateData.resource_name = resourceIdentifier;
-        annotateData.transcript = $(".transcriptionTextarea").val();
-        annotateData.order_transcript = 1000000;
-
-        if (annotateData.transcript.length > 0)
-            $.ajax({
-                url: arcs.baseURL + "api/annotations.json",
-                type: "POST",
-                data: annotateData,
-                success: function () {
-                    $(".transcriptionTextarea").val('');
-                    $(".newTranscriptionForm").hide();
-                    GetDetails();
-                }
-            });
-    });
-    // Details tab
-    $(".details").click(function () {
-        GetDetails();
-    });
-
-    //resize the canvas on a image width change
-    $(window).resize(function() {
-        $('#canvas').width($('#PageImage').width());
-        drawAndRedraw();
-    });
 }
-
-// $(document).ready(annotationPrep);

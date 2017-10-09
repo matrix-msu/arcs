@@ -9676,6 +9676,24 @@ input[type=range]:focus::-ms-fill-upper {
   background: #fff;
   border-bottom: 1px solid #cdcdcd;
   overflow: hidden !important;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+#viewer-window .canvasGrabCursor {
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
 #viewer-window #ImageWrap {
   width: 100%;
@@ -9688,7 +9706,6 @@ input[type=range]:focus::-ms-fill-upper {
   margin-right: auto;
   margin-left: auto;
   transform: scale(1);
-  cursor: move;
   transform-origin: center;
 }
 #viewer-window #ImageWrap .canvas {
@@ -9696,7 +9713,6 @@ input[type=range]:focus::-ms-fill-upper {
   display: block;
   margin-right: auto;
   margin-left: auto;
-  cursor: move;
   z-index: 1;
 }
 #resource-tools {

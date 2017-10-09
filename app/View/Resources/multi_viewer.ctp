@@ -287,9 +287,9 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
         <div id="viewer-window">
 
             <div class="annotateHelp">Click and drag to outline the area you would like to annotate.
-                <div class="annotationHelpOk">OK</div>
+                <div class="annotationHelpOk">Cancel</div>
             </div>
-            <div id="ImageWrap">
+            <div id="ImageWrap" class="canvasGrabCursor">
                 <img src="<?php ?> " id="PageImage">
                 <div>
                     <div id="canvas" class='canvas'><div id="missingPictureIcon">

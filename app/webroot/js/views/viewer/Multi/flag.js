@@ -10,8 +10,10 @@ function flagPrep() {
 
     //click on an annotation flag
     $('#canvas').on('click', ".flagAnnotation", function () {
-        console.log('flag click');
         var el = $(this);
+        if( el.hasClass('flagged') ){ //already flagged so no clicks
+            return;
+        }
         el.find('img').attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
             .removeClass('icon-meta-flag')
             .addClass('icon-meta-flag-blue')
@@ -50,8 +52,11 @@ function flagPrep() {
 
     //click on a details-tab flag
     $(document).on('click', ".flagTranscript", function () {
-        $(".flagModalBackground").show();
         var el = $(this);
+        if( el.hasClass('flagged') ){ //already flagged so no clicks
+            return;
+        }
+        $(".flagModalBackground").show();
         el.attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
             .removeClass('icon-meta-flag').addClass('icon-meta-flag-blue');
         if( el.hasClass('details-transcript') ){ //is transcript

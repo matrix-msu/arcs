@@ -563,13 +563,17 @@ class SearchController extends AppController {
     /**
      * Search resources with advanced search.
      */
-    public function advanced_resources() {
-
-        $options = $this->parseParams();
+    public function advanced_resources($data = null) {
+        $isAnnotations = false;
+        if( !empty($data) ){
+            $isAnnotations = true;
+            @$this->request->data = $data;
+        }
+        //$options = $this->parseParams();
         $this->autoRender = false;
-
         $pName = parent::convertKIDtoProjectName($this->request->data['pid']);
         $pid = parent::getPIDFromProjectName($pName);
+
         if( $this->request->data['sid'] == 'resource' ){
             $sid = parent::getResourceSIDFromProjectName($pName);
         }elseif( $this->request->data['sid'] == 'subject' ){
@@ -607,14 +611,19 @@ class SearchController extends AppController {
                }
                $tempRes2 = json_decode($kora->return_json());
                $tempRes["resource"] = $tempRes2;
-               echo json_encode($tempRes);
+               if( $isAnnotations ){
+                   return $tempRes;
+               }else {
+                   echo json_encode($tempRes);
+               }
                return;
            }
         }
-
-
-
-        echo ($results);
+        if( $isAnnotations ){
+            return $results;
+        }else {
+            echo ($results);
+        }
     }
 
 
