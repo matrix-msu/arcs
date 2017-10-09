@@ -37,12 +37,13 @@ $(document).ready(function(){
         });
 
     }
-    
+
     if (typeof notAResource !== 'undefined' && notAResource) {
-        $('#resourcePermHeader').html("Oh no! This resource doesn't exist!");
-        $('#resourcePermPara').html("Please check your url and that the resource does exist");
+        $('#resourcePermHeader').html("This resource has been removed, or no longer exists within the system.");
+        $('#resourcePermPara').hide();
         $('.logModalBtn').hide();
-        $('.permission-content').css('height', '195px');
+        $('.permission-content').css('height', '175px');
+        $('.permission-modal-header').css('width', '80%');
         $("#resource_permission_model").show();
     }else if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
         $("#resource_permission_model").show();
