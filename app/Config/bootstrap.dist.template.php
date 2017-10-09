@@ -141,6 +141,7 @@ JAVASCRIPT
 define("globaljsvars",
     "<script type='text/javascript'>" .
     "var BASE_URL ='".BASE_URL."';" .
+    "var THUMBNAIL_URL ='".THUMBS_URL."';" .
     "var PID_ARRAY ='".json_encode($GLOBALS['PID_ARRAY'])."';" .
     "var PROJECT_SID_ARRAY ='".json_encode($GLOBALS['PROJECT_SID_ARRAY'])."';" .
     "var SEASON_SID_ARRAY ='".json_encode($GLOBALS['SEASON_SID_ARRAY'])."';" .
