@@ -780,8 +780,11 @@ function annotationPrep() {
                     });
                 }
 				//reset annotations and redraw
-				getAnnotationData();
+				$(".annotation_display").remove();
+				$(".transcript_display").remove();
+				$(".gen_box").remove();
 				resetAnnotations();
+				getAnnotationData();
             }
         });
     });
@@ -802,8 +805,11 @@ function annotationPrep() {
 				type: "DELETE",
 				statusCode: {
 					200: function () {
-						GetDetails();
-						DrawBoxes(kid);
+						$(".annotation_display").remove();
+						$(".transcript_display").remove();
+						$(".gen_box").remove();
+						resetAnnotations();
+						getAnnotationData();
 					},
 					403: function () {
 						alert("You don't have permission to delete this annotation");
