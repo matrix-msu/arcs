@@ -56,6 +56,9 @@
                     }
                     echo "<script>var resourceAccess = false;</script>";
                 }
+                if (isset($notAResource) && (bool)$notAResource) {
+                    echo "<script>var notAResource = true;</script>";
+                }
                 if ($title_for_layout == 'Collections' || $title_for_layout == 'Resources' || $title_for_layout == 'Search' || $title_for_layout == 'AdvancedSearch' || $title_for_layout == 'Users' || $title_for_layout == 'Projects') {
                     if (isset($user['loggedIn']) && $user['loggedIn'] != '' ) {
                         echo $this->element('Permissions/request_permission');

@@ -2,10 +2,10 @@
     <div class="permission-content">
         <div class="modal-exit"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
         <div class="permission-modal-header">
-            <h1>Oh no! This resource is locked!</h1>
+            <h1 id="resourcePermHeader">Oh no! This resource is locked!</h1>
         </div>
         <div class="permission-modal-content">
-            <p>You will need to login in order to view this private resource</p>
+            <p id="resourcePermPara">You will need to login in order to view this private resource</p>
         </div>
         <div class="permission-modal-responseButtons">
             <p>
@@ -21,29 +21,35 @@
 </div>
 
 <script>
-  $(document).ready(function(){
+$(document).ready(function(){
     var permissions = function(){
 
-          $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
+        $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
             $("#resource_permission_model").show();
             $("#resource_permission_model").css("pointer-events", "all");
-          });
-          $(".modal-exit").click(function () {
-              $("#resource_permission_model").hide();
-              $("#resource_permission_model").css("pointer-events", "none");
-          });
-          $(".logModalBtn, .reg").click(function () {
-             $(".modal-exit").click();
-          });
+        });
+        $(".modal-exit").click(function () {
+            $("#resource_permission_model").hide();
+            $("#resource_permission_model").css("pointer-events", "none");
+        });
+        $(".logModalBtn, .reg").click(function () {
+            $(".modal-exit").click();
+        });
 
     }
-
-    if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
-      $("#resource_permission_model").show();
+    
+    if (typeof notAResource !== 'undefined' && notAResource) {
+        $('#resourcePermHeader').html("Oh no! This resource doesn't exist!");
+        $('#resourcePermPara').html("Please check your url and that the resource does exist");
+        $('.logModalBtn').hide();
+        $('.permission-content').css('height', '195px');
+        $("#resource_permission_model").show();
+    }else if (typeof resourceAccess !== 'undefined' && !resourceAccess) {
+        $("#resource_permission_model").show();
     }
 
     permissions();
-  });
+});
 
 
 </script>

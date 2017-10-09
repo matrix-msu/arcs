@@ -867,6 +867,9 @@ class ResourcesController extends AppController {
             }
         }
 
+        if( sizeof($resources_array) == 1 && empty($resources) ){
+            $this->set("notAResource", true);
+        }
         if ( empty($resources) ) {
             $this->set("resourceAccess", false);
         }
