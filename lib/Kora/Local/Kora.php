@@ -51,7 +51,7 @@ class Kora extends AppController{
       $this->fields = "ALL";
       $this->results_per_page = 100;
     }
-    protected function search(){
+    public function search(){
 
         $this->comprehensive_results = KORA_Search(
 
