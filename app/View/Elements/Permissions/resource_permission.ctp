@@ -39,7 +39,7 @@ $(document).ready(function(){
     }
 
     if (typeof notAResource !== 'undefined' && notAResource) {
-        $('#resourcePermHeader').html("This resource has been removed, or no longer exists within the system.");
+        $('#resourcePermHeader').html("This resource has been removed or no longer exists within the system.");
         $('#resourcePermPara').hide();
         $('.logModalBtn').hide();
         $('.permission-content').css('height', '175px');
