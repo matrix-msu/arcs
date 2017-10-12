@@ -53,6 +53,7 @@
         $(e.currentTarget).removeClass('btn-show-all');
         src = arcs.baseURL + 'img/arcs-preloader.gif';
         $(e.currentTarget).find("img:first").attr('src', src);
+
         limit = 0;
       } else {
         $el = $(e.currentTarget).parent();
@@ -222,6 +223,7 @@
           var project = $('#resources').attr('href').split('/').reverse()[0];
 
           var url = "../search/collection/" + id;
+
           $('<form />')
               .hide()
               .attr({method: "get"})

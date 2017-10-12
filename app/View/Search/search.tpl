@@ -116,7 +116,7 @@
 		      	Projects
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
-		      <ul class="dropdown-menu sitesMenu" data-id="Excavation Name">
+		      <ul class="dropdown-menu sitesMenu" data-id="Project Name">
 		      </ul>
 		    </div>
 
@@ -205,7 +205,7 @@
 
 	<div class='search-pagination'>
 		<div id="search-results">
-            
+
 			<div class='toolbar-fixed'>
 				<a id='select-all'><span id='toggle-select'>SELECT</span> ALL (<span id='results-count'></span>) SEARCH RESULTS</a>
 				<a id='selected-all'>ADD (<span id='selected-count'></span>) SELECTED RESULTS TO A COLLECTION <div class="icon-collection"></div></a>
@@ -270,7 +270,7 @@
     arcs.searchView = new arcs.views.search.Search({
         el: $('.wrap')
     });
-    
+
     $(document).ready(function() {
         $("#pageHelpModal").click(function(e) {
             if (e.target.nodeName === "ARTICLE") {

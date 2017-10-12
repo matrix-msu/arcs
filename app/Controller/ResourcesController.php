@@ -556,7 +556,7 @@ class ResourcesController extends AppController {
     }
 
     //collections show all button.. get all and send to search
-    public function viewcollection($projectName){
+    public function viewcollection($collection_id){
 
         $username = NULL;
         $usersC = new UsersController();
@@ -575,7 +575,7 @@ class ResourcesController extends AppController {
                     array( 'Collection.public' => '2'),
                     array( 'Collection.public' => '3'),
                     array( 'Collection.user_id' => $user_id)
-                ),'Collection.collection_id' => $projectName)
+                ),'Collection.collection_id' => $collection_id)
             ));
             //remove all the public 3 collections that the user isn't a part of
             $count = 0;

@@ -22,6 +22,7 @@
     };
 
     SingleProject.prototype.onClick = function(e) {
+
       var $el, limit, ref, src;
       if (e.currentTarget.tagName === 'DETAILS') {
         $el = $(e.currentTarget);
@@ -99,17 +100,17 @@
               darkBackground.width(pictureWidth); //background same as picture width
             });
           });
-          return
+          return;
         }else{
+          //show all button goes to search.
+          var project = $('#resources').attr('href').split('/').reverse()[0];
+
+          var url = "../../search/collection/" + id;
+
           $('<form />')
               .hide()
-              .attr({ method : "post" })
-              .attr({ action : "../../search/collection"})
-              .append($('<input />')
-                  .attr("type","hidden")
-                  .attr({ "name" : "resource_kids" })
-                  .val(JSON.stringify(response.results))
-              )
+              .attr({method: "get"})
+              .attr({action: url})
               .append('<input type="submit" />')
               .appendTo($("body"))
               .submit();
