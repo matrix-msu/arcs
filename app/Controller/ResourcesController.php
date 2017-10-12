@@ -771,6 +771,8 @@ class ResourcesController extends AppController {
             array_push($projectPermissionArray, $mapping['Mapping']['pid']);
         }
 
+        $hasARealResource = false;
+
         foreach($resources_array as $resource){
 
             //get resource information
@@ -779,6 +781,7 @@ class ResourcesController extends AppController {
             if( empty($info_array) ){ //check if a real resource
                 continue;
             }
+            $hasARealResource = true;
 
             //check the resource for project permissions
             if( array_search($info_array[$resource]['pid'], $projectPermissionArray) === false ){
@@ -867,7 +870,7 @@ class ResourcesController extends AppController {
             }
         }
 
-        if( sizeof($resources_array) == 1 && empty($resources) ){
+        if( !$hasARealResource ){
             $this->set("notAResource", true);
         }
         if ( empty($resources) ) {
