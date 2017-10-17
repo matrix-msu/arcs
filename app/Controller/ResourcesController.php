@@ -599,7 +599,7 @@ class ResourcesController extends AppController {
                 'order' => 'Collection.modified DESC',
                 'conditions' => array(
                     'Collection.public' => '1',
-                    'Collection.collection_id' => $projectName
+                    'Collection.collection_id' => $collection_id
                 )//,  //only get public collections
                 //'group' => 'collection_id'
             ));
