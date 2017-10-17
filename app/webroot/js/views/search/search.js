@@ -95,7 +95,6 @@
     var setVisualFilter = function (filters) {
         var ul = $("#field-selctor ul")
         ul.empty()
-        console.log(ul)
         for (filter in filters) {
             if (filters.hasOwnProperty(filter)) {
                 if (filters[filter]) {
@@ -715,8 +714,6 @@
         a = document.createElement('a');
         $(a).addClass('sort-btn filter');
         $(a).html(val);
-
-
         li.appendChild(a);
         results1.push($('.sitesMenu').append(li));
       }
@@ -752,6 +749,7 @@
       }
       return 0;
     };
+
     function buildNewData(data) {
       console.log(data);
       var newData = {
@@ -1129,6 +1127,7 @@
         return cnt;
       };
       filterResults = function() {
+        console.log('filterResults function');
         var count, creator, excavationType, key, seasonName, sites, type, val;
         totalResults = [];
         filters = {
@@ -1138,7 +1137,7 @@
           'sites': [],
           'types': []
         };
-        sites = filtersApplied['Excavation Name'];
+        sites = filtersApplied['Project Name'];
         seasonName = filtersApplied['Season Name'];
         type = filtersApplied['Type'];
         excavationType = filtersApplied['Excavation Type'];
@@ -1148,10 +1147,8 @@
         for (key in unfilteredResults) {
           // console.log(sites);
           val = unfilteredResults[key];
-          // console.log(val);
+          //console.log(val);
           if (sites !== '') {
-            console.log("looking at project filter");
-            console.log(val);
             if (val['project'] !== sites) {
               continue;
             }
