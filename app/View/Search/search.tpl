@@ -111,7 +111,7 @@
 		<div class="mobile-filter-opt"> open filter options</div>
 		<div id="search-actions" class="search-toolbar">
 			<div class="tool-bar-results hideSearchBars">
-			<div id="sites-buttons" class="btn-group actions-left hiddenProject">
+			<div id="sites-buttons" data-field="Project Name" class="btn-group actions-left hiddenProject filter-btn">
 		      <button id="sites-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Projects
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
