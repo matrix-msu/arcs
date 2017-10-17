@@ -660,7 +660,6 @@
         $(a).html(val);
 
 
-
         li.appendChild(a);
         results1.push($('.excavationMenu').append(li));
       }
@@ -777,9 +776,11 @@
               if(key2 === "filters"){
                 for (var filter in data[key][key2]){
                     if (filter === "projects"){
-                        newData["filters"][filter].push(key)
-                        for(var resource in data[key]["results"]){
-                            data[key]["results"][resource]["project"] = key;
+                        if (data[key]['total'] !== 0){//if there are results for the project
+                          newData["filters"][filter].push(key)
+                          for(var resource in data[key]["results"]){
+                              data[key]["results"][resource]["project"] = key;
+                          }
                         }
                     }
                   for (var val in data[key][key2][filter]){
@@ -801,7 +802,6 @@
             }
 
         }
-
         console.log(newData);
         return newData;
     }
