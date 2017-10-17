@@ -104,7 +104,7 @@
                       filter + ": \"" + filters[filter] + "\"" +
                       "<span class=\"exit-btn\">X</span>" +
                       "</li>"
-                    )    
+                    )
                 }
             }
         }
@@ -583,6 +583,8 @@
     }
 
     adjustPage = function(results, currentPage) {
+      console.log('adjust page function');
+      console.log(totalResults);
       var lastPage, numberPerPage, pageNum, skip, temp;
       if (waiting) {
         return;
@@ -656,6 +658,9 @@
         a = document.createElement('a');
         $(a).addClass('sort-btn filter');
         $(a).html(val);
+
+
+
         li.appendChild(a);
         results1.push($('.excavationMenu').append(li));
       }
@@ -711,6 +716,8 @@
         a = document.createElement('a');
         $(a).addClass('sort-btn filter');
         $(a).html(val);
+
+
         li.appendChild(a);
         results1.push($('.sitesMenu').append(li));
       }
@@ -794,6 +801,7 @@
             }
 
         }
+
         console.log(newData);
         return newData;
     }
@@ -824,6 +832,7 @@
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
       totalResults = [];
+      unfilteredResults = [];
       return $.ajax({
         'dataType': 'json',
         'url': arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl,
@@ -867,7 +876,6 @@
             Search.prototype._render({
               results: totalResults
             });
-
             return adjustPage(totalResults, 1);
           }
         }
@@ -940,7 +948,7 @@
 				$(".flex-container").addClass("detailed-list");
 			}
       results = results.results;
-   
+
       if(results.length && results[0].Orphan == 'TRUE' ){
         $('.toolbar-fixed').css('display', 'none');
       }
