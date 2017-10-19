@@ -122,7 +122,7 @@ class AnnotationsController extends MetaResourcesController {
 		if ($relatedAnn[0]['user_username'] == $username) {
 			$isCreator = true;
 		}
-
+		print_r($relatedAnn);
 		if (!$isCreator && !$isProjectAdmin) {
 			die;
 		}

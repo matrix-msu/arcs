@@ -316,6 +316,7 @@
     };
 
     Search.prototype.unselectAll = function(trigger) {
+		console.log('unselectAll function');
       if (trigger == null) {
         trigger = true;
       }
@@ -342,8 +343,6 @@
         w = Math.ceil($(this)[0].nextElementSibling.offsetWidth)
         $(this).css('width', w)
       })
-      console.log(selectedMap["selected"]);
-      console.log(selectedMap["selected"].length);
       Search.selected = selectedMap["selected"]
       Search.selected.forEach(function(e) {
         var li = $('li[data-id="'+e+'"]');
@@ -364,6 +363,7 @@
     };
 
     Search.prototype.toggle = function(e) {
+		console.log('togge func');
       if (!(e.ctrlKey || e.shiftKey || e.metaKey)) {
         this.unselectAll(false);
       }
@@ -1110,6 +1110,7 @@
           }
           arcs.searchView.selectAll();
           $('#toggle-select').html('DE-SELECT');
+		  this.id = "deselect-all";
           $('#selected-resource-ids').html(JSON.stringify(selectedMap["selected"]));
           return $('#selected-count').html(selectedMap["selected"].length);
         } else {
@@ -1136,17 +1137,16 @@
         return cnt;
       };
       filterResults = function() {
-        console.log('filterResults function');
         var count, creator, excavationType, key, seasonName, sites, type, val;
         totalResults = [];
-        filters = {
-          'creators': [],
-          'excavations': [],
-          'seasons': [],
-          'sites': [],
-          'types': []
-        };
-        sites = filtersApplied['Project Name'];
+        // filters = {
+        //   'creators': [],
+        //   'excavations': [],
+        //   'seasons': [],
+        //   'sites': [],
+        //   'types': []
+        // };
+        sites = filtersApplied['Excavation Name'];
         seasonName = filtersApplied['Season Name'];
         type = filtersApplied['Type'];
         excavationType = filtersApplied['Excavation Type'];
@@ -1156,7 +1156,6 @@
         for (key in unfilteredResults) {
           // console.log(sites);
           val = unfilteredResults[key];
-          //console.log(val);
           if (sites !== '') {
             if (val['project'] !== sites) {
               continue;
@@ -1182,9 +1181,8 @@
               continue;
             }
           }
+
           totalResults.push(val);
-          console.log('val = ');
-          console.log(val);
           if (val.hasOwnProperty('Locked') === false) {
             count++;
           }
