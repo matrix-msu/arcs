@@ -76,18 +76,18 @@ class AppController extends Controller
      *
      * @return the Project Name or false
      */
-    public static function convertKIDtoProjectName($kid) { 
+    public static function convertKIDtoProjectName($kid) {
         if (!empty(explode('-', $kid))) {
             $pid = hexdec( explode('-', $kid)[0] );
             $projects = static::getPIDArray();
             // array search returns false if not found
             return array_search($pid, $projects);
-        }        
+        }
         return false;
     }
     public static function getPIDArray() {
         if (!isset($GLOBALS['PID_ARRAY'])) {
-            throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound); 
+            throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound);
         }
         return $GLOBALS['PID_ARRAY'];
     }
@@ -403,5 +403,39 @@ class AppController extends Controller
         // copy from the source to the thumbnail
         imagecopyresampled($thumb, $image, $thumb_x, $thumb_y, 0, 0, $new_width, $new_height, $src_width, $src_height);
         return $thumb;
+    }
+
+	//check if the user is an admin of the project or if they created the resource
+    public function authenticateUserByKid($kid){
+
+
+		$project = self::convertKIDtoProjectName($kid);
+        $pid = self::getPIDFromProjectName($project);
+
+		//if they are not signed in
+		if (!isset($_SESSION['Auth']['User'])){
+			return false;
+		}
+
+		$user_id = $_SESSION['Auth']['User']['id'];
+		$mappings = $this->Mapping->find('all', array(
+			'fields' => array('Mapping.pid'),
+			'conditions' => array(
+				'AND' => array(
+					'Mapping.id_user' => $user_id,
+					'Mapping.status' => 'confirmed',
+					'Mapping.role' => 'Admin',
+					'Mapping.pid' => $pid
+				),
+			)
+		));
+
+		if( empty($mappings) ){
+			return false;
+		}else{
+			return true;
+		}
+
+		die;
     }
 }

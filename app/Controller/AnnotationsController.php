@@ -96,17 +96,32 @@ class AnnotationsController extends MetaResourcesController {
 	    echo json_encode($return);
 	    die;
     }
-	
+
 	public function deleteAnnotation($id){
+
+
         $relatedAnn = $this->Annotation->find('all', array(
             'conditions' => array(
                 'OR' => array(
                     'Annotation.id' => $id,
                     'Annotation.relation_id' => $id
                 )
-            ),
-            'fields' => array('id')
+            )
         ));
+
+        $isProjectAdmin = parent::authenticateUserByKid($relatedAnn[0]['page_kid']);
+		//$isProjectAdmin = parent::authenticateUserByKid('A8-393-0');
+		$isCreator = false;
+		$username =  $this->Session->read('Auth.User.username');
+
+		if ($relatedAnn[0]['user_username'] == $username) {
+			$isCreator = true;
+		}
+
+		if (!$isCreator && !$isProjectAdmin) {
+			die;
+		}
+
         $ids = array();
         foreach( $relatedAnn as $val ){
             array_push($ids, $val['id']);
@@ -118,7 +133,6 @@ class AnnotationsController extends MetaResourcesController {
             false,
             false
         );
-        print_r($deleteAnn);
         die;
     }
 }
