@@ -63,6 +63,7 @@
     };
 
     Search.prototype.changeDisplay = function() {
+      console.log('changing display');
       if(typeof results_to_display != "undefined"){
         var data = results_to_display
         $(".searchIntro").css("display","none")
@@ -73,6 +74,7 @@
             display    : 'initial'
         });
         $('#results-count').html(data['total']);
+        console.log('changeDisplay function');
             filters = data['filters'];
             indicators = data['indicators'];
             filteredFilters = filters;
@@ -112,7 +114,6 @@
             var filter = e.parent().data("field")
             $(".filter-btn").each(function(){
                 if (filter === $(this).data("field")) {
-                    console.log($(this))
                     filtersApplied[filter] = ""
                     $(this).find(".filter").each(function(){
                         if ($(this).html() == "all") {
@@ -121,7 +122,6 @@
                    })
                 }
             })
-
           e.parent().remove()
         })
 
@@ -338,11 +338,12 @@
       }
       console.log("select everything");
       this.$(".select-overlay").each(function(){
-        console.log($(this)[0].nextElementSibling);
+      //  console.log($(this)[0].nextElementSibling);
         w = Math.ceil($(this)[0].nextElementSibling.offsetWidth)
         $(this).css('width', w)
       })
       console.log(selectedMap["selected"]);
+      console.log(selectedMap["selected"].length);
       Search.selected = selectedMap["selected"]
       Search.selected.forEach(function(e) {
         var li = $('li[data-id="'+e+'"]');
@@ -845,11 +846,19 @@
               console.log("in all search");
               $(".hiddenProject").removeClass("hiddenProject");
               data = buildNewData(data);
-
             }
 
               $(".hideSearchBars").removeClass("hideSearchBars");
-            $('#results-count').html(data['total']);
+
+              //count locked resources
+              var locked = 0;
+              for (var kid in data['results']) {
+                if (data['results'][kid].hasOwnProperty('Locked')) {
+                  locked += 1;
+                }
+              }
+            //#results-count only represents unlocked results
+            $('#results-count').html(data['total'] - locked);
             filters = data['filters'];
             indicators = data['indicators'];
             filteredFilters = filters;
@@ -866,8 +875,8 @@
             selectedMap['unselected'] = totalResults;
             waiting = false;
 
-			//set the results into a global variable for export
-			arcs.views.search.exportResults = totalResults;
+      			//set the results into a global variable for export
+      			arcs.views.search.exportResults = totalResults;
             arcs.views.search.exportRawResults = ref
 
             setFilters();
@@ -1174,9 +1183,14 @@
             }
           }
           totalResults.push(val);
-          count++;
+          console.log('val = ');
+          console.log(val);
+          if (val.hasOwnProperty('Locked') === false) {
+            count++;
+          }
+
         }
-        $('#results-count').html(count);
+        $('#results-count').html(count);//only represents unlocked results
         adjustPage(totalResults, 1);
       };
       $('.filter').unbind().on("click", function() {
@@ -1201,7 +1215,16 @@
             filterResults();
           } else {
             totalResults = unfilteredResults;
-            $('#results-count').html(totalResults.length);
+
+            //count locked resources
+            var locked = 0;
+            for (var kid in totalResults) {
+              if (totalResults[kid].hasOwnProperty('Locked')) {
+                locked += 1;
+              }
+            }
+            //#results-count only represents unlocked results
+            $('#results-count').html(totalResults.length - locked);
             adjustPage(totalResults, 1);
           }
         }
