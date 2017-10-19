@@ -4,8 +4,6 @@ function annotationPrep() {
     var pageKidGlobal;
     var isAnnotating = false;
     var resourceHasPermissions = false;
-    console.log('flags:')
-    console.log(annotationFlags)
 
     //get annotate to support multi-pages.
     $('.page-slider').on('click', '.other-resource', function(){
@@ -24,6 +22,8 @@ function annotationPrep() {
                 $(".transcript_display").remove();
                 var currentResource = $('.selectedCurrentResource').find('img');
                 resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
+                resourceKid = currentResource.attr('id').replace('identifier-', '');
+                resourceIdentifier = RESOURCES[resourceKid]['Resource Identifier'];
                 getAnnotationData();
             }
         });
@@ -39,8 +39,6 @@ function annotationPrep() {
             },
             success: function (data) {
                 annotationDataGlobal = JSON.parse(data);
-                console.log('page data')
-                console.log(annotationDataGlobal);
                 displayAnnotations();
                 isAnnotating = false;
             }
@@ -437,7 +435,6 @@ function annotationPrep() {
         var annotateSearch = $(".annotateSearch");
         var search = annotateSearch.val()
         if( search == '' ){
-            console.log('empty search');
             return;
         }
         $(".annotateSearch ").hide()
@@ -653,6 +650,7 @@ function annotationPrep() {
 
                         if (selected || annotateData.url.length > 0) {
                             $(".annotateSubmit").show();
+
                         }
                         else {
                             $(".annotateSubmit").hide();
@@ -736,6 +734,10 @@ function annotationPrep() {
         }
     }
 	$(".annotateSubmit").click(function () {
+
+	    if( $('.annotateUrlContainer').css('display') == 'block' ){
+            annotateData.url = $(".annotateUrl").val();
+        }
         annotateData.page_kid = kid;
         annotateData.resource_kid = resourceKid;
         annotateData.resource_name = resourceIdentifier;

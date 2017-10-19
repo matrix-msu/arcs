@@ -18,6 +18,11 @@ class AnnotationsController extends MetaResourcesController {
         $this->Auth->allow(
             'findByKid', 'findallbyuser'
         );
+        $user = $this->Auth->User();
+        $this->request->data['user_id'] = $user['id'];
+        $this->request->data['user_name'] = $user['name'];
+        $this->request->data['user_username'] = $user['username'];
+        $this->request->data['user_email'] = $user['email'];
     }
 
     //Find all annotations associated with user id
