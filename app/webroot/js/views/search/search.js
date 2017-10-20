@@ -73,8 +73,16 @@
             visibility : 'visible',
             display    : 'initial'
         });
-        $('#results-count').html(data['total']);
-        console.log('changeDisplay function');
+
+
+		var locked = 0;
+		for (var kid in data['results']) {
+		  if (data['results'][kid].hasOwnProperty('Locked')) {
+			locked += 1;
+		  }
+		}
+
+        $('#results-count').html(data['total'] - locked);
             filters = data['filters'];
             indicators = data['indicators'];
             filteredFilters = filters;
@@ -95,6 +103,7 @@
       }
     }
     var setVisualFilter = function (filters) {
+		console.log('setVisualFilter');
         var ul = $("#field-selctor ul")
         ul.empty()
         for (filter in filters) {
@@ -583,8 +592,6 @@
     }
 
     adjustPage = function(results, currentPage) {
-      console.log('adjust page function');
-      console.log(totalResults);
       var lastPage, numberPerPage, pageNum, skip, temp;
       if (waiting) {
         return;
@@ -1137,6 +1144,8 @@
         return cnt;
       };
       filterResults = function() {
+		  console.log('filtering');
+		  console.log(filtersApplied);
         var count, creator, excavationType, key, seasonName, sites, type, val;
         totalResults = [];
         // filters = {

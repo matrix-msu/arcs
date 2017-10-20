@@ -49,19 +49,19 @@
 .search-info {
   margin-bottom: 80px;
 }
-#field-selctor {
+#field-selctor1 {
   margin-top: 19px;
   font-size: 12px;
   color: #686868;
 }
-#field-selctor span {
+#field-selctor1 span {
   padding-right: 10px;
 }
-#field-selctor ul{
+#field-selctor1 ul{
   display: inline-block;
   padding: 0;
 }
-#field-selctor li{
+#field-selctor1 li{
   border-right: 1px solid #E2E2E2;
   padding: 4px;
   display: inline-block;
@@ -70,7 +70,7 @@
   padding-left: 0;
   margin-left: 0;
 }
-#field-selctor .exit-btn{
+#field-selctor1 .exit-btn{
   font-weight: 100;
   padding-left: 10px;
   cursor: pointer;
@@ -91,7 +91,7 @@ is from here to ...
         <span id="page-title">Advanced Search</span>
       </header>
     </section>
-    <section id="field-selctor">
+    <section id="field-selctor1">
       <ul>
         <span id="result-info">Showing 20 of 100 resutls for </span>
       </ul>
@@ -179,7 +179,7 @@ is from here to ...
 						</ul>
 					</div>
 
-					<div data-field="Season Name" id="seasons-buttons" class="btn-group actions-left" >
+					<div data-field="Season Name" id="seasons-buttons" class="filter-btn btn-group actions-left" >
 						<button id="seasons-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Season
 							<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -188,7 +188,7 @@ is from here to ...
 						</ul>
 					</div>
 
-					<div data-field="Type" id="resources-buttons" class="btn-group actions-left">
+					<div data-field="Type" id="resources-buttons" class="filter-btn btn-group actions-left">
 						<button id="resources-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Resource Type
 							<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -199,7 +199,7 @@ is from here to ...
 					</div>
 
 
-					<div data-field="Excavation Type" id="excavation-buttons" class="btn-group actions-left">
+					<div data-field="Excavation Type" id="excavation-buttons" class="filter-btn btn-group actions-left">
 						<button id="excavation-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Excavation Units
 							<span class="pointerDown sort-arrow pointerSearch"></span>
@@ -209,7 +209,7 @@ is from here to ...
 						</ul>
 					</div>
 
-					<div data-field="Creator" id="author-buttons" class="btn-group actions-left">
+					<div data-field="Creator" id="author-buttons" class="filter-btn btn-group actions-left">
 						<!--				need to adjust these on search -->
 						<button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Creator
@@ -256,6 +256,11 @@ is from here to ...
 				</div>
 			</div>
 		</div>
+		<section class="search-filter-selector" id="field-selctor">
+	      <ul>
+	      </ul>
+	    </section>
+
 		<div class='search-pagination'>
 			<div id="search-results">
 
@@ -370,14 +375,17 @@ is from here to ...
       ul.append(
         "<span id=\"result-info\">Showing "+min+" of "+max+" resutls for </span>"
       )
+
+
       paramArray.forEach(function(element) {
         ul.append(
           "<li data-field=\"" + element.field + "\">" +
           element.field + ": \"" + decodeURIComponent(element.value) + "\"" +
-          "<span class=\"exit-btn\">X</span>" +
+          //"<span class=\"exit-btn\">X</span>" +
           "</li>"
         )
       })
+
     },
     search : function(params) {
       var api = arcs.baseURL + "api/search/advanced/"
@@ -393,14 +401,14 @@ is from here to ...
     var params = AdvancedSearch.getParams()
     var min = 20
     var max = window.results_to_display.total || 0
-    AdvancedSearch.pushParamsToView("#field-selctor ul", params, min, max)
+    AdvancedSearch.pushParamsToView("#field-selctor1 ul", params, min, max)
 
     $(".exit-btn").click(function() {
       var field = $(this).parent().data("field")
       params.forEach(function(e) {
         if (field == e.field) {
           params.splice(params.indexOf(e), 1)
-          AdvancedSearch.pushParamsToView("#field-selctor ul", params, min, max)
+          AdvancedSearch.pushParamsToView("#field-selctor1 ul", params, min, max)
           AdvancedSearch.search(params)
           return
         }
