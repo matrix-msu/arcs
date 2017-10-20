@@ -1148,13 +1148,7 @@
 		  console.log(filtersApplied);
         var count, creator, excavationType, key, seasonName, sites, type, val;
         totalResults = [];
-        // filters = {
-        //   'creators': [],
-        //   'excavations': [],
-        //   'seasons': [],
-        //   'sites': [],
-        //   'types': []
-        // };
+    
         sites = filtersApplied['Excavation Name'];
         seasonName = filtersApplied['Season Name'];
         type = filtersApplied['Type'];
@@ -1165,6 +1159,11 @@
         for (key in unfilteredResults) {
           // console.log(sites);
           val = unfilteredResults[key];
+
+		 if (val.hasOwnProperty('Locked') === true) {
+			 continue;
+		}
+
           if (sites !== '') {
             if (val['project'] !== sites) {
               continue;
@@ -1185,12 +1184,15 @@
               continue;
             }
           }
+		  console.log('checking');
+		  console.log(val);
           if (creator !== '') {
             if (indexOf.call(val['Creator'], creator) < 0) {
+				console.log('inside');
               continue;
             }
           }
-
+		  console.log('done');
           totalResults.push(val);
           if (val.hasOwnProperty('Locked') === false) {
             count++;
