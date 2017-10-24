@@ -2511,7 +2511,6 @@ input[type="checkbox"] + label {
   width: 92%;
   background-color: #949494;
   color: #FFF;
-  white-space: nowrap;
   overflow: hidden;
 }
 #collectionSearchObjects label:hover {
@@ -6675,7 +6674,7 @@ h4 {
 .no-details details[open] > summary:before {
   content: "▼";
 }
-/* 
+/*
 .footer {
     background: #333;
     text-align: center;

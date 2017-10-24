@@ -83,6 +83,7 @@ class MetadataEditsController extends AppController {
     //single resource frontend edit associators
     public function getAllKidsByScheme(){
 
+
         $this->autoRender = false;
         if( $this->request->data['scheme_name'] && $this->request->data['meta_kid'] ) {
 
@@ -107,7 +108,7 @@ class MetadataEditsController extends AppController {
 
             }elseif( $this->request->data['scheme_name'] == 'Pages Associator' ){
                 $sid = parent::getPageSIDFromProjectName($pName);
-                $fields = array('Format','Type','Image Upload');
+                $fields = array('Format','Type','Image Upload', 'Resource Identifier');
 
             }elseif( $this->request->data['scheme_name'] == 'Subject of Observation Associator' ){
                 $sid = parent::getSubjectSIDFromProjectName($pName);

@@ -31,7 +31,6 @@ abstract class Permissions {
 
 
 class ResourcesController extends AppController {
-
     public $name = 'Resources';
     public $uses = array('Resource', 'Collection', 'MetadataEdit', 'User', 'Flag', 'Mapping');
 

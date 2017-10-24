@@ -401,6 +401,11 @@ function editMetaPrep() {
 
     //load in associator checkboxes based on the current page number
     function populateAssociatorCheckboxes(currentPage) {
+        var associatorPreview = {
+            'excavations' : 'Title',
+            'archival objects' : 'Name',
+            'subjects' : 'Resource Identifier'//go ask kora for this pls
+        };
         var populateCheckboxes = "<hr>";
         currentPage = currentPage-1; //pages start at 1, but array index starts at 0
         var startIndex = currentPage*10; //10 items per page
@@ -408,8 +413,13 @@ function editMetaPrep() {
             var obj = associator_current_showing[key];
             var kid = '';
             var text = '';
+            var preview = obj[associatorPreview[meta_scheme_name]];
+            console.log(obj);
             for (var field in obj) {
-                if (obj.hasOwnProperty(field) && field != 'pid' && field != 'schemeID' && field != 'linkers') {
+                if(
+                  obj.hasOwnProperty(field) && field != 'pid' && field != 'schemeID'
+                  && field != 'linkers' && field != associatorPreview[meta_scheme_name]
+                ){
                     if (field == 'kid') {
                         kid = obj[field];
                     } else if (field == 'Image Upload') {
@@ -419,8 +429,13 @@ function editMetaPrep() {
                     }
                 }
             }
-            populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='associator-item-" + key + "' id='associator-item-" + key + "' value='" + kid + "' />"
-                + "<label for='associator-item-" + key + "'><div style='float:left'>" + kid + " </div><div style='float:right'>" + text + "</div></label><br />";
+            populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='associator-item-"
+                + key + "' id='associator-item-" + key + "' value='" + kid + "' />"
+                + "<label for='associator-item-" + key
+                + "'><div style='float:left; width:200px;'>"
+                + preview + " </div><div style='float:right; width:200px;'>"
+                + 'KID: ' + kid + "<br />" + text + "</div></label><br />";
+
         }
         $("#associatorSearchObjects").scrollTop(0); //scroll back to top of the checkboxes on page change.
         $('#associatorSearchObjects').html(populateCheckboxes); //new page of content

@@ -103,8 +103,6 @@ class AnnotationsController extends MetaResourcesController {
     }
 
 	public function deleteAnnotation($id){
-
-
         $relatedAnn = $this->Annotation->find('all', array(
             'conditions' => array(
                 'OR' => array(
@@ -115,29 +113,29 @@ class AnnotationsController extends MetaResourcesController {
         ));
 
         $isProjectAdmin = parent::authenticateUserByKid($relatedAnn[0]['page_kid']);
-		//$isProjectAdmin = parent::authenticateUserByKid('A8-393-0');
-		$isCreator = false;
-		$username =  $this->Session->read('Auth.User.username');
+  		//$isProjectAdmin = parent::authenticateUserByKid('A8-393-0');
+  		$isCreator = false;
+  		$username =  $this->Session->read('Auth.User.username');
 
-		if ($relatedAnn[0]['user_username'] == $username) {
-			$isCreator = true;
-		}
-		print_r($relatedAnn);
-		if (!$isCreator && !$isProjectAdmin) {
-			die;
-		}
+  		if ($relatedAnn[0]['user_username'] == $username) {
+  			$isCreator = true;
+  		}
+  		print_r($relatedAnn);
+  		if (!$isCreator && !$isProjectAdmin) {
+  			die;
+  		}
 
-        $ids = array();
-        foreach( $relatedAnn as $val ){
-            array_push($ids, $val['id']);
-        }
-        $deleteAnn = $this->Annotation->deleteAll(
-            array(
-                'Annotation.id' => $ids
-            ),
-            false,
-            false
-        );
-        die;
+          $ids = array();
+          foreach( $relatedAnn as $val ){
+              array_push($ids, $val['id']);
+          }
+          $deleteAnn = $this->Annotation->deleteAll(
+              array(
+                  'Annotation.id' => $ids
+              ),
+              false,
+              false
+          );
+          die;
     }
 }
