@@ -414,7 +414,6 @@ function editMetaPrep() {
             var kid = '';
             var text = '';
             var preview = obj[associatorPreview[meta_scheme_name]];
-            console.log(obj);
             for (var field in obj) {
                 if(
                   obj.hasOwnProperty(field) && field != 'pid' && field != 'schemeID'
@@ -423,18 +422,24 @@ function editMetaPrep() {
                     if (field == 'kid') {
                         kid = obj[field];
                     } else if (field == 'Image Upload') {
-                        text += 'Original Name: ' + obj[field]['originalName'] + '<br />';
+                        text += "<span class='metadata_associator'>"
+                        + 'Original Name: ' + obj[field]['originalName']
+                        + "</span><br />";
                     } else {
-                        text += field + ': ' + obj[field] + '<br />';
+                        text += "<span class='metadata_associator'>"
+                        + field + ': ' + obj[field]
+                        + "</span><br />";
                     }
+
                 }
             }
+
             populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='associator-item-"
                 + key + "' id='associator-item-" + key + "' value='" + kid + "' />"
-                + "<label for='associator-item-" + key
-                + "'><div style='float:left; width:200px;'>"
+                + "<label for='associator-item-" + key + "'><div style='float:left; width:200px;'>"
                 + preview + " </div><div style='float:right; width:200px;'>"
-                + 'KID: ' + kid + "<br />" + text + "</div></label><br />";
+                + "<span class='metadata_associator'>" + 'KID: ' + kid + "</span>" + "<br />"
+                + text + "</div></label><br />";
 
         }
         $("#associatorSearchObjects").scrollTop(0); //scroll back to top of the checkboxes on page change.
@@ -460,6 +465,10 @@ function editMetaPrep() {
 					}
 				}
 			}
+      if (associator_current_showing.length == 0) {//no results
+          $('#associatorSearchObjects').html('');
+      }
+
 			//add pagination numbers based on 10 items / page
 			populateNumbers(Math.ceil( associator_current_showing.length/10 ));
 		}
@@ -681,6 +690,7 @@ function editMetaPrep() {
 
     function populateNumbers(i){
         var numbersHtml = '';
+        $('.associator_numbers').html(numbersHtml);//clear
         for(var j=1; j<=i; j++) {
             numbersHtml += '<span class="aso_page_number" data-asoindex="'+j+'" style="display:none;">'+j+'</span>';
         }
