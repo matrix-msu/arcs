@@ -128,6 +128,10 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
 		}
 	}
     for (key in data) {
+      console.log('item');
+      console.log(item);
+      console.log('control');
+      console.log(control);
         var item = data[key];
         counter++;
         if (schemename == 'excavations' || schemename == 'Seasons') {
