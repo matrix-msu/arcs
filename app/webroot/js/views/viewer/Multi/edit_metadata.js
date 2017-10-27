@@ -435,7 +435,7 @@ function editMetaPrep() {
 
             populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='associator-item-"
                 + key + "' id='associator-item-" + key + "' value='" + kid + "' />"
-                + "<label for='associator-item-" + key + "'><div style='float:left; width:105px;'>"
+                + "<label for='associator-item-" + key + "'><div style='float:left; width:111px;'>"
                 + preview + " </div><div style='float:left; width:200px;'>"
                 + "<span class='metadata_associator'>" + 'KID: ' + kid + "</span>" + "<br />"
                 + text + "</div></label><br />";
