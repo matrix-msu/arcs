@@ -316,6 +316,9 @@ class Advanced_Field_Search extends Kora
         $map         = $this->_map->resource;
         $clauses     = $this->generateKoraClauseFromMap($resource, $map);
 
+        print_r($clauses);
+        die;
+
         if (!empty($clauses)) {
 
             $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
@@ -454,6 +457,12 @@ class Advanced_Field_Search extends Kora
         $clauses = array();
         $i = -1;
         // loop sub data structure
+        print_r('generate clause start');
+        echo '<br><br>';
+        print_r($array);
+        echo '<br><br>';
+        print_r($map);
+        echo '<br><br>';
         foreach ($array as $key => $value) {
             // ignore empty fields in the data strucuture
             if (!empty($value) && !is_array($value)) {
@@ -461,7 +470,7 @@ class Advanced_Field_Search extends Kora
                 $koraField = $map[$key];
                 $clauses[++$i] = new KORA_Clause($koraField, "LIKE", "%$value%");
 
-            } else if (is_array($value) && !self::isEmptyDate($value)) {
+            } else if (is_array($value) ){//&& !self::isEmptyDate($value)) {
                 $year  = $value["year"];
                 $month = $value["month"];
                 $day   = $value["day"];
@@ -541,6 +550,7 @@ class Advanced_Field_Search extends Kora
         for ($i = 1; $i < count($clauses); $i++) {
             $joins = new KORA_Clause($joins, $condition, $clauses[$i]);
         }
+        print_r($joins);
         return $joins;
 
     }

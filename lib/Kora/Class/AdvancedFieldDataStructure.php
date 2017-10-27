@@ -32,6 +32,10 @@ class AdvancedFieldDataStructure {
         ),
         "languages"     => "",
         "transcription" => "",
+        "date_range"   =>  array(
+            "start_year"  => "",
+            "end_year" => "",
+        ),
     );
     public $page = array(
         "scan_date"    => array(
@@ -89,6 +93,7 @@ class AdvancedFieldMap{
         "latest_date"   => "Latest Date",
         "languages"     => "Language",
         "transcription" => "Transcription",
+        'date_range' => "Date Range",
     );
     public $page = array(
         "scan_date"    => "Scan Date",
@@ -199,6 +204,7 @@ class AFDSFactory {
       if(isset($array[$queryKey])){
         if (is_array($ds->resource[$key])) {
           $ds->resource[$key] = self::getDateFromQuery($array[$queryKey]);
+          print_r($ds->resource[$key]);
         } else {
           $ds->resource[$key] = $array[$queryKey];
         }

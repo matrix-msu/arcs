@@ -175,6 +175,23 @@
         </div>
       </div>
 
+        <div class="section-search-box">
+            <p>Date Range</p>
+            <div class="date-range" data-name="date_range" style="display:flex">
+                <select name="start-year" style="width:47%">
+                    <option value="default">Select Year</option>
+                    <?php $this->Search->printYearOptions($min,$max,$step); ?>
+                </select>
+                <div style="display:inline-block;text-align:center;width:6%">
+                    <p style="font-size:17px;margin-top:14px">&rarr;</p>
+                </div>
+                <select name="end-year" style="float:right;width:47%">
+                    <option value="default">Select Year</option>
+                    <?php $this->Search->printYearOptions($min,$max,$step); ?>
+                </select>
+            </div>
+        </div>
+
       <div class="section-search-box">
         <p>Select Language(s)</p>
         <select name="languages">
@@ -332,16 +349,16 @@
 (function(){
 
 
-  var AdvancedSearch = AdvancedSearch || {}
-  AdvancedSearch.months = [
-    "January", "February", "March", "April", "May", "June", "July",
-    "August", "September", "October", "November", "December"
-  ];
-  AdvancedSearch.display = {
+    var AdvancedSearch = AdvancedSearch || {}
+    AdvancedSearch.months = [
+        "January", "February", "March", "April", "May", "June", "July",
+        "August", "September", "October", "November", "December"
+    ];
+    AdvancedSearch.display = {
 
-    getQuery : function (inputs, selects, dates, eras) {
-      var query = "";
-      inputs.each(function() {
+    getQuery : function (inputs, selects, dates, dateRange, eras) {
+        var query = "";
+        inputs.each(function() {
         var parentClass = $(this).parent().attr("class")
         if ( parentClass !== "date-select" && parentClass !== "double-select") {
             var val = $(this).val()
@@ -352,20 +369,20 @@
                 query += prefix + name + "=" + val + "&"
             }
         }
-      })
-      selects.each(function() {
+        })
+        selects.each(function() {
         var parentClass = $(this).parent().attr("class")
-        if ( parentClass !== "date-select" && parentClass !== "double-select") {
-          var val = $(this).val()
-          var prefix = $(this).parent().parent().data("prefix");
-          var name = $(this).attr("name")
-          if (val != "default" && val.length) {
-            query += prefix + name + "=" + val + "&"
-          }
+        if ( parentClass!=="date-select" && parentClass!=="date-range"&& parentClass!=="double-select") {
+            var val = $(this).val()
+            var prefix = $(this).parent().parent().data("prefix");
+            var name = $(this).attr("name")
+            if (val != "default" && val.length) {
+                query += prefix + name + "=" + val + "&"
+            }
         }
-      })
+        })
 
-      dates.each(function() {
+        dates.each(function() {
         var comps = $(this)
         var prefix = $(this).parent().parent().data("prefix");
         var name = $(this).data("name");
@@ -384,66 +401,83 @@
 
         if (val !== "00-00-00")
           query += prefix + name + "=" + val + "&"
+        })
 
-      })
-      eras.each(function() {
+        dateRange.each(function() {
+            var comps = $(this)
+            var prefix = $(this).parent().parent().data("prefix");
+            var name = $(this).data("name");
+            var year1 = comps.find("select[name='start-year']")
+            var year2 = comps.find("select[name='end-year']")
+
+            year1  = parseInt(year1.val())  || "0000";
+            year2   = parseInt(year2.val())   || "0000";
+
+            var val = year1 + "-" + year2
+
+            if (val !== "0000-0000")
+                query += prefix + name + "=" + val + "&"
+        })
+
+        eras.each(function() {
           var elem = $(this)
           var date = elem.find("input")
           var era  = elem.find("select")
           var prefix = elem.parent().parent().data("prefix");
           var name = elem.data("name")
           if (
-              date.length && era.length && 
-              date.attr("placeholder") !== date.val() && 
+              date.length && era.length &&
+              date.attr("placeholder") !== date.val() &&
               era.val() !== "default"
              )
           {
              var year = parseInt(date.val()) || false
              if (era.val() === "BP" && year){
-                 query += prefix + name + "=" + (year + 1950) + "-00-00" + "&"    
+                 query += prefix + name + "=" + (year + 1950) + "-00-00" + "&"
              }
              else if (year) {
-                 query += prefix + name + "=" + year + "-00-00-" + era.val() + "&"    
+                 query += prefix + name + "=" + year + "-00-00-" + era.val() + "&"
              }
           }
-          
-      })
-      return query;
+
+        })
+        return query;
     },
     search : function (baseURL, query, project) {
-      window.location.href = baseURL + "/search/advanced/view/" + project + "?" + query
+        window.location.href = baseURL + "/search/advanced/view/" + project + "?" + query
 
     }
 
-  }
+    }
 
-  $(document).ready(function() {
-    var baseURL = window.location.href.split("/search/")[0];
-    var project = $("main").data("project")
-    $(".search-btn").click(function() {
+    $(document).ready(function() {
+        var baseURL = window.location.href.split("/search/")[0];
+        var project = $("main").data("project")
+        $(".search-btn").click(function() {
 
-      var sections = $(".section-search-box")
-      var inputs = sections.find("input")
-      var selects = sections.find("select")
-      var dateSelects = sections.find(".date-select")
-      var doubleSelects = sections.find(".double-select")
+            var sections = $(".section-search-box")
+            var inputs = sections.find("input")
+            var selects = sections.find("select")
+            var dateSelects = sections.find(".date-select")
+            var dateRangeSelects = sections.find(".date-range")
+            var doubleSelects = sections.find(".double-select")
 
-      var query = AdvancedSearch.display.getQuery(inputs, selects, dateSelects, doubleSelects)
-      AdvancedSearch.display.search(baseURL, query, project)
+            var query = AdvancedSearch.display.getQuery(inputs, selects, dateSelects, dateRangeSelects, doubleSelects)
+            AdvancedSearch.display.search(baseURL, query, project)
+
+        })
+
+        $("#backToSearch").find("a").click(function() {
+            window.location.href =
+            window.location.origin + arcs.baseURL + "search/" + project
+        })
+
+        $("#pageHelpModal").click(function(e) {
+            if (e.target.nodeName === "ARTICLE") {
+                $("#removeModal")[0].click()
+            }
+        })
 
     })
-
-    $("#backToSearch").find("a").click(function() {
-      window.location.href =
-      window.location.origin + arcs.baseURL + "search/" + project
-    })
-
-    $("#pageHelpModal").click(function(e) {
-      if (e.target.nodeName === "ARTICLE") {
-        $("#removeModal")[0].click()
-      }
-    })
-
-  })
 })()
 </script>

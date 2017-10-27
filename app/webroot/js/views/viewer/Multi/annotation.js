@@ -7,8 +7,18 @@ function annotationPrep() {
 
     //get annotate to support multi-pages.
     $('.page-slider').on('click', '.other-resource', function(){
-        pageKidGlobal = $(this).attr('id'); //the page kid being loaded
+        pageKidGlobal = $(this).attr('id');
+        newPageClicked();
+    });
+
+    function newPageClicked(){
         $('#PageImage').unbind().one('load', function(){ //make sure this function is only called once
+            if( $('#PageImage').attr('src') == '/'+BASE_URL+'img/arcs-preloader.gif' ){
+                setTimeout(function(){
+                    newPageClicked();
+                }, 4000);
+                return;
+            }
             //resize the canvas
             $(".canvas").height($("#PageImage").height());
             $(".canvas").width($("#PageImage").width());
@@ -27,7 +37,7 @@ function annotationPrep() {
                 getAnnotationData();
             }
         });
-    });
+    }
 
     //ajax function for getting annotation data, call drawboxes on finish
     function getAnnotationData(){
