@@ -313,9 +313,8 @@ class SearchController extends AppController {
                 }
 
                 //Handle resource title
-                $resource_title = $r['Title'];
-                if( !empty($resource_title)){
-                    $temp_array['title'] = $resource_title;
+                if( isset($r['Title']) ){
+                    $temp_array['title'] = $r['Title'];
                 }else{
                     $temp_array['title'] = 'Unknown Title';
                 }
@@ -323,11 +322,11 @@ class SearchController extends AppController {
                 $temp_array['orphan'] = 'false';
 
                 //Handle resource type
-                $resource_type = $r['Type'];
-                if ( !empty($resource_type) ){
-                    $temp_array['type'] = $resource_type;
+                if ( isset($r['Type']) ){
+                    $resource_type = $r['Type'];
+                    $temp_array['Type'] = $resource_type;
                 }else{
-                    $temp_array['type'] = 'Unknown Type';
+                    continue;
                 }
                 $temp_array['kid'] = $temp_kid;
 
