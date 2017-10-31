@@ -6,7 +6,6 @@ function dynamicPrep() {
 
     //new page click show/hide the correct metadata
     $('.other-page').on('click', 'img', function(){  //page click
-
         $('.resource-reset-icon').click(); //reset the image position
 
         //subject of observation stuffs.
@@ -19,7 +18,7 @@ function dynamicPrep() {
         var pageKid = $(this).attr('id');
         var clickedFirst = 0;
         $(".soo-li").each(function(){  //show the matching radio buttons
-            if( $(this).attr('data-pageKid').indexOf(pageKid) != -1 ){
+            if( $(this).attr('data-pageKid') == (pageKid)){
                 $(this).css('display','list-item');
                 if( clickedFirst == 0 ){ //click the page's first soo radio button
                     $(this)[0].click();
