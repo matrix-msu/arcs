@@ -314,10 +314,8 @@ class Advanced_Field_Search extends Kora
 
         $resource    = $this->_ds->resource;
         $map         = $this->_map->resource;
-        $clauses     = $this->generateKoraClauseFromMap($resource, $map);
 
-        print_r($clauses);
-        die;
+        $clauses = $this->generateKoraClauseFromMap($resource, $map);
 
         if (!empty($clauses)) {
 
@@ -457,12 +455,6 @@ class Advanced_Field_Search extends Kora
         $clauses = array();
         $i = -1;
         // loop sub data structure
-        print_r('generate clause start');
-        echo '<br><br>';
-        print_r($array);
-        echo '<br><br>';
-        print_r($map);
-        echo '<br><br>';
         foreach ($array as $key => $value) {
             // ignore empty fields in the data strucuture
             if (!empty($value) && !is_array($value)) {
@@ -470,7 +462,21 @@ class Advanced_Field_Search extends Kora
                 $koraField = $map[$key];
                 $clauses[++$i] = new KORA_Clause($koraField, "LIKE", "%$value%");
 
-            } else if (is_array($value) ){//&& !self::isEmptyDate($value)) {
+            } else if( $key == 'date_range'){
+                $start_year = $value['start_year'];
+                $end_year = $value['end_year'];
+                $date_range_clause = array();
+                for( $k=$start_year; $k<=$end_year; $k++ ){
+                    array_push(
+                        $date_range_clause,
+                        new KORA_Clause('Earliest Date', "LIKE", "%<year>$k</year>%"),
+                        new KORA_Clause('Latest Date', "LIKE", "%<year>$k</year>%")
+                    );
+                };
+                $date_range_clause = self::clauseJoin($date_range_clause, "OR");
+                $clauses[++$i] = $date_range_clause;
+
+            }else if (is_array($value) && !self::isEmptyDate($value)) {
                 $year  = $value["year"];
                 $month = $value["month"];
                 $day   = $value["day"];
@@ -547,10 +553,10 @@ class Advanced_Field_Search extends Kora
         }
 
         $joins = $clauses[0];
+
         for ($i = 1; $i < count($clauses); $i++) {
             $joins = new KORA_Clause($joins, $condition, $clauses[$i]);
         }
-        print_r($joins);
         return $joins;
 
     }

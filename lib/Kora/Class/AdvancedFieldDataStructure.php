@@ -138,6 +138,11 @@ class AFDSFactory {
         "day"   => $comp[2] == "00" ? "%" : (int) $comp[2],
         "era"   => $comp[3]
       );
+    }else if(count($comp) === 2){ //is date range
+        return array(
+            "start_year" => $comp[0] == "00" ? "%" : (int) $comp[0],
+            "end_year" => $comp[1] == "00" ? "%" : (int) $comp[1]
+        );
     }
     return array(
       "year"  => "",
@@ -204,7 +209,6 @@ class AFDSFactory {
       if(isset($array[$queryKey])){
         if (is_array($ds->resource[$key])) {
           $ds->resource[$key] = self::getDateFromQuery($array[$queryKey]);
-          print_r($ds->resource[$key]);
         } else {
           $ds->resource[$key] = $array[$queryKey];
         }
