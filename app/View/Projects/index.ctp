@@ -6,9 +6,24 @@ echo $this->Session->flash('flash_success'); ?>
 <div class="intro">
     <div class="landing_header">The Archaeological Resource Cataloging System</div>
 
-    <div class="landing_body_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex. Nulla fermentum, est ut suscipit interdum, lorem eros gravida lorem, eu lobortis purus ligula in orci. Duis massa neque, rhoncus sit amet sem ut, cursus interdum ligula. Duis ultricies euismod ligula, sed lacinia turpis laoreet ac. Donec tristique scelerisque tristique. Aliquam non enim non purus faucibus viverra. Phasellus euismod vestibulum enim.</div>
+    <div class="landing_body_text">
+        The Archaeological Resource Cataloging System (ARCS) is a free, open-source software solution,
+        created to allow archaeological projects to share more easily and efficiently the records stored
+        in their traditional paper-based archives.  Far more than a simple transcription tool, ARCS is
+        designed to foster the upload, augmentation, and presentation of digitized copies of various types
+        of archaeological documentation. Each installation of ARCS can be customized to reflect the
+        unique organizational systems of archaeological surveys and excavations focused on a variety of
+        periods and places.  ARCS is built upon the KORA Digital Repository and Publishing Platform and
+        has been developed with the support of the National Endowment for the Humanities, the MATRIX
+        Center for Digital Humanities & Social Sciences and the Michigan State University College of Arts
+        and Letters.
+    </div>
 
-	<div class="landing_header_two">Choose a project site below to get started.</div>
+	<div class="landing_header_two">
+        To learn more about ARCS, click
+        <a href="/<?php echo BASE_URL;?>about">here</a>
+        or choose a project from the map below to get started.
+    </div>
 
 </div>
 
