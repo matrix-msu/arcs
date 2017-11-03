@@ -4,7 +4,6 @@ var editCommentOldValue = '';
 
 function commentsPrep(){
     getComments();
-
     $(".discussion").click(function () {
         var viewer = $("#ImageWrap"),
         submit = $(".submitContainer"),
@@ -21,6 +20,11 @@ function commentsPrep(){
         $(".newCommentForm").css("display", "inline");
         $(this).hide();
         parent = null;
+        if (!$(".commentContainer").hasClass("alreadyMoved")){
+            $(".commentContainer").css("height",$(".commentContainer").height() - 99)
+                .addClass("alreadyMoved")
+                .css("margin-bottom",101);
+        }
     });
 
     $(".closeComment").click(function () {
@@ -31,6 +35,15 @@ function commentsPrep(){
 
     $(".newCommentForm,.newReplyForm ").submit(function (e) {
         e.preventDefault();
+        if ($(".commentTextArea").val() == "" && $(".replyTextArea").val() == ""){
+            $(".commentContainer").css("height",$(".commentContainer").height() + 101)
+                .removeClass("alreadyMoved")
+                .css("margin-bottom", 0);
+            $(".newCommentForm,.newReplyForm, .newEditDiscussionReplyForm").hide();
+            $(".newComment").show();
+            return;
+        }
+
         if ($(".commentTextArea").val() != "") {
             $.ajax({
                 url: NEW_COM_URL,
@@ -67,9 +80,20 @@ function commentsPrep(){
             });
             parent = null;
         }
+        $(".commentContainer").css("height",$(".commentContainer").height() + 101)
+            .removeClass("alreadyMoved")
+            .css("margin-bottom", 0);
     });
     $(".newEditDiscussionReplyForm").submit(function (e) {
         e.preventDefault();
+        if( $('.editDiscussionTextArea').val() == editCommentOldValue ){
+            $(".commentContainer").css("height",$(".commentContainer").height() + 101)
+                .removeClass("alreadyMoved")
+                .css("margin-bottom", 0);
+            $(".newCommentForm,.newReplyForm, .newEditDiscussionReplyForm").hide();
+            return;
+        }
+
         if( $('.editDiscussionTextArea').val() !== editCommentOldValue ){
             $.ajax({
                 url: "../comments/editComment",
@@ -88,7 +112,13 @@ function commentsPrep(){
                 }
             });
             parent = null;
+        }else{
+            return;
         }
+        $(".commentContainer").css("height",$(".commentContainer").height() + 101)
+            .removeClass("alreadyMoved")
+            .css("margin-bottom", 0);
+        $(".newCommentForm,.newReplyForm, .newEditDiscussionReplyForm").hide();
     });
 };
 
@@ -165,11 +195,20 @@ function getComments() {
                 $('html, body').animate({
                     scrollTop: $(".newReplyForm").offset().top - 600
                 }, 1000);
+                if (!$(".commentContainer").hasClass("alreadyMoved")){
+                    $(".commentContainer").css("height",$(".commentContainer").height() - 99)
+                        .addClass("alreadyMoved")
+                        .css("margin-bottom",101);
+                }
             });
 
             $(".editComment").click(function(){
-                console.log('edit click')
-                console.log($(".newEditDiscussionReplyForm"))
+                if (!$(".commentContainer").hasClass("alreadyMoved")){
+                    $(".commentContainer").css("height",$(".commentContainer").height() - 99)
+                        .addClass("alreadyMoved")
+                        .css("margin-bottom",101);
+                    $(".newCommentForm,.newReplyForm, .newEditDiscussionReplyForm").hide();
+                }
                 editCommentOldValue = "";
                 editCommentOldValue = $(this).closest('.commentBody').attr('data-content');
                 $("#tabs-3").append($(".newEditDiscussionReplyForm"));
