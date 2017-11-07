@@ -10,9 +10,9 @@
       Combining Advanced Searches<br />
       Entering a single term or phrase in more than one search box results in a search where ALL words added to the first box are present in the first field AND ALL words added to the second box are present in the second field. For example, a search for Roman lamp in the Resource Title field and lamp in the Artifact/Structure Type field will only return records where "Roman lamp" is in the Resource Title AND "lamp" is in the Artifact/Structure Type field.
       <br /><br />
-      To conduct a more basic search across a limited number of data fields, try a Keyword Search [provide link].
+      To conduct a more basic search across a limited number of data fields, try a <a href="#" id="modalBackToSearch" style="color: #44D1FF">Keyword Search</a>.
       <br /><br />
-      For a more detailed description of search fields, logic and filters, consult the help text [provide link].
+      For a more detailed description of search fields, logic and filters, consult the <a href="#" id="help" style="color: #44D1FF">help text</a>.
 
       </p>
   </div>
@@ -453,6 +453,8 @@
     $(document).ready(function() {
         var baseURL = window.location.href.split("/search/")[0];
         var project = $("main").data("project")
+        console.log(project);
+        console.log($("main").data);
         $(".search-btn").click(function() {
 
             var sections = $(".section-search-box")
@@ -473,8 +475,16 @@
         })
 
         $("#pageHelpModal").click(function(e) {
-            if (e.target.nodeName === "ARTICLE") {
+            if (e.target.nodeName === "ARTICLE") {;
                 $("#removeModal")[0].click()
+            }
+            if (e.target.id === "modalBackToSearch") {
+                window.location.href =
+                window.location.origin + arcs.baseURL + "search/" + project
+            }
+            if (e.target.id === "help") {
+                window.location.href =
+                window.location.origin + arcs.baseURL + "help/"
             }
         })
 

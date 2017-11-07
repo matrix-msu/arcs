@@ -8280,6 +8280,7 @@ div#searchCriteria ul {
   position: fixed;
   bottom: 60px;
   margin: auto;
+  margin-bottom: 430px;
 }
 .page-info header {
   position: relative;
@@ -8348,8 +8349,8 @@ div#searchCriteria ul {
   padding: 80px;
   right: 0;
   color: white;
-  font-size: 14px;
-  line-height: 25px;
+  font-size: 16px;
+  line-height: 30px;
   padding-top: 24px;
 }
 #pageHelpModal p {

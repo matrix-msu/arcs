@@ -63,7 +63,6 @@
     };
 
     Search.prototype.changeDisplay = function() {
-      console.log('changing display');
       if(typeof results_to_display != "undefined"){
         var data = results_to_display
         $(".searchIntro").css("display","none")
@@ -103,7 +102,6 @@
       }
     }
     var setVisualFilter = function (filters) {
-		console.log('setVisualFilter');
         var ul = $("#field-selctor ul")
         ul.empty()
         for (filter in filters) {
@@ -203,7 +201,6 @@
         })(this),
         selected: (function(_this) {
           return function(e, ui) {
-            console.log("Selecting");
             $(ui.selected).parents('.result').addClass('selected');
             $(ui.selected).parents('.result').children('.select-button').html('DE-SELECT');
             $(ui.selected).parents('.result').children('.select-button').addClass('de-select');
@@ -325,7 +322,6 @@
     };
 
     Search.prototype.unselectAll = function(trigger) {
-		console.log('unselectAll function');
       if (trigger == null) {
         trigger = true;
       }
@@ -346,7 +342,6 @@
       if (trigger == null) {
         trigger = true;
       }
-      console.log("select everything");
       this.$(".select-overlay").each(function(){
       //  console.log($(this)[0].nextElementSibling);
         w = Math.ceil($(this)[0].nextElementSibling.offsetWidth)
@@ -372,7 +367,6 @@
     };
 
     Search.prototype.toggle = function(e) {
-		console.log('togge func');
       if (!(e.ctrlKey || e.shiftKey || e.metaKey)) {
         this.unselectAll(false);
       }
@@ -557,10 +551,7 @@
         $(".resource-thumb").each(function(){
           if(Search.selected.indexOf($(this).attr("data-id")) !== -1 ){
               $(this).find(".results").one("load", function() {
-                  console.log(this)
                   w = $(this).css('width')
-                  console.log(w);
-                  console.log($(this).prev());
                   var previus = $(this).prev()
                   $(previus).css('background','rgba(0, 147, 190, 0.75)');
                   $(previus).css("opacity", "1");
@@ -574,10 +565,8 @@
 
     }
     function set_widths(){
-      console.log("adjust widths");
       $(".select-overlay").each(function(){
         w = Math.ceil($(this)[0].nextElementSibling.childNodes[1].offsetWidth)
-        console.log(w);
         $(this).css('width', w)
       })
     }
@@ -585,7 +574,6 @@
         var results = arcs.views.search.exportRawResults;
         $(".flex-container").find("li").each(function(el){
          var kid = $(this).data("id");
-         console.log(results);
          if(results[kid]['Locked'])
            $(this).addClass("Locked")
        })
@@ -717,7 +705,6 @@
       results1 = [];
       for (key in ref) {
         val = ref[key];
-        console.log(val);
         li = document.createElement('li');
         a = document.createElement('a');
         $(a).addClass('sort-btn filter');
@@ -759,7 +746,6 @@
     };
 
     function buildNewData(data) {
-      console.log(data);
       var newData = {
           "data": [],
           "filters": {
@@ -808,7 +794,6 @@
             }
 
         }
-        console.log(newData);
         return newData;
     }
     search = function() {
@@ -848,9 +833,7 @@
             adjustPage([], 0);
             return noResults();
           } else {
-            console.log(data);
             if (!('results' in data)){
-              console.log("in all search");
               $(".hiddenProject").removeClass("hiddenProject");
               data = buildNewData(data);
             }
@@ -1144,20 +1127,16 @@
         return cnt;
       };
       filterResults = function() {
-		  console.log('filtering');
-		  console.log(filtersApplied);
         var count, creator, excavationType, key, seasonName, sites, type, val;
         totalResults = [];
-    
+
         sites = filtersApplied['Excavation Name'];
         seasonName = filtersApplied['Season Name'];
         type = filtersApplied['Type'];
         excavationType = filtersApplied['Excavation Type'];
         creator = filtersApplied['Creator'];
         count = 0;
-        // console.log(filtersApplied);
         for (key in unfilteredResults) {
-          // console.log(sites);
           val = unfilteredResults[key];
 
 		 if (val.hasOwnProperty('Locked') === true) {
@@ -1184,15 +1163,12 @@
               continue;
             }
           }
-		  console.log('checking');
-		  console.log(val);
+
           if (creator !== '') {
             if (indexOf.call(val['Creator'], creator) < 0) {
-				console.log('inside');
               continue;
             }
           }
-		  console.log('done');
           totalResults.push(val);
           if (val.hasOwnProperty('Locked') === false) {
             count++;
@@ -1215,10 +1191,8 @@
           }
           parentUl.find($('.active')).removeClass('active');
           $(this).addClass('active');
-          console.log(filterKey);
           filtersApplied[filterKey] = currentFilter;
           setVisualFilter(filtersApplied)
-          console.log(filtersApplied);
           filterCnt = getCnt();
           if (filterCnt) {
             filterResults();
@@ -1255,7 +1229,6 @@
         }
       });
       $('.mobile-filter-opt').unbind().click(function () {
-            console.log("clicked");
             if ($('.tool-bar-results').css("display") == "none"){
                 $('.tool-bar-results').css("display",'block')
             }
@@ -1280,8 +1253,6 @@
                     $(".flex-container").removeClass("detailed-list");
                     $(".flex-container").addClass("grid-list");
                 }
-
-                console.log(template);
 
                 calculateMargins();
             }

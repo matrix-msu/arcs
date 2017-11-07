@@ -28,9 +28,11 @@
 	  Month and year (e.g. March 1972 and not 3/1972)<br />
 	  Full date in year, month, day format (e.g. 1972/03/15 and not 3/15/72)<br />
 	  <br />
-	  To conduct a more detailed search across many more fields in a single project, try an Advanced Search [provide link].
-	  <br /><br />
-	  For a more detailed description of search fields, logic and filters, consult the help text [provide link].
+        <section id="modal-advanced-search">
+	         To conduct a more detailed search across many more fields in a single project, try an <a href="#" id="advancedSearch" style="color: #44D1FF">Advanced Search</a>.
+           <br /><br />
+        </section>
+      For a more detailed description of search fields, logic and filters, consult the <a href="#" id="help" style="color: #44D1FF">help text</a>.
 	  </p>
   </div>
 </article>
@@ -272,9 +274,26 @@
     });
 
     $(document).ready(function() {
+        var projectURL = window.location.href.split("/search/")[1];
+        projectURL = projectURL.split(/[/#]/)[0];
+
+        if (projectURL == "all") {//don't show the advanced search section if it's an all project search
+            var advancedSection = document.getElementById("modal-advanced-search");
+            advancedSection.style.display = "none";
+        }
+
+
         $("#pageHelpModal").click(function(e) {
             if (e.target.nodeName === "ARTICLE") {
                 $("#removeModal")[0].click()
+            }
+            if (e.target.id === "advancedSearch") {
+                window.location.href =
+                window.location.origin + arcs.baseURL + "search/advanced/" + projectURL
+            }
+            if (e.target.id === "help") {
+                window.location.href =
+                window.location.origin + arcs.baseURL + "help/"
             }
         })
     });
