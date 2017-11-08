@@ -311,7 +311,6 @@ class Advanced_Field_Search extends Kora
      */
     private function _resourceLevelSearch()
     {
-
         $resource    = $this->_ds->resource;
         $map         = $this->_map->resource;
 
@@ -462,7 +461,7 @@ class Advanced_Field_Search extends Kora
                 $koraField = $map[$key];
                 $clauses[++$i] = new KORA_Clause($koraField, "LIKE", "%$value%");
 
-            } else if( $key == 'date_range'){
+            } else if( $key == 'date_range' && !self::isEmptyDateRange($value) ){
                 $start_year = $value['start_year'];
                 $end_year = $value['end_year'];
                 $date_range_clause = array();
@@ -535,6 +534,22 @@ class Advanced_Field_Search extends Kora
             return $isset;
         } else {
             return false;
+        }
+    }
+
+    public static function isEmptyDateRange($dateRange)
+    {
+        $isset = false;
+        if (is_array($dateRange)) {
+            foreach ($dateRange as $subDate => $val) {
+                if (empty($val)) {
+                    $isset = true;
+                    break;
+                }
+            }
+            return $isset;
+        } else {
+            return true;
         }
     }
     /**
