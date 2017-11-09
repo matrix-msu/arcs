@@ -90,5 +90,3 @@ function scrollPrep() {
         $('#scrollLine2').slider('value', val2);
     });
 }
-
-// $( document ).ready(scrollPrep);

@@ -461,7 +461,10 @@ class Advanced_Field_Search extends Kora
                 $koraField = $map[$key];
                 $clauses[++$i] = new KORA_Clause($koraField, "LIKE", "%$value%");
 
-            } else if( $key == 'date_range' && !self::isEmptyDateRange($value) ){
+            } else if( $key == 'date_range' ){
+                if( self::isEmptyDateRange($value) ){
+                    continue;
+                }
                 $start_year = $value['start_year'];
                 $end_year = $value['end_year'];
                 $date_range_clause = array();
@@ -542,7 +545,7 @@ class Advanced_Field_Search extends Kora
         $isset = false;
         if (is_array($dateRange)) {
             foreach ($dateRange as $subDate => $val) {
-                if (empty($val)) {
+                if (empty($val) || $val == '%') {
                     $isset = true;
                     break;
                 }
