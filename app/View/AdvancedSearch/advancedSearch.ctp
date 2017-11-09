@@ -339,9 +339,10 @@
       </div>
 
     </section>
+      <button class="search-btn" type="button" name="button">Search</button>
   </article>
 
-  <button class="search-btn" type="button" name="button">Search</button>
+
 </main>
 <a id="removeModal" href="#"></a>
 <!---TODO move to js file-->
@@ -450,11 +451,52 @@
 
     }
 
+
+    $.fn.followTo = function (pos) {//make the search bar stick to the top of the footer
+        var $this = this,
+        $window = $(window);
+        $window.scroll(function (e) {
+          console.log($window.scrollTop());
+          console.log("----");
+          console.log(pos - $window.scrollTop());
+            if (pos - $window.scrollTop() - $window.height() <= 0) {
+                $this.css({//stuck
+                    position: 'static',
+                    width: '100%'
+                });
+            } else {
+                $this.css({//dynamic
+                    position: 'fixed',
+                    bottom: '60px',
+                    width: '70%'
+                });
+            }
+        });
+    };
+
+
+    $(window).resize(function(){
+      var heightAbove = $('.advanced-search-container').height()
+          +  $('.advanced-search-container').offset().top
+          + $('.search-btn').height()
+          + parseInt($('.search-btn').css("bottom"))
+          + parseInt($('.section-search-box').css("margin-bottom"))
+
+          $('.search-btn').followTo(heightAbove)
+    });
+
+    var heightAbove = $('.advanced-search-container').height()
+        +  $('.advanced-search-container').offset().top
+        + $('.search-btn').height()
+        + parseInt($('.search-btn').css("bottom"))
+        + parseInt($('.section-search-box').css("margin-bottom"))
+
+        $('.search-btn').followTo(heightAbove)
+
+
     $(document).ready(function() {
         var baseURL = window.location.href.split("/search/")[0];
         var project = $("main").data("project")
-        console.log(project);
-        console.log($("main").data);
         $(".search-btn").click(function() {
 
             var sections = $(".section-search-box")

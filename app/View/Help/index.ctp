@@ -74,7 +74,7 @@ ADVANCED SEARCH
 
 For more specific searches for individual items or terms within a specific field, an Advanced Search can be useful.
 
-Here searchable fields more closely match the complete number of fields in the ARCSCore <a href="#" id="advancedSearch" >metadata schema</a>.
+Here searchable fields more closely match the complete number of fields in the ARCSCore metadata schema.
 
 Where possible, all existing terms in a field have been provided as a list of options.
 
@@ -124,15 +124,3 @@ Artifact / Structure Inscription
 
 Because the Advanced Search requires search terms to be entered in a specific data field, searches involving lists of terms will generate results only when all terms are present in each specific field and NOT among fields. For example, a search for "Roman Lamp" in the Resource Title field will only return records where both "Roman" AND "lamp" appear in the Resource Title, regardless of their presence in other fields. Searches for terms in two different fields will generate results only when the unique search term is present in BOTH fields. For example, a search for "Roman lamp" in the Resource Title field and "lamp" in the Artifact / Structure Type field will only return records where "Roman" AND "lamp" are both in the Resource Title AND "lamp" is in the Artifact / Structure Type.
 </p>
-
-
-
-<script type="text/javascript">
-    $(document).ready(function() {
-      var baseURL = window.location.href.split("/help")[0];
-        $("#advancedSearch").click(function() {
-            window.location.href =
-          baseURL + "/search/advanced/isthmia/"//only goes to isthmia right now
-        })
-    });
-</script>
