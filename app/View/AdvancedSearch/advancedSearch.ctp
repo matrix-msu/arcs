@@ -452,14 +452,18 @@
     }
 
 
-    $.fn.followTo = function (pos) {//make the search bar stick to the top of the footer
+    $.fn.followTo = function () {//make the search bar stick to bottom of the search fields
         var $this = this,
         $window = $(window);
+        var heightAbove = $('.advanced-search-container').height()
+            +  $('.advanced-search-container').offset().top
+            + $('.search-btn').height()
+            + parseInt($('.search-btn').css("bottom"))
+            + parseInt($('.section-search-box').css("margin-bottom"))
+            + parseInt($('.section-search-box').css("border"))*2
+            
         $window.scroll(function (e) {
-          console.log($window.scrollTop());
-          console.log("----");
-          console.log(pos - $window.scrollTop());
-            if (pos - $window.scrollTop() - $window.height() <= 0) {
+            if (heightAbove - $window.scrollTop() - $window.height() <= 0) {
                 $this.css({//stuck
                     position: 'static',
                     width: '100%'
@@ -474,24 +478,10 @@
         });
     };
 
-
+    $('.search-btn').followTo()
     $(window).resize(function(){
-      var heightAbove = $('.advanced-search-container').height()
-          +  $('.advanced-search-container').offset().top
-          + $('.search-btn').height()
-          + parseInt($('.search-btn').css("bottom"))
-          + parseInt($('.section-search-box').css("margin-bottom"))
-
-          $('.search-btn').followTo(heightAbove)
+        $('.search-btn').followTo()
     });
-
-    var heightAbove = $('.advanced-search-container').height()
-        +  $('.advanced-search-container').offset().top
-        + $('.search-btn').height()
-        + parseInt($('.search-btn').css("bottom"))
-        + parseInt($('.section-search-box').css("margin-bottom"))
-
-        $('.search-btn').followTo(heightAbove)
 
 
     $(document).ready(function() {

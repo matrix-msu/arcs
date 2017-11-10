@@ -74,6 +74,8 @@ ADVANCED SEARCH
 
 For more specific searches for individual items or terms within a specific field, an Advanced Search can be useful.
 
+To access the advanced search functionality, you must navigate to the the single project’s search page.
+
 Here searchable fields more closely match the complete number of fields in the ARCSCore metadata schema.
 
 Where possible, all existing terms in a field have been provided as a list of options.
