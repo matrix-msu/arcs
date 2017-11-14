@@ -149,8 +149,13 @@
         });
 
         $(".user-actions").click(function() {
-            $("#user-actions .nav").slideToggle("slow");
-            $(".user-actions").toggleClass("active-menu");
+            if( $("#user-actions .nav").is(':animated')){//if they spam the button
+				return;
+            }else{
+              $("#user-actions .nav").slideToggle("slow");
+              $(".user-actions").toggleClass("active-menu");
+            }
+
         });
     });
 </script>

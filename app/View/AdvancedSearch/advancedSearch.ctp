@@ -456,12 +456,12 @@
         var $this = this,
         $window = $(window);
         var heightAbove = $('.advanced-search-container').height()
-            +  $('.advanced-search-container').offset().top
+            + $('.advanced-search-container').offset().top
             + $('.search-btn').height()
             + parseInt($('.search-btn').css("bottom"))
             + parseInt($('.section-search-box').css("margin-bottom"))
-            + parseInt($('.section-search-box').css("border"))*2
-            
+		 	+ 2
+
         $window.scroll(function (e) {
             if (heightAbove - $window.scrollTop() - $window.height() <= 0) {
                 $this.css({//stuck

@@ -388,7 +388,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
         <div id="tabs-3" class="metadata-content" style="display:none;">
             <div id="discussionTab">
-                <div class="commentContainer"></div>
+                <div class="commentContainer" style="overflow-y: scroll"></div>
 
                 <div class="submitContainer">
                     <button class="newComment">ADD NEW DISCUSSION</button>
