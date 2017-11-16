@@ -2,7 +2,14 @@
 function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, $flags, $counter = 0){
 ?>
 
-    <h3 class="level-tab <?= $schemename ?>" ><?= $schemename ?>
+    <h3 class="level-tab <?= $schemename ?>" >
+        <?php
+            if( $schemename == 'archival objects' ){
+                echo 'Resource (archival document)';
+            }else{
+                echo $schemename;
+            }
+        ?>
         <span class="metadata-edit-btn" style="visibility:hidden;" >Edit</span>
     </h3>
     <div class="level-content" style="display:none;">
@@ -50,15 +57,15 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Country' => 'list',
             'Region' => 'list',
             'Modern Name' => 'list',
+            'Persistent Name' => 'text',
             'Location Identifier' => 'text',
             'Location Identifier Scheme' => 'text',
             'Geolocation' => 'multi_input',
             'Elevation' => 'text',
+            'Records Archive' => 'multi_select',
+            'Complex Title' => 'text',
             'Earliest Date' => 'date',
             'Latest Date' => 'date',
-            'Records Archive' => 'multi_select',
-            'Persistent Name' => 'text',
-            'Complex Title' => 'text',
             'Terminus Ante Quem' => 'terminus',
             'Terminus Post Quem' => 'terminus',
             'Period' => 'multi_select',
@@ -71,9 +78,9 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             //'Project Associator' => 'associator',
             'Title' => 'text',
             'Type' => 'multi_select',
+            'Sponsor' => 'multi_select',
             'Director' => 'multi_select',
             'Registrar' => 'multi_select',
-            'Sponsor' => 'multi_select',
             'Contributor' => 'list',
             'Contributor Role' => 'multi_select',
             'Contributor 2' => 'list',
@@ -118,6 +125,8 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Type' => 'list',
             'Title' => 'text',
             'Sub-title' => 'text',
+            'Repository' => 'list',
+            'Accession Number' => 'text',
             'Creator' => 'multi_select',
             'Creator Role' => 'multi_select',
             'Earliest Date' => 'date',
@@ -128,8 +137,6 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Pages' => 'text',
             'Rights' => 'text',
             'Rights Holder' => 'multi_select',
-            'Repository' => 'list',
-            'Accession Number' => 'text',
         ),
         'subjects' => array(
             'Pages Associator' => 'associator',
@@ -140,20 +147,20 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Artifact - Structure Material' => 'multi_select',
             'Artifact - Structure Technique' => 'multi_select',
             //'Artifact - Structure Archaeological Culture' => 'multi_select',
-            'Artifact - Structure Period' => 'multi_select',
             'Artifact - Structure Terminus Ante Quem' => 'terminus',
             'Artifact - Structure Terminus Post Quem' => 'terminus',
+            'Artifact - Structure Period' => 'multi_select',
 
             'Artifact - Structure Title' => 'text',
-            'Artifact - Structure Location' => 'list',
-            'Artifact - Structure Repository' => 'list',
-            'Artifact - Structure Repository Accession Number' => 'text',
             'Artifact - Structure Creator' => 'multi_select',
             'Artifact - Structure Creator Role' => 'multi_select',
             'Artifact - Structure Dimensions' => 'multi_input',
-            'Artifact - Structure Geolocation' => 'multi_select',
             'Artifact - Structure Excavation Unit' => 'multi_select',
             'Artifact - Structure Location' => 'multi_select',
+            'Artifact - Structure Geolocation' => 'multi_select',
+            'Artifact - Structure Current Location' => 'list',
+            'Artifact - Structure Repository' => 'list',
+            'Artifact - Structure Repository Accession Number' => 'text',
             'Artifact - Structure Description' => 'text',
             'Artifact - Structure Condition' => 'multi_select',
             'Artifact - Structure Inscription' => 'text',
@@ -171,7 +178,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Name' => 'Name',
             'Country' => 'Country',
             'Region' => 'Geographic Region',
-            'Modern Name' => 'ModernPlacename',
+            'Modern Name' => 'Modern Placename',
             'Location Identifier' => 'Location',
             'Location Identifier Scheme' => 'Location Source',
             'Geolocation' => 'Coordinates',
@@ -266,7 +273,8 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Artifact - Structure Terminus Post Quem' => 'Latest Possible Date of Artifact / Structure',
 
             'Artifact - Structure Title' => 'Title of Artifact / Structure',
-            'Artifact - Structure Location' => 'Current Location of Artifact / Structure',
+            'Artifact - Structure Location' => 'Project-specific Location',
+            'Artifact - Structure Current Location' => 'Current Location of Artifact / Structure',
             'Artifact - Structure Repository' => 'Storage / Repository',
             'Artifact - Structure Repository Accession Number' => 'Accession Number',
             'Artifact - Structure Creator' => 'Artifact / Structure Creator',
@@ -287,7 +295,7 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
             'Artifact - Structure Shelving Location' => 'Location in repository'
         )
     );
-	
+
     foreach ($data as $array) {
         $counter++;
 
