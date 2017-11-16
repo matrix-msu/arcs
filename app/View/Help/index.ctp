@@ -32,8 +32,9 @@ details at the <a href="about-collections">Collections</a> section.</p>
 <p>Resources can be uploaded in ARCS in a very user-friendly manner. A researcher
 can upload multiple files of different formats at a time. You can learn more
 details at the <a href="Uploading">Uploading</a> section.</p>
+
 <h2 id="searching">Searching</h2>
-<p style="white-space:pre">While the ARCS system encourages browsing the resources uploaded by one or more projects, searching is often an effective way to identify resources individually or by type.  ARCS offers two different ways to search.
+<p style="white-space:pre-wrap">While the ARCS system encourages browsing the resources uploaded by one or more projects, searching is often an effective way to identify resources individually or by type.  ARCS offers two different ways to search.
 
 KEYWORD SEARCH
 
@@ -41,7 +42,7 @@ For those seeking to gain a more general sense of the resources within a project
 
 Keyword Searches query only 13 of all the possible fields that describe resources in the ARCS system.  They are as follows.
 
-RESOURCE SCHEME -- focuses on 1 archival Resource (document, map, photograph, etc.) created during the archaeological field research process
+RESOURCE SCHEME -- focuses on 1 archival <b>Resource</b> (document, map, photograph, etc.) created during the archaeological field research process
 Resource Title
 Resource Identifier
 Resource Type
@@ -49,7 +50,7 @@ Earliest Date of Resource
 Latest Date of Resource
 Accession/Catalog Number(s)
 
-SUBJECT OF OBSERVATION SCHEME -- focuses on the archeological item that is the topic of study in the archival document
+SUBJECT OF OBSERVATION SCHEME -- focuses on the archeological item that is the <b>topic of study</b> in the archival document
 Artifact / Structure Classification
 Artifact / Structure Type
 Artifact / Structure Material
@@ -58,7 +59,7 @@ Artifact / Structure Period
 Earliest Possible Date of Artifact / Structure
 Latest Possible Date of Artifact / Structure
 
-Searches involving lists or terms will generate results only all when all terms are present among these fields.  For example, a search for “Roman lamp” will return records where both "Roman" AND "lamp" appear in the Resource Title OR Resource Identifier OR Artifact / Structure Type OR Artifact / Structure Period, etc.
+Searches involving lists or terms will generate results only all when all terms are present among these fields.  For example, a search for “Roman lamp” will return records where both "Roman" <b>AND</b> "lamp" appear in the Resource Title <b>OR</b> Resource Identifier <b>OR</b> Artifact / Structure Type <b>OR</b> Artifact / Structure Period, etc.
 
 To search dates, enter the data as follows:
 Complete year (e.g. 1972 and not 72)
@@ -84,17 +85,17 @@ Advanced Search fields are as follows
 
 * Indicates fields that are populated automatically.
 
-SEASON -- focuses on the period of time (season/campaign) during which archaeological research was conducted
+SEASON -- focuses on the <b>period of time</b> (season/campaign) during which archaeological research was conducted
 Title
 Research Activity*
 Director(s)*
 
-EXCAVATION SURVEY -- focuses on 1 field data collection unit when archaeological research was conducted
+EXCAVATION SURVEY -- focuses on 1 <b>field data collection unit</b> when archaeological research was conducted
 Unit of Study
 Type of Study*
 Supervisor(s)*
 
-RESOURCE -- focuses on 1 archival Resource (document, map, photograph, etc.) created during the archaeological field research process
+RESOURCE -- focuses on 1 archival <b>Resource</b> (document, map, photograph, etc.) created during the archaeological field research process
 Resource Identifier
 Resource Type*
 Resource Title
@@ -105,12 +106,12 @@ Latest Date of Resource*
 Language(s)*
 Transcription
 
-PAGES -- focuses on a single scanned page of the digitized archival document
+PAGES -- focuses on a <b>single scanned page</b> of the digitized archival document
 Type*
 Date Resource Scanned*
 Creator of Scanned Resource
 
-SUBJECT OF OBSERVATION GENERAL -- focuses on the archeological item that is the topic of study in the archival document
+SUBJECT OF OBSERVATION GENERAL -- focuses on the archeological item that is the <b>topic of study</b> in the archival document
 Artifact / Structure Classification*
 Artifact / Structure Type*
 Artifact / Structure Material*
@@ -119,7 +120,7 @@ Artifact / Structure Period*
 Earliest Possible Date of Artifact / Structure*
 Latest Possible Date of Artifact / Structure*
 
-SUBJECT OF OBSERVATION DETAILED -- focuses on the archeological item that is the topic of study in the archival document
+SUBJECT OF OBSERVATION DETAILED -- focuses on the archeological item that is the <b>topic of study</b> in the archival document
 Artifact / Structure Survey / Excavation Unit*
 Project Specific Location*
 Artifact / Structure Inscription
