@@ -148,9 +148,11 @@
 
         <div class="greybg">
           <div class = "projectIntro">
-            <h1 class="title">Search</h1>
-            <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.
-            </p>
+            <h1 class="title">Keyword Search</h1>
+            <p>Keyword searches are designed to provide an overview of the resources uploaded by one or more projects into ARCS.  Keyword Search conducts a search over words in six fields related to each archival document, including its Title, Resource Identifier, Resource Type, Date Created, and Accession Number. Keyword also searches fields that identify the subject focus of these archival documents, including the Classification, Type, and Period of the artifact or structure described in the archival document, and the Material, Technique and Dates of production for the artifact or structure.
+
+        		<br/><br/>Because ARCS relies on user-generated content, search results may be incomplete.
+        	</p>
           </div>
 		  <br>
           <a name="searchJump"></a>
@@ -162,10 +164,7 @@
          <div class="proper-width">
 			<div class="asearch">
 			    <span style="cursor:pointer">
-			        <?php echo $this->Html->link(
-			            'ADVANCED SEARCH',
-			            ['controller' => 'AdvancedSearch', 'action' => 'advance_search']);
-			        ?>
+                    <a href="<?php echo '/'.BASE_URL.'search/advanced/'.$pName; ?>">ADVANCED SEARCH</a>
 			    </span></div>
 		</div>
 		<div class="proper-width" id="show-min">
