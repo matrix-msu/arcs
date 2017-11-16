@@ -12767,6 +12767,18 @@ th.user-tabs-header {
   text-transform: uppercase;
   color: #1C95BA;
 }
+#user-info dl dd input[type='file'] {
+  display: none;
+}
+#user-info dl dd input,
+#user-info dl dd form {
+  border: 2px solid #34aac9;
+  color: #5d5d5d;
+  background-color: #ceeaef;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
 #user-info dl dd img {
   width: 28px;
   height: 28px;

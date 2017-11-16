@@ -39,9 +39,13 @@
                         <a href="#" id="edit-profile" onclick="return false;">Edit Profile</a>
                     </dd>
                     <form method="post" enctype="multipart/form-data">
-                        <dd><input type="file" name="user_image" id="newProfImg" value="Upload Profile Image" /></dd>
+						<label id="newProfImgLabel">
+                        	<dd><input type="file" name="user_image" id="newProfImg" value="Upload Profile Image" /></dd>
+						</label>
+						<dd>Choose File</dd>
                         <dd><input type="submit" id="profImgUpload" value="Upload Profile Image"></dd>
                     </form>
+
                 <?php endif ?>
                 <?php echo $user_info['thumbnails'] ?>
             </dl>

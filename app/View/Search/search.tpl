@@ -293,7 +293,7 @@
             }
             if (e.target.id === "help") {
                 window.location.href =
-                window.location.origin + arcs.baseURL + "help/"
+                window.location.origin + arcs.baseURL + "help/searching"
             }
         })
     });
