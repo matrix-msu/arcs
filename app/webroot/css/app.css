@@ -12759,13 +12759,22 @@ th.user-tabs-header {
   margin-bottom: 1em;
   font-size: 85%;
 }
-#user-info dl dd #profImgUpload {
+#user-info dl dd #profImgUpload,
+#user-info dl dd #newProfImg {
   display: none;
 }
 #user-info dl dd #edit-profile {
   font-size: 120%;
   text-transform: uppercase;
   color: #1C95BA;
+}
+#user-info dl dd input,
+#user-info dl dd #uploadProfImgLabel {
+  border: 1px solid #0093be;
+  color: #5d5d5d;
+  background-color: #ceeaef;
+  font-size: 12px;
+  font-weight: bold;
 }
 #user-info dl dd img {
   width: 28px;

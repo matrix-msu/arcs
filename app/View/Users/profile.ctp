@@ -39,7 +39,12 @@
                         <a href="#" id="edit-profile" onclick="return false;">Edit Profile</a>
                     </dd>
                     <form method="post" enctype="multipart/form-data">
-                        <dd><input type="file" name="user_image" id="newProfImg" value="Upload Profile Image" /></dd>
+                        <dd>
+							<div>
+								<label for="files" class="btn" id="uploadProfImgLabel">Choose File</label>
+								<input type="file" name="user_image" id="newProfImg" value="Upload Profile Image"/>
+							</div>
+						</dd>
                         <dd><input type="submit" id="profImgUpload" value="Upload Profile Image"></dd>
                     </form>
                 <?php endif ?>
@@ -169,4 +174,18 @@ arcs.profileView2 = new arcs.views.users.Profile({id: '<?php echo $user_info['id
         var project = $(this).attr('data-project');
         window.location.href = arcs.baseURL+'admin/createthumbnails/'+project;
     });
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		$("#uploadProfImgLabel").click(function() {
+			$("#newProfImg").trigger('click');
+		});
+	})
+
+	$('#newProfImg').change(function() {
+	  var i = $(this).prev('label').clone();
+	  var file = $('#newProfImg')[0].files[0].name;
+	  $(this).prev('label').text(file);
+	});
 </script>
