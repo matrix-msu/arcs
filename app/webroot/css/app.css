@@ -7294,6 +7294,7 @@ div#toolbar .btn {
   padding-right: 30px;
   padding-left: 30px;
   border-bottom: 1px solid #e9e9e9;
+  white-space: normal;
 }
 div#toolbar .btn-grey {
   background: #F4F4F4;
@@ -7531,6 +7532,7 @@ input.indexSearchBox {
     padding-right: 30px;
     padding-left: 30px;
     border-bottom: 1px solid #e9e9e9;
+    white-space: normal;
   }
   div#toolbar .btn-grey {
     background: #F4F4F4;
