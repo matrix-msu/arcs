@@ -14570,6 +14570,7 @@ body {
   margin: 0;
   padding: 0;
   background: #fff;
+  overflow-x: hidden;
 }
 ul {
   list-style: none;
