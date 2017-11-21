@@ -35,7 +35,8 @@ echo $this->Session->flash('flash_success'); ?>
 
     map.scrollWheelZoom.disable();
 
-    L.tileLayer('http://{s}.tiles.mapbox.com/v3/austintruchan.m3e777m7/{z}/{x}/{y}.png', {
+     L.tileLayer('https://api.mapbox.com/styles/v1/matrix-msu/cja9rwjz71s2r2rpa006vmr81/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWF0cml4LW1zdSIsImEiOiJmU1NPbUFjIn0.MWCWCMSJ8Ar-6KZtNPzy4w', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 maxZoom: 18 }).addTo(map);
 
 	map.on('popupopen', function(e) {
