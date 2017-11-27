@@ -10,23 +10,12 @@ App::uses('MetaResourcesController', 'Controller');
  */
 class FlagsController extends MetaResourcesController {
 	public $name = 'Flags';
-	
+
 	public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('findAllByUser');
-        $this->loadModel('Resources');
 
-        $resource = '';
-        if(isset($this->request->data['resource_name'])) {
-            $resource = $this->Resources->find('all', array(
-                'conditions' => array('Resources.title' => $this->request->data['resource_name'])
-            ));
-        }
-		
 		$user = $this->Auth->User();
-		if($resource != '' ) {
-            $this->request->data['resource_id'] = $resource[0]['Resources']['id'];
-        }
 		$this->request->data['user_id'] = $user['id'];
 		$this->request->data['user_name'] = $user['name'];
 		$this->request->data['user_username'] = $user['username'];
