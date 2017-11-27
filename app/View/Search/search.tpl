@@ -18,21 +18,26 @@
 </style>
 
 <article id="pageHelpModal">
-  <div>
+  <div style="overflow-y:hidden">
 
     <p class="modal-title">Keyword Search</p>
-	  Entering more than one word in a Keyword Search will generate results where ALL words in the search are present in ANY of the Keyword Search fields.  A search for Byzantine glazed lamp, for example, will return records where "Byzantine" AND "glazed" AND "lamp" appear in the Title OR Resource Identifier OR Resource Type OR Date Created OR any of the 13 Keyword fields.
+	  Entering more than one word in a Keyword Search will generate results where ALL words in the
+	  search are present in ANY of the Keyword Search fields.  A search for Byzantine glazed lamp,
+	  for example, will return records where "Byzantine" <b>AND</b> "glazed" <b>AND</b> "lamp" appear in the Title
+	  <b>OR</b> Resource Identifier <b>OR</b> Resource Type <b>OR</b> Date Created <b>OR</b> any of the 13 Keyword fields.
 		<br /><br />
-	  To search dates, enter the data as follows:<br />
+	  <u>To search dates, enter the data as follows</u>:<br />
 	  Complete year (e.g. 1972 and not 72)<br />
 	  Month and year (e.g. March 1972 and not 3/1972)<br />
 	  Full date in year, month, day format (e.g. 1972/03/15 and not 3/15/72)<br />
 	  <br />
         <section id="modal-advanced-search">
-	         To conduct a more detailed search across many more fields in a single project, try an <a href="#" id="advancedSearch" style="color: #44D1FF">Advanced Search</a>.
+	         To conduct a more detailed search across many more fields in a single project, try an
+			<a href="#" id="advancedSearch" style="color: #44D1FF">Advanced Search</a>.
            <br /><br />
         </section>
-      For a more detailed description of search fields, logic and filters, consult the <a href="#" id="help" style="color: #44D1FF">help text</a>.
+      For a more detailed description of search fields, logic and filters, consult the
+	  <a href="#" id="help" style="color: #44D1FF">help text</a>.
 	  </p>
   </div>
 </article>
@@ -87,7 +92,13 @@
       <a id="page-help" href="#pageHelpModal">?</a>
     </h1>
 
-    <p>Keyword searches are designed to provide an overview of the resources uploaded by one or more projects into ARCS.  Keyword Search conducts a search over words in six fields related to each archival document, including its Title, Resource Identifier, Resource Type, Date Created, and Accession Number. Keyword also searches fields that identify the subject focus of these archival documents, including the Classification, Type, and Period of the artifact or structure described in the archival document, and the Material, Technique and Dates of production for the artifact or structure.
+    <p>
+		Keyword searches are designed to provide an overview of the resources uploaded by one or more projects into ARCS.
+		Keyword Search conducts a search over words in six fields related to each <i>archival document</i>,
+		including its Title, Resource Identifier, Resource Type, Date Created, and Accession Number.
+		Keyword also searches fields that identify the <i>subject</i> focus of these archival documents,
+		including the Classification, Type, and Period of the artifact or structure described in the
+		archival document, and the Material, Technique and Dates of production for the artifact or structure.
 
 		<br/><br/>Because ARCS relies on user-generated content, search results may be incomplete.
 	</p>
@@ -277,7 +288,7 @@
         var projectURL = window.location.href.split("/search/")[1];
         projectURL = projectURL.split(/[/#]/)[0];
 
-        if (projectURL == "all") {//don't show the advanced search section if it's an all project search
+        if (projectURL == "all") { //don't show the advanced search section if it's an all project search
             var advancedSection = document.getElementById("modal-advanced-search");
             advancedSection.style.display = "none";
         }

@@ -5,10 +5,10 @@
     <p class="modal-title">Advanced Search</p>
       Advanced Search allows users to search for words and phrases in numerous fields. Users can build complex searches by combining terms and phrases in multiple search boxes.
         <br /><br />
-      Entering more than one word in one Advanced Search box results in a search where ALL words in the query are present in the selected field.  For example, a search for Roman Lamp in the Title field will only return records where both "Roman" AND "lamp" appear in the Title, regardless of their presence in other fields.
+      Entering more than one word in one Advanced Search box results in a search where <b><u>ALL</u></b> <i>words</i> in the query are present in the selected field.  For example, a search for Roman Lamp in the Title field will only return records where both "Roman" <b>AND</b> "lamp" appear in the Title, regardless of their presence in other fields.
       <br /><br />
-      Combining Advanced Searches<br />
-      Entering a single term or phrase in more than one search box results in a search where ALL words added to the first box are present in the first field AND ALL words added to the second box are present in the second field. For example, a search for Roman lamp in the Resource Title field and lamp in the Artifact/Structure Type field will only return records where "Roman lamp" is in the Resource Title AND "lamp" is in the Artifact/Structure Type field.
+      <i>Combining Advanced Searches</i><br />
+      Entering a single term or phrase in more than one search box results in a search where <b><u>ALL</u></b> <i>words</i> added to the first box are present in the first field <b>AND</b> <u>ALL</u> <i>words</i> added to the second box are present in the second field. For example, a search for Roman lamp in the Resource Title field and lamp in the Artifact/Structure Type field will only return records where "Roman lamp" is in the Resource Title <b>AND</b> "lamp" is in the Artifact/Structure Type field.
       <br /><br />
       To conduct a more basic search across a limited number of data fields, try a <a href="#" id="modalBackToSearch" style="color: #44D1FF">Keyword Search</a>.
       <br /><br />

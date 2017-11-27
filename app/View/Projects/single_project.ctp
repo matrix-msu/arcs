@@ -149,10 +149,16 @@
         <div class="greybg">
           <div class = "projectIntro">
             <h1 class="title">Keyword Search</h1>
-            <p>Keyword searches are designed to provide an overview of the resources uploaded by one or more projects into ARCS.  Keyword Search conducts a search over words in six fields related to each archival document, including its Title, Resource Identifier, Resource Type, Date Created, and Accession Number. Keyword also searches fields that identify the subject focus of these archival documents, including the Classification, Type, and Period of the artifact or structure described in the archival document, and the Material, Technique and Dates of production for the artifact or structure.
+              <p>
+                  Keyword searches are designed to provide an overview of the resources uploaded by one or more projects into ARCS.
+                  Keyword Search conducts a search over words in six fields related to each <i>archival document</i>,
+                  including its Title, Resource Identifier, Resource Type, Date Created, and Accession Number.
+                  Keyword also searches fields that identify the <i>subject</i> focus of these archival documents,
+                  including the Classification, Type, and Period of the artifact or structure described in the
+                  archival document, and the Material, Technique and Dates of production for the artifact or structure.
 
-        		<br/><br/>Because ARCS relies on user-generated content, search results may be incomplete.
-        	</p>
+                  <br/><br/>Because ARCS relies on user-generated content, search results may be incomplete.
+              </p>
           </div>
 		  <br>
           <a name="searchJump"></a>

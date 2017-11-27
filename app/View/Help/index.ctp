@@ -61,7 +61,7 @@ Latest Possible Date of Artifact / Structure
 
 Searches involving lists or terms will generate results only all when all terms are present among these fields.  For example, a search for “Roman lamp” will return records where both "Roman" <b>AND</b> "lamp" appear in the Resource Title <b>OR</b> Resource Identifier <b>OR</b> Artifact / Structure Type <b>OR</b> Artifact / Structure Period, etc.
 
-To search dates, enter the data as follows:
+<u>To search dates, enter the data as follows</u>:
 Complete year (e.g. 1972 and not 72)
 Month and year (e.g. March 1972 and not 3/1972)
 Full date in year, month, day format (e.g. 1972/03/15 and not 3/15/72)
