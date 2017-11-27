@@ -238,7 +238,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
           'Creator Role' : 'Author/Creator Role',
           'Earliest Date' : 'Earliest Date of Resource',
           'Latest Date' : 'Latest Date of Resource',
-          'Dimensions' => 'Dimensions',
+          'Dimensions' : 'Dimensions',
           'Language' : 'Language(s)',
           'Description' : 'Description of Resource',
           'Pages' : 'Number of Pages',
@@ -296,6 +296,8 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             html += '<div class="level-content smaller '+excavationSmallClass+'" data-kid="'+item['kid']+'">';
         }
         html += '<table id="'+schemename+counter+'" class="'+schemename+'-table" data-scheme="'+schemename+'" data-kid="'+item['kid']+'">';
+        var matchContributor = false;
+        var firstEmptyContributor = true;
         for (control in controlTypes[schemename]) {
             type = controlTypes[schemename][control];
             var text = '';
@@ -328,17 +330,21 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             }
             var options = '';
             var tmpControl = control;
-            if(tmpControl.indexOf("Contributor Role ") == 0) {
+            if( matchContributor == true ) {
                 tmpControl = "Contributor Role";
-                if( text == '' ){
-                    continue;
-                }
+                matchContributor = false;
             }
             else if(tmpControl.indexOf("Contributor ") == 0 && tmpControl != 'Contributor Role') {
                 tmpControl = "Contributor";
                 if( text == '' ){
-                    continue;
+                    if( firstEmptyContributor == true ){
+                        firstEmptyContributor = false;
+                    }else{
+                        continue;
+                    }
                 }
+                matchContributor = true;
+                console.log('in metadata js display')
             }
 
             if (controlOptions[schemename][tmpControl] != undefined) {

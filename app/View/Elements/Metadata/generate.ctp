@@ -322,6 +322,8 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
                 <table id="<?=$schemename . $counter?>" class="<?=$schemename?>-table" data-scheme="<?=$schemename?>" data-kid="<?=$array['kid']?>">
 
                     <?php
+                        $matchContributor = false;
+                        $firstEmptyContributor = true;
                         foreach($controlTypes[$schemename] as $control => $type){
                             //build how the text value of the control should be displayed.
                             $text = '';
@@ -352,16 +354,19 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
 
                             $options = '';  //decide if there are options
                             $tmpControl = $control;
-                            if( fnmatch("Contributor Role *",$tmpControl) ){
+                            if( $matchContributor == true ){
                                 $tmpControl = "Contributor Role";
-                                if( $text == '' ){
-                                    continue;
-                                }
+                                $matchContributor = false;
                             }elseif( fnmatch("Contributor *",$tmpControl) && $tmpControl != 'Contributor Role' ){
                                 $tmpControl = "Contributor";
                                 if( $text == '' ){
-                                    continue;
+                                    if( $firstEmptyContributor == true ){
+                                        $firstEmptyContributor = false;
+                                    }else{
+                                        continue;
+                                    }
                                 }
+                                $matchContributor = true;
                             }
 
                             if( isset($controlOptions[$schemename][$tmpControl]) ){
