@@ -15,7 +15,8 @@ function GetNewResource(id) {
 
     }else {
         $('#missingPictureIcon').css('display', 'none');
-        image.src = '/'+BASE_URL+'img/arcs-preloader.gif';
+        $(image).css('display', 'none');
+        $('#PageImagePreloader').css('display', 'flex');
         waitingId++;
 
         $.ajax({
@@ -32,7 +33,9 @@ function GetNewResource(id) {
                     //display obervatoins that apply to the selected page
                     var cnt = 0;
                     var pageNum = 1;
-                    image.src = res["kora_url"] + res['Image Upload']['localName'];
+                    $(image).attr('src', res["kora_url"] + res['Image Upload']['localName']);
+                    $('#PageImagePreloader').css('display', 'none');
+                    $(image).css('display', 'block');
                     document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
                 }
             }

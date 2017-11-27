@@ -291,6 +291,9 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
             </div>
             <div id="ImageWrap" class="canvasGrabCursor">
                 <img src="<?php ?> " id="PageImage">
+                <div id="PageImagePreloader" style="display:none;height:100%;display:flex;align-items:center;">
+                    <img src="/<?php echo BASE_URL; ?>img/arcs-preloader.gif" style="margin:0 auto;">
+                </div>
                 <div>
                     <div id="canvas" class='canvas'><div id="missingPictureIcon">
                             <p>NOTIFY ADMIN OF MISSING IMAGE</p>
