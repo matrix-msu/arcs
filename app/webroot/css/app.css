@@ -6679,7 +6679,7 @@ h4 {
 .no-details details[open] > summary:before {
   content: "▼";
 }
-/* 
+/*
 .footer {
     background: #333;
     text-align: center;
@@ -6688,7 +6688,7 @@ h4 {
     font-size: 15px;
     padding-left: 30px;
     padding-right: 30px;
-    padding-top: 175px;
+    padding-top: 88px;
     padding-bottom: 75px;
     float: left;
     border-top: 15px solid #444;
@@ -6704,7 +6704,7 @@ h4 {
   margin-top: -110px;
   padding-left: 30px;
   padding-right: 30px;
-  padding-top: 75px;
+  padding-top: 88px!important;
   padding-bottom: 75px;
   border-top: none !important;
   position: relative;
