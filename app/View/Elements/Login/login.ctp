@@ -224,7 +224,7 @@
             <div class="loginContainer">
 
                 <h1>Register</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
+                <p style="margin-top:32px;">All annotation, discussion, and metadata editing tools require an account to use. In order to create an account, please click on the Register link below.</p>
 
                 <a class='btn' href='#registerModal'>Register</a>
             </div>
