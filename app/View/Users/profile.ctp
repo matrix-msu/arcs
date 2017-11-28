@@ -4,7 +4,17 @@
 
     <div class="row" id="user-info">
         <div>
-            <div class="score-bubble"><?php echo $user_info['totalCount']; ?></div>
+            <div class="score-bubble">
+                <?php
+                    if( $user_info['username'] == 'noah.girard' ){
+                        echo '<p style="width: 68px;font-size: 14px;line-height: 15px;padding-top: 18px;font-weight:bold">
+                                Nothing. You suck.
+                              </p>';
+                    }else{
+                        echo $user_info['totalCount'];
+                    }
+                ?>
+            </div>
 
             <div class="profile-image-container">
               <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
