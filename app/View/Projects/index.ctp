@@ -84,7 +84,7 @@ echo $this->Session->flash('flash_success'); ?>
 				$html .= "marker_array.push(marker);";
 				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
 				$brief = str_replace("'", "\'", $item['Description']);
-				$html .= 'marker.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+				$html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
 				print $html; //print markers and set coords_array
 				//print "console.log('".$coords[0]."', '".$coords[1]."');";
 			}
