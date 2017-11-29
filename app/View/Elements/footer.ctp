@@ -16,7 +16,7 @@
         'http://cal.msu.edu',
         array('escape' => false)
     );
-    
+
 	echo "</div>";
 
 	echo '<br>';
@@ -32,11 +32,15 @@
 		Call us: (517) 335-9300 |
 		<?php echo $this->Html->link('About', '/about') ?> |
 		<?php echo $this->Html->link('Home', '/') ?> |
-		<?php echo $this->Html->link('Search', '/search') ?> |
+		<?php echo $this->Html->link('Search', '/search/all') ?> |
 		<?php echo $this->Html->link('Help', '/help') ?> |
 		<?php echo $this->Html->link('Login', '/#loginModal') ?> |
-		<?php echo $this->Html->link('Privacy Statement', 'https://msu.edu/privacy/') ?> |
-		<?php echo $this->Html->link('Site Accssibility', 'https://webaccess.msu.edu/Policy_and_Guidelines/web-accessibility-policy.html') ?>
+		<?php echo $this->Html->link('Privacy Statement', 'https://msu.edu/privacy/', array('target' => '_blank') ) ?> |
+		<?php echo $this->Html->link(
+                            'Site Accssibility',
+                            'https://webaccess.msu.edu/Policy_and_Guidelines/web-accessibility-policy.html',
+                            array('target' => '_blank')
+                        ) ?>
 		</span>
 		<br>
 		<span class="footer-misc">
