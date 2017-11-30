@@ -11,6 +11,7 @@
     "selected": []
   };
 
+
   var searching = false;
 
   titleOrTime = false;
@@ -1062,6 +1063,7 @@
           selectedMap['selected'] = Search.selected
         }
         //update the add to collections button informations
+		collectionPrep();
         $("#selected-resource-ids").html(JSON.stringify(Search.selected))
         $('#selected-count').html(Search.selected.length)
         if( Search.selected.length == 0 ){ //not clickable
@@ -1074,6 +1076,13 @@
           });
         }
       });
+
+	  // $('#selected-all').click(function(){
+		// console.log('ok');
+		//   if (parseInt($('#selected-count').html()) > 0) {
+		// 	  $(".collectionModalBackground").show();
+		//   }
+	  // });
 
       $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
