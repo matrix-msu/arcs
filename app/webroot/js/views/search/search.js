@@ -1063,7 +1063,7 @@
           selectedMap['selected'] = Search.selected
         }
         //update the add to collections button informations
-		collectionPrep();
+		//collectionPrep();
         $("#selected-resource-ids").html(JSON.stringify(Search.selected))
         $('#selected-count').html(Search.selected.length)
         if( Search.selected.length == 0 ){ //not clickable
