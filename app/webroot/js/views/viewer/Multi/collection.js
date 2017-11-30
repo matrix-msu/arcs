@@ -220,7 +220,7 @@ var unselect = function (trigger) {
     // this.$(".checkedboxes").prop("checked", false);
     this.$("#collectionTitle").val('');
     this.$(".collectionTabSearch").trigger("click");
-    collectionList();
+    //collectionList();
     checkSearchSubmitBtn();
 }
 
@@ -254,8 +254,8 @@ function collectionsSearch() {
     // I.E. "" is in every collection title and user_name
     var populateCheckboxes = "<hr>";
     for (var i = 0; i < collectionArray.length; i++) {
-        if ((collectionArray[i][0].toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
-            (collectionArray[i][2].toLowerCase()).indexOf(query.toLowerCase()) != -1) {
+        if ((collectionArray[i][0].toString().toLowerCase()).indexOf(query.toLowerCase()) != -1 ||
+            (collectionArray[i][2].toString().toLowerCase()).indexOf(query.toLowerCase()) != -1) {
 
             populateCheckboxes += "<input type='checkbox' class='checkedboxes' name='item-" + i + "' id='item-" + i + "' value='" + collectionArray[i][1] + "' />"
                 + "<label for='item-" + i + "'><div style='float:left'>" + collectionArray[i][0] + " </div><div style='float:right'>" + collectionArray[i][2] + "</div></label><br />";
@@ -323,4 +323,4 @@ function getCollections( resourceKid='' ) {
     })
 }
 
-// $( document ).ready(collectionPrep)
+$( document ).ready(collectionPrep)
