@@ -1077,13 +1077,6 @@
         }
       });
 
-	  // $('#selected-all').click(function(){
-		// console.log('ok');
-		//   if (parseInt($('#selected-count').html()) > 0) {
-		// 	  $(".collectionModalBackground").show();
-		//   }
-	  // });
-
       $('.perpage-btn').unbind().click(function() {
         $('#items-per-page-btn').html($(this).html() + "<span class='pointerDown sort-arrow pointerSearch'></span>");
         $('.pageNumber').removeClass('selected');
