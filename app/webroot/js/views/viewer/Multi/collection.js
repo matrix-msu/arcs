@@ -1,7 +1,6 @@
 // multi-resource collections
 //also, search page collections
 function collectionPrep() {
-
     // run on page load
     $(".collectionNewContainer").hide();
     collectionList();
