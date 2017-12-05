@@ -4957,17 +4957,6 @@ a.thumbnail.active {
   right: -21px;
   color: inherit;
 }
-.alert-success {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  color: #3c763d;
-}
-.alert-success hr {
-  border-top-color: #c9e2b3;
-}
-.alert-success .alert-link {
-  color: #2b542c;
-}
 .alert-info {
   background-color: #d9edf7;
   border-color: #bce8f1;
@@ -5728,7 +5717,7 @@ button.close {
 }
 .modal-open .modal {
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 .modal-dialog {
   position: relative;
@@ -6785,8 +6774,8 @@ h4 {
 .modal {
   background-color: #0093be;
   color: #fff;
-  width: 840px;
-  height: 450px;
+  width: 600px;
+  height: 650px;
   margin: auto;
   margin-top: 138.688px;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
@@ -6871,7 +6860,7 @@ h4 {
   display: block;
   margin: 1em 0;
   padding: 1em;
-  width: 50%;
+  width: 75%;
   height: 4em;
   background: #0093be;
   color: #fff;
@@ -6998,10 +6987,13 @@ h4 {
   height: 20px;
 }
 .alert {
-  margin-top: 5px;
+  margin-top: -60px;
   border: 0;
-  color: #ED7474;
+  color: #0094BC;
+  line-height: 2;
   text-align: center;
+  max-width: 1200px;
+  font-size: 21px;
 }
 .notification {
   position: fixed;

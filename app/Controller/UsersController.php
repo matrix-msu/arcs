@@ -629,7 +629,7 @@ class UsersController extends AppController
                         $this->Mapping->saveAll($mappingArray);
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         $this->confirmUserEmail($user);
-                        $this->Session->setFlash("Thank you for registering.  You will recieve a confirmation email shortly.  After your account is confirmed, the admins will be notified of your request.", 'flash_success');
+                        $this->Session->setFlash("Thank you for registering!  You will recieve a confirmation email shortly.<br>After your account is confirmed, the admins will be notified of your request.", 'flash_success');
 
                         $this->redirect($this->referer());
                     } else {
