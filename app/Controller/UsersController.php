@@ -848,55 +848,6 @@ class UsersController extends AppController
         if( isset($signedIn['User']['username']) ){
             $signedIn = $signedIn['User']['username'];
         }
-        //upload the profile picture function
-        if ($this->request->is("post") && $user['username'] == $signedIn ) {
-            if (isset($_FILES['user_image'])) {
-                $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
-                $nameEnd = explode('.',$_FILES['user_image']['name']);
-                $file_ext = strtolower(end($nameEnd));
-                if ($_FILES['user_image']['error'] > 0 ) {
-                    $error    = $_FILES['user_image']['error'];
-                    $errorOut = "Unknown upload error.";
-                    if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
-                    elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
-                    elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
-                    elseif ($error == 4) $errorOut = "No file was uploaded";
-                    elseif ($error == 6) $errorOut = "Missing a temporary folder";
-                    elseif ($error == 7) $errorOut = "Failed to write file to disk";
-                    elseif ($error == 8) $errorOut = "File upload stopped by extension";
-                    $this->Session->setFlash("Error: " . $errorOut, 'flash_error');
-                } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
-                    // check if image file exists
-                    $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
-                } elseif ($_FILES['user_image']['size'] > 500000) {
-                    // check if file size is extremely large
-                    $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
-                } elseif (!in_array($file_ext, $vaildExtensions)) {
-                    // check if file extension is valid
-                    $this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
-                } else {
-                    // try to upload the image.
-                    $uploadFile = $uploads_path . $user['username'] . ".";
-
-                    // each user is allowed one profile picture
-                    if (count(glob($uploadFile."*")) > 0) {
-                        foreach (glob($uploadFile."*") as $file) {
-                            unlink($file);
-                        }
-                    }
-                    if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
-                        $this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
-                        $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$user["username"];
-                        $this->redirect($actual_link);
-                    } else {
-                        $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
-                        $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$user["username"];
-                        $this->redirect($actual_link);
-                    }
-                }
-            }
-            die;
-        }
 
         //get the user profile picture
         $user['profileImage'] = NULL;
@@ -925,6 +876,66 @@ class UsersController extends AppController
         $this->set('isAdmin', $this->Access->isAdmin());
         $this->set('user_info', $user);
     }
+
+
+	//upload the profile picture function
+	public function uploadProfileImage() {
+		$signedIn = $this->getUser($this->Auth);
+
+		$username = $signedIn['username'];
+
+		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        //$uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
+		if (isset($_FILES['user_image'])) {
+			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
+			$nameEnd = explode('.',$_FILES['user_image']['name']);
+			$file_ext = strtolower(end($nameEnd));
+			if ($_FILES['user_image']['error'] > 0 ) {
+				$error    = $_FILES['user_image']['error'];
+				$errorOut = "Unknown upload error.";
+				if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+				elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+				elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
+				elseif ($error == 4) $errorOut = "No file was uploaded";
+				elseif ($error == 6) $errorOut = "Missing a temporary folder";
+				elseif ($error == 7) $errorOut = "Failed to write file to disk";
+				elseif ($error == 8) $errorOut = "File upload stopped by extension";
+				$this->Session->setFlash("Error: " . $errorOut, 'flash_error');
+			} elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
+				// check if image file exists
+				$this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
+			} elseif ($_FILES['user_image']['size'] > 500000) {
+				// check if file size is extremely large
+				$this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
+			} elseif (!in_array($file_ext, $vaildExtensions)) {
+				// check if file extension is valid
+				$this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
+			} else {
+				// try to upload the image.
+				$uploadFile = $uploads_path . $username . ".";
+
+				// each user is allowed one profile picture
+				if (count(glob($uploadFile."*")) > 0) {
+					foreach (glob($uploadFile."*") as $file) {
+						unlink($file);
+					}
+				}
+
+				if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
+					$this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
+					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+					//$this->redirect($actual_link);
+					echo json_encode('ok');
+				} else {
+					$this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
+					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+					//$this->redirect($actual_link);
+				}
+			}
+		}
+		die;
+	}
+
 
     /**
      * Give users the options to crop profile image.

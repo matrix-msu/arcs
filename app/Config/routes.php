@@ -204,6 +204,9 @@
     Router::connect('/users/missingPictureNotifyAdmin',
         array('controller' => 'users', 'action' => 'sendMissingImageEmail')
     );
+	Router::connect('/users/uploadProfileImage',
+		array('controller' => 'users', 'action' => 'uploadProfileImage')
+	);
 
 
     Router::connect('/findUnassociatedResources',

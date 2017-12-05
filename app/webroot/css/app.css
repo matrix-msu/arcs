@@ -6896,6 +6896,20 @@ h4 {
   width: 20%;
   text-transform: uppercase;
 }
+.modal #uploadProfImgLabel {
+  background: #fff;
+  color: #0093be;
+  border: 0;
+  border-radius: 0;
+  text-transform: uppercase;
+  float: left;
+  height: 53px;
+  line-height: 40px;
+  margin: -2px 0 0 0;
+  min-width: 20%;
+  max-width: 50%;
+  width: auto;
+}
 .modal input.error,
 .modal textarea.error,
 .modal select.error,
@@ -12759,17 +12773,12 @@ th.user-tabs-header {
   margin-bottom: 1em;
   font-size: 85%;
 }
-#user-info dl dd #profImgUpload,
-#user-info dl dd #newProfImg {
-  display: none;
-}
 #user-info dl dd #edit-profile {
   font-size: 120%;
   text-transform: uppercase;
   color: #1C95BA;
 }
-#user-info dl dd input,
-#user-info dl dd #uploadProfImgLabel {
+#user-info dl dd input {
   border: 1px solid #0093be;
   color: #5d5d5d;
   background-color: #ceeaef;

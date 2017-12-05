@@ -393,10 +393,14 @@
           activity[count].date = date;
           extra = '';
           if (a['type'] !== 'log') {
-            extra = '<a href=\'' + arcs.baseURL + 'resource/' + a['kid'] + '\'>' +
-                      '<span class=\'name\'>' + a['name'] + '</span>' +
-                    '</a><img>';
-            (function(count) {
+            extra =    '<a href="' + arcs.baseURL + 'resource/' + a['kid'] + '">' +
+                        //  '<span class="name">' +
+                            a['name'] +
+                          // '</span>' +
+                       '</a>' +
+                     '<img>';
+
+            (function(count){
               $.ajax({
                 url: info.url + 'resources/viewkid/' + a['kid'] + '.json',
                 type: 'GET',
@@ -413,7 +417,7 @@
                     }
                   }
                   if (result['Title'] != null) {
-                    activity[count].name = result['Title'];
+                    activity[count].name = reslt['Title'];
                   }
                   activity[count].thumb = result['thumb'];
                 }

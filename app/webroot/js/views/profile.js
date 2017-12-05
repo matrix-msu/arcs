@@ -38,7 +38,8 @@
     };
 
     Profile.prototype.editAccount = function() {
-      return new arcs.views.Modal({
+     // return new arcs.views.Modal({
+      var profileModal = new arcs.views.Modal({
         title: 'Edit Your Account',
         subtitle: "If you'd like your password to stay the same, leave the " + "password field blank.",
         inputs: {
@@ -53,7 +54,7 @@
           },
           password: {
             type: 'password'
-          }
+		  }
         },
         buttons: {
           save: {
@@ -64,21 +65,74 @@
                 if (vals.password === '') {
                   delete vals.password;
                 }
-                arcs.loader.show();
-                return _this.model.save(vals, {
-                  success: function(model, response, options) {
-                    arcs.loader.hide();
-                  },
-                  error: function(model, response, options) {
-                    arcs.loader.hide();
-                  }
-                });
+				arcs.loader.show();
+
+
+				_this.model.save(vals, {
+				 success: function(model, response, options) {
+				   arcs.loader.hide();
+				 },
+				 error: function(model, response, options) {
+				   arcs.loader.hide();
+				 }
+			   });
+
+
+				if ($('#newProfImg')[0].files[0] != undefined){
+					var imgFile = $('#newProfImg')[0].files[0];
+					var data = new FormData();
+					data.append('user_image',  $('#newProfImg')[0].files[0]);
+					console.log(arcs.baseURL + 'users/uploadProfileImage');
+					$.ajax({
+					  	  url: arcs.baseURL + 'users/uploadProfileImage',
+					  	  type: "POST",
+					  	  data: data,
+						  cache: false,
+						  processData: false,  // tell jQuery not to process the data
+       					  contentType: false,  // tell jQuery not to set contentType
+						  success: function (data) {
+							  console.log('random words');
+				  			console.log(data);
+							location.reload();
+						}
+					  });
+				}else {
+					location.reload();
+				}
               };
             })(this)
           },
           cancel: function() {}
         }
       });
+	  //Adding the Choose file button and label
+	  profileModal.$el.find('.modal-body').append(
+		  '<p style="display:inline-block;max-width:100%;margin-bottom:5px;font-weight: bold;">Profile Picture</p>'
+	  );
+	  profileModal.$el.find('.modal-footer').append(
+		  '<label for="files" class="btn" name="user_image" id="uploadProfImgLabel">Choose File</label>'
+	  );
+	  profileModal.$el.find('.modal-body').append(
+		  '<form method="post" enctype="multipart/form-data" id="profImgForm">'+
+		  '<input type="file" name="user_image" id="newProfImg" value="Upload Profile Image" style="display:none"/>'+
+		  '<input type="button" id="profImgUpload" style="display:none" >'+
+		  '</form>'
+	  );
+
+
+	  $(function() {//Connecting the label to the upload file button
+		  profileModal.$el.find("#uploadProfImgLabel").click(function() {
+			  $("#newProfImg").trigger('click');
+		  });
+	  })
+	  $('#newProfImg').change(function() {//Making the filename appear on the label
+		var i = $(this).prev('label').clone();
+		var file = $('#newProfImg')[0].files[0].name;
+		profileModal.$el.find("#uploadProfImgLabel").text(file);
+		profileModal.$el.find("#uploadProfImgLabel").css("width:auto");
+	  });
+
+	  return profileModal;
     };
 
     Profile.prototype.onClick = function(e) {
@@ -190,13 +244,7 @@
     };
 
     Profile.prototype.fileSelect = function(e) {
-      var val = $('#enwProfImg').val();
-      if (val != "" && val != "Upload Profile Image") {
-        $('#profImgUpload').show();
-      }
-      else {
-        $('#profImgUpload').hide();
-      }
+      var val = $('#newProfImg').val();
     }
 
     return Profile;
