@@ -67,22 +67,21 @@
                 }
 				arcs.loader.show();
 
-
 				_this.model.save(vals, {
 				 success: function(model, response, options) {
 				   arcs.loader.hide();
+				   window.location = arcs.baseURL + 'user/' + vals['username'];
 				 },
 				 error: function(model, response, options) {
 				   arcs.loader.hide();
+			       location.reload();
 				 }
 			   });
-
 
 				if ($('#newProfImg')[0].files[0] != undefined){
 					var imgFile = $('#newProfImg')[0].files[0];
 					var data = new FormData();
 					data.append('user_image',  $('#newProfImg')[0].files[0]);
-					console.log(arcs.baseURL + 'users/uploadProfileImage');
 					$.ajax({
 					  	  url: arcs.baseURL + 'users/uploadProfileImage',
 					  	  type: "POST",
@@ -90,13 +89,10 @@
 						  cache: false,
 						  processData: false,  // tell jQuery not to process the data
        					  contentType: false,  // tell jQuery not to set contentType
-						  success: function (data) {
-				  			console.log(data);
-							location.reload();
-						}
+						  success: function(data){
+							  console.log(data);
+						  }
 					  });
-				}else {
-					location.reload();
 				}
               };
             })(this)

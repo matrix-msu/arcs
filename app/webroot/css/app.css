@@ -6995,6 +6995,9 @@ h4 {
   max-width: 1200px;
   font-size: 21px;
 }
+.alert-error {
+  color: #ff0000;
+}
 .notification {
   position: fixed;
   padding: 10px;

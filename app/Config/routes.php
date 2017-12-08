@@ -172,7 +172,7 @@
         array('controller' => 'users', 'action' => 'profile')
     );
     Router::connect('/user/edit/*',
-        array('controller' => 'users', 'action' => 'edit')
+        array('controller' => 'users', 'action' => 'editfsd')
     );
     Router::connect('/users/reset_password/*',
         array('controller' => 'users', 'action' => 'reset_password')

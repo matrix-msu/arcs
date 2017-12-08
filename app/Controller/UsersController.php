@@ -333,34 +333,81 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Session->setFlash($this->data['User']['id']);
-        // Change to return json error! Otherwise it is nearly impossible to diagnois why ajax isn't working.
-        if (!($this->request->is('put') || $this->request->is('post')))
-            // throw new MethodNotAllowedException();
-            return $this->json(405);
-        if (!$this->request->data || !$id)
-            // throw new BadRequestException();
-            return $this->json(400);
-        $user = $this->User->read(null, $id);
-        if (!$user)
-            // throw new NotFoundException();
-            return $this->json(404);
-        # Must be editing own account, or an admin.
-       if (!($this->User->id == $this->Auth->user('id') || $this->Access->isAdmin()))
-            // throw new ForbiddenException();
-            return $this->json(403);
-        # Only admins can change user roles.
-       if ($this->Access->isAdmin())
-            $this->User->permit('isAdmin');
-        // returns internal error when it shouldn't <<<<<<<<<<<<<<<<
-        if (!$this->User->save($this->request->data)) {
-            // throw new InternalErrorException();
+		$signedIn = $this->getUser($this->Auth);
+		$numberEdited = 0;
+
+		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
+		$file_array = glob($uploads_path . $signedIn['username'] . '*');
+
+		foreach ($file_array as $file) {
+			if (pathinfo($file)['filename'] == $signedIn['username']) {
+				$fileName = pathinfo($file)['basename'];
+				$fileExtension = pathinfo($file)['extension'];
+			}
+		}
+
+		$userNames = $this->User->find('all', array(
+			'conditions' => array(
+				'username' => $this->request->data['username']
+			)
+		));
+
+		$emails = $this->User->find('all', array(
+			'conditions' => array(
+				'email' => $this->request->data['email']
+			)
+		));
+
+		//Check if the email is taken
+		if (empty($emails)) {//nobody else has it
+			if (filter_var($this->request->data['email'], FILTER_VALIDATE_EMAIL)){
+				$this->Session->setFlash('Profile edited successfully1', 'flash_success');
+			}else {
+				$this->Session->setFlash('This email is not valid.', 'flash_error');
+				return;
+			}
+		} elseif (sizeof($emails) == 1) {
+			//if its not their own email
+			if ($emails[0]['id'] !== $signedIn['id']){
+				$this->Session->setFlash('This email is already in use.', 'flash_error');
+				return;
+			}
+		//more than one person has it. This shouldn't happen..
+		} else {
+			return;
+		}
+
+    $changedUsername = false;
+		//Check if the username is taken
+		if (empty($userNames)) {//nobody else has it
+			//make the profile picture connect to the new username
+      $changedUsername = true;
+			$this->Session->setFlash('Profile edited successfully.', 'flash_success');
+			$this->json(200);
+		} elseif (sizeof($userNames) == 1) {
+			//if its not their own username
+			if ($userNames[0]['id'] !== $signedIn['id']){
+				$this->Session->setFlash('This username is already taken.', 'flash_error');
+				return;
+			}
+		//more than one person has it. This shouldn't happen..
+		} else {
+			return;
+		}
+
+		$save = $this->User->save($this->request->data);
+        if (!$save) {
+			$this->Session->setFlash('There was an error.', 'flash_error');
             return $this->json(500);
-        }
+        }elseif($save == array() ){
+			return $this->json(500);
+		}
+    rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
+
         # Update the Auth Session var, if necessary.
        if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));
-        $this->json(200, $this->User->findById($id));
+        	$this->json(200, $this->User->findById($id));
     }
 
     /**
@@ -887,7 +934,7 @@ class UsersController extends AppController
 		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
         //$uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 		if (isset($_FILES['user_image'])) {
-			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
+			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png', 'mp4');
 			$nameEnd = explode('.',$_FILES['user_image']['name']);
 			$file_ext = strtolower(end($nameEnd));
 			if ($_FILES['user_image']['error'] > 0 ) {
@@ -922,7 +969,7 @@ class UsersController extends AppController
 				}
 
 				if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
-					$this->Session->setFlash("Profile picture has been uploaded successfully.", 'flash_success');
+					$this->Session->setFlash("Profile edited successfully.", 'flash_success');
 					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
 					//$this->redirect($actual_link);
 					echo json_encode('ok');
