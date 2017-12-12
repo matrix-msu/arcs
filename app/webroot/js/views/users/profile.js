@@ -417,7 +417,7 @@
                     }
                   }
                   if (result['Title'] != null) {
-                    activity[count].name = reslt['Title'];
+                    activity[count].name = result['Title'];
                   }
                   activity[count].thumb = result['thumb'];
                 }

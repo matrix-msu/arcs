@@ -391,7 +391,7 @@ is from here to ...
       var api = arcs.baseURL + "api/search/advanced/"
       var param = AdvancedSearch.getQuery(params);
       $('.flex-container').empty();
-      $('.flex-container').append('<img src=' +arcs.baseURL+'img/arcs-preloader.gif>');
+      $('.flex-container').append(ARCS_LOADER_HTML);
       window.location.href = window.location.origin + window.location.pathname + param
     }
 

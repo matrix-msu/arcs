@@ -13,7 +13,7 @@ function annotationPrep() {
 
     function newPageClicked(){
         $('#PageImage').unbind().one('load', function(){ //make sure this function is only called once
-            if( $('#PageImage').attr('src') == '/'+BASE_URL+'img/arcs-preloader.gif' ){
+            if( $('#PageImagePreloader').css('display') == 'flex' ){
                 setTimeout(function(){
                     newPageClicked();
                 }, 4000);
@@ -298,7 +298,8 @@ function annotationPrep() {
     }
     function resetAnnotations(){
         $('.gen_box_temp').remove();
-        $('.resource-icons').css('display', 'table-cell')
+        //$('.resource-icons').css('display', 'table-cell')
+        $('.resource-icons').css('visibility', 'visible')
         $('#prev-resource').css('display', '')
         $('.tools').show();
         $(".annotateModalBackground").hide();
@@ -319,8 +320,9 @@ function annotationPrep() {
     }
     function prepareAddAnnotation(){
         $('.other-resource, .other-resources').on('click.preventPageClicks', preventPageClicks);
-        $('.resource-reset-icon').click();
-        $('.resource-icons').css('display', 'none')
+        //$('.resource-reset-icon').click();
+        //$('.resource-icons').css('display', 'none')
+        $('.resource-icons:not(.resource-icon-zoom-in-out)').css('visibility', 'hidden')
         $('#prev-resource').css('display', 'none')
         $('.tools').hide();
         $('.gen_box_temp').remove();
@@ -329,14 +331,32 @@ function annotationPrep() {
         var startX,startY,endX,endY,height,width;
         //this is where the actual user annotating code is
         $("#canvas").css('cursor', 'move');
+        var zoomScale;
+        var canvas = $('#canvas')[0];
         $("#canvas").selectable({
             start: function (e) { //mousedown record the coordinates
+                zoomScale = canvas.getBoundingClientRect().width / canvas.offsetWidth;
+                //zoomScale = 1;
                 startX = e.pageX;
+                console.log('realx', e.pageX);
+
+                var imageWrap = $('#ImageWrap');
+                var imageDraggedLeft = parseFloat($(imageWrap).css('left'));
+                var imageDraggedTop = parseFloat($(imageWrap).css('top'));
+
+                console.log('draggedPos ' + imageDraggedLeft + ", " + imageDraggedTop);
+
+                startX = startX - imageDraggedLeft;
+
+                console.log('scaleX', startX);
+                console.log('zoomscale', zoomScale);
+                console.log('x*scale', zoomScale*startX);
+                console.log('x/scale', startX/zoomScale);
                 startY = e.pageY;
             },
             stop: function (e) { //mouseup record the coordinates and draw a temp box.
-                endX = e.pageX;
-                endY = e.pageY;
+                endX = e.pageX * zoomScale;
+                endY = e.pageY * zoomScale;
                 if( endX - startX >= 1 ){
                     width = endX - startX;
                 }else{
@@ -356,12 +376,20 @@ function annotationPrep() {
                     'left': startX,
                     'top': startY - 120
                 });
+                // console.log('startx', startX);
+                // console.log('startY', startY);
+
+
+                //console.log('draggedPos ' + imageDraggedLeft + ", " + imageDraggedTop);
+
+                //var zoomScale = $('#canvas').css('transform');
+                ///console.log('zoomscale:', zoomScale);
                 //add extra offset to the temp box depending on how it was drawn
                 drag_left ? $('.gen_box_temp').offset({left: endX}) : $('.gen_box_temp').offset({left: startX});
                 drag_up ? $('.gen_box_temp').offset({top: endY}) : $('.gen_box_temp').offset({top: startY});
-				
+
 				var gen_box = $('.gen_box_temp');
-				
+
 				//Add coordinates to annotation to save
 				annotateData.x1 = parseFloat($(gen_box).css('left'), 10) / $(".canvas").width();
 				annotateData.x2 = (parseFloat($(gen_box).css('left')) + width) / $(".canvas").width();
@@ -511,21 +539,23 @@ function annotationPrep() {
     }
 	function InjectLoader(injectId) {
         var obj = $(injectId)
-        var spinner = "<img class=\"annoteSpinner\" src=\"" + arcs.baseURL + "img/arcs-preloader.gif\">"
+        var spinner = $(ARCS_LOADER_HTML);
         obj.ready(function () {
             obj.append(spinner)
         })
-        spinner = $(".annoteSpinner")
         return {
             show: function () {
+                $('#annotateModal').css('min-height', '197px');
                 $(".annotateRelationContainer").css("text-align", "center")
                 obj.css("display","inherit")
             },
             hide: function () {
+                $('#annotateModal').css('min-height', '');
                 $(".annotateRelationContainer").css("text-align", "initial")
                 obj.css("display","none")
             },
             remove: function () {
+                $('#annotateModal').css('min-height', '');
                 spinner.remove()
                 $(".annotateRelationContainer").css("text-align", "initial")
             }
@@ -800,7 +830,7 @@ function annotationPrep() {
             }
         });
     });
-	
+
 	$(document).on('click', ".trashTranscript", function () {
 		if( $(this).parent().hasClass('annotation_display') ){
 			$('.deleteBody').html('Are you sure you want to delete this annotation?');

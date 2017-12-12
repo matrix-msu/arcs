@@ -9,7 +9,7 @@
   <li class="resource-icons">
       <img class="resources-fullscreen-icon" src="/<?php echo BASE_URL; ?>img/Fullscreen.svg">
   </li>
-  <li class="resource-icons">
+  <li class="resource-icons resource-icon-zoom-in-out">
     <div class="zoom-div">
       <img id="zoom-out" class="resources-zoom-out-icon" src="/<?php echo BASE_URL; ?>img/zoomOut.svg">
       <input type="range" min="1" max="10" value="1" step="0.1" class="zoom-bar" id="zoom-range">

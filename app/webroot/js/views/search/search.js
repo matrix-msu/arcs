@@ -899,7 +899,10 @@
           $("#1").html(1);
           e.preventDefault();
           $('.flex-container').empty();
-          $('.flex-container').append('<img src=' +arcs.baseURL+'img/arcs-preloader.gif' + ' style = "position:absolute; left:0; right:0; top:0; bottom:0; margin:auto;">');
+          $(".flex-container").removeClass("grid-list").removeClass('detailed-list');
+          var loaderHtml = $(ARCS_LOADER_HTML);
+          $(loaderHtml).css({'position':'absolute','margin':'auto','left':'0','top':'0','right':'0','bottom':'0'});
+          $('.flex-container').append(loaderHtml);
           $('#search-results-wrapper').css('visibility', 'visible');
           $('#search-results-wrapper').css('display', 'block');
           return search();
@@ -926,8 +929,6 @@
 
 
     Search.prototype._render = function(results, append) {
-
-
 
       var $results, filterResults, getCnt, template;
       if (append == null) {

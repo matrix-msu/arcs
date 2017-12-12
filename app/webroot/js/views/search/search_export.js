@@ -8,8 +8,10 @@
             return;
         }
         isExporting = 1;
-        $('#options-btn').html('<img class="icon-export" src="/'+BASE_URL+'img/arcs-preloader.gif" style="height:inherit;margin-top:-6px;" />');
-
+        var loaderHtml = $(ARCS_LOADER_HTML);
+        $(loaderHtml).css({'height':'inherit', 'margin-top':'-6px'});
+        $(loaderHtml).find('.sk-folding-cube').css({'height':'36.43px', 'width':'36.43px'});
+        $('#options-btn').html(loaderHtml);
 		//get all resource kids
 		var resourceKidResults = [];
 		arcs.views.search.exportResults.forEach(function(e){

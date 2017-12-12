@@ -33,13 +33,13 @@
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
-        $(e.currentTarget).children().eq(2).prepend('<img src="' + src + '" alt="SeeAll.svg">');
+        $(e.currentTarget).children().eq(2).prepend(ARCS_LOADER_HTML);
+        return;
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
         $(e.currentTarget).removeClass('btn-show-all');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
-        $(e.currentTarget).find("img:first").attr('src', src);
+        //add in the arcs loader
+        $(e.currentTarget).find("a:first")[0].outerHTML = ARCS_LOADER_HTML;
         limit = 0;
       } else {
         $el = $(e.currentTarget).parent();
@@ -50,9 +50,8 @@
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
         if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
-          $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
+            $(e.currentTarget).next().prepend(ARCS_LOADER_HTML);
         }
       }
       this.renderDetails($el, limit);
@@ -106,6 +105,9 @@
           var project = $('#resources').attr('href').split('/').reverse()[0];
 
           var url = "../../search/collection/" + id;
+
+          console.log('go to search');
+          return;
 
           $('<form />')
               .hide()

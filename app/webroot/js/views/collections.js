@@ -46,14 +46,10 @@
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
-        $(e.currentTarget).children().eq(1).prepend('<img src="' + src + '" alt="SeeAll.svg">');
+        $(e.currentTarget).children().eq(1).prepend(ARCS_LOADER_HTML);
       } else if (e.currentTarget.className === 'btn-show-all') {
         $el = $(e.currentTarget).parent().parent().parent().parent();
-        $(e.currentTarget).removeClass('btn-show-all');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
-        $(e.currentTarget).find("img:first").attr('src', src);
-
+        $(e.currentTarget).find("img:first").replaceWith(ARCS_LOADER_HTML);
         limit = 0;
       } else {
         $el = $(e.currentTarget).parent();
@@ -64,9 +60,8 @@
         limit = 1;
         $el.toggleAttr('open');
         $el.toggleClass('closed').toggleClass('open');
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
         if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
-          $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
+          $(e.currentTarget).next().prepend(ARCS_LOADER_HTML);
         }
 
 

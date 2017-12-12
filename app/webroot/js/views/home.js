@@ -41,15 +41,14 @@
         }
         $el.toggleAttr('open');
         limit = 25;
-        src = arcs.baseURL + 'img/arcs-preloader.gif';
         if ($(e.currentTarget).next().children().eq(0).prop("tagName") !== 'IMG') {
-          $(e.currentTarget).next().prepend('<img src="' + src + '" alt="SeeAll.svg">');
+          $(e.currentTarget).next().prepend(ARCS_LOADER_HTML);
         }
       } else if (e.currentTarget.className === 'btn-show-all') {
         //Show all was pressed to go to the resource_type search page
         var resource_type = $(e.currentTarget).closest('details').attr('data-type');
         $(e.currentTarget).removeClass('btn-show-all');
-        $(e.currentTarget).find("img:first").attr('src', arcs.baseURL + 'img/arcs-preloader.gif');
+        $(e.currentTarget).find("img:first").replaceWith(ARCS_LOADER_HTML);
         var project = $('#resources').attr('href')
             .split("/")
             .reverse()[0];

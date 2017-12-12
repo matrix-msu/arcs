@@ -6,7 +6,12 @@ $(document).ready(function(){
             return;
         }
         isExporting = 1;
-        $('.icon-export').css('background-image','url(/'+BASE_URL+'img/arcs-preloader.gif)');
+        var loaderHtml = $(ARCS_LOADER_HTML);
+        //$(loaderHtml).css({'height':'inherit', 'margin-top':'-6px'});
+        $(loaderHtml).css({'height':'13px', 'width':'13px'});
+        $(loaderHtml).find('.sk-folding-cube').css({'height':'11px', 'width':'11px'});
+        $('.icon-export').css('background-image','none').css('padding-left', '2px');
+        $('.icon-export').html(loaderHtml);
         //load data in variables
 
 		//var projects = PROJECTS;
@@ -221,6 +226,7 @@ $(document).ready(function(){
                             data: {'filename': data},
                             statusCode: {
                                 200: function () {
+                                    $('.icon-export').html('');
                                     $('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
                                     isExporting = 0;
                                 }

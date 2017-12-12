@@ -301,9 +301,11 @@ function editMetaPrep() {
                         $('.associator_prev').css('visibility', 'hidden');
                         $('.associator_next').css('visibility', 'hidden');
                         $('.associator_end').css('visibility', 'hidden');
-                        //add the preloader gif
-                        var html = '<img alt="preloader gif" src="' + arcs.baseURL + 'img/arcs-preloader.gif" style="display:block;margin:20px auto 0 auto;" />';
-                        $('#associatorSearchObjects').append(html);
+                        //add the preloader
+                        var loaderHtml = $(ARCS_LOADER_HTML);
+                        $(loaderHtml).css({'margin-top':'5px'});
+                        $(loaderHtml).find('.sk-cube').addClass('sk-cube-white');
+                        $('#associatorSearchObjects').append(loaderHtml);
 
                         $.ajax({
                             url: arcs.baseURL + "metadataedits/getAllKidsByScheme",
