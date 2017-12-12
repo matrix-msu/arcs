@@ -135,6 +135,17 @@ define("KORA_LIB"      ,  LIB . "Kora/Local/");
 define("THUMBS_URL", "$protocol://$base/".BASE_URL."app/webroot/thumbs/");
 define("THUMBS", APP."webroot/thumbs/");
 
+define("ARCS_LOADER_HTML",
+    "<div class='sk-cube-container'>".
+    "<div class='sk-folding-cube'>".
+    "<div class='sk-cube1 sk-cube'></div>".
+    "<div class='sk-cube2 sk-cube'></div>".
+    "<div class='sk-cube4 sk-cube'></div>".
+    "<div class='sk-cube3 sk-cube'></div>".
+    "</div>".
+    "</div>"
+);
+
 /*///////////////////////////////////////////////////////////////////////
 JAVASCRIPT
 ///////////////////////////////////////////////////////////////////////*/
@@ -152,4 +163,5 @@ define("globaljsvars",
     "var KORA_FILES_URI ='".KORA_FILES_URI."';".
     "function getSidFromKid(kid){var bootstrapSid = kid.split('-')[1];return parseInt(bootstrapSid, 16);}".
     "function getPidFromKid(kid){var bootstrapPid = kid.split('-')[0];return parseInt(bootstrapPid, 16);}".
+    "var ARCS_LOADER_HTML = \" ".ARCS_LOADER_HTML." \";" .
     "</script>");
