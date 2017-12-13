@@ -14,7 +14,7 @@ require_once(KORA_LIB . "General_Search.php");
 class UsersController extends AppController
 {
     public $name = 'Users';
-    public $uses = array('User', 'Mapping', 'Collection');
+    public $uses = array('User', 'Mapping');
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -377,11 +377,11 @@ class UsersController extends AppController
 			return;
 		}
 
-    $changedUsername = false;
+        $changedUsername = false;
 		//Check if the username is taken
 		if (empty($userNames)) {//nobody else has it
 			//make the profile picture connect to the new username
-      $changedUsername = true;
+        $changedUsername = true;
 			$this->Session->setFlash('Profile edited successfully.', 'flash_success');
 			$this->json(200);
 		} elseif (sizeof($userNames) == 1) {
@@ -402,14 +402,32 @@ class UsersController extends AppController
         }elseif($save == array() ){
 			return $this->json(500);
 		}
-    rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
+        rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
 
-    if ($changedUsername == true) {
-      $this->Collection->updateAll(
-        array('Collection.username' => $this->request->data['username']),
-        array('Collection.user_id' => $signedIn['id'])
-      );
-    }
+        if ($changedUsername) {
+            //update the collections table
+            $this->loadModel('Collection');
+            $collectionIds = $this->Collection->find('list',array(
+                'conditions' => array('Collection.user_id' => $signedIn['id']),
+                'fields' => array('Collection.id')
+            ));
+            $collectionIds = array_keys($collectionIds);
+
+            $updateArray = array();
+            foreach( $collectionIds as $id ){
+                array_push(
+                    $updateArray,
+                    array(
+                        'Collection' => array(
+                            'id' => $id,
+                            'username' => $this->request->data['username'],
+                            'user_name' => $this->request->data['name']
+                        )
+                    )
+                );
+            }
+            $this->Collection->saveAll($updateArray);
+        }
 
 
         # Update the Auth Session var, if necessary.
