@@ -14,7 +14,7 @@ require_once(KORA_LIB . "General_Search.php");
 class UsersController extends AppController
 {
     public $name = 'Users';
-    public $uses = array('User', 'Mapping');
+    public $uses = array('User', 'Mapping', 'Collection');
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -403,6 +403,14 @@ class UsersController extends AppController
 			return $this->json(500);
 		}
     rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
+
+    if ($changedUsername == true) {
+      $this->Collection->updateAll(
+        array('Collection.username' => $this->request->data['username']),
+        array('Collection.user_id' => $signedIn['id'])
+      );
+    }
+
 
         # Update the Auth Session var, if necessary.
        if ($id == $this->Auth->user('id'))
