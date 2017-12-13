@@ -82,11 +82,11 @@
                                 _this.model.save(vals, {
                                     success: function (model, response, options) {
                                         arcs.loader.hide();
-                                        // window.location = arcs.baseURL + 'user/' + vals['username'];
+                                        window.location = arcs.baseURL + 'user/' + vals['username'];
                                     },
                                     error: function (model, response, options) {
                                         arcs.loader.hide();
-                                        //location.reload();
+                                        location.reload();
                                     }
                                 });
 

@@ -358,10 +358,12 @@ class UsersController extends AppController
 			)
 		));
 
+        $changedEmail = false;
 		//Check if the email is taken
 		if (empty($emails)) {//nobody else has it
 			if (filter_var($this->request->data['email'], FILTER_VALIDATE_EMAIL)){
-				$this->Session->setFlash('Profile edited successfully1', 'flash_success');
+                $changedEmail = true;
+				$this->Session->setFlash('Profile edited successfully.', 'flash_success');
 			}else {
 				$this->Session->setFlash('This email is not valid.', 'flash_error');
 				return;
@@ -402,9 +404,16 @@ class UsersController extends AppController
         }elseif($save == array() ){
 			return $this->json(500);
 		}
+        //assign their profile picture to their new username
         rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
 
-        if ($changedUsername) {
+
+        $changedName = false;
+        if ($this->request->data['name'] != $signedIn['name']){
+            $changedName = true;
+        }
+
+        if ($changedUsername || $changedName) {
             //update the collections table
             $this->loadModel('Collection');
             $collectionIds = $this->Collection->find('list',array(
@@ -427,6 +436,104 @@ class UsersController extends AppController
                 );
             }
             $this->Collection->saveAll($updateArray);
+        }
+
+        if ($changedUsername || $changedName || $changedEmail) {
+            //update the flags table
+            $this->loadModel('Flag');
+            $flagIds = $this->Flag->find('list',array(
+                'conditions' => array('Flag.user_id' => $signedIn['id']),
+                'fields' => array('Flag.id')
+            ));
+            $flagIds = array_keys($flagIds);
+
+            $updateArray = array();
+            foreach( $flagIds as $id ){
+                array_push(
+                    $updateArray,
+                    array(
+                        'Flag' => array(
+                            'id' => $id,
+                            'user_username' => $this->request->data['username'],
+                            'user_name' => $this->request->data['name'],
+                            'user_email' => $this->request->data['email'],
+                        )
+                    )
+                );
+            }
+            $this->Flag->saveAll($updateArray);
+
+
+            //update the annotations table
+            $this->loadModel('Annotation');
+            $annotationIds = $this->Annotation->find('list',array(
+                'conditions' => array('Annotation.user_id' => $signedIn['id']),
+                'fields' => array('Annotation.id')
+            ));
+            $annotationIds = array_keys($annotationIds);
+
+            $updateArray = array();
+            foreach( $annotationIds as $id ){
+                array_push(
+                    $updateArray,
+                    array(
+                        'Annotation' => array(
+                            'id' => $id,
+                            'user_username' => $this->request->data['username'],
+                            'user_name' => $this->request->data['name'],
+                            'user_email' => $this->request->data['email'],
+                        )
+                    )
+                );
+            }
+            $this->Annotation->saveAll($updateArray);
+        }
+
+        if($changedName){
+            //update the metadata_edits table
+            $this->loadModel('MetadataEdit');
+            $metadaEditIds = $this->MetadataEdit->find('list',array(
+                'conditions' => array('MetadataEdit.user_id' => $signedIn['id']),
+                'fields' => array('MetadataEdit.id')
+            ));
+            $metadaEditIds = array_keys($metadaEditIds);
+
+            $updateArray = array();
+            foreach( $metadaEditIds as $id ){
+                array_push(
+                    $updateArray,
+                    array(
+                        'MetadataEdit' => array(
+                            'id' => $id,
+                            'user_name' => $this->request->data['name']
+                        )
+                    )
+                );
+            }
+            $this->MetadataEdit->saveAll($updateArray);
+
+
+            //update the comments table
+            $this->loadModel('Comment');
+            $commentIds = $this->Comment->find('list',array(
+                'conditions' => array('Comment.user_id' => $signedIn['id']),
+                'fields' => array('Comment.id')
+            ));
+            $commentIds = array_keys($commentIds);
+
+            $updateArray = array();
+            foreach( $commentIds as $id ){
+                array_push(
+                    $updateArray,
+                    array(
+                        'Comment' => array(
+                            'id' => $id,
+                            'name' => $this->request->data['name']
+                        )
+                    )
+                );
+            }
+            $this->Comment->saveAll($updateArray);
         }
 
 
@@ -960,7 +1067,7 @@ class UsersController extends AppController
 		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
         //$uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 		if (isset($_FILES['user_image'])) {
-			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png', 'mp4');
+			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
 			$nameEnd = explode('.',$_FILES['user_image']['name']);
 			$file_ext = strtolower(end($nameEnd));
 			if ($_FILES['user_image']['error'] > 0 ) {
