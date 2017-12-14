@@ -51,19 +51,21 @@
 
         Profile.prototype.editAccount = function () {
             // return new arcs.views.Modal({
+            console.log('edit account thing')
             console.log(this.model);
+            console.log(arcs);
             var profileModal = new arcs.views.Modal({
                 title: 'Edit Your Account',
                 subtitle: "If you'd like your password to stay the same, leave the " + "password field blank.",
                 inputs: {
                     name: {
-                        value: this.model.get('name')
+                        value: $('#userInfoName').html().trim()
                     },
                     username: {
-                        value: this.model.get('username')
+                        value: $('#userInfoUsername').html().trim()
                     },
                     email: {
-                        value: this.model.get('email')
+                        value: $('#userInfoEmail').html().trim()
                     },
                     password: {
                         type: 'password'

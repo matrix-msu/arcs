@@ -22,12 +22,12 @@
 
             <dl class="user-project-info">
                 <dd>
-                    <h2><?php echo $user_info['name'];?></h2>
+                    <h2 id="userInfoName"><?php echo $user_info['name'];?></h2>
                 </dd>
-                <dd>
+                <dd id="userInfoEmail">
                     <?php echo $user_info['email'];?>
                 </dd>
-                <dd>
+                <dd id="userInfoUsername">
                 	<?php echo $user_info['username'];?>
                 </dd>
                 <dd>
@@ -38,7 +38,7 @@
                         $string = '<span class="bolded">'.$projectString.'</span>: '.$mapping['role'];
                         $projects[] = $string;
                     }
-                    echo implode(',<br /> ', $projects);
+                    echo implode('<br /> ', $projects);
                     ?>
                 </dd>
                 <dd>
