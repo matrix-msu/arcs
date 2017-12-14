@@ -383,9 +383,8 @@ class UsersController extends AppController
 		//Check if the username is taken
 		if (empty($userNames)) {//nobody else has it
 			//make the profile picture connect to the new username
-        $changedUsername = true;
+            $changedUsername = true;
 			$this->Session->setFlash('Profile edited successfully.', 'flash_success');
-			$this->json(200);
 		} elseif (sizeof($userNames) == 1) {
 			//if its not their own username
 			if ($userNames[0]['id'] !== $signedIn['id']){
@@ -406,6 +405,8 @@ class UsersController extends AppController
 		}
         //assign their profile picture to their new username
         rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
+
+        $this->Session->setFlash('Profile edited successfully.', 'flash_success');
 
 
         $changedName = false;
@@ -949,6 +950,9 @@ class UsersController extends AppController
      * @param string $ref username or id of an existing user
      */
     public function profile($ref){
+        //Cache::clear();
+        // print_r($this->Session);
+        // die;
         $this->User->flatten = false;
         $this->User->recursive = 1;
 

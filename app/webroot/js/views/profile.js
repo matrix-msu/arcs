@@ -51,6 +51,7 @@
 
         Profile.prototype.editAccount = function () {
             // return new arcs.views.Modal({
+            console.log(this.model);
             var profileModal = new arcs.views.Modal({
                 title: 'Edit Your Account',
                 subtitle: "If you'd like your password to stay the same, leave the " + "password field blank.",
