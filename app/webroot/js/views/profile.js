@@ -130,7 +130,6 @@
                 '</form>'
             );
 
-
             $(function () {//Connecting the label to the upload file button
                 profileModal.$el.find("#uploadProfImgLabel").click(function () {
                     $("#newProfImg").trigger('click');

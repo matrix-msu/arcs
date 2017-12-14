@@ -13,6 +13,7 @@
                     }else{
                         echo $user_info['totalCount'];
                     }
+                    $allProjects = $projects;
                 ?>
             </div>
 
@@ -22,12 +23,12 @@
 
             <dl class="user-project-info">
                 <dd>
-                    <h2 id="userInfoName"><?php echo $user_info['name'];?></h2>
+                    <h2><?php echo $user_info['name'];?></h2>
                 </dd>
-                <dd id="userInfoEmail">
+                <dd>
                     <?php echo $user_info['email'];?>
                 </dd>
-                <dd id="userInfoUsername">
+                <dd>
                 	<?php echo $user_info['username'];?>
                 </dd>
                 <dd>
@@ -38,8 +39,11 @@
                         $string = '<span class="bolded">'.$projectString.'</span>: '.$mapping['role'];
                         $projects[] = $string;
                     }
-                    echo implode('<br /> ', $projects);
+                    echo implode(',<br /> ', $projects);
                     ?>
+                </dd>
+                <dd>
+                    <a href="#addProjectModal" id="request-project">Request Project Access</a>
                 </dd>
                 <dd>
                     <span class="bolded">Active Since: </span><?php echo $user_info['activeSince']; ?>
@@ -109,6 +113,39 @@
         </div>
     </div>
 </div>
+<!--<div id="addProjectModal" id="modal" class="addProject">-->
+    <div id="addProjectModal" class="register">
+        <div class="register-content">
+            <a id="#close" class="reverse-filter" href="#">
+              <?=
+              $this->Html->image('Close.svg', array('class' => 'exit', 'alt' => 'Exit'));?>
+            </a>
+
+            <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register')); ?>
+
+            <div class="left">
+                <div class="registerContainer">
+                    <h3>Request Project Access</h3>
+
+                    <input type="hidden" id="UserProject" name="data[User][project]">
+                    <div class="selectDiv">
+                        Select Project(s) to Register In *
+                    </div>
+                    <div id="projectDropdown" style="display: none;">
+                        <?php foreach($allProjects as $p) { ?>
+                            <p id="<?php echo $p['Persistent Name'] ?>"><?php echo ucwords($p['Persistent Name']) ?></p>
+                        <?php } ?>
+                    </div>
+                </div>
+                <?php echo $this->Form->submit('Register', array('class' => 'btn btn-success', 'id' => 'register')); ?>
+            </div>
+
+            <?php echo $this->Form->end() ?>
+
+        </div>
+    </div>
+
+
 
 <script type='text/javascript'>
     // edit user

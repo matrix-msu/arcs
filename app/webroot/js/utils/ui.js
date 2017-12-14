@@ -53,23 +53,24 @@ $(document).ready(function() {
   });
 
   $("#projectDropdown > p").click(function(e) {
+    $("#projectDropdown").toggle();
     e.stopPropagation();
     var target = $(e.target);
     var selectDiv = $(".selectDiv");
     target.toggleClass('selected');
     if (target.hasClass('selected')) {
-      console.log(selectDiv.text());
       if (selectDiv.text().includes("Select Project(s) to Register In *")) {
         selectDiv.text(target.text());
       }
-      else {
-        selectDiv.text(selectDiv.text() + ", " + target.text());
+      else if (!selectDiv.text().includes(target.text())) {//dont add duplicates
+          selectDiv.text(selectDiv.text() + ", " + target.text());
       }
     }
-    else {
+    else {//removing from the list
       var temp = selectDiv.text();
-      temp = temp.replace(", " + target.text, "");
-      temp = temp.replace(target.text, "");
+      temp = temp.replace(target.text() + ", ", "");
+      temp = temp.replace(", " + target.text(), "");
+      temp = temp.replace(target.text(), "");
       selectDiv.text(temp);
     }
     if ($("#projectDropdown .selected").length == 0) {
