@@ -293,6 +293,8 @@ function editMetaPrep() {
                             $('#meta_textarea option[value="' + meta_value_before + '"]').prop('selected', true);
                         }
                     } else if (meta_control_type == 'associator') {
+                        meta_value_before = $(this).children('div').eq(1).attr('data-associations');
+                        meta_value_before = meta_value_before.split(' ').join('\n');
                         $(this).children('div').eq(1).append('<div id="meta_textarea"></div>');
                         $('#associatorTitle').html('Edit ' + meta_field_name + ' Metadata');
                         $('.associatorModalBackground').show();

@@ -86,8 +86,8 @@ function dynamicPrep() {
         $('.archival.objects-table[data-kid="'+resourceKid+'"]').css('display', 'table');
         //find the excavations
         var stringExcavationKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
-            .find("[id='Excavation - Survey Associator']").html();
-        var excavationKids = stringExcavationKids.split('<br>'); //turn into array
+            .find("[id='Excavation - Survey Associator']").attr('data-associations');
+        var excavationKids = stringExcavationKids.split(' '); //turn into array
         excavationKids.pop(); //remove an empty index
         excavationKids.sort();
         var excavationSeasonAssociators = [];
@@ -119,16 +119,16 @@ function dynamicPrep() {
                         firstDrawer2 = 1;
                     }
                     var ex = $('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]')
-                        .find("[id='Season Associator']").html();
-                    ex = ex.replace('<br>', '');
+                        .find("[id='Season Associator']").attr('data-associations');
+                    ex = ex.replace(' ', '');
                     //console.log(ex);
                     excavationSeasonAssociators.push(ex);
                 }
             }
             //find the season
             var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
-                .find("[id='Season Associator']").html();
-            var seasonKids = stringSeasonKids.split('<br>'); //turn into array
+                .find("[id='Season Associator']").attr('data-associations');
+            var seasonKids = stringSeasonKids.split(' '); //turn into array
             seasonKids.pop(); //remove an empty index
             //todo- improve this to hide/show correct seasons**associated through excavation
             $('.Seasons-table').css('display', 'none');

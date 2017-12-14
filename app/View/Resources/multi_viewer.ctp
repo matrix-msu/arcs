@@ -323,8 +323,8 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     $metadataFlags = $flags['metadataFlags'];
                     Generate_Metadata("project",$projectsArray,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
                     Generate_Metadata("Seasons",$seasons,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                    Generate_Metadata("excavations",$excavations,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
-                    Generate_Metadata("archival objects",$resources,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
+                    Generate_Metadata("excavations",$excavations,$metadataEdits,$metadataEditsControlOptions,$metadataFlags,$seasons);
+                    Generate_Metadata("archival objects",$resources,$metadataEdits,$metadataEditsControlOptions,$metadataFlags,$excavations,$seasons);
                     Generate_Metadata("subjects",$subjects,$metadataEdits,$metadataEditsControlOptions,$metadataFlags);
                 ?>
               </div>

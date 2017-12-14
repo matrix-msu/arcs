@@ -1,4 +1,4 @@
-function generateMetadata(schemename, data, metadataEdits, controlOptions, flags) {
+function generateMetadata(schemename, data, metadataEdits, controlOptions, flags, aboveScheme=false, aboveTwoSchemes=false) {
     var counter = 0;
 
 	var html = '<h3 class="level-tab '+schemename+'" >';
@@ -306,10 +306,37 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             if(type == 'text' || type == 'list') {
                 text = item[control];
             }
-            else if(type == 'multi_input' || type == 'multi_select' || type == 'associator') {
+            else if(type == 'multi_input' || type == 'multi_select' ) {
                 if(typeof item[control] != "string"){
                     for (var i = 0; i < item[control].length; i++) {
                         text += item[control][i]+"<br>";
+                    }
+                }
+            }
+            else if(type == 'associator') {
+                var dataAssociatedList = '';
+                if( aboveScheme !== false || aboveTwoSchemes !== false ) {
+                    var preview = '';
+                    var usedAboveScheme = aboveScheme;
+                    if (schemename == 'excavations') {
+                        preview = 'Title';
+                    } else if (schemename == 'archival objects') {
+                        if (control == 'Excavation - Survey Associator') {
+                            preview = 'Name';
+                        } else { //season is the above scheme
+                            usedAboveScheme = aboveTwoSchemes;
+                            preview = 'Title';
+                        }
+                    }
+                }
+                if(typeof item[control] != "string"){
+                    for (var i = 0; i < item[control].length; i++) {
+                        if( aboveScheme !== false || aboveTwoSchemes !== false ){
+                            text += item[control][i]+" ("+usedAboveScheme[item[control][i]][preview]+")<br>";
+                        }else{
+                            text += item[control][i]+"<br>";
+                        }
+                        dataAssociatedList += item[control][i]+ ' ';
                     }
                 }
             }
@@ -359,6 +386,9 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             }
 
             extraString = " class='metadataEdit'>"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+">"+text+"</div>";
+            if( type == 'associator' ){
+                extraString = " class='metadataEdit'>"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+" data-associations='"+dataAssociatedList+"'>"+text+"</div>";
+            }
             if(control == 'Persistent Name'){
                 extraString = " >"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+">"+text+"</div>";
             }

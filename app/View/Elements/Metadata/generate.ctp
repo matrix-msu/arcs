@@ -1,5 +1,14 @@
 <?php
-function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, $flags, $counter = 0){
+function Generate_Metadata(
+                $schemename,
+                $data,
+                $metadataEdits,
+                $controlOptions,
+                $flags,
+                $aboveScheme=false,
+                $aboveTwoSchemes=false
+    ){
+    $counter = 0;
 ?>
 
     <h3 class="level-tab <?= $schemename ?>" >
@@ -331,9 +340,35 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
                             $text = '';
                             if( $type=='text'||$type=='list' ) {
                                 $text = $array[$control];
-                            }elseif( $type=='multi_input'||$type=='multi_select'||$type=='associator' ){
+                            }elseif( $type=='multi_input'||$type=='multi_select' ){
                                 if( !is_string($array[$control]) ){
                                     foreach($array[$control] as $temp) {$text .= $temp."<br>";}
+                                }
+                            }elseif( $type=='associator' ){
+                                $dataAssociatedList = ''; //used for the dynamic accordion
+                                if( !is_string($array[$control]) ){
+                                    if( $aboveScheme || $aboveTwoSchemes ) {
+                                        $preview = '';
+                                        $usedAboveScheme = $aboveScheme;
+                                        if ($schemename == 'excavations') {
+                                            $preview = 'Title';
+                                        } elseif ($schemename == 'archival objects') {
+                                            if ($control == 'Excavation - Survey Associator') {
+                                                $preview = 'Name';
+                                            } else { //season is the above scheme
+                                                $usedAboveScheme = $aboveTwoSchemes;
+                                                $preview = 'Title';
+                                            }
+                                        }
+                                    }
+                                    foreach($array[$control] as $temp) {
+                                        if( $aboveScheme || $aboveTwoSchemes ){
+                                            $text .= $temp." (".$usedAboveScheme[$temp][$preview].")<br>";
+                                        }else{
+                                            $text .= $temp."<br>";
+                                        }
+                                        $dataAssociatedList .= $temp. ' ';
+                                    }
                                 }
                             }elseif( $type == 'date' ){
                                 if( !is_string($array[$control]) ){
@@ -387,6 +422,11 @@ function Generate_Metadata($schemename, $data, $metadataEdits, $controlOptions, 
                             $string = " class='metadataEdit'>
                                         $flagged
                                         <div id='$control' data-control='$type'$options>$text</div>";
+                            if( $type == 'associator' ){
+                                $string = " class='metadataEdit'>
+                                        $flagged
+                                        <div id='$control' data-control='$type'$options data-associations='$dataAssociatedList'>$text</div>";
+                            }
                             if( $control == 'Persistent Name' ){
                                 $string = " >
                                         $flagged
