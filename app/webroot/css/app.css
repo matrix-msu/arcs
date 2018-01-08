@@ -8254,7 +8254,7 @@ input.indexSearchBox {
 }
 #addProjectModal .register-content {
   width: 34em;
-  height: 18em;
+  height: 21em;
   background: #0093be;
   margin: 30% auto;
   padding: 4%;
@@ -8282,6 +8282,10 @@ input.indexSearchBox {
   height: 100%;
   color: #fff;
 }
+#addProjectModal .left #projectsDropdown {
+  position: absolute;
+  z-index: 9999;
+}
 #addProjectModal h3 {
   color: white;
   margin: 0px 0 30px 0;
@@ -8305,6 +8309,15 @@ input.indexSearchBox {
   line-height: 60px;
   cursor: pointer;
 }
+#addProjectModal .left .selectDiv:after {
+  bottom: 158px !important;
+  float: right;
+  margin-top: 20px /*
+  position: initial !important;
+  margin-bottom: 3px;
+  margin-left: 80px;
+  */;
+}
 #addProjectModal .selectDiv:after {
   content: ' ';
   display: inline-block;
@@ -8313,9 +8326,6 @@ input.indexSearchBox {
   border-bottom: 1px solid white;
   border-right: 1px solid white;
   transform: rotate(45deg);
-  position: absolute;
-  bottom: 83px;
-  right: 53px;
 }
 #addProjectModal .register-content .left .selectDiv {
   margin-top: 5.8%;
@@ -8336,6 +8346,25 @@ input.indexSearchBox {
   background: white;
   color: #0093be !important;
   line-height: 48px;
+  margin-top: 30px;
+  width: 360px;
+}
+#addProjectModal .register-content .left #projectsDropdown {
+  border: 1px solid white;
+  background-color: #0093be;
+  width: 360px;
+}
+#addProjectModal .register-content .left #projectsDropdown > p {
+  padding-left: 2em;
+  cursor: pointer;
+}
+#addProjectModal .register-content .left #projectsDropdown > .selected {
+  color: #0093be;
+  background-color: white;
+}
+#addProjectModal .register-content .left p {
+  margin-top: 2.5%;
+  line-height: 200%;
 }
 #field-selctor {
   margin-top: 19px;

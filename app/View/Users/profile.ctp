@@ -13,7 +13,22 @@
                     }else{
                         echo $user_info['totalCount'];
                     }
-                    $allProjects = $projects;
+                    $allProjects = array();
+                    foreach ($projects as $p) {
+                        array_push($allProjects, $p['Persistent Name']);
+                    }
+
+                    $users_projects = array();
+                    foreach ($user_info['mappings'] as $p) {
+                        array_push($users_projects, $p['project']);
+                    }
+
+                    //print_r($projects);
+                    //print_r($users_projects);
+                    //echo sizeof($users_projects);
+                    //echo sizeof($allProjects);
+                    //die;
+
                 ?>
             </div>
 
@@ -120,31 +135,35 @@
               <?=
               $this->Html->image('Close.svg', array('class' => 'exit', 'alt' => 'Exit'));?>
             </a>
-
-            <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'register')); ?>
-
             <div class="left">
                 <div class="registerContainer">
                     <h3>Request Project Access</h3>
-
-                    <input type="hidden" id="UserProject" name="data[User][project]">
-                    <div class="selectDiv">
-                        Select Project(s) to Register In *
-                    </div>
-                    <div id="projectDropdown" style="display: none;">
-                        <?php foreach($allProjects as $p) { ?>
-                            <p id="<?php echo $p['Persistent Name'] ?>"><?php echo ucwords($p['Persistent Name']) ?></p>
-                        <?php } ?>
+                    <?php
+                        if (sizeof($allProjects) > sizeof($users_projects)){
+                    ?>
+                        <input type="hidden" id="UserProject" name="data[User][project]">
+                        <div class="selectDiv" id="selected-projects">
+                    <?php
+                        echo "Select Project(s) to Register In *";
+                    ?>
+                        </div>
+                    <div id="projectsDropdown" style="display: none;">
+                        <?php foreach($allProjects as $p) {
+                            $temp = str_replace(' ', '_', $p);
+                                if (!in_array($temp, $users_projects)){
+                        ?>
+                                    <p id="<?php echo $p ?>"><?php echo ucwords($p) ?></p>
+                        <?php }} ?>
                     </div>
                 </div>
-                <?php echo $this->Form->submit('Register', array('class' => 'btn btn-success', 'id' => 'register')); ?>
+                <?php echo $this->Form->submit('Request Project Access', array('class' => 'btn btn-success', 'id' => 'request-access-submit')); ?>
+                <?php }else {
+                    echo "You have access to all projects";
+                } ?>
             </div>
-
-            <?php echo $this->Form->end() ?>
-
+            <?php echo $this->Form->end();?>
         </div>
     </div>
-
 
 
 <script type='text/javascript'>

@@ -51,9 +51,6 @@
 
         Profile.prototype.editAccount = function () {
             // return new arcs.views.Modal({
-            console.log('edit account thing')
-            console.log(this.model);
-            console.log(arcs);
             var profileModal = new arcs.views.Modal({
                 title: 'Edit Your Account',
                 subtitle: "If you'd like your password to stay the same, leave the " + "password field blank.",
@@ -252,6 +249,67 @@
         Profile.prototype.fileSelect = function (e) {
             var val = $('#newProfImg').val();
         }
+
+
+
+
+        $(document).ready(function() {
+          $("#addProjectModal .selectDiv").click(function(e) {
+            e.stopPropagation();
+            $("#projectsDropdown").toggle();
+            var value = "";
+            $("#projectsDropdown .selected").each(function(i, e) {
+              if (value == "") {
+                value = $(e).attr("id");
+              }
+              else {
+                value += ", " + $(e).attr("id");
+              }
+            });
+            $("#UserProject").val(value);
+          });
+
+          $("#projectsDropdown > p").click(function(e) {
+            $("#projectsDropdown").toggle();
+            e.stopPropagation();
+            var target = $(e.target);
+            var selectDiv = $("#selected-projects");
+            target.toggleClass('selected');
+            if (target.hasClass('selected')) {
+              if (selectDiv.text().includes("Select Project(s) to Register In *")) {
+                selectDiv.text(target.text());
+              }
+              else if (!selectDiv.text().includes(target.text())) {//dont add duplicates
+                  //temp = selectDiv.text()
+                  selectDiv.text(selectDiv.text() + ", " + target.text());
+              }
+            }
+            else {//removing from the list
+              var temp = selectDiv.text();
+              temp = temp.replace(target.text() + ", ", "");
+              temp = temp.replace(", " + target.text(), "");
+              temp = temp.replace(target.text(), "");
+              selectDiv.text(temp);
+            }
+            if ($("#projectsDropdown .selected").length == 0) {
+              selectDiv.text("Select Project(s) to Register In *");
+            }
+          });
+
+          $("#request-access-submit").click(function() {
+              console.log('asdf');
+              //ajax goes to the requestPermission function in userscontroller
+            $("#addProjectModal .selectDiv").click();
+          });
+
+          $("#addProjectModal").click(function() {
+            if ($("#projectsDropdown").is(":visible")) {
+              $("#addProjectModal .selectDiv").click();
+            }
+          });
+        });
+
+
 
         return Profile;
 

@@ -72,7 +72,6 @@
   background: white;
   color: #0093be !important;
   line-height: 48px;
-
 }
 @media screen and (max-width: 1000px) {
   .mobile-only{
@@ -145,7 +144,6 @@
     bottom: 0;
     display: table;
     margin: auto;
-
   }
   #registerModal .register-content .right {
     display: none;
@@ -197,7 +195,7 @@
 
 #addProjectModal .register-content {
     width: 34em;
-    height: 18em;
+    height: 21em;
     background: #0093be;
     position: relative;
     margin: 30% auto;
@@ -232,6 +230,11 @@
     color: #fff;
 }
 
+#addProjectModal .left #projectsDropdown {
+  position: absolute;
+  z-index: 9999;
+}
+
 #addProjectModal h3 {
     color: white;
     margin: 0px 0 30px 0;
@@ -258,6 +261,17 @@
     cursor: pointer;
 }
 
+#addProjectModal .left .selectDiv:after {
+  bottom: 158px !important;
+  float: right;
+  margin-top: 20px
+  /*
+  position: initial !important;
+  margin-bottom: 3px;
+  margin-left: 80px;
+  */
+}
+
 #addProjectModal .selectDiv:after {
     content: ' ';
     display: inline-block;
@@ -266,9 +280,6 @@
     border-bottom: 1px solid white;
     border-right: 1px solid white;
     transform: rotate(45deg);
-    position: absolute;
-    bottom: 83px;
-    right: 53px;
 }
 
 #addProjectModal .register-content .left .selectDiv {
@@ -292,4 +303,25 @@
   background: white;
   color: #0093be !important;
   line-height: 48px;
+  margin-top: 30px;
+  width: 360px
+}
+
+#addProjectModal .register-content .left #projectsDropdown{
+    border: 1px solid white;
+    background-color: #0093be;
+    width: 360px;
+    > p{
+        padding-left: 2em;
+        cursor: pointer;
+    }
+    > .selected{
+        color: #0093be;
+        background-color: white;
+    }
+}
+
+#addProjectModal .register-content .left p{
+    margin-top: 2.5%;
+    line-height: 200%;
 }
