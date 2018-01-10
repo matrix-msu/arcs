@@ -8,6 +8,8 @@ $project = isset($project)
            ? $project
            : "Invalid Project";
 
+$project = str_replace("_", " ", $project);
+$project = ucwords($project)
 ?>
 
 <p>User "<?=$username?>" has request access to the project "<?=$project?>"

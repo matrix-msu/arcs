@@ -13,22 +13,17 @@
                     }else{
                         echo $user_info['totalCount'];
                     }
+
                     $allProjects = array();
                     foreach ($projects as $p) {
                         array_push($allProjects, $p['Persistent Name']);
                     }
 
+
                     $users_projects = array();
                     foreach ($user_info['mappings'] as $p) {
                         array_push($users_projects, $p['project']);
                     }
-
-                    //print_r($projects);
-                    //print_r($users_projects);
-                    //echo sizeof($users_projects);
-                    //echo sizeof($allProjects);
-                    //die;
-
                 ?>
             </div>
 
@@ -51,15 +46,21 @@
                     $projects = array();
                     foreach($user_info['mappings'] as $mapping) {
                         $projectString = ucwords(str_replace('_', ' ', $mapping['project']));
-                        $string = '<span class="bolded">'.$projectString.'</span>: '.$mapping['role'];
+                        if ($mapping['status'] == 'confirmed'){
+                          $string = '<span class="bolded">'.$projectString.'</span>: '.$mapping['role'];
+                        }else{
+                          $string = '<span class="bolded">'.$projectString.'</span>: Unconfirmed';
+                        }
                         $projects[] = $string;
                     }
                     echo implode('<br /> ', $projects);
                     ?>
                 </dd>
-                <dd>
-                    <a href="#addProjectModal" id="request-project">Request Project Access</a>
-                </dd>
+                  <?php if ($user['id'] == $user_info['id']): ?>
+                      <dd>
+                          <a href="#addProjectModal" id="request-project">Request Project Access</a>
+                      </dd>
+                  <?php endif ?>
                 <dd>
                     <span class="bolded">Active Since: </span><?php echo $user_info['activeSince']; ?>
                 </dd>

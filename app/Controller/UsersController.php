@@ -115,7 +115,19 @@ class UsersController extends AppController
       *
       * @return array of admin emails
       */
-    public function requestPermission($param) {
+    public function requestPermission($param = null) {
+      if ($param == null){
+          if (!isset($_POST[0])){
+              die;
+          }
+          $param = $_POST[0];
+      }
+
+      $this->loadModel('Mapping');
+      $user = $this->getUser($this->Auth);
+      $pid = parent::getPIDFromProjectName($param);
+
+
       $template; $viewVars; $admins;
 
       //echo json_encode($param);
@@ -123,7 +135,7 @@ class UsersController extends AppController
       //echo json_encode($resolve);
       $admins = $this->getAdmins($resolve["project"]);
       //echo json_encode($admins);
-      die;
+    //  die;
       // don't render a view
       $this->autoRender = false;
 
@@ -138,7 +150,8 @@ class UsersController extends AppController
           $template = 'requestAccessProject';
           $viewVars = array('user' => $user, 'project' => $resolve["project"]);
         }
-        // Send emails to admins
+
+        //Send emails to admins
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->viewVars($viewVars)
@@ -149,10 +162,34 @@ class UsersController extends AppController
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
 
+        //check if there is already a request for this
+        $results = $this->Mapping->find('all', array(
+            'conditions' => array(
+                'AND' => array(
+                    'id_user' => $user['id'],
+                    'pid' => $pid,
+                )
+            )
+        ));
+
+        if (empty($results)){
+            //update the mappings table
+            $mappingArray = [
+            'id_user' => $user['id'],
+            'role' => 'Researcher',
+            'pid' => $pid,
+            'status' => 'unconfirmed',
+            'activation' => $this->Mapping->getToken()
+          ];
+          $this->Mapping->saveAll($mappingArray);
+        }
+
         // return the flash message for frontend
+      	$this->Session->setFlash('Success, the request has been sent', 'flash_success');
         return "Success, the request has been sent.";
       }
       // return the flash message for frontend
+      $this->Session->setFlash('Error, Request was not set', 'flash_error');
       return "Error, Request was not set";
     }
 
@@ -970,9 +1007,9 @@ class UsersController extends AppController
             throw new NotFoundException();
 
         $mappings = $this->Mapping->find('all', array(
-            'fields' => array('Mapping.role', 'Mapping.pid'),
+            'fields' => array('Mapping.role', 'Mapping.pid', 'Mapping.status'),
             'conditions' => array(
-                'AND' => array('Mapping.id_user' => $user['id'], 'Mapping.status' => 'confirmed'),
+                'AND' => array('Mapping.id_user' => $user['id']),
             )
         ));
 
@@ -987,7 +1024,9 @@ class UsersController extends AppController
             $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
             $role = $mapping["Mapping"]['role'];
             $user['mappings'][] = array("project" => $project,
-                                        "role" => $role);
+                                        "role" => $role,
+                                        'status' => $mapping["Mapping"]['status']);
+
             if( $role == 'Admin' ) {
                 $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" " .
                     "type=\"submit\" value=\"Create All $project Thumbnails\"></dd>";

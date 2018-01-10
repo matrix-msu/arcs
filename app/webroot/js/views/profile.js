@@ -297,8 +297,20 @@
           });
 
           $("#request-access-submit").click(function() {
-              console.log('asdf');
-              //ajax goes to the requestPermission function in userscontroller
+              var selectDiv = $("#selected-projects");
+              var projects = selectDiv.text().toLowerCase().replace(' ', '_').split(', ');
+
+              for (var j = 0; j < projects.length; j++){
+                //ajax goes to the requestPermission function in UsersController
+                  $.ajax({
+                      url: arcs.baseURL + 'users/request_permission/',
+                      type: "POST",
+                      data: {0:projects[j]},
+                      success: function (data) {
+                          console.log(data);
+                      }
+                  });
+              }
             $("#addProjectModal .selectDiv").click();
           });
 
