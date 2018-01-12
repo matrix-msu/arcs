@@ -408,7 +408,6 @@ $(document).ready(function() {
     }
 
     if (multiInfo !== false) {
-        console.log('ajax here');
         $.ajax({
             url: arcs.baseURL + "view/" + multiInfo,
             type: 'GET',

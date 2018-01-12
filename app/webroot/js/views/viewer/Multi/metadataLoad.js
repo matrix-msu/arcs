@@ -288,6 +288,9 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
 
 
     for (key in data) {
+        if (key == 'diff' || data.length == 0) {
+           break;
+        }
         var item = data[key];
         counter++;
         if (schemename == 'excavations' || schemename == 'Seasons') {
@@ -329,6 +332,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                         }
                     }
                 }
+
                 if(typeof item[control] != "string"){
                     for (var i = 0; i < item[control].length; i++) {
                         if( aboveScheme !== false || aboveTwoSchemes !== false ){
