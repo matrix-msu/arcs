@@ -62,7 +62,7 @@ function editMetaPrep() {
                     if (metadataIsSelected == 1) {
                         var id = $("#meta_textarea").parent().children("div").eq(0).text();
                         var text = $("#meta_textarea").text();
-                        if (meta_options == '') {
+                        if (meta_options == '' || meta_options == undefined) {
                             if (meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' )) {
                                 meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
                             }
@@ -536,7 +536,8 @@ function editMetaPrep() {
             $(".metadata-save-btn").removeClass("metadata-save-btn").text("EDIT").addClass("metadata-edit-btn").css("color", '');
             var id = $("#meta_textarea").parent().children("div").eq(0).text();
             var text = $("#meta_textarea").text();
-            if (meta_options == '') {
+            if (meta_options == '' || meta_options == undefined) {
+
                 if (meta_value_before != '' && (meta_control_type == 'multi_input' || meta_control_type == 'multi_select' )) {
                     meta_value_before = meta_value_before.replace(/\n+/g, '<br />');
                 }

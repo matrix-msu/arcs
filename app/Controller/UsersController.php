@@ -164,7 +164,7 @@ class UsersController extends AppController
               ->template($template, 'default')
               ->emailFormat('html')
               ->subject('User Access Request')
-              ->to('girardno@msu.edu')
+              ->to($admins)
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
 
