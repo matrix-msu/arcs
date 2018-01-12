@@ -296,22 +296,28 @@
             }
           });
 
+
           $("#request-access-submit").click(function() {
               var selectDiv = $("#selected-projects");
-              var projects = selectDiv.text().toLowerCase().replace(' ', '_').split(', ');
-
-              for (var j = 0; j < projects.length; j++){
-                //ajax goes to the requestPermission function in UsersController
-                  $.ajax({
-                      url: arcs.baseURL + 'users/request_permission/',
-                      type: "POST",
-                      data: {0:projects[j]},
-                      success: function (data) {
-                          console.log(data);
-                      }
-                  });
-              }
-            $("#addProjectModal .selectDiv").click();
+              if (selectDiv.text().includes('Select Project')){
+                  return;
+              }else{
+                  var projects = selectDiv.text().toLowerCase().replace(' ', '_').split(', ');
+                  for (var j = 0; j < projects.length; j++){
+                    //ajax goes to the requestPermission function in UsersController
+                      $.ajax({
+                          url: arcs.baseURL + 'users/request_permission/',
+                          type: "POST",
+                          data: {0:projects[j]},
+                          success: function (data) {
+                              //console.log(data);
+                          }
+                      });
+                  }
+                  location.reload();
+                  $(".exit").click();
+                  $("#addProjectModal .selectDiv").click();
+                }
           });
 
           $("#addProjectModal").click(function() {

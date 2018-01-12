@@ -125,8 +125,14 @@ class UsersController extends AppController
 
       $this->loadModel('Mapping');
       $user = $this->getUser($this->Auth);
-      $pid = parent::getPIDFromProjectName($param);
 
+      try {
+          $pid = parent::getPIDFromProjectName($param);
+      } catch (Exception $e) {//if the project name is not valid
+          // return the flash message for frontend
+          $this->Session->setFlash('Error, Request was not set', 'flash_error');
+          return;
+      }
 
       $template; $viewVars; $admins;
 
@@ -141,6 +147,7 @@ class UsersController extends AppController
 
       // assert email dependencies
       if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
+          echo "wtf man";
         // Set the template and view vars based on type
         if ($resolve["isResource"]) {
           $template = 'requestAccessResource';
@@ -150,7 +157,6 @@ class UsersController extends AppController
           $template = 'requestAccessProject';
           $viewVars = array('user' => $user, 'project' => $resolve["project"]);
         }
-
         //Send emails to admins
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
@@ -158,7 +164,7 @@ class UsersController extends AppController
               ->template($template, 'default')
               ->emailFormat('html')
               ->subject('User Access Request')
-              ->to($admins)
+              ->to('girardno@msu.edu')
               ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $Email->send();
 
@@ -186,11 +192,11 @@ class UsersController extends AppController
 
         // return the flash message for frontend
       	$this->Session->setFlash('Success, the request has been sent', 'flash_success');
-        return "Success, the request has been sent.";
+        return;
       }
       // return the flash message for frontend
       $this->Session->setFlash('Error, Request was not set', 'flash_error');
-      return "Error, Request was not set";
+      return;
     }
 
     public function getUser(&$auth){
