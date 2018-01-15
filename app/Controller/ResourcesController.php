@@ -1016,12 +1016,19 @@ class ResourcesController extends AppController {
                   name = 'Access Level' OR
                   name = 'Language'";
         $rCid = $this->getControls($pid, $sid, $query);
-
+//structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
         $query = "name = 'Artifact - Structure Classification' OR
                   name = 'Artifact - Structure Type' OR
                   name = 'Artifact - Structure Excavation Unit' OR
-                  name = 'Artifact - Structure Location'";
+                  name = 'Artifact - Structure Location' OR
+                  name = 'Artifact - Structure Material' OR
+                  name = 'Artifact - Structure Technique' OR
+                  name = 'Artifact - Structure Archaeological Culture' OR
+                  name = 'Artifact - Structure Period' OR
+                  name = 'Artifact - Structure Creator' OR
+                  name = 'Artifact - Structure Condition' OR
+                  name = 'Artifact - Structure Subject'";
         $sooCid = $this->getControls($pid, $sid, $query);
 
         $return = array(
@@ -1066,6 +1073,10 @@ class ResourcesController extends AppController {
             $list = new ListControl($pid, $cid);
             $settings = $list->GetControlOptions();
             $controls[$res['name']] =   (array)$settings->option;
+        }
+        if( $sid == '739'){
+            //echo json_encode($controls);
+            //die;
         }
         return $controls;
     }

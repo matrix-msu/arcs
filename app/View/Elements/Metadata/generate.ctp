@@ -168,7 +168,7 @@ function Generate_Metadata(
             'Artifact - Structure Dimensions' => 'multi_input',
             'Artifact - Structure Excavation Unit' => 'multi_select',
             'Artifact - Structure Location' => 'multi_select',
-            'Artifact - Structure Geolocation' => 'multi_select',
+            'Artifact - Structure Geolocation' => 'multi_input',
             'Artifact - Structure Current Location' => 'list',
             'Artifact - Structure Repository' => 'list',
             'Artifact - Structure Repository Accession Number' => 'text',

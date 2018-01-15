@@ -143,7 +143,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
           'Artifact - Structure Dimensions' : 'multi_input',
           'Artifact - Structure Excavation Unit' : 'multi_select',
           'Artifact - Structure Location' : 'multi_select',
-          'Artifact - Structure Geolocation' : 'multi_select',
+          'Artifact - Structure Geolocation' : 'multi_input',
           'Artifact - Structure Current Location' : 'list',
           'Artifact - Structure Repository' : 'list',
           'Artifact - Structure Repository Accession Number' : 'text',
@@ -257,7 +257,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
           'Artifact - Structure Type Qualifier' : 'Type Qualifier',
           'Artifact - Structure Material' : 'Artifact / Structure Material',
           'Artifact - Structure Technique' : 'Manufacturing technique',
-          'Artifact - Structure Archaeological Culture' : 'Associated Archaeological Culture',
+          'Artifact - Structure Archaeological Culture' : 'Associated Archaeological Culture',//broken
           'Artifact - Structure Period' : 'Artifact / Structure Period',
           'Artifact - Structure Terminus Ante Quem' : 'Earliest Possible Date of Artifact / Structure',
           'Artifact - Structure Terminus Post Quem' : 'Latest Possible Date of Artifact / Structure',
@@ -278,7 +278,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
           'Artifact - Structure Inscription' : 'Inscribed text',
           'Artifact - Structure Munsell Number' : 'Artifact / Structure Color(s)',
           'Artifact - Structure Date' : 'Precise Date of Artifact / Structure',
-          'Artifact - Structure Subject' : 'Subject of Artifact / Structure',
+          'Artifact - Structure Subject' : 'Subject of Artifact / Structure',//broken
           'Artifact - Structure Origin' : 'Point of Origin',
           'Artifact - Structure Comparanda' : 'Comparative examples',
           'Artifact - Structure Archaeological Context' : 'Archaeological context',
@@ -400,6 +400,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             if(metadataEdits.hasOwnProperty(item['kid']) && metadataEdits[item['kid']].hasOwnProperty(control)) {
                 extraString = '><div class="icon-meta-lock">&nbsp;</div><div>Pending Approval</div>';
             }
+
 
             displayedControlName = controlDisplayNames[schemename][tmpControl];
             html += "<tr><td>"+displayedControlName+"</td><td"+extraString+"</td></tr>";

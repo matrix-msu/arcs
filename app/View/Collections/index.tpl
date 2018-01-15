@@ -74,7 +74,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 
 <script>
 	//handles filter button click to display filter options
@@ -109,23 +109,23 @@
 		//determin if the window needs to scroll to a specific collection
 		//single/mult-resource and search can view a specific collection.
 		//take the collection_id from the url
-		
+
 		var col_id = '';
 		col_id = window.location.search.substr(1);
 		var openCollection = $('#all-collections').find('details[data-id="'+col_id+'"]');
-		
+
 		if( col_id != '' ){
 			//find where the collection is
 			function collectionCheck(col){
 				return col.Collection.collection_id == col_id;
 			}
 			var col_index = {{ collections|json_encode }}.findIndex(collectionCheck) + 1;
-			
+
 			//find the page it's on and go to it
 			var item_per_page = $('#items-per-page-btn').html().substring(0,2);
 			$('#'+Math.ceil(col_index/item_per_page)).trigger('click');
 			openCollection = $('#all-collections').find('details[data-id="'+col_id+'"]');
-			
+
 			//scroll and click the collection
 			if( openCollection.prev().length == 1 ){
 				$('html, body').animate({
@@ -144,6 +144,7 @@
 	  $("#author-dropdown").hide();
 	  $("#author-dropdown").removeClass("second-open").removeClass("open");
 	  arcs.user_viewer.collection = new arcs.collections.CollectionList({{ collections|json_encode }});
+
 	  arcs.user_viewer.collection.sortVar = 'created';
 	  arcs.user_viewer.collection.sort({silent:true});
 	  arcs.user_viewer.collection.models = arcs.user_viewer.collection.models.reverse();
@@ -153,7 +154,7 @@
 	    $(this).css('font-weight','normal');
 	  });
 	  filter.css('font-weight', 'bold');
-	});	
+	});
 	$("#old-new").click(function(e) {
 	  $("#author-dropdown").hide();
 	  $("#author-dropdown").removeClass("second-open").removeClass("open");
@@ -166,8 +167,8 @@
 	    $(this).css('font-weight','normal');
 	  });
 	  filter.css('font-weight', 'bold');
-	});	
-	
+	});
+
 	$("#popular").click(function(e) {
 	  $("#author-dropdown").hide();
 	  $("#author-dropdown").removeClass("second-open").removeClass("open");
@@ -216,7 +217,7 @@
 	    $(this).css('font-weight','normal');
 	  });
 	  filter.css('font-weight', 'bold');
-	});	
+	});
 
 	$( '.dropdown-toggle' ).click(function() {
 	  $( '.filter-arrow' ).toggleClass( 'pointerUp' );
