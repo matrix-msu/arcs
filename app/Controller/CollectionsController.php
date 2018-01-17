@@ -20,6 +20,7 @@ class CollectionsController extends AppController {
         $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers', 'findAllByUser');
     }
 
+
     /**
      * Display all collections. Main collection page, initial collection list.
      */
@@ -55,7 +56,7 @@ class CollectionsController extends AppController {
 
             //remove all the public 3 collections that the user isn't a part of
             $count = 0;
-            foreach( $collections as $collection ){
+            foreach( $collections as $key => $collection ){
                 $bool_delete = 1;
                 if( array_values($collection)[0]['public'] == '3'){
                     $members =  explode(';', array_values($collection)[0]['members'] );
@@ -81,6 +82,12 @@ class CollectionsController extends AppController {
                 'group' => 'collection_id'
             ));
         }
+
+        foreach( $collections as $key => $collection ){
+            $collection_time = new DateTime($collection['Collection']['created']);
+            $collections[$key]['Collection']['timeAgo'] = $this->time_elapsed_string($collection_time);
+        }
+
         //grab all user_names out of the collections.
         $authorList = array();
         foreach( $collections as $collection ){
@@ -102,11 +109,42 @@ class CollectionsController extends AppController {
         $this->set('collections', $collections);
     }
 
+
+    public static function time_elapsed_string($datetime, $full = false) {
+        $now = new DateTime;
+        $ago = $datetime;
+        $diff = $now->diff($ago);
+
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+
+        $string = array(
+            'y' => 'year',
+            'm' => 'month',
+            'w' => 'week',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
+
+
     /**
      *  get all resource kids in a project based on the project name.
      */
     protected function getProjectResources($pName){
-
         $pid = parent::getPIDFromProjectName(strtolower($pName));
         $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
         $fields = array('Title');
@@ -119,7 +157,6 @@ class CollectionsController extends AppController {
      * Get all collections a resource is a part of
      */
     public function memberships() {
-
         //handle collections info on the single resource page
         if (isset($this->request->query['id'])){
             $resource_id = $this->request->query['id'];

@@ -16,10 +16,11 @@
 
 App::import('Controller', 'Users');
 App::import('Controller', 'Resources');
+App::import('Controller', 'Collections');
 
 class ProjectsController extends AppController {
     public $name = 'Projects';
-    public $uses = array('Mapping');
+    public $uses = array('Mapping', 'Collection');
 
 
 	public function beforeFilter() {
@@ -253,7 +254,6 @@ class ProjectsController extends AppController {
 				}
 				$count++;
 			}
-			$this->set('collections', $collections);
 
 		}else { //not signed in
 			$collections = $this->Collection->find('all', array(
@@ -263,9 +263,13 @@ class ProjectsController extends AppController {
 				'group' => 'collection_id',
 				'limit' => 10
 			));
-			$this->set('collections', $collections);
 		}
+    foreach( $collections as $key => $collection ){
+        $collection_time = new DateTime($collection['Collection']['created']);
+        $collections[$key]['Collection']['timeAgo'] =  CollectionsController::time_elapsed_string($collection_time);
+    }
 
+    $this->set('collections', $collections);
     $this->render("single_project");
 
 	}
