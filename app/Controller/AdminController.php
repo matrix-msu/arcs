@@ -39,6 +39,12 @@ class AdminController extends AppController {
                 'Mapping.status' => 'confirmed'
             )
         ));
+        if( empty($mappings) ){
+            $this->Session->setFlash('You must be an Admin to access the Admin ' .
+                ' console.', 'flash_error');
+            $this->redirect('/');
+            die;
+        }
         $first = true;
 
         if( isset($this->request->params['pass']) && !empty($this->request->params['pass']) ){
