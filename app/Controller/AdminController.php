@@ -3,7 +3,7 @@ App::uses('ConnectionManager', 'Model');
 /**
  * Admin controller.
  *
- * This is largely a read-only group of views. Admin actions are carried out 
+ * This is largely a read-only group of views. Admin actions are carried out
  * through ajax requests to the proper controller actions on the client-side.
  *
  * @package    ARCS
@@ -14,14 +14,13 @@ App::uses('ConnectionManager', 'Model');
 class AdminController extends AppController {
     public $name = 'Admin';
     public $uses = array(
-        'User', 
-        'Flag', 
-        'Job', 
-        'Resource', 
+        'User',
+        'Flag',
+        'Mapping',
         'Collection',
-        'Metadatum', 
+        'MetadataEdit',
         'Comment',
-        'Keyword', 
+        'Keyword',
         'Annotation'
     );
 
@@ -29,9 +28,59 @@ class AdminController extends AppController {
         parent::beforeFilter();
         if (!$this->Access->isAdmin()) {
             $this->Session->setFlash('You must be an Admin to access the Admin ' .
-               ' console.', 'flash_error');
+                ' console.', 'flash_error');
             $this->redirect('/');
         }
+
+        $mappings = $this->Mapping->find('all', array(
+            'conditions' => array(
+                'Mapping.role' => 'Admin',
+                'Mapping.id_user' => $this->Auth->user('id'),
+                'Mapping.status' => 'confirmed'
+            )
+        ));
+        $first = true;
+
+        if( isset($this->request->params['pass']) && !empty($this->request->params['pass']) ){
+            $_SESSION['currentProjectName'] = $this->request->params['pass'][0];
+        }
+
+        if( isset($_SESSION['currentProjectName']) ){
+            $first = false;
+        }
+
+        $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;margin-top:200px" >';
+
+        foreach ($mappings as $map) {
+            $name = parent::getProjectNameFromPID($map['Mapping']['pid']);
+            if ($name != '') {
+                if( $first == true ){
+                    $_SESSION['currentProjectName'] = $name;
+                }
+                if ($_SESSION['currentProjectName'] == $name) {
+                    $first = false;
+                    $projectPicker .= '<option selected="selected" disabled="" hidden="" value="" class="">' . $name . '</option>';
+                } else {
+                    $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$name;
+                    $projectPicker .= "<option value='" . $url . "' label='$name'>$name</option>";
+                }
+            }
+        }
+        $projectPicker .= "</select>";
+
+        $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$_SESSION['currentProjectName'];
+        if( $_SERVER['REQUEST_URI']!=$url && $_SERVER['REQUEST_URI']!=$url.'/' ){
+            echo '<script>window.location.replace("'.$url.'");</script>';
+        }
+        $script = '<script>
+                    window.onload = function(){
+                        $("#projectSelect").change(function(){
+                            window.location.replace(this.value);
+                        })
+                    }
+                </script>';
+        echo $projectPicker;
+        echo $script;
     }
 
     /**
@@ -50,10 +99,10 @@ class AdminController extends AppController {
             'writable' => is_writable($uploads_path),
             'executable' => is_executable($uploads_path)
         ));
-	clearstatcache();
-	$ghostscript = '/usr/bin/gs';
+        clearstatcache();
+        $ghostscript = '/usr/bin/gs';
         $this->set('dependencies', array(
-		
+
             'Ghostscript' => is_executable($ghostscript),
             'Imagemagick' => class_exists('Imagick')
         ));
@@ -88,6 +137,11 @@ class AdminController extends AppController {
     public function flags() {
         $this->set('flags', $this->Flag->find('all', array(
             'order' => 'Flag.created DESC'
+        )));
+    }
+
+    public function metadata_edits(){
+        $this->set('metadata', $this->MetadataEdit->find('all', array(
         )));
     }
 

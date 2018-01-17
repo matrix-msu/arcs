@@ -88,7 +88,8 @@ class UsersController extends AppController
         'fields' => array('Mapping.id_user'),
         'conditions' => array(
           'Mapping.role' => 'Admin',
-          'Mapping.pid'  => $pid
+          'Mapping.pid'  => $pid,
+            'Mapping.status' => 'confirmed'
         )
       ));
 
@@ -584,6 +585,7 @@ class UsersController extends AppController
         # Update the Auth Session var, if necessary.
        if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));
+            $this->Session->write('Auth.User2', $this->User->findById($id));
         	$this->json(200, $this->User->findById($id));
     }
 

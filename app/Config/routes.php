@@ -256,8 +256,11 @@
         array('controller' => 'search', 'action' => 'keywordSearch')
     );
     Router::connect('/simple_search/*',
-        array('controller' => 'search', 'action' => 'simple_search')
+        array('controller' => 'AdvancedSearch', 'action' => 'simpleSearchWrapper')
     );
+//    Router::connect('/simple_search/*',
+//        array('controller' => 'search', 'action' => 'simple_search')
+//    );
     Router::connect('/api/simple_search/***',
         array('controller' => 'search', 'action' => 'simple_search')
     );
@@ -371,6 +374,17 @@
 # Orphans controller
 Router::connect('/orphan/*',
     array('controller' => 'orphans', 'action' => 'display')
+);
+
+#admin pages
+Router::connect('/admintools/activity/*',
+    array('controller' => 'admin', 'action' => 'activity')
+);
+Router::connect('/admintools/flags/*',
+    array('controller' => 'admin', 'action' => 'flags')
+);
+Router::connect('/admintools/metadata_edits/*',
+    array('controller' => 'admin', 'action' => 'metadata_edits')
 );
 
 #create thumbnails

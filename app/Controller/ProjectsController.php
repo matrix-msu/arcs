@@ -19,6 +19,7 @@ App::import('Controller', 'Resources');
 
 class ProjectsController extends AppController {
     public $name = 'Projects';
+    public $uses = array('Mapping');
 
 
 	public function beforeFilter() {
@@ -31,10 +32,11 @@ class ProjectsController extends AppController {
   		));
 
   }
-  public function getUser() {
+    public function getUser() {
     $user = array();
     $user = [];
     $user["loggedIn"] = $this->Session->read('Auth.User.name');
+    $user["isAnyAdmin"] = $this->checkIfAnyAdmin($this->Session->read('Auth.User.id'));
     $user["name"] = $this->Session->read('Auth.User.name');
     $user["username"] = $this->Session->read('Auth.User.username');
     if( $this->Session->read('Auth.User.isAdmin') === 1 ){
@@ -43,7 +45,23 @@ class ProjectsController extends AppController {
       $user["role"] = 'Not';
     }
     return $user;
-  }
+    }
+    public function checkIfAnyAdmin($id){
+        $mappings = $this->Mapping->find('all', array(
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.id_user' => $id,
+                    'Mapping.status' => 'confirmed',
+                    'Mapping.role' => 'Admin'
+                ),
+            )
+        ));
+        if( !empty($mappings) ){
+            return true;
+        }else{
+            return false;
+        }
+    }
 	public function getProjects() {
 
         $projectstemp = array();

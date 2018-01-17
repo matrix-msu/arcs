@@ -55,7 +55,7 @@ class AppController extends Controller
             ),
             'toolbar' => array(
                 'logo' => true,
-                'buttons' => array()
+                'buttons' => array(),
             ),
             'body_class' => 'default',
             'footer' => true,
@@ -65,8 +65,6 @@ class AppController extends Controller
         );
 
         $this->RequestHandler->addInputType('json', array('json_decode', true));
-
-
     }
 
     /**

@@ -44,15 +44,20 @@
 				<div id="droppedMenu" class="dropped-menu">
 					<?php echo $this->Html->link('Profile',
 						'/user/' . $user['username'] . '/') ?>
-					<!-- ?php if ($user['role'] == "Admin"): ?>
-					< ?php echo $this->Html->link('Admin',
-						'/admin') ?>
-					< ?php endif ? -->
+                    <?php if( isset($user['isAnyAdmin'])&& $user['isAnyAdmin'] ){ ?>
+                    <div id='toolbar-activity'> <?php echo $this->Html->link('Activity',
+                            '/admintools/activity') ?></div>
+                    <div id='toolbar-metadataedits'> <?php echo $this->Html->link('Metadata',
+                            '/admintools/metadata_edits') ?></div>
+                    <div id='toolbar-flags'> <?php echo $this->Html->link('Flags',
+                            '/admintools/flags') ?></div>
+                    <div id='toolbar-users'> <?php echo $this->Html->link('Users',
+                            '/admintools/users') ?></div>
+                    <?php } ?>
 					<div id='signOut'> <?php echo $this->Html->link('Sign Out',
 						'/logout') ?></div>
 				</div>
 			</div>
-      <!--Display search bar for index page. Placeholder, require backend programming.-->
 
 		<?php else: ?>
 
@@ -75,24 +80,18 @@
 
 
 	<div class="btn-group toolbar-btn">
-		 <!-- Arrow won't work-->
 		 <div  id= "projects" class="btn btn-grey">
 			 <div id='projCage'>
-			 <i class="icon-white icon-folder-open"></i>
-			 <div id="toolbarHead" >
-				 	<div id="dropArrow" class='pointerDown pointerTool'>
-
-				    </div>
-
-				 </div>
-
+                 <i class="icon-white icon-folder-open"></i>
+                 <div id="toolbarHead" >
+                        <div id="dropArrow" class='pointerDown pointerTool'></div>
+                 </div>
 			 </div>
 			<div id="projectsMenu" class="projects-menu">
 			    <?php foreach($projects as $p): ?>
 				<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent Name'])) )?>"><?php echo $p['Persistent Name'] ?></a>
 			    <?php endforeach ?>
 			</div>
-
 		</div>
 		<div id= 'belowProjects'>
 		    <?php
@@ -115,7 +114,8 @@
 
             <?php }elseif(   //skip links if in profile or all project search
                         $this->request->params['controller'] != 'user' &&
-                        $this->request->params['action'] != 'profile'
+                        $this->request->params['action'] != 'profile' &&
+                        $this->request->params['controller'] != 'admin'
                    ){
 					$resourceBlue = '';
 					if( //is multi-resource, so make the link blue

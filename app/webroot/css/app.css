@@ -14697,6 +14697,11 @@ input.user-reg-btn.btn.btn-success:focus {
   display: block;
   color: #000;
 }
+.admin-header {
+  margin-top: -45px;
+  margin-left: 15px;
+  margin-bottom: 14px;
+}
 .accordion-wrapper {
   width: 90%;
   margin: 50px auto;
