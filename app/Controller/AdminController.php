@@ -81,7 +81,9 @@ class AdminController extends AppController {
 
         $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$_SESSION['currentProjectName']."/".$otherParams;
         if( $_SERVER['REQUEST_URI']!=$url && $_SERVER['REQUEST_URI']!=$url.'/' ){
+          if (!isset($_POST['api'])){
             echo '<script>window.location.replace("'.$url.'");</script>';
+          }
         }
         $script = '<script>
                     window.onload = function(){
@@ -90,8 +92,11 @@ class AdminController extends AppController {
                         })
                     }
                 </script>';
-        echo $projectPicker;
-        echo $script;
+        if (!isset($_POST['api'])){
+          echo $projectPicker;
+          echo $script;
+        }
+
     }
 
     /**
@@ -159,6 +164,43 @@ class AdminController extends AppController {
             )
         )));
     }
+
+
+public function editFlags() {
+    include_once("../Config/database.php");
+    $db = new DATABASE_CONFIG();
+    $db_object =  (object) $db;
+    $db_array = $db_object->{'default'};
+    $response['db_info'] = $db_array['host'];
+    //$conn = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+    //$conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbHost = $db_array['host'];
+    $database = $db_array['database'];
+    $conn = new PDO("mysql:host=$dbHost;dbname=$database", $db_array['login'], $db_array['password']);
+
+
+    if ($_POST['status'] == 'delete'){
+      $user = $conn->prepare("DELETE FROM flags WHERE id = ?");
+      $user->bindParam(1, $_POST['flagID'], PDO::PARAM_STR);
+      $user->execute();
+      //$row = $user->fetch(PDO::FETCH_ASSOC);
+      // $row = $row['id'];
+    }
+    elseif ($_POST['status'] == 'edit'){
+      //print_r($_POST);die;
+      $user = $conn->prepare("UPDATE flags SET status = ? WHERE id = ?");
+      $user->bindParam(1, $_POST['updateTo'], PDO::PARAM_STR);
+      $user->bindParam(2, $_POST['flagID'], PDO::PARAM_STR);
+      $user->execute();
+    }
+
+
+
+die;
+}
+
+
+
 
     public function metadata_edits(){
         $this->set('metadata', $this->MetadataEdit->find('all', array(

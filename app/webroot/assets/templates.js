@@ -12,6 +12,14 @@ JST["admin/flags"] = "<table class=\"table table-striped table-bordered\">"+
         "<td>"+
             "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
             "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Approve</button>"+
+			         "<div class=\"styled-select\">"+
+                  "<select>"+
+					             "<option class=\"orange\" value=\"unresolved\">UNRESOLVED</option>"+
+					             "<option class=\"green\" value=\"resolved\">RESOLVED</option>"+
+					             "<option class=\"blue\" value=\"pending\">PENDING</option>"+
+                   "</select>"+
+				"<span class=\"glyphicon glyphicon-chevron-down\" ng-class=\"{orange: flag.status=='unresolved', green: flag.status=='resolved', blue: flag.status=='pending'}\"></span>"+
+			       "</div>"+
         "</td>"+
     "</tr><% }) %>"+
     "</table>";

@@ -33,3 +33,45 @@
   })(Backbone.View);
 
 }).call(this);
+
+
+
+$(document).ready(function() {
+    $('#flags').on('click', '#delete-btn', function(e){
+        console.log('clicked delete');
+        flagID = ($(this).data('id'));
+        $.ajax({
+            url: arcs.baseURL + 'admin/editFlags',
+            type: "POST",
+            data:  {
+              status: 'delete',
+              flagID: flagID,
+              api: true
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    });
+
+    $('#flags').on('click', '#edit-btn', function(e){
+        console.log('clicked approve');
+        flagID = ($(this).data('id'));
+        updateTo = "resolved"
+        $.ajax({
+            url: arcs.baseURL + 'admin/editFlags',
+            type: "POST",
+            data:  {
+              status: 'edit',
+              flagID: flagID,
+              api: true,
+              updateTo: updateTo,
+            },
+            success: function (data) {
+
+            }
+        });
+    });
+
+
+});

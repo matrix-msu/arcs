@@ -389,10 +389,11 @@ Router::connect('/admintools/metadata_edits/*',
 Router::connect('/admintools/users/*',
     array('controller' => 'admin', 'action' => 'users')
 );
-
-#create thumbnails
-Router::connect('/admin/createthumbnails/*',
-    array('controller' => 'users', 'action' => 'createThumbnails')
+Router::connect('/users/uploadProfileImage',
+  array('controller' => 'users', 'action' => 'uploadProfileImage')
+);
+Router::connect('/admin/editFlags/*',
+    array('controller' => 'admin', 'action' => 'editFlags')
 );
 
     $restful = array(
