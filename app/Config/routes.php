@@ -386,6 +386,9 @@ Router::connect('/admintools/flags/*',
 Router::connect('/admintools/metadata_edits/*',
     array('controller' => 'admin', 'action' => 'metadata_edits')
 );
+Router::connect('/admintools/users/*',
+    array('controller' => 'admin', 'action' => 'users')
+);
 
 #create thumbnails
 Router::connect('/admin/createthumbnails/*',

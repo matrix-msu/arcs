@@ -44,7 +44,10 @@
 				<div id="droppedMenu" class="dropped-menu">
 					<?php echo $this->Html->link('Profile',
 						'/user/' . $user['username'] . '/') ?>
-                    <?php if( isset($user['isAnyAdmin'])&& $user['isAnyAdmin'] ){ ?>
+                    <?php if(
+                            (isset($user['isAnyAdmin']) && $user['isAnyAdmin']) ||
+                            $this->request->params['controller'] == 'admin'
+                          ){ ?>
                     <div id='toolbar-activity'> <?php echo $this->Html->link('Activity',
                             '/admintools/activity') ?></div>
                     <div id='toolbar-metadataedits'> <?php echo $this->Html->link('Metadata',

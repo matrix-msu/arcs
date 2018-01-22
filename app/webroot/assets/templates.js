@@ -1,8 +1,71 @@
 window.JST = window.JST || {};
-JST["admin/flags"] = "<table class=\"table table-striped table-bordered\">  <tr>    <th>Resource</th>    <th>Reason</th>    <th>Explanation</th>    <th>Flagger</th>    <th>Flagged</th>    <th>Status</th>  </tr><% _.each(flags, function(f, i) { %>  <tr>    <td>      <% if (f.resource.title) { %>      <a href=\"<%= arcs.url('resource', f.resource.id) %>\">        <%= f.resource.title %>      </a>      <% } else { %>      (deleted)      <% } %>    </td>    <td><%= f.reason %></td>    <td><%= f.explanation %></td>    <td>      <a href=\"<%= arcs.url('user', f.user.username) %>\">        <%= f.user.name %>      </a>    </td>    <td><%= relativeDate(new Date(f.created)) %></td>    <td><span class=\"label label-important\">Unresolved</span></td>  </tr><% }) %></table>";
-JST["admin/jobs"] = "<table class=\"table table-striped table-bordered\">  <tr>    <th>Job</th>    <th>Status</th>    <th>Lock</th>    <th>Created</th>    <th>Data</th>    <th>Error</th>    <th>Actions</th>  </tr><% _.each(jobs, function(j, i) { %>  <tr>    <td><%= j.name %></td>    <td>      <% if (j.status == 0) { %>      <span class=\"label label-success\">done</span>      <% } if (j.status == 1) { %>      <span class=\"label label-info\">pending</span>      <% } if (j.status == 2) { %>      <span class=\"label label-warning has-error\" rel=\"popover\" data-original-title=\"Error\"        data-content=\"<%= j.error %>\">failing</span>      <% } if (j.status == 3) { %>      <span class=\"label label-important has-error\" rel=\"popover\" data-original-title=\"Error\"        data-content=\"<%= j.error %>\">failed</span>      <% } if (j.status == 4) { %>      <span class=\"label label-important has-error\" rel=\"popover\" data-original-title=\"Error\"        data-content=\"<%= j.error %>\">interrupted</span>      <% } %>    </td>    <td>    <% if (j.locked_by) { %>      <%= relativeDate(new Date(j.locked_at)) %> by <span class=\"label\"><%= j.locked_by %></span>     <% } %>    </td>    <td><%= relativeDate(new Date(j.created)) %></td>    <td class=\"data\"><%= arcs.inflector.truncate(j.data, 50) %></td>    <td class=\"data\"><%= arcs.inflector.truncate(j.error, 50) %></td>    <td>      <button id=\"show-btn\" class=\"btn btn-mini\"        data-id=\"<%= j.id %>\">Show</button>      <button id=\"retry-btn\" class=\"btn btn-mini\"        data-id=\"<%= j.id %>\">Retry</button>      <button id=\"release-btn\" class=\"btn btn-mini\"        data-id=\"<%= j.id %>\">Release</button>      <button id=\"delete-btn\" class=\"btn btn-danger btn-mini\"        data-id=\"<%= j.id %>\">Delete</button>    </td>  </tr><% }) %></table>";
+JST["admin/flags"] = "<table class=\"table table-striped table-bordered\">"+
+    "<tr><th>Reason</th>"+
+    "<th>Explanation</th>"+
+    "<th>Status</th><th>Flagger</th><th>Created</th><th>Actions</th></tr><tr>"+
+    "<% _.each(flags, function(f, i) { %>  "+
+        "<td><%= f.reason %></td>"+
+        "<td><%= f.explanation %></td>"+
+        "<td><%= f.status %></td>"+
+        "<td><%= f.user_username %></td>"+
+        "<td><%= f.created %></td>"+
+        "<td>"+
+            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
+            "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Approve</button>"+
+        "</td>"+
+    "</tr><% }) %>"+
+    "</table>";
+
+JST["admin/metadata_edits"] = "<table class=\"table table-striped table-bordered\">"+
+    "<tr><th>Resource Kid</th>"+
+    "<th>User Name</th>"+
+    "<th>Field Name</th>"+
+    "<th>Old Value</th>"+
+    "<th>New Value</th><th>Actions</th></tr><tr>"+
+    "<% _.each(metadata_edits, function(f, i) { %>  "+
+        "<td><%= f.MetadataEdit.resource_kid %></td>"+
+        "<td><%= f.MetadataEdit.user_name %></td>"+
+        "<td><%= f.MetadataEdit.field_name %></td>"+
+        "<td><%= f.MetadataEdit.value_before %></td>"+
+        "<td><%= f.MetadataEdit.new_value %></td>"+
+        "<td>"+
+            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
+            "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Approve</button>"+
+        "</td>"+
+    "</tr><% }) %>"+
+    "</table>";
+
+JST["admin/activity"] = "<table class=\"table table-striped table-bordered\">"+
+    "<tr><th>Name</th>"+
+    "<th>Date</th>"+
+    "<th>Type</th>"+
+    "</tr><tr>"+
+    "<% _.each(activity, function(f, i) { %>  "+
+        "<td><%= f.name %></td>"+
+        "<td><%= f.date %></td>"+
+        "<td><%= f.type %></td>"+
+    "</tr><% }) %>"+
+    "</table>";
+
 JST["admin/show_job"] = "<dl>  <dt>Job</dt>  <dd><%= name %></dd>  <dt>Status</dt>  <dd><%= status %></dd>  <dt>Created</dt>  <dd><%= created %></dd>  <dt>Lock</dt>  <dd><%= locked_at %></dd>  <dt>Data</dt>  <dd><pre><%= data %></pre></dd>  <dt>Error</dt>  <dd><pre><%= error %></pre></dd></dl>";
-JST["admin/users"] = "<table class=\"table table-striped table-bordered\">  <tr>    <th>Name</th>    <th>Username</th>    <th>Email</th>    <th>Role</th>    <th>Actions</th>  </tr><% _.each(users, function(u, i) { %>  <tr>    <td><%= u.name %></td>    <td><%= u.username %></td>    <td><%= u.email %></td>    <td><%= u.role %></td>      <button id=\"delete-btn\" class=\"btn btn-danger btn-mini \"        data-id=\"<%= u.id %>\">Delete</button>      <button id=\"edit-btn\" class=\"btn btn-info btn-mini\"        data-id=\"<%= u.id %>\">Edit</button>    </td>  </tr><% }) %></table>";
+JST["admin/users"] = "<table class=\"table table-striped table-bordered\">"+
+    "<tr><th>Name</th>"+
+    "<th>Username</th>"+
+    "<th>Email</th>"+
+    "<th>Project Roles</th>"+
+    "<th>Status</th>"+
+    "<th>Actions</th></tr><tr>"+
+    "<% _.each(users, function(f, i) { %>  "+
+        "<td><%= f.name %></td>"+
+        "<td><%= f.username %></td>"+
+        "<td><%= f.email %></td>"+
+        "<td><%= f.value_before %></td>"+
+        "<td><%= f.status %></td>"+
+        "<td>"+
+            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
+            "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Edit</button>"+
+        "</td>"+
+    "</tr><% }) %></table>";
 
 JST["collections/list"] = "<% _.each(collections, function(c, i) { %>" +
     "<% if (i == -1) { %>  "+

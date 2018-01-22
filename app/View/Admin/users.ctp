@@ -1,4 +1,7 @@
-<?php echo $this->element('admin_nav', array('active' => 'users')) ?>
+<?php //echo $this->element('admin_nav', array('active' => 'users')) ?>
+
+<h1 class="admin-header">Users</h1>
+
 <div id="admin-users">
     <button id="new-btn" class="btn">
         <i class="icon-plus"></i> New User
