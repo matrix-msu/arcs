@@ -187,7 +187,6 @@ public function editFlags() {
       // $row = $row['id'];
     }
     elseif ($_POST['status'] == 'edit'){
-      //print_r($_POST);die;
       $user = $conn->prepare("UPDATE flags SET status = ? WHERE id = ?");
       $user->bindParam(1, $_POST['updateTo'], PDO::PARAM_STR);
       $user->bindParam(2, $_POST['flagID'], PDO::PARAM_STR);

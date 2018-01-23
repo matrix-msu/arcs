@@ -6,20 +6,12 @@ JST["admin/flags"] = "<table class=\"table table-striped table-bordered\">"+
     "<% _.each(flags, function(f, i) { %>  "+
         "<td><%= f.reason %></td>"+
         "<td><%= f.explanation %></td>"+
-        "<td><%= f.status %></td>"+
+        "<td class='flag-status'><%= f.status %></td>"+
         "<td><%= f.user_username %></td>"+
         "<td><%= f.created %></td>"+
         "<td>"+
-            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
-            "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Approve</button>"+
-			         "<div class=\"styled-select\">"+
-                  "<select>"+
-					             "<option class=\"orange\" value=\"unresolved\">UNRESOLVED</option>"+
-					             "<option class=\"green\" value=\"resolved\">RESOLVED</option>"+
-					             "<option class=\"blue\" value=\"pending\">PENDING</option>"+
-                   "</select>"+
-				"<span class=\"glyphicon glyphicon-chevron-down\" ng-class=\"{orange: flag.status=='unresolved', green: flag.status=='resolved', blue: flag.status=='pending'}\"></span>"+
-			       "</div>"+
+            "<button class=\"delete-flag-btn btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
+            "<button class=\"edit-flag-btn btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Edit</button>"+
         "</td>"+
     "</tr><% }) %>"+
     "</table>";

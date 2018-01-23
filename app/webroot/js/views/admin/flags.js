@@ -34,12 +34,9 @@
 
 }).call(this);
 
-
-
 $(document).ready(function() {
-    $('#flags').on('click', '#delete-btn', function(e){
-        console.log('clicked delete');
-        flagID = ($(this).data('id'));
+    $('#flags').on('click', '.delete-flag-btn', function(e){
+        var flagID = ($(this).data('id'));
         $.ajax({
             url: arcs.baseURL + 'admin/editFlags',
             type: "POST",
@@ -54,10 +51,34 @@ $(document).ready(function() {
         });
     });
 
-    $('#flags').on('click', '#edit-btn', function(e){
-        console.log('clicked approve');
-        flagID = ($(this).data('id'));
-        updateTo = "resolved"
+    $('#flags').on('click', '.edit-flag-btn', function(e){
+        var oldSelect = $('.flag-select');
+        if( $(oldSelect).length > 0 ){
+          $(oldSelect).parent().html($(oldSelect).attr('data-current'));
+          $('.edit-flag-btn').html('Edit');
+          $('.save-flag-btn').removeClass('save-flag-btn').addClass('edit-flag-btn').html('Edit');
+        }
+        var statusBox = $(this).parent().prevAll('.flag-status');
+        var currentStatus = $(statusBox).html();
+        var select =
+            "<div class=\"styled-select flag-select\" data-current='"+currentStatus+"'>"+
+            "<select>"+
+                "<option class='unresolved' value=\"unresolved\">unresolved</option>"+
+                "<option class='resolved' value=\"resolved\">resolved</option>"+
+                "<option class='pending' value=\"pending\">pending</option>"+
+            "</select>"+
+            "<span></span>"+
+            "</div>";
+        $(statusBox).html(select);
+        $('.'+currentStatus).attr('selected', 'selected');
+        $(this).html('Submit');
+        $(this).removeClass('edit-flag-btn').addClass('save-flag-btn');
+    });
+
+    $('#flags').on('click', '.save-flag-btn', function(e){
+        var statusBox = $(this).parent().prevAll('.flag-status');
+        var updateTo = $(statusBox).find(" :selected").text();
+        var flagID = $(this).attr('data-id');
         $.ajax({
             url: arcs.baseURL + 'admin/editFlags',
             type: "POST",
@@ -65,10 +86,10 @@ $(document).ready(function() {
               status: 'edit',
               flagID: flagID,
               api: true,
-              updateTo: updateTo,
+              updateTo: updateTo
             },
             success: function (data) {
-
+                location.reload();
             }
         });
     });
