@@ -395,6 +395,9 @@ Router::connect('/users/uploadProfileImage',
 Router::connect('/admin/editFlags/*',
     array('controller' => 'admin', 'action' => 'editFlags')
 );
+Router::connect('/admin/editMetadata/*',
+    array('controller' => 'admin', 'action' => 'editMetadata')
+);
 
     $restful = array(
         'resources',

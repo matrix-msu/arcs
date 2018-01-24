@@ -29,8 +29,11 @@ JST["admin/metadata_edits"] = "<table class=\"table table-striped table-bordered
         "<td><%= f.MetadataEdit.value_before %></td>"+
         "<td><%= f.MetadataEdit.new_value %></td>"+
         "<td>"+
-            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
-            "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Approve</button>"+
+            "<button class=\"delete-flag-btn btn btn-danger btn-mini \" " +
+                "data-id=\"<%= f.MetadataEdit.id %>\" " +
+                "data-email='<%= f.MetadataEdit.email %>'>Delete</button>"+
+            "<button class=\"edit-flag-btn btn btn-info btn-mini\" " +
+                "data-id=\"<%= f.MetadataEdit.id %>\" >Approve</button>"+
         "</td>"+
     "</tr><% }) %>"+
     "</table>";

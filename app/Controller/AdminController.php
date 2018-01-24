@@ -166,44 +166,263 @@ class AdminController extends AppController {
     }
 
 
-public function editFlags() {
-    include_once("../Config/database.php");
-    $db = new DATABASE_CONFIG();
-    $db_object =  (object) $db;
-    $db_array = $db_object->{'default'};
-    $response['db_info'] = $db_array['host'];
-    //$conn = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
-    //$conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-    $dbHost = $db_array['host'];
-    $database = $db_array['database'];
-    $conn = new PDO("mysql:host=$dbHost;dbname=$database", $db_array['login'], $db_array['password']);
+    public function editFlags() {
+        include_once("../Config/database.php");
+        $db = new DATABASE_CONFIG();
+        $db_object =  (object) $db;
+        $db_array = $db_object->{'default'};
+        $response['db_info'] = $db_array['host'];
+        $dbHost = $db_array['host'];
+        $database = $db_array['database'];
+        $conn = new PDO("mysql:host=$dbHost;dbname=$database", $db_array['login'], $db_array['password']);
 
 
-    if ($_POST['status'] == 'delete'){
-      $user = $conn->prepare("DELETE FROM flags WHERE id = ?");
-      $user->bindParam(1, $_POST['flagID'], PDO::PARAM_STR);
-      $user->execute();
-      //$row = $user->fetch(PDO::FETCH_ASSOC);
-      // $row = $row['id'];
+        if ($_POST['status'] == 'delete'){
+          $user = $conn->prepare("DELETE FROM flags WHERE id = ?");
+          $user->bindParam(1, $_POST['flagID'], PDO::PARAM_STR);
+          $user->execute();
+          //$row = $user->fetch(PDO::FETCH_ASSOC);
+          // $row = $row['id'];
+        }
+        elseif ($_POST['status'] == 'edit'){
+          $user = $conn->prepare("UPDATE flags SET status = ? WHERE id = ?");
+          $user->bindParam(1, $_POST['updateTo'], PDO::PARAM_STR);
+          $user->bindParam(2, $_POST['flagID'], PDO::PARAM_STR);
+          $user->execute();
+        }
+        die;
     }
-    elseif ($_POST['status'] == 'edit'){
-      $user = $conn->prepare("UPDATE flags SET status = ? WHERE id = ?");
-      $user->bindParam(1, $_POST['updateTo'], PDO::PARAM_STR);
-      $user->bindParam(2, $_POST['flagID'], PDO::PARAM_STR);
-      $user->execute();
-    }
-
-
-
-die;
-}
 
 
 
 
     public function metadata_edits(){
-        $this->set('metadata', $this->MetadataEdit->find('all', array(
-        )));
+        $metadata = $this->MetadataEdit->find('all', array());
+        $resultsArray = array();
+        $count = 0;
+        foreach($metadata as $row) {
+            $count++;
+            if ($row['MetadataEdit']["user_id"]) {
+                //$row["target"] = $row["annotation_target"];
+                $id = $row['MetadataEdit']['user_id'];
+                $user = $this->User->find('first', array('conditions'=>array('id'=>$id)));
+                $row['MetadataEdit']['user_name'] = $user['User']['username'];
+                $row['MetadataEdit']['email'] = $user['User']['email'];
+            }
+            array_push($resultsArray, $row);
+        }
+
+        $this->set('metadata', $resultsArray);
+    }
+
+    public function editMetadata(){
+        include_once("../Config/database.php");
+        $db = new DATABASE_CONFIG();
+        $db_object =  (object) $db;
+        $db_array = $db_object->{'default'};
+        $con=mysqli_connect($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+        $user = "";
+        $pass = "";
+        $display = "json";
+        $result = Array();
+
+        // Check connection
+        if (mysqli_connect_errno()) {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        } else {
+            if ($_POST['task'] == 'reject' && $_POST['reason'] != NULL ) {
+                $flags = mysqli_query($con, "UPDATE metadata_edits SET rejected = '".decbin(1)."', reason_rejected='".$_POST['reason']."', approved = '".decbin(0)."' WHERE id = '" . $_POST['id'] . "'");
+
+                $metadata_info = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM metadata_edits WHERE id='".$_POST['id']."'"),MYSQL_ASSOC);
+
+
+                // the message
+                $msg = '<h3>The metadata edit you submitted was rejected for the following reason:</h3>'
+                    . '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $metadata_info['reason_rejected'] . "</p>"
+                    . '<h4>Other information about this metadata edit:</h4>';
+                unset( $metadata_info['reason_rejected'] );
+
+                foreach( $metadata_info as $key => $value ){
+                    $msg .= '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $key . ' : ' . $value . "</p>";
+                }
+
+                // send email
+                $headers = 'MIME-Version: 1.0' . "\r\n";
+                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                $headers .= 'From: Noreply <noreply@matrix.msu.edu>' . "\r\n";
+                $email_subject = "Your ARCS Metadata Edit was Rejected";
+
+                mail($_POST['email'], $email_subject, $msg, $headers);
+
+                echo json_encode($metadata_info);
+            }
+            elseif ($_POST['task'] == 'approve') {
+                $approve = mysqli_query($con, "UPDATE metadata_edits SET approved = '".decbin(1)."' WHERE id = '" . $_POST['id'] . "'");
+                $metadata_row = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM metadata_edits WHERE id='".$_POST['id']."'"));
+                $metadata_kid = $metadata_row['metadata_kid'];
+                $scheme_id = $metadata_row['scheme_id'];
+                $field_name = $metadata_row['field_name'];
+                $new_value = $metadata_row['new_value'];
+                $control_type = $metadata_row['control_type'];
+
+                //Get the resource from kora
+                $resource = koraSearchKidWrapper($metadata_kid);
+
+                $resource = $resource[$metadata_kid];
+                $result['resource'] = $resource;
+                $result['new_value:'] = $new_value;
+                if( $resource['kid']) {
+                    unset($resource['kid']);
+                }
+
+                //change the edit to an array or object if needed
+                if( $control_type == 'multi_input' || $control_type == 'multi_select' || $control_type == 'associator' ){
+                    $temp = array();
+                    $temp = preg_split("/\\r\\n|\\r|\\n/", $new_value );
+                    $new_value = $temp;
+                }elseif( $control_type == 'date' || $control_type == 'terminus' ){
+                    $month = '';
+                    $day = '';
+                    $year = '';
+                    $prefix = '';
+                    $era = '';
+
+                    $valueArray = array();
+                    $valueArray = explode(" ", $new_value);
+                    $dateString = '';
+                    if( strpos($valueArray[0], '/') === false ){     // '/' does not exist in array value, it is the prefix
+                        $prefix = $valueArray[0];
+                        $dateString = $valueArray[1];
+                        if( array_key_exists(2,$valueArray) ) { //does exist
+                            $era = $valueArray[2];
+                        }
+
+                    }else{      // '/' does exit it is the date
+                        $dateString = $valueArray[0];
+                        if( array_key_exists(1,$valueArray) ) { //does exist
+                            $era = $valueArray[1];
+                        }
+                    }
+                    $dateArray = array();
+                    $dateArray = explode('/', $dateString);
+                    $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                        'September', 'October', 'November', 'December');
+                    $month = strval( array_search($dateArray[0], $months) + 1 ); //+1 because in kora, january = 1
+                    $day = $dateArray[1];
+                    $year = $dateArray[2];
+                    $dateObject = new stdClass;
+                    $dateObject->month = $month;
+                    $dateObject->day = $day;
+                    $dateObject->year = $year;
+                    $dateObject->era = $era;
+                    $dateObject->prefix = $prefix;
+                    $dateArray2 = array();
+                    $dateArray2['month'] = $month;
+                    $dateArray2['day'] = $day;
+                    $dateArray2['year'] = $year;
+                    $dateArray2['era'] = $era;
+                    $dateArray2['prefix'] = $prefix;
+
+                    $new_value = $dateArray2;
+                }
+
+                //*** Do the actual edit here! then wrap in Record tag.
+                $resource[$field_name] = $new_value;
+                $result['new_value:'] = $new_value;
+                $result['resources after new value:'] = $resource;
+                $record_array = array();
+                $record_array['Record'] = $resource;
+                array_push($result, $record_array);
+                $json = json_encode($resource);
+                array_push($result, $json );
+                $json2 = json_decode($json);
+                array_push($result, $json2 );
+
+                //Build the XML
+                $xml =<<<XML
+<?xml version="1.0" encoding="ISO-8859-1"?><Data><ConsistentData/></Data>
+XML;
+
+                $xml_data = new SimpleXMLElement($xml);
+                array_to_xml($record_array, $xml_data, $result);
+                $xml = $xml_data->asXML();
+                $xml = str_replace("\n", '', $xml);
+
+                array_push($result, $xml);
+
+                //Update the resource in kora
+                $pid = getCurrentProjectPid();
+                $pName = getProjectNameFromPid($pid);
+                $token = getTokenFromProjectName($pName);
+                $url = KORA_RESTFUL_URL."?request=UPDATE&pid=".$pid."&sid=".$scheme_id."&token=".$token."&rid=".$metadata_kid."&xml=".urlencode($xml);
+                array_push($result, $url);
+                //initialize post request to KORA API using curl
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
+                //capture results and display
+                $update = json_decode(curl_exec($ch), true);
+                //array_push($result, $update);
+
+                echo json_encode($result);
+            }
+            elseif($_POST['task'] == 'updateEdit') {
+                $result = array();
+                $result[] = 'updateEdit';
+                $result['text'] = $_POST['text'];
+                $flags = mysqli_query($con, "UPDATE metadata_edits SET new_value = '".$_POST['text']."' WHERE id = '" . $_POST['id'] . "'");
+
+                echo json_encode($result);
+
+            }elseif ($_POST['task'] == 'deleteRow') {
+                $flags = mysqli_query($con, "DELETE FROM metadata_edits WHERE id = '" . $_POST['id'] . "'");
+                echo json_encode('Delete Metadata Sucess');
+            }
+        }
+
+        //build the xml to send to kora
+        function array_to_xml( $data, $xml_data, $result ) {
+            foreach( $data as $key => $value ) {
+                if($key == 'Record') {  //treat record tag specially
+                    $subnode = $xml_data->addChild($key);
+                    array_to_xml($value, $subnode, $result);
+                }elseif( is_array($value) ) {
+                    if ( is_numeric(key($value)) ) {  //multi-select, multi-input, and associator controls here
+                        foreach ($value as $list_key => $list_value) {
+                            $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$list_value"));
+                        }
+                    } else { //dates and terminus controls here
+                        $string = "";
+                        $was_there_prefix = 0;
+                        $prefix = '';
+                        foreach ($value as $list_key => $list_value) {
+                            if (strcmp($list_key, 'prefix') === 0 && strcmp($list_value, '') !== 0) {
+                                $prefix = $list_value;
+                                $was_there_prefix = 1;
+
+                            }elseif( strcmp($list_key, 'month') === 0 || strcmp($list_key, 'day') === 0 ) {
+                                $string = $string . $list_value . '/';
+
+                            }elseif( strcmp($list_key, 'year') === 0 ) {
+                                $string = $string . $list_value;
+
+                            }elseif( strcmp($list_key, 'era') === 0 && strcmp($list_value, '') !== 0 ) {
+                                $string = $string . ' ' . $list_value;
+                            }
+                        }
+                        if ($was_there_prefix == 1) {
+                            $has_prefix = $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
+                            $has_prefix->addAttribute('prefix', $prefix);
+                        } else {
+                            $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
+                        }
+                    }
+                }elseif($value != "") { //text controls
+                    $xml_data->addChild(str_replace(' ', '_', $key),htmlspecialchars("$value"));
+                }
+            }
+        }
+        die;
     }
 
     /**

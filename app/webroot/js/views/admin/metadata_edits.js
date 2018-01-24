@@ -33,3 +33,55 @@
   })(Backbone.View);
 
 }).call(this);
+
+$(document).ready(function() {
+    $('#metadata_edits').on('click', '.delete-flag-btn', function(e){
+        var flagID = ($(this).data('id'));
+        $.ajax({
+            url: arcs.baseURL + 'admin/editMetadata',
+            type: "POST",
+            data:  {
+                task: 'reject',
+                id: flagID,
+                reason: 'because',
+                api: true,
+                email: $(this).data('email')
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    });
+
+    $('#metadata_edits').on('click', '.edit-flag-btn', function(e){
+        var oldSelect = $('.flag-select');
+        if( $(oldSelect).length > 0 ){
+            $('.edit-flag-btn').html('Edit');
+            $('.save-flag-btn').removeClass('save-flag-btn').addClass('edit-flag-btn').html('Edit');
+        }
+        //$(this).html('Submit'); //add this back when adding editing later
+        $(this).removeClass('edit-flag-btn').addClass('save-flag-btn');
+        $('.save-flag-btn').click(); //just auto submit.. no edit option yet.
+    });
+
+    $('#metadata_edits').on('click', '.save-flag-btn', function(e){
+        var statusBox = $(this).parent().prevAll('.flag-status');
+        var updateTo = $(statusBox).find(" :selected").text();
+        var flagID = $(this).attr('data-id');
+        $.ajax({
+            url: arcs.baseURL + 'admin/editMetadata',
+            type: "POST",
+            data:  {
+                status: 'edit',
+                id: flagID,
+                api: true,
+                updateTo: updateTo
+            },
+            success: function (data) {
+                console.log('ajax save success')
+                console.log(data);
+                location.reload();
+            }
+        });
+    });
+});
