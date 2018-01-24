@@ -66,7 +66,7 @@ $(document).ready(function() {
 
     $('#metadata_edits').on('click', '.save-flag-btn', function(e){
         var statusBox = $(this).parent().prevAll('.flag-status');
-        var updateTo = $(statusBox).find(" :selected").text();
+        //var updateTo = $(statusBox).find(" :selected").text();
         var flagID = $(this).attr('data-id');
         $.ajax({
             url: arcs.baseURL + 'admin/editMetadata',
@@ -75,11 +75,10 @@ $(document).ready(function() {
                 status: 'edit',
                 id: flagID,
                 api: true,
-                updateTo: updateTo
+                task: "approve"
+                //updateTo: updateTo
             },
             success: function (data) {
-                console.log('ajax save success')
-                console.log(data);
                 location.reload();
             }
         });

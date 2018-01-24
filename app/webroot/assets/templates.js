@@ -17,23 +17,34 @@ JST["admin/flags"] = "<table class=\"table table-striped table-bordered\">"+
     "</table>";
 
 JST["admin/metadata_edits"] = "<table class=\"table table-striped table-bordered\">"+
-    "<tr><th>Resource Kid</th>"+
-    "<th>User Name</th>"+
-    "<th>Field Name</th>"+
-    "<th>Old Value</th>"+
-    "<th>New Value</th><th>Actions</th></tr><tr>"+
+    "<tr>" +
+        "<th>Resource Kid</th>"+
+        "<th>User Name</th>"+
+        "<th>Metadata Kid</th>"+
+        "<th>Field Name</th>"+
+        "<th>Old Value</th>"+
+        "<th>New Value</th>" +
+        "<th>Actions</th>" +
+    "</tr><tr>"+
     "<% _.each(metadata_edits, function(f, i) { %>  "+
         "<td><%= f.MetadataEdit.resource_kid %></td>"+
         "<td><%= f.MetadataEdit.user_name %></td>"+
+        "<td><%= f.MetadataEdit.metadata_kid %></td>"+
         "<td><%= f.MetadataEdit.field_name %></td>"+
         "<td><%= f.MetadataEdit.value_before %></td>"+
         "<td><%= f.MetadataEdit.new_value %></td>"+
         "<td>"+
-            "<button class=\"delete-flag-btn btn btn-danger btn-mini \" " +
-                "data-id=\"<%= f.MetadataEdit.id %>\" " +
-                "data-email='<%= f.MetadataEdit.email %>'>Delete</button>"+
-            "<button class=\"edit-flag-btn btn btn-info btn-mini\" " +
-                "data-id=\"<%= f.MetadataEdit.id %>\" >Approve</button>"+
+            "<% if( f.MetadataEdit.rejected == 1 ){ %>  "+
+                "Rejected"+
+            "<% }else if( f.MetadataEdit.approved == 1 ){ %>  "+
+                "Approved"+
+            "<% }else{ %>"+
+                "<button class=\"delete-flag-btn btn btn-danger btn-mini \" " +
+                    "data-id=\"<%= f.MetadataEdit.id %>\" " +
+                    "data-email='<%= f.MetadataEdit.email %>'>Delete</button>"+
+                "<button class=\"edit-flag-btn btn btn-info btn-mini\" " +
+                    "data-id=\"<%= f.MetadataEdit.id %>\" >Approve</button>"+
+            "<% } %>"+
         "</td>"+
     "</tr><% }) %>"+
     "</table>";

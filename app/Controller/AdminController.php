@@ -1,5 +1,7 @@
 <?php
 App::uses('ConnectionManager', 'Model');
+
+require_once(KORA_LIB . "General_Search.php");
 /**
  * Admin controller.
  *
@@ -266,7 +268,15 @@ class AdminController extends AppController {
                 $control_type = $metadata_row['control_type'];
 
                 //Get the resource from kora
-                $resource = koraSearchKidWrapper($metadata_kid);
+
+                $pName = parent::convertKIDtoProjectName($metadata_kid);
+                $sid = parent::getResourceSIDFromProjectName($pName);
+                $pid = parent::getPIDFromProjectName($pName);
+                $fields = array('ALL');
+                $kora = new General_Search($pid, $sid, 'kid', '=', $metadata_kid, $fields);
+                $resource = json_decode($kora->return_json(), true);
+
+                //$resource = koraSearchKidWrapper($metadata_kid);
 
                 $resource = $resource[$metadata_kid];
                 $result['resource'] = $resource;
@@ -344,16 +354,14 @@ class AdminController extends AppController {
 XML;
 
                 $xml_data = new SimpleXMLElement($xml);
-                array_to_xml($record_array, $xml_data, $result);
+                self::array_to_xml($record_array, $xml_data, $result);
                 $xml = $xml_data->asXML();
                 $xml = str_replace("\n", '', $xml);
 
                 array_push($result, $xml);
 
                 //Update the resource in kora
-                $pid = getCurrentProjectPid();
-                $pName = getProjectNameFromPid($pid);
-                $token = getTokenFromProjectName($pName);
+                $token = parent::getTokenFromProjectName($pName);
                 $url = KORA_RESTFUL_URL."?request=UPDATE&pid=".$pid."&sid=".$scheme_id."&token=".$token."&rid=".$metadata_kid."&xml=".urlencode($xml);
                 array_push($result, $url);
                 //initialize post request to KORA API using curl
@@ -379,50 +387,49 @@ XML;
                 echo json_encode('Delete Metadata Sucess');
             }
         }
+        die;
+    }
+    //build the xml to send to kora
+    public function array_to_xml( $data, $xml_data, $result ) {
+        foreach( $data as $key => $value ) {
+            if($key == 'Record') {  //treat record tag specially
+                $subnode = $xml_data->addChild($key);
+                self::array_to_xml($value, $subnode, $result);
+            }elseif( is_array($value) ) {
+                if ( is_numeric(key($value)) ) {  //multi-select, multi-input, and associator controls here
+                    foreach ($value as $list_key => $list_value) {
+                        $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$list_value"));
+                    }
+                } else { //dates and terminus controls here
+                    $string = "";
+                    $was_there_prefix = 0;
+                    $prefix = '';
+                    foreach ($value as $list_key => $list_value) {
+                        if (strcmp($list_key, 'prefix') === 0 && strcmp($list_value, '') !== 0) {
+                            $prefix = $list_value;
+                            $was_there_prefix = 1;
 
-        //build the xml to send to kora
-        function array_to_xml( $data, $xml_data, $result ) {
-            foreach( $data as $key => $value ) {
-                if($key == 'Record') {  //treat record tag specially
-                    $subnode = $xml_data->addChild($key);
-                    array_to_xml($value, $subnode, $result);
-                }elseif( is_array($value) ) {
-                    if ( is_numeric(key($value)) ) {  //multi-select, multi-input, and associator controls here
-                        foreach ($value as $list_key => $list_value) {
-                            $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$list_value"));
-                        }
-                    } else { //dates and terminus controls here
-                        $string = "";
-                        $was_there_prefix = 0;
-                        $prefix = '';
-                        foreach ($value as $list_key => $list_value) {
-                            if (strcmp($list_key, 'prefix') === 0 && strcmp($list_value, '') !== 0) {
-                                $prefix = $list_value;
-                                $was_there_prefix = 1;
+                        }elseif( strcmp($list_key, 'month') === 0 || strcmp($list_key, 'day') === 0 ) {
+                            $string = $string . $list_value . '/';
 
-                            }elseif( strcmp($list_key, 'month') === 0 || strcmp($list_key, 'day') === 0 ) {
-                                $string = $string . $list_value . '/';
+                        }elseif( strcmp($list_key, 'year') === 0 ) {
+                            $string = $string . $list_value;
 
-                            }elseif( strcmp($list_key, 'year') === 0 ) {
-                                $string = $string . $list_value;
-
-                            }elseif( strcmp($list_key, 'era') === 0 && strcmp($list_value, '') !== 0 ) {
-                                $string = $string . ' ' . $list_value;
-                            }
-                        }
-                        if ($was_there_prefix == 1) {
-                            $has_prefix = $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
-                            $has_prefix->addAttribute('prefix', $prefix);
-                        } else {
-                            $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
+                        }elseif( strcmp($list_key, 'era') === 0 && strcmp($list_value, '') !== 0 ) {
+                            $string = $string . ' ' . $list_value;
                         }
                     }
-                }elseif($value != "") { //text controls
-                    $xml_data->addChild(str_replace(' ', '_', $key),htmlspecialchars("$value"));
+                    if ($was_there_prefix == 1) {
+                        $has_prefix = $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
+                        $has_prefix->addAttribute('prefix', $prefix);
+                    } else {
+                        $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
+                    }
                 }
+            }elseif($value != "") { //text controls
+                $xml_data->addChild(str_replace(' ', '_', $key),htmlspecialchars("$value"));
             }
         }
-        die;
     }
 
     /**
