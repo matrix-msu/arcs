@@ -265,8 +265,7 @@ class ProjectsController extends AppController {
 			));
 		}
     foreach( $collections as $key => $collection ){
-        $collection_time = new DateTime($collection['Collection']['created']);
-        $collections[$key]['Collection']['timeAgo'] =  CollectionsController::time_elapsed_string($collection_time);
+        $collections[$key]['Collection']['timeAgo'] =  parent::time_elapsed_string($collection['Collection']['created']);
     }
 
     $this->set('collections', $collections);

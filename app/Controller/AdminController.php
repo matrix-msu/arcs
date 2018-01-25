@@ -438,7 +438,7 @@ XML;
     public function activity() {
 
         $_POST['task'] = "all";
-        $_POST['username'] = "josh.christ";
+        $_POST['username'] = "";
 
         include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
@@ -488,7 +488,7 @@ XML;
         }
         if( $_POST['task'] == 'all' || $_POST['task'] == 'annotations' ){
             $table = self::getTable(
-                "SELECT user_name as name,modified as date,user_username as username,resource_name,resource_kid ".
+                "SELECT user_name as name,modified as date,user_username as username,resource_name,resource_kid,user_email as email ".
                 "FROM annotations ".
                 "WHERE user_id IN (" .$mappingsArray. ") ".
                 "AND resource_kid LIKE '$hex%' ".
@@ -499,10 +499,11 @@ XML;
         }
         if(  $_POST['task'] == 'all' || $_POST['task'] == 'metadata_edits' ){
             //get usernames because they aren't in the metadata table
-            $users = self::getTable("SELECT id,username FROM users WHERE id IN ($mappingsArray)", $conn);
+            $users = self::getTable("SELECT id,username,email FROM users WHERE id IN ($mappingsArray)", $conn);
             $userMappings = array();
             foreach( $users as $user ){
-                $userMappings[$user['id']] = $user['username'];
+                $userMappings[$user['id']] = array('username'=>$user['username'],'email'=>$user['email']);
+                //$userMappings[$user['id']] = $user['username'];
             }
             //get the actual metadata edits
             $table = self::getTable(
@@ -514,15 +515,16 @@ XML;
                 $conn, 'metadata'
             );
             foreach( $table as $key => $value ){
-                $table[$key]['username'] = $userMappings[$value['user_id']];
-                //$table[$key]['profilePic'] = checkProfilePicture($table[$key]['username']);
-                $table[$key]['profilePic'] = "testing";
+                $username = $userMappings[$value['user_id']]['username'];
+                $email = $userMappings[$value['user_id']]['email'];
+                $table[$key]['username'] = $username;
+                $table[$key]['email'] = $email;
             }
             $resultsArray = array_merge($resultsArray, $table);
         }
         if( $_POST['task'] == 'all' || $_POST['task'] == 'flags' ){
             $table = self::getTable(
-                "SELECT user_name as name,created as date,user_username as username,resource_name,resource_kid ".
+                "SELECT user_name as name,created as date,user_username as username,resource_name,resource_kid,user_email as email ".
                 "FROM flags ".
                 "WHERE user_id IN (" .$mappingsArray. ") ".
                 "AND resource_kid LIKE '$hex%' ".
@@ -539,14 +541,18 @@ XML;
         }
         array_multisort($date, SORT_DESC, $resultsArray);
 
-        //return
-        $count = count($resultsArray);
-
-        //$resultsArray = array_splice($resultsArray, $_POST['low'], $_POST['limit'], []);
-
-        //$resultsArray = array_splice($resultsArray, "0", "20", []);
-        //echo json_encode(array($resultsArray, $count));
-
+        //get the profile pic and formatted date
+        foreach( $resultsArray as $key => $value ){
+            if( isset($value['username']) ) {
+                if( !isset($value['email']) ){
+                    $value['email'] = '';
+                }
+                $resultsArray[$key]['profilePic'] = parent::checkForProfilePicture($value['username'], $value['email']);
+            }
+            if( isset($value['date']) ) {
+                $resultsArray[$key]['date'] = parent::time_elapsed_string($value['date']);
+            }
+        }
         $this->set('activity', $resultsArray);
     }
 
@@ -560,13 +566,13 @@ XML;
             if ($type == 'logins' && !isset($row['date'])) {
                 continue;
             }
-            if (isset($row['username']) && isset($row['email'])) {
-                //$row['profilePic'] = checkProfilePicture($row['username'], $row['email']);
-                $row['profilePic'] = "testing";
-            } elseif (isset($row['username'])) {
-                //$row['profilePic'] = checkProfilePicture($row['username']);
-                $row['profilePic'] = "testing";
-            }
+//            if (isset($row['username']) && isset($row['email'])) {
+//                //$row['profilePic'] = checkProfilePicture($row['username'], $row['email']);
+//                $row['profilePic'] = "testing";
+//            } elseif (isset($row['username'])) {
+//                //$row['profilePic'] = checkProfilePicture($row['username']);
+//                $row['profilePic'] = "testing";
+//            }
             $row['type'] = $type;
             array_push($resultsArray, $row);
         }

@@ -436,4 +436,63 @@ class AppController extends Controller
 
 		die;
     }
+
+    //get a user's profile picture
+    public function checkForProfilePicture($username, $email=''){
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
+
+        $return = NULL;
+        $profileImage = glob($uploads_path . $username . '.*');
+        if (count($profileImage) == 1) {
+            $filename = explode('/', $profileImage[0]);
+            $filename = array_pop($filename);
+            $return = $uploads_url . $filename;
+        }elseif($email!=''){
+            $gravatar = 'http://gravatar.com/avatar/'.md5(strtolower($email)).'?d=404';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,$gravatar);
+            // don't download content
+            curl_setopt($ch, CURLOPT_NOBODY, 1);
+            curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            if(curl_exec($ch)!==FALSE){
+                $return = $gravatar;
+            }
+        }
+        if ($return == NULL) {
+            $return = $this->webroot."app/webroot/img/DefaultProfilePic.svg";
+        }
+        return $return;
+    }
+
+    public static function time_elapsed_string($createdDate, $full = false) {
+        $now = new DateTime;
+        $ago = new DateTime($createdDate);;
+        $diff = $now->diff($ago);
+
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+
+        $string = array(
+            'y' => 'year',
+            'm' => 'month',
+            'w' => 'week',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
 }

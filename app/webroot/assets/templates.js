@@ -50,11 +50,14 @@ JST["admin/metadata_edits"] = "<table class=\"table table-striped table-bordered
     "</table>";
 
 JST["admin/activity"] = "<table class=\"table table-striped table-bordered\">"+
-    "<tr><th>Name</th>"+
-    "<th>Date</th>"+
-    "<th>Type</th>"+
+    "<tr>" +
+        "<th>Picture</th>"+
+        "<th>Name</th>"+
+        "<th>Date</th>"+
+        "<th>Type</th>"+
     "</tr><tr>"+
     "<% _.each(activity, function(f, i) { %>  "+
+        "<td><img style='height:100px;width:100px' src='<%= f.profilePic %>' /></td>"+
         "<td><%= f.name %></td>"+
         "<td><%= f.date %></td>"+
         "<td><%= f.type %></td>"+

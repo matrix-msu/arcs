@@ -1072,8 +1072,6 @@ class UsersController extends AppController
         /*** End Getting User Information ***/
 
         /*** Begin Profile Picture ***/
-        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
-        $uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
 
         //authenticate---
         if( isset($signedIn['User']['username']) ){
@@ -1081,27 +1079,7 @@ class UsersController extends AppController
         }
 
         //get the user profile picture
-        $user['profileImage'] = NULL;
-        $profileImage = glob($uploads_path . $user['username'] . '.*');
-        if (count($profileImage) == 1) {
-            $filename = explode('/', $profileImage[0]);
-            $filename = array_pop($filename);
-            $user['profileImage'] = $uploads_url . $filename;
-        }else{
-            $gravatar = 'http://gravatar.com/avatar/'.md5(strtolower($user['email'])).'?d=404';
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL,$gravatar);
-            // don't download content
-            curl_setopt($ch, CURLOPT_NOBODY, 1);
-            curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            if(curl_exec($ch)!==FALSE){
-                $user['profileImage'] = $gravatar;
-            }
-        }
-        if ($user['profileImage'] == NULL) {
-            $user['profileImage'] = $this->webroot."app/webroot/img/DefaultProfilePic.svg";
-        }
+        $user['profileImage'] = parent::checkForProfilePicture($user['username'], $user['email']);
 
         // set user and admin status
         $this->set('isAdmin', $this->Access->isAdmin());

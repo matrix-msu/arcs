@@ -1,4 +1,4 @@
-<?php echo json_encode($activity); ?>
+<?php //echo json_encode($activity); ?>
 
 <h1 class="admin-header">Activity</h1>
 
