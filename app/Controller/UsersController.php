@@ -414,7 +414,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->json(200, "something");
+        $this->json(200, "editing");
         if( isset($this->request->data['adminapi']) && $this->request->data['adminapi'] == 'true' ){
             $signedIn = self::adminOfUser($id);//return the user that you are editing only if you are an admin of the current project and that user
             if (empty($signedIn)){
@@ -853,6 +853,7 @@ class UsersController extends AppController
      * Send an invite email and set up a skeleton account.
      */
     public function ajaxInvite(){
+        $this->json(200, "inviting");
         $this->autoRender = false;
         if (!$this->request->is('post') || !isset($this->request->data['form']['projects']) )
             return $this->json(400);

@@ -128,6 +128,7 @@ function Generate_Metadata(
             'Post Dispositional Transformation' => 'text'
         ),
         'archival objects' => array(
+            'URL' => 'url',
             'Excavation - Survey Associator' => 'associator',
             'Season Associator' => 'associator',
             'Resource Identifier' => 'text',
@@ -252,6 +253,7 @@ function Generate_Metadata(
             'Post Dispositional Transformation' => 'Post-Depositional Activity'
         ),
         'archival objects' => array(
+            'URL' => 'Stable URL',
             'Excavation - Survey Associator' => 'Study(s) when Resource was created',
             'Season Associator' => 'Season(s) when Resource was created',
             'Resource Identifier' => 'Resource Identifier',
@@ -340,6 +342,13 @@ function Generate_Metadata(
                             $text = '';
                             if( $type=='text'||$type=='list' ) {
                                 $text = $array[$control];
+                            }elseif($type=='url'){
+                                $host_url = "http://$_SERVER[HTTP_HOST]";//$_SERVER[REQUEST_URI]";
+                                $kid = $array['kid'];
+                                $url = BASE_URL.'resource/'.$kid;
+                                $url = $host_url.'/'.$url;
+                                $link = "<a href=".$url.">".$url."</a>";
+                                $text = $link;
                             }elseif( $type=='multi_input'||$type=='multi_select' ){
                                 if( !is_string($array[$control]) ){
                                     foreach($array[$control] as $temp) {$text .= $temp."<br>";}

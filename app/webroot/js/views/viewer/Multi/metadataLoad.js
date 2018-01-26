@@ -1,5 +1,5 @@
 function generateMetadata(schemename, data, metadataEdits, controlOptions, flags, aboveScheme=false, aboveTwoSchemes=false) {
-    var counter = 0;
+  var counter = 0;
 
 	var html = '<h3 class="level-tab '+schemename+'" >';
 	if( schemename === 'archival objects' ){
@@ -103,6 +103,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
           'Post Dispositional Transformation' : 'text'
       },
       'archival objects' : {
+          'URL': 'url',
           'Excavation - Survey Associator' : 'associator',
           'Season Associator' : 'associator',
           'Resource Identifier' : 'text',
@@ -229,6 +230,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
           'Post Dispositional Transformation' : 'Post-Depositional Activity'
       },
       'archival objects' : {
+          'URL': 'Stable URL',
           'Excavation - Survey Associator' : 'Study(s) when Resource was created',
           'Season Associator' : 'Season(s) when Resource was created',
           'Resource Identifier' : 'Resource Identifier',
@@ -308,6 +310,13 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             var text = '';
             if(type == 'text' || type == 'list') {
                 text = item[control];
+            }
+            else if (type == 'url') {
+                var host_url = window.location.hostname
+                var kid = item['kid'];
+                var url = 'http://'+host_url + arcs.baseURL+'resource/'+kid;
+                var link = "<a href="+url+">"+url+"</a>";
+                text = link;
             }
             else if(type == 'multi_input' || type == 'multi_select' ) {
                 if(typeof item[control] != "string"){

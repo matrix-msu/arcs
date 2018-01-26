@@ -37,7 +37,6 @@
     Users.prototype.deleteUser = function(e) {
       var user;
       user = this.collection.get($(e.currentTarget).data('id'));
-      console.log(user);
       return arcs.confirm("Are you sure you want to delete this user?", "The account for <b>" + (user.get('name')) + "</b> will be deleted.", (function(_this) {
         return function() {
           arcs.loader.show();
@@ -47,6 +46,7 @@
         };
       })(this));
     };
+
 
     Users.prototype.editUser = function(e) {
       var user;
