@@ -445,7 +445,8 @@ class UsersController extends AppController
                     )
                 );
             }
-            $this->Collection->saveAll($updateArray);
+
+            $this->Mapping->saveAll($updateArray);
         }
 
 		$numberEdited = 0;

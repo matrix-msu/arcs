@@ -168,9 +168,12 @@ class AdminController extends AppController {
         }
 
 
-        $cleanedReturn = array();//getting rid of the 'User' part
-        foreach ($userReturn as $thing) {
-            array_push($cleanedReturn, $thing['User']);
+        $cleanedReturn = array();//getting rid of the 'User'
+        $i = 0;
+        foreach ($userReturn as $user) {
+            array_push($cleanedReturn, $user['User']);
+            $cleanedReturn[$i]['profilePic'] = parent::checkForProfilePicture($cleanedReturn[$i]['username'], $cleanedReturn[$i]['email']);
+            $i++;
         }
 
         $this->set('users', $cleanedReturn);

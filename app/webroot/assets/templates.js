@@ -66,13 +66,17 @@ JST["admin/activity"] = "<table class=\"table table-striped table-bordered\">"+
 
 JST["admin/show_job"] = "<dl>  <dt>Job</dt>  <dd><%= name %></dd>  <dt>Status</dt>  <dd><%= status %></dd>  <dt>Created</dt>  <dd><%= created %></dd>  <dt>Lock</dt>  <dd><%= locked_at %></dd>  <dt>Data</dt>  <dd><pre><%= data %></pre></dd>  <dt>Error</dt>  <dd><pre><%= error %></pre></dd></dl>";
 JST["admin/users"] = "<table class=\"table table-striped table-bordered\">"+
-    "<tr><th>Name</th>"+
-    "<th>Username</th>"+
-    "<th>Email</th>"+
-    "<th>Project Roles</th>"+
-    "<th>Status</th>"+
-    "<th>Actions</th></tr><tr>"+
+
+    "<tr>" +
+      "<th>Picture</th>"+
+      "<th>Name</th>"+
+      "<th>Username</th>"+
+      "<th>Email</th>"+
+      "<th>Project Roles</th>"+
+      "<th>Status</th>"+
+      "<th>Actions</th></tr><tr>"+
     "<% _.each(users, function(f, i) { %>  "+
+        "<td><img style='height:100px;width:100px' src='<%= f.profilePic %>' /></td>"+
         "<td><%= f.name %></td>"+
         "<td><%= f.username %></td>"+
         "<td><%= f.email %></td>"+
