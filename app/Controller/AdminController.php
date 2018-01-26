@@ -142,13 +142,39 @@ class AdminController extends AppController {
      * Add, edit, and delete users.
      */
     public function users() {
-        $this->User->recursive = -1;
-        $this->User->flatten = true;
-        $this->set('users', $this->User->find('all', array(
-            'order' => 'User.created'
-        )));
-    }
+        $pid = parent::getPIDFromProjectName($_SESSION['currentProjectName']);
 
+        $project_users = $this->Mapping->find('list', array(
+            'fields' => array(
+                'Mapping.id_user',
+                'Mapping.role'
+            ),
+            'conditions' => array(
+                    'Mapping.pid' => $pid
+                ),
+            )
+        );
+
+        $mappingUserIds = array_keys($project_users);
+        $userReturn = $this->User->find('all', array(
+            'order' => 'User.created',
+            'conditions' => array(
+                    'User.id' => $mappingUserIds
+                    ),
+        ));
+
+        foreach ($userReturn as $key => $user) {
+            $userReturn[$key]['User']['role'] = $project_users[$user['User']['id']];
+        }
+
+
+        $cleanedReturn = array();//getting rid of the 'User' part
+        foreach ($userReturn as $thing) {
+            array_push($cleanedReturn, $thing['User']);
+        }
+
+        $this->set('users', $cleanedReturn);
+    }
     /**
      * View resource and collection flags.
      */

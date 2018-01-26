@@ -1,5 +1,3 @@
-<?php //echo $this->element('admin_nav', array('active' => 'users')) ?>
-
 <h1 class="admin-header">Users</h1>
 
 <div id="admin-users">

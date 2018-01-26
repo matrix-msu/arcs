@@ -37,6 +37,7 @@
     Users.prototype.deleteUser = function(e) {
       var user;
       user = this.collection.get($(e.currentTarget).data('id'));
+      console.log(user);
       return arcs.confirm("Are you sure you want to delete this user?", "The account for <b>" + (user.get('name')) + "</b> will be deleted.", (function(_this) {
         return function() {
           arcs.loader.show();
@@ -50,6 +51,7 @@
     Users.prototype.editUser = function(e) {
       var user;
       user = this.collection.get($(e.currentTarget).data('id'));
+      console.log(this.collection);
       new arcs.views.Modal({
         title: 'Edit user',
         inputs: {
@@ -65,23 +67,41 @@
           role: {
             type: 'select',
             options: this.USER_ROLES
+          },
+          password: {
+            type: 'password'
           }
         },
         buttons: {
           save: {
-            "class": 'btn btn-success',
-            callback: (function(_this) {
-              return function(vals) {
-                arcs.loader.show();
-                user.unset('password');
-                return user.save(vals, {
-                  success: arcs.loader.hide
-                });
-              };
-            })(this)
+              validate: true,
+              "class": 'btn btn-success',
+              callback: (function (_this) {
+                  return function (vals) {
+                                    vals['adminapi'] = true;
+                                    vals['id'] = user['id'];
+                                    console.log(vals);
+                      if (vals.password === '') {
+                          delete vals.password;
+                      }
+
+                      arcs.loader.show();
+                      $.ajax({
+                          url: arcs.baseURL + 'user/edit/'+user['id'],
+                          type: "POST",
+                          data: vals,
+                          success: function () {
+                             window.location.reload();
+                          }
+                      });
+
+
+                  };
+              })(this)
           },
-          cancel: function() {}
-        }
+            cancel: function () {
+            }
+         }
       });
       return $('#modal-role-input').val(user.get('role'));
     };

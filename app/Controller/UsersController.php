@@ -22,7 +22,7 @@ class UsersController extends AppController
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
           'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate',
-          'profile', 'getAllUsers', 'findById', 'ajaxDelete'
+          'profile', 'getAllUsers', 'findById', 'ajaxDelete', 'edit', 'adminOfUser'
           );
         $this->User->flatten = true;
         $this->User->recursive = -1;
@@ -142,13 +142,11 @@ class UsersController extends AppController
       //echo json_encode($resolve);
       $admins = $this->getAdmins($resolve["project"]);
       //echo json_encode($admins);
-    //  die;
       // don't render a view
       $this->autoRender = false;
 
       // assert email dependencies
       if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
-          echo "wtf man";
         // Set the template and view vars based on type
         if ($resolve["isResource"]) {
           $template = 'requestAccessResource';
@@ -371,24 +369,98 @@ class UsersController extends AppController
     }
 
     /**
+     * Return a user if you are an admin for a project that user is a part of
+     *
+     * @param string $id user id
+     */
+    public function adminOfUser($user_id){
+        $pid = parent::getPIDFromProjectName($_SESSION['currentProjectName']);
+        $admin_id = $_SESSION['Auth']['User']['id'];
+
+        $adminMap = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.pid'),
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.id_user' => $admin_id,
+                    'Mapping.status' => 'confirmed',
+                    'Mapping.role' => 'Admin',
+                    'Mapping.pid' => $pid
+                ),
+            )
+        ));
+
+        $userMap = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.pid'),
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.id_user' => $user_id,
+                    'Mapping.pid' => $pid
+                ),
+            )
+        ));
+
+        if (!empty($userMap) && !empty($adminMap)){
+            $user = $this->User->find('first', array(
+                'conditions' => array("User.id" => $user_id)
+            ));
+            return $user;
+        }
+    }
+
+    /**
      * Edit a user.
      *
      * @param string $id user id
      */
     public function edit($id = null)
     {
-		$signedIn = $this->getUser($this->Auth);
+        $this->json(200, "something");
+        if( isset($this->request->data['adminapi']) && $this->request->data['adminapi'] == 'true' ){
+            $signedIn = self::adminOfUser($id);//return the user that you are editing only if you are an admin of the current project and that user
+            if (empty($signedIn)){
+                $this->Session->setFlash('You are not an admin of that user.', 'flash_error');
+				            return;
+            }
+        }else{
+            $signedIn = $this->getUser($this->Auth);
+        }
+
+        if ($this->request->data['role'] != null){
+            $this->loadModel('Mapping');
+            $mappingID = $this->Mapping->find('list',array(
+                'conditions' => array('Mapping.id_user' => $signedIn['id']),
+                'fields' => array('Mapping.id')
+            ));
+            $mappingID = array_keys($mappingID);
+
+            $updateArray = array();
+            foreach( $mappingID as $row ){
+                array_push(
+                    $updateArray,
+                    array(
+                        'Mapping' => array(
+                            'id' => $row,
+                            'role' => $this->request->data['role'],
+                        )
+                    )
+                );
+            }
+            $this->Collection->saveAll($updateArray);
+        }
+
 		$numberEdited = 0;
 
 		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
 		$file_array = glob($uploads_path . $signedIn['username'] . '*');
 
-		foreach ($file_array as $file) {
-			if (pathinfo($file)['filename'] == $signedIn['username']) {
-				$fileName = pathinfo($file)['basename'];
-				$fileExtension = pathinfo($file)['extension'];
-			}
-		}
+        if (!empty($file_array)){
+            foreach ($file_array as $file) {
+                if (pathinfo($file)['filename'] == $signedIn['username']) {
+                    $fileName = pathinfo($file)['basename'];
+                    $fileExtension = pathinfo($file)['extension'];
+                }
+            }
+        }
 
 		$userNames = $this->User->find('all', array(
 			'conditions' => array(
@@ -402,7 +474,7 @@ class UsersController extends AppController
 			)
 		));
 
-        $changedEmail = false;
+    $changedEmail = false;
 		//Check if the email is taken
 		if (empty($emails)) {//nobody else has it
 			if (filter_var($this->request->data['email'], FILTER_VALIDATE_EMAIL)){
@@ -440,6 +512,7 @@ class UsersController extends AppController
 			return;
 		}
 
+
 		$save = $this->User->save($this->request->data);
         if (!$save) {
 			$this->Session->setFlash('There was an error.', 'flash_error');
@@ -447,9 +520,10 @@ class UsersController extends AppController
         }elseif($save == array() ){
 			return $this->json(500);
 		}
-        //assign their profile picture to their new username
-        rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
-
+        if (!empty($file_array)){
+            //assign their profile picture to their new username
+            rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
+        }
         $this->Session->setFlash('Profile edited successfully.', 'flash_success');
 
 

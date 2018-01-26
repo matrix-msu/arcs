@@ -76,7 +76,7 @@ JST["admin/users"] = "<table class=\"table table-striped table-bordered\">"+
         "<td><%= f.name %></td>"+
         "<td><%= f.username %></td>"+
         "<td><%= f.email %></td>"+
-        "<td><%= f.value_before %></td>"+
+        "<td><%= f.role %></td>"+
         "<td><%= f.status %></td>"+
         "<td>"+
             "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
