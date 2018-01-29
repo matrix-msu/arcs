@@ -566,4 +566,17 @@ $('#soo').ready(function(){
     $('.selectedCurrentPage').find('img')[0].click();
 });
 
+
+$('#viewer-right').on('click', '.stable-url', function(){
+    var url = $(this).attr('href');
+    var win = window.open(url, '_blank');
+    win.focus();
+});
+
+$('#viewer-right').on('click', '.js-textareacopybtn', function(){
+    var copyTextarea = document.querySelector('.js-copytextarea');
+    copyTextarea.select();
+    document.execCommand('copy')
+});
+
 </script>

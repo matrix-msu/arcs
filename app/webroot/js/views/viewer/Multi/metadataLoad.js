@@ -315,7 +315,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 var host_url = window.location.hostname
                 var kid = item['kid'];
                 var url = 'http://'+host_url + arcs.baseURL+'resource/'+kid;
-                var link = "<a href="+url+">"+url+"</a>";
+                var link = "<a class='stable-url' href="+url+">"+url+"</a>";
                 text = link;
             }
             else if(type == 'multi_input' || type == 'multi_select' ) {
@@ -402,7 +402,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             if( type == 'associator' ){
                 extraString = " class='metadataEdit'>"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+" data-associations='"+dataAssociatedList+"'>"+text+"</div>";
             }
-            if(control == 'Persistent Name'){
+            if(control == 'Persistent Name' || type == "url"){
                 extraString = " >"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+">"+text+"</div>";
             }
             //there is an edited metadata, so string is this
