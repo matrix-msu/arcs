@@ -241,8 +241,9 @@ class UsersController extends AppController
         }
         //make sure the admin has permissions for every project the delete is a part of
         $authenticated = $this->pluginAuthentication(
-            $this->request->data['user'],
-            $this->request->data['pass'],
+            // $this->request->data['user'],
+            // $this->request->data['pass'],
+            //use signed in info for this!!!!!!!!!!!!!!!
             $projects
         );
         $response["message"] = '';

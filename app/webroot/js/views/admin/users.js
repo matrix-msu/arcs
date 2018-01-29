@@ -37,9 +37,16 @@
     Users.prototype.deleteUser = function(e) {
       var user;
       user = this.collection.get($(e.currentTarget).data('id'));
-      return arcs.confirm("Are you sure you want to delete this user?", "The account for <b>" + (user.get('name')) + "</b> will be deleted.", (function(_this) {
+      //$('.modal-body').css('display', 'none')
+      $('.modal-body').html();
+      console.log('got to delete')
+      console.log($('.modal-body'), $('.modal-body').css('display'))
+      return arcs.confirm("Are you sure you want to delete this user?", "<p id='delete-msg' class='dontDelete'>The account for <b class='dontDelete'>" + (user.get('name')) + "</b> will be deleted.</p>", (function(_this) {
+$('.modal-body').html();
         return function() {
+            $('.modal-body').html();
           arcs.loader.show();
+
           return user.destroy({
             success: arcs.loader.hide
           });
@@ -176,6 +183,7 @@
       });
     };
 
+
     Users.prototype.render = function() {
       this.$('#users').html(arcs.tmpl('admin/users', {
         users: this.collection.toJSON()
@@ -188,3 +196,34 @@
   })(Backbone.View);
 
 }).call(this);
+
+
+$(document).ready(function() {
+    $('#confirm-btn').on('click', function(){
+        var userID = ($(this).data('id'));
+        $.ajax({
+            url: arcs.baseURL + 'admin/accept/'+userID,
+            type: "POST",
+            success: function () {
+              window.location.reload();
+            }
+        });
+    });
+
+
+    $('#users').on('click', '#delete-btn', function(e){
+        setTimeout(function(){
+            $('#modal').css('height', '380px');
+            $('.modal-body').find('*').not('.dontDelete').remove();
+        }, 1);
+    });
+
+    $('#users').on('click', '#edit-btn', function(e){
+        setTimeout(function(){
+            $('#modal').css('height', '720px');
+            $('#delete-msg').remove();
+        }, 1);
+    });
+
+
+});

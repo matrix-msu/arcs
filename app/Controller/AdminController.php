@@ -178,6 +178,60 @@ class AdminController extends AppController {
 
         $this->set('users', $cleanedReturn);
     }
+
+
+    public function accept($map_id) {
+        include_once("../Config/database.php");
+        $db = new DATABASE_CONFIG();
+        $db_object =  (object) $db;
+        $db_array = $db_object->{'default'};
+        $con=mysqli_connect($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+        $mappings = mysqli_query($con, "SELECT * FROM mappings WHERE id_user = '$map_id'");
+        $map = mysqli_fetch_array($mappings);
+        $users = mysqli_query($con, "SELECT * FROM users WHERE id = '$map_id'");
+        $user = mysqli_fetch_array($users);
+        $project = "";
+
+        foreach ($GLOBALS['PID_ARRAY'] as $name => $pid) {
+            if ($map["pid"] == $pid) {
+                $project = $name;
+            }
+        }
+
+
+        self::acceptanceEmail($user, $project, $map['role']);
+
+        mysqli_query($con, "UPDATE users SET status = 'active' WHERE id = '" . $user['id'] . "'");
+        mysqli_query($con, "UPDATE mappings SET status = 'confirmed', activation = '' WHERE id_user = '" . $user['id'] . "'");
+        die;
+    }
+
+    public function acceptanceEmail($user, $project, $role) {
+        $to = $user['email'];
+        $subject = "ARCS Account Approval";
+        $login_url = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'#loginModal/';
+
+        $txt = '';
+        $txt .= "<p>Hello " . $user['name'] . ",</p>";
+        $txt .= "<p>Your account registration has been approved!</p>";
+        $txt .= "<p>You can now access the $project project as '$role'.</p>";
+        $txt .= "<p>Follow this link to sign in to your new account.</p>";
+        $txt .= "<p><a href='" . $login_url . "'>" . $login_url . "</a>\r\n";
+
+        $headers = '';
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-type: text/html\r\n";
+        $headers .= "From: \"ARCS\" <arcs@arcs.matrix.msu.edu>\r\n";
+        $headers .= "To: " . $user['email'] . "\r\n";
+
+        $success = mail($to, $subject, $txt, $headers);
+    }
+
+
+
+
+
+
     /**
      * View resource and collection flags.
      */

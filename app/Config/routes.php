@@ -398,6 +398,9 @@ Router::connect('/admin/editFlags/*',
 Router::connect('/admin/editMetadata/*',
     array('controller' => 'admin', 'action' => 'editMetadata')
 );
+Router::connect('/admin/accept/*',
+    array('controller' => 'admin', 'action' => 'accept')
+);
 
     $restful = array(
         'resources',
