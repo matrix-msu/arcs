@@ -347,7 +347,9 @@ function Generate_Metadata(
                                 $kid = $array['kid'];
                                 $url = BASE_URL.'resource/'.$kid;
                                 $url = $host_url.'/'.$url;
-                                $link = "<a href=".$url.">".$url."</a>";
+                                $link = "<a class='stable-url' href=".$url.">".$url."</a>";
+//                                $link .= '<button class="js-textareacopybtn" style="vertical-align:top;">Copy Url</button>
+//                                            <textarea style="visibility:hidden;" class="js-copytextarea">'.$url.'</textarea>';
                                 $text = $link;
                             }elseif( $type=='multi_input'||$type=='multi_select' ){
                                 if( !is_string($array[$control]) ){
@@ -436,7 +438,7 @@ function Generate_Metadata(
                                         $flagged
                                         <div id='$control' data-control='$type'$options data-associations='$dataAssociatedList'>$text</div>";
                             }
-                            if( $control == 'Persistent Name' ){
+                            if( $control == 'Persistent Name' || $type == "url" ){
                                 $string = " >
                                         $flagged
                                         <div id='$control' data-control='$type'$options>$text</div>";
