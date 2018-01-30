@@ -316,6 +316,12 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 var kid = item['kid'];
                 var url = 'http://'+host_url + arcs.baseURL+'resource/'+kid;
                 var link = "<a class='stable-url' href="+url+">"+url+"</a>";
+                link += '<input type="text" style="display:none;" value="'+url+'" id="myInput">'+
+                '<div class="tooltip" style="opacity:1;">'+
+                    '<button onclick="myFunction()" onmouseout="outFunc()">'+
+                    'Copy link'+
+                '</button>'+
+                '</div>';
                 text = link;
             }
             else if(type == 'multi_input' || type == 'multi_select' ) {

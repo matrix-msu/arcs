@@ -573,10 +573,25 @@ $('#viewer-right').on('click', '.stable-url', function(){
     win.focus();
 });
 
-$('#viewer-right').on('click', '.js-textareacopybtn', function(){
-    var copyTextarea = document.querySelector('.js-copytextarea');
-    copyTextarea.select();
-    document.execCommand('copy')
-});
+//$('#viewer-right').on('click', '.js-textareacopybtn', function(){
+//    var copyTextarea = document.querySelector('.js-copytextarea');
+//    copyTextarea.select();
+//    document.execCommand('copy')
+//});
+function myFunction() {
+    $('#myInput').css('display', 'block');
+    var copyText = document.getElementById("myInput");
+    copyText.select();
+    document.execCommand("Copy");
+
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copied!";// + copyText.value;
+    $('#myInput').css('display', 'none');
+}
+
+function outFunc() {
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copy to clipboard";
+}
 
 </script>

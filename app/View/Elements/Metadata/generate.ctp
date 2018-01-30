@@ -350,6 +350,12 @@ function Generate_Metadata(
                                 $link = "<a class='stable-url' href=".$url.">".$url."</a>";
 //                                $link .= '<button class="js-textareacopybtn" style="vertical-align:top;">Copy Url</button>
 //                                            <textarea style="visibility:hidden;" class="js-copytextarea">'.$url.'</textarea>';
+                                $link .= '<input type="text" style="display:none;" value="'.$url.'" id="myInput">
+                                        <div class="tooltip" style="opacity:1;">
+                                            <button onclick="myFunction()" onmouseout="outFunc()">
+                                                  Copy link
+                                              </button>
+                                        </div>';
                                 $text = $link;
                             }elseif( $type=='multi_input'||$type=='multi_select' ){
                                 if( !is_string($array[$control]) ){
