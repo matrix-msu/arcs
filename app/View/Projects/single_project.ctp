@@ -7,6 +7,7 @@
         <title>ARCS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
         <script type="text/javascript">globalproject = "<?=$pName?>"</script>
+        <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
     </head>
     <body>
 		<div class="intro">
@@ -147,7 +148,33 @@
         </div>
 
         <div class="greybg">
-          <div class = "projectIntro">
+            <div class = "projectIntro">
+                <h1 class="title">Project User Profiles</h1>
+                <?php
+                    //echo json_encode($projectUsers);
+                    $html4 = '<form class="uploadForm single-project-chosen-choices" id="urlform" method="post" enctype="multipart/form-data" style="visibility:hidden;">
+	                            <fieldset class="users-fieldset">
+                                <select id ="urlAuthor" 
+                                    data-placeholder="Search for users that are a part of the project" 
+                                    multiple class="chosen-select" style="width:90%;"
+                                >';
+                    $index = 0;
+                    forEach( $projectUsers as $username => $name ){
+                        $html4 .= '<option class="data-project-profiles-index-'.$index.'"
+                                    data-username="'.$username.'">'.
+                                    $name.'  ('.$username.
+                                    ')</option>';
+                        $index++;
+                    }
+                    $html4 .= '</select>
+                                </fieldset></form>';
+                    echo $html4;
+                ?>
+                <br><br>
+            </div>
+        </div>
+
+        <div class = "projectIntro">
             <h1 class="title">Keyword Search</h1>
               <p>
                   Keyword searches are designed to provide an overview of the resources uploaded by one or more projects into ARCS.
@@ -159,26 +186,25 @@
 
                   <br/><br/>Because ARCS relies on user-generated content, search results may be incomplete.
               </p>
-          </div>
-		  <br>
-          <a name="searchJump"></a>
-          <div id="searchBox">
-          	<div class="searchIcon"></div>
-		          <input data-searchLink='true' data-project-Kid="<?=$kid?>" type="text" class="searchBoxInput search-bar-js" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
-          </div><br>
-          <?php echo $this->Html->script('searchBox.js');?>
-         <div class="proper-width">
-			<div class="asearch">
-			    <span style="cursor:pointer">
+            </div>
+            <br>
+            <a name="searchJump"></a>
+            <div id="searchBox">
+            <div class="searchIcon"></div>
+                  <input data-searchLink='true' data-project-Kid="<?=$kid?>" type="text" class="searchBoxInput search-bar-js" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+            </div><br>
+            <?php echo $this->Html->script('searchBox.js');?>
+            <div class="proper-width">
+            <div class="asearch">
+                <span style="cursor:pointer">
                     <a href="<?php echo '/'.BASE_URL.'search/advanced/'.$pName; ?>">ADVANCED SEARCH</a>
-			    </span></div>
-		</div>
-		<div class="proper-width" id="show-min">
-			<div class="more-info">
-			<span style="cursor:pointer"><a>GO TO ADVANCED SEARCH</a></span></div>
-		</div>
-		<br><br>
-		</div>
+                </span></div>
+            </div>
+            <div class="proper-width" id="show-min">
+            <div class="more-info">
+            <span style="cursor:pointer"><a>GO TO ADVANCED SEARCH</a></span></div>
+        </div>
+        <br><br>
     </body>
 </html>
 
@@ -193,4 +219,24 @@ arcs.user_viewer = new arcs.views.SingleProject({
   el: $('#all-collections')
 });
 arcs.user_viewer.render();
+
+$(document).ready(function(){
+
+    //take care of the user profile chosen select
+    $(".chosen-select").chosen().change(function(e){
+        var index = $('.search-choice-close').data('option-array-index')
+        $('.search-choice').remove();
+        var username = $('.data-project-profiles-index-'+index).data('username')
+        var getUrl = window.location;
+        var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+        baseUrl += '/arcs/user/'+username;
+
+        $('.result-selected').addClass('active-result').removeClass('result-selected');
+        $(".chosen-select").val('').trigger("liszt:updated");
+        $(".chosen-select").trigger("chosen:updated");
+
+        window.location = baseUrl;
+    });
+    $('#urlform').css('visibility', '');
+});
 </script>
