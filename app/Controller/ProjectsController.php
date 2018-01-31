@@ -20,7 +20,7 @@ App::import('Controller', 'Collections');
 
 class ProjectsController extends AppController {
     public $name = 'Projects';
-    public $uses = array('Mapping', 'Collection');
+    public $uses = array('Mapping', 'Collection', 'User');
 
 
 	public function beforeFilter() {
@@ -186,9 +186,26 @@ class ProjectsController extends AppController {
             $resources[] = $temp_array;
 		}
 
+        $usersC = new UsersController();
+        $mappings = $this->Mapping->find('list', array(
+            'conditions' => array(
+                'Mapping.pid' => $pid,
+                'Status' => 'confirmed'
+            ),
+            'fields' => array('id_user')
+        ));
+        $mappings = array_values($mappings);
+
+		$projectUsers = $this->User->find('list', array(
+            'conditions' => array('id' => $mappings),
+            'order' => 'name',
+            'fields' => array('username', 'name')
+        ));
+		$this->set('projectUsers', $projectUsers);
+
+
 		// get user for permissions filter
         $username = NULL;
-        $usersC = new UsersController();
         if ($user = $usersC->getUser($this->Auth)) {
             $username = $user['User']['username'];
         }
