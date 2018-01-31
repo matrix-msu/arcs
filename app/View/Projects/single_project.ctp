@@ -150,12 +150,14 @@
         <div class="greybg">
             <div class = "projectIntro">
                 <h1 class="title">Project User Profiles</h1>
+            </div>
+            <br>
                 <?php
                     //echo json_encode($projectUsers);
-                    $html4 = '<form class="uploadForm single-project-chosen-choices" id="urlform" method="post" enctype="multipart/form-data" style="visibility:hidden;">
+                    $html4 = '<div id="searchBox"><form class="uploadForm single-project-chosen-choices" id="urlform" method="post" enctype="multipart/form-data" style="visibility:hidden;">
 	                            <fieldset class="users-fieldset">
                                 <select id ="urlAuthor" 
-                                    data-placeholder="Search for users that are a part of the project" 
+                                    data-placeholder="SEARCH FOR USERS THAT ARE A PART OF THE PROJECT" 
                                     multiple class="chosen-select" style="width:90%;"
                                 >';
                     $index = 0;
@@ -167,11 +169,10 @@
                         $index++;
                     }
                     $html4 .= '</select>
-                                </fieldset></form>';
+                                </fieldset></form></div>';
                     echo $html4;
                 ?>
-                <br><br>
-            </div>
+                <br><br><br><br>
         </div>
 
         <div class = "projectIntro">
@@ -237,6 +238,7 @@ $(document).ready(function(){
 
         window.location = baseUrl;
     });
+    $('.chosen-choices').prepend('<div class="searchIcon"></div>');
     $('#urlform').css('visibility', '');
 });
 </script>
