@@ -224,6 +224,7 @@ class UsersController extends AppController
     }
 
     public function ajaxDelete(){
+        $signedIn = $this->getUser($this->Auth);
         $this->autoRender = false;
         if (!($this->request->is('post') && $this->request->data))
             return $this->json(400);
@@ -241,9 +242,8 @@ class UsersController extends AppController
         }
         //make sure the admin has permissions for every project the delete is a part of
         $authenticated = $this->pluginAuthentication(
-            // $this->request->data['user'],
-            // $this->request->data['pass'],
-            //use signed in info for this!!!!!!!!!!!!!!!
+            $signedIn['username'],
+            $signedIn['password'],
             $projects
         );
         $response["message"] = '';
@@ -854,20 +854,28 @@ class UsersController extends AppController
      * Send an invite email and set up a skeleton account.
      */
     public function ajaxInvite(){
+        //print_r($this->request->data);die;
+        $role = $this->request->data['role'];
+        $project = $_SESSION['currentProjectName'];
+        $pid = parent::getPIDFromProjectName($project);
+        $this->request->data['addProjects'] = array(array('project' => $project, 'role' => $role));
+
+        //print_r($_SESSION);die;
+        $signedIn = $this->getUser($this->Auth);
         $this->json(200, "inviting");
         $this->autoRender = false;
-        if (!$this->request->is('post') || !isset($this->request->data['form']['projects']) )
+        if (!$this->request->is('POST') || !isset($this->request->data['addProjects']) )
             return $this->json(400);
         $mappingProjects = array();
         foreach( $this->request->data['addProjects'] as $p ){
-            array_push($mappingProjects, array('project'=>$p['project'], 'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+            array_push($mappingProjects, array('project'=>array($p['project'], 'pid' => $pid),  'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
         }
         $authenticated = $this->pluginAuthentication(
-            $this->request->data['user'],
-            $this->request->data['pass'],
+            $signedIn['username'],
+            $signedIn['password'],
             $mappingProjects
         );
-        $this->request->data = $this->request->data['form'];
+        //$this->request->data = $this->request->data['form'];
         $response["message"] = [];
         $response['auth'] = $authenticated;
         if( !$authenticated ){
@@ -875,13 +883,20 @@ class UsersController extends AppController
             return $this->json(400, ($response));
         }
 
+
         $data = $this->request->data;
+        $data['isAdmin'] = 0;
+        if ($role == 'Admin'){
+            $data['isAdmin'] = 1;
+        }
+
+
         if (!($data && $data['email']))
             throw new BadRequestException();
         $token = $this->User->getToken();
         $this->User->permit('activation');
         $this->User->permit('isAdmin');
-        $name = $data['firstName'] . " " . $data['lastName'];
+        $name = $data['name'];
         $response["message"] = [];
         $response["status"] = $this->User->add(array('name' => $name, 'isAdmin' => $data['isAdmin'], 'email' => $data['email'], 'activation' => $token, 'status' => "invited"));
         if ($response["status"] == false) {
@@ -964,6 +979,7 @@ class UsersController extends AppController
      */
     public function registerByInvite($token)
     {
+        //print_r($this->data);die;
         $this->set('activation', $token);
         $this->set('error', false);
 
@@ -1016,10 +1032,12 @@ class UsersController extends AppController
                                         }
                                 } else {
                                         //Error getting user
-                                        $this->Session->setFlash('Account count not be created.', 'flash_error');
+                                        $this->Session->setFlash('Account could not be created.', 'flash_error');
                                 }
                         }
                 }
+                $this->Session->setFlash('Account could not be created.', 'flash_error');
+                $this->redirect('/');
     }
 
     /**
@@ -1072,9 +1090,6 @@ class UsersController extends AppController
      * @param string $ref username or id of an existing user
      */
     public function profile($ref){
-        //Cache::clear();
-        // print_r($this->Session);
-        // die;
         $this->User->flatten = false;
         $this->User->recursive = 1;
 

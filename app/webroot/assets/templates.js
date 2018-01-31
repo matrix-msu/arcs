@@ -85,10 +85,10 @@ JST["admin/users"] = "<table class=\"table table-striped table-bordered\">"+
         "<td>"+
             "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
 
-            "<% if( f.status == 'unconfirmed' ){ %>  "+
-                "<button id=\"confirm-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Confirm</button>"+
-            "<% }else{ %>"+
+            "<% if( f.status == 'active' ){ %>  "+
                 "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Edit</button>"+
+            "<% }else{ %>"+
+                "<button id=\"confirm-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Confirm</button>"+
             "<% } %>"+
         "</td>"+
     "</tr><% }) %></table>";

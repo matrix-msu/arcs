@@ -37,18 +37,13 @@
     Users.prototype.deleteUser = function(e) {
       var user;
       user = this.collection.get($(e.currentTarget).data('id'));
-      //$('.modal-body').css('display', 'none')
-      $('.modal-body').html();
-      console.log('got to delete')
-      console.log($('.modal-body'), $('.modal-body').css('display'))
       return arcs.confirm("Are you sure you want to delete this user?", "<p id='delete-msg' class='dontDelete'>The account for <b class='dontDelete'>" + (user.get('name')) + "</b> will be deleted.</p>", (function(_this) {
-$('.modal-body').html();
         return function() {
-            $('.modal-body').html();
           arcs.loader.show();
-
-          return user.destroy({
-            success: arcs.loader.hide
+          return $.postJSON(arcs.baseURL + 'api/users/delete', user, function() {
+              arcs.loader.hide();
+              window.location.reload();
+            return;// _this.collection.add(vals);
           });
         };
       })(this));
@@ -61,6 +56,7 @@ $('.modal-body').html();
       console.log(this.collection);
       new arcs.views.Modal({
         title: 'Edit user',
+        subtitle: null,
         inputs: {
           name: {
             value: user.get('name')
@@ -87,7 +83,7 @@ $('.modal-body').html();
                   return function (vals) {
                                     vals['adminapi'] = true;
                                     vals['id'] = user['id'];
-                                    console.log(vals);
+                                    //console.log(vals);
                       if (vals.password === '') {
                           delete vals.password;
                       }
@@ -116,6 +112,7 @@ $('.modal-body').html();
     Users.prototype.newUser = function() {
       return new arcs.views.Modal({
         title: 'Create a new user',
+        subtitle: null,
         inputs: {
           name: {
             focused: true
@@ -158,6 +155,9 @@ $('.modal-body').html();
         title: 'Invite someone to ARCS',
         subtitle: "Provide an email address and we'll send them a link that will " + "allow them to create an account.",
         inputs: {
+            name: {
+              focused: true
+            },
           email: {
             focused: true
           },
@@ -172,7 +172,8 @@ $('.modal-body').html();
             callback: (function(_this) {
               return function(vals) {
                 vals.email = $.trim(vals.email);
-                return $.postJSON(arcs.baseURL + 'users/invite', vals, function() {
+                //console.log(vals);
+                return $.postJSON(arcs.baseURL + 'api/users/invite', vals, function() {
                   return _this.collection.add(vals);
                 });
               };
@@ -210,20 +211,10 @@ $(document).ready(function() {
         });
     });
 
-
     $('#users').on('click', '#delete-btn', function(e){
         setTimeout(function(){
             $('#modal').css('height', '380px');
             $('.modal-body').find('*').not('.dontDelete').remove();
         }, 1);
     });
-
-    $('#users').on('click', '#edit-btn', function(e){
-        setTimeout(function(){
-            $('#modal').css('height', '720px');
-            $('#delete-msg').remove();
-        }, 1);
-    });
-
-
 });
