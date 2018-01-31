@@ -197,7 +197,7 @@ class ProjectsController extends AppController {
         $mappings = array_values($mappings);
 
 		$projectUsers = $this->User->find('list', array(
-            'conditions' => array('id' => $mappings),
+            'conditions' => array('id' => $mappings, 'status' => 'active'),
             'order' => 'name',
             'fields' => array('username', 'name')
         ));
