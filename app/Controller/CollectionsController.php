@@ -126,7 +126,7 @@ die;
         $fields = array('ALL');
         $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
         $allResources = json_decode($kora->return_json(), true);
-        print_r($allResources);
+        echo json_encode($allResources);
         die;
     }
 

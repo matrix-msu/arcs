@@ -91,8 +91,8 @@ class TestController extends AppController {
     }
     public function pullProjects() {
        $scheme  = parent::getProjectSIDFromProjectName($this->project);
-       echo 'end';
-die;
+//        echo 'end';
+// die;
        $this->kora->setScheme($scheme);
        $clause = new KORA_Clause("kid","!=", "");
        $this->kora->setFields("ALL");
