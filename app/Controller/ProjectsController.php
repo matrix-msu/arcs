@@ -69,14 +69,17 @@ class ProjectsController extends AppController {
         foreach( parent::getPIDArray() as $name => $pid ) {
             $fields = array('Geolocation', "Persistent Name", "Description", "Name");
             $projectSid = parent::getProjectSIDFromProjectName($name);
-            $kora = new General_Search($pid, $projectSid, 'kid', '!=', '0', $fields);
+            $kora = new General_Search($pid, $projectSid, 'kid', '!=', '', $fields);
             $projectstemp[] = json_decode($kora->return_json(), true);
         }
         $projects = array();
+
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
+        print_r($projects);die;
 		$this->set('projects', $projects);
+
 	}
   public function index() {
     $this->getProjects();

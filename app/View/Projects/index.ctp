@@ -62,6 +62,7 @@ echo $this->Session->flash('flash_success'); ?>
 		//$projects_array = json_decode($projects, true);
 
 		foreach($projects as $item) {
+            
 			$link = $this->Html->link(
 				'VIEW PROJECT',
 				array(
