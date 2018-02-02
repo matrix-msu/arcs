@@ -77,7 +77,7 @@ class ProjectsController extends AppController {
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
-        print_r($projects);die;
+    
 		$this->set('projects', $projects);
 
 	}
