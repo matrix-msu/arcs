@@ -1036,8 +1036,8 @@ class UsersController extends AppController
                                 }
                         }
                 }
-                $this->Session->setFlash('Account could not be created.', 'flash_error');
-                $this->redirect('/');
+                // $this->Session->setFlash('Account could not be created.', 'flash_error');
+                // $this->redirect('/');
     }
 
     /**

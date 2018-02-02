@@ -25,8 +25,8 @@ class CollectionsController extends AppController {
      * Display all collections. Main collection page, initial collection list.
      */
     public function index() {
-
         $pName = explode('/', $this->request->query['url']);
+
         if( isset($pName[1]) ){
             $isRealProject = parent::isRealProject($pName[1]);
             if(!$isRealProject){    //not a real project, so redirect.
@@ -37,7 +37,7 @@ class CollectionsController extends AppController {
         $path = func_get_args();
 
         $projectResourceKids = $this->getProjectResources($path[0]);
-
+die;
         $this->Collection->recursive = -1;
 
         $user_id =  $this->Session->read('Auth.User.id');
@@ -118,6 +118,16 @@ class CollectionsController extends AppController {
         $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
         $allResources = json_decode($kora->return_json(), true);
         return array_keys($allResources);
+    }
+
+    public function testK3Projects($pName = 'isthmia'){
+        $pid = parent::getPIDFromProjectName(strtolower($pName));
+        $sid = parent::getProjectSIDFromProjectName(strtolower($pName));
+        $fields = array('ALL');
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $allResources = json_decode($kora->return_json(), true);
+        print_r($allResources);
+        die;
     }
 
     /**

@@ -14,7 +14,6 @@ require_once(KORA_LIB . "Kora.php");
 use mb\Benchmark;
 use Lib\Kora;
 
-
 class TestController extends AppController {
 
     public $bench;
@@ -34,7 +33,7 @@ class TestController extends AppController {
     }
     private function setVars() {
         $pid = parent::getPIDFromProjectName($this->project);
-        $token = parent::getTokenFromProjectName($this->project); 
+        $token = parent::getTokenFromProjectName($this->project);
         $this->kora->setToken($token);
         $this->kora->setProject($pid);
     }
@@ -51,9 +50,9 @@ class TestController extends AppController {
 
         $this->bench->start();
                 switch ($testNum) {
-           
+
             case "pull_all_resources":
-                $this->pullResources();            
+                $this->pullResources();
                 break;
             case "pull_all_pages":
                 $this->pullPages();
@@ -83,51 +82,52 @@ class TestController extends AppController {
     }
 
     public function pullResources() {
-       $scheme  = parent::getResourceSIDFromProjectName($this->project); 
+       $scheme  = parent::getResourceSIDFromProjectName($this->project);
        $this->kora->setScheme($scheme);
        $clause = new KORA_Clause("kid","!=", "");
        $this->kora->setFields("ALL");
-       $this->kora->setClause($clause); 
-       $this->kora->search();        
+       $this->kora->setClause($clause);
+       $this->kora->search();
     }
     public function pullProjects() {
-       $scheme  = parent::getProjectSIDFromProjectName($this->project); 
+       $scheme  = parent::getProjectSIDFromProjectName($this->project);
+       echo 'end';
+die;
        $this->kora->setScheme($scheme);
        $clause = new KORA_Clause("kid","!=", "");
        $this->kora->setFields("ALL");
-       $this->kora->setClause($clause); 
-       $this->kora->search();        
-    
+       $this->kora->setClause($clause);
+       $this->kora->search();
     }
     public function pullPages() {
-       $scheme  = parent::getPageSIDFromProjectName($this->project); 
+       $scheme  = parent::getPageSIDFromProjectName($this->project);
        $this->kora->setScheme($scheme);
        $clause = new KORA_Clause("kid","!=", "");
        $this->kora->setFields("ALL");
-       $this->kora->setClause($clause); 
-       $this->kora->search();        
-    
+       $this->kora->setClause($clause);
+       $this->kora->search();
+
     }
     public function pullSeasons() {
-       $scheme  = parent::getSeasonSIDFromProjectName($this->project); 
+       $scheme  = parent::getSeasonSIDFromProjectName($this->project);
        $this->kora->setScheme($scheme);
        $clause = new KORA_Clause("kid","!=", "");
        $this->kora->setFields("ALL");
-       $this->kora->setClause($clause); 
-       $this->kora->search();        
-    
+       $this->kora->setClause($clause);
+       $this->kora->search();
+
     }
     public function pullExcavations() {
-       $scheme  = parent::getSurveySIDFromProjectName($this->project); 
+       $scheme  = parent::getSurveySIDFromProjectName($this->project);
        $this->kora->setScheme($scheme);
        $clause = new KORA_Clause("kid","!=", "");
        $this->kora->setFields("ALL");
-       $this->kora->setClause($clause); 
-       $this->kora->search();        
-     
+       $this->kora->setClause($clause);
+       $this->kora->search();
+
     }
     public function generalSearch() {
-    
+
     }
 
 

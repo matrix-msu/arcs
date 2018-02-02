@@ -208,6 +208,10 @@
 		array('controller' => 'users', 'action' => 'uploadProfileImage')
 	);
 
+    Router::connect('/k3test',
+		array('controller' => 'collections', 'action' => 'testK3Projects')
+	);
+
 
     Router::connect('/findUnassociatedResources',
         array('controller' => 'resources', 'action' => 'findUnassociatedResources')
