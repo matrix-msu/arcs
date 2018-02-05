@@ -128,12 +128,14 @@ class ProjectsController extends AppController {
 	public function single_project($proj) {
         $pid = static::getPIDFromProjectName($proj);
         $sid = static::getResourceSIDFromProjectName($proj);
-        $fields = array("Title","Type","Resource_Identifier", "systimestamp", "Permissions", "Special_User");
+        $fields = array("Title","Type","Resource_Identifier", "Permissions", "Special_User");
         $sort = array();
-        // $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+        //$sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+        // $sort = json_encode(array('field' => 'systimestamp', 'direction' => SORT_DESC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
         $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
+        //echo json_encode($server_output);die;
 
 
 
@@ -144,7 +146,7 @@ class ProjectsController extends AppController {
 
 
         $sid = static::getProjectSIDFromProjectName($proj);
-        $fields = array('ALL');
+        $fields = 'ALL';
         $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $project = json_decode($kora->return_json(), true);
         $project = array_values($project)[0];
