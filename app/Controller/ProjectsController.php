@@ -131,11 +131,18 @@ class ProjectsController extends AppController {
         $fields = array("Title","Type","Resource_Identifier", "Permissions", "Special_User");
         $sort = array();
         //$sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
-        $sort = array("{'Title', 'DESC'}");
+        $sort = array(array('field'=>'Title', 'direction'=>'DESC'));
+        $sort = array(array('field'=>'Permissions', 'direction'=>SORT_DESC));
+        $sort = array(array('field'=>'Permissions', 'direction'=>SORT_ASC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
         $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
+
+        
         echo json_encode($server_output);die;
+
+        echo json_encode($server_output);
+        die;
 
 
 
@@ -143,6 +150,9 @@ class ProjectsController extends AppController {
         $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $allResources = json_decode($kora->return_json(), true);
         $projectResourceKids = array_keys($allResources); //all resource kids in the project. for collections
+
+        echo json_encode($allResources);
+        die;
 
 
         $sid = static::getProjectSIDFromProjectName($proj);
