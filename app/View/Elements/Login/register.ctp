@@ -26,7 +26,7 @@
                 </div>
                 <div id="projectDropdown" style="display: none;">
                     <?php foreach($projects as $p) { ?>
-                        <p id="<?php echo $p['Persistent Name'] ?>"><?php echo ucwords($p['Persistent Name']) ?></p>
+                        <p id="<?php echo $p['Persistent_Name'] ?>"><?php echo ucwords($p['Persistent_Name']) ?></p>
                     <?php } ?>
                 </div>
 

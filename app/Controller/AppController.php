@@ -76,7 +76,7 @@ class AppController extends Controller
      */
     public static function convertKIDtoProjectName($kid) {
         if (!empty(explode('-', $kid))) {
-            $pid = hexdec( explode('-', $kid)[0] );
+            $pid = explode('-', $kid)[0];
             $projects = static::getPIDArray();
             // array search returns false if not found
             return array_search($pid, $projects);

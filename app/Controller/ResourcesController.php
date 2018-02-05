@@ -86,7 +86,7 @@ class ResourcesController extends AppController {
             foreach($projects as $project) {
                 $pid = parent::getPIDFromProjectName($project);
                 $sid = parent::getResourceSIDFromProjectName($project);
-                $fields = array('Special User', 'Permissions', 'Type','Title');
+                $fields = array('Special_User', 'Permissions', 'Type','Title');
                 $kora = new Advanced_Search($pid, $sid, $fields);
                 $kora->add_clause("kid", "IN", $KIDs);
                 $res = json_decode($kora->search(), true);
@@ -96,7 +96,7 @@ class ResourcesController extends AppController {
                     if (
                         isset($resource['Permissions']) &&
                         $resource['Permissions'] === Permissions::R_Special &&
-                        !static::isSpecial($resource['Special User'], $userName)
+                        !static::isSpecial($resource['Special_User'], $userName)
                       ) {
                         static::lockResource($kid, $resources);
                       }
@@ -477,7 +477,7 @@ class ResourcesController extends AppController {
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getPageSIDFromProjectName($pName);
 
-        $fields = array('ALL');
+        $fields = 'ALL';
         $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
         $page = json_decode($kora->return_json(), true);
 
@@ -636,7 +636,7 @@ class ResourcesController extends AppController {
             $pageSid = parent::getPageSIDFromProjectName($projectName);
 
             //get resources
-            $search = new General_Search($pid, $sid, 'Type', '=', $resource_type,['Type','Resource Identifier', 'Permissions']);
+            $search = new General_Search($pid, $sid, 'Type', '=', $resource_type,['Type','Resource_Identifier', 'Permissions']);
             $results = $search->return_array();
             $rKids = array_keys($results);
 
@@ -644,20 +644,20 @@ class ResourcesController extends AppController {
             $indicators = Resource::flag_analysis($results);
 
             //get pages
-            $fields = array('Image Upload','Resource Associator','Scan Number');
+            $fields = array('Image_Upload','Resource_Associator','Scan_Number');
             $kora = new Advanced_Search($pid, $pageSid, $fields);
-            if( $resource_type == 'Field journal' ) {
-                $kora->add_double_clause("Resource Associator", "IN", $rKids,
-                    "Scan Number", "=", "1");
+            if( $resource_type == 'Field journal' ) {//kora 3 todo do types get an underscore??
+                $kora->add_double_clause("Resource_Associator", "IN", $rKids,
+                    "Scan_Number", "=", "1");
             }else {
-                $kora->add_clause("Resource Associator", "IN", $rKids);
+                $kora->add_clause("Resource_Associator", "IN", $rKids);
             }
             $allPages = json_decode($kora->search(), true);
 
             //link in the pages to the resources
             foreach( $allPages as $page ){
-                $resourceAssociator = $page['Resource Associator'][0];
-                $thumb = $page['Image Upload']['localName'];
+                $resourceAssociator = $page['Resource_Associator'][0];
+                $thumb = $page['Image_Upload']['localName'];
                 $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb);
             }
 
@@ -666,7 +666,7 @@ class ResourcesController extends AppController {
                 if( !isset($v['thumb']) ) {
                     $results[$key]['thumb'] = $this->smallThumb('');
                 }
-                $results[$key]['Title'] = $v['Resource Identifier'];
+                $results[$key]['Title'] = $v['Resource_Identifier'];
             }
 
             $results = ['filters' => [], 'indicators' => $indicators, 'results' => $results, 'total'=>count($results)];
@@ -681,10 +681,10 @@ class ResourcesController extends AppController {
             $results = ['filters' => [], 'indicators' => [], 'results' => $pages];
             //static::filterByPermission($username, $results['results']);
             foreach ($results['results'] as $key => $value) {
-                $results['results'][$key]['Title'] = $value['Page Identifier'];
+                $results['results'][$key]['Title'] = $value['Page_Identifier'];
                 $results['results'][$key]['orphan'] = true;
-                if (is_array($value['Image Upload'])) {
-                    $results['results'][$key]['thumb'] = $this->smallThumb($value['Image Upload']['localName']);
+                if (is_array($value['Image_Upload'])) {
+                    $results['results'][$key]['thumb'] = $this->smallThumb($value['Image_Upload']['localName']);
                 }
                 $results['indicators'][$key] = array(
                   "hasFlags"=>false,
@@ -773,7 +773,7 @@ class ResourcesController extends AppController {
         $hasARealResource = false;
 
         foreach($resources_array as $resource){
-
+            echo "2";
             //get resource information
             $info_array = $this->getResource($resource);
 
@@ -813,24 +813,24 @@ class ResourcesController extends AppController {
                 }
             }
 
-            if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
-                $exc_kids = $this->getFromKey($info_array, "Excavation - Survey Associator");
+            if( $info_array[$resource]["Excavation_-_Survey_Associator"] != '') {
+                $exc_kids = $this->getFromKey($info_array, "Excavation_-_Survey_Associator");
 
                 //get Season data
                 $excavation_array = $this->getExcavation($exc_kids);
                 $this->pushToArray($excavation_array, $excavations);
 
-                $season_kids = $this->getFromKey($excavation_array, "Season Associator");
+                $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
 
             }else{
-                $season_kids = $this->getFromKey($info_array, "Season Associator");
+                $season_kids = $this->getFromKey($info_array, "Season_Associator");
             }
 
             //get Season data
             $season_array = $this->getSeason($season_kids);
             $this->pushToArray($season_array, $seasons);
 
-            $project_kid = $this->getFromKey($season_array,"Project Associator")[0];
+            $project_kid = $this->getFromKey($season_array,"Project_Associator")[0];
             $info_array[$resource]['project_kid'] = $project_kid;
             $pName = parent::convertKIDtoProjectName($project_kid);
 
@@ -1132,17 +1132,17 @@ class ResourcesController extends AppController {
         $pName = parent::convertKIDtoProjectName($resource_kid);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getPageSIDFromProjectName($pName);
-        $fields = array('ALL');
-        $sort = array(array( 'field' => 'Scan Number', 'direction' => SORT_ASC));
+        $fields = 'ALL';
+        $sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
-        $kora->add_clause("Resource Associator", "=", $resource_kid);
+        $kora->add_clause("Resource_Associator", "=", $resource_kid);
         return json_decode($kora->search(), true);
     }
     protected function getSubjectOfObservation($pageKids){
         $pName = parent::convertKIDtoProjectName($pageKids[0]);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSubjectSIDFromProjectName($pName);
-        $query_array = array("Pages Associator", "IN", $pageKids);
+        $query_array = array("Pages_Associator", "IN", $pageKids);
         $fields = "ALL";
         $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         return $result->return_array();

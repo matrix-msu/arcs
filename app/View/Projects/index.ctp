@@ -61,6 +61,7 @@ echo $this->Session->flash('flash_success'); ?>
     });
 	<?php
 		//$projects_array = json_decode($projects, true);
+        //echo json_encode($projects);
 
 		foreach($projects as $item) {
 
@@ -69,7 +70,7 @@ echo $this->Session->flash('flash_success'); ?>
 				array(
 					'controller' => 'projects',
 					'action' => 'single_project',
-					str_replace(' ', '_', strtolower($item["Persistent Name"]))
+					str_replace(' ', '_', strtolower($item["Persistent_Name"]))
 				)
 			);
 
@@ -87,7 +88,7 @@ echo $this->Session->flash('flash_success'); ?>
 				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
 				$brief = str_replace("'", "\'", $item['Description']);
 				$html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
-				print $html; //print markers and set coords_array
+	            print $html; //print markers and set coords_array
 				//print "console.log('".$coords[0]."', '".$coords[1]."');";
 			}
 
@@ -100,6 +101,7 @@ echo $this->Session->flash('flash_success'); ?>
 			//$html .= '.removeLayer('.L.polyline().');';
 			print $html;
 			//print "console.log(coords_array);";
+            //break;
 		}
 	?>
 	window.map.removeLayer(window.polygon);

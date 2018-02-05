@@ -67,7 +67,7 @@ class ProjectsController extends AppController {
 
         $projectstemp = array();
         foreach( parent::getPIDArray() as $name => $pid ) {
-            $fields = array('Geolocation', "Persistent Name", "Description", "Name");
+            $fields = array('Geolocation', "Persistent_Name", "Description", "Name");
             $projectSid = parent::getProjectSIDFromProjectName($name);
             $kora = new General_Search($pid, $projectSid, 'kid', '!=', '', $fields);
             $projectstemp[] = json_decode($kora->return_json(), true);
@@ -77,12 +77,12 @@ class ProjectsController extends AppController {
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
-        //echo json_encode($projects[0]);die;
 		$this->set('projects', $projects);
 
 	}
   public function index() {
     $this->getProjects();
+
 
     $user = $this->getUser();
     $this->set("user", $user);
@@ -128,22 +128,17 @@ class ProjectsController extends AppController {
 	public function single_project($proj) {
         $pid = static::getPIDFromProjectName($proj);
         $sid = static::getResourceSIDFromProjectName($proj);
-        $fields = array("Title","Type","Resource_Identifier", "Permissions", "Special_User");
+        $fields = array("Title", "Type","Resource_Identifier", "Permissions", "Special_User");
         $sort = array();
+        /***********
+        KORA3TODO
+        Add this sort by systimestamp once it gets inplemented into kora 2 legacy
+        Add underscore to the fields that had spaces
+        ***********/
         //$sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
-        $sort = array(array('field'=>'Title', 'direction'=>'DESC'));
-        $sort = array(array('field'=>'Permissions', 'direction'=>SORT_DESC));
-        $sort = array(array('field'=>'Permissions', 'direction'=>SORT_ASC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
         $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
-
-        
-        echo json_encode($server_output);die;
-
-        echo json_encode($server_output);
-        die;
-
 
 
         $fields = array('Title');
@@ -151,16 +146,12 @@ class ProjectsController extends AppController {
         $allResources = json_decode($kora->return_json(), true);
         $projectResourceKids = array_keys($allResources); //all resource kids in the project. for collections
 
-        echo json_encode($allResources);
-        die;
-
 
         $sid = static::getProjectSIDFromProjectName($proj);
         $fields = 'ALL';
         $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $project = json_decode($kora->return_json(), true);
         $project = array_values($project)[0];
-
 
 
         $this->set("name",$project['Name']);
@@ -173,19 +164,19 @@ class ProjectsController extends AppController {
 		$resources = [];
 		foreach($server_output as $result) {
             $sid = static::getPageSIDFromProjectName($proj);
-            $fields = array("Image Upload");
+            $fields = array("Image_Upload");
             $sort = array();
             $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
             if( $result['Type'] == 'Field journal' ) {
-                $kora->add_double_clause("Resource Associator", "=", $result['kid'],
+                $kora->add_double_clause("Resource_Associator", "=", $result['kid'], // NOT SURE IF THIS SHOULD HAVE THE UNDERSCORE
                     "Scan Number", "=", "1");
             }else {
-                $kora->add_clause("Resource Associator", "=", $result['kid']);
+                $kora->add_clause("Resource_Associator", "=", $result['kid']);
             }
             $page = json_decode($kora->search(), true);
 
-            $picture_url = isset(array_values($page)[0]['Image Upload']['localName'])?
-                     array_values($page)[0]['Image Upload']['localName'] : null;
+            $picture_url = isset(array_values($page)[0]['Image_Upload']['localName'])?
+                     array_values($page)[0]['Image_Upload']['localName'] : null;
 
             //Decide if there is a picture..
             if( $picture_url != null ){
