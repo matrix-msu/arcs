@@ -185,8 +185,9 @@
 			 </div>
 			<div id="projectsMenu" class="projects-menu homeProject">
 				<?php foreach($projects as $p): ?>
-                	<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent Name'])) )?>">
-						<?php echo $p['Persistent Name'] ?>
+
+                	<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent_Name'])) )?>">
+						<?php echo $p['Persistent_Name'] ?>
 					</a>
                 <?php endforeach ?>
 			</div>

@@ -61,11 +61,11 @@ class Kora extends AppController{
             $this->The_Clause,
             $this->fields
         );
+        //echo json_encode($this->comprehensive_results);die;
         return $this->comprehensive_results;
     }
 
     protected function search_limited(){
-
         $this->comprehensive_results = KORA_Search(
 
             $this->token,

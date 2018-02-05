@@ -32,6 +32,7 @@ echo $this->Session->flash('flash_success'); ?>
 
 <script>
     var map = L.map('map', { zoomControl:false });
+    console.log(map);
 
     map.scrollWheelZoom.disable();
 
@@ -62,7 +63,7 @@ echo $this->Session->flash('flash_success'); ?>
 		//$projects_array = json_decode($projects, true);
 
 		foreach($projects as $item) {
-            
+
 			$link = $this->Html->link(
 				'VIEW PROJECT',
 				array(

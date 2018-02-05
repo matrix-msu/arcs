@@ -1,7 +1,7 @@
 <?php
 require_once("Kora.php");
 use Lib\Kora;
-use Lib\KORA_Clause;
+use \App\FieldHelpers\KORA_Clause;
 
 class Advanced_Search extends Kora{
 
@@ -57,9 +57,9 @@ class Advanced_Search extends Kora{
         $this->The_Clause = $this->final_clause;
 
 
-        //$this->formulatedResult = parent::search();
+        // $this->formulatedResult = parent::search();
         parent::search_limited();
-
+        // echo json_encode($this->comprehensive_results);die;
         return json_encode($this->comprehensive_results);
     }
 }

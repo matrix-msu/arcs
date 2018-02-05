@@ -28,7 +28,6 @@ class General_Search extends Kora{
       $this->fields = $fields;
 
       //do the keyword search
-      //$this->formulatedResult = parent::search();
       $this->formulatedResult = parent::search();
 
       //return $this->formulatedResult;
@@ -38,7 +37,6 @@ class General_Search extends Kora{
   }
 
     public function return_json(){
-
         return json_encode($this->formulatedResult);
     }
     public function return_array(){

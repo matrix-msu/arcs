@@ -77,7 +77,7 @@ class ProjectsController extends AppController {
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
-    
+        //echo json_encode($projects[0]);die;
 		$this->set('projects', $projects);
 
 	}
@@ -126,30 +126,36 @@ class ProjectsController extends AppController {
 	}
 
 	public function single_project($proj) {
-
         $pid = static::getPIDFromProjectName($proj);
         $sid = static::getResourceSIDFromProjectName($proj);
-        $fields = array("Title","Type","Resource Identifier", "systimestamp", "Permissions", "Special User");
-        $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+        $fields = array("Title","Type","Resource_Identifier", "systimestamp", "Permissions", "Special_User");
+        $sort = array();
+        // $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
-        $kora->add_clause("kid", "!=", '0');
+        $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
 
+
+
         $fields = array('Title');
-        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $allResources = json_decode($kora->return_json(), true);
         $projectResourceKids = array_keys($allResources); //all resource kids in the project. for collections
 
+
         $sid = static::getProjectSIDFromProjectName($proj);
         $fields = array('ALL');
-        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $project = json_decode($kora->return_json(), true);
         $project = array_values($project)[0];
+
+
 
         $this->set("name",$project['Name']);
         $this->set("description",$project['Description']);
         $this->set("kid",$project['kid']);
         $this->set("pName",$proj);
+
 
         // Now we go through the list, get any more needed information, and compile results
 		$resources = [];
