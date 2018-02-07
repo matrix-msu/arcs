@@ -29,7 +29,7 @@ require_once("Advanced_Search.php");
 
 use Lib\Kora;
 use Lib\Resource;
-use Lib\KORA_Clause;
+use App\FieldHelpers\KORA_Clause;
 //use \SearchController;
 use arcs_e\ArcsException;
 use \App;
@@ -511,17 +511,20 @@ class Keyword_Search extends Kora
     {
         $season = array();
         $this->schemeMapping = $sid;
-        $this->fields = array("Title", "Project Associator");
+        $this->fields = array("Title", "Project_Associator");
         $this->The_Clause = new KORA_Clause("kid", "!=", "");
 
         self::search();
 
         foreach ($this->comprehensive_results as $key => $value) {
-            $projAssoc = isset($value["Project Associator"][0])?$value["Project Associator"][0]:"";
-            $season[$key] = array(
-            "Name" => $value['Title'],
-            "Project Associator" => $projAssoc
-            );
+            $projAssoc = isset($value["Project_Associator"][0])?$value["Project_Associator"][0]:"";    
+            if (isset($value['Title'])) {
+                $season[$key] = array(
+                "Name" => $value['Title'],
+                "Project Associator" => $projAssoc
+                );
+            }
+            
         }
         return $season;
 
