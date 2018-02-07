@@ -207,7 +207,6 @@ class SearchController extends AppController {
      * Search resources.
      */
     public function resources() {
-        
         $options = $this->parseParams();
 
         if (!isset($this->request->query['q']))
@@ -223,13 +222,9 @@ class SearchController extends AppController {
         if (isset($this->request->query['pKid'])) {
             $pName = $this->request->query['pKid'];
         }
+
         //Collections search
         if ( substr($this->request->query['q'],0,13) == 'collection_id' ){
-            
-            
-            
-            
-            
             $collection_id = substr($this->request->query['q'],15,-1);
             //// Start SQL Area
             $db = new DATABASE_CONFIG;
@@ -244,7 +239,6 @@ class SearchController extends AppController {
 
             //Get the kid's from the collection_id
             if ($limit > 0) {
-                
                 // $sql = "SELECT resource_kid, id FROM collections WHERE collections.collection_id ='" . $collection_id . "' LIMIT " . ($limit+1);
                 $sql = $mysqli->prepare("SELECT resource_kid, id FROM collections WHERE collections.collection_id = ? LIMIT ?");
                 $temp = $limit+1;
@@ -279,9 +273,9 @@ class SearchController extends AppController {
             }
 
             $response['results'] = array();
+
             $first = 1;
             foreach( $test as $row){
-                
                 $temp_array = array();
                 if( $first == 1 ) {
                     $temp_array['more_results'] = $more_results;
@@ -290,7 +284,6 @@ class SearchController extends AppController {
                 $temp_kid = $row['resource_kid'];
 
                 $pName = parent::convertKIDtoProjectName($temp_kid);
-                
                 $pid = parent::getPIDFromProjectName($pName);
                 $sid = parent::getResourceSIDFromProjectName($pName);
                 $pageSid = parent::getPageSIDFromProjectName($pName);
@@ -300,7 +293,6 @@ class SearchController extends AppController {
 
                 $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
                 $query_array = explode(",", $query);
-                
                 $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
@@ -311,7 +303,6 @@ class SearchController extends AppController {
                 if ($user = $usersC->getUser($this->Auth)) {
                     $username = $user['User']['username'];
                 }
-                
                 ResourcesController::filterByPermission($username, $resource);
 
 
@@ -346,7 +337,7 @@ class SearchController extends AppController {
                 $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
                 $kora = new Advanced_Search($pid, $pageSid, $fields);
 
-                if( $resource_type == 'Field_Journal' ) {
+                if( $resource_type == 'Field journal' ) {
                     $temp_array['resource-type'] = $resource_type;
                     $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
                         "Scan_Number", "=", "1");
@@ -361,20 +352,15 @@ class SearchController extends AppController {
                 if (isset(array_values($page2)[0])) {
                     $picture_url = array_values($page2)[0]['Image_Upload']['localName'];
                 }
-                
-                
 
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){
                     $temp_array['thumb'] = $this->smallThumb($picture_url);
                 }else{
-                    
                     $temp_array['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
                 }
-                
                 array_push($response['results'], $temp_array );
             }
-            
             //return collections
             $response['total'] = count($response['results']);
             return $this->json(200, $response);
@@ -416,7 +402,7 @@ class SearchController extends AppController {
                 $temp['kid'] = $page['kid'];
 
                 $temp['title'] = 'Unknown Title';
-                if (array_key_exists('Image Upload', $page) && array_key_exists('originalName', $page['Image_Upload']) ) {
+                if (array_key_exists('Image_Upload', $page) && array_key_exists('originalName', $page['Image_Upload']) ) {
                     $temp['title'] = $page['Image_Upload']['originalName'];
                 }
 
@@ -442,19 +428,23 @@ class SearchController extends AppController {
 
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getResourceSIDFromProjectName($pName);
+            //$sid = parent::getProjectSIDFromProjectName($pName);
 
 
             //search for the resources by type
             $fields = array('Title','Resource_Identifier', 'Permissions', 'Special_User', 'Type');
+            //$fields = 'ALL';
             $query_array = explode(",", $query);
+            //$query_array = array('kid', '!=', '');
             if( $limit != -1 ) {
-                $kora = new Advanced_Search($pid, $sid, $fields, 0, $limit+1);
+                $kora = new Advanced_Search($pid, $sid, $fields, null, $limit+1);
             }else{
-                $kora = new Advanced_Search($pid, $sid, array('Title'), 0, 0);
+                $kora = new Advanced_Search($pid, $sid, array('Title'), null, 0);
             }
-            print_r($query_array);
-			$kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
+            $kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
+
+
 
             $username = NULL;
             $usersC = new UsersController();
@@ -493,7 +483,7 @@ class SearchController extends AppController {
             }
 
             //using the array and 'in' this way because it's much faster.
-            if( $query_array[2] == 'Field_Journal' ) {
+            if( $query_array[2] == 'Field journal' ) {
                 $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
                     "Scan_Number", "=", "1");
             }else {
@@ -505,6 +495,7 @@ class SearchController extends AppController {
             //get the info from the resources and pages
             $returnResults = array();
             $count = 0;
+
             foreach ($resources as $key => $item) {
                 //check for show all button stuffs
                 $count++;

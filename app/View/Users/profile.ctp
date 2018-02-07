@@ -16,7 +16,7 @@
 
                     $allProjects = array();
                     foreach ($projects as $p) {
-                        array_push($allProjects, $p['Persistent Name']);
+                        array_push($allProjects, $p['Persistent_Name']);
                     }
 
 

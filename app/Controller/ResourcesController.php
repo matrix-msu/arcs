@@ -645,7 +645,7 @@ class ResourcesController extends AppController {
             //get pages
             $fields = array('Image_Upload','Resource_Associator','Scan_Number');
             $kora = new Advanced_Search($pid, $pageSid, $fields);
-            if( $resource_type == 'Field_journal' ) {//kora 3 todo do types get an underscore??
+            if( $resource_type == 'Field journal' ) {
                 $kora->add_double_clause("Resource_Associator", "IN", $rKids,
                     "Scan_Number", "=", "1");
             }else {
@@ -812,24 +812,24 @@ class ResourcesController extends AppController {
                 }
             }
 
-            if( $info_array[$resource]["Excavation_-_Survey_Associator"] != '') {
-                $exc_kids = $this->getFromKey($info_array, "Excavation_-_Survey_Associator");
+            if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
+                $exc_kids = $this->getFromKey($info_array, "Excavation - Survey Associator");
 
                 //get Season data
                 $excavation_array = $this->getExcavation($exc_kids);
                 $this->pushToArray($excavation_array, $excavations);
 
-                $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
+                $season_kids = $this->getFromKey($excavation_array, "Season Associator");
 
             }else{
-                $season_kids = $this->getFromKey($info_array, "Season_Associator");
+                $season_kids = $this->getFromKey($info_array, "Season Associator");
             }
 
             //get Season data
             $season_array = $this->getSeason($season_kids);
             $this->pushToArray($season_array, $seasons);
 
-            $project_kid = $this->getFromKey($season_array,"Project_Associator")[0];
+            $project_kid = $this->getFromKey($season_array,"Project Associator")[0];
             $info_array[$resource]['project_kid'] = $project_kid;
             $pName = parent::convertKIDtoProjectName($project_kid);
 
@@ -1134,33 +1134,33 @@ class ResourcesController extends AppController {
         $fields = 'ALL';
         $sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
-        $kora->add_clause("Resource_Associator", "=", $resource_kid);
+        $kora->add_clause("Resource Associator", "=", $resource_kid);
         return json_decode($kora->search(), true);
     }
     protected function getSubjectOfObservation($pageKids){
         $pName = parent::convertKIDtoProjectName($pageKids[0]);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSubjectSIDFromProjectName($pName);
-        $query_array = array("Pages_Associator", "IN", $pageKids);
+        $query_array = array("Pages Associator", "IN", $pageKids);
         $fields = "ALL";
         $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
         return $result->return_array();
     }
 
-    public function findUnassociatedResources(){
-        $pName = 'isthmia';
-        $pid = parent::getPIDFromProjectName($pName);
-        $sid = parent::getResourceSIDFromProjectName($pName);
-        $query_array = array("kid","!=",'');
-        $fields = "Title";
-        $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-        $resourcesWithNoPage = array();
-        foreach( $result->return_array() as $resource ){
-            if( empty($resource['linkers']) ){
-                array_push($resourcesWithNoPage, $resource['kid']);
-            }
-        }
-        echo json_encode( $resourcesWithNoPage );
-        die;
-    }
+    // public function findUnassociatedResources(){
+    //     $pName = 'isthmia';
+    //     $pid = parent::getPIDFromProjectName($pName);
+    //     $sid = parent::getResourceSIDFromProjectName($pName);
+    //     $query_array = array("kid","!=",'');
+    //     $fields = "Title";
+    //     $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+    //     $resourcesWithNoPage = array();
+    //     foreach( $result->return_array() as $resource ){
+    //         if( empty($resource['linkers']) ){
+    //             array_push($resourcesWithNoPage, $resource['kid']);
+    //         }
+    //     }
+    //     echo json_encode( $resourcesWithNoPage );
+    //     die;
+    // }
 }
