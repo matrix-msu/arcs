@@ -17,7 +17,7 @@ class CollectionsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers', 'findAllByUser');
+        $this->Auth->allow('titlesAndIds', 'memberships', 'index', 'distinctUsers', 'findAllByUser','testK3Projects');
     }
 
 
@@ -25,8 +25,10 @@ class CollectionsController extends AppController {
      * Display all collections. Main collection page, initial collection list.
      */
     public function index() {
+        
+       //echo 'hi in index';
         $pName = explode('/', $this->request->query['url']);
-
+        
         if( isset($pName[1]) ){
             $isRealProject = parent::isRealProject($pName[1]);
             if(!$isRealProject){    //not a real project, so redirect.
@@ -35,9 +37,8 @@ class CollectionsController extends AppController {
         }
 
         $path = func_get_args();
-
         $projectResourceKids = $this->getProjectResources($path[0]);
-die;
+        
         $this->Collection->recursive = -1;
 
         $user_id =  $this->Session->read('Auth.User.id');
@@ -81,9 +82,11 @@ die;
                 ),  //only get public collections
                 'group' => 'collection_id'
             ));
+            
         }
 
         foreach( $collections as $key => $collection ){
+            
             $collections[$key]['Collection']['timeAgo'] = parent::time_elapsed_string($collection['Collection']['created']);
         }
 
@@ -102,7 +105,8 @@ die;
         if( $authorString == '' ){  //html if none are found.
             $authorString = '<li><a class="author-filter" href="#">No Authors Available</a></li>';
         }
-
+        
+        
         //set variables for the view.
         $this->set('authors', $authorString);
         $this->set('collections', $collections);
@@ -115,20 +119,20 @@ die;
         $pid = parent::getPIDFromProjectName(strtolower($pName));
         $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
         $fields = array('Title');
-        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $allResources = json_decode($kora->return_json(), true);
         return array_keys($allResources);
     }
 
-    public function testK3Projects($pName = 'isthmia'){
+/*    public function testK3Projects($pName = 'isthmia'){
         $pid = parent::getPIDFromProjectName(strtolower($pName));
-        $sid = parent::getProjectSIDFromProjectName(strtolower($pName));
-        $fields = array('ALL');
+        $sid = parent::getSeasonSIDFromProjectName(strtolower($pName));
+        $fields = 'ALL';
         $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
         $allResources = json_decode($kora->return_json(), true);
         echo json_encode($allResources);
         die;
-    }
+    }*/
 
     /**
      * Get all collections a resource is a part of
