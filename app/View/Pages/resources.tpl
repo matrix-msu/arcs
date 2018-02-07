@@ -7,7 +7,7 @@
     {% endif %}
 
     <div class="collection-list" id="all-collections">
-        <details class="back-color"  data-type="Field Journal" >
+        <details class="back-color"  data-type="Field_Journal" >
             <summary class="rsc-sum">
                 <p class="rsc-name">NOTEBOOKS</p>
             </summary>
@@ -21,7 +21,7 @@
             <div></div>
         </details>
 
-        <details class="back-color" data-type="Photographic Negative">
+        <details class="back-color" data-type="Photographic_Negative">
             <summary class="rsc-sum">
                 <p class="rsc-name">PHOTOGRAPHIC NEGATIVE</p>
             </summary>
@@ -42,14 +42,14 @@
             <div></div>
         </details>
 
-        <details class="back-color" data-type="Plan or Elevation">
+        <details class="back-color" data-type="Plan_or_Elevation">
             <summary class="rsc-sum">
                 <p class="rsc-name">MAPS</p>
             </summary>
             <div></div>
         </details>
 
-        <details class="back-color" data-type="Inventory Card">
+        <details class="back-color" data-type="Inventory_Card">
             <summary class="rsc-sum">
                 <p class="rsc-name">INVENTORY CARDS</p>
             </summary>

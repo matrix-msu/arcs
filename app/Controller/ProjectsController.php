@@ -129,16 +129,12 @@ class ProjectsController extends AppController {
         $pid = static::getPIDFromProjectName($proj);
         $sid = static::getResourceSIDFromProjectName($proj);
         $fields = array("Title", "Type","Resource_Identifier", "Permissions", "Special_User");
-        $sort = array();
-        /***********
-        KORA3TODO
-        Add this sort by systimestamp once it gets inplemented into kora 2 legacy
-        Add underscore to the fields that had spaces
-        ***********/
-        //$sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+        $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+      //  $sort = array();
         $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
         $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
+        // echo json_encode($server_output);die;
 
 
         $fields = array('Title');

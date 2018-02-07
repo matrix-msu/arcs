@@ -290,7 +290,7 @@ class SearchController extends AppController {
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
 
-                $fields = array('Title','Type','Resource Identifier','Permissions','Special User');
+                $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
                 $query_array = explode(",", $query);
                 $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
@@ -333,15 +333,15 @@ class SearchController extends AppController {
                 $temp_array['collection_id'] = $row['id'];
 
                 //grab all pages with the resource associator
-                $fields = array('Image Upload', 'Resource Associator', 'Scan Number');
+                $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
                 $kora = new Advanced_Search($pid, $pageSid, $fields);
 
-                if( $resource_type == 'Field journal' ) {
+                if( $resource_type == 'Field_Journal' ) {
                     $temp_array['resource-type'] = $resource_type;
-                    $kora->add_double_clause("Resource Associator", "=", $temp_kid,
-                        "Scan Number", "=", "1");
+                    $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
+                        "Scan_Number", "=", "1");
                 }else {
-                    $kora->add_clause("Resource Associator", "=", $temp_kid);
+                    $kora->add_clause("Resource_Associator", "=", $temp_kid);
                 }
 
                 $page2 = json_decode($kora->search(), true);
@@ -349,7 +349,7 @@ class SearchController extends AppController {
                 //Get the picture URL from the page results
                 $picture_url = '';
                 if (isset(array_values($page2)[0])) {
-                    $picture_url = array_values($page2)[0]['Image Upload']['localName'];
+                    $picture_url = array_values($page2)[0]['Image_Upload']['localName'];
                 }
 
                 //Decide if there is a picture..
@@ -372,7 +372,7 @@ class SearchController extends AppController {
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getPageSIDFromProjectName($pName);
 
-            $fields = array('Image Upload');
+            $fields = array('Image_Upload');
             $query_array = explode(",", $this->request->query['q']);
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($pid, $sid, $fields, 0, $limit+1);
@@ -401,13 +401,13 @@ class SearchController extends AppController {
                 $temp['kid'] = $page['kid'];
 
                 $temp['title'] = 'Unknown Title';
-                if (array_key_exists('Image Upload', $page) && array_key_exists('originalName', $page['Image Upload']) ) {
-                    $temp['title'] = $page['Image Upload']['originalName'];
+                if (array_key_exists('Image Upload', $page) && array_key_exists('originalName', $page['Image_Upload']) ) {
+                    $temp['title'] = $page['Image_Upload']['originalName'];
                 }
 
                 $temp['thumb'] = '';
-                if (array_key_exists('Image Upload', $page) && array_key_exists('localName', $page['Image Upload']) ) {
-                    $temp['thumb'] = $page['Image Upload']['localName'];
+                if (array_key_exists('Image_Upload', $page) && array_key_exists('localName', $page['Image_Upload']) ) {
+                    $temp['thumb'] = $page['Image_Upload']['localName'];
                 }
 
                 //Decide if there is a picture..
@@ -428,16 +428,20 @@ class SearchController extends AppController {
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getResourceSIDFromProjectName($pName);
 
+
             //search for the resources by type
-            $fields = array('Title','Resource Identifier', 'Permissions', 'Special User', 'Type');
+            $fields = array('Title','Resource_Identifier', 'Permissions', 'Special_User', 'Type');
             $query_array = explode(",", $query);
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($pid, $sid, $fields, 0, $limit+1);
             }else{
                 $kora = new Advanced_Search($pid, $sid, array('Title'), 0, 0);
             }
+            print_r($query_array);
 			$kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
+            echo "hi";
+            echo json_encode($resources);die;
 
             $username = NULL;
             $usersC = new UsersController();
@@ -459,7 +463,7 @@ class SearchController extends AppController {
 
             //grab all pages with the resource associator
             $sid = parent::getPageSIDFromProjectName($pName);
-            $fields = array('Image Upload', 'Resource Associator', 'Scan Number');
+            $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
             $kora = new Advanced_Search($pid, $sid, $fields);
 
             //get a accepted resource associator array for kora,
@@ -476,11 +480,11 @@ class SearchController extends AppController {
             }
 
             //using the array and 'in' this way because it's much faster.
-            if( $query_array[2] == 'Field Journal' ) {
-                $kora->add_double_clause("Resource Associator", "IN", $resourceKidArray,
-                    "Scan Number", "=", "1");
+            if( $query_array[2] == 'Field_Journal' ) {
+                $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
+                    "Scan_Number", "=", "1");
             }else {
-                $kora->add_clause("Resource Associator", "IN", $resourceKidArray);
+                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
             }
 
             $pages = json_decode($kora->search(), true);
@@ -517,7 +521,7 @@ class SearchController extends AppController {
                 if( !empty($item['linkers']) ){
                     $minKey = min(array_keys($item['linkers'])); //grab the newest kid.
                     if(array_key_exists($minKey, $pages)){
-                        $temp['thumb'] = $pages[$minKey]['Image Upload']['localName'];
+                        $temp['thumb'] = $pages[$minKey]['Image_Upload']['localName'];
                         unset($pages[$minKey]); //delete that page to optimize
                     }
                 }
@@ -526,7 +530,7 @@ class SearchController extends AppController {
                 if ($temp['thumb'] == '') {
                     foreach ($pages as $key2 => $item2) {
                         if (in_array($temp["kid"],$pages[$key2]['Resource Associator'])) {
-                            $temp['thumb'] = $pages[$key2]['Image Upload']['localName'];
+                            $temp['thumb'] = $pages[$key2]['Image_Upload']['localName'];
                             unset($pages[$key2]); //delete that page to optimize
                             break;
                         }
@@ -593,8 +597,8 @@ class SearchController extends AppController {
         if (!empty($results)) {
             $temp = json_decode($results);
             $associator = (array)array_values((array)$temp)[0];
-            $associator = isset($associator['Resource Associator'][0])
-                          ? $associator['Resource Associator'][0]
+            $associator = isset($associator['Resource_Associator'][0])
+                          ? $associator['Resource_Associator'][0]
                           : false;
            if ($associator) {
                $pageSid = $sid;
@@ -603,7 +607,7 @@ class SearchController extends AppController {
                $tempRes = (array)json_decode($results, true);
                if( $this->request->data['sid'] == 'page' ) {
                    foreach ($tempRes as $key => $value) {
-                       $localName = $tempRes[$key]['Image Upload']['localName'];
+                       $localName = $tempRes[$key]['Image_Upload']['localName'];
                        //$localName = $tempRes[$key]->{'Image Upload'}->localName;
                        $tempRes[$key]['constructed_image'] = KORA_FILES_URI.$pid.'/'. $pageSid . '/'.$localName;
                    }

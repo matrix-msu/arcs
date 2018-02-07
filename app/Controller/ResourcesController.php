@@ -61,7 +61,6 @@ class ResourcesController extends AppController {
      */
      public static function filterByPermission($userName, &$resources) {
 
-
         if (empty($userName)) {
             static::lockResourcesByPermission(Permissions::R_Member, $resources);
             static::lockResourcesByPermission(Permissions::R_Special, $resources);
@@ -225,8 +224,8 @@ class ResourcesController extends AppController {
             $resource = $this->getResource($kid)[$kid];
             $pages = $this->getPages($kid);
             $page1 = reset($pages);
-            if (!empty($page1['Image Upload']['localName'])) {
-                $resource['thumb'] = $this->smallThumb($page1['Image Upload']['localName']);
+            if (!empty($page1['Image_Upload']['localName'])) {
+                $resource['thumb'] = $this->smallThumb($page1['Image_Upload']['localName']);
             }
         }
         $this->json(200, $resource);
@@ -646,7 +645,7 @@ class ResourcesController extends AppController {
             //get pages
             $fields = array('Image_Upload','Resource_Associator','Scan_Number');
             $kora = new Advanced_Search($pid, $pageSid, $fields);
-            if( $resource_type == 'Field journal' ) {//kora 3 todo do types get an underscore??
+            if( $resource_type == 'Field_journal' ) {//kora 3 todo do types get an underscore??
                 $kora->add_double_clause("Resource_Associator", "IN", $rKids,
                     "Scan_Number", "=", "1");
             }else {
@@ -907,11 +906,11 @@ class ResourcesController extends AppController {
             ksort($excavations);
             foreach ($resources as $kid => $r) {
                 $p = $r['page'];
-                $p = isset(array_values($p)[0]['Image Upload']['localName'])? array_values($p)[0]['Image Upload']['localName'] : "";
+                $p = isset(array_values($p)[0]['Image_Upload']['localName'])? array_values($p)[0]['Image_Upload']['localName'] : "";
                 $p = AppController::smallThumb($p);
                 $resources[$kid]['thumbsrc'] = $p;
                 foreach ($r['page'] as $key => $page) {
-                    $img = isset($page['Image Upload']['localName']) ? $page['Image Upload']['localName'] : "";
+                    $img = isset($page['Image_Upload']['localName']) ? $page['Image_Upload']['localName'] : "";
                     $resources[$kid]['page'][$key]['thumbsrc'] = AppController::smallThumb($img);
                 }
             }
