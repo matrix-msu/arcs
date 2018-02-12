@@ -65,23 +65,23 @@ function Generate_Metadata(
             'Name' => 'text',
             'Country' => 'list',
             'Region' => 'list',
-            'Modern Name' => 'list',
+            'Modern_Name' => 'list',
             'Persistent_Name' => 'text',
-            'Location Identifier' => 'text',
-            'Location Identifier Scheme' => 'text',
+            'Location_Identifier' => 'text',
+            'Location_Identifier_Scheme' => 'text',
             'Geolocation' => 'multi_input',
             'Elevation' => 'text',
-            'Records Archive' => 'multi_select',
-            'Complex Title' => 'text',
-            'Earliest Date' => 'date',
-            'Latest Date' => 'date',
-            'Terminus Ante Quem' => 'terminus',
-            'Terminus Post Quem' => 'terminus',
+            'Records_Archive' => 'multi_select',
+            'Complex_Title' => 'text',
+            'Earliest_Date' => 'date',
+            'Latest_Date' => 'date',
+            'Terminus_Ante_Quem' => 'terminus',
+            'Terminus_Post_Quem' => 'terminus',
             'Period' => 'multi_select',
-            'Archaeological Culture' => 'multi_select',
+            'Archaeological_Culture' => 'multi_select',
             'Description' => 'text',
             //'Brief Description' => 'text',
-            'Permitting Heritage Body' => 'multi_select'
+            'Permitting_Heritage_Body' => 'multi_select'
         ),
         'Seasons' => array(
             //'Project Associator' => 'associator',
@@ -91,98 +91,98 @@ function Generate_Metadata(
             'Director' => 'multi_select',
             'Registrar' => 'multi_select',
             'Contributor' => 'list',
-            'Contributor Role' => 'multi_select',
-            'Contributor 2' => 'list',
-            'Contributor Role 2' => 'multi_select',
-            'Contributor 3' => 'list',
-            'Contributor Role 3' => 'multi_select',
-            'Contributor 4' => 'list',
-            'Contributor Role 4' => 'multi_select',
-            'Contributor 5' => 'list',
-            'Contributor Role 5' => 'multi_select',
-            'Contributor 6' => 'list',
-            'Contributor Role 6' => 'multi_select',
-            'Contributor 7' => 'list',
-            'Contributor Role 7' => 'multi_select',
-            'Contributor 8' => 'list',
-            'Contributor Role 8' => 'multi_select',
-            'Contributor 9' => 'list',
-            'Contributor Role 9' => 'multi_select',
-            'Earliest Date' => 'date',
-            'Latest Date' => 'date',
-            'Terminus Ante Quem' => 'terminus',
-            'Terminus Post Quem' => 'terminus',
+            'Contributor_Role' => 'multi_select',
+            'Contributor_2' => 'list',
+            'Contributor_Role_2' => 'multi_select',
+            'Contributor_3' => 'list',
+            'Contributor_Role_3' => 'multi_select',
+            'Contributor_4' => 'list',
+            'Contributor_Role_4' => 'multi_select',
+            'Contributor_5' => 'list',
+            'Contributor_Role_5' => 'multi_select',
+            'Contributor_6' => 'list',
+            'Contributor_Role_6' => 'multi_select',
+            'Contributor_7' => 'list',
+            'Contributor_Role_7' => 'multi_select',
+            'Contributor_8' => 'list',
+            'Contributor_Role_8' => 'multi_select',
+            'Contributor_9' => 'list',
+            'Contributor_Role_9' => 'multi_select',
+            'Earliest_Date' => 'date',
+            'Latest_Date' => 'date',
+            'Terminus_Ante_Quem' => 'terminus',
+            'Terminus_Post_Quem' => 'terminus',
             'Description' => 'text'
         ),
         'excavations' => array(
-            'Season Associator' => 'associator',
+            'Season_Associator' => 'associator',
             'Name' => 'text',
             'Type' => 'list',
             'Supervisor' => 'multi_select',
-            'Earliest Date' => 'date',
-            'Latest Date' => 'date',
-            'Terminus Ante Quem' => 'terminus',
-            'Terminus Post Quem' => 'terminus',
-            'Excavation Stratigraphy' => 'text',
-            'Survey Conditions' => 'text',
-            'Post Dispositional Transformation' => 'text'
+            'Earliest_Date' => 'date',
+            'Latest_Date' => 'date',
+            'Terminus_Ante_Quem' => 'terminus',
+            'Terminus_Post_Quem' => 'terminus',
+            'Excavation_Stratigraphy' => 'text',
+            'Survey_Conditions' => 'text',
+            'Post_Dispositional_Transformation' => 'text'
         ),
         'archival objects' => array(
             'URL' => 'url',
-            'Excavation - Survey Associator' => 'associator',
-            'Season Associator' => 'associator',
-            'Resource Identifier' => 'text',
+            'Excavation_-_Survey_Associator' => 'associator',
+            'Season_Associator' => 'associator',
+            'Resource_Identifier' => 'text',
             'Type' => 'list',
             'Title' => 'text',
             'Sub-title' => 'text',
             'Repository' => 'list',
-            'Accession Number' => 'text',
+            'Accession_Number' => 'text',
             'Creator' => 'multi_select',
-            'Creator Role' => 'multi_select',
-            'Earliest Date' => 'date',
-            'Latest Date' => 'date',
+            'Creator_Role' => 'multi_select',
+            'Earliest_Date' => 'date',
+            'Latest_Date' => 'date',
             //'Date Range' => 'text',
             'Dimensions' => 'multi_input',
             'Language' => 'multi_select',
             'Description' => 'text',
             'Pages' => 'text',
             'Rights' => 'text',
-            'Rights Holder' => 'multi_select',
+            'Rights_Holder' => 'multi_select',
         ),
         'subjects' => array(
-            'Pages Associator' => 'associator',
+            'Pages_Associator' => 'associator',
             //'Resource Identifier' => 'text',
-            'Subject of Observation Associator' => 'associator',
-            'Artifact - Structure Classification' => 'list',
-            'Artifact - Structure Type' => 'multi_select',
-            'Artifact - Structure Type Qualifier' => 'text',
-            'Artifact - Structure Material' => 'multi_select',
-            'Artifact - Structure Technique' => 'multi_select',
-            'Artifact - Structure Terminus Ante Quem' => 'terminus',
-            'Artifact - Structure Terminus Post Quem' => 'terminus',
-            'Artifact - Structure Period' => 'multi_select',
-            'Artifact - Structure Archaeological Culture' => 'multi_select',
+            'Subject_of_Observation_Associator' => 'associator',
+            'Artifact_-_Structure_Classification' => 'list',
+            'Artifact_-_Structure_Type' => 'multi_select',
+            'Artifact_-_Structure_Type_Qualifier' => 'text',
+            'Artifact_-_Structure_Material' => 'multi_select',
+            'Artifact_-_Structure_Technique' => 'multi_select',
+            'Artifact_-_Structure_Terminus_Ante_Quem' => 'terminus',
+            'Artifact_-_Structure_Terminus_Post_Quem' => 'terminus',
+            'Artifact_-_Structure_Period' => 'multi_select',
+            'Artifact_-_Structure_Archaeological_Culture' => 'multi_select',
 
-            'Artifact - Structure Title' => 'text',
-            'Artifact - Structure Creator' => 'multi_select',
-            'Artifact - Structure Creator Role' => 'multi_select',
-            'Artifact - Structure Dimensions' => 'multi_input',
-            'Artifact - Structure Excavation Unit' => 'multi_select',
-            'Artifact - Structure Location' => 'multi_select',
-            'Artifact - Structure Geolocation' => 'multi_input',
-            'Artifact - Structure Current Location' => 'list',
-            'Artifact - Structure Repository' => 'list',
-            'Artifact - Structure Repository Accession Number' => 'text',
-            'Artifact - Structure Description' => 'text',
-            'Artifact - Structure Condition' => 'multi_select',
-            'Artifact - Structure Inscription' => 'text',
-            'Artifact - Structure Munsell Number' => 'text',
-            'Artifact - Structure Date' => 'date',
-            'Artifact - Structure Subject' => 'multi_select',
-            'Artifact - Structure Origin' => 'list',
-            'Artifact - Structure Comparanda' => 'text',
-            'Artifact - Structure Archaeological Context' => 'text',
-            'Artifact - Structure Shelving Location' => 'text'
+            'Artifact_-_Structure_Title' => 'text',
+            'Artifact_-_Structure_Creator' => 'multi_select',
+            'Artifact_-_Structure_Creator Role' => 'multi_select',
+            'Artifact_-_Structure_Dimensions' => 'multi_input',
+            'Artifact_-_Structure_Excavation Unit' => 'multi_select',
+            'Artifact_-_Structure_Location' => 'multi_select',
+            'Artifact_-_Structure_Geolocation' => 'multi_input',
+            'Artifact_-_Structure_Current_Location' => 'list',
+            'Artifact_-_Structure_Repository' => 'list',
+            'Artifact_-_Structure_Repository_Accession_Number' => 'text',
+            'Artifact_-_Structure_Description' => 'text',
+            'Artifact_-_Structure_Condition' => 'multi_select',
+            'Artifact_-_Structure_Inscription' => 'text',
+            'Artifact_-_Structur_Munsell_Number' => 'text',
+            'Artifact_-_Structure_Date' => 'date',
+            'Artifact_-_Structure_Subject' => 'multi_select',
+            'Artifact_-_Structure_Origin' => 'list',
+            'Artifact_-_Structure_Comparanda' => 'text',
+            'Artifact_-_Structure_Archaeological_Context' => 'text',
+            'Artifact_-_Structure_Shelving_Location' => 'text'
         )
     );
     $controlDisplayNames = array(
@@ -190,23 +190,23 @@ function Generate_Metadata(
             'Name' => 'Name',
             'Country' => 'Country',
             'Region' => 'Geographic Region',
-            'Modern Name' => 'Modern Placename',
-            'Location Identifier' => 'Location',
-            'Location Identifier Scheme' => 'Location Source',
+            'Modern_Name' => 'Modern Placename',
+            'Location_Identifier' => 'Location',
+            'Location_Identifier_Scheme' => 'Location Source',
             'Geolocation' => 'Coordinates',
             'Elevation' => 'Elevation',
-            'Earliest Date' => 'Earliest Research Activity',
-            'Latest Date' => 'Latest Research Activity',
-            'Records Archive' => 'Archive / Repository',
+            'Earliest_Date' => 'Earliest Research Activity',
+            'Latest_Date' => 'Latest Research Activity',
+            'Records_Archive' => 'Archive / Repository',
             'Persistent_Name' => 'Common Name',
-            'Complex Title' => 'Associated Institution(s)',
-            'Terminus Ante Quem' => 'Earliest Cultural Activity',
-            'Terminus Post Quem' => 'Latest Cultural Activity',
+            'Complex_Title' => 'Associated Institution(s)',
+            'Terminus_Ante_Quem' => 'Earliest Cultural Activity',
+            'Terminus_Post_Quem' => 'Latest Cultural Activity',
             'Period' => 'Period(s) of Cultural Activity',
-            'Archaeological Culture' => 'Archaeological Culture',
+            'Archaeological_Culture' => 'Archaeological Culture',
             'Description' => 'Full Description',
             //'Brief Description' => 'text',
-            'Permitting Heritage Body' => 'Permitting Heritage Body'
+            'Permitting_Heritage_Body' => 'Permitting Heritage Body'
         ),
         'Seasons' => array(
             //'Project Associator' => 'associator',
@@ -216,100 +216,101 @@ function Generate_Metadata(
             'Registrar' => 'Registrar(s)',
             'Sponsor' => 'Sponsor(s)',
             'Contributor' => 'Contributor(s)',
-            'Contributor Role' => 'Contributor Role(s)',
-            'Contributor 2' => 'Contributor(s)',
-            'Contributor Role 2' => 'Contributor Role(s)',
-            'Contributor 3' => 'Contributor(s)',
-            'Contributor Role 3' => 'Contributor Role(s)',
-            'Contributor 4' => 'Contributor(s)',
-            'Contributor Role 4' => 'Contributor Role(s)',
-            'Contributor 5' => 'Contributor(s)',
-            'Contributor Role 5' => 'Contributor Role(s)',
-            'Contributor 6' => 'Contributor(s)',
-            'Contributor Role 6' => 'Contributor Role(s)',
-            'Contributor 7' => 'Contributor(s)',
-            'Contributor Role 7' => 'Contributor Role(s)',
-            'Contributor 8' => 'Contributor(s)',
-            'Contributor Role 8' => 'Contributor Role(s)',
-            'Contributor 9' => 'Contributor(s)',
-            'Contributor Role 9' => 'Contributor Role(s)',
-            'Earliest Date' => 'Beginning of Season',
-            'Latest Date' => 'End of Season',
-            'Terminus Ante Quem' => 'Earliest Cultural Activity for Season',
-            'Terminus Post Quem' => 'Latest Cultural Activity for Season',
+            'Contributor_Role' => 'Contributor Role(s)',
+            'Contributor_2' => 'Contributor(s)',
+            'Contributor_Role_2' => 'Contributor Role(s)',
+            'Contributor_3' => 'Contributor(s)',
+            'Contributor_Role_3' => 'Contributor Role(s)',
+            'Contributor_4' => 'Contributor(s)',
+            'Contributor_Role_4' => 'Contributor Role(s)',
+            'Contributor_5' => 'Contributor(s)',
+            'Contributor_Role_5' => 'Contributor Role(s)',
+            'Contributor_6' => 'Contributor(s)',
+            'Contributor_Role_6' => 'Contributor Role(s)',
+            'Contributor_7' => 'Contributor(s)',
+            'Contributor_Role_7' => 'Contributor Role(s)',
+            'Contributor_8' => 'Contributor(s)',
+            'Contributor_Role_8' => 'Contributor Role(s)',
+            'Contributor_9' => 'Contributor(s)',
+            'Contributor_Role_9' => 'Contributor Role(s)',
+            'Earliest_Date' => 'Beginning of Season',
+            'Latest_Date' => 'End of Season',
+            'Terminus_Ante_Quem' => 'Earliest Cultural Activity for Season',
+            'Terminus_Post_Quem' => 'Latest Cultural Activity for Season',
             'Description' => 'Description of Season Activity'
         ),
         'excavations' => array(
-            'Season Associator' => 'Season(s) when Study took place',
+            'Season_Associator' => 'Season(s) when Study took place',
             'Name' => 'Unit of Study',
             'Type' => 'Type of Study',
             'Supervisor' => 'Supervisor(s)',
-            'Earliest Date' => 'Beginning of Study',
-            'Latest Date' => 'End of Study',
-            'Terminus Ante Quem' => 'Earliest Cultural Activity for Study Unit',
-            'Terminus Post Quem' => 'Latest Cultural Activity for Study Unit',
-            'Excavation Stratigraphy' => 'Description of Stratigraphy',
-            'Survey Conditions' => 'Description of Survey',
-            'Post Dispositional Transformation' => 'Post-Depositional Activity'
+            'Earliest_Date' => 'Beginning of Study',
+            'Latest_Date' => 'End of Study',
+            'Terminus_Ante_Quem' => 'Earliest Cultural Activity for Study Unit',
+            'Terminus_Post_Quem' => 'Latest Cultural Activity for Study Unit',
+            'Excavation_Stratigraphy' => 'Description of Stratigraphy',
+            'Survey_Conditions' => 'Description of Survey',
+            'Post_Dispositional_Transformation' => 'Post-Depositional Activity'
         ),
         'archival objects' => array(
             'URL' => 'Stable URL',
-            'Excavation - Survey Associator' => 'Study(s) when Resource was created',
-            'Season Associator' => 'Season(s) when Resource was created',
-            'Resource Identifier' => 'Resource Identifier',
+            'Excavation_-_Survey_Associator' => 'Study(s) when Resource was created',
+            'Season_Associator' => 'Season(s) when Resource was created',
+            'Resource_Identifier' => 'Resource Identifier',
             'Type' => 'Resource Type',
             'Title' => 'Title',
             'Sub-title' => 'Sub-title',
             'Creator' => 'Author/Creator',
-            'Creator Role' => 'Author/Creator Role',
-            'Earliest Date' => 'Earliest Date of Resource',
-            'Latest Date' => 'Latest Date of Resource',
+            'Creator_Role' => 'Author/Creator Role',
+            'Earliest_Date' => 'Earliest Date of Resource',
+            'Latest_Date' => 'Latest Date of Resource',
             'Dimensions' => 'Dimensions',
             'Language' => 'Language(s)',
             'Description' => 'Description of Resource',
             'Pages' => 'Number of Pages',
             'Rights' => 'Rights',
-            'Rights Holder' => 'Rights Holder',
+            'Rights_Holder' => 'Rights Holder',
             'Repository' => 'Archive / Repository',
-            'Accession Number' => 'Accession/Catalogue Number(s)',
+            'Accession_Number' => 'Accession/Catalogue Number(s)',
         ),
         'subjects' => array(
-            'Pages Associator' => 'Page ID with Topic Info',
+            'Pages_Associator' => 'Page ID with Topic Info',
             //'Resource Identifier' => 'text',
-            'Subject of Observation Associator' => 'Other Records with Topic Info',
-            'Artifact - Structure Classification' => 'Artifact / Structure Classification',
-            'Artifact - Structure Type' => 'Artifact / Structure Type',
-            'Artifact - Structure Type Qualifier' => 'Type Qualifier',
-            'Artifact - Structure Material' => 'Artifact / Structure Material',
-            'Artifact - Structure Technique' => 'Manufacturing technique',
-            'Artifact - Structure Archaeological Culture' => 'Associated Archaeological Culture',
-            'Artifact - Structure Period' => 'Artifact / Structure Period',
-            'Artifact - Structure Terminus Ante Quem' => 'Earliest Possible Date of Artifact / Structure',
-            'Artifact - Structure Terminus Post Quem' => 'Latest Possible Date of Artifact / Structure',
+            'Subject_of_Observation_Associator' => 'Other Records with Topic Info',
+            'Artifact_-_Structure_Classification' => 'Artifact / Structure Classification',
+            'Artifact_-_Structure_Type' => 'Artifact / Structure Type',
+            'Artifact_-_Structure_Type_Qualifier' => 'Type Qualifier',
+            'Artifact_-_Structure_Material' => 'Artifact / Structure Material',
+            'Artifact_-_Structure_Technique' => 'Manufacturing technique',
+            'Artifact_-_Structure_Archaeological_Culture' => 'Associated Archaeological Culture',
+            'Artifact_-_Structure_Period' => 'Artifact / Structure Period',
+            'Artifact_-_Structure_Terminus_Ante_Quem' => 'Earliest Possible Date of Artifact / Structure',
+            'Artifact_-_Structure_Terminus_Post_Quem' => 'Latest Possible Date of Artifact / Structure',
 
-            'Artifact - Structure Title' => 'Title of Artifact / Structure',
-            'Artifact - Structure Location' => 'Project-specific Location',
-            'Artifact - Structure Current Location' => 'Current Location of Artifact / Structure',
-            'Artifact - Structure Repository' => 'Storage / Repository',
-            'Artifact - Structure Repository Accession Number' => 'Accession Number',
-            'Artifact - Structure Creator' => 'Artifact / Structure Creator',
-            'Artifact - Structure Creator Role' => 'Creator Role',
-            'Artifact - Structure Dimensions' => 'Artifact / Structure Dimensions',
-            'Artifact - Structure Geolocation' => 'Artifact / Structure Coordinates',
-            'Artifact - Structure Excavation Unit' => 'Artifact / Structure Survey / Excavation Unit',
-            'Artifact - Structure Location' => 'Project-specific Location',
-            'Artifact - Structure Description' => 'Artifact / Structure Description',
-            'Artifact - Structure Condition' => 'Artifact / Structure Condition',
-            'Artifact - Structure Inscription' => 'Inscribed text',
-            'Artifact - Structure Munsell Number' => 'Artifact / Structure Color(s)',
-            'Artifact - Structure Date' => 'Precise Date of Artifact / Structure',
-            'Artifact - Structure Subject' => 'Subject of Artifact / Structure',
-            'Artifact - Structure Origin' => 'Point of Origin',
-            'Artifact - Structure Comparanda' => 'Comparative examples',
-            'Artifact - Structure Archaeological Context' => 'Archaeological context',
-            'Artifact - Structure Shelving Location' => 'Location in repository'
+            'Artifact_-_Structure_Title' => 'Title of Artifact / Structure',
+            'Artifact_-_Structure_Location' => 'Project-specific Location',
+            'Artifact_-_Structure_Current_Location' => 'Current Location of Artifact / Structure',
+            'Artifact_-_Structure_Repository' => 'Storage / Repository',
+            'Artifact_-_Structure_Repository_Accession_Number' => 'Accession Number',
+            'Artifact_-_Structure_Creator' => 'Artifact / Structure Creator',
+            'Artifact_-_Structure_Creator_Role' => 'Creator Role',
+            'Artifact_-_Structure_Dimensions' => 'Artifact / Structure Dimensions',
+            'Artifact_-_Structure_Geolocation' => 'Artifact / Structure Coordinates',
+            'Artifact_-_Structure_Excavation_Unit' => 'Artifact / Structure Survey / Excavation Unit',
+            'Artifact_-_Structure_Location' => 'Project-specific Location',
+            'Artifact_-_Structure_Description' => 'Artifact / Structure Description',
+            'Artifact_-_Structure_Condition' => 'Artifact / Structure Condition',
+            'Artifact_-_Structure_Inscription' => 'Inscribed text',
+            'Artifact_-_Structure_Munsell_Number' => 'Artifact / Structure Color(s)',
+            'Artifact_-_Structure_Date' => 'Precise Date of Artifact / Structure',
+            'Artifact_-_Structure_Subject' => 'Subject of Artifact / Structure',
+            'Artifact_-_Structure_Origin' => 'Point of Origin',
+            'Artifact_-_Structure_Comparanda' => 'Comparative examples',
+            'Artifact_-_Structure_Archaeological_Context' => 'Archaeological context',
+            'Artifact_-_Structure_Shelving_Location' => 'Location in repository'
         )
     );
+
 
     foreach ($data as $array) {
         $counter++;
@@ -338,9 +339,18 @@ function Generate_Metadata(
                         $matchContributor = false;
                         $firstEmptyContributor = true;
                         foreach($controlTypes[$schemename] as $control => $type){
+                            if (!isset($array[$control])){
+                                $displayedControlName = $controlDisplayNames[$schemename][$control];
+                                //PUT A FLAG HERE
+                                echo "<tr>
+                                        <td>$displayedControlName</td>
+                                        <td></td>
+                                    </tr>";
+                                continue;
+                            }
                             //build how the text value of the control should be displayed.
                             $text = '';
-                            if( $type=='text'||$type=='list' ) {
+                            if( $type=='text'||$type=='list' ) {//MAKE THE URL SHOW UP
                                 //echo json_encode($array);
                                 $text = $array[$control];
                             }elseif($type=='url'){
@@ -358,6 +368,7 @@ function Generate_Metadata(
                                               </button>
                                         </div>';
                                 $text = $link;
+
                             }elseif( $type=='multi_input'||$type=='multi_select' ){
                                 if( !is_string($array[$control]) ){
                                     foreach($array[$control] as $temp) {$text .= $temp."<br>";}
@@ -371,7 +382,7 @@ function Generate_Metadata(
                                         if ($schemename == 'excavations') {
                                             $preview = 'Title';
                                         } elseif ($schemename == 'archival objects') {
-                                            if ($control == 'Excavation - Survey Associator') {
+                                            if ($control == 'Excavation_-_Survey_Associator') {
                                                 $preview = 'Name';
                                             } else { //season is the above scheme
                                                 $usedAboveScheme = $aboveTwoSchemes;
@@ -410,9 +421,9 @@ function Generate_Metadata(
                             $options = '';  //decide if there are options
                             $tmpControl = $control;
                             if( $matchContributor == true ){
-                                $tmpControl = "Contributor Role";
+                                $tmpControl = "Contributor_Role";
                                 $matchContributor = false;
-                            }elseif( fnmatch("Contributor *",$tmpControl) && $tmpControl != 'Contributor Role' ){
+                            }elseif( fnmatch("Contributor *",$tmpControl) && $tmpControl != 'Contributor_Role' ){
                                 $tmpControl = "Contributor";
                                 if( $text == '' ){
                                     if( $firstEmptyContributor == true ){
@@ -445,7 +456,7 @@ function Generate_Metadata(
                                         $flagged
                                         <div id='$control' data-control='$type'$options data-associations='$dataAssociatedList'>$text</div>";
                             }
-                            if( $control == 'Persistent Name' || $type == "url" ){
+                            if( $control == 'Persistent_Name' || $type == "url" ){
                                 $string = " >
                                         $flagged
                                         <div id='$control' data-control='$type'$options>$text</div>";
@@ -459,6 +470,11 @@ function Generate_Metadata(
                                         <div class="icon-meta-lock">&nbsp;</div>
                                         <div>Pending Approval</div>';
                             }
+                            // if ($tmpControl == 'Archaeological_Culture'){
+                            //     echo "wewewewe";
+                            //     print_r($controlDisplayNames[$schemename]);
+                            //     die;
+                            // }
 
                             $displayedControlName = $controlDisplayNames[$schemename][$tmpControl];
 

@@ -189,7 +189,7 @@ function keywordPrep(){
                     $('#urlform2').css('display', 'none');
                     $('#urlform').find('.chosen-choices').html();
                     $('#urlform').css('display', 'none');
-                    var pName = $('#project1').find("[id='Persistent Name']").html();
+                    var pName = $('#project1').find("[id='Persistent_Name']").html();
                     pName = pName.replace(/ /g, '_').toLowerCase();
                     var keywordHtml = '';
                     if (keywordArray instanceof Array) {

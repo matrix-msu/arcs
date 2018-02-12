@@ -86,12 +86,17 @@ function dynamicPrep() {
         $('.archival.objects-table[data-kid="'+resourceKid+'"]').css('display', 'table');
         //find the excavations
         var stringExcavationKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
-            .find("[id='Excavation - Survey Associator']").attr('data-associations');
+            .find("[id='Excavation_-_Survey_Associator']").attr('data-associations');
+
+        if (typeof(stringExcavationKids) == 'undefined'){
+            stringExcavationKids = "";
+        }
+
         var excavationKids = stringExcavationKids.split(' '); //turn into array
         excavationKids.pop(); //remove an empty index
         excavationKids.sort();
         var excavationSeasonAssociators = [];
-        setTimeout(function () {//wasn't hiding all if not in this..
+        setTimeout(function () { //wasn't hiding all if not in this..
             $('.excavation-tab-head').css('display', 'none'); //hide all
             $('.excavation-tab-content').css('display', 'none');
             $('.excavation-tab-content').css('height', 'auto');
@@ -119,15 +124,17 @@ function dynamicPrep() {
                         firstDrawer2 = 1;
                     }
                     var ex = $('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]')
-                        .find("[id='Season Associator']").attr('data-associations');
+                        .find("[id='Season_Associator']").attr('data-associations');
                     ex = ex.replace(' ', '');
                     //console.log(ex);
                     excavationSeasonAssociators.push(ex);
                 }
             }
+
             //find the season
             var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
-                .find("[id='Season Associator']").attr('data-associations');
+                .find("[id='Season_Associator']").attr('data-associations');
+
             var seasonKids = stringSeasonKids.split(' '); //turn into array
             seasonKids.pop(); //remove an empty index
             //todo- improve this to hide/show correct seasons**associated through excavation

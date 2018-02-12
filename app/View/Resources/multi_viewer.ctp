@@ -541,7 +541,7 @@ var multiInfo = <?php echo $multiInfo; ?>;
 //update the toolbar page urls with project.
 
 //get project name
-var pName = $('#project1').find("[id='Persistent Name']").html();
+var pName = $('#project1').find("[id='Persistent_Name']").html();
 pName = pName.replace(/ /g, '_').toLowerCase();
 
 //add the project kid to the resources url.
