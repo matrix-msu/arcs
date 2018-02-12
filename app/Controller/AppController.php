@@ -277,32 +277,22 @@ class AppController extends Controller
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
 
-		$UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
-        $KoraUrlName = rawurlencode($name);
-
-        if($pid=='' || $sid == '') {
-            $pName = self::convertKIDtoProjectName($name);
-            $pid = self::getPIDFromProjectName($pName);
-            $sid = self::getPageSIDFromProjectName($pName);
-        }
-
-        $path = THUMBS . "smallThumbs/";
-        $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
-        $path .= $thumb;
-        $url = THUMBS_URL . "smallThumbs/" . $thumb;
-        if (!file_exists($path)) {
-            $imgpath = KORA_FILES_URI . $pid . "/" . $sid . "/" . $KoraUrlName;
-            $image = @file_get_contents($imgpath);
-            if( $image == '' || $image == FALSE ){
-                return '/' . BASE_URL . DEFAULT_THUMB;
+        $name = str_replace(' ', '_', $name); //url can't have spaces so replace
+        // add 'thumbnail' inbetween 'PATH_TO_FILE' and 'filename.ext' so url looks like
+        // PATH_TO_FILE/thumbnail/filename.ext
+        /*$parts = explode("/", $name);
+        $i = 0;
+        $name = "";
+        while($i < sizeof($parts)) {
+            $name = $name . $parts[$i] . "/";
+            if ($i == (sizeof($parts) - 2)) {
+                $name = $name . "thumbnail/";
             }
-            $image = @imagecreatefromstring($image);
-            $result = AppController::resize($image, 240, 200);
-            imagedestroy($image);
-            imagejpeg($result, $path);
-            imagedestroy($result);
+            $i = $i + 1;
         }
-        return $url;
+        $name = rtrim($name, "/");*/
+        $name = KORA_FILES_URI . $name;
+        return $name;
     }
 
     /**
@@ -317,33 +307,9 @@ class AppController extends Controller
         if ($name === "") {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
-        $UrlName = str_replace(' ', '_', $name); //url can't have spaces so replace
-        $KoraUrlName = rawurlencode($name);
-
-        if($name == ''){
-            return '';
-        }
-        $pName = self::convertKIDtoProjectName($name);
-        $pid = self::getPIDFromProjectName($pName);
-        $sid = self::getPageSIDFromProjectName($pName);
-
-        $path = THUMBS . "largeThumbs/";
-        $thumb = pathinfo($UrlName, PATHINFO_FILENAME) . ".jpg";
-        $path .= $thumb;
-        $url = THUMBS_URL . "largeThumbs/" . $thumb;
-        if (!file_exists($path)) {
-            $imgpath = KORA_FILES_URI . $pid . "/" . $sid . "/" . $KoraUrlName;
-            $image = file_get_contents($imgpath);
-            if( $image == '' || $image == FALSE ){
-                return '/' . BASE_URL . DEFAULT_THUMB;
-            }
-            $image = imagecreatefromstring($image);
-            $result = $this->resize($image, 400, 400);
-            imagedestroy($image);
-            imagejpeg($result, $path);
-            imagedestroy($result);
-        }
-        return $url;
+        $name = str_replace(' ', '_', $name); //url can't have spaces so replace
+        $name = KORA_FILES_URI . $name;
+        return $name;
     }
 
 

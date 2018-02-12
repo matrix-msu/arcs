@@ -11,7 +11,7 @@ class Advanced_Search extends Kora{
     private $sid;
 	private $pid;
 
-    function __construct($pid, $sid, $fields = 'ALL', $start = 0, $limit = 0, $sort = array() ){
+    function __construct($pid, $sid, $fields = 'ALL', $start = null, $limit = null, $sort = array() ){
         //call parent constructor 'kora'
         parent::__construct();
         $this->pid = $pid;

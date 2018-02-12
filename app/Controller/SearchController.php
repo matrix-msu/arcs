@@ -222,9 +222,9 @@ class SearchController extends AppController {
         if (isset($this->request->query['pKid'])) {
             $pName = $this->request->query['pKid'];
         }
-
         //Collections search
         if ( substr($this->request->query['q'],0,13) == 'collection_id' ){
+             
             $collection_id = substr($this->request->query['q'],15,-1);
             //// Start SQL Area
             $db = new DATABASE_CONFIG;
@@ -273,7 +273,7 @@ class SearchController extends AppController {
             }
 
             $response['results'] = array();
-
+            
             $first = 1;
             foreach( $test as $row){
                 $temp_array = array();
@@ -282,12 +282,10 @@ class SearchController extends AppController {
                     $first = 0;
                 }
                 $temp_kid = $row['resource_kid'];
-
                 $pName = parent::convertKIDtoProjectName($temp_kid);
                 $pid = parent::getPIDFromProjectName($pName);
                 $sid = parent::getResourceSIDFromProjectName($pName);
                 $pageSid = parent::getPageSIDFromProjectName($pName);
-
                 //Get the Resources from Kora
                 $query = "kid,=,".$temp_kid;
 
@@ -296,7 +294,6 @@ class SearchController extends AppController {
                 $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
                 $resource = json_decode($kora->return_json(), true);
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
-
                 //permissions stuffs.
                 $username = NULL;
                 $usersC = new UsersController();
@@ -330,45 +327,50 @@ class SearchController extends AppController {
                     continue;
                 }
                 $temp_array['kid'] = $temp_kid;
+                /*echo json_encode($temp_array);
+                die;*/
 
                 $temp_array['collection_id'] = $row['id'];
 
                 //grab all pages with the resource associator
                 $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
                 $kora = new Advanced_Search($pid, $pageSid, $fields);
-
+                
                 if( $resource_type == 'Field journal' ) {
+                    
                     $temp_array['resource-type'] = $resource_type;
                     $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
                         "Scan_Number", "=", "1");
                 }else {
                     $kora->add_clause("Resource_Associator", "=", $temp_kid);
-                }
-
+                    //echo $temp_kid . " ";
+                };
                 $page2 = json_decode($kora->search(), true);
-
                 //Get the picture URL from the page results
                 $picture_url = '';
+                
                 if (isset(array_values($page2)[0])) {
                     $picture_url = array_values($page2)[0]['Image_Upload']['localName'];
                 }
-
+                
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){
                     $temp_array['thumb'] = $this->smallThumb($picture_url);
                 }else{
                     $temp_array['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
                 }
+                
                 array_push($response['results'], $temp_array );
+                
             }
             //return collections
             $response['total'] = count($response['results']);
             return $this->json(200, $response);
         }//finished collections search
-
+        
         //// Resource Type search - resources page - orphans
         if ( $this->request->query['q'] == 'Orphan,=,true' ){
-
+            
             //search for the orphaned pages with a limit.
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getPageSIDFromProjectName($pName);
@@ -390,13 +392,14 @@ class SearchController extends AppController {
 
             $returnResults = array();
             $count = 0;
+            
             foreach ($response['results'] as $page){
                 $count++;
                 if ($count > $limit && $limit != -1) {
                     $returnResults[0]['more_results'] = 1;
                     break;
                 }
-
+                
                 $temp['orphan'] = 'true';
 
                 $temp['kid'] = $page['kid'];
@@ -410,17 +413,19 @@ class SearchController extends AppController {
                 if (array_key_exists('Image_Upload', $page) && array_key_exists('localName', $page['Image_Upload']) ) {
                     $temp['thumb'] = $page['Image_Upload']['localName'];
                 }
-
+                
                 //Decide if there is a picture..
                 if ($temp['thumb'] != '') {
+                    echo $temp['thumb'];
                     $temp['thumb'] = $this->smallThumb($temp['thumb']);
                 } else {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
                 }
-
+                
                 array_push($returnResults, $temp);
+                
             }
-
+            
 
         }else {     // Resource type search - resources page
             //Get the Resources

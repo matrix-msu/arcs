@@ -557,7 +557,6 @@ class ResourcesController extends AppController {
     //collections show all button.. get all and send to search
     public function viewcollection($collection_id = null){
     //    print_r($collection_id);die;
-
         $username = NULL;
         $usersC = new UsersController();
         if ($user = $usersC->getUser($this->Auth)) {
