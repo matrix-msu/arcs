@@ -66,7 +66,7 @@ function Generate_Metadata(
             'Country' => 'list',
             'Region' => 'list',
             'Modern Name' => 'list',
-            'Persistent Name' => 'text',
+            'Persistent_Name' => 'text',
             'Location Identifier' => 'text',
             'Location Identifier Scheme' => 'text',
             'Geolocation' => 'multi_input',
@@ -198,7 +198,7 @@ function Generate_Metadata(
             'Earliest Date' => 'Earliest Research Activity',
             'Latest Date' => 'Latest Research Activity',
             'Records Archive' => 'Archive / Repository',
-            'Persistent Name' => 'Common Name',
+            'Persistent_Name' => 'Common Name',
             'Complex Title' => 'Associated Institution(s)',
             'Terminus Ante Quem' => 'Earliest Cultural Activity',
             'Terminus Post Quem' => 'Latest Cultural Activity',
@@ -341,6 +341,7 @@ function Generate_Metadata(
                             //build how the text value of the control should be displayed.
                             $text = '';
                             if( $type=='text'||$type=='list' ) {
+                                //echo json_encode($array);
                                 $text = $array[$control];
                             }elseif($type=='url'){
                                 $host_url = "http://$_SERVER[HTTP_HOST]";//$_SERVER[REQUEST_URI]";

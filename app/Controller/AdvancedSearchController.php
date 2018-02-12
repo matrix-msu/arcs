@@ -183,6 +183,10 @@ class AdvancedSearchController extends AppController
     }
     private function getControls($pid,$sid,$query) {
       // require symlink to the kora db
+      /*
+      TODO KORA3TODO
+      Make this hack thing work to get controls
+      */
       $kora = new Kora();
 
       global $db;

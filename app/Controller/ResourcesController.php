@@ -20,6 +20,7 @@
  use Lib\Kora;
  use Lib\Resource;
 
+
 App::import('Controller', 'Users');
 
 // Enum class for Permissions
@@ -554,7 +555,8 @@ class ResourcesController extends AppController {
     }
 
     //collections show all button.. get all and send to search
-    public function viewcollection($collection_id){
+    public function viewcollection($collection_id = null){
+    //    print_r($collection_id);die;
 
         $username = NULL;
         $usersC = new UsersController();
@@ -772,7 +774,6 @@ class ResourcesController extends AppController {
         $hasARealResource = false;
 
         foreach($resources_array as $resource){
-            echo "2";
             //get resource information
             $info_array = $this->getResource($resource);
 
@@ -812,24 +813,25 @@ class ResourcesController extends AppController {
                 }
             }
 
-            if( $info_array[$resource]["Excavation - Survey Associator"] != '') {
-                $exc_kids = $this->getFromKey($info_array, "Excavation - Survey Associator");
+
+            if( isset($info_array[$resource]["Excavation_-_Survey_Associator"])) {
+                $exc_kids = $this->getFromKey($info_array, "Excavation_-_Survey_Associator");
 
                 //get Season data
                 $excavation_array = $this->getExcavation($exc_kids);
                 $this->pushToArray($excavation_array, $excavations);
 
-                $season_kids = $this->getFromKey($excavation_array, "Season Associator");
+                $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
 
             }else{
-                $season_kids = $this->getFromKey($info_array, "Season Associator");
+                $season_kids = $this->getFromKey($info_array, "Season_Associator");
             }
 
             //get Season data
             $season_array = $this->getSeason($season_kids);
             $this->pushToArray($season_array, $seasons);
 
-            $project_kid = $this->getFromKey($season_array,"Project Associator")[0];
+            $project_kid = $this->getFromKey($season_array,"Project_Associator")[0];
             $info_array[$resource]['project_kid'] = $project_kid;
             $pName = parent::convertKIDtoProjectName($project_kid);
 
@@ -839,14 +841,16 @@ class ResourcesController extends AppController {
 
             //get pages and add to resource array
             $page = $this->getPages($resource);
-            $pageKids = array_keys($page);
+
 
             if(empty($page)) {
                 // creates a hacky solution to display a default page
                 // when there are no pages associated with the resource
                 // missing a lot of other information typically associated with a page
                 $page["DefaultPage"] = array();
-            }
+            }else{
+                $pageKids = array_keys($page);
+            }//noah idk if this is okay
 
             $info_array[$resource]["page"] = $page;
 
@@ -874,6 +878,7 @@ class ResourcesController extends AppController {
         if ( empty($resources) ) {
             $this->set("resourceAccess", false);
         }
+
         if( !isset($this->request->query['ajax'] ) && !isset($_GET['getRest'])){ //this is for a normal multi_view
             $metadataedits = $this->getEditMetadata();
             if($pName != '') {
@@ -1045,7 +1050,6 @@ class ResourcesController extends AppController {
         }
     }
     private function htmlifyControls($controlArray){
-
         foreach($controlArray as $control => $optionsArray){
             $optionsString = '';
             foreach($optionsArray as $option){
@@ -1056,10 +1060,16 @@ class ResourcesController extends AppController {
         return $controlArray;
     }
     private function getControls($pid,$sid,$query) {
+        return array();//REMOVE THIS WHEN THE CONTROLS GET FIXED
         // require symlink to the kora db
+        /*
+        TODO KORA3TODO
+        Make this hack thing work to get controls
+        */
         $kora = new Kora();
 
         global $db;
+
         $controls = array();
 
         $object = $db->query("SELECT * FROM p$pid" .

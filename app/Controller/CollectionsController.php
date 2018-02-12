@@ -25,10 +25,8 @@ class CollectionsController extends AppController {
      * Display all collections. Main collection page, initial collection list.
      */
     public function index() {
-        
-       //echo 'hi in index';
         $pName = explode('/', $this->request->query['url']);
-        
+
         if( isset($pName[1]) ){
             $isRealProject = parent::isRealProject($pName[1]);
             if(!$isRealProject){    //not a real project, so redirect.
@@ -38,7 +36,7 @@ class CollectionsController extends AppController {
 
         $path = func_get_args();
         $projectResourceKids = $this->getProjectResources($path[0]);
-        
+
         $this->Collection->recursive = -1;
 
         $user_id =  $this->Session->read('Auth.User.id');
@@ -82,11 +80,11 @@ class CollectionsController extends AppController {
                 ),  //only get public collections
                 'group' => 'collection_id'
             ));
-            
+
         }
 
         foreach( $collections as $key => $collection ){
-            
+
             $collections[$key]['Collection']['timeAgo'] = parent::time_elapsed_string($collection['Collection']['created']);
         }
 
@@ -105,8 +103,8 @@ class CollectionsController extends AppController {
         if( $authorString == '' ){  //html if none are found.
             $authorString = '<li><a class="author-filter" href="#">No Authors Available</a></li>';
         }
-        
-        
+
+
         //set variables for the view.
         $this->set('authors', $authorString);
         $this->set('collections', $collections);

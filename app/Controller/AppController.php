@@ -272,7 +272,7 @@ class AppController extends Controller
      * @return string the url to the thumb
      */
     public static function smallThumb($name, $pid='', $sid='')
-    {  
+    {
         if ($name === "") {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
