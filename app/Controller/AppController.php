@@ -277,7 +277,6 @@ class AppController extends Controller
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
 
-        $name = str_replace(' ', '_', $name); //url can't have spaces so replace
         // add 'thumbnail' inbetween 'PATH_TO_FILE' and 'filename.ext' so url looks like
         // PATH_TO_FILE/thumbnail/filename.ext
         /*$parts = explode("/", $name);
@@ -307,7 +306,6 @@ class AppController extends Controller
         if ($name === "") {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
-        $name = str_replace(' ', '_', $name); //url can't have spaces so replace
         $name = KORA_FILES_URI . $name;
         return $name;
     }
