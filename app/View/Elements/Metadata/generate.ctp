@@ -339,14 +339,9 @@ function Generate_Metadata(
                         $matchContributor = false;
                         $firstEmptyContributor = true;
                         foreach($controlTypes[$schemename] as $control => $type){
-                            if (!isset($array[$control])){
-                                $displayedControlName = $controlDisplayNames[$schemename][$control];
-                                //PUT A FLAG HERE
-                                echo "<tr>
-                                        <td>$displayedControlName</td>
-                                        <td></td>
-                                    </tr>";
-                                continue;
+                            if (!isset($array[$control])){ // if there is no metadata for the control type
+
+                                $array[$control] = "";
                             }
                             //build how the text value of the control should be displayed.
                             $text = '';
@@ -423,7 +418,7 @@ function Generate_Metadata(
                             if( $matchContributor == true ){
                                 $tmpControl = "Contributor_Role";
                                 $matchContributor = false;
-                            }elseif( fnmatch("Contributor *",$tmpControl) && $tmpControl != 'Contributor_Role' ){
+                            }elseif( fnmatch("Contributor*",$tmpControl) && $tmpControl != 'Contributor_Role' ){
                                 $tmpControl = "Contributor";
                                 if( $text == '' ){
                                     if( $firstEmptyContributor == true ){
@@ -470,11 +465,6 @@ function Generate_Metadata(
                                         <div class="icon-meta-lock">&nbsp;</div>
                                         <div>Pending Approval</div>';
                             }
-                            // if ($tmpControl == 'Archaeological_Culture'){
-                            //     echo "wewewewe";
-                            //     print_r($controlDisplayNames[$schemename]);
-                            //     die;
-                            // }
 
                             $displayedControlName = $controlDisplayNames[$schemename][$tmpControl];
 

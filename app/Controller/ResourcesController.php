@@ -476,10 +476,12 @@ class ResourcesController extends AppController {
         $pName = parent::convertKIDtoProjectName($id);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getPageSIDFromProjectName($pName);
+        parent::getK3Controls($pid, $sid);
 
         $fields = 'ALL';
         $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
         $page = json_decode($kora->return_json(), true);
+        //KORA3TODO NOT GETTING ANY RESULTS
 
         $page = $page[$id];
         $page['kora_url'] = KORA_FILES_URI.$pid."/".$sid."/";

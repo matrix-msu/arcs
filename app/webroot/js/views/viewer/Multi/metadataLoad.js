@@ -231,7 +231,8 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
       },
       'archival objects' : {
           'URL': 'Stable URL',
-          'Excavation_-_Survey_Associator' : 'Season(s) when Resource was created',
+          'Excavation_-_Survey_Associator' : 'Study(s) when Resource was created',
+          'Season_Associator' : 'Season(s) when Resource was created',
           'Resource_Identifier' : 'Resource Identifier',
           'Type' : 'Resource Type',
           'Title' : 'Title',
@@ -306,6 +307,10 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
         var matchContributor = false;
         var firstEmptyContributor = true;
         for (control in controlTypes[schemename]) {
+            //because kora3 returns undefined if it is empty
+            if(typeof item[control] == "undefined"){
+                item[control] = "";
+            }
             type = controlTypes[schemename][control];
             var text = '';
             if(type == 'text' || type == 'list') {
@@ -325,7 +330,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 text = link;
             }
             else if(type == 'multi_input' || type == 'multi_select' ) {
-                if(typeof item[control] != "string" && typeof item[control] != "undefined"){
+                if(typeof item[control] != "string"){
                     for (var i = 0; i < item[control].length; i++) {
                         text += item[control][i]+"<br>";
                     }
@@ -348,7 +353,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                         }
                     }
                 }
-                if(typeof item[control] != "string" && typeof item[control] != "undefined"){
+                if(typeof item[control] != "string"){
                     for (var i = 0; i < item[control].length; i++) {
                         if( aboveScheme !== false || aboveTwoSchemes !== false ){
                             text += item[control][i]+" ("+usedAboveScheme[item[control][i]][preview]+")<br>";
@@ -360,13 +365,13 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 }
             }
             else if (type == 'date') {
-                if (typeof item[control] != "string" && typeof item[control] != "undefined") {
+                if (typeof item[control] != "string") {
                     text += item[control]['year'] + "-" + item[control]['month'] + "-" +
                             item[control]['day'] + " " + item[control]['era'];
                 }
             }
             else if(type == 'terminus'){
-                if(typeof item[control] != "string" && typeof item[control] != "undefined"){
+                if(typeof item[control] != "string"){
                     if(item[control]['prefix']){
                         text = item[control]['prefix'] + " ";
                     }
@@ -382,7 +387,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 tmpControl = "Contributor_Role";
                 matchContributor = false;
             }
-            else if(tmpControl.indexOf("Contributor ") == 0 && tmpControl != 'Contributor_Role') {
+            else if(tmpControl.indexOf("Contributor") == 0 && tmpControl != 'Contributor_Role') {
                 tmpControl = "Contributor";
                 if( text == '' ){
                     if( firstEmptyContributor == true ){

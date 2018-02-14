@@ -33,10 +33,11 @@ function GetNewResource(id) {
                     //display obervatoins that apply to the selected page
                     var cnt = 0;
                     var pageNum = 1;
-                    $(image).attr('src', res["kora_url"] + res['Image Upload']['localName']);
+                    console.log(res); // KORA3TODO MAKE THIS IMAGE URL WORK
+                    $(image).attr('src', res["kora_url"] + res['Image_Upload']['localName']);
                     $('#PageImagePreloader').css('display', 'none');
                     $(image).css('display', 'block');
-                    document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image Upload']['localName'];
+                    document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image_Upload']['localName'];
                 }
             }
         });

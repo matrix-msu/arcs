@@ -458,4 +458,32 @@ class AppController extends Controller
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
+    public static function getK3Controls($pid, $sid) {
+        $url = KORA_FILES_URI.'api/projects/p'.$pid.'/'.'forms/f'.$sid.'/'.'fields';
+
+        $ch = curl_init();
+
+        //$headers = array("Accept: */*", "Content-Type: text/x-nquads");
+        //$headers = array("Accept: */*", "Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_HTTPGET, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        //curl_setopt($ch,CURLOPT_POSTFIELDS, $text);
+
+    	$result = curl_exec($ch);
+    	$info = curl_getinfo($ch);
+        curl_close($ch);
+
+        print_r($result);
+        print_r($info);
+        die;
+
+    }
+
+
+
+
+
 }

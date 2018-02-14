@@ -134,7 +134,11 @@ function dynamicPrep() {
             //find the season
             var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
                 .find("[id='Season_Associator']").attr('data-associations');
-
+                
+            if (typeof stringSeasonKids == 'undefined') {
+                //becasue kora returns undefined if something is not set
+                stringSeasonKids = ""
+            }
             var seasonKids = stringSeasonKids.split(' '); //turn into array
             seasonKids.pop(); //remove an empty index
             //todo- improve this to hide/show correct seasons**associated through excavation
