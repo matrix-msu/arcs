@@ -327,8 +327,6 @@ class SearchController extends AppController {
                     continue;
                 }
                 $temp_array['kid'] = $temp_kid;
-                /*echo json_encode($temp_array);
-                die;*/
 
                 $temp_array['collection_id'] = $row['id'];
 
@@ -343,7 +341,6 @@ class SearchController extends AppController {
                         "Scan_Number", "=", "1");
                 }else {
                     $kora->add_clause("Resource_Associator", "=", $temp_kid);
-                    //echo $temp_kid . " ";
                 };
                 $page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results
@@ -416,7 +413,6 @@ class SearchController extends AppController {
                 
                 //Decide if there is a picture..
                 if ($temp['thumb'] != '') {
-                    echo $temp['thumb'];
                     $temp['thumb'] = $this->smallThumb($temp['thumb']);
                 } else {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
@@ -538,7 +534,7 @@ class SearchController extends AppController {
                 //if the page wasn't found by key, then search through all pages manually.
                 if ($temp['thumb'] == '') {
                     foreach ($pages as $key2 => $item2) {
-                        if (in_array($temp["kid"],$pages[$key2]['Resource Associator'])) {
+                        if (in_array($temp["kid"],$pages[$key2]['Resource_Associator'])) {
                             $temp['thumb'] = $pages[$key2]['Image_Upload']['localName'];
                             unset($pages[$key2]); //delete that page to optimize
                             break;
