@@ -296,6 +296,7 @@ class AppController extends Controller
         }
         $name = rtrim($name, "/");*/
         $name = KORA_FILES_URI . $name;
+        
         return $name;
     }
 
@@ -464,8 +465,9 @@ class AppController extends Controller
     }
 
     public static function getK3Controls($pid, $sid) {       //parent::getK3Controls($pid, $sid); 
-        $url = KORA_FILES_URI.'api/projects/p'.$pid.'/'.'forms/f'.$sid.'/'.'fields';
-
+//        $url = KORA_FILES_URI.'api/projects/p'.$pid.'/'.'forms/f'.$sid.'/'.'fields';
+        $url = KORA_RESTFUL_URL.'projects/ARCS_Isthmia/forms/Project/fields';
+        //echo $url;die;
         $ch = curl_init();
 
         //$headers = array("Accept: */*", "Content-Type: text/x-nquads");
@@ -480,9 +482,12 @@ class AppController extends Controller
     	$result = curl_exec($ch);
     	$info = curl_getinfo($ch);
         curl_close($ch);
-
-        print_r($result);
-        print_r($info);
+        echo "result: ";
+        $result = json_decode($result);
+        $temp = $result[2545];
+        print_r($temp);
+        echo " end result.";
+        //print_r($info);
         die;
 
     }
