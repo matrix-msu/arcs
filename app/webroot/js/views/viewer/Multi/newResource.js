@@ -104,9 +104,7 @@ function pageSelectBuild(firstid) {
     }
 
     current = i;
-    console.log(keys);
     var kid = keys[current];
-    console.log(kid);
     GetNewResource(kid);
     }
 

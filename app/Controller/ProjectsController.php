@@ -72,9 +72,9 @@ class ProjectsController extends AppController {
             $kora = new General_Search($pid, $projectSid, 'kid', '!=', '', $fields);
             $projectstemp[] = json_decode($kora->return_json(), true);
         }
-        
+
         $projects = array();
-        
+
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
@@ -137,10 +137,10 @@ class ProjectsController extends AppController {
         $server_output = json_decode($kora->search(), true);
 
 
-        $fields = array('Title');
+        $fields = 'KID';
         $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-        $allResources = json_decode($kora->return_json(), true);
-        $projectResourceKids = array_keys($allResources); //all resource kids in the project. for collections
+        $projectResourceKids = json_decode($kora->return_json(), true);
+        //all resource kids in the project. for collections
 
 
         $sid = static::getProjectSIDFromProjectName($proj);
@@ -257,7 +257,7 @@ class ProjectsController extends AppController {
 					array( 'Collection.public' => '2'),
 					array( 'Collection.public' => '3'),
 					array( 'Collection.user_id' => $user_id)
-				), 'resource_kid' => $projectResourceKids),
+				), 'Collection.resource_kid LIKE' => "$pid-%"),
 				'group' => 'collection_id',
 				'limit' => 10
 			));
@@ -284,7 +284,7 @@ class ProjectsController extends AppController {
 			$collections = $this->Collection->find('all', array(
 				'order' => 'Collection.modified DESC',
 				'conditions' => array('Collection.public' => '1',  //only get public collections
-					'resource_kid' => $projectResourceKids),
+					'Collection.resource_kid LIKE' => "$pid-%"),
 				'group' => 'collection_id',
 				'limit' => 10
 			));

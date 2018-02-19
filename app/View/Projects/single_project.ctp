@@ -87,7 +87,7 @@
 						<li class="resource-thumb">
 						  <span style="cursor:pointer">
 						  <a>
-						  <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+  						  <!--<img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">  -->
 						  </a>
 						  </span><br>
 						  <h class="resource-title">Resource Title</h><br>
@@ -96,7 +96,7 @@
 					   <li class="resource-thumb">
 						  <span style="cursor:pointer">
 						  <a>
-						  <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+					  <!--<img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">  -->
 						  </a>
 						  </span><br>
 						  <h class="resource-title">Resource Title</h><br>
@@ -105,7 +105,7 @@
 					   <li class="resource-thumb">
 						  <span style="cursor:pointer">
 						  <a>
-						  <img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">
+						  <!--<img class="resource_imginfo_2" src="http://kora.matrix.msu.edu/files/123/738/7B-2E2-B-90-72-HEX-001-010.jpeg">  -->
 						  </a>
 						  </span><br>
 						  <h class="resource-title">Resource Title</h><br>
@@ -156,8 +156,8 @@
                     //echo json_encode($projectUsers);
                     $html4 = '<div id="searchBox"><form class="uploadForm single-project-chosen-choices" id="urlform" method="post" enctype="multipart/form-data" style="visibility:hidden;">
 	                            <fieldset class="users-fieldset">
-                                <select id ="urlAuthor" 
-                                    data-placeholder="SEARCH FOR USERS THAT ARE A PART OF THE PROJECT" 
+                                <select id ="urlAuthor"
+                                    data-placeholder="SEARCH FOR USERS THAT ARE A PART OF THE PROJECT"
                                     multiple class="chosen-select" style="width:90%;"
                                 >';
                     $index = 0;

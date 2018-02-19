@@ -35,7 +35,8 @@ class CollectionsController extends AppController {
         }
 
         $path = func_get_args();
-        $projectResourceKids = $this->getProjectResources($path[0]);
+        //$projectResourceKids = $this->getProjectResources($path[0]);
+        $pid = parent::getPIDFromProjectName($path[0]);
 
 
         $this->Collection->recursive = -1;
@@ -50,7 +51,7 @@ class CollectionsController extends AppController {
                     array( 'Collection.public' => '2'),
                     array( 'Collection.public' => '3'),
                     array( 'Collection.user_id' => $user_id)
-                ),  'Collection.resource_kid LIKE' => "$hex-%"),
+                ),  'Collection.resource_kid LIKE' => "$pid-%"),
                 'group' => 'collection_id'
             ));
 
@@ -78,7 +79,7 @@ class CollectionsController extends AppController {
                 'order' => 'Collection.modified DESC',
                 'conditions' => array(
                     'Collection.public' => '1',
-                    'resource_kid' => $projectResourceKids
+                    'Collection.resource_kid LIKE' => "$pid-%"
                 ),  //only get public collections
                 'group' => 'collection_id'
             ));
@@ -115,16 +116,14 @@ class CollectionsController extends AppController {
     /**
      *  get all resource kids in a project based on the project name.
      */
-    protected function getProjectResources($pName){
-        $pid = parent::getPIDFromProjectName(strtolower($pName));
-        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
-        //$fields = array('Title');
-        $fields = 'KID';
-        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-        $allResources = json_decode($kora->return_json(), true);
-        return $allResources;
-        //return array_keys($allResources);
-    }
+    // protected function getProjectResources($pName){
+    //     $pid = parent::getPIDFromProjectName(strtolower($pName));
+    //     $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
+    //     $fields = 'KID';
+    //     $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
+    //     $allResources = json_decode($kora->return_json(), true);
+    //     return $allResources;
+    // }
 
 /*    public function testK3Projects($pName = 'isthmia'){
         $pid = parent::getPIDFromProjectName(strtolower($pName));
@@ -360,8 +359,10 @@ class CollectionsController extends AppController {
         $user_id =  $this->Session->read('Auth.User.id');
 
         if (isset($this->request->query['pName'])) {
+            $pid = parent::getPIDFromProjectName($this->request->query['pName']);
 
-            $projectResourceKids = $this->getProjectResources($this->request->query['pName']);
+
+            //$projectResourceKids = $this->getProjectResources($this->request->query['pName']);
 
             if ($user_id !== null) { //signed in
                 $collections = $this->Collection->find('all', array(
@@ -371,7 +372,7 @@ class CollectionsController extends AppController {
                         array('Collection.public' => '2'),
                         array('Collection.public' => '3'),
                         array('Collection.user_id' => $user_id)
-                    ), 'resource_kid' => $projectResourceKids),
+                    ), 'Collection.resource_kid LIKE' => "$pid-%"),
                     'group' => 'collection_id'
                 ));
 
@@ -398,7 +399,7 @@ class CollectionsController extends AppController {
                     'order' => 'Collection.modified DESC',
                     'conditions' => array(
                         'Collection.public' => '1',
-                        'resource_kid' => $projectResourceKids
+                        'Collection.resource_kid LIKE' => "$pid-%"
                     ),  //only get public collections
                     'group' => 'collection_id'
                 ));

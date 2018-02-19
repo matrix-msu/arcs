@@ -219,7 +219,7 @@
 		<div class='fullscreenOverlay'>
 			<div class='fullscreenOuter'>
 				<div class='fullscreenInner'>
-					<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'>
+					<!--<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'> -->
 				</div>
 			</div>
       <ul class="fullscreen-toolbar">
@@ -395,7 +395,7 @@
 
                 <div class="accordion metadata-accordion">
                     <!-- h3 class="level-tab" style="cursor:default;display:none;">Page
-                        
+
                     </h3 -->
                     <div class="level-content" style="overflow-y: scroll;height:100%!important;">
                         <table id="Project">
