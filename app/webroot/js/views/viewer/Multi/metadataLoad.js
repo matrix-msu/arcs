@@ -19,12 +19,12 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
               count++;
                 var subject = data[key];
                 html += '<li class="soo-li"';
-                if (subject['Pages Associator'] != undefined && subject['Pages Associator'][0] != undefined) {
-                    html += 'data-pageKid="'+subject['Pages Associator'][0]+'" data-sooKid="'+subject['kid']+'"';
+                if (subject['Pages_Associator'] != undefined && subject['Pages_Associator'][0] != undefined) {
+                    html += 'data-pageKid="'+subject['Pages_Associator'][0]+'" data-sooKid="'+subject['kid']+'"';
                 }
                 html += '><a href="#soo-'+count+'" class="soo-click'+count+' soo-click">';
-                if (subject['Pages Associator'][0] != page_associator) {
-                    page_associator = subject['Pages Associator'][0];
+                if (subject['Pages_Associator'][0] != page_associator) {
+                    page_associator = subject['Pages_Associator'][0];
                     count = 1;
                 }
                 html += count+'</a></li>';

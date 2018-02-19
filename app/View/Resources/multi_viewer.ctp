@@ -437,7 +437,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
                   foreach ($page as $p) {
 
-                      $img = isset($p['Image Upload']['localName']) ? $p['Image Upload']['localName'] : "";
+                      $img = isset($p['Image_Upload']['localName']) ? $p['Image_Upload']['localName'] : "";
                       echo "<a class = 'other-resources' id = '".$r['kid']."'><img class = 'other-resource'";
                       if(isset($p['kid'])) {
                           echo "id = '" . $p['kid'] . "'";
@@ -494,8 +494,8 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
         <?php
 
             $p = $r['page'];
-            $p = isset(array_values($p)[0]['Image Upload']['localName'])?
-            array_values($p)[0]['Image Upload']['localName'] : "";
+            $p = isset(array_values($p)[0]['Image_Upload']['localName'])?
+            array_values($p)[0]['Image_Upload']['localName'] : "";
          ?>
         <a class='other-resources' data-projectKid="<?=$r['project_kid']?>" >
 

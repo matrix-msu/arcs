@@ -38,12 +38,12 @@ class OrphansController extends AppController{
 
             $page = $page[$kid];
             $tempArray = array(
-                'Image Original Name' => $page['Image Upload']['originalName'],
-                'Image Local Name' => $page['Image Upload']['localName'],
-                'Image Size' => $page['Image Upload']['size'],
-                'Image Type' => $page['Image Upload']['type']
+                'Image Original Name' => $page['Image_Upload']['originalName'],
+                'Image Local Name' => $page['Image_Upload']['localName'],
+                'Image Size' => $page['Image_Upload']['size'],
+                'Image Type' => $page['Image_Upload']['type']
             );
-            $uploadIndex = array_search("Image Upload",array_keys($page));
+            $uploadIndex = array_search("Image_Upload",array_keys($page));
             $page = array_slice($page, 0, $uploadIndex, true) +
                 $tempArray +
                 array_slice($page, $uploadIndex, count($page) - 1, true) ;
@@ -55,7 +55,7 @@ class OrphansController extends AppController{
                 $page['linkers'],
                 $page['systimestamp'],
                 $page['recordowner'],
-                $page['Image Upload']
+                $page['Image_Upload']
             );
             $this->set('image', KORA_FILES_URI.$pid."/".$sid."/".$page['Image Local Name']);
             $this->set('pageMetadata', $page);

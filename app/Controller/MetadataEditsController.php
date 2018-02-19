@@ -90,29 +90,29 @@ class MetadataEditsController extends AppController {
             $pName = parent::convertKIDtoProjectName($this->request->data['meta_kid']);
             $sid = '';
             $fields = '';
-            if( $this->request->data['scheme_name'] == 'Project Associator' ){
+            if( $this->request->data['scheme_name'] == 'Project_Associator' ){
                 $sid = parent::getProjectSIDFromProjectName($pName);
-                $fields = array('Name','Country','Persistent Name','Modern Name');
+                $fields = array('Name','Country','Persistent_Name','Modern_Name');
 
             }elseif( $this->request->data['scheme_name'] == 'Season Associator' ){
                 $sid = parent::getSeasonSIDFromProjectName($pName);
                 $fields = array('Title','Type','Director','Registrar');
 
-            }elseif( $this->request->data['scheme_name'] == 'Excavation - Survey Associator' ){
+            }elseif( $this->request->data['scheme_name'] == 'Excavation_-_Survey Associator' ){
                 $sid = parent::getSurveySIDProjectName($pName);
                 $fields = array('Name','Type');
 
-            }elseif( $this->request->data['scheme_name'] == 'Resource Associator' ){
+            }elseif( $this->request->data['scheme_name'] == 'Resource_Associator' ){
                 $sid = parent::getResourceSIDFromProjectName($pName);
                 $fields = array('Resource Identifier','Type','Title');
 
-            }elseif( $this->request->data['scheme_name'] == 'Pages Associator' ){
+            }elseif( $this->request->data['scheme_name'] == 'Pages_Associator' ){
                 $sid = parent::getPageSIDFromProjectName($pName);
-                $fields = array('Format','Type','Image Upload', 'Resource Identifier');
+                $fields = array('Format','Type','Image_Upload', 'Resource_Identifier');
 
-            }elseif( $this->request->data['scheme_name'] == 'Subject of Observation Associator' ){
+            }elseif( $this->request->data['scheme_name'] == 'Subject_of_Observation_Associator' ){
                 $sid = parent::getSubjectSIDFromProjectName($pName);
-                $fields = array('Resource Identifier','Artifact - Structure Location','Artifact - Structure Description');
+                $fields = array('Resource_Identifier','Artifact_-_Structure Location','Artifact_-_Structure_Description');
             }
 
             //Get the Resources from Kora

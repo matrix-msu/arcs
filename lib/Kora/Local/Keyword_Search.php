@@ -129,7 +129,7 @@ class Keyword_Search extends Kora
         $terms = explode(" ", trim($query));
         $terms = self::queryFilter($terms);
         $terms = self::dateFilter($terms);
-        
+
         $resourcesFromSOO = $this->_searchSOO($terms, $project);
 
         $clause = $this->_clauseGen(
@@ -517,14 +517,14 @@ class Keyword_Search extends Kora
         self::search();
 
         foreach ($this->comprehensive_results as $key => $value) {
-            $projAssoc = isset($value["Project_Associator"][0])?$value["Project_Associator"][0]:"";    
+            $projAssoc = isset($value["Project_Associator"][0])?$value["Project_Associator"][0]:"";
             if (isset($value['Title'])) {
                 $season[$key] = array(
                 "Name" => $value['Title'],
                 "Project Associator" => $projAssoc
                 );
             }
-            
+
         }
         return $season;
 

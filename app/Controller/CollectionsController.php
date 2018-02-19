@@ -37,6 +37,7 @@ class CollectionsController extends AppController {
         $path = func_get_args();
         $projectResourceKids = $this->getProjectResources($path[0]);
 
+
         $this->Collection->recursive = -1;
 
         $user_id =  $this->Session->read('Auth.User.id');
@@ -49,9 +50,10 @@ class CollectionsController extends AppController {
                     array( 'Collection.public' => '2'),
                     array( 'Collection.public' => '3'),
                     array( 'Collection.user_id' => $user_id)
-                ), 'resource_kid' => $projectResourceKids),
+                ),  'Collection.resource_kid LIKE' => "$hex-%"),
                 'group' => 'collection_id'
             ));
+
 
             //remove all the public 3 collections that the user isn't a part of
             $count = 0;
@@ -116,10 +118,12 @@ class CollectionsController extends AppController {
     protected function getProjectResources($pName){
         $pid = parent::getPIDFromProjectName(strtolower($pName));
         $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
-        $fields = array('Title');
+        //$fields = array('Title');
+        $fields = 'KID';
         $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         $allResources = json_decode($kora->return_json(), true);
-        return array_keys($allResources);
+        return $allResources;
+        //return array_keys($allResources);
     }
 
 /*    public function testK3Projects($pName = 'isthmia'){

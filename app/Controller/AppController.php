@@ -463,7 +463,7 @@ class AppController extends Controller
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
-    public static function getK3Controls($pid, $sid) {
+    public static function getK3Controls($pid, $sid) {       //parent::getK3Controls($pid, $sid); 
         $url = KORA_FILES_URI.'api/projects/p'.$pid.'/'.'forms/f'.$sid.'/'.'fields';
 
         $ch = curl_init();

@@ -1544,10 +1544,10 @@ class UsersController extends AppController
             echo "You don't have the project permissions necessary to do this.";
             die;
         }
-        $search = new General_Search($pid, $pageSid, 'kid', '!=', '0',['Image Upload']);
+        $search = new General_Search($pid, $pageSid, 'kid', '!=', '',['Image_Upload']);
         $results = $search->return_array();
         foreach( $results as $page ){
-            $localName = @$page['Image Upload']['localName'];
+            $localName = @$page['Image_Upload']['localName'];
             $this->smallThumb($localName,$pid,$pageSid);
         }
         print_r('All thumbnails have been successfully created!');
