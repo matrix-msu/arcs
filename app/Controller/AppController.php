@@ -119,15 +119,20 @@ class AppController extends Controller
     }
     public static function getProjectNameFromPID($pid)
     {
+         
         if (isset($GLOBALS['PID_ARRAY'])) {
+            
             if ( array_search($pid, $GLOBALS['PID_ARRAY']) ) {
+                
                 return array_search($pid, $GLOBALS['PID_ARRAY']);
             } else {
+                
                 throw new ArcsException(ErrorCodes::ProjectNameNotFound);
             }
         } else {
             throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound);
         }
+         
     }
     public static function getProjectSIDFromProjectName($name)
     {

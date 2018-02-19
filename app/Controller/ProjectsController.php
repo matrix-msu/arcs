@@ -73,7 +73,7 @@ class ProjectsController extends AppController {
             $projectstemp[] = json_decode($kora->return_json(), true);
         }
         $projects = array();
-
+        
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }

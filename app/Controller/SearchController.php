@@ -482,17 +482,17 @@ class SearchController extends AppController {
                 }
                 $resourceKidArray[] = $key;
             }
-
+            /*echo json_encode($resourceKidArray); die;*/
             //using the array and 'in' this way because it's much faster.
             if( $query_array[2] == 'Field journal' ) {
                 $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
                     "Scan_Number", "=", "1");
+//                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
             }else {
                 $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
             }
-
             $pages = json_decode($kora->search(), true);
-
+            
             //get the info from the resources and pages
             $returnResults = array();
             $count = 0;

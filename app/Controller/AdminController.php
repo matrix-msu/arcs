@@ -27,13 +27,15 @@ class AdminController extends AppController {
     );
 
     public function beforeFilter() {
+       
         parent::beforeFilter();
+        
         if (!$this->Access->isAdmin()) {
             $this->Session->setFlash('You must be an Admin to access the Admin ' .
                 ' console.', 'flash_error');
             $this->redirect('/');
         }
-
+        
         $mappings = $this->Mapping->find('all', array(
             'conditions' => array(
                 'Mapping.role' => 'Admin',
@@ -41,7 +43,8 @@ class AdminController extends AppController {
                 'Mapping.status' => 'confirmed'
             )
         ));
-        if( empty($mappings) ){
+        
+        if( empty($mappings) ){ 
             $this->Session->setFlash('You must be an Admin to access the Admin ' .
                 ' console.', 'flash_error');
             $this->redirect('/');
@@ -57,15 +60,17 @@ class AdminController extends AppController {
                 $otherParams = implode("/", $this->request->params['pass']);
             }
         }
-
+        
         if( isset($_SESSION['currentProjectName']) ){
             $first = false;
         }
 
         $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;margin-top:200px" >';
-
+        
         foreach ($mappings as $map) {
+            
             $name = parent::getProjectNameFromPID($map['Mapping']['pid']);
+            
             if ($name != '') {
                 if( $first == true ){
                     $_SESSION['currentProjectName'] = $name;
@@ -79,6 +84,7 @@ class AdminController extends AppController {
                 }
             }
         }
+        
         $projectPicker .= "</select>";
 
         $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$_SESSION['currentProjectName']."/".$otherParams;
@@ -236,16 +242,17 @@ class AdminController extends AppController {
      * View resource and collection flags.
      */
     public function flags() {
+        
         $pName = $this->request->params['pass'][0];
         $pid = parent::getPIDFromProjectName($pName);
 
         $pid = explode('-', $pid)[0];
-        $hex = dechex($pid);
-
+//        $hex = dechex($pid);
+        //echo $hex;die;
         $this->set('flags', $this->Flag->find('all', array(
             'order' => 'Flag.created DESC',
             'conditions' => array(
-                'Flag.resource_kid LIKE' => "$hex%"
+                'Flag.resource_kid LIKE' => "$pid-%"
             )
         )));
     }
@@ -282,6 +289,7 @@ class AdminController extends AppController {
 
 
     public function metadata_edits(){
+        echo "<script>console.log('test');</script>";
         $metadata = $this->MetadataEdit->find('all', array());
         $resultsArray = array();
         $count = 0;

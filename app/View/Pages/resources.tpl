@@ -73,7 +73,7 @@
 <div class="greybg">
       <div class = "projectIntro">
         <h1 class="title">Search</h1>
-        <p>Vommit food and eat it again leave fur on owners clothes purr for no reason shake treat bag lounge in doorway or make meme, make cute face. Run in circles if it fits, i sits but peer out window, chatter at birds, lure them to mouth damn that dog stick butt in face leave fur on owners clothes jump off balcony, onto stranger's head.
+        <p>Search for stuff here!
         </p>
       </div>
   <br>
