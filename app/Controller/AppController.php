@@ -483,8 +483,9 @@ class AppController extends Controller
     	$info = curl_getinfo($ch);
         curl_close($ch);
         echo "result: ";
-        $result = json_decode($result);
-        $temp = $result[2545];
+        $result = json_decode($result, true);
+        //$result_arr = json_decode(json_encode($result), true);
+        $temp = $result[2530]['options']["Options"][0];
         print_r($temp);
         echo " end result.";
         //print_r($info);
