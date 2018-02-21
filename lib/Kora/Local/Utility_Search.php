@@ -5,7 +5,8 @@ require_once("Kora.php");
 require_once("Advanced_Field_Search.php");
 
 use Lib\Kora;
-use Lib\KORA_Clause;
+//use Lib\KORA_Clause;
+use \App\FieldHelpers\KORA_Clause;
 use kora\local\Advanced_Field_Search;
 
 class Utility_Search extends Kora{
@@ -24,7 +25,6 @@ class Utility_Search extends Kora{
     $pages = parent::search();
 
     if (!empty($pages)) {
-
         $associators = Advanced_Field_Search::getAssociatorLinks(
           $pages, "Resource Associator"
         );

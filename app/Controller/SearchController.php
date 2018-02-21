@@ -134,13 +134,19 @@ class SearchController extends AppController {
           echo json_encode($results);
 
         } else {
+            //echo 'in simple single project';
           $preFilter = $this->getResourcesFromKeyword($project, $query);
           // Kora Search
           $keySearch = new Keyword_Search($preFilter);
           $keySearch->execute($query,$project);
+          //echo 'finished execute';die;
           $results = $keySearch->getResultsAsArray();
 
+//            echo 'before';
+//            echo json_encode($results);
+//            die;
           ResourcesController::filterByPermission($username, $results['results']);
+            //echo 'after';
 
           echo json_encode($results);
         }

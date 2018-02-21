@@ -259,12 +259,12 @@
     Router::connect('/search/keyword/*',
         array('controller' => 'search', 'action' => 'keywordSearch')
     );
-    Router::connect('/simple_search/*',
-        array('controller' => 'AdvancedSearch', 'action' => 'simpleSearchWrapper')
-    );
 //    Router::connect('/simple_search/*',
-//        array('controller' => 'search', 'action' => 'simple_search')
+//        array('controller' => 'AdvancedSearch', 'action' => 'simpleSearchWrapper')
 //    );
+    Router::connect('/simple_search/*',
+        array('controller' => 'search', 'action' => 'simple_search')
+    );
     Router::connect('/api/simple_search/***',
         array('controller' => 'search', 'action' => 'simple_search')
     );

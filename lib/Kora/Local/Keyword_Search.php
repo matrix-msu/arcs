@@ -140,7 +140,14 @@ class Keyword_Search extends Kora
             ), $terms
         );
 
-        if ($this->preFilter) {
+        //echo json_encode($terms);echo 'after';die;
+
+
+//        print_r($clause);
+//        print_r($this->preFilter);
+//        die;
+
+        if( $this->preFilter != array(0=>'empty') ){
           $keywordFilter = new KORA_Clause("kid", "IN", $this->preFilter);
           $clause = new KORA_Clause($clause, "OR", $keywordFilter);
         }
@@ -151,15 +158,26 @@ class Keyword_Search extends Kora
         $token = parent::getTokenFromProjectName($project);
         $this->set_search_parameters($query, $pid, $rid, $token, $clause);
 
+        //echo print_r(array($query, $pid, $rid, $token, $clause));
+
         //do the keyword search
         $resourcesFromResource = parent::search();
 
+        //echo json_encode($resourcesFromSOO);die;
+//        echo 'before return';
+        echo json_encode($resourcesFromResource);die;
+
+
+
         $this->formulatedResult = $this->koraSort(
             array_merge($resourcesFromResource, $resourcesFromSOO),
-            "Resource Identifier",
+            "Resource_Identifier",
             $pid,
             $rid
         );
+
+        //echo 'korasort:';
+        //echo json_encode($this->formulatedResult);die;
 
         $extra_data = array(
             "Return_Count_SOO"=>count($resourcesFromSOO),
@@ -189,6 +207,15 @@ class Keyword_Search extends Kora
 
     }
     private function koraSort($result, $field, $pid, $sid) {
+//        $fields = array("Title", "Type","Resource_Identifier", "Permissions", "Special_User");
+//        $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+//        $sort = array();    //Use this to turn of the sorting
+//        $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
+//        $kora->add_clause("kid", "!=", '');
+
+
+
+
         $result_keys = array_keys($result);
         if (empty($result_keys)) {
             $result_keys = array("empty");
@@ -201,21 +228,21 @@ class Keyword_Search extends Kora
             )
         );
         $fields = array(
-            "Excavation - Survey Associator",
+            "Excavation_-_Survey Associator",
             "Title",
             "Type",
-            "Resource Identifier",
-            "Accession Number",
+            "Resource_Identifier",
+            "Accession_Number",
             "Creator",
             "Creator2",
             "systimestamp",
             "recordowner",
-            "Earliest Date",
-            "Latest Date",
+            "Earliest_Date",
+            "Latest_Date",
             "Permissions",
          );
 
-        $kora = new Advanced_Search($pid, $sid, $fields,0,0,$sort);
+        $kora = new Advanced_Search($pid, $sid, $fields,null,null,$sort);
         $kora->add_clause("kid", "IN", $result_keys);
         $kora->search();
         return $kora->getResultsAsArray();
@@ -297,7 +324,7 @@ class Keyword_Search extends Kora
             foreach ($array as $term) {
                 $innerClause = array();
                 foreach ($query as $q) {
-                    $clause = new KORA_Clause($term, $condition, "%$q%");
+                    $clause = new KORA_Clause($term, $condition, "$q");
                     array_push($innerClause, $clause);
                 }
                 $joins = $innerClause[0];
@@ -315,7 +342,7 @@ class Keyword_Search extends Kora
         } else {
             $clauses = array();
             foreach ($array as $term) {
-                $clause = new KORA_Clause($term, $condition, "%$query%");
+                $clause = new KORA_Clause($term, $condition, "$query");
                 array_push($clauses, $clause);
             }
             $joins = $clauses[0];
