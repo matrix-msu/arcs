@@ -1005,12 +1005,7 @@ class ResourcesController extends AppController {
         $pCid = parent::getK3Controls($pid, $sid, $names, 'Project');
 
         $sid = parent::getSeasonSIDFromProjectName($project);
-        /*$query = "name = 'Type' OR
-                  name = 'Director' OR
-                  name = 'Registrar' OR
-                  name = 'Sponsor' OR
-                  name = 'Contributor' OR
-                  name = 'Contributor Role'";*/
+        
         $names = array('Type', 
                        'Director', 
                        'Registrar', 
@@ -1021,18 +1016,12 @@ class ResourcesController extends AppController {
         $sCid = parent::getK3Controls($pid, $sid, $names, 'Season');
 
         $sid = parent::getSurveySIDProjectName($project);
-        /*$query = "name = 'Type' OR
-                  name = 'Supervisor'";*/
+       
         $names = array('Type', 'Supervisor');
         $eCid = parent::getK3Controls($pid, $sid, $names, 'Excavation_-_Survey');
 
         $sid = parent::getResourceSIDFromProjectName($project);
-       /* $query = "name = 'Type' OR
-                  name = 'Creator' OR
-                  name = 'Creator Role' OR
-                  name = 'Condition' OR
-                  name = 'Access Level' OR
-                  name = 'Language'";*/
+       
         $names = array('Type', 
                        'Creator', 
                        'Creator Role', 
@@ -1043,17 +1032,7 @@ class ResourcesController extends AppController {
         $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
 //structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
-        /*$query = "name = 'Artifact - Structure Classification' OR
-                  name = 'Artifact - Structure Type' OR
-                  name = 'Artifact - Structure Excavation Unit' OR
-                  name = 'Artifact - Structure Location' OR
-                  name = 'Artifact - Structure Material' OR
-                  name = 'Artifact - Structure Technique' OR
-                  name = 'Artifact - Structure Archaeological Culture' OR
-                  name = 'Artifact - Structure Period' OR
-                  name = 'Artifact - Structure Creator' OR
-                  name = 'Artifact - Structure Condition' OR
-                  name = 'Artifact - Structure Subject'";*/
+        
         $names = array('Artifact - Structure Type', 
                        'Artifact - Structure Excavation Unit', 
                        'Artifact - Structure Location', 

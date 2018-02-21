@@ -467,9 +467,7 @@ class AppController extends Controller
     //takes pid, sid, list of field names, and the internal form name in kora3
     //returns an object of key:value which are 'field name':[field options]
     public static function getK3Controls($pid, $sid, $names, $form_name) {
-        //return array();
         $url = KORA_RESTFUL_URL.'projects/ARCS_Isthmia/forms/'.$form_name.'/fields';
-        //echo $url; die;
         $ch = curl_init();
         $controls = array();
         
@@ -491,8 +489,6 @@ class AppController extends Controller
             }
         }
         
-        //echo json_encode($controls); echo "<br/><br/>";
-//        die;
         return $controls;
     }
 
