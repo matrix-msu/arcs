@@ -844,14 +844,18 @@ class ResourcesController extends AppController {
             $page = $this->getPages($resource);
 
 
+
+
+//http://dev2.matrix.msu.edu/k3alpha/public/app/files/p34/f171/r221663/fl2617/IA_94-006.jpg
             if(empty($page)) {
+                echo "asdf";die;
                 // creates a hacky solution to display a default page
                 // when there are no pages associated with the resource
                 // missing a lot of other information typically associated with a page
                 $page["DefaultPage"] = array();
             }else{
                 $pageKids = array_keys($page);
-            }//noah idk if this is okay
+            }
 
             $info_array[$resource]["page"] = $page;
 

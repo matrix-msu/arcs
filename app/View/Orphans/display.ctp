@@ -219,7 +219,7 @@
 		<div class='fullscreenOverlay'>
 			<div class='fullscreenOuter'>
 				<div class='fullscreenInner'>
-					<!--<img id='fullscreenImage' class='fullscreenImage' src='http://kora.matrix.msu.edu/files/123/738/7B-2E2-1A-90-72-HEX-001-040.jpeg'> -->
+					<img id='fullscreenImage' class='fullscreenImage' src=''>
 				</div>
 			</div>
       <ul class="fullscreen-toolbar">

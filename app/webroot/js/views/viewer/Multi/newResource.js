@@ -7,6 +7,7 @@ function GetNewResource(id) {
         return;
     }
     else if(id.includes("default-page")) {
+        console.log('in default page');
         // if there are no pages, and the id contains default-page then set image to default resource
         image.src = '/' + BASE_URL + 'img/DefaultResourceImage.svg';
         var resourceKid = id.replace('-default-page', '');
@@ -38,10 +39,12 @@ function GetNewResource(id) {
                     $('#PageImagePreloader').css('display', 'none');
                     $(image).css('display', 'block');
 
+                    console.log('getting url');
                     var fullImage = document.getElementById('fullscreenImage');
-                    if (fullImage != null) {
-                        fullImage.src = res["kora_url"] + res['Image_Upload']['localName'];
-                    }
+                    var imgUrl = res["kora_url"] + res['Image_Upload']['localName'];
+                    console.log('img url: ');
+                    console.log(imgUrl);
+                    fullImage.src = imgUrl;
                 }
             }
         });
