@@ -182,6 +182,7 @@ class AdvancedSearchController extends AppController
         return json_encode($resources);
     }
     private function getControls($pid,$sid,$query) {
+        return array();
       // require symlink to the kora db
       /*
       TODO KORA3TODO

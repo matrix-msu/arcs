@@ -845,10 +845,9 @@ class ResourcesController extends AppController {
 
 
 
-
+// kora3todo why are some pages empty?
 //http://dev2.matrix.msu.edu/k3alpha/public/app/files/p34/f171/r221663/fl2617/IA_94-006.jpg
             if(empty($page)) {
-                echo "asdf";die;
                 // creates a hacky solution to display a default page
                 // when there are no pages associated with the resource
                 // missing a lot of other information typically associated with a page
@@ -994,57 +993,51 @@ class ResourcesController extends AppController {
         $pid = parent::getPIDFromProjectName($project);
 
         $sid = parent::getProjectSIDFromProjectName($project);
-        $names = array('Country', 
-                       'Region', 
-                       'Modern Name',
-                       'Records Archive', 
-                       'Period', 
-                       'Archaeological Culture', 
-                       'Permitting Heritage Body');
-        
-        $pCid = parent::getK3Controls($pid, $sid, $names, 'Project');
+        $query = "name = 'Country' OR
+                  name = 'Region' OR
+                  name = 'Modern Name' OR
+                  name = 'Records Archive' OR
+                  name = 'Period' OR
+                  name = 'Archaeological Culture' OR
+                  name = 'Permitting Heritage Body'";
+        $pCid = $this->getControls($pid, $sid, $query);
 
         $sid = parent::getSeasonSIDFromProjectName($project);
-        
-        $names = array('Type', 
-                       'Director', 
-                       'Registrar', 
-                       'Sponsor', 
-                       'Contributor', 
-                       'Contributor Role');
-        
-        $sCid = parent::getK3Controls($pid, $sid, $names, 'Season');
+        $query = "name = 'Type' OR
+                  name = 'Director' OR
+                  name = 'Registrar' OR
+                  name = 'Sponsor' OR
+                  name = 'Contributor' OR
+                  name = 'Contributor Role'";
+        $sCid = $this->getControls($pid, $sid, $query);
 
         $sid = parent::getSurveySIDProjectName($project);
-       
-        $names = array('Type', 'Supervisor');
-        $eCid = parent::getK3Controls($pid, $sid, $names, 'Excavation_-_Survey');
+        $query = "name = 'Type' OR
+                  name = 'Supervisor'";
+        $eCid = $this->getControls($pid, $sid, $query);
 
         $sid = parent::getResourceSIDFromProjectName($project);
-       
-        $names = array('Type', 
-                       'Creator', 
-                       'Creator Role', 
-                       'Condition', 
-                       'Access Level', 
-                       'Language');
-        
-        $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
+        $query = "name = 'Type' OR
+                  name = 'Creator' OR
+                  name = 'Creator Role' OR
+                  name = 'Condition' OR
+                  name = 'Access Level' OR
+                  name = 'Language'";
+        $rCid = $this->getControls($pid, $sid, $query);
 //structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
-        
-        $names = array('Artifact - Structure Type', 
-                       'Artifact - Structure Excavation Unit', 
-                       'Artifact - Structure Location', 
-                       'Artifact - Structure Material', 
-                       'Artifact - Structure Technique', 
-                       'Artifact - Structure Archaeological Culture',
-                       'Artifact - Structure Period', 
-                       'Artifact - Structure Creator', 
-                       'Artifact - Structure Condition', 
-                       'Artifact - Structure Subject');
-        
-        $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
+        $query = "name = 'Artifact - Structure Classification' OR
+                  name = 'Artifact - Structure Type' OR
+                  name = 'Artifact - Structure Excavation Unit' OR
+                  name = 'Artifact - Structure Location' OR
+                  name = 'Artifact - Structure Material' OR
+                  name = 'Artifact - Structure Technique' OR
+                  name = 'Artifact - Structure Archaeological Culture' OR
+                  name = 'Artifact - Structure Period' OR
+                  name = 'Artifact - Structure Creator' OR
+                  name = 'Artifact - Structure Condition' OR
+                  name = 'Artifact - Structure Subject'";
+        $sooCid = $this->getControls($pid, $sid, $query);
 
         $return = array(
             'project' => $this->htmlifyControls($pCid),
@@ -1061,8 +1054,6 @@ class ResourcesController extends AppController {
         }
     }
     private function htmlifyControls($controlArray){
-        /*echo $controlArray;
-        echo "<br />";*/
         foreach($controlArray as $control => $optionsArray){
             $optionsString = '';
             foreach($optionsArray as $option){
