@@ -165,7 +165,7 @@ class Keyword_Search extends Kora
 
         //echo json_encode($resourcesFromSOO);die;
 //        echo 'before return';
-        echo json_encode($resourcesFromResource);die;
+        //echo json_encode($resourcesFromResource);die;
 
 
 
