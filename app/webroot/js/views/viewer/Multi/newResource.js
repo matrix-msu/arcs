@@ -37,7 +37,11 @@ function GetNewResource(id) {
                     $(image).attr('src', res["kora_url"] + res['Image_Upload']['localName']);
                     $('#PageImagePreloader').css('display', 'none');
                     $(image).css('display', 'block');
-                    document.getElementById('fullscreenImage').src = res["kora_url"] + res['Image_Upload']['localName'];
+
+                    var fullImage = document.getElementById('fullscreenImage');
+                    if (fullImage != null) {
+                        fullImage.src = res["kora_url"] + res['Image_Upload']['localName'];
+                    }
                 }
             }
         });

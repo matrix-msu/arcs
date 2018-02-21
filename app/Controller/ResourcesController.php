@@ -483,7 +483,7 @@ class ResourcesController extends AppController {
         //print_r($page);die;
 
         $page = $page[$id];
-        $page['kora_url'] = KORA_FILES_URI.'p'.$pid."/f".$sid."/";
+        $page['kora_url'] = KORA_FILES_URI;
 
 		return json_encode($page);
     }
@@ -710,7 +710,7 @@ class ResourcesController extends AppController {
         $subjects = array();
         $resources_array = array();
         $showButNoEditArray = array();
-
+        //echo json_encode($this->request);die;
         if($this->request->method() === "POST" && isset($this->request->data['resources'])){
             $post_data = $this->request->data;
             //create a new session variable and forward to a get request
@@ -726,7 +726,7 @@ class ResourcesController extends AppController {
                 throw new NotFoundException();
             }
             //check first if this is a multi-resource session url
-            $id = (string)$id;
+            $id = (string)$id;  //kid
             if( isset($_SESSION['multi_viewer_resources']) ) {
                 foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
                     if ($id === (string)$key) {
@@ -753,6 +753,7 @@ class ResourcesController extends AppController {
 
         $username = NULL;
         $usersC = new UsersController();
+
         if ($user = $usersC->getUser($this->Auth)) {
             $username = $user['User']['username'];
         }
@@ -878,7 +879,6 @@ class ResourcesController extends AppController {
         if ( empty($resources) ) {
             $this->set("resourceAccess", false);
         }
-
         if( !isset($this->request->query['ajax'] ) && !isset($_GET['getRest'])){ //this is for a normal multi_view
             $metadataedits = $this->getEditMetadata();
             if($pName != '') {
@@ -899,10 +899,11 @@ class ResourcesController extends AppController {
             $this->set("flags", $flags);
             $this->set("showButNoEditArray", $showButNoEditArray);
         }
+
         else if (isset($_GET['getRest'])) {
             $metadataedits = $this->getEditMetadata();
             if($pName != '') {
-                $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
+                $metadataeditsControlOptions = $this->getMetadataditsControlOptions($pName);
             }else{
                 $metadataeditsControlOptions = array();
             }
