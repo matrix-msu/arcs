@@ -1143,8 +1143,8 @@ class ResourcesController extends AppController {
         $sid = parent::getPageSIDFromProjectName($pName);
         $fields = 'ALL';
         $sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
-        $kora = new Advanced_Search($pid, $sid, $fields, 0, 0, $sort);
-        $kora->add_clause("Resource Associator", "=", $resource_kid);
+        $kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+        $kora->add_clause("Resource_Associator", "=", $resource_kid);
         return json_decode($kora->search(), true);
     }
     protected function getSubjectOfObservation($pageKids){
