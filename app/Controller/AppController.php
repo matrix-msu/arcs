@@ -463,34 +463,37 @@ class AppController extends Controller
         if (!$full) $string = array_slice($string, 0, 1);
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
-
-    public static function getK3Controls($pid, $sid) {       //parent::getK3Controls($pid, $sid); 
-//        $url = KORA_FILES_URI.'api/projects/p'.$pid.'/'.'forms/f'.$sid.'/'.'fields';
-        $url = KORA_RESTFUL_URL.'projects/ARCS_Isthmia/forms/Project/fields';
-        //echo $url;die;
+    
+    //takes pid, sid, list of field names, and the internal form name in kora3
+    //returns an object of key:value which are 'field name':[field options]
+    public static function getK3Controls($pid, $sid, $names, $form_name) {
+        //return array();
+        $url = KORA_RESTFUL_URL.'projects/ARCS_Isthmia/forms/'.$form_name.'/fields';
+        //echo $url; die;
         $ch = curl_init();
-
-        //$headers = array("Accept: */*", "Content-Type: text/x-nquads");
-        //$headers = array("Accept: */*", "Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $controls = array();
+        
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_HTTPGET, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        //curl_setopt($ch,CURLOPT_POSTFIELDS, $text);
-
     	$result = curl_exec($ch);
-    	$info = curl_getinfo($ch);
-        curl_close($ch);
-        echo "result: ";
+        //make result an indexable array
         $result = json_decode($result, true);
-        //$result_arr = json_decode(json_encode($result), true);
-        $temp = $result[2530]['options']["Options"][0];
-        print_r($temp);
-        echo " end result.";
-        //print_r($info);
-        die;
 
+        curl_close($ch);
+
+        foreach($names as $name) {
+            foreach($result as $field) {
+                if ($field['name'] == $name){
+                    $controls[$name] = $field['options']['Options'];
+                }
+            }
+        }
+        
+        //echo json_encode($controls); echo "<br/><br/>";
+//        die;
+        return $controls;
     }
 
 

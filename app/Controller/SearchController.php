@@ -366,7 +366,7 @@ class SearchController extends AppController {
                 array_push($response['results'], $temp_array );
 
             }
-            parent::getK3Controls($pid, $sid);
+            
             //return collections
             $response['total'] = count($response['results']);
             return $this->json(200, $response);
