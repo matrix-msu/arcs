@@ -844,7 +844,6 @@ class ResourcesController extends AppController {
             $page = $this->getPages($resource);
 
 
-
 // kora3todo why are some pages empty?
 //http://dev2.matrix.msu.edu/k3alpha/public/app/files/p34/f171/r221663/fl2617/IA_94-006.jpg
             if(empty($page)) {
@@ -1147,9 +1146,18 @@ class ResourcesController extends AppController {
         $sid = parent::getPageSIDFromProjectName($pName);
         $fields = 'ALL';
         $sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
+        //$sort = array();
         $kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
         $kora->add_clause("Resource_Associator", "=", $resource_kid);
-        return json_decode($kora->search(), true);
+        $return = $kora->search();
+        if( $return == "[]" ){
+            $sort = array();
+            $kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+            $kora->add_clause("Resource_Associator", "=", $resource_kid);
+            return json_decode($kora->search(), true);
+        }else{
+            return json_decode($return, true);
+        }
     }
     protected function getSubjectOfObservation($pageKids){
         $pName = parent::convertKIDtoProjectName($pageKids[0]);
