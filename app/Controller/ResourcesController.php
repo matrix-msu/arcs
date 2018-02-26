@@ -993,54 +993,60 @@ class ResourcesController extends AppController {
         } catch (Exception $e) {
             //throw new NotFoundException("Project \"$project\" was not found!");
         }
-        $pid = parent::getPIDFromProjectName($project);
+                $pid = parent::getPIDFromProjectName($project);
 
         $sid = parent::getProjectSIDFromProjectName($project);
-        $query = "name = 'Country' OR
-                  name = 'Region' OR
-                  name = 'Modern Name' OR
-                  name = 'Records Archive' OR
-                  name = 'Period' OR
-                  name = 'Archaeological Culture' OR
-                  name = 'Permitting Heritage Body'";
-        $pCid = $this->getControls($pid, $sid, $query);
+        $names = array('Country', 
+                       'Region', 
+                       'Modern Name',
+                       'Records Archive', 
+                       'Period', 
+                       'Archaeological Culture', 
+                       'Permitting Heritage Body');
+        
+        $pCid = parent::getK3Controls($pid, $sid, $names, 'Project');
 
         $sid = parent::getSeasonSIDFromProjectName($project);
-        $query = "name = 'Type' OR
-                  name = 'Director' OR
-                  name = 'Registrar' OR
-                  name = 'Sponsor' OR
-                  name = 'Contributor' OR
-                  name = 'Contributor Role'";
-        $sCid = $this->getControls($pid, $sid, $query);
+        
+        $names = array('Type', 
+                       'Director', 
+                       'Registrar', 
+                       'Sponsor', 
+                       'Contributor', 
+                       'Contributor Role');
+        
+        $sCid = parent::getK3Controls($pid, $sid, $names, 'Season');
 
         $sid = parent::getSurveySIDProjectName($project);
-        $query = "name = 'Type' OR
-                  name = 'Supervisor'";
-        $eCid = $this->getControls($pid, $sid, $query);
+       
+        $names = array('Type', 'Supervisor');
+        $eCid = parent::getK3Controls($pid, $sid, $names, 'Excavation_-_Survey');
 
         $sid = parent::getResourceSIDFromProjectName($project);
-        $query = "name = 'Type' OR
-                  name = 'Creator' OR
-                  name = 'Creator Role' OR
-                  name = 'Condition' OR
-                  name = 'Access Level' OR
-                  name = 'Language'";
-        $rCid = $this->getControls($pid, $sid, $query);
+       
+        $names = array('Type', 
+                       'Creator', 
+                       'Creator Role', 
+                       'Condition', 
+                       'Access Level', 
+                       'Language');
+        
+        $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
 //structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
-        $query = "name = 'Artifact - Structure Classification' OR
-                  name = 'Artifact - Structure Type' OR
-                  name = 'Artifact - Structure Excavation Unit' OR
-                  name = 'Artifact - Structure Location' OR
-                  name = 'Artifact - Structure Material' OR
-                  name = 'Artifact - Structure Technique' OR
-                  name = 'Artifact - Structure Archaeological Culture' OR
-                  name = 'Artifact - Structure Period' OR
-                  name = 'Artifact - Structure Creator' OR
-                  name = 'Artifact - Structure Condition' OR
-                  name = 'Artifact - Structure Subject'";
-        $sooCid = $this->getControls($pid, $sid, $query);
+        
+        $names = array('Artifact - Structure Type', 
+                       'Artifact - Structure Excavation Unit', 
+                       'Artifact - Structure Location', 
+                       'Artifact - Structure Material', 
+                       'Artifact - Structure Technique', 
+                       'Artifact - Structure Archaeological Culture',
+                       'Artifact - Structure Period', 
+                       'Artifact - Structure Creator', 
+                       'Artifact - Structure Condition', 
+                       'Artifact - Structure Subject');
+        
+        $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
 
         $return = array(
             'project' => $this->htmlifyControls($pCid),

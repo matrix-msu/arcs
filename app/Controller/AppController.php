@@ -488,7 +488,6 @@ class AppController extends Controller
                 }
             }
         }
-        
         return $controls;
     }
 
