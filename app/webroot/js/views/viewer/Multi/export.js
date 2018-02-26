@@ -74,9 +74,9 @@ $(document).ready(function(){
         })
         xmlString = objects2xmlString(projectsObject);
         xmlArray.push(xmlString);
-        console.log('project done:');
-        console.log(xmlString);
-        console.log(xmlArray);
+        // console.log('project done:');
+        // console.log(xmlString);
+        // console.log(xmlArray);
         //return;
 
         var firstPass = true;
@@ -267,11 +267,6 @@ $(document).ready(function(){
             deleteTags(tempdata);
             var recordObject = {Record: tempdata};
             var dataObject = {Data: recordObject};
-            console.log(dataObject == null);
-            console.log('wat da hek');
-            // if (dataObject == ""){
-            //
-            // }
             var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
             trim = trim.substring(0, trim.length - 7);  //remove the </Data>
             xmlString += trim;
@@ -310,6 +305,9 @@ $(document).ready(function(){
         //console.log(o);
         var firstObject = true;
         var toXml = function(v, name, ind) {
+            if( v == null){
+               v = "";
+            }
             var xml = "";
             name = name.replace(/ /g, '_');
             if (v instanceof Array) {
