@@ -84,34 +84,34 @@ class AdvancedFieldMap{
         "supervisors" => "Supervisor",
     );
     public $resource = array(
-        "identifier"    => "Resource Identifier",
+        "identifier"    => "Resource_Identifier",
         "type"          => "Type",
         "title"          => "Title",
         "creators"      =>  "Creator",
-        "role"          => "Creator Role",
-        "earliest_date" => "Earliest Date",
-        "latest_date"   => "Latest Date",
+        "role"          => "Creator_Role",
+        "earliest_date" => "Earliest_Date",
+        "latest_date"   => "Latest_Date",
         "languages"     => "Language",
         "transcription" => "Transcription",
-        'date_range' => "Date Range",
+        'date_range' => "Date_Range",
     );
     public $page = array(
-        "scan_date"    => "Scan Date",
-        "scan_creator" => "Scan Creator"
+        "scan_date"    => "Scan_Date",
+        "scan_creator" => "Scan_Creator"
     );
     public $subjectGeneral = array(
-        "classification" => "Artifact - Structure Classification",
-        "type"          => "Artifact - Structure Type",
-        "materials"      => "Artifact - Structure Material",
-        "techniques"     => "Artifact - Structure Technique",
-        "period"         => "Artifact - Structure Period",
-        "terminus_ante_quem" => "Artifact - Structure Terminus Ante Quem",
-        "terminus_post_quem" => "Artifact - Structure Terminus Post Quem"
+        "classification" => "Artifact_-_Structure_Classification",
+        "type"          => "Artifact_-_Structure_Type",
+        "materials"      => "Artifact_-_Structure_Material",
+        "techniques"     => "Artifact_-_Structure_Technique",
+        "period"         => "Artifact_-_Structure_Period",
+        "terminus_ante_quem" => "Artifact_-_Structure_Terminus_Ante_Quem",
+        "terminus_post_quem" => "Artifact_-_Structure_Terminus_Post_Quem"
     );
     public $subjectDetailed = array(
-        "location"         => "Artifact - Structure Location",
-        "excavation_units" => "Artifact - Structure Excavation Unit",
-        "inscription"      => "Artifact - Structure Inscription"
+        "location"         => "Artifact_-_Structure_Location",
+        "excavation_units" => "Artifact_-_Structure_Excavation_Unit",
+        "inscription"      => "Artifact_-_Structure_Inscription"
     );
 
 }

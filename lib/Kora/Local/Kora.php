@@ -61,13 +61,20 @@ class Kora extends AppController{
             $this->The_Clause,
             $this->fields
         );
-        //echo json_encode($this->comprehensive_results);die;
+        if( $this->comprehensive_results == null ){
+            $this->comprehensive_results = array();
+        }
         return $this->comprehensive_results;
     }
 
     protected function search_limited(){
+        if( $this->start == 0 ){
+            $this->start = null;
+        }
+        if( $this->end == 0 ){
+            $this->end = null;
+        }
         $this->comprehensive_results = KORA_Search(
-
             $this->token,
             $this->projectMapping,
             $this->schemeMapping,
@@ -77,6 +84,9 @@ class Kora extends AppController{
             $this->start,
             $this->end
         );
+        if( $this->comprehensive_results == null ){
+            $this->comprehensive_results = array();
+        }
         return $this->comprehensive_results;
     }
     protected function MPF(){
@@ -89,6 +99,9 @@ class Kora extends AppController{
             $this->fields,
             $this->sortFields
         );
+        if( $this->comprehensive_results == null ){
+            $this->comprehensive_results = array();
+        }
         return $this->comprehensive_results;
     }
     // public setter functions to change

@@ -25,7 +25,8 @@ require_once "Resource_Search.php";
 require_once LIB . "Kora/Class/AdvancedFieldDataStructure.php";
 
 use Lib\Kora;
-use Lib\KORA_Clause;
+//use Lib\KORA_Clause;
+use \App\FieldHelpers\KORA_Clause;
 use Lib\Resource;
 use kora\classes\AdvancedFieldDataStructure as AdvancedDS;
 use kora\classes\AdvancedFieldMap;
@@ -154,13 +155,13 @@ class Advanced_Field_Search extends Kora
 
             $this->schemeMapping = parent::getSubjectSIDFromProjectName($this->_project);
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
-            $this->fields        = array("Pages Associator");
+            $this->fields        = array("Pages_Associator");
             $subjects = parent::search();
             //echo json_encode(count($subjects));exit();
 
             if (!empty($subjects)) {
 
-                $associators = self::getAssociatorLinks($subjects, "Pages Associator");
+                $associators = self::getAssociatorLinks($subjects, "Pages_Associator");
                 $this->schemeMapping = parent::getPageSIDFromProjectName($this->_project);
                 $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
                 $this->fields        = array("Resource Associator");
@@ -168,7 +169,7 @@ class Advanced_Field_Search extends Kora
 
                 if (!empty($pages)) {
                     //echo json_encode(count($pages));exit();
-                    $associators = self::getAssociatorLinks($pages, "Resource Associator");
+                    $associators = self::getAssociatorLinks($pages, "Resource_Associator");
 
                     $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
                     $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
@@ -200,19 +201,19 @@ class Advanced_Field_Search extends Kora
 
             $this->schemeMapping = parent::getSubjectSIDFromProjectName($this->_project);
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
-            $this->fields        = array("Pages Associator");
+            $this->fields        = array("Pages_Associator");
             $subjects = parent::search();
 
             if (!empty($subjects)) {
 
-                $associators = self::getAssociatorLinks($subjects, "Pages Associator");
+                $associators = self::getAssociatorLinks($subjects, "Pages_Associator");
                 $this->schemeMapping = parent::getPageSIDFromProjectName($this->_project);
                 $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
-                $this->fields        = array("Resource Associator");
+                $this->fields        = array("Resource_Associator");
                 $pages = parent::search();
 
                 if (!empty($pages)) {
-                    $associators = self::getAssociatorLinks($pages, "Resource Associator");
+                    $associators = self::getAssociatorLinks($pages, "Resource_Associator");
 
                     $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
                     $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
@@ -244,12 +245,12 @@ class Advanced_Field_Search extends Kora
 
             $this->schemeMapping = parent::getPageSIDFromProjectName($this->_project);
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
-            $this->fields        = array("Resource Associator");
+            $this->fields        = array("Resource_Associator");
             $pages = parent::search();
 
             if (!empty($pages)) {
 
-                $associators = self::getAssociatorLinks($pages, "Resource Associator");
+                $associators = self::getAssociatorLinks($pages, "Resource_Associator");
 
                 $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
                 $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
@@ -291,6 +292,7 @@ class Advanced_Field_Search extends Kora
 
                 // get direct resource linkers
                 $scheme = parent::getResourceSIDFromProjectName($this->_project);
+                ///echo 'here';die;
                 $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
                 // print_r(count($excavations));exit();
 
@@ -348,14 +350,24 @@ class Advanced_Field_Search extends Kora
             $this->fields        = array("Title", "Type");
 
             $seasons = parent::search();
-            // print_r(count($seasons));exit();
+            echo 'before seasons';
+            print_r(array_keys($seasons));
+            echo 'after seasons';
             if (!empty($seasons)) {
 
                   $linkers = $this->getLinkers($seasons);
+                echo 'linkers: <br><br>';
+                echo json_encode($linkers);
+
+                echo 'after   linkers: <br><br>';
 
                   // get direct resource linkers
                   $scheme = parent::getResourceSIDFromProjectName($this->_project);
                   $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
+
+                  echo 'resources: <br><br>';
+                  echo json_encode($resources);
+                  die;
 
                   // get excavation linkers return null;
                   $this->schemeMapping = parent::getSurveySIDProjectName($this->_project);
@@ -375,7 +387,6 @@ class Advanced_Field_Search extends Kora
 
         }
         return null;
-
     }
     /**
      * Resolve linkers from a specified scheme
@@ -391,9 +402,29 @@ class Advanced_Field_Search extends Kora
     {
 
         $this->schemeMapping = $scheme;
-        $this->The_Clause    = new KORA_Clause("kid", "IN", $linkers);
+        $this->The_Clause    = new KORA_Clause("KID", "IN", $linkers);
+        $this->The_Clause    = new KORA_Clause("KID", "!=", '');
+        ///$this->The_Clause    = new KORA_Clause("KID", "=", '34-173-226344');
+
+
+
+
+        print_r($this->The_Clause);
+
+
+
         $this->fields        = $fields;
         $resolvedKIDS        = parent::search();
+
+
+        echo "<br><br>";
+        var_dump($resolvedKIDS);
+
+        echo "<br><br>";
+        echo var_dump($fields);
+
+        die;
+        
 
         // rebase array with keys
         if ($rebase) {
@@ -459,7 +490,7 @@ class Advanced_Field_Search extends Kora
             if (!empty($value) && !is_array($value)) {
                 // get the mapped kora field
                 $koraField = $map[$key];
-                $clauses[++$i] = new KORA_Clause($koraField, "LIKE", "%$value%");
+                $clauses[++$i] = new KORA_Clause($koraField, "LIKE", "$value");
 
             } else if( $key == 'date_range' ){
                 if( self::isEmptyDateRange($value) ){
@@ -471,8 +502,8 @@ class Advanced_Field_Search extends Kora
                 for( $k=$start_year; $k<=$end_year; $k++ ){
                     array_push(
                         $date_range_clause,
-                        new KORA_Clause('Earliest Date', "LIKE", "%<year>$k</year>%"),
-                        new KORA_Clause('Latest Date', "LIKE", "%<year>$k</year>%")
+                        new KORA_Clause('Earliest_Date', "LIKE", "<year>$k</year>"),
+                        new KORA_Clause('Latest_Date', "LIKE", "<year>$k</year>")
                     );
                 };
                 $date_range_clause = self::clauseJoin($date_range_clause, "OR");
@@ -487,7 +518,7 @@ class Advanced_Field_Search extends Kora
                 if (!empty($era)) {
                     $query .= "<era>$era</era>";
                 }
-                $clauses[++$i] = new KORA_Clause($map[$key], "LIKE", "%$query%");
+                $clauses[++$i] = new KORA_Clause($map[$key], "LIKE", "$query");
             }
         }
         return $clauses;
