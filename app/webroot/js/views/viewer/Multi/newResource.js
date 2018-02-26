@@ -34,16 +34,13 @@ function GetNewResource(id) {
                     //display obervatoins that apply to the selected page
                     var cnt = 0;
                     var pageNum = 1;
-                    console.log(res); // KORA3TODO MAKE THIS IMAGE URL WORK
                     $(image).attr('src', res["kora_url"] + res['Image_Upload']['localName']);
                     $('#PageImagePreloader').css('display', 'none');
                     $(image).css('display', 'block');
 
-                    console.log('getting url');
                     var fullImage = document.getElementById('fullscreenImage');
                     var imgUrl = res["kora_url"] + res['Image_Upload']['localName'];
-                    console.log('img url: ');
-                    console.log(imgUrl);
+
                     fullImage.src = imgUrl;
                 }
             }

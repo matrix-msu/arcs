@@ -506,15 +506,19 @@ class ResourcesController extends AppController {
             $zip->addFromString($xmlNames[$count], $xml);
             $count++;
         }
-        if( isset($this->request->data['picUrls']) ){
 
+        if( isset($this->request->data['picUrls']) ){
             foreach(json_decode($this->request->data['picUrls']) as $url){
                 # download file
-                $pName = parent::convertKIDtoProjectName($url);
-                $pid = parent::getPIDFromProjectName($pName);
-                $sid = parent::getPageSIDFromProjectName($pName);
-
-                $string = KORA_FILES_URI.$pid.'/'.$sid.'/'.$url;
+                // echo "url";
+                // echo $url;
+                // $pName = parent::convertKIDtoProjectName($url);
+                // echo "pname";
+                // echo $pName;
+                // $pid = parent::getPIDFromProjectName($pName);
+                //                                 echo "wtf";die;
+                // $sid = parent::getPageSIDFromProjectName($pName);
+                $string = KORA_FILES_URI.$url;
                 $download_file = @file_get_contents( $string );
                 $zip->addFromString('images/'.basename($url),$download_file);
             }

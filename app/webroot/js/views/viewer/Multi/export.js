@@ -28,13 +28,16 @@ $(document).ready(function(){
 		var projectsObject = scheme2json(PROJECTS);
 
 		var seasonsObject = [];
-        if( !jQuery.isEmptyObject(seasons) ) {
+    //    if( !jQuery.isEmptyObject(seasons) ) {
+        if(seasons.length > 0) {
             seasonsObject = scheme2json(seasons);
         }
 		var excavationsObject = [];
-        if( !jQuery.isEmptyObject(excavations) ) {
+        //if( !jQuery.isEmptyObject(excavations) ) {
+        if(excavations.length > 0) {
             excavationsObject = scheme2json(excavations);
         }
+
 		var resourcesObject = scheme2json(resources);
         var pagesObject = [];
         resourcesObject.forEach(function (tempdata) {
@@ -47,7 +50,9 @@ $(document).ready(function(){
         })
         var pageUrls = [];
 		var subjectsObjectsArray = [];
-        if( !jQuery.isEmptyObject(subjects) ) {
+
+        //if( !jQuery.isEmptyObject(subjects) ) {
+        if(subjects.length > 0) {
             subjectsObjectsArray = scheme2json(subjects);
         }
 
@@ -115,8 +120,7 @@ $(document).ready(function(){
                 })
             }
         })
-        console.log('ex');
-        console.log(excavationsObject);
+
         xmlString = '';
         xmlString = objects2xmlString(seasonsObject);
         xmlArray.push(xmlString);
@@ -184,9 +188,9 @@ $(document).ready(function(){
                     })
                 })
             }
-            pageUrls.push(tempdata['Image Upload']['localName']); //collect image url stuff for later
-            var uploadObject = {originalName:tempdata['Image Upload']['originalName'],text:tempdata['Image Upload']['localName']};
-            tempdata['Image Upload'] = uploadObject;
+            pageUrls.push(tempdata['Image_Upload']['localName']); //collect image url stuff for later
+            var uploadObject = {originalName:tempdata['Image_Upload']['originalName'],text:tempdata['Image_Upload']['localName']};
+            tempdata['Image_Upload'] = uploadObject;
         })
         xmlString = '';
         xmlString = objects2xmlString(pagesObject);
@@ -253,7 +257,7 @@ $(document).ready(function(){
             }
             schemeString = schemeString.substring(0, schemeString.length -1 ); //remove last comma
             schemeString += ']';
-
+            //console.log(schemeString);
             return JSON.parse(schemeString);//get array of json objects
 	}
 
@@ -263,6 +267,11 @@ $(document).ready(function(){
             deleteTags(tempdata);
             var recordObject = {Record: tempdata};
             var dataObject = {Data: recordObject};
+            console.log(dataObject == null);
+            console.log('wat da hek');
+            // if (dataObject == ""){
+            //
+            // }
             var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
             trim = trim.substring(0, trim.length - 7);  //remove the </Data>
             xmlString += trim;
