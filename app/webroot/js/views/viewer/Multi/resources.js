@@ -415,8 +415,6 @@ $(document).ready(function() {
                 'getRest' : true
             },
             success: function (results) {
-                console.log(results);
-                // KORA3TODO MAKE THIS WORK AFTER GETTING CONTROLS TO WORK!!!!!!!!!!!!!!!!!!!
                 results = JSON.parse(results);
                 PROJECTS = results.projectsArray;
                 SEASONS = results.seasons;

@@ -311,6 +311,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             if(typeof item[control] == "undefined"){
                 item[control] = "";
             }
+
             type = controlTypes[schemename][control];
             var text = '';
             if(type == 'text' || type == 'list') {
@@ -333,6 +334,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 if(typeof item[control] != "string"){
                     for (var i = 0; i < item[control].length; i++) {
                         text += item[control][i]+"<br>";
+
                     }
                 }
             }

@@ -659,11 +659,14 @@ class ResourcesController extends AppController {
             }
             $allPages = json_decode($kora->search(), true);
 
+            //echo json_encode(array($allPages, $results));die;
             //link in the pages to the resources
             foreach( $allPages as $page ){
-                $resourceAssociator = $page['Resource_Associator'][0];
                 $thumb = $page['Image_Upload']['localName'];
-                $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb);
+                $resourceAssociator = $page['Resource_Associator'][0];
+                if (isset($results[$resourceAssociator])) {
+                    $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb);
+                }
             }
 
             //take care of resources without pages and data formatting
@@ -847,9 +850,6 @@ class ResourcesController extends AppController {
             //get pages and add to resource array
             $page = $this->getPages($resource);
 
-
-// kora3todo why are some pages empty?
-//http://dev2.matrix.msu.edu/k3alpha/public/app/files/p34/f171/r221663/fl2617/IA_94-006.jpg
             if(empty($page)) {
                 // creates a hacky solution to display a default page
                 // when there are no pages associated with the resource
@@ -909,7 +909,7 @@ class ResourcesController extends AppController {
         else if (isset($_GET['getRest'])) {
             $metadataedits = $this->getEditMetadata();
             if($pName != '') {
-                $metadataeditsControlOptions = $this->getMetadataditsControlOptions($pName);
+                $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
             }else{
                 $metadataeditsControlOptions = array();
             }
@@ -996,56 +996,56 @@ class ResourcesController extends AppController {
                 $pid = parent::getPIDFromProjectName($project);
 
         $sid = parent::getProjectSIDFromProjectName($project);
-        $names = array('Country', 
-                       'Region', 
+        $names = array('Country',
+                       'Region',
                        'Modern Name',
-                       'Records Archive', 
-                       'Period', 
-                       'Archaeological Culture', 
+                       'Records Archive',
+                       'Period',
+                       'Archaeological Culture',
                        'Permitting Heritage Body');
-        
+
         $pCid = parent::getK3Controls($pid, $sid, $names, 'Project');
 
         $sid = parent::getSeasonSIDFromProjectName($project);
-        
-        $names = array('Type', 
-                       'Director', 
-                       'Registrar', 
-                       'Sponsor', 
-                       'Contributor', 
+
+        $names = array('Type',
+                       'Director',
+                       'Registrar',
+                       'Sponsor',
+                       'Contributor',
                        'Contributor Role');
-        
+
         $sCid = parent::getK3Controls($pid, $sid, $names, 'Season');
 
         $sid = parent::getSurveySIDProjectName($project);
-       
+
         $names = array('Type', 'Supervisor');
         $eCid = parent::getK3Controls($pid, $sid, $names, 'Excavation_-_Survey');
 
         $sid = parent::getResourceSIDFromProjectName($project);
-       
-        $names = array('Type', 
-                       'Creator', 
-                       'Creator Role', 
-                       'Condition', 
-                       'Access Level', 
+
+        $names = array('Type',
+                       'Creator',
+                       'Creator Role',
+                       'Condition',
+                       'Access Level',
                        'Language');
-        
+
         $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
 //structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
-        
-        $names = array('Artifact - Structure Type', 
-                       'Artifact - Structure Excavation Unit', 
-                       'Artifact - Structure Location', 
-                       'Artifact - Structure Material', 
-                       'Artifact - Structure Technique', 
+
+        $names = array('Artifact - Structure Type',
+                       'Artifact - Structure Excavation Unit',
+                       'Artifact - Structure Location',
+                       'Artifact - Structure Material',
+                       'Artifact - Structure Technique',
                        'Artifact - Structure Archaeological Culture',
-                       'Artifact - Structure Period', 
-                       'Artifact - Structure Creator', 
-                       'Artifact - Structure Condition', 
+                       'Artifact - Structure Period',
+                       'Artifact - Structure Creator',
+                       'Artifact - Structure Condition',
                        'Artifact - Structure Subject');
-        
+
         $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
 
         $return = array(
