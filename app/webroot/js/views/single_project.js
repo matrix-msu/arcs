@@ -106,8 +106,8 @@
 
           var url = "../../search/collection/" + id;
 
-          console.log('go to search');
-          return;
+          //console.log('go to search');
+          //return;
 
           $('<form />')
               .hide()
