@@ -407,7 +407,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
 
             //check if the metadata has been flagged
             var flagged = "<div class='icon-meta-flag'>&nbsp;</div>";
-            if(flags.hasOwnProperty(item['kid']) && flags[item['kid']].hasOwnProperty(control)) {
+            if(flags.hasOwnProperty(item['kid']) && flags[item['kid']].includes(control)) {
                 flagged = "<div class='icon-meta-flag-red'>&nbsp;</div>";
             }
 
