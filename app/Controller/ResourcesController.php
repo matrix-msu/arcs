@@ -525,7 +525,7 @@ class ResourcesController extends AppController {
         }
         $zip->close();
 		echo $tmp_file;
-		die;
+		//die;
     }
 
     //download the created export file and delete it
@@ -616,7 +616,7 @@ class ResourcesController extends AppController {
             $resourceKids[0] = 'explode';
         }
         $pName = parent::convertKIDtoProjectName($resourceKids[0]);
-
+        
         $search = new Resource_Search($resourceKids, $pName);
         $results = $search->getResultsAsArray();
         static::filterByPermission($username, $results['results']);
@@ -845,6 +845,7 @@ class ResourcesController extends AppController {
 
             //get project array
             $project_array = $this->getProject($project_kid);
+            //echo json_encode($project_array);die;
             $this->pushToArray($project_array, $projectsArray);
 
             //get pages and add to resource array

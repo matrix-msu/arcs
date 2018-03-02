@@ -84,7 +84,7 @@ class SearchController extends AppController {
      * Display the search page
      */
     public function search($project=null, $query=null) {
-
+        //echo $project;die;
         if($project === null) { // If no project, throw exception to give error page without showing users the php errors
             parent::verifyGlobals('explode');
         }

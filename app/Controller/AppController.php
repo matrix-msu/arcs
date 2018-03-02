@@ -119,20 +119,20 @@ class AppController extends Controller
     }
     public static function getProjectNameFromPID($pid)
     {
-         
+
         if (isset($GLOBALS['PID_ARRAY'])) {
-            
+
             if ( array_search($pid, $GLOBALS['PID_ARRAY']) ) {
-                
+
                 return array_search($pid, $GLOBALS['PID_ARRAY']);
             } else {
-                
+
                 throw new ArcsException(ErrorCodes::ProjectNameNotFound);
             }
         } else {
             throw new ArcsException(ErrorCodes::ProjectPIDArrayNotFound);
         }
-         
+
     }
     public static function getProjectSIDFromProjectName($name)
     {
@@ -296,7 +296,7 @@ class AppController extends Controller
         }
         $name = rtrim($name, "/");*/
         $name = KORA_FILES_URI . $name;
-        
+
         return $name;
     }
 
@@ -463,14 +463,14 @@ class AppController extends Controller
         if (!$full) $string = array_slice($string, 0, 1);
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
-    
+
     //takes pid, sid, list of field names, and the internal form name in kora3
     //returns an object of key:value which are 'field name':[field options]
     public static function getK3Controls($pid, $sid, $names, $form_name) {
         $url = KORA_RESTFUL_URL.'projects/ARCS_Isthmia/forms/'.$form_name.'/fields';
         $ch = curl_init();
         $controls = array();
-        
+
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_HTTPGET, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -488,6 +488,7 @@ class AppController extends Controller
                 }
             }
         }
+
         return $controls;
     }
 

@@ -8,7 +8,7 @@ var RESOURCES = <?php echo json_encode($resources);?>;
 var EXCAVATIONS = <?php echo json_encode($excavations);?>;
 var SUBJECTS = <?php echo json_encode($subjects);?>;
 var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
-
+//console.log(PROJECTS);
 var showButNoEditArray = <?=json_encode($showButNoEditArray)?>;
 var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
 

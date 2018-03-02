@@ -142,16 +142,39 @@
 					}
             ?>
 			 <a id="resources" class="btn btn-grey<?php echo $resourceBlue ?>"
-				href="<?php echo $this->Html->url('/resources').$pKid ?>">
+				href="<?php if (($this->request->params['controller'] == 'resources' &&
+						$this->request->params['action'] == 'viewcollection')) {
+                            echo $this->Html->url('/resources')."/".$projectName;
+                        }
+                        else {
+                            echo $this->Html->url('/resources').$pKid;
+                        } ?>">
 				<i class="icon-white icon-folder-open"></i> Resources
 
 			</a>
 			<a id="collections" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/collections').$pKid ?>">
+				href="<?php 
+                        if (($this->request->params['controller'] == 'resources' &&
+						$this->request->params['action'] == 'viewcollection')) {
+                            echo $this->Html->url('/collections')."/".$projectName;
+                        }
+                        else {
+                            echo $this->Html->url('/collections').$pKid;
+                        } ?>">
 				<i class="icon-white icon-folder-open"></i> Collections
 			</a>
 			<a id="search" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/search').$pKid ?>">
+				href="
+                    <?php
+                        if (($this->request->params['controller'] == 'resources' &&
+						$this->request->params['action'] == 'viewcollection')) {
+                            echo $this->Html->url('/search')."/".$projectName;
+                        }
+                        else {
+                            echo $this->Html->url('/search').$pKid;
+                        }
+                    ?>
+                ">
 				<i class="icon-white icon-search"></i> Search
 			</a>
 
@@ -216,3 +239,10 @@
 </div>
   <?= $this->element("Login/login");?>
   <?= $this->element("Login/register");?>
+<script>
+    $(document).ready(function() {
+        console.log(PID_ARRAY);
+    })
+</script>
+
+

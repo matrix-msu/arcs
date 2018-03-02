@@ -185,8 +185,8 @@ function collectionList() {
     }
 
     if( href.length == 36 ){
-        $('#resources').css('display', 'none');
-        $('#collections').css('display', 'none');
+        $('#resources').css('display', 'block');
+        $('#collections').css('display', 'block');
         $('#selected-all').css('display', 'none');
         return;
     }

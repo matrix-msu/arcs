@@ -82,6 +82,7 @@ class ProjectsController extends AppController {
 
 	}
   public function index() {
+    
     $this->getProjects();
 
 
