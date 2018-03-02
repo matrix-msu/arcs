@@ -620,7 +620,8 @@ class ResourcesController extends AppController {
         $search = new Resource_Search($resourceKids, $pName);
         $results = $search->getResultsAsArray();
         static::filterByPermission($username, $results['results']);
-        echo "<script>var results_to_display = ".json_encode($results)."</script>";
+        $GLOBALS['current_project'] = $pName;
+        echo "<script> var results_to_display = ".json_encode($results)."; </script>";
         $this->set("projectName", $pName);
         $this->render("../Search/search");
     }

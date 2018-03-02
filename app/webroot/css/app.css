@@ -9952,7 +9952,8 @@ input[type=range]:focus::-ms-fill-upper {
   padding: 0;
   padding-bottom: 4px;
 }
-.metadata .metadata-content .metadata-accordion ul .soo-li {
+.metadata .metadata-content .metadata-accordion ul .soo-li,
+.metadata .metadata-content .metadata-accordion ul .excavation-li {
   background: #f9f9f9;
   border-radius: 100%;
   height: 20px;
@@ -9962,7 +9963,8 @@ input[type=range]:focus::-ms-fill-upper {
   top: 0;
   outline: none;
 }
-.metadata .metadata-content .metadata-accordion ul .soo-li a {
+.metadata .metadata-content .metadata-accordion ul .soo-li a,
+.metadata .metadata-content .metadata-accordion ul .excavation-li a {
   color: inherit;
   position: relative;
   padding: 2.5px;
@@ -9974,6 +9976,9 @@ input[type=range]:focus::-ms-fill-upper {
 .metadata .metadata-content .metadata-accordion ul li.ui-tabs-active {
   background-color: #0093be;
   color: #f9f9f9;
+}
+.metadata .metadata-content .metadata-accordion .excavations-table {
+  padding: 0;
 }
 .metadata .metadata-content .metadata-accordion .level-content {
   border-radius: 0;
