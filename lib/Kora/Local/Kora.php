@@ -59,19 +59,15 @@ class Kora extends AppController{
             $this->projectMapping,
             $this->schemeMapping,
             $this->The_Clause,
-            $this->fields
+            $this->fields,
+            null,
+            null,
+            null,
+            true
+
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
-        }
-        foreach($this->comprehensive_results as $kid => $record_values){
-            if( is_string($record_values) ){continue;}
-            foreach( $record_values as $key => $value ){
-                if (strpos($key, ' ') !== false) {
-                    $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
-                    unset($this->comprehensive_results[$kid][$key]);
-                }
-            }
         }
         return $this->comprehensive_results;
     }
@@ -91,19 +87,11 @@ class Kora extends AppController{
             $this->fields,
             $this->sortFields,
             $this->start,
-            $this->end
+            $this->end,
+            true
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
-        }
-        foreach($this->comprehensive_results as $kid => $record_values){
-            if( is_string($record_values) ){continue;}
-            foreach( $record_values as $key => $value ){
-                if (strpos($key, ' ') !== false) {
-                    $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
-                    unset($this->comprehensive_results[$kid][$key]);
-                }
-            }
         }
         return $this->comprehensive_results;
     }
@@ -115,19 +103,13 @@ class Kora extends AppController{
             $this->schemeMapping,
             $this->The_Clause,
             $this->fields,
-            $this->sortFields
+            $this->sortFields,
+            null,
+            null,
+            true
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
-        }
-        foreach($this->comprehensive_results as $kid => $record_values){
-            if( is_string($record_values) ){continue;}
-            foreach( $record_values as $key => $value ){
-                if (strpos($key, ' ') !== false) {
-                    $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
-                    unset($this->comprehensive_results[$kid][$key]);
-                }
-            }
         }
         return $this->comprehensive_results;
     }
