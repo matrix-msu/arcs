@@ -60,9 +60,10 @@ class Kora extends AppController{
             $this->schemeMapping,
             $this->The_Clause,
             $this->fields,
+            array(),
             null,
             null,
-            null,
+            array(),
             true
 
         );
@@ -88,6 +89,7 @@ class Kora extends AppController{
             $this->sortFields,
             $this->start,
             $this->end,
+            array(),
             true
         );
         if( $this->comprehensive_results == null ){
@@ -106,6 +108,7 @@ class Kora extends AppController{
             $this->sortFields,
             null,
             null,
+            array(),
             true
         );
         if( $this->comprehensive_results == null ){
