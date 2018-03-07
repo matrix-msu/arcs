@@ -439,7 +439,9 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
                       $img = isset($p['Image_Upload']['localName']) ? $p['Image_Upload']['localName'] : "";
                       echo "<a class = 'other-resources' id = '".$r['kid']."'><img class = 'other-resource'";
+                      $pageThingKid = '';
                       if(isset($p['kid'])) {
+                          $pageThingKid = $p['kid'];
                           echo "id = '" . $p['kid'] . "'";
                       }
                       else {
@@ -447,7 +449,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                           // For setting pageImage in newResource.js
                           echo "id = '" . $r['kid'] . "-default-page'";
                       }
-                      echo "src = '" . AppController::smallThumb($img) . "'  />";
+                      echo "src = '" . AppController::smallThumb($img, $pageThingKid) . "'  />";
                       echo "<div  class='numberOverResources'>";
                       echo ++$cnt;
                       echo "</div></a>";

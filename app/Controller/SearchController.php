@@ -340,25 +340,41 @@ class SearchController extends AppController {
                 $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
                 $kora = new Advanced_Search($pid, $pageSid, $fields);
 
+
+                $page2 = array();
                 if( $resource_type == 'Field journal' ) {
 
                     $temp_array['resource-type'] = $resource_type;
                     $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
                         "Scan_Number", "=", "1");
-                }else {
+                    $page2 = json_decode($kora->search(), true);
+                }
+                if( $page2 == array() ){
                     $kora->add_clause("Resource_Associator", "=", $temp_kid);
+                    $page2 = json_decode($kora->search(), true);
                 };
-                $page2 = json_decode($kora->search(), true);
+                if( $resource_type == 'Field journal' ) {
+                    $tempPagesArray = array();
+                    foreach ($page2 as $kid => $value) {
+                        if( $value['Scan_Number'] == '1' ){
+                            $tempPagesArray[$kid] = $value;
+                        }
+                    }
+                    $page2 = $tempPagesArray;
+                }
+
+                //$page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results
                 $picture_url = '';
 
                 if (isset(array_values($page2)[0])) {
                     $picture_url = array_values($page2)[0]['Image_Upload']['localName'];
+                    $picture_kid = array_values($page2)[0]['kid'];
                 }
 
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){
-                    $temp_array['thumb'] = $this->smallThumb($picture_url);
+                    $temp_array['thumb'] = $this->smallThumb($picture_url, $picture_kid);
                 }else{
                     $temp_array['thumb'] = Router::url('/', true)."img/DefaultResourceImage.svg";
                 }
@@ -366,7 +382,8 @@ class SearchController extends AppController {
                 array_push($response['results'], $temp_array );
 
             }
-            
+
+
             //return collections
             $response['total'] = count($response['results']);
             return $this->json(200, $response);
@@ -420,7 +437,7 @@ class SearchController extends AppController {
 
                 //Decide if there is a picture..
                 if ($temp['thumb'] != '') {
-                    $temp['thumb'] = $this->smallThumb($temp['thumb']);
+                    $temp['thumb'] = $this->smallThumb($temp['thumb'], $page['kid']);
                 } else {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
                 }
@@ -489,17 +506,29 @@ class SearchController extends AppController {
                 }
                 $resourceKidArray[] = $key;
             }
-            /*echo json_encode($resourceKidArray); die;*/
+
+            $pages = array();
             //using the array and 'in' this way because it's much faster.
             if( $query_array[2] == 'Field journal' ) {
                 $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
                     "Scan_Number", "=", "1");
 //                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
-            }else {
-                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+                $pages = json_decode($kora->search(), true);
             }
-            $pages = json_decode($kora->search(), true);
-            
+            if( $pages == array() ){
+                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+                $pages = json_decode($kora->search(), true);
+            }
+            if( $query_array[2] == 'Field journal' ) {
+                $tempPagesArray = array();
+                foreach ($pages as $kid => $value) {
+                    if( $value['Scan_Number'] == '1' ){
+                        $tempPagesArray[$kid] = $value;
+                    }
+                }
+                $pages = $tempPagesArray;
+            }
+
             //get the info from the resources and pages
             $returnResults = array();
             $count = 0;
@@ -525,15 +554,14 @@ class SearchController extends AppController {
                 if (array_key_exists('Title', $item) && $item['Title'] != '' ) {
                     $temp['title'] = $item['Title'];
                 }
-
                 //Get the Images
                 $temp['thumb'] = '';
-
                 //find the page by resource linkers and use the kid as the key.
                 if( !empty($item['linkers']) ){
                     $minKey = min(array_keys($item['linkers'])); //grab the newest kid.
                     if(array_key_exists($minKey, $pages)){
                         $temp['thumb'] = $pages[$minKey]['Image_Upload']['localName'];
+                        $temp['pageKid'] = $minKey;
                         unset($pages[$minKey]); //delete that page to optimize
                     }
                 }
@@ -543,15 +571,14 @@ class SearchController extends AppController {
                     foreach ($pages as $key2 => $item2) {
                         if (in_array($temp["kid"],$pages[$key2]['Resource_Associator'])) {
                             $temp['thumb'] = $pages[$key2]['Image_Upload']['localName'];
+                            $temp['pageKid'] = $key2;
                             unset($pages[$key2]); //delete that page to optimize
                             break;
                         }
                     }
                 }
-
-                //Decide if there is a picture..
                 if ($temp['thumb'] != '') {
-                    $temp['thumb'] = $this->smallThumb($temp['thumb']);
+                    $temp['thumb'] = $this->smallThumb($temp['thumb'], $temp['pageKid']);
                 } else {
                     $temp['thumb'] = Router::url('/', true) . "img/DefaultResourceImage.svg";
                 }

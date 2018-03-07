@@ -276,27 +276,16 @@ class AppController extends Controller
      *
      * @return string the url to the thumb
      */
-    public static function smallThumb($name, $pid='', $sid='')
+    public static function smallThumb($name, $kid='')
     {
-        if ($name === "") {
+        if ($name === "" || $kid == '') {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
+        $kidSplit = explode('-', $kid);
+        $pid = $kidSplit[0];
+        $sid = $kidSplit[1];
 
-        // add 'thumbnail' inbetween 'PATH_TO_FILE' and 'filename.ext' so url looks like
-        // PATH_TO_FILE/thumbnail/filename.ext
-        /*$parts = explode("/", $name);
-        $i = 0;
-        $name = "";
-        while($i < sizeof($parts)) {
-            $name = $name . $parts[$i] . "/";
-            if ($i == (sizeof($parts) - 2)) {
-                $name = $name . "thumbnail/";
-            }
-            $i = $i + 1;
-        }
-        $name = rtrim($name, "/");*/
-        $name = KORA_FILES_URI . $name;
-
+        $name = KORA_FILES_URI . 'p' . $pid . "/" . 'f' . $sid . "/" . $name;
         return $name;
     }
 
@@ -307,12 +296,16 @@ class AppController extends Controller
      *
      * @return string the url to the thumb
      */
-    public function largeThumb($name)
+    public function largeThumb($name,  $kid='')
     {
-        if ($name === "") {
+        if ($name === "" || $kid == '') {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
-        $name = KORA_FILES_URI . $name;
+        $kidSplit = explode('-', $kid);
+        $pid = $kidSplit[0];
+        $sid = $kidSplit[1];
+
+        $name = KORA_FILES_URI . 'p' . $pid . "/" . 'f' . $sid . "/" . $name;
         return $name;
     }
 

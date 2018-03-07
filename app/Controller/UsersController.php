@@ -1548,7 +1548,11 @@ class UsersController extends AppController
         $results = $search->return_array();
         foreach( $results as $page ){
             $localName = @$page['Image_Upload']['localName'];
-            $this->smallThumb($localName,$pid,$pageSid);
+            $pageThingKid = '';
+            if( isset($page) && isset($page['kid']) ){
+                $pageThingKid = $page['kid'];
+            }
+            $this->smallThumb($localName, $pageThingKid);
         }
         print_r('All thumbnails have been successfully created!');
         die;

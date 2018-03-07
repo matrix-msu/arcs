@@ -225,9 +225,9 @@ class ResourcesController extends AppController {
             $resource = $this->getResource($kid)[$kid];
             $pages = $this->getPages($kid);
             $page1 = reset($pages);
-            if (!empty($page1['Image_Upload']['localName'])) {
-                $resource['thumb'] = $this->smallThumb($page1['Image_Upload']['localName']);
-            }
+            // if (!empty($page1['Image_Upload']['localName'])) {
+            //     $resource['thumb'] = $this->smallThumb($page1['Image_Upload']['localName']);
+            // }
         }
         $this->json(200, $resource);
     }
@@ -616,7 +616,7 @@ class ResourcesController extends AppController {
             $resourceKids[0] = 'explode';
         }
         $pName = parent::convertKIDtoProjectName($resourceKids[0]);
-        
+
         $search = new Resource_Search($resourceKids, $pName);
         $results = $search->getResultsAsArray();
         static::filterByPermission($username, $results['results']);
@@ -666,7 +666,7 @@ class ResourcesController extends AppController {
                 $thumb = $page['Image_Upload']['localName'];
                 $resourceAssociator = $page['Resource_Associator'][0];
                 if (isset($results[$resourceAssociator])) {
-                    $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb);
+                    $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
                 }
             }
 
@@ -693,7 +693,7 @@ class ResourcesController extends AppController {
                 $results['results'][$key]['Title'] = $value['Page_Identifier'];
                 $results['results'][$key]['orphan'] = true;
                 if (is_array($value['Image_Upload'])) {
-                    $results['results'][$key]['thumb'] = $this->smallThumb($value['Image_Upload']['localName']);
+                    $results['results'][$key]['thumb'] = $this->smallThumb($value['Image_Upload']['localName'], $value['kid']);
                 }
                 $results['indicators'][$key] = array(
                   "hasFlags"=>false,
@@ -921,11 +921,17 @@ class ResourcesController extends AppController {
             foreach ($resources as $kid => $r) {
                 $p = $r['page'];
                 $p = isset(array_values($p)[0]['Image_Upload']['localName'])? array_values($p)[0]['Image_Upload']['localName'] : "";
-                $p = AppController::smallThumb($p);
+                if( $p != "" ){
+                    $pageThingKid = $p['kid'];
+                }
+                $p = AppController::smallThumb($p, $pageThingKid);
                 $resources[$kid]['thumbsrc'] = $p;
                 foreach ($r['page'] as $key => $page) {
                     $img = isset($page['Image_Upload']['localName']) ? $page['Image_Upload']['localName'] : "";
-                    $resources[$kid]['page'][$key]['thumbsrc'] = AppController::smallThumb($img);
+                    if( $p != "" ){
+                        $pageThingKid = $p['kid'];
+                    }
+                    $resources[$kid]['page'][$key]['thumbsrc'] = AppController::smallThumb($img, $pageThingKid);
                 }
             }
             echo json_encode(['resources' => $resources,

@@ -7,7 +7,6 @@ function GetNewResource(id) {
         return;
     }
     else if(id.includes("default-page")) {
-        console.log('in default page');
         // if there are no pages, and the id contains default-page then set image to default resource
         image.src = '/' + BASE_URL + 'img/DefaultResourceImage.svg';
         var resourceKid = id.replace('-default-page', '');
@@ -34,12 +33,18 @@ function GetNewResource(id) {
                     //display obervatoins that apply to the selected page
                     var cnt = 0;
                     var pageNum = 1;
-                    $(image).attr('src', res["kora_url"] + res['Image_Upload']['localName']);
+
+                    var pagePid = getPidFromKid(kid);
+                    var pageSid = getSidFromKid(kid);
+
+                    ///FULL SCREEN IMAGE CHANGED HERE YOU SHIT HEAD
+                    $(image).attr('src', res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
                     $('#PageImagePreloader').css('display', 'none');
+
                     $(image).css('display', 'block');
 
                     var fullImage = document.getElementById('fullscreenImage');
-                    var imgUrl = res["kora_url"] + res['Image_Upload']['localName'];
+                    var imgUrl = res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName'];
 
                     fullImage.src = imgUrl;
                 }

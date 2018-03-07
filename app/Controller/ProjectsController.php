@@ -82,7 +82,7 @@ class ProjectsController extends AppController {
 
 	}
   public function index() {
-    
+
     $this->getProjects();
 
 
@@ -175,9 +175,10 @@ class ProjectsController extends AppController {
             $picture_url = isset(array_values($page)[0]['Image_Upload']['localName'])?
                      array_values($page)[0]['Image_Upload']['localName'] : null;
 
+            $picture_kid = array_values($page)[0]['kid'];
             //Decide if there is a picture..
             if( $picture_url != null ){
-                $thumb = $this->largeThumb($picture_url);
+                $thumb = $this->largeThumb($picture_url, $picture_kid);
             }else{
                 $thumb = Router::url('/', true)."img/DefaultResourceImage.svg";
             }
