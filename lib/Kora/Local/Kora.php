@@ -64,6 +64,14 @@ class Kora extends AppController{
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
         }
+        foreach($this->comprehensive_results as $kid => $record_values){
+            foreach( $record_values as $key => $value ){
+                if (strpos($key, ' ') !== false) {
+                    $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
+                    unset($this->comprehensive_results[$kid][$key]);
+                }
+            }
+        }
         return $this->comprehensive_results;
     }
 
@@ -87,6 +95,14 @@ class Kora extends AppController{
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
         }
+        foreach($this->comprehensive_results as $kid => $record_values){
+            foreach( $record_values as $key => $value ){
+                if (strpos($key, ' ') !== false) {
+                    $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
+                    unset($this->comprehensive_results[$kid][$key]);
+                }
+            }
+        }
         return $this->comprehensive_results;
     }
     protected function MPF(){
@@ -101,6 +117,14 @@ class Kora extends AppController{
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
+        }
+        foreach($this->comprehensive_results as $kid => $record_values){
+            foreach( $record_values as $key => $value ){
+                if (strpos($key, ' ') !== false) {
+                    $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
+                    unset($this->comprehensive_results[$kid][$key]);
+                }
+            }
         }
         return $this->comprehensive_results;
     }
@@ -158,3 +182,4 @@ class Kora extends AppController{
     return $res;
   }
 }
+
