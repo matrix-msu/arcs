@@ -65,6 +65,7 @@ class Kora extends AppController{
             $this->comprehensive_results = array();
         }
         foreach($this->comprehensive_results as $kid => $record_values){
+            if( is_string($record_values) ){continue;}
             foreach( $record_values as $key => $value ){
                 if (strpos($key, ' ') !== false) {
                     $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
@@ -96,6 +97,7 @@ class Kora extends AppController{
             $this->comprehensive_results = array();
         }
         foreach($this->comprehensive_results as $kid => $record_values){
+            if( is_string($record_values) ){continue;}
             foreach( $record_values as $key => $value ){
                 if (strpos($key, ' ') !== false) {
                     $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
@@ -119,6 +121,7 @@ class Kora extends AppController{
             $this->comprehensive_results = array();
         }
         foreach($this->comprehensive_results as $kid => $record_values){
+            if( is_string($record_values) ){continue;}
             foreach( $record_values as $key => $value ){
                 if (strpos($key, ' ') !== false) {
                     $this->comprehensive_results[$kid][str_replace(' ','_',$key)] = $value;
