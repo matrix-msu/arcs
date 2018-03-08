@@ -561,7 +561,6 @@ class ResourcesController extends AppController {
 
     //collections show all button.. get all and send to search
     public function viewcollection($collection_id = null){
-    //    print_r($collection_id);die;
         $username = NULL;
         $usersC = new UsersController();
         if ($user = $usersC->getUser($this->Auth)) {
@@ -619,6 +618,8 @@ class ResourcesController extends AppController {
 
         $search = new Resource_Search($resourceKids, $pName);
         $results = $search->getResultsAsArray();
+        // echo 'after the thing';
+        // print_r($results);die;
         static::filterByPermission($username, $results['results']);
         $GLOBALS['current_project'] = $pName;
         echo "<script> var results_to_display = ".json_encode($results)."; </script>";

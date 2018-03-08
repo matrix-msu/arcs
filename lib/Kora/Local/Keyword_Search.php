@@ -601,20 +601,22 @@ class Keyword_Search extends Kora
 
         $images = self::search();
 
+
         foreach ($images as $img) {
+
             $pKid = $img['kid'];
-            if (isset($img["Resource Associator"]) && is_array($img["Resource Associator"])) {
-                foreach ($img["Resource Associator"] as $rKid) {
+            if (isset($img["Resource_Associator"]) && is_array($img["Resource_Associator"])) {
+                foreach ($img["Resource_Associator"] as $rKid) {
                     if (!isset($pageArray[$rKid])) {
-                        $pageArray[$rKid] = isset($img["Image Upload"]['localName'])?
-                        $img["Image Upload"]['localName'] : "none" ;
+                        $pageArray[$rKid] = isset($img["Image_Upload"]['localName'])?
+                        $img["Image_Upload"]['localName'] : "none" ;
                     }
                 }
             }
         }
         foreach ($this->formulatedResult as $obj) {
             if (isset($pageArray[$obj['kid']])) {
-                $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($pageArray[$obj['kid']]);
+                $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($pageArray[$obj['kid']], $pKid);
             } else {
                 $this->formulatedResult[$obj['kid']]["thumb"] = DEFAULT_THUMB;
             }
