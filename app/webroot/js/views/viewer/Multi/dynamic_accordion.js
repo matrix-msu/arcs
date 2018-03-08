@@ -103,7 +103,7 @@ function dynamicPrep() {
             var firstDrawer = 0;
             var firstDrawer2 = 0;
             for(var i=0;i<excavationKids.length;i++){ //show each excavation
-                var excavationHead = $('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]');
+                var excavationHead = $('.excavation-li[data-kid="'+excavationKids[i]+'"]');
                 $(excavationHead).css('display', 'block');
                 //click the first drawer
                 if( firstDrawer == 0 ){
@@ -113,13 +113,16 @@ function dynamicPrep() {
                     }
                 }
                 //rename the drawer.
-                var text = 'EXCAVATIONS LEVEL '+ (i+1);
-                if($('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]').length>0){
-                    $('.excavation-tab-head[data-kid="'+excavationKids[i]+'"]')[0].innerText = text;
-                }
+                // var text = 'EXCAVATIONS LEVEL '+ (i+1);
+                // if($('.excavation-li[data-kid="'+excavationKids[i]+'"]').length>0){
+                //     $('.excavation-li[data-kid="'+excavationKids[i]+'"]')[0].innerText = text;
+                // }
+                console.log('above the bit');
                 //only show the first excavation drawer.
                 if($('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').length>0 ){
+                    console.log('in the big');
                     if( firstDrawer2==0 ) {
+                        console.log('in the little');
                         $('.excavation-tab-content[data-kid="' + excavationKids[i] + '"]').eq(0).css('display', 'block');
                         firstDrawer2 = 1;
                     }
@@ -128,13 +131,14 @@ function dynamicPrep() {
                     ex = ex.replace(' ', '');
                     //console.log(ex);
                     excavationSeasonAssociators.push(ex);
+                    console.log('this thing important');
+                    console.log(excavationSeasonAssociators);
                 }
             }
 
             //find the season
             var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
                 .find("[id='Season_Associator']").attr('data-associations');
-
             if (typeof stringSeasonKids == 'undefined') {
                 //becasue kora returns undefined if something is not set
                 stringSeasonKids = ""

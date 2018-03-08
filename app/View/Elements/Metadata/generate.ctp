@@ -61,7 +61,8 @@ function Generate_Metadata(
                 <?php if(count($data) > 0) { ?>
                 <?php $count=0;?>
                 <?php foreach($data as $excavation) {
-                    $count++; ?>
+                    $count++;
+                    ?>
                     <li class="excavation-li" class="metadata-accordion ul">
                         <a href="#excavations<?php echo $count; ?>" class="excavation-click<?= $count ?>  excavation-click">
                             <?php
@@ -71,7 +72,7 @@ function Generate_Metadata(
                     </li>
                 <?php }} ?>
             </ul>
-            <div class="level-content soo">
+            <div class="excavation-tab-content" data-kid='<?php echo $excavation['kid'] ?>'>
         <?php
     }
 
