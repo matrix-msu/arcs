@@ -117,12 +117,9 @@ function dynamicPrep() {
                 // if($('.excavation-li[data-kid="'+excavationKids[i]+'"]').length>0){
                 //     $('.excavation-li[data-kid="'+excavationKids[i]+'"]')[0].innerText = text;
                 // }
-                console.log('above the bit');
                 //only show the first excavation drawer.
                 if($('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').length>0 ){
-                    console.log('in the big');
                     if( firstDrawer2==0 ) {
-                        console.log('in the little');
                         $('.excavation-tab-content[data-kid="' + excavationKids[i] + '"]').eq(0).css('display', 'block');
                         firstDrawer2 = 1;
                     }
@@ -131,8 +128,6 @@ function dynamicPrep() {
                     ex = ex.replace(' ', '');
                     //console.log(ex);
                     excavationSeasonAssociators.push(ex);
-                    console.log('this thing important');
-                    console.log(excavationSeasonAssociators);
                 }
             }
 
