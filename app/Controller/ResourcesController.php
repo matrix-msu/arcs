@@ -618,8 +618,6 @@ class ResourcesController extends AppController {
 
         $search = new Resource_Search($resourceKids, $pName);
         $results = $search->getResultsAsArray();
-        // echo 'after the thing';
-        // print_r($results);die;
         static::filterByPermission($username, $results['results']);
         $GLOBALS['current_project'] = $pName;
         echo "<script> var results_to_display = ".json_encode($results)."; </script>";
@@ -863,7 +861,6 @@ class ResourcesController extends AppController {
             }
 
             $info_array[$resource]["page"] = $page;
-
             //get SOO
             if( !empty($pageKids) ){
                 $soo = $this->getSubjectOfObservation($pageKids);
@@ -922,14 +919,16 @@ class ResourcesController extends AppController {
             foreach ($resources as $kid => $r) {
                 $p = $r['page'];
                 $p = isset(array_values($p)[0]['Image_Upload']['localName'])? array_values($p)[0]['Image_Upload']['localName'] : "";
-                if( $p != "" ){
+                $pageThingKid = '';
+                if( $p != "" && isset($p['kid'])){
                     $pageThingKid = $p['kid'];
                 }
                 $p = AppController::smallThumb($p, $pageThingKid);
                 $resources[$kid]['thumbsrc'] = $p;
                 foreach ($r['page'] as $key => $page) {
                     $img = isset($page['Image_Upload']['localName']) ? $page['Image_Upload']['localName'] : "";
-                    if( $p != "" ){
+                    $pageThingKid = '';
+                    if( $p != "" && isset($p['kid'])){
                         $pageThingKid = $p['kid'];
                     }
                     $resources[$kid]['page'][$key]['thumbsrc'] = AppController::smallThumb($img, $pageThingKid);

@@ -34,15 +34,15 @@ function Generate_Metadata(
             <?php foreach($data as $subject) {
                 $count++; ?>
                 <li class="soo-li"
-                    <?php if(array_key_exists('Pages Associator', $subject) && !empty($subject['Pages Associator']) ){
-                        echo 'data-pageKid="'.$subject['Pages Associator'][0].'" data-sooKid="'.$subject['kid'].'"';
+                    <?php if(array_key_exists('Pages_Associator', $subject) && !empty($subject['Pages_Associator']) ){
+                        echo 'data-pageKid="'.$subject['Pages_Associator'][0].'" data-sooKid="'.$subject['kid'].'"';
                     }?>
                 >
                     <a href="#soo-<?php echo $count; ?>" class="soo-click<?= $count ?>  soo-click">
                         <?php
-                            if( array_key_exists( 'Pages Associator', $subject ) && !empty($subject['Pages Associator'])
-                                && $subject['Pages Associator'][0] != $page_associator ){
-                                    $page_associator = $subject['Pages Associator'][0];
+                            if( array_key_exists( 'Pages_Associator', $subject ) && !empty($subject['Pages_Associator'])
+                                && $subject['Pages_Associator'][0] != $page_associator ){
+                                    $page_associator = $subject['Pages_Associator'][0];
                                     $count = 1;
                             }
 
@@ -189,9 +189,9 @@ function Generate_Metadata(
 
             'Artifact_-_Structure_Title' => 'text',
             'Artifact_-_Structure_Creator' => 'multi_select',
-            'Artifact_-_Structure_Creator Role' => 'multi_select',
+            'Artifact_-_Structure_Creator_Role' => 'multi_select',
             'Artifact_-_Structure_Dimensions' => 'multi_input',
-            'Artifact_-_Structure_Excavation Unit' => 'multi_select',
+            'Artifact_-_Structure_Excavation_Unit' => 'multi_select',
             'Artifact_-_Structure_Location' => 'multi_select',
             'Artifact_-_Structure_Geolocation' => 'multi_input',
             'Artifact_-_Structure_Current_Location' => 'list',
@@ -200,7 +200,7 @@ function Generate_Metadata(
             'Artifact_-_Structure_Description' => 'text',
             'Artifact_-_Structure_Condition' => 'multi_select',
             'Artifact_-_Structure_Inscription' => 'text',
-            'Artifact_-_Structur_Munsell_Number' => 'text',
+            'Artifact_-_Structure_Munsell_Number' => 'text',
             'Artifact_-_Structure_Date' => 'date',
             'Artifact_-_Structure_Subject' => 'multi_select',
             'Artifact_-_Structure_Origin' => 'list',
@@ -361,6 +361,7 @@ function Generate_Metadata(
 
                                 $array[$control] = "";
                             }
+
                             //build how the text value of the control should be displayed.
                             $text = '';
                             if( $type=='text'||$type=='list' ) {//MAKE THE URL SHOW UP

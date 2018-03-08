@@ -498,11 +498,12 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
             $p = $r['page'];
             $p = isset(array_values($p)[0]['Image_Upload']['localName'])?
             array_values($p)[0]['Image_Upload']['localName'] : "";
+            $pageThingKid = (array_values($r['page'])[0]['kid']);
          ?>
         <a class='other-resources' data-projectKid="<?=$r['project_kid']?>" >
 
             <img id="identifier-<?=$r['kid']?>" class="other-resource<?php if ( in_array($r['kid'], $showButNoEditArray) ){echo ' showButNoEdit'; }  ?>"
-                src="<?php echo AppController::smallThumb($p); ?> " height="200px"/>
+                src="<?php echo AppController::smallThumb($p, $pageThingKid); ?> " height="200px"/>
 
 			<?php if ($cnt ==1) :  ?>
 				<div class='numberOverResources selectedResource'>
