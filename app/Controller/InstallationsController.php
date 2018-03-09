@@ -15,6 +15,17 @@ class InstallationsController extends AppController {
         $this->Auth->allow('display');
     }
 
+
+	public function register() {
+	        echo 'got to display';
+	          $this->set(array(
+	            'title_for_layout' => 'index'
+	        ));
+	        $this->set("test", 'hi noah');
+	        $this->render("register");
+	    }
+
+
     /**
      * Displays the installation page
      *
@@ -22,10 +33,10 @@ class InstallationsController extends AppController {
      * @return void
      */
 	public function display() {
-		$this->loadModel('Installation');
 	  	$this->set(array(
 	    	'title_for_layout' => 'index'
 	    ));
+		$this->render("index");
 	}
 
 }
