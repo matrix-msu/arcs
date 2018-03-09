@@ -374,7 +374,15 @@
    Router::connect('/flags/add',
         array('controller' => 'flags', 'action' => 'add')
     );
-
+    ////////////////////////////////////////////////////////////////////////
+    # installation Controller
+    ////////////////////////////////////////////////////////////////////////
+    Router::connect('/installation',
+        array('controller' => 'installations', 'action' => 'display', 'index')
+    );
+    Router::connect('/installation/*',
+        array('controller' => 'installations', 'action' => 'display')
+    );
 # Orphans controller
 Router::connect('/orphan/*',
     array('controller' => 'orphans', 'action' => 'display')
