@@ -517,7 +517,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 			<?php endif  ?>
         </a>
 
-        <?php  endforeach   ?>
+    <?php  endforeach; ?>
     </div> <!--#other-resources-contain -->
 </div> <!--#other-resources-container -->
 

@@ -58,9 +58,9 @@ function Generate_Metadata(
         ?>
         <div id="soo">
             <ul>
-                <?php if(count($data) > 0) { ?>
-                <?php $count=0;?>
-                <?php foreach($data as $excavation) {
+                <?php if(count($data) > 0) {
+                $count=0;
+                foreach($data as $excavation) {
                     $count++;
                     ?>
                     <li class="excavation-li" class="metadata-accordion ul">
@@ -73,6 +73,26 @@ function Generate_Metadata(
                 <?php }} ?>
             </ul>
             <div class="excavation-tab-content" data-kid='<?php echo $excavation['kid'] ?>'>
+        <?php
+    }elseif( $schemename == 'Seasons' ){
+        ?>
+        <div>
+            <ul>
+                <?php if(count($data) > 0) { ?>
+                <?php $count=0;?>
+                <?php foreach($data as $season) {
+                    $count++;
+                    ?>
+                    <li class="season-tab-head" class="metadata-accordion ul" class="season-li">
+                        <a href="#seasons<?php echo $count; ?>" class="season-click<?= $count ?>  season-click">
+                            <?php
+                                echo $count;
+                            ?>
+                        </a>
+                    </li>
+                <?php }} ?>
+            </ul>
+            <div class="season-tab-content" data-kid='<?php echo $season['kid'] ?>'>
         <?php
     }
 
@@ -339,19 +359,7 @@ function Generate_Metadata(
 
     foreach ($data as $array) {
         $counter++;
-
-        if($schemename == 'Seasons'){
-            $excavationClass = 'season-tab-head';
-            $excavationSmallClass = 'season-tab-content';
-    ?>
-            <h3 class="level-tab <?=$excavationClass?>" data-kid="<?=$array['kid']?>"><?= $schemename . " Level " . $counter?>
-                <!-- span class="edit-btn">Edit</span -->
-            </h3>
-
-            <div class="level-content smaller <?=$excavationSmallClass?>" data-kid="<?=$array['kid']?>">
-
-        <?php } ?>
-
+         ?>
                 <table id="<?=$schemename . $counter?>" class="<?=$schemename?>-table" data-scheme="<?=$schemename?>" data-kid="<?=$array['kid']?>">
 
                     <?php
@@ -514,6 +522,9 @@ function Generate_Metadata(
 </div>
 <?php
         if( $schemename == 'excavations' ){
+            echo "</div>";
+        }
+        if( $schemename == 'Seasons' ){
             echo "</div>";
         }
 }

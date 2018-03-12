@@ -377,18 +377,16 @@
     ////////////////////////////////////////////////////////////////////////
     # installation Controller
     ////////////////////////////////////////////////////////////////////////
-    Router::connect('/installation/test',
-            array('controller' => 'installations', 'action' => 'display')
-    );
     Router::connect('/installation',
         array('controller' => 'installations', 'action' => 'display', 'index')
     );
-    Router::connect('/installation/*',
-        array('controller' => 'installations', 'action' => 'display')
-    );
     Router::connect('/installation/register',
        array('controller' => 'installations', 'action' => 'register')
-   );
+    );
+   Router::connect('/installation/kora',
+      array('controller' => 'installations', 'action' => 'koraConfig')
+    );
+
 
 
 

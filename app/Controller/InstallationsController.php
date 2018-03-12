@@ -17,26 +17,32 @@ class InstallationsController extends AppController {
 
 
 	public function register() {
-	        echo 'got to display';
 	          $this->set(array(
 	            'title_for_layout' => 'index'
 	        ));
-	        $this->set("test", 'hi noah');
 	        $this->render("register");
 	    }
 
 
     /**
-     * Displays the installation page
-     *
-     *
-     * @return void
+     * Displays the start installation page
      */
 	public function display() {
 	  	$this->set(array(
-	    	'title_for_layout' => 'index'
+	    	'title_for_layout' => 'Install ARCS'
 	    ));
 		$this->render("index");
+	}
+
+
+	/**
+	 * Displays the Kora Configuration page
+	 */
+	public function koraConfig() {
+		$this->set(array(
+			'title_for_layout' => 'Install ARCS'
+		));
+		$this->render("kora_config");
 	}
 
 }

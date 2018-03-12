@@ -153,7 +153,7 @@ function dynamicPrep() {
                     if( e == sKid ){
                         season.css('display', 'table');
                         season.parent().css('display', 'block');
-                        season.parent().prev().html('Season Level '+index);
+                        season.parent().prev().html(index);
                         season.parent().prev().css('display', 'block');
                         index++;
                         if( firstDrawerS==0 ) {
@@ -167,7 +167,7 @@ function dynamicPrep() {
                 if( excavationSeasonAssociators.indexOf(sKid) != -1 ){
                     season.css('display', 'table');
                     season.parent().css('display', 'block');
-                    season.parent().prev().html('Season Level '+index);
+                    season.parent().prev().html(index);
                     season.parent().prev().css('display', 'block');
                     index++;
                     if( firstDrawerS==0 ) {

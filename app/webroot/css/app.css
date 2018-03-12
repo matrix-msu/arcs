@@ -14787,6 +14787,63 @@ input.user-reg-btn.btn.btn-success:focus {
   margin-left: 15px;
   margin-bottom: 14px;
 }
+.install-welcome-text {
+  margin: auto;
+  color: #686868;
+  text-align: center;
+  margin-bottom: 50px;
+  height: 70px;
+  width: 258px;
+}
+.install-welcome-text h1 {
+  color: #686868;
+  font-size: 30px;
+  line-height: 36px;
+}
+.install-welcome-text h4 {
+  height: 22px;
+  width: 164px;
+  font-size: 18px;
+  line-height: 22px;
+  margin: auto;
+}
+.start-btn-container {
+  text-align: center;
+  margin-bottom: 149px;
+  margin-top: 50px;
+}
+.start-btn-container .start-install-btn {
+  width: 263px;
+  height: 49px;
+  background: #0094BC;
+  border: 1px solid #0094BC;
+  color: white;
+}
+.start-btn-container .start-install-btn p {
+  font-size: 16px;
+  margin: auto;
+}
+.kora-body-content {
+  height: 500px;
+}
+.install-progress-bar {
+  color: #3F3F3F;
+  height: 24px;
+  width: 80%;
+  font-size: 20px;
+  line-height: 24px;
+  margin: auto;
+  padding-left: 117px;
+}
+.install-progress-bar .current-step {
+  color: #0094BC;
+}
+.install-progress-bar ul {
+  width: 100%;
+}
+.install-progress-bar ul li {
+  display: inline-block;
+}
 .accordion-wrapper {
   width: 90%;
   margin: 50px auto;
