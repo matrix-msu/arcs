@@ -44,6 +44,11 @@ class Kora extends AppController{
     protected $end;
 
     function __construct(){
+      if(!is_link(LIB . "Kora/search")){
+            //Create Symbolic link to local kora_search
+            symlink(KORA_SEARCH,LIB . "Kora/search");
+      }
+      require_once(LIB . "Kora/search");
 
       $this->token = TOKEN;
       //$this->projectMapping = PID;
@@ -170,4 +175,5 @@ class Kora extends AppController{
     return $res;
   }
 }
+
 
