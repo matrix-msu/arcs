@@ -146,36 +146,50 @@ function dynamicPrep() {
             $('.season-tab-content').css('display', 'none');
             var index =1;
             var firstDrawerS = 0;
-            $('.Seasons-table').each(function(){
-                var season = $(this);
-                var sKid = season.attr('data-kid');
-                seasonKids.every(function(e){
-                    if( e == sKid ){
-                        season.css('display', 'table');
-                        season.parent().css('display', 'block');
-                        season.parent().prev().html(index);
-                        season.parent().prev().css('display', 'block');
-                        index++;
-                        if( firstDrawerS==0 ) {
-                            season.parent().prev().click();
-                            firstDrawerS = 1;
-                        }
-                        return false;
-                    }
-                    return true;
+            // $('.Seasons-table').each(function(){
+            //     var season = $(this);
+            //     var sKid = season.attr('data-kid');
+            //     seasonKids.every(function(e){
+            //         if( e == sKid ){
+            //             season.css('display', 'table');
+            //             season.parent().css('display', 'block');
+            //             season.parent().prev().html(index);
+            //             season.parent().prev().css('display', 'block');
+            //             index++;
+            //             if( firstDrawerS==0 ) {
+            //                 season.parent().prev().click();
+            //                 firstDrawerS = 1;
+            //             }
+            //             return false;
+            //         }
+            //         return true;
+            //     });
+            //     if( excavationSeasonAssociators.indexOf(sKid) != -1 ){
+            //         season.css('display', 'table');
+            //         season.parent().css('display', 'block');
+            //         season.parent().prev().html(index);
+            //         season.parent().prev().css('display', 'block');
+            //         index++;
+            //         if( firstDrawerS==0 ) {
+            //             season.parent().prev().click();
+            //             firstDrawerS = 1;
+            //         }
+            //     }
+            // });
+            //soo radio button clicked. change css and show the correct soo table.
+            $('.season-li').click(function () { //soo radio button click
+                $('.season-li').each(function(){  //unclick all radio button css
+                    $(this).css('background-color','#f9f9f9');
+                    $(this).css('color','#555555');
+                })
+                $(this).css('background-color','#0093be'); //click this one button css
+                $(this).css('color','#f9f9f9');
+                $('.Seasons-table').each(function(){  //hide all tables
+                    $(this).css('display','none');
                 });
-                if( excavationSeasonAssociators.indexOf(sKid) != -1 ){
-                    season.css('display', 'table');
-                    season.parent().css('display', 'block');
-                    season.parent().prev().html(index);
-                    season.parent().prev().css('display', 'block');
-                    index++;
-                    if( firstDrawerS==0 ) {
-                        season.parent().prev().click();
-                        firstDrawerS = 1;
-                    }
-                }
-            });
+                //var seasonKid = $(this).attr('data-sooKid');
+                //$('.subjects-table[data-kid="'+sooKid+'"]').css('display','table'); //show the correct table
+            })
         }, 1);
 
     })

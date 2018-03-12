@@ -76,14 +76,14 @@ function Generate_Metadata(
         <?php
     }elseif( $schemename == 'Seasons' ){
         ?>
-        <div>
+        <div >
             <ul>
                 <?php if(count($data) > 0) { ?>
                 <?php $count=0;?>
                 <?php foreach($data as $season) {
                     $count++;
                     ?>
-                    <li class="season-tab-head" class="metadata-accordion ul" class="season-li">
+                    <li class="season-li metadata-accordion ul season-tab-head">
                         <a href="#seasons<?php echo $count; ?>" class="season-click<?= $count ?>  season-click">
                             <?php
                                 echo $count;
