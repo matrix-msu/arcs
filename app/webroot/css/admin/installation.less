@@ -36,6 +36,7 @@
     background: #0094BC;
     border: 1px solid #0094BC;
     color: white;
+    float: right;
     p {
         font-size: 16px;
         margin: auto;
@@ -47,21 +48,21 @@
     height: 500px; //change this
 }
 
-
 .install-progress-bar {
     color: #3F3F3F;
 	height: 24px;
-    width: 80%;
+    width: 100%;
     font-size: 20px;
     line-height: 24px;
-    margin: auto;
     padding-left: 117px;
+    padding-bottom: 62px;
 
     .current-step {
         color: #0094BC;
     }
     ul {
         width: 100%;
+        margin: 0 auto;
         li {
             display: inline-block;
         }
@@ -71,4 +72,40 @@
         }
     }
 
+}
+
+.form-container {
+    width: 100%;
+    padding-left: 157px;
+    background-color: #F9F9F9;
+    font-size: 16px;
+    
+    .form-prompt-wrapper {
+        margin: 0 auto;
+        color: #686868;
+        padding-top: 45px;
+    }
+    
+    .form-wrapper{
+        margin: 0 auto;
+        padding-top: 70px;
+        
+        .row {
+            width: 100%;
+            display: inline-flex;
+            .input-left {
+                width: 40%;
+            }
+            .input-right {
+                width: 40%;
+                margin-left: 5%;
+            }
+            input {
+                width: 100%;
+                background-color: #fff;
+                border: 1px solid #D8D8D8;
+            }
+        }
+        
+    }
 }

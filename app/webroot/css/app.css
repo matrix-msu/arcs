@@ -14818,6 +14818,7 @@ input.user-reg-btn.btn.btn-success:focus {
   background: #0094BC;
   border: 1px solid #0094BC;
   color: white;
+  float: right;
 }
 .cont-install-btn p {
   font-size: 16px;
@@ -14829,17 +14830,18 @@ input.user-reg-btn.btn.btn-success:focus {
 .install-progress-bar {
   color: #3F3F3F;
   height: 24px;
-  width: 80%;
+  width: 100%;
   font-size: 20px;
   line-height: 24px;
-  margin: auto;
   padding-left: 117px;
+  padding-bottom: 62px;
 }
 .install-progress-bar .current-step {
   color: #0094BC;
 }
 .install-progress-bar ul {
   width: 100%;
+  margin: 0 auto;
 }
 .install-progress-bar ul li {
   display: inline-block;
@@ -14847,6 +14849,37 @@ input.user-reg-btn.btn.btn-success:focus {
 .install-progress-bar ul .right-arrow {
   padding-left: 7px;
   padding-right: 7px;
+}
+.form-container {
+  width: 100%;
+  padding-left: 157px;
+  background-color: #F9F9F9;
+  font-size: 16px;
+}
+.form-container .form-prompt-wrapper {
+  margin: 0 auto;
+  color: #686868;
+  padding-top: 45px;
+}
+.form-container .form-wrapper {
+  margin: 0 auto;
+  padding-top: 70px;
+}
+.form-container .form-wrapper .row {
+  width: 100%;
+  display: inline-flex;
+}
+.form-container .form-wrapper .row .input-left {
+  width: 40%;
+}
+.form-container .form-wrapper .row .input-right {
+  width: 40%;
+  margin-left: 5%;
+}
+.form-container .form-wrapper .row input {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #D8D8D8;
 }
 .accordion-wrapper {
   width: 90%;
