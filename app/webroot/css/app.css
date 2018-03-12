@@ -14812,14 +14812,14 @@ input.user-reg-btn.btn.btn-success:focus {
   margin-bottom: 149px;
   margin-top: 50px;
 }
-.start-btn-container .start-install-btn {
+.cont-install-btn {
   width: 263px;
   height: 49px;
   background: #0094BC;
   border: 1px solid #0094BC;
   color: white;
 }
-.start-btn-container .start-install-btn p {
+.cont-install-btn p {
   font-size: 16px;
   margin: auto;
 }
@@ -14843,6 +14843,10 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 .install-progress-bar ul li {
   display: inline-block;
+}
+.install-progress-bar ul .right-arrow {
+  padding-left: 7px;
+  padding-right: 7px;
 }
 .accordion-wrapper {
   width: 90%;

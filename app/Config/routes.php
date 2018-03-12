@@ -386,6 +386,15 @@
    Router::connect('/installation/kora',
       array('controller' => 'installations', 'action' => 'koraConfig')
     );
+    Router::connect('/installation/field',
+       array('controller' => 'installations', 'action' => 'fieldConfig')
+    );
+     Router::connect('/installation/create',
+        array('controller' => 'installations', 'action' => 'createProject')
+    );
+    Router::connect('/installation/config',
+         array('controller' => 'installations', 'action' => 'arcsConfig')
+    );
 
 
 

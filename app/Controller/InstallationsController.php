@@ -15,14 +15,12 @@ class InstallationsController extends AppController {
         $this->Auth->allow('display');
     }
 
-
 	public function register() {
 	          $this->set(array(
 	            'title_for_layout' => 'index'
 	        ));
 	        $this->render("register");
 	    }
-
 
     /**
      * Displays the start installation page
@@ -34,7 +32,6 @@ class InstallationsController extends AppController {
 		$this->render("index");
 	}
 
-
 	/**
 	 * Displays the Kora Configuration page
 	 */
@@ -45,4 +42,33 @@ class InstallationsController extends AppController {
 		$this->render("kora_config");
 	}
 
+	/**
+	 * Displays the Field Configuration page
+	 */
+	public function fieldConfig() {
+		$this->set(array(
+			'title_for_layout' => 'Install ARCS'
+		));
+		$this->render("field_config");
+	}
+
+	/**
+	 * Displays the Create Project page
+	 */
+	public function createProject() {
+		$this->set(array(
+			'title_for_layout' => 'Install ARCS'
+		));
+		$this->render("create_project");
+	}
+
+	/**
+	 * Displays the ARCS Configuration page
+	 */
+	public function arcsConfig() {
+		$this->set(array(
+			'title_for_layout' => 'Install ARCS'
+		));
+		$this->render("arcs_config");
+	}
 }
