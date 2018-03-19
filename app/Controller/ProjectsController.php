@@ -26,13 +26,16 @@ class ProjectsController extends AppController {
 	public function beforeFilter() {
 
       parent::beforeFilter();
-      $this->Auth->allow("index", 'display', 'search',"single_project");
+      $this->Auth->allow("index", 'display', 'search',"single_project", "special_login");
   		$this->set(array(
   		'toolbar' => true,
           'footer' => false
   		));
 
   }
+
+
+
     public function getUser() {
     $user = array();
     $user = [];

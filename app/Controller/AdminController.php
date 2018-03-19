@@ -27,15 +27,15 @@ class AdminController extends AppController {
     );
 
     public function beforeFilter() {
-       
+
         parent::beforeFilter();
-        
+
         if (!$this->Access->isAdmin()) {
             $this->Session->setFlash('You must be an Admin to access the Admin ' .
                 ' console.', 'flash_error');
             $this->redirect('/');
         }
-        
+
         $mappings = $this->Mapping->find('all', array(
             'conditions' => array(
                 'Mapping.role' => 'Admin',
@@ -43,8 +43,8 @@ class AdminController extends AppController {
                 'Mapping.status' => 'confirmed'
             )
         ));
-        
-        if( empty($mappings) ){ 
+
+        if( empty($mappings) ){
             $this->Session->setFlash('You must be an Admin to access the Admin ' .
                 ' console.', 'flash_error');
             $this->redirect('/');
@@ -60,17 +60,17 @@ class AdminController extends AppController {
                 $otherParams = implode("/", $this->request->params['pass']);
             }
         }
-        
+
         if( isset($_SESSION['currentProjectName']) ){
             $first = false;
         }
 
         $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;margin-top:200px" >';
-        
+
         foreach ($mappings as $map) {
-            
+
             $name = parent::getProjectNameFromPID($map['Mapping']['pid']);
-            
+
             if ($name != '') {
                 if( $first == true ){
                     $_SESSION['currentProjectName'] = $name;
@@ -84,7 +84,7 @@ class AdminController extends AppController {
                 }
             }
         }
-        
+
         $projectPicker .= "</select>";
 
         $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$_SESSION['currentProjectName']."/".$otherParams;
@@ -242,7 +242,7 @@ class AdminController extends AppController {
      * View resource and collection flags.
      */
     public function flags() {
-        
+
         $pName = $this->request->params['pass'][0];
         $pid = parent::getPIDFromProjectName($pName);
 
@@ -307,6 +307,133 @@ class AdminController extends AppController {
 
         $this->set('metadata', $resultsArray);
     }
+
+        /**
+         * View and re-run jobs.
+         */
+        public function activity() {
+            include_once("../Config/database.php");
+            $db = new DATABASE_CONFIG();
+
+            $_POST['task'] = "all";
+            $_POST['username'] = "";
+
+            $db_object =  (object) $db;
+            $db_array = $db_object->{'default'};
+            $response['db_info'] = $db_array['host'];
+            //$conn = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+            //$conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+            $dbHost = $db_array['host'];
+            $database = $db_array['database'];
+            $conn = new PDO("mysql:host=$dbHost;dbname=$database", $db_array['login'], $db_array['password']);
+
+            $pName = $this->request->params['pass'][0];
+            $pid = parent::getPIDFromProjectName($pName);
+
+            $pid = explode('-', $pid)[0];
+            $hex = dechex($pid);
+
+            //get mappings
+            if( $_POST['username'] == '' ){
+                $table = self::getTable("SELECT id_user FROM mappings WHERE pid = $pid AND status = 'confirmed'", $conn);
+                $mappingsArray = array();
+                foreach($table as $key => $object){
+                    $mappingsArray[] = $object['id_user'];
+                }
+                $mappingsArray = "'". implode("','", $mappingsArray) ."'";
+            }else{
+                $user = $conn->prepare("SELECT id FROM users WHERE username = ?");
+                $user->bindParam(1, $_POST['username'], PDO::PARAM_STR);
+                $user->execute();
+                $row = $user->fetch(PDO::FETCH_ASSOC);
+                $row = $row['id'];
+                $mappingsArray = "'$row'";
+            }
+
+            //get individual stuffs
+            $resultsArray = Array();
+            if( $_POST['task'] == 'all' || $_POST['task'] == 'logins' ){ //get logins
+                $table = self::getTable(
+                    "SELECT name,last_login as date,username,email  ".
+                    "FROM users ".
+                    "WHERE id IN ($mappingsArray) ".
+                    "ORDER BY last_login DESC",
+                    $conn, 'logins'
+                );
+                $resultsArray = array_merge($resultsArray, $table);
+            }
+            if( $_POST['task'] == 'all' || $_POST['task'] == 'annotations' ){
+                $table = self::getTable(
+                    "SELECT user_name as name,modified as date,user_username as username,resource_name,resource_kid,user_email as email ".
+                    "FROM annotations ".
+                    "WHERE user_id IN (" .$mappingsArray. ") ".
+                    "AND resource_kid LIKE '$hex%' ".
+                    "ORDER BY modified DESC",
+                    $conn, 'annotations'
+                );
+                $resultsArray = array_merge($resultsArray, $table);
+            }
+            if(  $_POST['task'] == 'all' || $_POST['task'] == 'metadata_edits' ){
+                //get usernames because they aren't in the metadata table
+                $users = self::getTable("SELECT id,username,email FROM users WHERE id IN ($mappingsArray)", $conn);
+                $userMappings = array();
+                foreach( $users as $user ){
+                    $userMappings[$user['id']] = array('username'=>$user['username'],'email'=>$user['email']);
+                    //$userMappings[$user['id']] = $user['username'];
+                }
+                //get the actual metadata edits
+                $table = self::getTable(
+                    "SELECT user_name as name,modified as date,user_id,resource_name,resource_kid ".
+                    "FROM metadata_edits ".
+                    "WHERE user_id IN (" .$mappingsArray. ") ".
+                    "AND resource_kid LIKE '$hex%' ".
+                    "ORDER BY modified DESC",
+                    $conn, 'metadata'
+                );
+                foreach( $table as $key => $value ){
+                    $username = $userMappings[$value['user_id']]['username'];
+                    $email = $userMappings[$value['user_id']]['email'];
+                    $table[$key]['username'] = $username;
+                    $table[$key]['email'] = $email;
+                }
+                $resultsArray = array_merge($resultsArray, $table);
+            }
+            if( $_POST['task'] == 'all' || $_POST['task'] == 'flags' ){
+                $table = self::getTable(
+                    "SELECT user_name as name,created as date,user_username as username,resource_name,resource_kid,user_email as email ".
+                    "FROM flags ".
+                    "WHERE user_id IN (" .$mappingsArray. ") ".
+                    "AND resource_kid LIKE '$hex%' ".
+                    "ORDER BY created DESC",
+                    $conn, 'flags'
+                );
+                $resultsArray = array_merge($resultsArray, $table);
+            }
+
+            //sort all of the returns by date..
+            $date = array();
+            foreach ($resultsArray as $key => $row){
+                $date[$key] = $row['date'];
+            }
+            array_multisort($date, SORT_DESC, $resultsArray);
+
+            //get the profile pic and formatted date
+            foreach( $resultsArray as $key => $value ){
+                if( isset($value['username']) ) {
+                    if( !isset($value['email']) ){
+                        $value['email'] = '';
+                    }
+                    $resultsArray[$key]['profilePic'] = parent::checkForProfilePicture($value['username'], $value['email']);
+                }
+                if( isset($value['date']) ) {
+                    $resultsArray[$key]['date'] = parent::time_elapsed_string($value['date']);
+                }
+            }
+            $this->set('activity', $resultsArray);
+        }
+
+
+
 
     public function editMetadata(){
         include_once("../Config/database.php");
@@ -522,131 +649,6 @@ XML;
             }
         }
     }
-
-    /**
-     * View and re-run jobs.
-     */
-    public function activity() {
-
-        $_POST['task'] = "all";
-        $_POST['username'] = "";
-
-        include_once("../Config/database.php");
-        $db = new DATABASE_CONFIG();
-        $db_object =  (object) $db;
-        $db_array = $db_object->{'default'};
-        $response['db_info'] = $db_array['host'];
-        //$conn = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
-        //$conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-        $dbHost = $db_array['host'];
-        $database = $db_array['database'];
-        $conn = new PDO("mysql:host=$dbHost;dbname=$database", $db_array['login'], $db_array['password']);
-
-        $pName = $this->request->params['pass'][0];
-        $pid = parent::getPIDFromProjectName($pName);
-
-        $pid = explode('-', $pid)[0];
-        $hex = dechex($pid);
-
-        //get mappings
-        if( $_POST['username'] == '' ){
-            $table = self::getTable("SELECT id_user FROM mappings WHERE pid = $pid AND status = 'confirmed'", $conn);
-            $mappingsArray = array();
-            foreach($table as $key => $object){
-                $mappingsArray[] = $object['id_user'];
-            }
-            $mappingsArray = "'". implode("','", $mappingsArray) ."'";
-        }else{
-            $user = $conn->prepare("SELECT id FROM users WHERE username = ?");
-            $user->bindParam(1, $_POST['username'], PDO::PARAM_STR);
-            $user->execute();
-            $row = $user->fetch(PDO::FETCH_ASSOC);
-            $row = $row['id'];
-            $mappingsArray = "'$row'";
-        }
-
-        //get individual stuffs
-        $resultsArray = Array();
-        if( $_POST['task'] == 'all' || $_POST['task'] == 'logins' ){ //get logins
-            $table = self::getTable(
-                "SELECT name,last_login as date,username,email  ".
-                "FROM users ".
-                "WHERE id IN ($mappingsArray) ".
-                "ORDER BY last_login DESC",
-                $conn, 'logins'
-            );
-            $resultsArray = array_merge($resultsArray, $table);
-        }
-        if( $_POST['task'] == 'all' || $_POST['task'] == 'annotations' ){
-            $table = self::getTable(
-                "SELECT user_name as name,modified as date,user_username as username,resource_name,resource_kid,user_email as email ".
-                "FROM annotations ".
-                "WHERE user_id IN (" .$mappingsArray. ") ".
-                "AND resource_kid LIKE '$hex%' ".
-                "ORDER BY modified DESC",
-                $conn, 'annotations'
-            );
-            $resultsArray = array_merge($resultsArray, $table);
-        }
-        if(  $_POST['task'] == 'all' || $_POST['task'] == 'metadata_edits' ){
-            //get usernames because they aren't in the metadata table
-            $users = self::getTable("SELECT id,username,email FROM users WHERE id IN ($mappingsArray)", $conn);
-            $userMappings = array();
-            foreach( $users as $user ){
-                $userMappings[$user['id']] = array('username'=>$user['username'],'email'=>$user['email']);
-                //$userMappings[$user['id']] = $user['username'];
-            }
-            //get the actual metadata edits
-            $table = self::getTable(
-                "SELECT user_name as name,modified as date,user_id,resource_name,resource_kid ".
-                "FROM metadata_edits ".
-                "WHERE user_id IN (" .$mappingsArray. ") ".
-                "AND resource_kid LIKE '$hex%' ".
-                "ORDER BY modified DESC",
-                $conn, 'metadata'
-            );
-            foreach( $table as $key => $value ){
-                $username = $userMappings[$value['user_id']]['username'];
-                $email = $userMappings[$value['user_id']]['email'];
-                $table[$key]['username'] = $username;
-                $table[$key]['email'] = $email;
-            }
-            $resultsArray = array_merge($resultsArray, $table);
-        }
-        if( $_POST['task'] == 'all' || $_POST['task'] == 'flags' ){
-            $table = self::getTable(
-                "SELECT user_name as name,created as date,user_username as username,resource_name,resource_kid,user_email as email ".
-                "FROM flags ".
-                "WHERE user_id IN (" .$mappingsArray. ") ".
-                "AND resource_kid LIKE '$hex%' ".
-                "ORDER BY created DESC",
-                $conn, 'flags'
-            );
-            $resultsArray = array_merge($resultsArray, $table);
-        }
-
-        //sort all of the returns by date..
-        $date = array();
-        foreach ($resultsArray as $key => $row){
-            $date[$key] = $row['date'];
-        }
-        array_multisort($date, SORT_DESC, $resultsArray);
-
-        //get the profile pic and formatted date
-        foreach( $resultsArray as $key => $value ){
-            if( isset($value['username']) ) {
-                if( !isset($value['email']) ){
-                    $value['email'] = '';
-                }
-                $resultsArray[$key]['profilePic'] = parent::checkForProfilePicture($value['username'], $value['email']);
-            }
-            if( isset($value['date']) ) {
-                $resultsArray[$key]['date'] = parent::time_elapsed_string($value['date']);
-            }
-        }
-        $this->set('activity', $resultsArray);
-    }
-
 
 
     public function getTable($query, $conn, $type=''){

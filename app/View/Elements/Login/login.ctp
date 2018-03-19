@@ -7,7 +7,10 @@
 
                 <h1 id="loginHeader">Login</h1>
 
-                <?php echo $this->Form->create('User', array('controller' => 'users', 'action' => 'special_login')); ?>
+                <?php
+                // echo $this->Form->create('User', array('controller' => 'users', 'url' => 'special_login'));
+                echo $this->Form->create('User', array('url' => array('controller'=>'users', 'action'=>'special_login')));
+                ?>
 
 				<p id="loginInfo"></p>
 

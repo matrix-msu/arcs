@@ -94,6 +94,7 @@ class ResourcesController extends AppController {
                     // Permissions is Special User, but the user is not on
                     // the special user list
                     if (
+                        isset($resource['Special_User']) &&
                         isset($resource['Permissions']) &&
                         $resource['Permissions'] === Permissions::R_Special &&
                         !static::isSpecial($resource['Special_User'], $userName)

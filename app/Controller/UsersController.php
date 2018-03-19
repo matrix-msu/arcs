@@ -690,6 +690,7 @@ class UsersController extends AppController
     {
         $this->User->flatten = false;
           if ($this->request->is('post')) {
+
             if ($this->request->data['User']['forgot_password']) {
                 /* Reset user's password */
                 $email = $this->request->data['User']['username']; // actually is email because the reset form overrides the login form
@@ -707,7 +708,6 @@ class UsersController extends AppController
                     $this->User->saveById($user['User']['id'], array(
                         'reset' => $token
                     ));
-
                     $this->sendEmailResetPassword($email, $token);
                     $this->Session->setFlash("We've sent an email to $email. It contains a special " .
                         "link to reset your password.", 'flash_success');
@@ -918,7 +918,8 @@ class UsersController extends AppController
         $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
-                $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
+                // $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
+                $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LfP5hcTAAAAACpAFd2VWMH0EUEZ1zzCL16oqA0Y&response=" . $this->request->data('g-recaptcha-response'));
                 $response = json_decode($response, true);
                 if ($response['success'] === true) {
                     $this->User->permit('isAdmin', 'last_login');

@@ -153,7 +153,7 @@
 
 			</a>
 			<a id="collections" class="btn btn-grey"
-				href="<?php 
+				href="<?php
                         if (($this->request->params['controller'] == 'resources' &&
 						$this->request->params['action'] == 'viewcollection')) {
                             echo $this->Html->url('/collections')."/".$projectName;
@@ -244,5 +244,3 @@
         console.log(PID_ARRAY);
     })
 </script>
-
-

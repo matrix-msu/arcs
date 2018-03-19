@@ -18,7 +18,10 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
+ // echo phpversion();       // USE THIS TO CHECK THE PHP VERSION
+ // die;
+// echo Configure::version();   // USE THIS TO CHECK THE CAKE VERSION
+// die;
 /**
  * CakePHP Debug Level:
  *
@@ -295,6 +298,23 @@
  *	));
  */
 
+
+// echo 'here';
+// print_r(DS);
+// die;
+
+if (!defined('ROOT')) {
+    define('ROOT', DS . 'app' . DS . 'webroot');
+}
+
+if (!defined('APP_DIR')) {
+    define ('APP_DIR', 'app');
+}
+
+// if (!defined('CAKE_CORE_INCLUDE_PATH')) {
+//     define('CAKE_CORE_INCLUDE_PATH', DS . 'usr' . DS . 'lib');
+// }
+
 /**
  * Pick the caching engine to use.  If APC is enabled use it.
  * If running via cli - apc is disabled by default. ensure it's available and enabled in this case
@@ -334,4 +354,3 @@ Cache::config('_cake_model_', array(
 	'serialize' => ($engine === 'File'),
 	'duration' => $duration
 ));
-

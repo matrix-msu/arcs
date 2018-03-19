@@ -61,7 +61,7 @@ class Resource extends AppModel {
     /**
      * Queue up a job to index the resource in SOLR.
      */
-    public function afterSave($created) {
+    public function afterSave($created, $options = array()) {
         $job = new Job();
         $job->enqueue('solr_index', array(
             'resource_id' => $this->id
