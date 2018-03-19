@@ -2,19 +2,19 @@
 /**
  * CakeHtmlReporter
  *
- * PHP 5
- *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 1.2.0.4433
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('CakeBaseReporter', 'TestSuite/Reporter');
 
 /**
@@ -26,6 +26,13 @@ App::uses('CakeBaseReporter', 'TestSuite/Reporter');
 class CakeHtmlReporter extends CakeBaseReporter {
 
 /**
+ * The content buffer
+ *
+ * @var string
+ */
+	protected $_buffer = '';
+
+/**
  * Paints the top of the web page setting the
  * title to the name of the starting test.
  *
@@ -33,10 +40,24 @@ class CakeHtmlReporter extends CakeBaseReporter {
  */
 	public function paintHeader() {
 		$this->_headerSent = true;
+		ob_start();
+		$this->sendContentType();
 		$this->sendNoCacheHeaders();
 		$this->paintDocumentStart();
 		$this->paintTestMenu();
 		echo "<ul class='tests'>\n";
+		$this->_buffer = ob_get_clean();
+	}
+
+/**
+ * Set the content-type header so it is in the correct encoding.
+ *
+ * @return void
+ */
+	public function sendContentType() {
+		if (!headers_sent()) {
+			header('Content-Type: text/html; charset=' . Configure::read('App.encoding'));
+		}
 	}
 
 /**
@@ -45,7 +66,6 @@ class CakeHtmlReporter extends CakeBaseReporter {
  * @return void
  */
 	public function paintDocumentStart() {
-		ob_start();
 		$baseDir = $this->params['baseDir'];
 		include CAKE . 'TestSuite' . DS . 'templates' . DS . 'header.php';
 	}
@@ -83,15 +103,15 @@ class CakeHtmlReporter extends CakeBaseReporter {
 			$urlExtra = '&plugin=' . $plugin;
 		}
 
-		if (1 > count($testCases)) {
+		if (count($testCases) < 1) {
 			$buffer .= "<strong>EMPTY</strong>";
 		}
 
-		foreach ($testCases as $testCaseFile => $testCase) {
+		foreach ($testCases as $testCase) {
 			$title = explode(DS, str_replace('.test.php', '', $testCase));
 			$title[count($title) - 1] = Inflector::camelize($title[count($title) - 1]);
 			$title = implode(' / ', $title);
-				$buffer .= "<li><a href='" . $this->baseUrl() . "?case=" . urlencode($testCase) . $urlExtra ."'>" . $title . "</a></li>\n";
+				$buffer .= "<li><a href='" . $this->baseUrl() . "?case=" . urlencode($testCase) . $urlExtra . "'>" . $title . "</a></li>\n";
 		}
 		$buffer .= "</ul>\n";
 		echo $buffer;
@@ -122,8 +142,10 @@ class CakeHtmlReporter extends CakeBaseReporter {
  * @return void
  */
 	public function paintFooter($result) {
+		echo $this->_buffer;
 		ob_end_flush();
-		$colour = ($result->failureCount()  + $result->errorCount() > 0 ? "red" : "green");
+
+		$colour = ($result->failureCount() + $result->errorCount() > 0 ? "red" : "green");
 		echo "</ul>\n";
 		echo "<div style=\"";
 		echo "padding: 8px; margin: 1em 0; background-color: $colour; color: white;";
@@ -157,6 +179,7 @@ class CakeHtmlReporter extends CakeBaseReporter {
 /**
  * Paints a code coverage report.
  *
+ * @param array $coverage The coverage data
  * @return void
  */
 	public function paintCoverage(array $coverage) {
@@ -185,12 +208,13 @@ class CakeHtmlReporter extends CakeBaseReporter {
 		}
 		if (!empty($this->params['case'])) {
 			$query['case'] = $this->params['case'];
- 		}
-		$show = $this->_queryString($show);
-		$query = $this->_queryString($query);
+		}
+		list($show, $query) = $this->_getQueryLink();
 
-		echo "<p><a href='" . $this->baseUrl() . $show . "'>Run more tests</a> | <a href='" . $this->baseUrl() . $query . "&show_passes=1'>Show Passes</a> | \n";
-		echo " <a href='" . $this->baseUrl() . $query . "&amp;code_coverage=true'>Analyze Code Coverage</a></p>\n";
+		echo "<p><a href='" . $this->baseUrl() . $show . "'>Run more tests</a> | <a href='" . $this->baseUrl() . $query . "&amp;show_passes=1'>Show Passes</a> | \n";
+		echo "<a href='" . $this->baseUrl() . $query . "&amp;debug=1'>Enable Debug Output</a> | \n";
+		echo "<a href='" . $this->baseUrl() . $query . "&amp;code_coverage=true'>Analyze Code Coverage</a> | \n";
+		echo "<a href='" . $this->baseUrl() . $query . "&amp;code_coverage=true&amp;show_passes=1&amp;debug=1'>All options enabled</a></p>\n";
 	}
 
 /**
@@ -229,18 +253,50 @@ class CakeHtmlReporter extends CakeBaseReporter {
  *
  * @param PHPUnit_Framework_AssertionFailedError $message Failure object displayed in
  *   the context of the other tests.
+ * @param mixed $test The test case to paint a failure for.
  * @return void
  */
 	public function paintFail($message, $test) {
+		ob_start();
 		$trace = $this->_getStackTrace($message);
-		$testName = get_class($test) . '(' . $test->getName() . ')';
+		$className = get_class($test);
+		$testName = $className . '::' . $test->getName() . '()';
+
+		$actualMsg = $expectedMsg = null;
+		if (method_exists($message, 'getComparisonFailure')) {
+			$failure = $message->getComparisonFailure();
+			if (is_object($failure)) {
+				$actualMsg = $failure->getActualAsString();
+				$expectedMsg = $failure->getExpectedAsString();
+			}
+		}
 
 		echo "<li class='fail'>\n";
 		echo "<span>Failed</span>";
-		echo "<div class='msg'><pre>" . $this->_htmlEntities($message->toString()) . "</pre></div>\n";
+		echo "<div class='msg'><pre>" . $this->_htmlEntities($message->toString());
+
+		if ((is_string($actualMsg) && is_string($expectedMsg)) || (is_array($actualMsg) && is_array($expectedMsg))) {
+
+			$diffs = "";
+			if (class_exists('PHPUnit_Util_Diff')) {
+				$diffs = PHPUnit_Util_Diff::diff($expectedMsg, $actualMsg);
+			} elseif (class_exists('SebastianBergmann\Diff\Differ')) {
+				$differ = new SebastianBergmann\Diff\Differ();
+				$diffs = $differ->diff($expectedMsg, $actualMsg);
+			}
+
+			echo "<br />" . $this->_htmlEntities($diffs);
+		}
+
+		echo "</pre></div>\n";
 		echo "<div class='msg'>" . __d('cake_dev', 'Test case: %s', $testName) . "</div>\n";
+		if (strpos($className, "PHPUnit_") === false) {
+			list($show, $query) = $this->_getQueryLink();
+			echo "<div class='msg'><a href='" . $this->baseUrl() . $query . "&amp;filter=" . $test->getName() . "'>" . __d('cake_dev', 'Rerun only this test: %s', $testName) . "</a></div>\n";
+		}
 		echo "<div class='msg'>" . __d('cake_dev', 'Stack trace:') . '<br />' . $trace . "</div>\n";
 		echo "</li>\n";
+		$this->_buffer .= ob_get_clean();
 	}
 
 /**
@@ -248,11 +304,12 @@ class CakeHtmlReporter extends CakeBaseReporter {
  * trail of the nesting test suites below the
  * top level test.
  *
- * @param PHPUnit_Framework_Test test method that just passed
+ * @param PHPUnit_Framework_Test $test Test method that just passed
  * @param float $time time spent to run the test method
  * @return void
  */
 	public function paintPass(PHPUnit_Framework_Test $test, $time = null) {
+		ob_start();
 		if (isset($this->params['showPasses']) && $this->params['showPasses']) {
 			echo "<li class='pass'>\n";
 			echo "<span>Passed</span> ";
@@ -260,15 +317,18 @@ class CakeHtmlReporter extends CakeBaseReporter {
 			echo "<br />" . $this->_htmlEntities($test->getName()) . " ($time seconds)\n";
 			echo "</li>\n";
 		}
+		$this->_buffer .= ob_get_clean();
 	}
 
 /**
  * Paints a PHP exception.
  *
- * @param Exception $exception Exception to display.
+ * @param Exception $message Exception to display.
+ * @param mixed $test The test that failed.
  * @return void
  */
 	public function paintException($message, $test) {
+		ob_start();
 		$trace = $this->_getStackTrace($message);
 		$testName = get_class($test) . '(' . $test->getName() . ')';
 
@@ -279,6 +339,7 @@ class CakeHtmlReporter extends CakeBaseReporter {
 		echo "<div class='msg'>" . __d('cake_dev', 'Test case: %s', $testName) . "</div>\n";
 		echo "<div class='msg'>" . __d('cake_dev', 'Stack trace:') . '<br />' . $trace . "</div>\n";
 		echo "</li>\n";
+		$this->_buffer .= ob_get_clean();
 	}
 
 /**
@@ -289,10 +350,12 @@ class CakeHtmlReporter extends CakeBaseReporter {
  * @return void
  */
 	public function paintSkip($message, $test) {
+		ob_start();
 		echo "<li class='skipped'>\n";
 		echo "<span>Skipped</span> ";
 		echo $test->getName() . ': ' . $this->_htmlEntities($message->getMessage());
 		echo "</li>\n";
+		$this->_buffer .= ob_get_clean();
 	}
 
 /**
@@ -339,12 +402,42 @@ class CakeHtmlReporter extends CakeBaseReporter {
 /**
  * A test suite started.
  *
- * @param  PHPUnit_Framework_TestSuite $suite
+ * @param PHPUnit_Framework_TestSuite $suite The test suite to start.
+ * @return void
  */
 	public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {
 		if (!$this->_headerSent) {
-			echo $this->paintHeader();
+			$this->paintHeader();
 		}
-		echo '<h2>' . __d('cake_dev', 'Running  %s', $suite->getName())  . '</h2>';
+		$this->_buffer .= '<h2>' . __d('cake_dev', 'Running  %s', $suite->getName()) . '</h2>';
 	}
+
+/**
+ * Returns the query string formatted for ouput in links
+ * 
+ * @return string
+ */
+	protected function _getQueryLink() {
+		$show = $query = array();
+		if (!empty($this->params['case'])) {
+			$show['show'] = 'cases';
+		}
+
+		if (!empty($this->params['core'])) {
+			$show['core'] = $query['core'] = 'true';
+		}
+		if (!empty($this->params['plugin'])) {
+			$show['plugin'] = $query['plugin'] = $this->params['plugin'];
+		}
+		if (!empty($this->params['case'])) {
+			$query['case'] = $this->params['case'];
+		}
+		if (!empty($this->params['filter'])) {
+			$query['filter'] = $this->params['filter'];
+		}
+		$show = $this->_queryString($show);
+		$query = $this->_queryString($query);
+		return array($show, $query);
+	}
+
 }

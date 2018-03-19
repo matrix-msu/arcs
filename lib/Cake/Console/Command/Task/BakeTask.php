@@ -2,18 +2,17 @@
 /**
  * Base class for Bake Tasks.
  *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc.
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppShell', 'Console/Command');
@@ -42,7 +41,7 @@ class BakeTask extends AppShell {
 /**
  * Flag for interactive mode
  *
- * @var boolean
+ * @var bool
  */
 	public $interactive = false;
 
@@ -52,14 +51,14 @@ class BakeTask extends AppShell {
  *
  * @return void
  */
-	function startup() {
+	public function startup() {
 		Configure::write('debug', 2);
 		Configure::write('Cache.disable', 1);
 		parent::startup();
 	}
 
 /**
- * Gets the path for output.  Checks the plugin property
+ * Gets the path for output. Checks the plugin property
  * and returns the correct path.
  *
  * @return string Path to output.

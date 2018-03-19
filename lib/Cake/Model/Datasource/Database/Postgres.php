@@ -1,20 +1,17 @@
 <?php
 /**
- * PostgreSQL layer for DBO.
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Model.Datasource.Database
  * @since         CakePHP(tm) v 0.9.1.114
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('DboSource', 'Model/Datasource');
@@ -34,18 +31,7 @@ class Postgres extends DboSource {
 	public $description = "PostgreSQL DBO Driver";
 
 /**
- * Index of basic SQL commands
- *
- * @var array
- */
-	protected $_commands = array(
-		'begin'    => 'BEGIN',
-		'commit'   => 'COMMIT',
-		'rollback' => 'ROLLBACK'
-	);
-
-/**
- * Base driver configuration settings.  Merged with user settings.
+ * Base driver configuration settings. Merged with user settings.
  *
  * @var array
  */
@@ -57,20 +43,27 @@ class Postgres extends DboSource {
 		'database' => 'cake',
 		'schema' => 'public',
 		'port' => 5432,
-		'encoding' => ''
+		'encoding' => '',
+		'sslmode' => 'allow',
+		'flags' => array()
 	);
 
 /**
  * Columns
  *
  * @var array
+ * @link https://www.postgresql.org/docs/9.6/static/datatype.html PostgreSQL Data Types
  */
 	public $columns = array(
 		'primary_key' => array('name' => 'serial NOT NULL'),
 		'string' => array('name' => 'varchar', 'limit' => '255'),
 		'text' => array('name' => 'text'),
 		'integer' => array('name' => 'integer', 'formatter' => 'intval'),
+		'smallinteger' => array('name' => 'smallint', 'formatter' => 'intval'),
+		'tinyinteger' => array('name' => 'smallint', 'formatter' => 'intval'),
+		'biginteger' => array('name' => 'bigint', 'limit' => '20'),
 		'float' => array('name' => 'float', 'formatter' => 'floatval'),
+		'decimal' => array('name' => 'decimal', 'formatter' => 'floatval'),
 		'datetime' => array('name' => 'timestamp', 'format' => 'Y-m-d H:i:s', 'formatter' => 'date'),
 		'timestamp' => array('name' => 'timestamp', 'format' => 'Y-m-d H:i:s', 'formatter' => 'date'),
 		'time' => array('name' => 'time', 'format' => 'H:i:s', 'formatter' => 'date'),
@@ -78,7 +71,8 @@ class Postgres extends DboSource {
 		'binary' => array('name' => 'bytea'),
 		'boolean' => array('name' => 'boolean'),
 		'number' => array('name' => 'numeric'),
-		'inet' => array('name' => 'inet')
+		'inet' => array('name' => 'inet'),
+		'uuid' => array('name' => 'uuid')
 	);
 
 /**
@@ -104,21 +98,30 @@ class Postgres extends DboSource {
 	protected $_sequenceMap = array();
 
 /**
+ * The set of valid SQL operations usable in a WHERE statement
+ *
+ * @var array
+ */
+	protected $_sqlOps = array('like', 'ilike', 'or', 'not', 'in', 'between', '~', '~\*', '\!~', '\!~\*', 'similar to');
+
+/**
  * Connects to the database using options in the given configuration array.
  *
- * @return boolean True if successfully connected.
+ * @return bool True if successfully connected.
  * @throws MissingConnectionException
  */
 	public function connect() {
 		$config = $this->config;
 		$this->connected = false;
+
+		$flags = $config['flags'] + array(
+			PDO::ATTR_PERSISTENT => $config['persistent'],
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+		);
+
 		try {
-			$flags = array(
-				PDO::ATTR_PERSISTENT => $config['persistent'],
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-			);
 			$this->_connection = new PDO(
-				"pgsql:host={$config['host']};port={$config['port']};dbname={$config['database']}",
+				"pgsql:host={$config['host']};port={$config['port']};dbname={$config['database']};sslmode={$config['sslmode']}",
 				$config['login'],
 				$config['password'],
 				$flags
@@ -129,10 +132,18 @@ class Postgres extends DboSource {
 				$this->setEncoding($config['encoding']);
 			}
 			if (!empty($config['schema'])) {
-				 $this->_execute('SET search_path TO ' . $config['schema']);
+				$this->_execute('SET search_path TO "' . $config['schema'] . '"');
+			}
+			if (!empty($config['settings'])) {
+				foreach ($config['settings'] as $key => $value) {
+					$this->_execute("SET $key TO $value");
+				}
 			}
 		} catch (PDOException $e) {
-			throw new MissingConnectionException(array('class' => $e->getMessage()));
+			throw new MissingConnectionException(array(
+				'class' => get_class($this),
+				'message' => $e->getMessage()
+			));
 		}
 
 		return $this->connected;
@@ -141,7 +152,7 @@ class Postgres extends DboSource {
 /**
  * Check if PostgreSQL is enabled/loaded
  *
- * @return boolean
+ * @return bool
  */
 	public function enabled() {
 		return in_array('pgsql', PDO::getAvailableDrivers());
@@ -150,13 +161,13 @@ class Postgres extends DboSource {
 /**
  * Returns an array of tables in the database. If there are no tables, an error is raised and the application exits.
  *
- * @param mixed $data
+ * @param mixed $data The sources to list.
  * @return array Array of table names in the database
  */
 	public function listSources($data = null) {
 		$cache = parent::listSources();
 
-		if ($cache != null) {
+		if ($cache) {
 			return $cache;
 		}
 
@@ -166,17 +177,17 @@ class Postgres extends DboSource {
 
 		if (!$result) {
 			return array();
-		} else {
-			$tables = array();
-
-			foreach ($result as $item) {
-				$tables[] = $item->name;
-			}
-
-			$result->closeCursor();
-			parent::listSources($tables);
-			return $tables;
 		}
+
+		$tables = array();
+
+		foreach ($result as $item) {
+			$tables[] = $item->name;
+		}
+
+		$result->closeCursor();
+		parent::listSources($tables);
+		return $tables;
 	}
 
 /**
@@ -186,31 +197,48 @@ class Postgres extends DboSource {
  * @return array Fields in table. Keys are name and type
  */
 	public function describe($model) {
-		$fields = parent::describe($model);
 		$table = $this->fullTableName($model, false, false);
+		$fields = parent::describe($table);
 		$this->_sequenceMap[$table] = array();
 		$cols = null;
+		$hasPrimary = false;
 
 		if ($fields === null) {
 			$cols = $this->_execute(
-				"SELECT DISTINCT table_schema AS schema, column_name AS name, data_type AS type, is_nullable AS null,
-					column_default AS default, ordinal_position AS position, character_maximum_length AS char_length,
-					character_octet_length AS oct_length FROM information_schema.columns
-				WHERE table_name = ? AND table_schema = ?  ORDER BY position",
-				array($table, $this->config['schema'])
+				'SELECT DISTINCT table_schema AS schema,
+					column_name AS name,
+					data_type AS type,
+					is_nullable AS null,
+					column_default AS default,
+					ordinal_position AS position,
+					character_maximum_length AS char_length,
+					character_octet_length AS oct_length,
+					pg_get_serial_sequence(attr.attrelid::regclass::text, attr.attname) IS NOT NULL AS has_serial
+				FROM information_schema.columns c
+				INNER JOIN pg_catalog.pg_namespace ns ON (ns.nspname = table_schema)
+				INNER JOIN pg_catalog.pg_class cl ON (cl.relnamespace = ns.oid AND cl.relname = table_name)
+				LEFT JOIN pg_catalog.pg_attribute attr ON (cl.oid = attr.attrelid AND column_name = attr.attname)
+				WHERE table_name = ? AND table_schema = ? AND table_catalog = ?
+				ORDER BY ordinal_position',
+				array($table, $this->config['schema'], $this->config['database'])
 			);
 
+			// @codingStandardsIgnoreStart
+			// Postgres columns don't match the coding standards.
 			foreach ($cols as $c) {
 				$type = $c->type;
 				if (!empty($c->oct_length) && $c->char_length === null) {
-					if ($c->type == 'character varying') {
+					if ($c->type === 'character varying') {
 						$length = null;
 						$type = 'text';
+					} elseif ($c->type === 'uuid') {
+						$type = 'uuid';
+						$length = 36;
 					} else {
-						$length = intval($c->oct_length);
+						$length = (int)$c->oct_length;
 					}
 				} elseif (!empty($c->char_length)) {
-					$length = intval($c->char_length);
+					$length = (int)$c->char_length;
 				} else {
 					$length = $this->length($c->type);
 				}
@@ -219,24 +247,36 @@ class Postgres extends DboSource {
 				}
 				$fields[$c->name] = array(
 					'type' => $this->column($type),
-					'null' => ($c->null == 'NO' ? false : true),
+					'null' => ($c->null === 'NO' ? false : true),
 					'default' => preg_replace(
 						"/^'(.*)'$/",
 						"$1",
 						preg_replace('/::.*/', '', $c->default)
 					),
-					'length' => $length
+					'length' => $length,
 				);
-				if ($model instanceof Model) {
-					if ($c->name == $model->primaryKey) {
-						$fields[$c->name]['key'] = 'primary';
-						if ($fields[$c->name]['type'] !== 'string') {
-							$fields[$c->name]['length'] = 11;
-						}
+
+				// Serial columns are primary integer keys
+				if ($c->has_serial) {
+					$fields[$c->name]['key'] = 'primary';
+					$fields[$c->name]['length'] = 11;
+					$hasPrimary = true;
+				}
+				if ($hasPrimary === false &&
+					$model instanceof Model &&
+					$c->name === $model->primaryKey
+				) {
+					$fields[$c->name]['key'] = 'primary';
+					if (
+						$fields[$c->name]['type'] !== 'string' &&
+						$fields[$c->name]['type'] !== 'uuid'
+					) {
+						$fields[$c->name]['length'] = 11;
 					}
 				}
 				if (
-					$fields[$c->name]['default'] == 'NULL' ||
+					$fields[$c->name]['default'] === 'NULL' ||
+					$c->default === null ||
 					preg_match('/nextval\([\'"]?([\w.]+)/', $c->default, $seq)
 				) {
 					$fields[$c->name]['default'] = null;
@@ -249,12 +289,17 @@ class Postgres extends DboSource {
 						$this->_sequenceMap[$table][$c->name] = $sequenceName;
 					}
 				}
-				if ($fields[$c->name]['type'] == 'boolean' && !empty($fields[$c->name]['default'])) {
+				if ($fields[$c->name]['type'] === 'timestamp' && $fields[$c->name]['default'] === '') {
+					$fields[$c->name]['default'] = null;
+				}
+				if ($fields[$c->name]['type'] === 'boolean' && !empty($fields[$c->name]['default'])) {
 					$fields[$c->name]['default'] = constant($fields[$c->name]['default']);
 				}
 			}
 			$this->_cacheDescription($table, $fields);
 		}
+		// @codingStandardsIgnoreEnd
+
 		if (isset($model->sequence)) {
 			$this->_sequenceMap[$table][$model->primaryKey] = $model->sequence;
 		}
@@ -270,7 +315,7 @@ class Postgres extends DboSource {
  *
  * @param string $source Name of the database table
  * @param string $field Name of the ID database field. Defaults to "id"
- * @return integer
+ * @return int
  */
 	public function lastInsertId($source = null, $field = 'id') {
 		$seq = $this->getSequence($source, $field);
@@ -280,7 +325,7 @@ class Postgres extends DboSource {
 /**
  * Gets the associated sequence for the given table/field
  *
- * @param mixed $table Either a full table name (with prefix) as a string, or a model object
+ * @param string|Model $table Either a full table name (with prefix) as a string, or a model object
  * @param string $field Name of the ID database field. Defaults to "id"
  * @return string The associated sequence name from the sequence map, defaults to "{$table}_{$field}_seq"
  */
@@ -288,20 +333,41 @@ class Postgres extends DboSource {
 		if (is_object($table)) {
 			$table = $this->fullTableName($table, false, false);
 		}
-		if (isset($this->_sequenceMap[$table]) && isset($this->_sequenceMap[$table][$field])) {
-			return $this->_sequenceMap[$table][$field];
-		} else {
-			return "{$table}_{$field}_seq";
+		if (!isset($this->_sequenceMap[$table])) {
+			$this->describe($table);
 		}
+		if (isset($this->_sequenceMap[$table][$field])) {
+			return $this->_sequenceMap[$table][$field];
+		}
+		return "{$table}_{$field}_seq";
+	}
+
+/**
+ * Reset a sequence based on the MAX() value of $column. Useful
+ * for resetting sequences after using insertMulti().
+ *
+ * @param string $table The name of the table to update.
+ * @param string $column The column to use when resetting the sequence value,
+ *   the sequence name will be fetched using Postgres::getSequence();
+ * @return bool success.
+ */
+	public function resetSequence($table, $column) {
+		$tableName = $this->fullTableName($table, false, false);
+		$fullTable = $this->fullTableName($table);
+
+		$sequence = $this->value($this->getSequence($tableName, $column));
+		$column = $this->name($column);
+		$this->execute("SELECT setval($sequence, (SELECT MAX($column) FROM $fullTable))");
+		return true;
 	}
 
 /**
  * Deletes all the records in a table and drops all associated auto-increment sequences
  *
- * @param mixed $table A string or model class representing the table to be truncated
- * @param boolean $reset true for resetting the sequence, false to leave it as is.
+ * @param string|Model $table A string or model class representing the table to be truncated
+ * @param bool $reset true for resetting the sequence, false to leave it as is.
  *    and if 1, sequences are not modified
- * @return boolean	SQL TRUNCATE TABLE statement, false if not applicable.
+ * @return bool SQL TRUNCATE TABLE statement, false if not applicable.
  */
 	public function truncate($table, $reset = false) {
 		$table = $this->fullTableName($table, false, false);
@@ -312,11 +378,10 @@ class Postgres extends DboSource {
 			$this->cacheSources = $cache;
 		}
 		if ($this->execute('DELETE FROM ' . $this->fullTableName($table))) {
-			$schema = $this->config['schema'];
 			if (isset($this->_sequenceMap[$table]) && $reset != true) {
-				foreach ($this->_sequenceMap[$table] as $field => $sequence) {
-					list($schema, $sequence) = explode('.', $sequence);
-					$this->_execute("ALTER SEQUENCE \"{$schema}\".\"{$sequence}\" RESTART WITH 1");
+				foreach ($this->_sequenceMap[$table] as $sequence) {
+					$quoted = $this->name($sequence);
+					$this->_execute("ALTER SEQUENCE {$quoted} RESTART WITH 1");
 				}
 			}
 			return true;
@@ -327,7 +392,7 @@ class Postgres extends DboSource {
 /**
  * Prepares field names to be quoted by parent
  *
- * @param string $data
+ * @param string $data The name to format.
  * @return string SQL field
  */
 	public function name($data) {
@@ -340,13 +405,13 @@ class Postgres extends DboSource {
 /**
  * Generates the fields list of an SQL query.
  *
- * @param Model $model
- * @param string $alias Alias table name
- * @param mixed $fields
- * @param boolean $quote
+ * @param Model $model The model to get fields for.
+ * @param string $alias Alias table name.
+ * @param mixed $fields The list of fields to get.
+ * @param bool $quote Whether or not to quote identifiers.
  * @return array
  */
-	public function fields($model, $alias = null, $fields = array(), $quote = true) {
+	public function fields(Model $model, $alias = null, $fields = array(), $quote = true) {
 		if (empty($alias)) {
 			$alias = $model->alias;
 		}
@@ -361,7 +426,7 @@ class Postgres extends DboSource {
 			$result = array();
 			for ($i = 0; $i < $count; $i++) {
 				if (!preg_match('/^.+\\(.*\\)/', $fields[$i]) && !preg_match('/\s+AS\s+/', $fields[$i])) {
-					if (substr($fields[$i], -1) == '*') {
+					if (substr($fields[$i], -1) === '*') {
 						if (strpos($fields[$i], '.') !== false && $fields[$i] != $alias . '.*') {
 							$build = explode('.', $fields[$i]);
 							$AssociatedModel = $model->{$build[0]};
@@ -387,7 +452,7 @@ class Postgres extends DboSource {
 						$fields[$i] = $prepend . $this->name($build[0]) . '.' . $this->name($build[1]) . ' AS ' . $this->name($build[0] . '__' . $build[1]);
 					}
 				} else {
-					$fields[$i] = preg_replace_callback('/\(([\s\.\w]+)\)/',  array(&$this, '_quoteFunctionField'), $fields[$i]);
+					$fields[$i] = preg_replace_callback('/\(([\s\.\w]+)\)/', array(&$this, '_quoteFunctionField'), $fields[$i]);
 				}
 				$result[] = $fields[$i];
 			}
@@ -415,7 +480,7 @@ class Postgres extends DboSource {
 			$match[1] = $this->name($match[1]);
 		} elseif (!$constant) {
 			$parts = explode('.', $match[1]);
-			if (!Set::numeric($parts)) {
+			if (!Hash::numeric($parts)) {
 				$match[1] = $this->name($match[1]);
 			}
 		}
@@ -443,12 +508,11 @@ class Postgres extends DboSource {
 			)
 			AND c.oid = i.indrelid AND i.indexrelid = c2.oid
 			ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname", false);
-			foreach ($indexes as $i => $info) {
+			foreach ($indexes as $info) {
 				$key = array_pop($info);
 				if ($key['indisprimary']) {
 					$key['relname'] = 'PRIMARY';
 				}
-				$col = array();
 				preg_match('/\(([^\)]+)\)/', $key['statement'], $indexColumns);
 				$parsedColumn = $indexColumns[1];
 				if (strpos($indexColumns[1], ',') !== false) {
@@ -476,7 +540,7 @@ class Postgres extends DboSource {
 		$colList = array();
 		foreach ($compare as $curTable => $types) {
 			$indexes = $colList = array();
-			if (!$table || $table == $curTable) {
+			if (!$table || $table === $curTable) {
 				$out .= 'ALTER TABLE ' . $this->fullTableName($curTable) . " \n";
 				foreach ($types as $type => $column) {
 					if (isset($column['indexes'])) {
@@ -489,37 +553,59 @@ class Postgres extends DboSource {
 								$col['name'] = $field;
 								$colList[] = 'ADD COLUMN ' . $this->buildColumn($col);
 							}
-						break;
+							break;
 						case 'drop':
 							foreach ($column as $field => $col) {
 								$col['name'] = $field;
 								$colList[] = 'DROP COLUMN ' . $this->name($field);
 							}
-						break;
+							break;
 						case 'change':
+							$schema = $this->describe($curTable);
 							foreach ($column as $field => $col) {
 								if (!isset($col['name'])) {
 									$col['name'] = $field;
 								}
+								$original = $schema[$field];
 								$fieldName = $this->name($field);
 
 								$default = isset($col['default']) ? $col['default'] : null;
 								$nullable = isset($col['null']) ? $col['null'] : null;
+								$boolToInt = $original['type'] === 'boolean' && $col['type'] === 'integer';
 								unset($col['default'], $col['null']);
-								$colList[] = 'ALTER COLUMN '. $fieldName .' TYPE ' . str_replace(array($fieldName, 'NOT NULL'), '', $this->buildColumn($col));
+								if ($field !== $col['name']) {
+									$newName = $this->name($col['name']);
+									$out .= "\tRENAME {$fieldName} TO {$newName};\n";
+									$out .= 'ALTER TABLE ' . $this->fullTableName($curTable) . " \n";
+									$fieldName = $newName;
+								}
+
+								if ($boolToInt) {
+									$colList[] = 'ALTER COLUMN ' . $fieldName . '  SET DEFAULT NULL';
+									$colList[] = 'ALTER COLUMN ' . $fieldName . ' TYPE ' . str_replace(array($fieldName, 'NOT NULL'), '', $this->buildColumn($col)) . ' USING CASE WHEN TRUE THEN 1 ELSE 0 END';
+								} else {
+									if ($original['type'] === 'text' && $col['type'] === 'integer') {
+										$colList[] = 'ALTER COLUMN ' . $fieldName . ' TYPE ' . str_replace(array($fieldName, 'NOT NULL'), '', $this->buildColumn($col)) . " USING cast({$fieldName} as INTEGER)";
+									} else {
+										$colList[] = 'ALTER COLUMN ' . $fieldName . ' TYPE ' . str_replace(array($fieldName, 'NOT NULL'), '', $this->buildColumn($col));
+									}
+								}
+
 								if (isset($nullable)) {
 									$nullable = ($nullable) ? 'DROP NOT NULL' : 'SET NOT NULL';
-									$colList[] = 'ALTER COLUMN '. $fieldName .'  ' . $nullable;
+									$colList[] = 'ALTER COLUMN ' . $fieldName . '  ' . $nullable;
 								}
 
 								if (isset($default)) {
-									$colList[] = 'ALTER COLUMN '. $fieldName .'  SET DEFAULT ' . $this->value($default, $col['type']);
+									if (!$boolToInt) {
+										$colList[] = 'ALTER COLUMN ' . $fieldName . '  SET DEFAULT ' . $this->value($default, $col['type']);
+									}
 								} else {
-									$colList[] = 'ALTER COLUMN '. $fieldName .'  DROP DEFAULT';
+									$colList[] = 'ALTER COLUMN ' . $fieldName . '  DROP DEFAULT';
 								}
 
 							}
-						break;
+							break;
 					}
 				}
 				if (isset($indexes['drop']['PRIMARY'])) {
@@ -556,7 +642,7 @@ class Postgres extends DboSource {
 		if (isset($indexes['drop'])) {
 			foreach ($indexes['drop'] as $name => $value) {
 				$out = 'DROP ';
-				if ($name == 'PRIMARY') {
+				if ($name === 'PRIMARY') {
 					continue;
 				} else {
 					$out .= 'INDEX ' . $name;
@@ -567,7 +653,7 @@ class Postgres extends DboSource {
 		if (isset($indexes['add'])) {
 			foreach ($indexes['add'] as $name => $value) {
 				$out = 'CREATE ';
-				if ($name == 'PRIMARY') {
+				if ($name === 'PRIMARY') {
 					continue;
 				} else {
 					if (!empty($value['unique'])) {
@@ -589,22 +675,16 @@ class Postgres extends DboSource {
 /**
  * Returns a limit statement in the correct format for the particular database.
  *
- * @param integer $limit Limit of results returned
- * @param integer $offset Offset from which to start results
+ * @param int $limit Limit of results returned
+ * @param int $offset Offset from which to start results
  * @return string SQL limit/offset statement
  */
 	public function limit($limit, $offset = null) {
 		if ($limit) {
-			$rt = '';
-			if (!strpos(strtolower($limit), 'limit') || strpos(strtolower($limit), 'limit') === 0) {
-				$rt = ' LIMIT';
-			}
-
-			$rt .= ' ' . $limit;
+			$rt = sprintf(' LIMIT %u', $limit);
 			if ($offset) {
-				$rt .= ' OFFSET ' . $offset;
+				$rt .= sprintf(' OFFSET %u', $offset);
 			}
-
 			return $rt;
 		}
 		return null;
@@ -626,14 +706,13 @@ class Postgres extends DboSource {
 		}
 
 		$col = str_replace(')', '', $real);
-		$limit = null;
 
 		if (strpos($col, '(') !== false) {
 			list($col, $limit) = explode('(', $col);
 		}
 
 		$floats = array(
-			'float', 'float4', 'float8', 'double', 'double precision', 'decimal', 'real', 'numeric'
+			'float', 'float4', 'float8', 'double', 'double precision', 'real'
 		);
 
 		switch (true) {
@@ -643,19 +722,26 @@ class Postgres extends DboSource {
 				return 'datetime';
 			case (strpos($col, 'time') === 0):
 				return 'time';
-			case (strpos($col, 'int') !== false && $col != 'interval'):
+			case ($col === 'bigint'):
+				return 'biginteger';
+			case ($col === 'smallint'):
+				return 'smallinteger';
+			case (strpos($col, 'int') !== false && $col !== 'interval'):
 				return 'integer';
-			case (strpos($col, 'char') !== false || $col == 'uuid'):
+			case (strpos($col, 'char') !== false):
 				return 'string';
+			case (strpos($col, 'uuid') !== false):
+				return 'uuid';
 			case (strpos($col, 'text') !== false):
 				return 'text';
 			case (strpos($col, 'bytea') !== false):
 				return 'binary';
+			case ($col === 'decimal' || $col === 'numeric'):
+				return 'decimal';
 			case (in_array($col, $floats)):
 				return 'float';
 			default:
 				return 'text';
-			break;
 		}
 	}
 
@@ -663,28 +749,23 @@ class Postgres extends DboSource {
  * Gets the length of a database-native column description, or null if no length
  *
  * @param string $real Real database-layer column type (i.e. "varchar(255)")
- * @return integer An integer representing the length of the column
+ * @return int An integer representing the length of the column
  */
 	public function length($real) {
-		$col = str_replace(array(')', 'unsigned'), '', $real);
-		$limit = null;
-
-		if (strpos($col, '(') !== false) {
-			list($col, $limit) = explode('(', $col);
+		$col = $real;
+		if (strpos($real, '(') !== false) {
+			list($col, $limit) = explode('(', $real);
 		}
-		if ($col == 'uuid') {
+		if ($col === 'uuid') {
 			return 36;
 		}
-		if ($limit != null) {
-			return intval($limit);
-		}
-		return null;
+		return parent::length($real);
 	}
 
 /**
  * resultSet method
  *
- * @param array $results
+ * @param array &$results The results
  * @return void
  */
 	public function resultSet(&$results) {
@@ -719,30 +800,28 @@ class Postgres extends DboSource {
 
 				switch ($type) {
 					case 'bool':
-						$resultRow[$table][$column] = is_null($row[$index]) ? null : $this->boolean($row[$index]);
-					break;
+						$resultRow[$table][$column] = $row[$index] === null ? null : $this->boolean($row[$index]);
+						break;
 					case 'binary':
 					case 'bytea':
-						$resultRow[$table][$column] = is_null($row[$index]) ? null : stream_get_contents($row[$index]);
-					break;
+						$resultRow[$table][$column] = $row[$index] === null ? null : stream_get_contents($row[$index]);
+						break;
 					default:
 						$resultRow[$table][$column] = $row[$index];
-					break;
 				}
 			}
 			return $resultRow;
-		} else {
-			$this->_result->closeCursor();
-			return false;
 		}
+		$this->_result->closeCursor();
+		return false;
 	}
 
 /**
  * Translates between PHP boolean values and PostgreSQL boolean values
  *
  * @param mixed $data Value to be translated
- * @param boolean $quote true to quote a boolean to be used in a query, false to return the boolean value
- * @return boolean Converted boolean value
+ * @param bool $quote true to quote a boolean to be used in a query, false to return the boolean value
+ * @return bool Converted boolean value
  */
 	public function boolean($data, $quote = false) {
 		switch (true) {
@@ -759,21 +838,20 @@ class Postgres extends DboSource {
 				$result = ($data === 'TRUE');
 				break;
 			default:
-				$result = (bool) $data;
-			break;
+				$result = (bool)$data;
 		}
 
 		if ($quote) {
 			return ($result) ? 'TRUE' : 'FALSE';
 		}
-		return (bool) $result;
+		return (bool)$result;
 	}
 
 /**
  * Sets the database encoding
  *
  * @param mixed $enc Database encoding
- * @return boolean True on success, false on failure
+ * @return bool True on success, false on failure
  */
 	public function setEncoding($enc) {
 		return $this->_execute('SET NAMES ' . $this->value($enc)) !== false;
@@ -805,8 +883,21 @@ class Postgres extends DboSource {
 		if (!isset($col['length']) && !isset($col['limit'])) {
 			unset($column['length']);
 		}
-		$out = preg_replace('/integer\([0-9]+\)/', 'integer', parent::buildColumn($column));
+		$out = parent::buildColumn($column);
+
+		$out = preg_replace(
+			'/integer\([0-9]+\)/',
+			'integer',
+			$out
+		);
+		$out = preg_replace(
+			'/bigint\([0-9]+\)/',
+			'bigint',
+			$out
+		);
+
 		$out = str_replace('integer serial', 'serial', $out);
+		$out = str_replace('bigint serial', 'bigserial', $out);
 		if (strpos($out, 'timestamp DEFAULT')) {
 			if (isset($column['null']) && $column['null']) {
 				$out = str_replace('DEFAULT NULL', '', $out);
@@ -819,7 +910,7 @@ class Postgres extends DboSource {
 				$out = str_replace('DEFAULT DEFAULT', 'DEFAULT NULL', $out);
 			} elseif (in_array($column['type'], array('integer', 'float'))) {
 				$out = str_replace('DEFAULT DEFAULT', 'DEFAULT 0', $out);
-			} elseif ($column['type'] == 'boolean') {
+			} elseif ($column['type'] === 'boolean') {
 				$out = str_replace('DEFAULT DEFAULT', 'DEFAULT FALSE', $out);
 			}
 		}
@@ -829,8 +920,8 @@ class Postgres extends DboSource {
 /**
  * Format indexes for create table
  *
- * @param array $indexes
- * @param string $table
+ * @param array $indexes The index to build
+ * @param string $table The table name.
  * @return string
  */
 	public function buildIndex($indexes, $table = null) {
@@ -839,7 +930,7 @@ class Postgres extends DboSource {
 			return array();
 		}
 		foreach ($indexes as $name => $value) {
-			if ($name == 'PRIMARY') {
+			if ($name === 'PRIMARY') {
 				$out = 'PRIMARY KEY  (' . $this->name($value['column']) . ')';
 			} else {
 				$out = 'CREATE ';
@@ -859,10 +950,21 @@ class Postgres extends DboSource {
 	}
 
 /**
+ * {@inheritDoc}
+ */
+	public function value($data, $column = null, $null = true) {
+		$value = parent::value($data, $column, $null);
+		if ($column === 'uuid' && is_scalar($data) && $data === '') {
+			return 'NULL';
+		}
+		return $value;
+	}
+
+/**
  * Overrides DboSource::renderStatement to handle schema generation with Postgres-style indexes
  *
- * @param string $type
- * @param array $data
+ * @param string $type The query type.
+ * @param array $data The array of data to render.
  * @return string
  */
 	public function renderStatement($type, $data) {
@@ -885,10 +987,8 @@ class Postgres extends DboSource {
 					}
 				}
 				return "CREATE TABLE {$table} (\n\t{$columns}\n);\n{$indexes}";
-			break;
 			default:
 				return parent::renderStatement($type, $data);
-			break;
 		}
 	}
 
@@ -897,8 +997,17 @@ class Postgres extends DboSource {
  *
  * @return string The schema name
  */
-	function getSchemaName() {
+	public function getSchemaName() {
 		return $this->config['schema'];
+	}
+
+/**
+ * Check if the server support nested transactions
+ *
+ * @return bool
+ */
+	public function nestedTransactionSupported() {
+		return $this->useNestedTransactions && version_compare($this->getVersion(), '8.0', '>=');
 	}
 
 }

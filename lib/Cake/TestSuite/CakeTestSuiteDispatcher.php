@@ -2,19 +2,18 @@
 /**
  * CakeTestSuiteDispatcher controls dispatching TestSuite web based requests.
  *
- * PHP 5
- *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.TestSuite
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 define('CORE_TEST_CASES', CAKE . 'Test' . DS . 'Case');
@@ -28,6 +27,7 @@ App::uses('CakeTestSuiteCommand', 'TestSuite');
  * @package       Cake.TestSuite
  */
 class CakeTestSuiteDispatcher {
+
 /**
  * 'Request' parameters
  *
@@ -37,7 +37,7 @@ class CakeTestSuiteDispatcher {
 		'codeCoverage' => false,
 		'case' => null,
 		'core' => false,
-		'app' => true,
+		'app' => false,
 		'plugin' => null,
 		'output' => 'html',
 		'show' => 'groups',
@@ -54,7 +54,7 @@ class CakeTestSuiteDispatcher {
 	protected $_baseUrl;
 
 /**
- * Base dir of the request.  Used for accessing assets.
+ * Base dir of the request. Used for accessing assets.
  *
  * @var string
  */
@@ -63,7 +63,7 @@ class CakeTestSuiteDispatcher {
 /**
  * boolean to set auto parsing of params.
  *
- * @var boolean
+ * @var bool
  */
 	protected $_paramsParsed = false;
 
@@ -75,11 +75,9 @@ class CakeTestSuiteDispatcher {
 	protected static $_Reporter = null;
 
 /**
- * constructor
- *
- * @return void
+ * Constructor
  */
-	function __construct() {
+	public function __construct() {
 		$this->_baseUrl = $_SERVER['PHP_SELF'];
 		$dir = rtrim(dirname($this->_baseUrl), '\\');
 		$this->_baseDir = ($dir === '/') ? $dir : $dir . '/';
@@ -116,7 +114,7 @@ class CakeTestSuiteDispatcher {
 	}
 
 /**
- * Checks that PHPUnit is installed.  Will exit if it doesn't
+ * Checks that PHPUnit is installed. Will exit if it doesn't
  *
  * @return void
  */
@@ -132,27 +130,37 @@ class CakeTestSuiteDispatcher {
 /**
  * Checks for the existence of the test framework files
  *
- * @return boolean true if found, false otherwise
+ * @return bool true if found, false otherwise
  */
 	public function loadTestFramework() {
-		$found = $path = null;
-
-		if (@include 'PHPUnit' . DS . 'Autoload.php') {
-			$found = true;
+		if (class_exists('PHPUnit_Framework_TestCase')) {
+			return true;
 		}
-
-		if (!$found) {
-			foreach (App::path('vendors') as $vendor) {
-				if (is_dir($vendor . 'PHPUnit')) {
-					$path = $vendor;
-				}
-			}
-
-			if ($path && ini_set('include_path', $path . PATH_SEPARATOR . ini_get('include_path'))) {
-				$found = include 'PHPUnit' . DS . 'Autoload.php';
+		$phpunitPath = 'phpunit' . DS . 'phpunit';
+		if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+			$composerGlobalDir[] = env('APPDATA') . DS . 'Composer' . DS . 'vendor' . DS;
+		} else {
+			$composerGlobalDir[] = env('HOME') . DS . '.composer' . DS . 'vendor' . DS;
+		}
+		$vendors = array_merge(App::path('vendors'), $composerGlobalDir);
+		foreach ($vendors as $vendor) {
+			$vendor = rtrim($vendor, DS);
+			if (is_dir($vendor . DS . $phpunitPath)) {
+				ini_set('include_path', $vendor . DS . $phpunitPath . PATH_SEPARATOR . ini_get('include_path'));
+				break;
+			} elseif (is_dir($vendor . DS . 'PHPUnit')) {
+				ini_set('include_path', $vendor . PATH_SEPARATOR . ini_get('include_path'));
+				break;
+			} elseif (is_file($vendor . DS . 'phpunit.phar')) {
+				$backup = $GLOBALS['_SERVER']['SCRIPT_NAME'];
+				$GLOBALS['_SERVER']['SCRIPT_NAME'] = '-';
+				$included = include_once $vendor . DS . 'phpunit.phar';
+				$GLOBALS['_SERVER']['SCRIPT_NAME'] = $backup;
+				return $included;
 			}
 		}
-		return $found;
+		include 'PHPUnit' . DS . 'Autoload.php';
+		return class_exists('PHPUnit_Framework_TestCase');
 	}
 
 /**
@@ -161,7 +169,7 @@ class CakeTestSuiteDispatcher {
  *
  * @return void
  */
-	function _checkXdebug() {
+	protected function _checkXdebug() {
 		if (!extension_loaded('xdebug')) {
 			$baseDir = $this->_baseDir;
 			include CAKE . 'TestSuite' . DS . 'templates' . DS . 'xdebug.php';
@@ -174,7 +182,7 @@ class CakeTestSuiteDispatcher {
  *
  * @return void
  */
-	function _testCaseList() {
+	protected function _testCaseList() {
 		$command = new CakeTestSuiteCommand('', $this->params);
 		$Reporter = $command->handleReporter($this->params['output']);
 		$Reporter->paintDocumentStart();
@@ -195,11 +203,11 @@ class CakeTestSuiteDispatcher {
 	}
 
 /**
- * Parse url params into a 'request'
+ * Parse URL params into a 'request'
  *
  * @return void
  */
-	function _parseParams() {
+	protected function _parseParams() {
 		if (!$this->_paramsParsed) {
 			if (!isset($_SERVER['SERVER_NAME'])) {
 				$_SERVER['SERVER_NAME'] = '';
@@ -226,7 +234,7 @@ class CakeTestSuiteDispatcher {
  *
  * @return void
  */
-	function _runTestCase() {
+	protected function _runTestCase() {
 		$commandArgs = array(
 			'case' => $this->params['case'],
 			'core' => $this->params['core'],
@@ -246,8 +254,9 @@ class CakeTestSuiteDispatcher {
 		restore_error_handler();
 
 		try {
+			static::time();
 			$command = new CakeTestSuiteCommand('CakeTestLoader', $commandArgs);
-			$result = $command->run($options);
+			$command->run($options);
 		} catch (MissingConnectionException $exception) {
 			ob_end_clean();
 			$baseDir = $this->_baseDir;
@@ -255,4 +264,30 @@ class CakeTestSuiteDispatcher {
 			exit();
 		}
 	}
+
+/**
+ * Sets a static timestamp
+ *
+ * @param bool $reset to set new static timestamp.
+ * @return int timestamp
+ */
+	public static function time($reset = false) {
+		static $now;
+		if ($reset || !$now) {
+			$now = time();
+		}
+		return $now;
+	}
+
+/**
+ * Returns formatted date string using static time
+ * This method is being used as formatter for created, modified and updated fields in Model::save()
+ *
+ * @param string $format format to be used.
+ * @return string formatted date
+ */
+	public static function date($format) {
+		return date($format, static::time());
+	}
+
 }

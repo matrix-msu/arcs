@@ -2,19 +2,18 @@
 /**
  * AppTest file.
  *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Core
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -30,6 +29,7 @@ class AppTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
+		parent::tearDown();
 		CakePlugin::unload();
 	}
 
@@ -95,7 +95,7 @@ class AppTest extends CakeTestCase {
 	}
 
 /**
- * tests that it is possible to set up paths using the cake 1.3 notation for them (models, behaviors, controllers...)
+ * tests that it is possible to set up paths using the CakePHP 1.3 notation for them (models, behaviors, controllers...)
  *
  * @return void
  */
@@ -165,7 +165,7 @@ class AppTest extends CakeTestCase {
 		App::build(array('helpers' => array('/path/to/helpers/')));
 		$expected = array(
 			'/path/to/helpers/',
-			APP . 'View' . DS . 'Helper' .DS
+			APP . 'View' . DS . 'Helper' . DS
 		);
 		$result = App::path('helpers');
 		$this->assertEquals($expected, $result);
@@ -191,6 +191,19 @@ class AppTest extends CakeTestCase {
  * @return void
  */
 	public function testBuildPackage() {
+		$pluginPaths = array(
+			'/foo/bar',
+			APP . 'Plugin' . DS,
+			dirname(dirname(CAKE)) . DS . 'plugins' . DS
+		);
+		App::build(array(
+			'Plugin' => array(
+				'/foo/bar'
+			)
+		));
+		$result = App::path('Plugin');
+		$this->assertEquals($pluginPaths, $result);
+
 		$paths = App::path('Service');
 		$this->assertEquals(array(), $paths);
 
@@ -203,11 +216,16 @@ class AppTest extends CakeTestCase {
 		$expected = array(
 			APP . 'Service' . DS,
 		);
-
 		$result = App::path('Service');
 		$this->assertEquals($expected, $result);
 
-		App::build(array(), App::REGISTER);
+		//Ensure new paths registered for other packages are not affected
+		$result = App::path('Plugin');
+		$this->assertEquals($pluginPaths, $result);
+
+		App::build();
+		$paths = App::path('Service');
+		$this->assertEquals(array(), $paths);
 	}
 
 /**
@@ -283,7 +301,7 @@ class AppTest extends CakeTestCase {
  * @return void
  */
 	public function testListObjects() {
-		$result = App::objects('class',  CAKE . 'Routing', false);
+		$result = App::objects('class', CAKE . 'Routing', false);
 		$this->assertTrue(in_array('Dispatcher', $result));
 		$this->assertTrue(in_array('Router', $result));
 
@@ -328,7 +346,7 @@ class AppTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$result = App::objects('NonExistingType');
-		$this->assertEquals($result, array());
+		$this->assertSame(array(), $result);
 
 		App::build(array(
 			'plugins' => array(
@@ -344,6 +362,8 @@ class AppTest extends CakeTestCase {
 
 /**
  * Make sure that .svn and friends are excluded from App::objects('plugin')
+ *
+ * @return void
  */
 	public function testListObjectsIgnoreDotDirectories() {
 		$path = CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS;
@@ -370,7 +390,7 @@ class AppTest extends CakeTestCase {
 			'Model' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Model' . DS),
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
 		), App::RESET);
-		CakePlugin::loadAll();
+		CakePlugin::load(array('TestPlugin', 'TestPluginTwo'));
 
 		$result = App::objects('TestPlugin.model');
 		$this->assertTrue(in_array('TestPluginPost', $result));
@@ -395,9 +415,9 @@ class AppTest extends CakeTestCase {
 		$this->assertTrue(in_array('OtherComponent', $result));
 
 		$result = App::objects('TestPluginTwo.behavior');
-		$this->assertEquals($result, array());
+		$this->assertSame(array(), $result);
 		$result = App::objects('TestPluginTwo.Model/Behavior');
-		$this->assertEquals($result, array());
+		$this->assertSame(array(), $result);
 
 		$result = App::objects('model', null, false);
 		$this->assertTrue(in_array('Comment', $result));
@@ -411,28 +431,7 @@ class AppTest extends CakeTestCase {
 	}
 
 /**
- * test that pluginPath can find paths for plugins.
- *
- * @return void
- */
-	public function testPluginPath() {
-		App::build(array(
-			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
-		));
-		CakePlugin::loadAll();
-
-		$path = App::pluginPath('TestPlugin');
-		$expected = CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS . 'TestPlugin' . DS;
-		$this->assertEquals($path, $expected);
-
-		$path = App::pluginPath('TestPluginTwo');
-		$expected = CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS . 'TestPluginTwo' . DS;
-		$this->assertEquals($path, $expected);
-		App::build();
-	}
-
-/**
- * test that pluginPath can find paths for plugins.
+ * test that themePath can find paths for themes.
  *
  * @return void
  */
@@ -442,11 +441,11 @@ class AppTest extends CakeTestCase {
 		));
 		$path = App::themePath('test_theme');
 		$expected = CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS . 'Themed' . DS . 'TestTheme' . DS;
-		$this->assertEquals($path, $expected);
+		$this->assertEquals($expected, $path);
 
 		$path = App::themePath('TestTheme');
 		$expected = CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS . 'Themed' . DS . 'TestTheme' . DS;
-		$this->assertEquals($path, $expected);
+		$this->assertEquals($expected, $path);
 
 		App::build();
 	}
@@ -540,7 +539,7 @@ class AppTest extends CakeTestCase {
 			'Lib' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Lib' . DS),
 			'Plugin' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
 		));
-		CakePlugin::loadAll();
+		CakePlugin::load(array('TestPlugin', 'TestPluginTwo'));
 
 		$result = App::import('Controller', 'TestPlugin.Tests');
 		$this->assertTrue($result);
@@ -567,6 +566,9 @@ class AppTest extends CakeTestCase {
 		$this->assertTrue($result);
 		$this->assertTrue(class_exists('TestSource'));
 
+		App::uses('ExampleExample', 'TestPlugin.Vendor/Example');
+		$this->assertTrue(class_exists('ExampleExample'));
+
 		App::build();
 	}
 
@@ -574,10 +576,8 @@ class AppTest extends CakeTestCase {
  * test that building helper paths actually works.
  *
  * @return void
- * @link http://cakephp.lighthouseapp.com/projects/42648/tickets/410
  */
 	public function testImportingHelpersFromAlternatePaths() {
-
 		$this->assertFalse(class_exists('BananaHelper', false), 'BananaHelper exists, cannot test importing it.');
 		App::build(array(
 			'View/Helper' => array(
@@ -596,11 +596,11 @@ class AppTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testFileLoading () {
-		$file = App::import('File', 'RealFile', false, array(), CAKE  . 'Config' . DS . 'config.php');
+	public function testFileLoading() {
+		$file = App::import('File', 'RealFile', false, array(), CAKE . 'Config' . DS . 'config.php');
 		$this->assertTrue($file);
 
-		$file = App::import('File', 'NoFile', false, array(), CAKE  . 'Config' . DS . 'cake' . DS . 'config.php');
+		$file = App::import('File', 'NoFile', false, array(), CAKE . 'Config' . DS . 'cake' . DS . 'config.php');
 		$this->assertFalse($file);
 	}
 
@@ -610,13 +610,21 @@ class AppTest extends CakeTestCase {
  * @return void
  */
 	public function testFileLoadingWithArray() {
-		$type = array('type' => 'File', 'name' => 'SomeName', 'parent' => false,
-				'file' => CAKE  . DS . 'Config' . DS . 'config.php');
+		$type = array(
+			'type' => 'File',
+			'name' => 'SomeName',
+			'parent' => false,
+			'file' => CAKE . DS . 'Config' . DS . 'config.php'
+		);
 		$file = App::import($type);
 		$this->assertTrue($file);
 
-		$type = array('type' => 'File', 'name' => 'NoFile', 'parent' => false,
-				'file' => CAKE  . 'Config' . DS . 'cake' . DS . 'config.php');
+		$type = array(
+			'type' => 'File',
+			'name' => 'NoFile',
+			'parent' => false,
+			'file' => CAKE . 'Config' . DS . 'cake' . DS . 'config.php'
+		);
 		$file = App::import($type);
 		$this->assertFalse($file);
 	}
@@ -626,14 +634,18 @@ class AppTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testFileLoadingReturnValue () {
-		$file = App::import('File', 'Name', false, array(), CAKE  . 'Config' . DS . 'config.php', true);
+	public function testFileLoadingReturnValue() {
+		$file = App::import('File', 'Name', false, array(), CAKE . 'Config' . DS . 'config.php', true);
 		$this->assertTrue(!empty($file));
 
 		$this->assertTrue(isset($file['Cake.version']));
 
-		$type = array('type' => 'File', 'name' => 'OtherName', 'parent' => false,
-				'file' => CAKE  . 'Config' . DS . 'config.php', 'return' => true);
+		$type = array(
+			'type' => 'File',
+			'name' => 'OtherName',
+			'parent' => false,
+			'file' => CAKE . 'Config' . DS . 'config.php', 'return' => true
+		);
 		$file = App::import($type);
 		$this->assertTrue(!empty($file));
 
@@ -645,7 +657,7 @@ class AppTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testLoadingWithSearch () {
+	public function testLoadingWithSearch() {
 		$file = App::import('File', 'NewName', false, array(CAKE . 'Config' . DS), 'config.php');
 		$this->assertTrue($file);
 
@@ -698,7 +710,6 @@ class AppTest extends CakeTestCase {
 
 		$classes = array_flip(get_declared_classes());
 
-
 		$this->assertTrue(isset($classes['PersisterOne']));
 		$this->assertTrue(isset($classes['PersisterTwo']));
 
@@ -706,19 +717,18 @@ class AppTest extends CakeTestCase {
 		$this->assertFalse($load);
 	}
 
-
 	public function testLoadingVendor() {
 		App::build(array(
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS),
-			'vendors' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor'. DS),
+			'vendors' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Vendor' . DS),
 		), App::RESET);
-		CakePlugin::loadAll();
+		CakePlugin::load(array('TestPlugin', 'TestPluginTwo'));
 
 		ob_start();
 		$result = App::import('Vendor', 'css/TestAsset', array('ext' => 'css'));
 		$text = ob_get_clean();
 		$this->assertTrue($result);
-		$this->assertEquals($text, 'this is the test asset css file');
+		$this->assertEquals('/* this is the test asset css file */', trim($text));
 
 		$result = App::import('Vendor', 'TestPlugin.sample/SamplePlugin');
 		$this->assertTrue($result);
@@ -732,44 +742,45 @@ class AppTest extends CakeTestCase {
 		$result = App::import('Vendor', 'SomeNameInSubfolder', array('file' => 'somename/some.name.php'));
 		$text = ob_get_clean();
 		$this->assertTrue($result);
-		$this->assertEquals($text, 'This is a file with dot in file name');
+		$this->assertEquals('This is a file with dot in file name', $text);
 
 		ob_start();
 		$result = App::import('Vendor', 'TestHello', array('file' => 'Test' . DS . 'hello.php'));
 		$text = ob_get_clean();
 		$this->assertTrue($result);
-		$this->assertEquals($text, 'This is the hello.php file in Test directory');
+		$this->assertEquals('This is the hello.php file in Test directory', $text);
 
 		ob_start();
 		$result = App::import('Vendor', 'MyTest', array('file' => 'Test' . DS . 'MyTest.php'));
 		$text = ob_get_clean();
 		$this->assertTrue($result);
-		$this->assertEquals($text, 'This is the MyTest.php file');
+		$this->assertEquals('This is the MyTest.php file', $text);
 
 		ob_start();
 		$result = App::import('Vendor', 'Welcome');
 		$text = ob_get_clean();
 		$this->assertTrue($result);
-		$this->assertEquals($text, 'This is the welcome.php file in vendors directory');
+		$this->assertEquals('This is the welcome.php file in vendors directory', $text);
 
 		ob_start();
 		$result = App::import('Vendor', 'TestPlugin.Welcome');
 		$text = ob_get_clean();
 		$this->assertTrue($result);
-		$this->assertEquals($text, 'This is the welcome.php file in test_plugin/vendors directory');
+		$this->assertEquals('This is the welcome.php file in test_plugin/vendors directory', $text);
 	}
 
 /**
  * Tests that the automatic class loader will also find in "libs" folder for both
  * app and plugins if it does not find the class in other configured paths
  *
+ * @return void
  */
 	public function testLoadClassInLibs() {
 		App::build(array(
 			'libs' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Lib' . DS),
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
 		), App::RESET);
-		CakePlugin::loadAll();
+		CakePlugin::load(array('TestPlugin', 'TestPluginTwo'));
 
 		$this->assertFalse(class_exists('CustomLibClass', false));
 		App::uses('CustomLibClass', 'TestPlugin.Custom/Package');
@@ -777,11 +788,11 @@ class AppTest extends CakeTestCase {
 
 		$this->assertFalse(class_exists('TestUtilityClass', false));
 		App::uses('TestUtilityClass', 'Utility');
-		$this->assertTrue(class_exists('CustomLibClass'));
+		$this->assertTrue(class_exists('TestUtilityClass'));
 	}
 
 /**
- * Tests that  App::location() returns the defined path for a class
+ * Tests that App::location() returns the defined path for a class
  *
  * @return void
  */
@@ -812,9 +823,41 @@ class AppTest extends CakeTestCase {
 		App::build(array(
 			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
 		), App::RESET);
-		CakePlugin::loadAll();
+		CakePlugin::load(array('TestPlugin', 'TestPluginTwo'));
 		$this->assertFalse(class_exists('TestPluginOtherLibrary', false));
 		App::uses('TestPluginOtherLibrary', 'TestPlugin.Lib');
 		$this->assertTrue(class_exists('TestPluginOtherLibrary'));
+	}
+
+/**
+ * Test that increaseMemoryLimit increases the maximum amount of memory actually
+ *
+ * @dataProvider memoryVariationProvider
+ * @return void
+ */
+	public function testIncreaseMemoryLimit($memoryLimit, $additionalKb, $expected) {
+		$this->skipIf(!function_exists('ini_set'));
+
+		$originalMemoryLimit = ini_get('memory_limit');
+
+		ini_set('memory_limit', $memoryLimit);
+		App::increaseMemoryLimit($additionalKb);
+		$this->assertEquals($expected, ini_get('memory_limit'));
+
+		ini_set('memory_limit', $originalMemoryLimit);
+	}
+
+/**
+ * Data provider function for testIncreaseMemoryLimit 
+ *
+ * @return void
+ */
+	public function memoryVariationProvider() {
+		return array(
+			array('131072K', 100000, '231072K'),
+			array('256M', 1, '262145K'),
+			array('1G', 1, '1048577K'),
+			array('-1', 100000, '-1')
+		);
 	}
 }

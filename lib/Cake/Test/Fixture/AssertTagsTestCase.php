@@ -1,6 +1,6 @@
 <?php
 /**
- * This class helpes in indirectly testing the functionaliteies of CakeTestCase::assertTags
+ * This class helps in indirectly testing the functionalities of CakeTestCase::assertTags
  *
  * @package       Cake.Test.Fixture
  */
@@ -86,7 +86,7 @@ class AssertTagsTestCase extends CakeTestCase {
 		$this->assertTags($input, $pattern);
 	}
 
- /**
+/**
  * testBadAssertTags
  *
  * @return void
@@ -115,4 +115,5 @@ class AssertTagsTestCase extends CakeTestCase {
 		);
 		$this->assertTags($input, $pattern);
 	}
+
 }

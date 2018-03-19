@@ -2,23 +2,27 @@
 /**
  * ConsoleOptionParserTest file
  *
- * PHP 5
- *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc.
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc.
- * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Console
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('ConsoleOptionParser', 'Console');
 
+/**
+ * ConsoleOptionParserTest
+ *
+ * @package       Cake.Test.Case.Console
+ */
 class ConsoleOptionParserTest extends CakeTestCase {
 
 /**
@@ -33,12 +37,12 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$this->assertEquals($parser, $result, 'Setting description is not chainable');
 		$this->assertEquals('A test', $parser->description(), 'getting value is wrong.');
 
-		$result = $parser->description(array('A test', 'something'));
+		$parser->description(array('A test', 'something'));
 		$this->assertEquals("A test\nsomething", $parser->description(), 'getting value is wrong.');
 	}
 
 /**
- * test setting the console epliog
+ * test setting the console epilog
  *
  * @return void
  */
@@ -49,7 +53,7 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$this->assertEquals($parser, $result, 'Setting epilog is not chainable');
 		$this->assertEquals('A test', $parser->epilog(), 'getting value is wrong.');
 
-		$result = $parser->epilog(array('A test', 'something'));
+		$parser->epilog(array('A test', 'something'));
 		$this->assertEquals("A test\nsomething", $parser->epilog(), 'getting value is wrong.');
 	}
 
@@ -76,6 +80,18 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		));
 		$result = $parser->parse(array('--test', 'value'));
 		$this->assertEquals(array('test' => 'value', 'help' => false), $result[0], 'Long parameter did not parse out');
+	}
+
+/**
+ * test adding an option with a zero value
+ *
+ * @return void
+ */
+	public function testAddOptionZero() {
+		$parser = new ConsoleOptionParser('test', false);
+		$parser->addOption('count', array());
+		$result = $parser->parse(array('--count', '0'));
+		$this->assertEquals(array('count' => '0', 'help' => false), $result[0], 'Zero parameter did not parse out');
 	}
 
 /**
@@ -242,24 +258,26 @@ class ConsoleOptionParserTest extends CakeTestCase {
  * test parsing options that do not exist.
  *
  * @expectedException ConsoleException
+ * @return void
  */
 	public function testOptionThatDoesNotExist() {
 		$parser = new ConsoleOptionParser('test', false);
 		$parser->addOption('no-commit', array('boolean' => true));
 
-		$result = $parser->parse(array('--fail', 'other'));
+		$parser->parse(array('--fail', 'other'));
 	}
 
 /**
  * test parsing short options that do not exist.
  *
  * @expectedException ConsoleException
+ * @return void
  */
 	public function testShortOptionThatDoesNotExist() {
 		$parser = new ConsoleOptionParser('test', false);
 		$parser->addOption('no-commit', array('boolean' => true));
 
-		$result = $parser->parse(array('-f'));
+		$parser->parse(array('-f'));
 	}
 
 /**
@@ -276,7 +294,7 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$expected = array('name' => 'mark', 'help' => false);
 		$this->assertEquals($expected, $result[0], 'Got the correct value.');
 
-		$result = $parser->parse(array('--name', 'jimmy'));
+		$parser->parse(array('--name', 'jimmy'));
 	}
 
 /**
@@ -302,7 +320,7 @@ class ConsoleOptionParserTest extends CakeTestCase {
 	public function testPositionalArgument() {
 		$parser = new ConsoleOptionParser('test', false);
 		$result = $parser->addArgument('name', array('help' => 'An argument'));
-		$this->assertEquals($parser, $result, 'Should returnn this');
+		$this->assertEquals($parser, $result, 'Should return this');
 	}
 
 /**
@@ -314,8 +332,27 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$parser = new ConsoleOptionParser('test', false);
 		$parser->addArgument(new ConsoleInputArgument('test'));
 		$result = $parser->arguments();
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals('test', $result[0]->name());
+	}
+
+/**
+ * Test adding arguments out of order.
+ *
+ * @return void
+ */
+	public function testAddArgumentOutOfOrder() {
+		$parser = new ConsoleOptionParser('test', false);
+		$parser->addArgument('name', array('index' => 1, 'help' => 'first argument'))
+			->addArgument('bag', array('index' => 2, 'help' => 'second argument'))
+			->addArgument('other', array('index' => 0, 'help' => 'Zeroth argument'));
+
+		$result = $parser->arguments();
+		$this->assertCount(3, $result);
+		$this->assertEquals('other', $result[0]->name());
+		$this->assertEquals('name', $result[1]->name());
+		$this->assertEquals('bag', $result[2]->name());
+		$this->assertSame(array(0, 1, 2), array_keys($result));
 	}
 
 /**
@@ -347,7 +384,20 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$result = $parser->parse($expected);
 		$this->assertEquals($expected, $result[1], 'Arguments are not as expected');
 
-		$result = $parser->parse(array('one', 'two', 'three'));
+		$parser->parse(array('one', 'two', 'three'));
+	}
+
+/**
+ * test parsing arguments with 0 value.
+ *
+ * @return void
+ */
+	public function testParseArgumentZero() {
+		$parser = new ConsoleOptionParser('test', false);
+
+		$expected = array('one', 'two', 0, 'after', 'zero');
+		$result = $parser->parse($expected);
+		$this->assertEquals($expected, $result[1], 'Arguments are not as expected');
 	}
 
 /**
@@ -380,7 +430,7 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$expected = array('mark', 'samurai', 'sword');
 		$this->assertEquals($expected, $result[1], 'Got the correct value.');
 
-		$result = $parser->parse(array('jose', 'coder'));
+		$parser->parse(array('jose', 'coder'));
 	}
 
 /**
@@ -424,6 +474,21 @@ class ConsoleOptionParserTest extends CakeTestCase {
 		$result = $parser->subcommands();
 		$this->assertEquals(1, count($result));
 		$this->assertEquals('test', $result['test']->name());
+	}
+
+/**
+ * test removeSubcommand with an object.
+ *
+ * @return void
+ */
+	public function testRemoveSubcommand() {
+		$parser = new ConsoleOptionParser('test', false);
+		$parser->addSubcommand(new ConsoleInputSubcommand('test'));
+		$result = $parser->subcommands();
+		$this->assertEquals(1, count($result));
+		$parser->removeSubcommand('test');
+		$result = $parser->subcommands();
+		$this->assertEquals(0, count($result), 'Remove a subcommand does not work');
 	}
 
 /**
@@ -483,7 +548,7 @@ cake mycommand method [-h] [--connection]
 --connection      Db connection.
 
 TEXT;
-		$this->assertEquals($expected, $result, 'Help is not correct.');
+		$this->assertTextEquals($expected, $result, 'Help is not correct.');
 	}
 
 /**

@@ -1,34 +1,32 @@
 <?php
 /**
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Model
  * @since         CakePHP(tm) v 0.2.9
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-App::uses('AppModel', 'Model');
+App::uses('Model', 'Model');
 
 /**
  * ACL Node
  *
  * @package       Cake.Model
  */
-class AclNode extends AppModel {
+class AclNode extends Model {
 
 /**
  * Explicitly disable in-memory query caching for ACL models
  *
- * @var boolean
+ * @var bool
  */
 	public $cacheQueries = false;
 
@@ -42,20 +40,25 @@ class AclNode extends AppModel {
 /**
  * Constructor
  *
+ * @param bool|int|string|array $id Set this ID for this model on startup,
+ *   can also be an array of options, see above.
+ * @param string $table Name of database table to use.
+ * @param string $ds DataSource connection name.
  */
-	public function __construct() {
+	public function __construct($id = false, $table = null, $ds = null) {
 		$config = Configure::read('Acl.database');
 		if (isset($config)) {
 			$this->useDbConfig = $config;
 		}
-		parent::__construct();
+		parent::__construct($id, $table, $ds);
 	}
 
 /**
  * Retrieves the Aro/Aco node for this model
  *
- * @param mixed $ref Array with 'model' and 'foreign_key', model object, or string value
+ * @param string|array|Model $ref Array with 'model' and 'foreign_key', model object, or string value
  * @return array Node found in database
+ * @throws CakeException when binding to a model that doesn't exist.
  */
 	public function node($ref = null) {
 		$db = $this->getDataSource();
@@ -83,11 +86,13 @@ class AclNode extends AppModel {
 				'joins' => array(array(
 					'table' => $table,
 					'alias' => "{$type}0",
-					'type' => 'LEFT',
+					'type' => 'INNER',
 					'conditions' => array("{$type}0.alias" => $start)
 				)),
 				'order' => $db->name("{$type}.lft") . ' DESC'
 			);
+
+			$conditionsAfterJoin = array();
 
 			foreach ($path as $i => $alias) {
 				$j = $i - 1;
@@ -95,40 +100,42 @@ class AclNode extends AppModel {
 				$queryData['joins'][] = array(
 					'table' => $table,
 					'alias' => "{$type}{$i}",
-					'type' => 'LEFT',
+					'type' => 'INNER',
 					'conditions' => array(
-						$db->name("{$type}{$i}.lft") . ' > ' . $db->name("{$type}{$j}.lft"),
-						$db->name("{$type}{$i}.rght") . ' < ' . $db->name("{$type}{$j}.rght"),
-						$db->name("{$type}{$i}.alias") . ' = ' . $db->value($alias, 'string'),
-						$db->name("{$type}{$j}.id") . ' = ' . $db->name("{$type}{$i}.parent_id")
+						"{$type}{$i}.alias" => $alias
 					)
 				);
+
+				// it will be better if this conditions will performs after join operation
+				$conditionsAfterJoin[] = $db->name("{$type}{$j}.id") . ' = ' . $db->name("{$type}{$i}.parent_id");
+				$conditionsAfterJoin[] = $db->name("{$type}{$i}.rght") . ' < ' . $db->name("{$type}{$j}.rght");
+				$conditionsAfterJoin[] = $db->name("{$type}{$i}.lft") . ' > ' . $db->name("{$type}{$j}.lft");
 
 				$queryData['conditions'] = array('or' => array(
 					$db->name("{$type}.lft") . ' <= ' . $db->name("{$type}0.lft") . ' AND ' . $db->name("{$type}.rght") . ' >= ' . $db->name("{$type}0.rght"),
 					$db->name("{$type}.lft") . ' <= ' . $db->name("{$type}{$i}.lft") . ' AND ' . $db->name("{$type}.rght") . ' >= ' . $db->name("{$type}{$i}.rght"))
 				);
 			}
+			$queryData['conditions'] = array_merge($queryData['conditions'], $conditionsAfterJoin);
 			$result = $db->read($this, $queryData, -1);
 			$path = array_values($path);
 
-			if (
-				!isset($result[0][$type]) ||
+			if (!isset($result[0][$type]) ||
 				(!empty($path) && $result[0][$type]['alias'] != $path[count($path) - 1]) ||
 				(empty($path) && $result[0][$type]['alias'] != $start)
 			) {
 				return false;
 			}
-		} elseif (is_object($ref) && is_a($ref, 'Model')) {
-			$ref = array('model' => $ref->alias, 'foreign_key' => $ref->id);
+		} elseif (is_object($ref) && $ref instanceof Model) {
+			$ref = array('model' => $ref->name, 'foreign_key' => $ref->id);
 		} elseif (is_array($ref) && !(isset($ref['model']) && isset($ref['foreign_key']))) {
 			$name = key($ref);
+			list(, $alias) = pluginSplit($name);
 
-			$model = ClassRegistry::init(array('class' => $name, 'alias' => $name));
+			$model = ClassRegistry::init(array('class' => $name, 'alias' => $alias));
 
 			if (empty($model)) {
-				trigger_error(__d('cake_dev', "Model class '%s' not found in AclNode::node() when trying to bind %s object", $type, $this->alias), E_USER_WARNING);
-				return null;
+				throw new CakeException('cake_dev', "Model class '%s' not found in AclNode::node() when trying to bind %s object", $type, $this->alias);
 			}
 
 			$tmpRef = null;
@@ -136,7 +143,7 @@ class AclNode extends AppModel {
 				$tmpRef = $model->bindNode($ref);
 			}
 			if (empty($tmpRef)) {
-				$ref = array('model' => $name, 'foreign_key' => $ref[$name][$model->primaryKey]);
+				$ref = array('model' => $alias, 'foreign_key' => $ref[$name][$model->primaryKey]);
 			} else {
 				if (is_string($tmpRef)) {
 					return $this->node($tmpRef);
@@ -161,7 +168,7 @@ class AclNode extends AppModel {
 				'joins' => array(array(
 					'table' => $table,
 					'alias' => "{$type}0",
-					'type' => 'LEFT',
+					'type' => 'INNER',
 					'conditions' => array(
 						$db->name("{$type}.lft") . ' <= ' . $db->name("{$type}0.lft"),
 						$db->name("{$type}.rght") . ' >= ' . $db->name("{$type}0.rght")
@@ -172,9 +179,10 @@ class AclNode extends AppModel {
 			$result = $db->read($this, $queryData, -1);
 
 			if (!$result) {
-				trigger_error(__d('cake_dev', "AclNode::node() - Couldn't find %s node identified by \"%s\"", $type, print_r($ref, true)), E_USER_WARNING);
+				throw new CakeException(__d('cake_dev', "AclNode::node() - Couldn't find %s node identified by \"%s\"", $type, print_r($ref, true)));
 			}
 		}
 		return $result;
 	}
+
 }

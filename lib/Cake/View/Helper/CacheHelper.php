@@ -1,20 +1,17 @@
 <?php
 /**
- * CacheHelper helps create full page view caching.
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 1.0.0.2277
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppHelper', 'View/Helper');
@@ -25,8 +22,10 @@ App::uses('AppHelper', 'View/Helper');
  * When using CacheHelper you don't call any of its methods, they are all automatically
  * called by View, and use the $cacheAction settings set in the controller.
  *
- * @package       Cake.View.Helper
- * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/cache.html
+ * @package Cake.View.Helper
+ * @link https://book.cakephp.org/2.0/en/core-libraries/helpers/cache.html
+ * @deprecated This class will be removed in 3.0. You should use a separate response cache
+ * like Varnish instead.
  */
 class CacheHelper extends AppHelper {
 
@@ -49,24 +48,25 @@ class CacheHelper extends AppHelper {
 /**
  * Counter used for counting nocache section tags.
  *
- * @var integer
+ * @var int
  */
 	protected $_counter = 0;
 
 /**
  * Is CacheHelper enabled? should files + output be parsed.
  *
- * @return boolean
+ * @return bool
  */
 	protected function _enabled() {
-		return (($this->_View->cacheAction != false)) && (Configure::read('Cache.check') === true);
+		return $this->_View->cacheAction && (Configure::read('Cache.check') === true);
 	}
 
 /**
  * Parses the view file and stores content for cache file building.
  *
- * @param string $viewFile
- * @return void
+ * @param string $viewFile View file name.
+ * @param string $output The output for the file.
+ * @return string Updated content.
  */
 	public function afterRenderFile($viewFile, $output) {
 		if ($this->_enabled()) {
@@ -77,7 +77,7 @@ class CacheHelper extends AppHelper {
 /**
  * Parses the layout file and stores content for cache file building.
  *
- * @param string $layoutFile
+ * @param string $layoutFile Layout file name.
  * @return void
  */
 	public function afterLayout($layoutFile) {
@@ -88,7 +88,7 @@ class CacheHelper extends AppHelper {
 	}
 
 /**
- * Parse a file + output.  Matches nocache tags between the current output and the current file
+ * Parse a file + output. Matches nocache tags between the current output and the current file
  * stores a reference of the file, so the generated can be swapped back with the file contents when
  * writing the cache file.
  *
@@ -107,8 +107,9 @@ class CacheHelper extends AppHelper {
  *
  * @param string $file File to cache
  * @param string $out output to cache
- * @return string view ouput
- * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/cache.html
+ * @return string view output
+ * @link https://book.cakephp.org/2.0/en/core-libraries/helpers/cache.html
+ * @throws Exception If debug mode is enabled and writing to cache file fails.
  */
 	public function cache($file, $out) {
 		$cacheTime = 0;
@@ -120,20 +121,20 @@ class CacheHelper extends AppHelper {
 			$index = null;
 
 			foreach ($keys as $action) {
-				if ($action == $this->request->params['action']) {
+				if ($action === $this->request->params['action']) {
 					$index = $action;
 					break;
 				}
 			}
 
-			if (!isset($index) && $this->request->params['action'] == 'index') {
+			if (!isset($index) && $this->request->params['action'] === 'index') {
 				$index = 'index';
 			}
 
 			$options = $cacheAction;
 			if (isset($cacheAction[$index])) {
 				if (is_array($cacheAction[$index])) {
-					$options = array_merge(array('duration' => 0, 'callbacks' => false), $cacheAction[$index]);
+					$options = $cacheAction[$index] + array('duration' => 0, 'callbacks' => false);
 				} else {
 					$cacheTime = $cacheAction[$index];
 				}
@@ -148,9 +149,23 @@ class CacheHelper extends AppHelper {
 			$cacheTime = $cacheAction;
 		}
 
-		if ($cacheTime != '' && $cacheTime > 0) {
+		if ($cacheTime && $cacheTime > 0) {
 			$cached = $this->_parseOutput($out);
-			$this->_writeFile($cached, $cacheTime, $useCallbacks);
+			try {
+				$this->_writeFile($cached, $cacheTime, $useCallbacks);
+			} catch (Exception $e) {
+				if (Configure::read('debug')) {
+					throw $e;
+				}
+
+				$message = __d(
+					'cake_dev',
+					'Unable to write view cache file: "%s" for "%s"',
+					$e->getMessage(),
+					$this->request->here
+				);
+				$this->log($message, 'error');
+			}
 			$out = $this->_stripTags($out);
 		}
 		return $out;
@@ -256,8 +271,9 @@ class CacheHelper extends AppHelper {
  *
  * @param string $content view content to write to a cache file.
  * @param string $timestamp Duration to set for cache file.
- * @param boolean $useCallbacks
- * @return boolean success of caching view.
+ * @param bool|null $useCallbacks Whether to include statements in cached file which
+ *   run callbacks, otherwise null.
+ * @return bool success of caching view.
  */
 	protected function _writeFile($content, $timestamp, $useCallbacks = false) {
 		$now = time();
@@ -268,13 +284,17 @@ class CacheHelper extends AppHelper {
 			$cacheTime = strtotime($timestamp, $now);
 		}
 		$path = $this->request->here();
-		if ($path == '/') {
+		if ($path === '/') {
 			$path = 'home';
+		}
+		$prefix = Configure::read('Cache.viewPrefix');
+		if ($prefix) {
+			$path = $prefix . '_' . $path;
 		}
 		$cache = strtolower(Inflector::slug($path));
 
 		if (empty($cache)) {
-			return;
+			return null;
 		}
 		$cache = $cache . '.php';
 		$file = '<!--cachetime:' . $cacheTime . '--><?php';
@@ -285,13 +305,14 @@ class CacheHelper extends AppHelper {
 			";
 		} else {
 			$file .= "
+			App::uses('{$this->_View->plugin}AppController', '{$this->_View->plugin}.Controller');
 			App::uses('{$this->_View->name}Controller', '{$this->_View->plugin}.Controller');
 			";
 		}
 
 		$file .= '
-				$request = unserialize(\'' . str_replace("'", "\\'", serialize($this->request)) . '\');
-				$response = new CakeResponse(array("charset" => Configure::read("App.encoding")));
+				$request = unserialize(base64_decode(\'' . base64_encode(serialize($this->request)) . '\'));
+				$response->type(\'' . $this->_View->response->type() . '\');
 				$controller = new ' . $this->_View->name . 'Controller($request, $response);
 				$controller->plugin = $this->plugin = \'' . $this->_View->plugin . '\';
 				$controller->helpers = $this->helpers = unserialize(base64_decode(\'' . base64_encode(serialize($this->_View->helpers)) . '\'));
@@ -301,7 +322,7 @@ class CacheHelper extends AppHelper {
 				Router::setRequestInfo($controller->request);
 				$this->request = $request;';
 
-		if ($useCallbacks == true) {
+		if ($useCallbacks) {
 			$file .= '
 				$controller->constructClasses();
 				$controller->startupProcess();';
@@ -312,8 +333,9 @@ class CacheHelper extends AppHelper {
 				$this->loadHelpers();
 				extract($this->viewVars, EXTR_SKIP);
 		?>';
-		$content = preg_replace("/(<\\?xml)/", "<?php echo '$1';?>", $content);
+		$content = preg_replace("/(<\\?xml)/", "<?php echo '$1'; ?>", $content);
 		$file .= $content;
 		return cache('views' . DS . $cache, $file, $timestamp);
 	}
+
 }

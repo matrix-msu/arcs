@@ -2,20 +2,20 @@
 /**
  * AclComponentTest file
  *
- * PHP 5
- *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Controller.Component
  * @since         CakePHP(tm) v 1.2.0.5435
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('AclComponent', 'Controller/Component');
 class_exists('AclComponent');
 
@@ -25,6 +25,7 @@ class_exists('AclComponent');
  * @package       Cake.Test.Case.Controller.Component
  */
 class AclComponentTest extends CakeTestCase {
+
 /**
  * setUp method
  *
@@ -51,8 +52,8 @@ class AclComponentTest extends CakeTestCase {
 	}
 
 /**
- * test that construtor throws an exception when Acl.classname is a
- * non-existant class
+ * test that constructor throws an exception when Acl.classname is a
+ * non-existent class
  *
  * @expectedException CakeException
  * @return void
@@ -60,24 +61,24 @@ class AclComponentTest extends CakeTestCase {
 	public function testConstrutorException() {
 		Configure::write('Acl.classname', 'AclClassNameThatDoesNotExist');
 		$Collection = new ComponentCollection();
-		$acl = new AclComponent($Collection);
+		new AclComponent($Collection);
 	}
 
 /**
- * test that adapter() allows control of the interal implementation AclComponent uses.
+ * test that adapter() allows control of the internal implementation AclComponent uses.
  *
  * @return void
  */
 	public function testAdapter() {
-		$implementation = new MockAclImplementation();
-		$implementation->expects($this->once())->method('initialize')->with($this->Acl);
-		$this->assertNull($this->Acl->adapter($implementation));
+		$Adapter = $this->getMock('AclInterface');
+		$Adapter->expects($this->once())->method('initialize')->with($this->Acl);
 
-		$this->assertEquals($this->Acl->adapter(), $implementation, 'Returned object is different %s');
+		$this->assertNull($this->Acl->adapter($Adapter));
+		$this->assertEquals($this->Acl->adapter(), $Adapter, 'Returned object is different %s');
 	}
 
 /**
- * test that adapter() whines when the class is not an AclBase
+ * test that adapter() whines when the class does not implement AclInterface
  *
  * @expectedException CakeException
  * @return void

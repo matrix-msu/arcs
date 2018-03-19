@@ -4,28 +4,29 @@
  *
  * Behavior to simplify manipulating a model's bindings when doing a find operation
  *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Model.Behavior
  * @since         CakePHP(tm) v 1.2.0.5669
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+App::uses('ModelBehavior', 'Model');
+
 /**
- * Behavior to allow for dynamic and atomic manipulation of a Model's associations 
- * used for a find call. Most useful for limiting the amount of associations and 
+ * Behavior to allow for dynamic and atomic manipulation of a Model's associations
+ * used for a find call. Most useful for limiting the amount of associations and
  * data returned.
  *
  * @package       Cake.Model.Behavior
- * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html
+ * @link https://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html
  */
 class ContainableBehavior extends ModelBehavior {
 
@@ -61,7 +62,7 @@ class ContainableBehavior extends ModelBehavior {
  * @param array $settings Settings to override for model.
  * @return void
  */
-	public function setup($Model, $settings = array()) {
+	public function setup(Model $Model, $settings = array()) {
 		if (!isset($this->settings[$Model->alias])) {
 			$this->settings[$Model->alias] = array('recursive' => true, 'notices' => true, 'autoFields' => true);
 		}
@@ -74,7 +75,7 @@ class ContainableBehavior extends ModelBehavior {
  *
  * `Model->find('all', array('contain' => array('Model1', 'Model2')));`
  *
- * {{{
+ * ```
  * Model->find('all', array('contain' => array(
  * 	'Model1' => array('Model11', 'Model12'),
  * 	'Model2',
@@ -83,30 +84,32 @@ class ContainableBehavior extends ModelBehavior {
  * 		'Model32',
  * 		'Model33' => array('Model331', 'Model332')
  * )));
- * }}}
+ * ```
  *
- * @param Model $Model	Model using the behavior
+ * @param Model $Model Model using the behavior
  * @param array $query Query parameters as set by cake
  * @return array
  */
-	public function beforeFind($Model, $query) {
+	public function beforeFind(Model $Model, $query) {
 		$reset = (isset($query['reset']) ? $query['reset'] : true);
-		$noContain = (
-			(isset($this->runtime[$Model->alias]['contain']) && empty($this->runtime[$Model->alias]['contain'])) ||
-			(isset($query['contain']) && empty($query['contain']))
-		);
+		$noContain = false;
 		$contain = array();
+
 		if (isset($this->runtime[$Model->alias]['contain'])) {
+			$noContain = empty($this->runtime[$Model->alias]['contain']);
 			$contain = $this->runtime[$Model->alias]['contain'];
 			unset($this->runtime[$Model->alias]['contain']);
 		}
+
 		if (isset($query['contain'])) {
-			$contain = array_merge($contain, (array)$query['contain']);
+			$noContain = $noContain || empty($query['contain']);
+			if ($query['contain'] !== false) {
+				$contain = array_merge($contain, (array)$query['contain']);
+			}
 		}
-		if (
-			$noContain || !$contain || in_array($contain, array(null, false), true) ||
-			(isset($contain[0]) && $contain[0] === null)
-		) {
+		$noContain = $noContain && empty($contain);
+
+		if ($noContain || empty($contain)) {
 			if ($noContain) {
 				$query['recursive'] = -1;
 			}
@@ -121,7 +124,7 @@ class ContainableBehavior extends ModelBehavior {
 		$map = $this->containmentsMap($containments);
 
 		$mandatory = array();
-		foreach ($containments['models'] as $name => $model) {
+		foreach ($containments['models'] as $model) {
 			$instance = $model['instance'];
 			$needed = $this->fieldDependencies($instance, $map, false);
 			if (!empty($needed)) {
@@ -156,7 +159,7 @@ class ContainableBehavior extends ModelBehavior {
 							}
 							if (!$reset && empty($instance->__backOriginalAssociation)) {
 								$instance->__backOriginalAssociation = $backupBindings;
-							} else if ($reset) {
+							} elseif ($reset) {
 								$instance->__backAssociation[$type] = $backupBindings[$type];
 							}
 							$instance->{$type}[$assoc] = array_merge($instance->{$type}[$assoc], $model['keep'][$assoc]);
@@ -170,7 +173,7 @@ class ContainableBehavior extends ModelBehavior {
 		}
 
 		if ($this->settings[$Model->alias]['recursive']) {
-			$query['recursive'] = (isset($query['recursive'])) ? $query['recursive'] : $containments['depth'];
+			$query['recursive'] = (isset($query['recursive'])) ? max($query['recursive'], $containments['depth']) : $containments['depth'];
 		}
 
 		$autoFields = ($this->settings[$Model->alias]['autoFields']
@@ -185,8 +188,8 @@ class ContainableBehavior extends ModelBehavior {
 		foreach (array('hasOne', 'belongsTo') as $type) {
 			if (!empty($Model->{$type})) {
 				foreach ($Model->{$type} as $assoc => $data) {
-					if ($Model->useDbConfig == $Model->{$assoc}->useDbConfig && !empty($data['fields'])) {
-						foreach ((array) $data['fields'] as $field) {
+					if ($Model->useDbConfig === $Model->{$assoc}->useDbConfig && !empty($data['fields'])) {
+						foreach ((array)$data['fields'] as $field) {
 							$query['fields'][] = (strpos($field, '.') === false ? $assoc . '.' : '') . $field;
 						}
 					}
@@ -196,11 +199,11 @@ class ContainableBehavior extends ModelBehavior {
 
 		if (!empty($mandatory[$Model->alias])) {
 			foreach ($mandatory[$Model->alias] as $field) {
-				if ($field == '--primaryKey--') {
+				if ($field === '--primaryKey--') {
 					$field = $Model->primaryKey;
-				} else if (preg_match('/^.+\.\-\-[^-]+\-\-$/', $field)) {
+				} elseif (preg_match('/^.+\.\-\-[^-]+\-\-$/', $field)) {
 					list($modelName, $field) = explode('.', $field);
-					if ($Model->useDbConfig == $Model->{$modelName}->useDbConfig) {
+					if ($Model->useDbConfig === $Model->{$modelName}->useDbConfig) {
 						$field = $modelName . '.' . (
 							($field === '--primaryKey--') ? $Model->$modelName->primaryKey : $field
 						);
@@ -223,9 +226,9 @@ class ContainableBehavior extends ModelBehavior {
  *
  * @param Model $Model Model on which binding restriction is being applied
  * @return void
- * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html#using-containable
+ * @link https://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html#using-containable
  */
-	public function contain($Model) {
+	public function contain(Model $Model) {
 		$args = func_get_args();
 		$contain = call_user_func_array('am', array_slice($args, 1));
 		$this->runtime[$Model->alias]['contain'] = $contain;
@@ -239,7 +242,7 @@ class ContainableBehavior extends ModelBehavior {
  * @param Model $Model Model on which to reset bindings
  * @return void
  */
-	public function resetBindings($Model) {
+	public function resetBindings(Model $Model) {
 		if (!empty($Model->__backOriginalAssociation)) {
 			$Model->__backAssociation = $Model->__backOriginalAssociation;
 			unset($Model->__backOriginalAssociation);
@@ -260,13 +263,12 @@ class ContainableBehavior extends ModelBehavior {
  * @param Model $Model Model on which binding restriction is being applied
  * @param array $contain Parameters to use for restricting this model
  * @param array $containments Current set of containments
- * @param boolean $throwErrors Whether non-existent bindings show throw errors
+ * @param bool $throwErrors Whether non-existent bindings show throw errors
  * @return array Containments
  */
-	public function containments($Model, $contain, $containments = array(), $throwErrors = null) {
-		$options = array('className', 'joinTable', 'with', 'foreignKey', 'associationForeignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'unique', 'finderQuery', 'deleteQuery', 'insertQuery');
+	public function containments(Model $Model, $contain, $containments = array(), $throwErrors = null) {
+		$options = array('className', 'joinTable', 'with', 'foreignKey', 'associationForeignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'unique', 'finderQuery');
 		$keep = array();
-		$depth = array();
 		if ($throwErrors === null) {
 			$throwErrors = (empty($this->settings[$Model->alias]) ? true : $this->settings[$Model->alias]['notices']);
 		}
@@ -287,7 +289,7 @@ class ContainableBehavior extends ModelBehavior {
 			$children = (array)$children;
 			foreach ($children as $key => $val) {
 				if (is_string($key) && is_string($val) && !in_array($key, $options, true)) {
-					$children[$key] = (array) $val;
+					$children[$key] = (array)$val;
 				}
 			}
 
@@ -304,8 +306,8 @@ class ContainableBehavior extends ModelBehavior {
 				if (!$optionKey && is_string($key) && preg_match('/^[a-z(]/', $key) && (!isset($Model->{$key}) || !is_object($Model->{$key}))) {
 					$option = 'fields';
 					$val = array($key);
-					if ($key{0} == '(') {
-						$val = preg_split('/\s*,\s*/', substr(substr($key, 1), 0, -1));
+					if ($key{0} === '(') {
+						$val = preg_split('/\s*,\s*/', substr($key, 1, -1));
 					} elseif (preg_match('/ASC|DESC$/', $key)) {
 						$option = 'order';
 						$val = $Model->{$name}->alias . '.' . $key;
@@ -322,12 +324,12 @@ class ContainableBehavior extends ModelBehavior {
 					$key = $option;
 					$optionKey = true;
 					if (!empty($newChildren)) {
-						$children = Set::merge($children, $newChildren);
+						$children = Hash::merge($children, $newChildren);
 					}
 				}
 				if ($optionKey && isset($children[$key])) {
 					if (!empty($keep[$name][$key]) && is_array($keep[$name][$key])) {
-						$keep[$name][$key] = array_merge((isset($keep[$name][$key]) ? $keep[$name][$key] : array()), (array) $children[$key]);
+						$keep[$name][$key] = array_merge((isset($keep[$name][$key]) ? $keep[$name][$key] : array()), (array)$children[$key]);
 					} else {
 						$keep[$name][$key] = $children[$key];
 					}
@@ -363,17 +365,17 @@ class ContainableBehavior extends ModelBehavior {
  *
  * @param Model $Model Model
  * @param array $map Map of relations for given model
- * @param mixed $fields If array, fields to initially load, if false use $Model as primary model
+ * @param array|bool $fields If array, fields to initially load, if false use $Model as primary model
  * @return array Fields
  */
-	public function fieldDependencies($Model, $map, $fields = array()) {
+	public function fieldDependencies(Model $Model, $map, $fields = array()) {
 		if ($fields === false) {
 			foreach ($map as $parent => $children) {
 				foreach ($children as $type => $bindings) {
 					foreach ($bindings as $dependency) {
-						if ($type == 'hasAndBelongsToMany') {
+						if ($type === 'hasAndBelongsToMany') {
 							$fields[$parent][] = '--primaryKey--';
-						} else if ($type == 'belongsTo') {
+						} elseif ($type === 'belongsTo') {
 							$fields[$parent][] = $dependency . '.--primaryKey--';
 						}
 					}
@@ -425,4 +427,5 @@ class ContainableBehavior extends ModelBehavior {
 		}
 		return $map;
 	}
+
 }

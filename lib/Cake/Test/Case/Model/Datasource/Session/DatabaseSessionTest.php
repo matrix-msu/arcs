@@ -2,19 +2,18 @@
 /**
  * DatabaseSessionTest file
  *
- * PHP 5
- *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <https://book.cakephp.org/2.0/en/development/testing.html>
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Model.Datasource.Session
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Model', 'Model');
@@ -22,9 +21,15 @@ App::uses('CakeSession', 'Model/Datasource');
 App::uses('DatabaseSession', 'Model/Datasource/Session');
 class_exists('CakeSession');
 
+/**
+ * SessionTestModel
+ *
+ * @package       Cake.Test.Case.Model.Datasource.Session
+ */
 class SessionTestModel extends Model {
-	public $name = 'SessionTestModel';
+
 	public $useTable = 'sessions';
+
 }
 
 /**
@@ -49,7 +54,7 @@ class DatabaseSessionTest extends CakeTestCase {
  * @return void
  */
 	public static function setupBeforeClass() {
-		self::$_sessionBackup = Configure::read('Session');
+		static::$_sessionBackup = Configure::read('Session');
 		Configure::write('Session.handler', array(
 			'model' => 'SessionTestModel',
 		));
@@ -62,7 +67,7 @@ class DatabaseSessionTest extends CakeTestCase {
  * @return void
  */
 	public static function teardownAfterClass() {
-		Configure::write('Session', self::$_sessionBackup);
+		Configure::write('Session', static::$_sessionBackup);
 	}
 
 /**
@@ -93,7 +98,7 @@ class DatabaseSessionTest extends CakeTestCase {
  */
 	public function testConstructionSettings() {
 		ClassRegistry::flush();
-		$storage = new DatabaseSession();
+		new DatabaseSession();
 
 		$session = ClassRegistry::getObject('session');
 		$this->assertInstanceOf('SessionTestModel', $session);
@@ -117,15 +122,8 @@ class DatabaseSessionTest extends CakeTestCase {
  * @return void
  */
 	public function testWrite() {
-		$result = $this->storage->write('foo', 'Some value');
-		$expected = array(
-			'Session' => array(
-				'id' => 'foo',
-				'data' => 'Some value',
-				'expires' => time() + (Configure::read('Session.timeout') * 60)
-			)
-		);
-		$this->assertEquals($expected, $result);
+		$this->storage->write('foo', 'Some value');
+		$this->assertEquals($this->storage->read('foo'), 'Some value');
 	}
 
 /**
@@ -145,13 +143,10 @@ class DatabaseSessionTest extends CakeTestCase {
  */
 	public function testRead() {
 		$this->storage->write('foo', 'Some value');
-
-		$result = $this->storage->read('foo');
-		$expected = 'Some value';
-		$this->assertEquals($expected, $result);
-
-		$result = $this->storage->read('made up value');
-		$this->assertFalse($result);
+		$this->assertEquals($this->storage->read('foo'), 'Some value');
+		$this->storage->write('bar', 0);
+		$this->assertEquals(0, $this->storage->read('bar'));
+		$this->assertSame('', $this->storage->read('made up value'));
 	}
 
 /**
@@ -163,7 +158,7 @@ class DatabaseSessionTest extends CakeTestCase {
 		$this->storage->write('foo', 'Some value');
 
 		$this->assertTrue($this->storage->destroy('foo'), 'Destroy failed');
-		$this->assertFalse($this->storage->read('foo'), 'Value still present.');
+		$this->assertSame($this->storage->read('foo'), '');
 	}
 
 /**
@@ -180,6 +175,58 @@ class DatabaseSessionTest extends CakeTestCase {
 
 		sleep(1);
 		$storage->gc();
-		$this->assertFalse($storage->read('foo'));
+		$this->assertSame($storage->read('foo'), '');
+	}
+
+/**
+ * testConcurrentInsert
+ *
+ * @return void
+ */
+	public function testConcurrentInsert() {
+		$this->skipIf(
+			$this->db instanceof Sqlite,
+			'Sqlite does not throw exceptions when attempting to insert a duplicate primary key'
+		);
+
+		ClassRegistry::removeObject('Session');
+
+		$mockedModel = $this->getMockForModel(
+			'SessionTestModel',
+			array('exists'),
+			array('alias' => 'MockedSessionTestModel', 'table' => 'sessions')
+		);
+		Configure::write('Session.handler.model', 'MockedSessionTestModel');
+
+		$counter = 0;
+		// First save
+		$mockedModel->expects($this->at($counter++))
+			->method('exists')
+			->will($this->returnValue(false));
+
+		// Second save
+		$mockedModel->expects($this->at($counter++))
+			->method('exists')
+			->will($this->returnValue(false));
+
+		// Second save retry
+		$mockedModel->expects($this->at($counter++))
+			->method('exists')
+			->will($this->returnValue(true));
+
+		// Datasource exists check
+		$mockedModel->expects($this->at($counter++))
+			->method('exists')
+			->will($this->returnValue(true));
+
+		$this->storage = new DatabaseSession();
+
+		$this->storage->write('foo', 'Some value');
+		$return = $this->storage->read('foo');
+		$this->assertSame('Some value', $return);
+
+		$this->storage->write('foo', 'Some other value');
+		$return = $this->storage->read('foo');
+		$this->assertSame('Some other value', $return);
 	}
 }

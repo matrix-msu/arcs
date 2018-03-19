@@ -2,66 +2,47 @@
 /**
  * Test Case bake template
  *
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Console.Templates.default.classes
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 echo "<?php\n";
 ?>
-App::uses('<?php echo $fullClassName; ?>', '<?php echo $realType; ?>');
+<?php foreach ($uses as $dependency): ?>
+App::uses('<?php echo $dependency[0]; ?>', '<?php echo $dependency[1]; ?>');
+<?php endforeach; ?>
 
-<?php if ($mock and strtolower($type) == 'controller'): ?>
-/**
- * Test<?php echo $fullClassName; ?>
- *
- */
-class Test<?php echo $fullClassName; ?> extends <?php echo $fullClassName; ?> {
-/**
- * Auto render
- *
- * @var boolean
- */
-	public $autoRender = false;
-
-/**
- * Redirect action
- *
- * @param mixed $url
- * @param mixed $status
- * @param boolean $exit
- * @return void
- */
-	public function redirect($url, $status = null, $exit = true) {
-		$this->redirectUrl = $url;
-	}
-}
-
-<?php endif; ?>
 /**
  * <?php echo $fullClassName; ?> Test Case
- *
  */
-class <?php echo $fullClassName; ?>TestCase extends CakeTestCase {
+<?php if ($type === 'Controller'): ?>
+class <?php echo $fullClassName; ?>Test extends ControllerTestCase {
+<?php else: ?>
+class <?php echo $fullClassName; ?>Test extends CakeTestCase {
+<?php endif; ?>
+
 <?php if (!empty($fixtures)): ?>
 /**
  * Fixtures
  *
  * @var array
  */
-	public $fixtures = array('<?php echo join("', '", $fixtures); ?>');
+	public $fixtures = array(
+		'<?php echo join("',\n\t\t'", $fixtures); ?>'
+	);
 
 <?php endif; ?>
+<?php if (!empty($construction)): ?>
 /**
  * setUp method
  *
@@ -69,8 +50,9 @@ class <?php echo $fullClassName; ?>TestCase extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-
+<?php echo $preConstruct ? "\t\t" . $preConstruct : ''; ?>
 		$this-><?php echo $className . ' = ' . $construction; ?>
+<?php echo $postConstruct ? "\t\t" . $postConstruct : ''; ?>
 	}
 
 /**
@@ -79,20 +61,21 @@ class <?php echo $fullClassName; ?>TestCase extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this-><?php echo $className;?>);
+		unset($this-><?php echo $className; ?>);
 
 		parent::tearDown();
 	}
 
+<?php endif; ?>
 <?php foreach ($methods as $method): ?>
 /**
- * test<?php echo Inflector::classify($method); ?> method
+ * test<?php echo Inflector::camelize($method); ?> method
  *
  * @return void
  */
-	public function test<?php echo Inflector::classify($method); ?>() {
-
+	public function test<?php echo Inflector::camelize($method); ?>() {
+		$this->markTestIncomplete('test<?php echo Inflector::camelize($method); ?> not implemented.');
 	}
 
-<?php endforeach;?>
+<?php endforeach; ?>
 }

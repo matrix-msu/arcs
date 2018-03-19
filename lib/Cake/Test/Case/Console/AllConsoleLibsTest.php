@@ -2,19 +2,18 @@
 /**
  * AllConsoleLibsTest file
  *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Console
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -34,12 +33,14 @@ class AllConsoleLibsTest extends PHPUnit_Framework_TestSuite {
 	public static function suite() {
 		$suite = new CakeTestSuite('All console lib classes');
 
-		$path = CORE_TEST_CASES . DS . 'Console';
 		foreach (new DirectoryIterator(dirname(__FILE__)) as $file) {
 			if (!$file->isFile() || strpos($file, 'All') === 0) {
 				continue;
 			}
-			$suite->addTestFile($file->getRealPath());
+			$fileName = $file->getRealPath();
+			if (substr($fileName, -4) === '.php') {
+				$suite->addTestFile($file->getRealPath());
+			}
 		}
 		return $suite;
 	}
