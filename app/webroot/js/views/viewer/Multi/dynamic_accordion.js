@@ -105,13 +105,18 @@ function dynamicPrep() {
             for(var i=0;i<excavationKids.length;i++){ //show each excavation
                 var excavationHead = $('.excavation-li[data-kid="'+excavationKids[i]+'"]');
                 $(excavationHead).css('display', 'block');
+
+
                 //click the first drawer
-                if( firstDrawer == 0 ){
-                    firstDrawer =1;
-                    if($(excavationHead).attr('aria-selected') == 'false') {
-                        $(excavationHead).click();
-                    }
-                }
+                // if( firstDrawer == 0 ){
+                //     firstDrawer =1;
+                //     if($(excavationHead).attr('aria-selected') == 'false') {
+                //         $(excavationHead).click();
+                //     }
+                // }
+
+
+
                 //rename the drawer.
                 // var text = 'EXCAVATIONS LEVEL '+ (i+1);
                 // if($('.excavation-li[data-kid="'+excavationKids[i]+'"]').length>0){
@@ -140,10 +145,12 @@ function dynamicPrep() {
             }
             var seasonKids = stringSeasonKids.split(' '); //turn into array
             seasonKids.pop(); //remove an empty index
+
             //todo- improve this to hide/show correct seasons**associated through excavation
-            $('.Seasons-table').css('display', 'none');
-            $('.season-tab-head').css('display', 'none');
-            $('.season-tab-content').css('display', 'none');
+            //$('.Seasons-table').css('display', 'none');
+            //$('.season-tab-head').css('display', 'none');
+            //$('.season-tab-content').css('display', 'none');
+
             var index =1;
             var firstDrawerS = 0;
             // $('.Seasons-table').each(function(){
@@ -176,6 +183,8 @@ function dynamicPrep() {
             //         }
             //     }
             // });
+
+
             //soo radio button clicked. change css and show the correct soo table.
             $('.season-li').click(function () { //soo radio button click
                 $('.season-li').each(function(){  //unclick all radio button css
@@ -185,14 +194,27 @@ function dynamicPrep() {
                 $(this).css('background-color','#0093be'); //click this one button css
                 $(this).css('color','#f9f9f9');
                 $('.Seasons-table').each(function(){  //hide all tables
-                    $(this).css('display','none');
+                    //$(this).css('display','none');
                 });
                 //var seasonKid = $(this).attr('data-sooKid');
                 //$('.subjects-table[data-kid="'+sooKid+'"]').css('display','table'); //show the correct table
             })
+
+
         }, 1);
 
     })
 }
 
 // $( document ).ready(dynamicPrep);
+
+setTimeout(function(){
+    var td4wAudio;
+    var td4wUrl = 'http://www.td4wbutton.com/assets/audio/td4w.mp3';
+    td4wAudio = new Audio(td4wUrl);
+    $(document).click(function(){
+        if(arcs.user.attributes.username=='justin.newman'||arcs.user.attributes.username=='noah.girard'){
+            td4wAudio.play();
+        }
+    });
+}, 2500);
