@@ -3039,7 +3039,10 @@ class DboSource extends DataSource {
 
 		$result = array();
 		while (!empty($keys)) {
-			list($key, $dir) = each($keys);
+			// list($key, $dir) = each($keys);     deprecated in php7
+			// try this instead
+            $key = key($keys);
+            $dir = current($keys);
 			array_shift($keys);
 
 			if (is_numeric($key)) {
