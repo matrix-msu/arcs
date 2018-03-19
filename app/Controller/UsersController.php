@@ -918,9 +918,7 @@ class UsersController extends AppController
         $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
-                // $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdFHQ0TAAAAADQYAB3dz72MPq293ggfKl5GOQsm&response=" . $this->request->data('g-recaptcha-response'));
-                $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LfP5hcTAAAAACpAFd2VWMH0EUEZ1zzCL16oqA0Y&response=" . $this->request->data('g-recaptcha-response'));
-                $response = json_decode($response, true);
+                $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LfP5hcTAAAAACpAFd2VWMH0EUEZ1zzCL16oqA0Y&response=" . $this->request->data('g-recaptcha-response'));                $response = json_decode($response, true);
                 if ($response['success'] === true) {
                     $this->User->permit('isAdmin', 'last_login');
                     if ($this->User->add(array(

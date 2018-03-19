@@ -14,6 +14,7 @@
  * @author Graham Weldon (http://grahamweldon.com)
  * @license The MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+//echo 'fuck you';die;
 if (!defined('TWIG_VIEW_CACHE')) {
 	define('TWIG_VIEW_CACHE', CakePlugin::path('TwigView') . 'tmp' . DS . 'views');
 }

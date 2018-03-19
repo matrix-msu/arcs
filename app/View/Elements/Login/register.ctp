@@ -45,8 +45,7 @@
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
 
                 <!-- g-recaptcha has to be inside the <form method="post"></form> (also form method has to be  post) -->
-                <!-- <div class="g-recaptcha" data-sitekey="6LdFHQ0TAAAAAFZ2cLF1oq7X1zoUJapbhYgpYVh2"></div> -->
-                <div class="g-recaptcha" data-sitekey="6LfP5hcTAAAAADZ4Je8NJ0LOoP2lE4JgYet3BOx1"></div>
+            <div class="g-recaptcha" data-sitekey="6LfP5hcTAAAAADZ4Je8NJ0LOoP2lE4JgYet3BOx1"></div>
 
 				<?php echo $this->Form->submit('Register', array('class' => 'btn btn-success', 'id' => 'register')); ?>
 
