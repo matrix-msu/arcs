@@ -14809,12 +14809,11 @@ input.user-reg-btn.btn.btn-success:focus {
   margin-bottom: 14px;
 }
 .install-welcome-text {
-  margin: auto;
   color: #686868;
   text-align: center;
-  margin-bottom: 50px;
+  margin: 0 auto;
   height: 70px;
-  width: 258px;
+  width: 100%;
 }
 .install-welcome-text h1 {
   color: #686868;
@@ -14823,46 +14822,43 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 .install-welcome-text h4 {
   height: 22px;
-  width: 164px;
   font-size: 18px;
   line-height: 22px;
-  margin: auto;
 }
 .start-btn-container {
   text-align: center;
-  margin-bottom: 149px;
-  margin-top: 50px;
+  margin: 50px auto 149px auto;
 }
-.cont-install-btn {
+.start-btn-container .start-install-btn {
   width: 263px;
   height: 49px;
   background: #0094BC;
   border: 1px solid #0094BC;
   color: white;
-  float: right;
 }
-.cont-install-btn p {
+.start-btn-container .start-install-btn p {
   font-size: 16px;
   margin: auto;
 }
 .kora-body-content {
-  height: 500px;
+  height: auto;
 }
 .install-progress-bar {
   color: #3F3F3F;
-  height: 24px;
-  width: 100%;
+  width: 90%;
+  max-width: 1300px;
   font-size: 20px;
   line-height: 24px;
-  padding-left: 117px;
-  padding-bottom: 62px;
+  padding-bottom: 75px;
+  text-align: left;
+  margin: 0 auto;
 }
 .install-progress-bar .current-step {
   color: #0094BC;
 }
 .install-progress-bar ul {
   width: 100%;
-  margin: 0 auto;
+  padding-left: 0px;
 }
 .install-progress-bar ul li {
   display: inline-block;
@@ -14871,36 +14867,138 @@ input.user-reg-btn.btn.btn-success:focus {
   padding-left: 7px;
   padding-right: 7px;
 }
+.field-progress-bar {
+  color: #3F3F3F;
+  width: 90%;
+  max-width: 1300px;
+  font-size: 16px;
+  line-height: 18px;
+  padding-bottom: 40px;
+  text-align: left;
+  margin: 0 auto;
+}
+.field-progress-bar .current-step {
+  color: #0094BC;
+}
+.field-progress-bar ul {
+  width: 100%;
+  padding-left: 0px;
+}
+.field-progress-bar ul li {
+  display: inline-block;
+}
 .form-container {
   width: 100%;
-  padding-left: 157px;
   background-color: #F9F9F9;
   font-size: 16px;
+  padding-bottom: 98px;
+}
+.form-container .project {
+  display: block;
+}
+.form-container .season {
+  display: none;
+}
+.form-container .excavation {
+  display: none;
 }
 .form-container .form-prompt-wrapper {
   margin: 0 auto;
   color: #686868;
   padding-top: 45px;
+  text-align: left;
+  max-width: 1300px;
+  width: 90%;
+}
+.form-container .form-prompt-wrapper .prompt1 {
+  line-height: 28px;
+}
+.form-container .form-prompt-wrapper .prompt2 {
+  font-size: 12px;
+  line-height: 18px;
 }
 .form-container .form-wrapper {
   margin: 0 auto;
   padding-top: 70px;
+  max-width: 1300px;
+  /*#kora-name {
+            padding-top: 70px;
+            padding-bottom: 61px;
+        }*/
+  /*#ctn-create {
+            display: none;
+        }*/
+}
+.form-container .form-wrapper .dot {
+  height: 6px;
+  width: 6px;
+  background-color: #0094BC;
+  border-radius: 50%;
+  display: inline-block;
+  margin-bottom: 2px;
+  margin-right: 5px;
+}
+.form-container .form-wrapper form {
+  display: block;
+  position: relative;
 }
 .form-container .form-wrapper .row {
   width: 100%;
   display: inline-flex;
 }
+.form-container .form-wrapper .row p {
+  display: inline-block;
+}
 .form-container .form-wrapper .row .input-left {
   width: 40%;
+  margin: 0 auto;
 }
 .form-container .form-wrapper .row .input-right {
   width: 40%;
-  margin-left: 5%;
+  margin: 0 auto;
+}
+.form-container .form-wrapper .row .input-full {
+  width: 90%;
+  margin: 0 auto;
 }
 .form-container .form-wrapper .row input {
   width: 100%;
   background-color: #fff;
   border: 1px solid #D8D8D8;
+}
+.form-container .form-wrapper .divider {
+  padding-top: 49px;
+  margin-top: 61px;
+  width: 90%;
+}
+.form-container .form-wrapper .bottom {
+  width: 90%;
+  margin: 0 auto;
+}
+.form-container .form-wrapper .bottom .required {
+  width: 50%;
+  height: auto;
+  display: inline-block;
+}
+.form-container .form-wrapper .bottom .required p {
+  display: inline-block;
+}
+.form-container .form-wrapper .bottom .cont-btn-container {
+  width: 49%;
+  text-align: right;
+  height: auto;
+  display: inline-block;
+}
+.form-container .form-wrapper .bottom .cont-btn-container .cont-install-btn {
+  width: auto;
+  height: 49px;
+  background: #0094BC;
+  border: 1px solid #0094BC;
+  color: white;
+}
+.form-container .form-wrapper .bottom .cont-btn-container .cont-install-btn p {
+  font-size: 16px;
+  margin: auto;
 }
 .accordion-wrapper {
   width: 90%;

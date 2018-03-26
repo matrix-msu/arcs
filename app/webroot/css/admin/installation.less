@@ -2,12 +2,11 @@
 // ----------
 
 .install-welcome-text {
-    margin: auto;
     color: #686868;
     text-align: center;
-    margin-bottom: 50px;
+    margin: 0 auto;
     height: 70px;
-    width: 258px;
+    width: 100%;
 
     h1 {
         color: #686868;
@@ -16,53 +15,53 @@
     }
     h4 {
     	height: 22px;
-        width: 164px;
         font-size: 18px;
         line-height: 22px;
-        margin: auto;
     }
 
 }
 
 .start-btn-container {
     text-align: center;
-    margin-bottom: 149px;
-    margin-top: 50px;
-}
-
-.cont-install-btn {
-    width: 263px;
-    height: 49px;
-    background: #0094BC;
-    border: 1px solid #0094BC;
-    color: white;
-    float: right;
-    p {
-        font-size: 16px;
-        margin: auto;
+    margin: 50px auto 149px auto;
+    
+    .start-install-btn {
+        width: 263px;
+        height: 49px;
+        background: #0094BC;
+        border: 1px solid #0094BC;
+        color: white;
+        p {
+            font-size: 16px;
+            margin: auto;
+        }
     }
 }
 
+
+
 //Kora config pages
 .kora-body-content {
-    height: 500px; //change this
+    height: auto; //change this
 }
 
 .install-progress-bar {
     color: #3F3F3F;
-	height: 24px;
-    width: 100%;
+    width: 90%;
+    max-width: 1300px;
     font-size: 20px;
     line-height: 24px;
-    padding-left: 117px;
-    padding-bottom: 62px;
+    padding-bottom: 75px;
+    text-align: left;
+    margin: 0 auto;
 
     .current-step {
         color: #0094BC;
     }
     ul {
         width: 100%;
-        margin: 0 auto;
+        padding-left: 0px;
+        
         li {
             display: inline-block;
         }
@@ -74,36 +73,153 @@
 
 }
 
+.field-progress-bar {
+    color: #3F3F3F;
+    width: 90%;
+    max-width: 1300px;
+    font-size: 16px;
+    line-height: 18px;
+    padding-bottom: 40px;
+    text-align: left;
+    margin: 0 auto;
+    
+    .current-step {
+        color: #0094BC;
+    }
+    
+    ul {
+        width: 100%;
+        padding-left: 0px;
+        li {
+            display: inline-block;
+        }
+    }
+
+}
+
 .form-container {
     width: 100%;
-    padding-left: 157px;
     background-color: #F9F9F9;
     font-size: 16px;
+    padding-bottom: 98px;
     
+    .project{
+        display: block;
+    }
+    .season{
+        display: none;
+    }
+    .excavation{
+        display: none;
+    }
     .form-prompt-wrapper {
         margin: 0 auto;
         color: #686868;
         padding-top: 45px;
+        text-align: left;
+        max-width: 1300px;
+        width: 90%;
+        
+        .prompt1 {
+            line-height: 28px;
+        }
+        .prompt2 {
+            font-size: 12px;
+            line-height: 18px;
+        }
     }
     
     .form-wrapper{
         margin: 0 auto;
         padding-top: 70px;
+        max-width: 1300px;
         
+        .dot {
+            height: 6px;
+            width: 6px;
+            background-color: #0094BC;
+            border-radius: 50%;
+            display: inline-block;
+            margin-bottom: 2px;
+            margin-right: 5px;
+        }
+        
+        form {
+            display: block;
+            position: relative;
+        }
         .row {
             width: 100%;
             display: inline-flex;
+            
+            p{
+                display: inline-block;
+            }
             .input-left {
                 width: 40%;
+                margin: 0 auto;
+                
             }
             .input-right {
                 width: 40%;
-                margin-left: 5%;
+                margin: 0 auto;
+            }
+            .input-full {
+                width: 90%;
+                margin: 0 auto;
             }
             input {
                 width: 100%;
                 background-color: #fff;
                 border: 1px solid #D8D8D8;
+            }
+        }
+        
+        /*#kora-name {
+            padding-top: 70px;
+            padding-bottom: 61px;
+        }*/
+        
+        .divider {
+            padding-top: 49px;
+            margin-top: 61px;
+            width: 90%;
+        }
+        
+        /*#ctn-create {
+            display: none;
+        }*/
+        
+        .bottom{
+            width: 90%;
+            margin: 0 auto;
+            
+            .required {
+                width: 50%;
+                height: auto;
+                display: inline-block;
+
+                p{
+                    display: inline-block;
+                }
+            }
+            .cont-btn-container {
+                width: 49%;
+                text-align: right;
+                height: auto;
+                display: inline-block;
+
+                .cont-install-btn {
+                    width: auto;
+                    height: 49px;
+                    background: #0094BC;
+                    border: 1px solid #0094BC;
+                    color: white;
+                    p {
+                        font-size: 16px;
+                        margin: auto;
+                    }
+                }
             }
         }
         
