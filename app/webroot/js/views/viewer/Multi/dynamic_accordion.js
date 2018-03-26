@@ -7,7 +7,6 @@ function dynamicPrep() {
     //new page click show/hide the correct metadata
     $('.other-page').on('click', 'img', function(){  //page click
         $('.resource-reset-icon').click(); //reset the image position
-
         //subject of observation stuffs.
         $('.subjects-table').each(function(){  //hide all tables
             $(this).css('display','none');
@@ -17,9 +16,13 @@ function dynamicPrep() {
         });
         var pageKid = $(this).attr('id');
         var clickedFirst = 0;
-        $(".soo-li").each(function(){  //show the matching radio buttons
+        var number = 1;
+        $(".soo-li").each(function(){
+            //show the matching radio buttons
             if( $(this).attr('data-pageKid') == (pageKid)){
-                $(this).css('display','list-item');
+                $(this).css('display','inline-block');
+                $(this).find('a').html(number);
+                number++;
                 if( clickedFirst == 0 ){ //click the page's first soo radio button
                     $(this)[0].click();
                     clickedFirst = 1;
@@ -41,8 +44,25 @@ function dynamicPrep() {
         var sooKid = $(this).attr('data-sooKid');
         $('.subjects-table[data-kid="'+sooKid+'"]').css('display','table'); //show the correct table
     })
+
+    // //excavation radio button clicked. change css and show the correct excavations table.
+    $('.excavation-li').click(function () { //soo radio button click
+        $('.excavation-li').each(function(){  //unclick all radio button css
+            $(this).css('background-color','#f9f9f9');
+            $(this).css('color','#555555');
+        })
+        $(this).css('background-color','#0093be'); //click this one button css
+        $(this).css('color','#f9f9f9');
+        $('.excavations-table').each(function(){  //hide all tables
+            $(this).css('display','none');
+        });
+        var kid = $(this).attr('data-kid');
+        $('.excavations-table[data-kid="'+kid+'"]').css('display','table'); //show the correct table
+    })
+
     //new resource clicked. show/hide metadata based on the resource.
     $('.resource-slider').find('a.other-resources').click(function(){
+        console.log('here?');
 
         //display correct project
         var projectKid = $(this).attr('data-projectKid');
@@ -97,62 +117,132 @@ function dynamicPrep() {
         excavationKids.sort();
         var excavationSeasonAssociators = [];
         setTimeout(function () { //wasn't hiding all if not in this..
-            $('.excavation-tab-head').css('display', 'none'); //hide all
+            $('.excavation-li').css('display', 'none'); //hide all
             $('.excavation-tab-content').css('display', 'none');
             $('.excavation-tab-content').css('height', 'auto');
             var firstDrawer = 0;
             var firstDrawer2 = 0;
+            var number = 1;
             for(var i=0;i<excavationKids.length;i++){ //show each excavation
                 var excavationHead = $('.excavation-li[data-kid="'+excavationKids[i]+'"]');
                 $(excavationHead).css('display', 'block');
-
+                excavationHead.find('a').html(number);
+                number++;
 
                 //click the first drawer
-                // if( firstDrawer == 0 ){
-                //     firstDrawer =1;
-                //     if($(excavationHead).attr('aria-selected') == 'false') {
-                //         $(excavationHead).click();
-                //     }
-                // }
-
-
-
-                //rename the drawer.
-                // var text = 'EXCAVATIONS LEVEL '+ (i+1);
-                // if($('.excavation-li[data-kid="'+excavationKids[i]+'"]').length>0){
-                //     $('.excavation-li[data-kid="'+excavationKids[i]+'"]')[0].innerText = text;
-                // }
-                //only show the first excavation drawer.
-                if($('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]').length>0 ){
-                    if( firstDrawer2==0 ) {
-                        $('.excavation-tab-content[data-kid="' + excavationKids[i] + '"]').eq(0).css('display', 'block');
-                        firstDrawer2 = 1;
-                    }
-                    var ex = $('.excavation-tab-content[data-kid="'+excavationKids[i]+'"]')
-                        .find("[id='Season_Associator']").attr('data-associations');
-                    ex = ex.replace(' ', '');
-                    //console.log(ex);
-                    excavationSeasonAssociators.push(ex);
+                if( firstDrawer == 0 ){
+                    firstDrawer =1;
+                    $('.excavation-tab-content').css('display', 'block');
+                    // if($(excavationHead).attr('aria-selected') == 'false') {
+                        $(excavationHead).click();
+                    // }
                 }
+
+                //only show the first excavation drawer.
+                if($('.excavations-table[data-kid="'+excavationKids[i]+'"]').length>0 ){
+
+                    //console.log('loop');
+                    // if( firstDrawer2==0 ) {
+                    //     console.log('here');
+                    //     console.log(excavationKids[i]);
+                    //     $('.excavation-tab-content[data-kid="' + excavationKids[i] + '"]').eq(0).css('display', 'block');
+                    //     firstDrawer2 = 1;
+                    // }
+                    var ex = $('.excavations-table[data-kid="'+excavationKids[i]+'"]')
+                        .find("[id='Season_Associator']").attr('data-associations');
+                    ex = ex.split(' ');
+                    ex.pop();
+                    //console.log(ex);
+                    $.merge(excavationSeasonAssociators, ex);
+                }
+                var result = [];
+                $.each(excavationSeasonAssociators, function(i, e) {
+                    if ($.inArray(e, result) == -1){
+                        result.push(e);
+                    }
+                });
+                excavationSeasonAssociators = result;
             }
 
             //find the season
             var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
                 .find("[id='Season_Associator']").attr('data-associations');
+
+
             if (typeof stringSeasonKids == 'undefined') {
                 //becasue kora returns undefined if something is not set
-                stringSeasonKids = ""
+                stringSeasonKids = "";
             }
             var seasonKids = stringSeasonKids.split(' '); //turn into array
             seasonKids.pop(); //remove an empty index
+
+            //merge the season kids found through excations with the ones found in resource
+            $.merge(seasonKids, excavationSeasonAssociators);
+            var result = [];
+            $.each(seasonKids, function(i, e) {
+                if ($.inArray(e, result) == -1){
+                    result.push(e);
+                }
+            });
+            seasonKids = result; //all the season kids associated to the clicked resource
+
+
+            //hide and show the correct seasons
+            $('.season-li').css('display', 'none'); //hide all
+            $('.season-tab-content').css('display', 'none');
+            $('.season-tab-content').css('height', 'auto');
+            var firstDrawer = 0;
+            var firstDrawer2 = 0;
+            var number = 1;
+            console.log('creating the seaason numbers')
+            for(var i=0;i<seasonKids.length;i++){ //show each season
+                var seasonHead = $('.season-li[data-kid="'+seasonKids[i]+'"]');
+                $(seasonHead).css('display', 'inline-block');
+                seasonHead.find('a').html(number);
+                number++;
+
+                //click the first drawer
+                if( firstDrawer == 0 ){
+                    firstDrawer =1;
+                    $('.season-tab-content').css('display', 'block');
+                    var firstSeasonHead = seasonHead;
+                    setTimeout(function(){
+                        $(firstSeasonHead).click();
+                    }, 1);
+                }
+            }
+
+
+
+            // console.log('before')
+            // console.log(seasonKids);
+            // $('.Seasons-table').css('display', '')
+            // for(var i=0;i<seasonKids.length;i++){
+            //     console.log('inside first');
+            //     if($('.Seasons-table[data-kid="'+seasonKids[i]+'"]').length>0 ){
+            //         console.log('in if');
+            //         if( firstDrawer2==0 ) {
+            //             console.log('display her5e');
+            //             $('.Seasons-table[data-kid="' + seasonKids[i] + '"]').eq(0).css('display', 'block');
+            //             firstDrawer2 = 1;
+            //         }
+            //         var ex = $('.season-tab-content[data-kid="'+seasonKids[i]+'"]')
+            //             .find("[id='Season_Associator']").attr('data-associations');
+            //         ex = ex.replace(' ', '');
+            //         console.log(ex);
+            //         excavationSeasonAssociators.push(ex);
+            //     }
+            // }
 
             //todo- improve this to hide/show correct seasons**associated through excavation
             //$('.Seasons-table').css('display', 'none');
             //$('.season-tab-head').css('display', 'none');
             //$('.season-tab-content').css('display', 'none');
 
-            var index =1;
-            var firstDrawerS = 0;
+
+
+            // var index =1;
+            // var firstDrawerS = 0;
             // $('.Seasons-table').each(function(){
             //     var season = $(this);
             //     var sKid = season.attr('data-kid');
@@ -160,7 +250,7 @@ function dynamicPrep() {
             //         if( e == sKid ){
             //             season.css('display', 'table');
             //             season.parent().css('display', 'block');
-            //             season.parent().prev().html(index);
+            //             //season.parent().prev().html(index);
             //             season.parent().prev().css('display', 'block');
             //             index++;
             //             if( firstDrawerS==0 ) {
@@ -185,7 +275,7 @@ function dynamicPrep() {
             // });
 
 
-            //soo radio button clicked. change css and show the correct soo table.
+            // seasons bubble changed
             $('.season-li').click(function () { //soo radio button click
                 $('.season-li').each(function(){  //unclick all radio button css
                     $(this).css('background-color','#f9f9f9');
@@ -194,12 +284,11 @@ function dynamicPrep() {
                 $(this).css('background-color','#0093be'); //click this one button css
                 $(this).css('color','#f9f9f9');
                 $('.Seasons-table').each(function(){  //hide all tables
-                    //$(this).css('display','none');
+                    $(this).css('display','none');
                 });
-                //var seasonKid = $(this).attr('data-sooKid');
-                //$('.subjects-table[data-kid="'+sooKid+'"]').css('display','table'); //show the correct table
+                var seasonKid = $(this).attr('data-kid');
+                $('.Seasons-table[data-kid="'+seasonKid+'"]').css('display','table'); //show the correct table
             })
-
 
         }, 1);
 
@@ -207,5 +296,3 @@ function dynamicPrep() {
 }
 
 // $( document ).ready(dynamicPrep);
-
-

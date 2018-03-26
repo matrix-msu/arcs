@@ -449,6 +449,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                           // For setting pageImage in newResource.js
                           echo "id = '" . $r['kid'] . "-default-page'";
                       }
+
                       echo "src = '" . AppController::smallThumb($img, $pageThingKid) . "'  />";
                       echo "<div  class='numberOverResources'>";
                       echo ++$cnt;
@@ -503,8 +504,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
         <a class='other-resources' data-projectKid="<?=$r['project_kid']?>" >
 
             <img id="identifier-<?=$r['kid']?>" class="other-resource<?php if ( in_array($r['kid'], $showButNoEditArray) ){echo ' showButNoEdit'; }  ?>"
-                src="<?php echo AppController::smallThumb($p, $pageThingKid); ?> " height="200px"/>
-
+                src="<?php echo AppController::smallThumb($p, $pageThingKid); ?>" height="200px"/>
 			<?php if ($cnt ==1) :  ?>
 				<div class='numberOverResources selectedResource'>
 					<?php  echo $cnt;   ?>

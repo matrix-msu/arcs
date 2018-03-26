@@ -1,40 +1,6 @@
 function generateMetadata(schemename, data, metadataEdits, controlOptions, flags, aboveScheme=false, aboveTwoSchemes=false) {
   var counter = 0;
 
-	var html = '<h3 class="level-tab '+schemename+'" >';
-	if( schemename === 'archival objects' ){
-	    html += 'Resource (archival document)';
-    }else{
-	    html += schemename;
-    }
-	html += '<span class="metadata-edit-btn" style="visibility:hidden;" >Edit</span></h3>';
-	html += '<div class="level-content" style="display:none;">';
-	html += '<div class="accordion metadata-accordion excavation-div">';
-
-	if (schemename == 'subjects') {
-		html += '<div id="soo"><ul>';
-        if (Object.keys(data).length > 0) {
-            var count=0, page_associator='';
-            for (key in data) {
-              count++;
-                var subject = data[key];
-                html += '<li class="soo-li"';
-                if (subject['Pages_Associator'] != undefined && subject['Pages_Associator'][0] != undefined) {
-                    html += 'data-pageKid="'+subject['Pages_Associator'][0]+'" data-sooKid="'+subject['kid']+'"';
-                }
-                html += '><a href="#soo-'+count+'" class="soo-click'+count+' soo-click">';
-                if (subject['Pages_Associator'][0] != page_associator) {
-                    page_associator = subject['Pages_Associator'][0];
-                    count = 1;
-                }
-                html += count+'</a></li>';
-            }
-        }
-        html += '</ul><div class="level-content soo">';
-	}
-	if (schemename != 'excavations' && schemename != 'subjects' && schemename != 'Seasons') {
-		html += '<div class="level-content">';
-	}
   var controlTypes = {
       'project' : {
           'Name' : 'text',
@@ -288,6 +254,82 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
       }
   };
 
+  var html = '<h3 class="level-tab '+schemename+'" >';
+  if( schemename === 'archival objects' ){
+      html += 'Resource (archival document)';
+  }else{
+      html += schemename;
+  }
+  html += '<span class="metadata-edit-btn" style="visibility:hidden;" >Edit</span></h3>';
+  html += '<div class="level-content" style="display:none;">';
+  html += '<div class="accordion metadata-accordion excavation-div">';
+
+    if (schemename == 'subjects') {
+      html += '<div id="soo"><ul>';
+      if (Object.keys(data).length > 0) {
+          var count=0, page_associator='';
+          for (key in data) {
+            count++;
+              var subject = data[key];
+              html += '<li class="soo-li"';
+              if (subject['Pages_Associator'] != undefined && subject['Pages_Associator'][0] != undefined) {
+                  html += 'data-pageKid="'+subject['Pages_Associator'][0]+'" data-sooKid="'+subject['kid']+'"';
+              }
+              html += '><a href="#soo-'+count+'" class="soo-click'+count+' soo-click">';
+              if (subject['Pages_Associator'][0] != page_associator) {
+                  page_associator = subject['Pages_Associator'][0];
+                //   count = 1;
+              }
+              html += count+'</a></li>';
+          }
+    }
+      html += '</ul><div class="level-content soo">';
+    }else if (schemename == 'excavations') {
+      html += '<div id="soo"><ul>';
+      if (Object.keys(data).length > 0) {
+         var count = 0;
+         for (key in data){
+             count++;
+             var excavation = data[key];
+             html += '<li class="excavation-li" class="metadata-accordion ul" data-kid="'+excavation['kid']+'">';
+             html += '<a href="#excavations'+count+'" class="excavation-click'+count+' excavation-click">';
+             html += count+'</a></li>';
+         }
+      }
+      html += '</ul><div class="excavation-tab-content" data-kid="';
+      if (typeof excavation !== 'undefined'){
+          html += excavation['kid'];
+      }else {
+          html += '';
+      }
+      html += '">';
+    }else if (schemename == 'Seasons') {
+        html += '<div style="margin-top:0px;">';
+        html += '<ul style="top:-1px;position:relative;height:24px;">';
+        if (Object.keys(data).length > 0) {
+            var count = 0;
+            for (key in data){
+                count++;
+                var season = data[key];
+                html += '<li class="season-li season-li-bubble-css"  class="metadata-accordion ul" ';
+                html += ' data-kid = '+season["kid"]+'>';
+                html += '<a href="#Seasons'+count+'" class="season-a-bubble-css season-click'+count+'  season-click">';
+                html += count+'</a></li>';
+            }
+        }
+        html += '</ul><div class="season-tab-content" data-kid="';
+        if (typeof season !== 'undefined'){
+            html += season['kid'];
+        }else {
+            html += '';
+        }
+        html += '">';
+    }
+
+    if (schemename != 'excavations' && schemename != 'subjects' && schemename != 'Seasons') {
+      html += '<div class="level-content">';
+    }
+
 
     for (key in data) {
         if (key == 'diff' || data.length == 0) {
@@ -296,13 +338,6 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
         var item = data[key];
         counter++;
 
-        if (schemename == 'excavations' || schemename == 'Seasons') {
-            var prefix = schemename.substring(0, schemename.length-1).toLowerCase();
-            var excavationClass = prefix + '-tab-head';
-            var excavationSmallClass = prefix + '-tab-content';
-            html += '<h3 class="level-tab '+excavationClass+'" data-kid="'+item['kid']+'">'+schemename+' Level '+counter+'</h2>';
-            html += '<div class="level-content smaller '+excavationSmallClass+'" data-kid="'+item['kid']+'">';
-        }
         html += '<table id="'+schemename+counter+'" class="'+schemename+'-table" data-scheme="'+schemename+'" data-kid="'+item['kid']+'">';
         var matchContributor = false;
         var firstEmptyContributor = true;
@@ -413,6 +448,8 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
 
             extraString = " class='metadataEdit'>"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+">"+text+"</div>";
             if( type == 'associator' ){
+                // console.log('data associator');
+                // console.log(dataAssociatedList);
                 extraString = " class='metadataEdit'>"+flagged+"<div id='"+control+"' data-control='"+type+"'"+options+" data-associations='"+dataAssociatedList+"'>"+text+"</div>";
             }
             if(control == 'Persistent_Name' || type == "url"){
@@ -428,13 +465,19 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
             html += "<tr><td>"+displayedControlName+"</td><td"+extraString+"</td></tr>";
         }
         html += '</table>';
-        if(schemename == 'excavations' || schemename == 'Seasons' ){
-            html += '</div>';
-        }
     }
-    if(schemename != 'excavations' && schemename != 'Seasons'   ){
+
+    if( schemename != 'Seasons' ){
         html += '</div>';
     }
+
     html += '</div></div>';
+
+    if( schemename == 'excavations' ){
+        html += '</div>';
+    }
+    if( schemename == 'Seasons' ){
+        html += '</div></div>';
+    }
     return html;
 }

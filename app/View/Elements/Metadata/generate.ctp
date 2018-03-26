@@ -297,7 +297,7 @@ $controlDisplayNames = array(
                             if( array_key_exists( 'Pages_Associator', $subject ) && !empty($subject['Pages_Associator'])
                                 && $subject['Pages_Associator'][0] != $page_associator ){
                                     $page_associator = $subject['Pages_Associator'][0];
-                                    $count = 1;
+                                    // $count = 1;
                             }
                             echo $count;
                         ?>
@@ -316,7 +316,7 @@ $controlDisplayNames = array(
                 foreach($data as $excavation) {
                     $count++;
                     ?>
-                    <li class="excavation-li" class="metadata-accordion ul">
+                    <li class="excavation-li" class="metadata-accordion ul" data-kid="<?php echo $excavation['kid']; ?>">
                         <a href="#excavations<?php echo $count; ?>" class="excavation-click<?= $count ?>  excavation-click">
                             <?php
                                 echo $count;
@@ -325,7 +325,14 @@ $controlDisplayNames = array(
                     </li>
                 <?php }} ?>
             </ul>
-            <div class="excavation-tab-content" data-kid='<?php echo $excavation['kid'] ?>'>
+            <div class="excavation-tab-content" data-kid="<?php
+                if (isset($excavation['kid'])){
+                    echo $excavation['kid'];
+                }
+                else{
+                    echo '';
+                }
+            ?>">
         <?php
     }elseif( $schemename == 'Seasons' ){
         ?>
@@ -335,8 +342,9 @@ $controlDisplayNames = array(
                 <?php $count=0;?>
                 <?php foreach($data as $season) {
                     $count++;
+
                     ?>
-                    <li class="season-li season-li-bubble-css"  class="metadata-accordion ul">
+                    <li class="season-li season-li-bubble-css"  class="metadata-accordion ul"  data-kid='<?php echo $season['kid']?>'>
                         <a href="#Seasons<?php echo $count; ?>" class="season-a-bubble-css season-click<?= $count ?>  season-click">
                             <?php
                                 echo $count;
@@ -513,11 +521,7 @@ $controlDisplayNames = array(
 
 
 <?php
-        if( $schemename == 'Seasons' ){
-            ?></div><?php
-        }
     }
-
     if($schemename != 'Seasons' ){
             ?></div><?php
             }
@@ -529,7 +533,7 @@ $controlDisplayNames = array(
             echo "</div>";
         }
         if( $schemename == 'Seasons' ){
-            echo "</div>";
+            echo "</div></div>";
         }
 }
 ?>
