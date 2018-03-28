@@ -35,6 +35,7 @@ function collectionPrep() {
 
     //new collection submit, creates a new one then adds the rest to that collection
     $(".collectionNewSubmit").click(function () {
+		//$(".collectionNewSubmit").attr("disabled", "disabled");
         var resource_kids = getAllResourceKids();
         var formdata = {
             title: $('#collectionTitle').val(),

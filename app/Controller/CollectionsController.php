@@ -198,7 +198,7 @@ class CollectionsController extends AppController {
         if (!$this->request->data) {$this->json(400); throw new BadRequestException();}
 
         // Save the collection.
-        $this->request->data['collection_id'] = String::uuid();
+        $this->request->data['collection_id'] = CakeText::uuid();
         $this->Collection->permit('collection_id');
         $this->Collection->permit('resource_kid');
         $this->request->data['user_id'] = $this->Auth->user('id');
