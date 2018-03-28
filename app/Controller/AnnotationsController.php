@@ -32,6 +32,10 @@ class AnnotationsController extends MetaResourcesController {
             'order' => 'Annotation.created DESC',
 			'conditions' => array('user_id' => $this->request->data['id'])
 		));
+        foreach ($results as $key => $annotation) {
+            $results[$key]['time_string'] = parent::time_elapsed_string($annotation['created']);
+        }
+
 		$this->json(200, $results);
 	}
 

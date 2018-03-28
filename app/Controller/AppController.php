@@ -430,7 +430,7 @@ class AppController extends Controller
 
     public static function time_elapsed_string($createdDate, $full = false) {
         $now = new DateTime;
-        $ago = new DateTime($createdDate);;
+        $ago = new DateTime($createdDate);
         $diff = $now->diff($ago);
 
         $diff->w = floor($diff->d / 7);

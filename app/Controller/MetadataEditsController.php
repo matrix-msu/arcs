@@ -76,6 +76,7 @@ class MetadataEditsController extends AppController {
         foreach( $results as $key => $edit ){
             $results[$key]['MetadataEdit']['kid'] = $edit['MetadataEdit']['resource_kid'];
             $results[$key] = $results[$key]['MetadataEdit'];
+            $results[$key]['time_string'] = parent::time_elapsed_string($edit['MetadataEdit']['modified']);
         }
         $this->json(200, $results);
     }

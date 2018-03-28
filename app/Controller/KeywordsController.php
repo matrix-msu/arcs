@@ -218,6 +218,10 @@ class KeywordsController extends MetaResourcesController {
 		$results = $this->$model->find('all', array(
 			'conditions' => array('user_id' => $this->request->data['id'])
 		));
+        foreach ($results as $key => $keyword) {
+            $results[$key]['time_string'] = parent::time_elapsed_string($keyword['created']);
+        }
+
 		$this->json(200, $results);
 	}
 }

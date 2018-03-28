@@ -69,6 +69,7 @@
               if (a['transcript'] === '' || a['transcript'] === null) {
                 activity.push({
                   time: a['created'],
+                  time_string: a['time_string'],
                   type: 'annotation',
                   kid: a['resource_kid'],
                   name: a['resource_name'],
@@ -287,6 +288,7 @@
             activity.push({
               time: flag['created'],
               type: 'flag',
+              time_string: flag['time_string'],
               kid: flag['resource_kid'],
               name: flag['resource_name'],
               text: 'Created New Flag'
@@ -308,6 +310,7 @@
           mdata.forEach(function(edit) {
             activity.push({
               time: edit['modified'],
+              time_string: edit['time_string'],
               type: 'edit',
               kid: edit['resource_kid'],
               name: edit['resource_name'],
@@ -328,6 +331,7 @@
         success: function(udata) {
           activity.push({
             time: udata['last_login'],
+            time_string: udata['time_string'],
             type: 'log',
             text: 'Logged In'
           });
@@ -385,13 +389,15 @@
         });
         content = '';
         count = 0;
+        console.log('activigy build', activity);
         activity.forEach(function(a) {
-          var date, extra;
-          date = new Date(a['time']);
-          date.setMinutes(-new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset() + 300);
-          date = relativeDate(date);
-          activity[count].date = date;
-          extra = '';
+          //var date, extra;
+          //date = new Date(a['time']);
+          //date.setMinutes(-new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset() + 300);
+          //date = relativeDate(date);
+          //activity[count].date = date;
+          var extra = '';
+          var date = a['time_string'];
           if (a['type'] !== 'log') {
             extra =    '<a href="' + arcs.baseURL + 'resource/' + a['kid'] + '">' +
                         //  '<span class="name">' +
@@ -605,6 +611,7 @@
       var arr;
       if (target === 'activity') {
         arr = activity;
+        //console.log('in activity set', arr);
         div = $('#activity-tab');
       } else if (target === 'annotations') {
         arr = annotations;
