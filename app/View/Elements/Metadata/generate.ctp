@@ -263,16 +263,18 @@ $controlDisplayNames = array(
 ?>
 
     <h3 class="level-tab <?= $schemename ?>" >
+        <div class="drawer-name-text-<?= $schemename ?>">
         <?php
             if( $schemename == 'archival objects' ){
                 echo 'Resource (archival document)';
             }else{
                 echo $schemename;
             }
-            if( count($data) !== 0 && count($data) !== 1 ) {
-                echo ' (' . count($data) . ')';
-            }
+            // if( count($data) !== 0 && count($data) !== 1 ) {
+            //     echo ' (' . count($data) . ')';
+            // }
         ?>
+        </div>
         <span class="metadata-edit-btn" style="visibility:hidden;" >Edit</span>
     </h3>
     <div class="level-content" style="display:none;">

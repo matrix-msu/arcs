@@ -1,9 +1,7 @@
 function dynamicPrep() {
-
     /*
           Multi-resource dynamic accordion. based on new page and resource clicks.
      *********************************************************************************/
-
     //new page click show/hide the correct metadata
     $('.other-page').on('click', 'img', function(){  //page click
         $('.resource-reset-icon').click(); //reset the image position
@@ -29,6 +27,13 @@ function dynamicPrep() {
                 }
             }
         })
+        var countHtml = '';
+        number -= 1;
+        if( number > 1 ){
+            countHtml = " ("+number+")";
+        }
+        $('.drawer-name-text-subjects').html('Subjects'+countHtml);
+
     })
     //soo radio button clicked. change css and show the correct soo table.
     $('.soo-li').click(function () { //soo radio button click
@@ -62,8 +67,6 @@ function dynamicPrep() {
 
     //new resource clicked. show/hide metadata based on the resource.
     $('.resource-slider').find('a.other-resources').click(function(){
-        console.log('here?');
-
         //display correct project
         var projectKid = $(this).attr('data-projectKid');
         $('.project-table').css('display', 'none');
@@ -140,14 +143,6 @@ function dynamicPrep() {
 
                 //only show the first excavation drawer.
                 if($('.excavations-table[data-kid="'+excavationKids[i]+'"]').length>0 ){
-
-                    //console.log('loop');
-                    // if( firstDrawer2==0 ) {
-                    //     console.log('here');
-                    //     console.log(excavationKids[i]);
-                    //     $('.excavation-tab-content[data-kid="' + excavationKids[i] + '"]').eq(0).css('display', 'block');
-                    //     firstDrawer2 = 1;
-                    // }
                     var ex = $('.excavations-table[data-kid="'+excavationKids[i]+'"]')
                         .find("[id='Season_Associator']").attr('data-associations');
                     ex = ex.split(' ');
@@ -163,6 +158,12 @@ function dynamicPrep() {
                 });
                 excavationSeasonAssociators = result;
             }
+            var countHtml = '';
+            if( excavationKids.length > 1 ){
+                countHtml = " ("+excavationKids.length+")";
+            }
+            $('.drawer-name-text-excavations').html('excavations'+countHtml);
+
 
             //find the season
             var stringSeasonKids = $('.archival.objects-table[data-kid="'+resourceKid+'"]')
@@ -194,7 +195,6 @@ function dynamicPrep() {
             var firstDrawer = 0;
             var firstDrawer2 = 0;
             var number = 1;
-            console.log('creating the seaason numbers')
             for(var i=0;i<seasonKids.length;i++){ //show each season
                 var seasonHead = $('.season-li[data-kid="'+seasonKids[i]+'"]');
                 $(seasonHead).css('display', 'inline-block');
@@ -211,69 +211,11 @@ function dynamicPrep() {
                     }, 1);
                 }
             }
-
-
-
-            // console.log('before')
-            // console.log(seasonKids);
-            // $('.Seasons-table').css('display', '')
-            // for(var i=0;i<seasonKids.length;i++){
-            //     console.log('inside first');
-            //     if($('.Seasons-table[data-kid="'+seasonKids[i]+'"]').length>0 ){
-            //         console.log('in if');
-            //         if( firstDrawer2==0 ) {
-            //             console.log('display her5e');
-            //             $('.Seasons-table[data-kid="' + seasonKids[i] + '"]').eq(0).css('display', 'block');
-            //             firstDrawer2 = 1;
-            //         }
-            //         var ex = $('.season-tab-content[data-kid="'+seasonKids[i]+'"]')
-            //             .find("[id='Season_Associator']").attr('data-associations');
-            //         ex = ex.replace(' ', '');
-            //         console.log(ex);
-            //         excavationSeasonAssociators.push(ex);
-            //     }
-            // }
-
-            //todo- improve this to hide/show correct seasons**associated through excavation
-            //$('.Seasons-table').css('display', 'none');
-            //$('.season-tab-head').css('display', 'none');
-            //$('.season-tab-content').css('display', 'none');
-
-
-
-            // var index =1;
-            // var firstDrawerS = 0;
-            // $('.Seasons-table').each(function(){
-            //     var season = $(this);
-            //     var sKid = season.attr('data-kid');
-            //     seasonKids.every(function(e){
-            //         if( e == sKid ){
-            //             season.css('display', 'table');
-            //             season.parent().css('display', 'block');
-            //             //season.parent().prev().html(index);
-            //             season.parent().prev().css('display', 'block');
-            //             index++;
-            //             if( firstDrawerS==0 ) {
-            //                 season.parent().prev().click();
-            //                 firstDrawerS = 1;
-            //             }
-            //             return false;
-            //         }
-            //         return true;
-            //     });
-            //     if( excavationSeasonAssociators.indexOf(sKid) != -1 ){
-            //         season.css('display', 'table');
-            //         season.parent().css('display', 'block');
-            //         season.parent().prev().html(index);
-            //         season.parent().prev().css('display', 'block');
-            //         index++;
-            //         if( firstDrawerS==0 ) {
-            //             season.parent().prev().click();
-            //             firstDrawerS = 1;
-            //         }
-            //     }
-            // });
-
+            var countHtml = '';
+            if( seasonKids.length > 1 ){
+                countHtml = " ("+seasonKids.length+")";
+            }
+            $('.drawer-name-text-Seasons').html('Seasons'+countHtml);
 
             // seasons bubble changed
             $('.season-li').click(function () { //soo radio button click
@@ -294,5 +236,3 @@ function dynamicPrep() {
 
     })
 }
-
-// $( document ).ready(dynamicPrep);

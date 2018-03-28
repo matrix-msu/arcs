@@ -255,11 +255,13 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
   };
 
   var html = '<h3 class="level-tab '+schemename+'" >';
+  html += '<div class="drawer-name-text-'+schemename+'">';
   if( schemename === 'archival objects' ){
       html += 'Resource (archival document)';
   }else{
       html += schemename;
   }
+  html += '</div>';
   html += '<span class="metadata-edit-btn" style="visibility:hidden;" >Edit</span></h3>';
   html += '<div class="level-content" style="display:none;">';
   html += '<div class="accordion metadata-accordion excavation-div">';
@@ -278,7 +280,6 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
               html += '><a href="#soo-'+count+'" class="soo-click'+count+' soo-click">';
               if (subject['Pages_Associator'][0] != page_associator) {
                   page_associator = subject['Pages_Associator'][0];
-                //   count = 1;
               }
               html += count+'</a></li>';
           }
