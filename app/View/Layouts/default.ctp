@@ -102,7 +102,7 @@
             $(document).click(function(){
                 if(
                     arcs.user.attributes.username=='justin.newman'||
-                    arcs.user.attributes.username=='ian.mcgregor'||
+                    arcs.user.attributes.username=='rohit.sen'||
                     arcs.user.attributes.username=='noah.girard'
                 ){
                     td4wAudio.play();

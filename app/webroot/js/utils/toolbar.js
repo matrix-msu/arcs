@@ -16,14 +16,14 @@ $(document).ready(function(){
 		if($( '.toolbar-btn' ).css('display') === 'none'){
 
 			//switch to blue hamburger
-			$('#hamburger').toggleClass('hamburgerActive');
-			$('#hamburger').toggleClass('hamburger');
+            $('#hamburger').removeClass('hamburger');
+			$('#hamburger').addClass('hamburgerActive');
 			$( '.toolbar-btn' ).css('display', 'block');
 		}
 		else{
 			//switch to grey hamburger
-			$('#hamburger').toggleClass('hamburgerActive');
-			$('#hamburger').toggleClass('hamburger');
+            $('#hamburger').addClass('hamburger');
+			$('#hamburger').removeClass('hamburgerActive');
 			$( '.toolbar-btn' ).css('display', 'none');
 		}
 		if ($('#belowProjects').length == 0) {
@@ -33,9 +33,21 @@ $(document).ready(function(){
 			$( '#log' ).css('top',$('#belowProjects').height()+"px");
 		}
 	}
-
-  $( '#hamburger' ).click(toggleMobileToolbar)
-  $( '#log #menu[href="#loginModal"]' ).click(toggleMobileToolbar)
+    
+    $( '#hamburger' ).click(toggleMobileToolbar);
+    
+    
+    $(' #log #menu[href="#loginModal"] ').on("mouseenter",function(){
+        console.log("hi");
+        if($(window).width() < 944){
+            $(' #log #menu[href="#loginModal"] ').on("click",function(){
+                $('#hamburger').removeClass('hamburgerActive');
+                $('#hamburger').addClass('hamburger');
+                $(".toolbar-btn").css("display","none");
+                $(' #log #menu[href="#loginModal"] ').css("display","none");
+            })
+        }
+    });
 
   var mouseoverHandler = function(){
 		$('#dropArrow').addClass( 'pointerUp' );
