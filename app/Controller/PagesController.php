@@ -53,6 +53,7 @@ class PagesController extends AppController {
 				} catch (Exception $e) {
 					$this->redirect('/');
 				}
+
 			}
 		}
 		if (!empty($path[1])) {
@@ -64,7 +65,17 @@ class PagesController extends AppController {
         if ($title_for_layout == 'About') {
             $this->set('toolbar', false);
         }
+
+		$pid = parent::getPIDFromProjectName($pName);
+		$sid = parent::getResourceSIDFromProjectName($pName);
+		$types = parent::getK3Controls($pid, $sid, array('Type'), 'Resource');
+
+		$this->set("pid", $pid);
+		$this->set("sid", $sid);
+		$this->set("types", $types);
+
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
+		//var_dump($path);die;
 		$this->render(implode('/', $path));
 	}
 }

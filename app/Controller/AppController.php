@@ -285,7 +285,12 @@ class AppController extends Controller
         $pid = $kidSplit[0];
         $sid = $kidSplit[1];
 
-        $name = KORA_FILES_URI . 'p' . $pid . "/" . 'f' . $sid . "/" . $name;
+        $nameStuff = explode('/', $name);
+        $rPart = array_shift($nameStuff);
+        $fPart = array_shift($nameStuff);
+        $imageName = implode($nameStuff);
+
+        $name = KORA_FILES_URI.'p'.$pid."/f".$sid.'/'.$rPart.'/'.$fPart."/thumbnail/".$imageName;
         return $name;
     }
 
@@ -305,7 +310,12 @@ class AppController extends Controller
         $pid = $kidSplit[0];
         $sid = $kidSplit[1];
 
-        $name = KORA_FILES_URI . 'p' . $pid . "/" . 'f' . $sid . "/" . $name;
+        $nameStuff = explode('/', $name);
+        $rPart = array_shift($nameStuff);
+        $fPart = array_shift($nameStuff);
+        $imageName = implode($nameStuff);
+
+        $name = KORA_FILES_URI.'p'.$pid."/f".$sid.'/'.$rPart.'/'.$fPart."/medium/".$imageName;
         return $name;
     }
 
@@ -430,6 +440,7 @@ class AppController extends Controller
 
     public static function time_elapsed_string($createdDate, $full = false) {
         $now = new DateTime;
+        // return $now;
         $ago = new DateTime($createdDate);
         $diff = $now->diff($ago);
 

@@ -4,7 +4,7 @@
           <?= $this->Html->image('Close.svg', array('class' => 'exit', 'alt' => 'Exit'));?>
         </a>
 
-        <?php echo $this->Form->create('User', array('controller' => 'users', 'url' => 'register')); ?>
+        <?php echo $this->Form->create('User', array('controller' => 'users', 'url' => '/register')); ?>
 
         <div class="left">
             <div class="registerContainer">

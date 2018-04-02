@@ -925,6 +925,8 @@ class ResourcesController extends AppController {
                     $pageThingKid = $p['kid'];
                 }
                 $p = AppController::smallThumb($p, $pageThingKid);
+                echo "thereererere";
+                die;
                 $resources[$kid]['thumbsrc'] = $p;
                 foreach ($r['page'] as $key => $page) {
                     $img = isset($page['Image_Upload']['localName']) ? $page['Image_Upload']['localName'] : "";

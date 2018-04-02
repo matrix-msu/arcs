@@ -1,67 +1,45 @@
 <div class="collection-list-wrapper">
     <h1 class="rsc-title">Resources</h1>
-    {% if not user.loggedIn %}
+
+    <?php if ($user['loggedIn'] != 1){ ?>
     <p class="login_msg">Some resources require you to
         <a href=#loginModal>log in</a>, or have specific permissions to view.
     </p>
-    {% endif %}
+    <?php } ?>
 
     <div class="collection-list" id="all-collections">
-        <details class="back-color"  data-type="Field journal" >
-            <summary class="rsc-sum">
-                <p class="rsc-name">NOTEBOOKS</p>
-            </summary>
-            <div></div>
-        </details>
 
-        <details class="back-color" data-type="Photograph">
-            <summary class="rsc-sum">
-                <p class="rsc-name">PHOTOGRAPHS</p>
-            </summary>
-            <div></div>
-        </details>
+    <?php
+    // Display field journals first if they exist
+    if (in_array("Field journal", $types['Type'])){
+        ?>
+            <details class="back-color"  data-type="Field journal" >
+                <summary class="rsc-sum">
+                    <p class="rsc-name">NOTEBOOKS</p>
+                </summary>
+                <div></div>
+            </details>
+        <?php
+        $types['Type'] = array_diff($types['Type'], ['Field journal']);
+    }
 
-        <details class="back-color" data-type="Photographic negative">
-            <summary class="rsc-sum">
-                <p class="rsc-name">PHOTOGRAPHIC NEGATIVE</p>
-            </summary>
-            <div></div>
-        </details>
+    foreach ($types['Type'] as $type) { ?>
+            <details class="back-color"  data-type="<?=$type?>" >
+                <summary class="rsc-sum">
+                    <p class="rsc-name"><?=strtoupper($type)?></p>
+                </summary>
+                <div></div>
+            </details>
+    <?php
+    }
+    ?>
+    <details class="back-color" data-type="Orphaned">
+        <summary class="rsc-sum">
+            <p class="rsc-name">ORPHANED (Digitized Resources Without Metadata)</p>
+        </summary>
+        <div></div>
+    </details>
 
-        <details class="back-color" data-type="Report">
-            <summary class="rsc-sum">
-                <p class="rsc-name">REPORTS</p>
-            </summary>
-            <div></div>
-        </details>
-
-        <details class="back-color" data-type="Drawing">
-            <summary class="rsc-sum">
-                <p class="rsc-name">DRAWINGS</p>
-            </summary>
-            <div></div>
-        </details>
-
-        <details class="back-color" data-type="Plan or elevation">
-            <summary class="rsc-sum">
-                <p class="rsc-name">MAPS</p>
-            </summary>
-            <div></div>
-        </details>
-
-        <details class="back-color" data-type="Inventory card">
-            <summary class="rsc-sum">
-                <p class="rsc-name">INVENTORY CARDS</p>
-            </summary>
-            <div></div>
-        </details>
-
-        <details class="back-color" data-type="Orphaned">
-            <summary class="rsc-sum">
-                <p class="rsc-name">ORPHANED (Digitized Resources Without Metadata)</p>
-            </summary>
-            <div></div>
-        </details>
     </div>
     <script>arcs.homeView = new arcs.views.Home({el: $('.page')});</script>
 </div>

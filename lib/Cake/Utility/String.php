@@ -15,13 +15,13 @@
  * @since         CakePHP(tm) v 1.2.0.5551
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-App::uses('CakeText', 'Utility');
-
-/**
- * String handling methods.
- *
- * @package Cake.Utility
- * @deprecated 3.0.0 Deprecated since version 2.7, use CakeText class instead.
- */
-class String extends CakeText {
-}
+// App::uses('CakeText', 'Utility');
+//
+// /**
+//  * String handling methods.
+//  *
+//  * @package Cake.Utility
+//  * @deprecated 3.0.0 Deprecated since version 2.7, use CakeText class instead.
+//  */
+// class String extends CakeText {
+// }

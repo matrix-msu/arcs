@@ -329,6 +329,8 @@
           id: info.id
         },
         success: function(udata) {
+            console.log('log data');
+            console.log(udata);
           activity.push({
             time: udata['last_login'],
             time_string: udata['time_string'],

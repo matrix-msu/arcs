@@ -371,7 +371,6 @@ class SearchController extends AppController {
                     $picture_url = array_values($page2)[0]['Image_Upload']['localName'];
                     $picture_kid = array_values($page2)[0]['kid'];
                 }
-
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){
                     $temp_array['thumb'] = $this->smallThumb($picture_url, $picture_kid);
