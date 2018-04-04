@@ -343,25 +343,27 @@ class SearchController extends AppController {
 
                 $page2 = array();
                 if( $resource_type == 'Field journal' ) {
-
                     $temp_array['resource-type'] = $resource_type;
                     $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
                         "Scan_Number", "=", "1");
+                        // TODO: make this work
                     $page2 = json_decode($kora->search(), true);
                 }
+                // echo "page2";
+                // print_r($page2);die;
                 if( $page2 == array() ){
                     $kora->add_clause("Resource_Associator", "=", $temp_kid);
                     $page2 = json_decode($kora->search(), true);
                 };
-                if( $resource_type == 'Field journal' ) {
-                    $tempPagesArray = array();
-                    foreach ($page2 as $kid => $value) {
-                        if( $value['Scan_Number'] == '1' ){
-                            $tempPagesArray[$kid] = $value;
-                        }
+
+                $tempPagesArray = array();
+                foreach ($page2 as $kid => $value) {
+                    if( $value['Scan_Number'] == '1' ){
+                        $tempPagesArray[$kid] = $value;
                     }
-                    $page2 = $tempPagesArray;
                 }
+                $page2 = $tempPagesArray;
+
 
                 //$page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results

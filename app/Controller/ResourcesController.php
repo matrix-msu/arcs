@@ -1167,7 +1167,6 @@ class ResourcesController extends AppController {
         $sid = parent::getPageSIDFromProjectName($pName);
         $fields = 'ALL';
         $sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
-        //$sort = array();
         $kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
         $kora->add_clause("Resource_Associator", "=", $resource_kid);
         $return = $kora->search();

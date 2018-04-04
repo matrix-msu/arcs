@@ -742,7 +742,7 @@ class UsersController extends AppController
                     foreach ($admins as $admin) {
                         $this->pendingUserEmail($admin, $user);
                     }
-                    $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
+                    $this->Session->setFlash("Thank you for confirming your registration!  Your account is waiting for administrator approval.", 'flash_success');
                     $this->redirect('/');
                 }
                 //Invited users will not be found by findByRef until activated
@@ -814,7 +814,7 @@ class UsersController extends AppController
             $this->pendingUserEmail($admin, $user);
         }
 
-        $this->Session->setFlash("Thank you for confirming your registration.  Your account is waiting for administrator approval.", 'flash_success');
+        $this->Session->setFlash("Thank you for confirming your registration!  Your account is waiting for administrator approval.", 'flash_success');
         $this->redirect('/');
     }
 
@@ -1499,7 +1499,7 @@ class UsersController extends AppController
             'conditions' => array('id' => $this->request->data['id'])
         ));
         $results['time_string'] = parent::time_elapsed_string($results['last_login']);
-        
+
         $this->json(200, $results);
     }
 
