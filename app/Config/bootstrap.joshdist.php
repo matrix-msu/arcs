@@ -38,15 +38,25 @@ Configure::load('assets');
 
 # Basic Kora Information
 define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
-define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
-define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
+//define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
+//define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
 define("KORA_LIB", CORE_PATH . "Kora/Local/");
-define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
+//define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
 //define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
 //define ("LOCAL_URI", "~josh.christ/arcs/webroot/");
 define("BASE_URL",  "~josh.christ/arcs/" );
 
+//define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
+
+
+define("KORA_FILES_URI"     ,  "http://dev2.matrix.msu.edu/k3alpha/public/app/files/"); //unique
+//define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
+//define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
+define ("KORA_SEARCH", "/matrix/dev/public_html/k3alpha/app/FieldHelpers/koraSearch.php");
+//define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");maraland
+define ("KORA_RESTFUL_URL", "http://dev2.matrix.msu.edu/k3alpha/public/api/");
 define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
+
 
 //define ("PID", "123");
 //define ("PROJECT_SID", "734");
@@ -57,35 +67,43 @@ define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugin
 //define ("SURVEY_SID", "740");
 
 $GLOBALS['PID_ARRAY'] = array(
-    'isthmia' => 123,
-    'grotto_tiberri' => 168
+    //'isthmia' => 123
+    'isthmia' => 34
+    //'grotto_tiberri' => 168
 );
 $GLOBALS['PROJECT_SID_ARRAY'] = array(
-    'isthmia' => 734,
+    'isthmia' => 168,
+    //'isthmia' => 734,
     'grotto_tiberri' => 911
 );
 $GLOBALS['SEASON_SID_ARRAY'] = array(
-    'isthmia' => 735,
+    'isthmia' => 169,
+    //'isthmia' => 735,
     'grotto_tiberri' => 913
 );
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
-    'isthmia' => 740,
+    'isthmia' => 173,
+    //'isthmia' => 740,
     'grotto_tiberri' => 914
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
-    'isthmia' => 736,
+    'isthmia' => 170,
+    //'isthmia' => 736,
     'grotto_tiberri' => 915
 );
 $GLOBALS['PAGES_SID_ARRAY'] = array(
-    'isthmia' => 738,
+    'isthmia' => 171,
+    //'isthmia' => 738,
     'grotto_tiberri' => 916
 );
 $GLOBALS['SUBJECT_SID_ARRAY'] = array(
-    'isthmia' => 739,
+    'isthmia' => 172,
+    //'isthmia' => 739,
     'grotto_tiberri' => 917
 );
 $GLOBALS['TOKEN_ARRAY'] = array(
-    'isthmia' => "8b88eecedaa2d3708ebec77a",
+    'isthmia' => "sZGUHpfv56qlPGWli6yM1oRl",
+    //'isthmia' => "8b88eecedaa2d3708ebec77a",
     'grotto_tiberri' => "8b88eecedaa2d3708ebec77a"
 );
 
@@ -101,12 +119,12 @@ CakePlugin::load('TwigView');
 
 define("ARCS_LOADER_HTML",
     "<div class='sk-cube-container'>".
-        "<div class='sk-folding-cube'>".
-            "<div class='sk-cube1 sk-cube'></div>".
-            "<div class='sk-cube2 sk-cube'></div>".
-            "<div class='sk-cube4 sk-cube'></div>".
-            "<div class='sk-cube3 sk-cube'></div>".
-        "</div>".
+    "<div class='sk-folding-cube'>".
+    "<div class='sk-cube1 sk-cube'></div>".
+    "<div class='sk-cube2 sk-cube'></div>".
+    "<div class='sk-cube4 sk-cube'></div>".
+    "<div class='sk-cube3 sk-cube'></div>".
+    "</div>".
     "</div>"
 );
 
