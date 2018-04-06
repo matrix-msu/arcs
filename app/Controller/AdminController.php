@@ -1,5 +1,6 @@
 <?php
 App::uses('ConnectionManager', 'Model');
+App::import('Controller', 'Users');
 
 require_once(KORA_LIB . "General_Search.php");
 /**
@@ -198,12 +199,12 @@ class AdminController extends AppController {
         $user = mysqli_fetch_array($users);
         $project = "";
 
+
         foreach ($GLOBALS['PID_ARRAY'] as $name => $pid) {
             if ($map["pid"] == $pid) {
                 $project = $name;
             }
         }
-
 
         self::acceptanceEmail($user, $project, $map['role']);
 
@@ -213,16 +214,25 @@ class AdminController extends AppController {
     }
 
     public function acceptanceEmail($user, $project, $role) {
+        $Users = new UsersController;
+        $adminEmails = $Users->getAdmins($project);
+
         $to = $user['email'];
         $subject = "ARCS Account Approval";
         $login_url = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'#loginModal/';
 
         $txt = '';
-        $txt .= "<p>Hello " . $user['name'] . ",</p>";
-        $txt .= "<p>Your account registration has been approved!</p>";
-        $txt .= "<p>You can now access the $project project as '$role'.</p>";
-        $txt .= "<p>Follow this link to sign in to your new account.</p>";
-        $txt .= "<p><a href='" . $login_url . "'>" . $login_url . "</a>\r\n";
+        $txt .= "<p>Hi there,</p>";
+        $txt .= "<p>An ARCS administrator approved your account.</p>";
+        $txt .= "<p>You should be good to go!</p>";
+        $txt .= "<p>If you have any questions at all, please contact us:</p>";
+        foreach ($adminEmails as $email) {
+            $txt .= $email."<br>";
+        }
+        $txt .= '<br>';
+        $txt .= "<p>ARCS was developed by Michigan State University's MATRIX: ";
+        $txt .= "The Center for Digital Humanities & Social Sciences with support ";
+        $txt .= "from the National Endowment for the Humanities<p>";
 
         $headers = '';
         $headers .= "MIME-Version: 1.0\r\n";

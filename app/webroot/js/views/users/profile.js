@@ -329,8 +329,6 @@
           id: info.id
         },
         success: function(udata) {
-            console.log('log data');
-            console.log(udata);
           activity.push({
             time: udata['last_login'],
             time_string: udata['time_string'],
@@ -490,7 +488,6 @@
           badgeNum = parseInt((collectionsMade-10) / 10) % 4 + 1;
           $("#achievements-tab").append('<div class="badgeDiv"><span>'+collectionsMade+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/collections created'+badgeNum+'.png"><h3>Collections Created</h3><p>Achievement Description</p></div>');
         }
-        console.log('profile badge');
         if( $('.badgeImg').length == 0 ){
           $("#achievements-tab").append('<h3>This user hasn\'t earned any achievements yet</h3>');
         }

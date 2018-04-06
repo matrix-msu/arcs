@@ -89,7 +89,7 @@ class UsersController extends AppController
         'conditions' => array(
           'Mapping.role' => 'Admin',
           'Mapping.pid'  => $pid,
-            'Mapping.status' => 'confirmed'
+          'Mapping.status' => 'confirmed'
         )
       ));
 
@@ -103,7 +103,7 @@ class UsersController extends AppController
 
       // push the emails to an array
       foreach ($res as $key => $value) {
-        array_push($mapping, $value['email']);
+        array_push($mapping, $value['User']['email']);
       }
       // return the admin emails
       return $mapping;

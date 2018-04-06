@@ -13,7 +13,7 @@
                 <th>Date</th>
             </tr>
         </thead>
-        <tbody><?php foreach($user_info['Activity'] as $a): ?>
+        <tbody><?php foreach($user_info['Activity'] as $a):?>
               <tr>
                   <td>
                   <!-- TO DO: ADD THE CODE FOR DISPLAYING WHAT AN ACTIVITY CORRESPONDS TO -->

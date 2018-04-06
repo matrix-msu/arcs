@@ -200,7 +200,7 @@
 
 
 $(document).ready(function() {
-    $('#confirm-btn').on('click', function(){
+    $('#users').on('click', '#confirm-btn', function(){
         var userID = ($(this).data('id'));
         $.ajax({
             url: arcs.baseURL + 'admin/accept/'+userID,
