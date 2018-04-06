@@ -586,15 +586,13 @@ function myFunction() {
     var copyText = document.getElementById("myInput");
     copyText.select();
     document.execCommand("Copy");
-
-    var tooltip = document.getElementById("myTooltip");
-    tooltip.innerHTML = "Copied!";// + copyText.value;
+    $("#myTooltip").text("Copied!");// + copyText.value;
     $('#myInput').css('display', 'none');
 }
 
 function outFunc() {
-    var tooltip = document.getElementById("myTooltip");
-    tooltip.innerHTML = "Copy to clipboard";
+    //var tooltip = document.getElementById("myTooltip");
+    //$("#myTooltip").text("Copy to clipboard");
 }
 
 </script>

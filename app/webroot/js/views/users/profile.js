@@ -391,7 +391,6 @@
         });
         content = '';
         count = 0;
-        console.log('activigy build', activity);
         activity.forEach(function(a) {
           //var date, extra;
           //date = new Date(a['time']);
@@ -401,12 +400,7 @@
           var extra = '';
           var date = a['time_string'];
           if (a['type'] !== 'log') {
-            extra =    '<a href="' + arcs.baseURL + 'resource/' + a['kid'] + '">' +
-                        //  '<span class="name">' +
-                            a['name'] +
-                          // '</span>' +
-                       '</a>' +
-                     '<img>';
+             extra = '<img/>';
 
             (function(count){
               $.ajax({
@@ -419,6 +413,7 @@
                   var div;
                   if (!(count >= 15)) {
                     div = $('#activity-tab .cont')[count];
+                    console.log(result);
                     $(div).find('img').attr('src', result['thumb']);
                     if (result['Title'] != null) {
                       $(div).find('span.name').html(result['Title']);
@@ -435,10 +430,15 @@
           if (!(count >= 15)) {
             content += '<div class=\'cont\'>' +
                 '<p><span class=\'time\'>' + date + '</span>' +
-                    '<span class=\'' + a['type'] + '\'></span>' +
-                    '<span class=\'text\'>' + a['text'] + '</span>' +
-                    extra +
-                '</p></div>';
+                    '<span class=\'' + a['type'] + '\'></span>';
+                    if (a['type'] !== 'log'){
+                      content+='<a href="' + arcs.baseURL + 'resource/' + a['kid'] + '"><span class=\'text\' title="'+ a['name']+'">' + a['text'] + '</span></a>'; 
+                    }
+                    else{
+                      content+='<span class=\'text\'>' + a['text'] + '</span>';
+                    }
+                    
+                    content += extra +'</p></div>';
           }
           count++;
         });

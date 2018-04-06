@@ -399,8 +399,8 @@ $controlDisplayNames = array(
 //                                $link .= '<button class="js-textareacopybtn" style="vertical-align:top;">Copy Url</button>
 //                                            <textarea style="visibility:hidden;" class="js-copytextarea">'.$url.'</textarea>';
                                 $link .= '<input type="text" style="display:none;" value="'.$url.'" id="myInput">
-                                        <div class="tooltip" style="opacity:1;">
-                                            <button onclick="myFunction()" onmouseout="outFunc()">
+                                        <div class="tooltip" title="Copy to Clipboard" style="opacity:1;">
+                                            <button id="myTooltip" onclick="myFunction()" onmouseout="outFunc()">
                                                   Copy link
                                               </button>
                                         </div>';
