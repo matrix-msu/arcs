@@ -84,7 +84,6 @@ class SearchController extends AppController {
      * Display the search page
      */
     public function search($project=null, $query=null) {
-        //echo $project;die;
         if($project === null) { // If no project, throw exception to give error page without showing users the php errors
             parent::verifyGlobals('explode');
         }
@@ -134,19 +133,13 @@ class SearchController extends AppController {
           echo json_encode($results);
 
         } else {
-            //echo 'in simple single project';
           $preFilter = $this->getResourcesFromKeyword($project, $query);
           // Kora Search
           $keySearch = new Keyword_Search($preFilter);
           $keySearch->execute($query,$project);
-          //echo 'finished execute';die;
           $results = $keySearch->getResultsAsArray();
 
-//            echo 'before';
-//            echo json_encode($results);
-//            die;
           ResourcesController::filterByPermission($username, $results['results']);
-            //echo 'after';
 
           echo json_encode($results);
         }
@@ -342,36 +335,39 @@ class SearchController extends AppController {
 
 
                 $page2 = array();
-                if( $resource_type == 'Field journal' ) {
-                    $temp_array['resource-type'] = $resource_type;
-                    $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
-                        "Scan_Number", "=", "1");
-                        // TODO: make this work
-                    $page2 = json_decode($kora->search(), true);
-                }
-                // echo "page2";
-                // print_r($page2);die;
+                $temp_array['resource-type'] = $resource_type;
+                $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
+                    "Scan_Number", "=", "1");
+                    // TODO: make this work
+                $page2 = json_decode($kora->search(), true);
+
                 if( $page2 == array() ){
                     $kora->add_clause("Resource_Associator", "=", $temp_kid);
                     $page2 = json_decode($kora->search(), true);
                 };
 
-                $tempPagesArray = array();
-                foreach ($page2 as $kid => $value) {
-                    if( $value['Scan_Number'] == '1' ){
-                        $tempPagesArray[$kid] = $value;
-                    }
+                if (count($page2) > 1) {
+                  $tempPagesArray = array();
+                  foreach ($page2 as $kid => $value) {
+                      if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
+                          $tempPagesArray[$kid] = $value;
+                      }
+                  }
+                  $page2 = $tempPagesArray;
                 }
-                $page2 = $tempPagesArray;
+                if (!empty($page2)) {
+                  $page2 = array_pop($page2);
+                }
+
+
 
 
                 //$page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results
                 $picture_url = '';
-
                 if (isset(array_values($page2)[0])) {
-                    $picture_url = array_values($page2)[0]['Image_Upload']['localName'];
-                    $picture_kid = array_values($page2)[0]['kid'];
+                    $picture_url = $page2['Image_Upload']['localName'];
+                    $picture_kid = $page2['kid'];
                 }
                 //Decide if there is a picture..
                 if( !empty($picture_url) ){

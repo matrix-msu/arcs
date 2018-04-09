@@ -407,6 +407,10 @@ $(document).ready(function() {
         });
     }
 
+    if (typeof(multiInfo) == 'undefined') {
+        return; 
+    }
+
     if (multiInfo !== false) {
         $.ajax({
             url: arcs.baseURL + "view/" + multiInfo,

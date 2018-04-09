@@ -652,30 +652,40 @@ class ResourcesController extends AppController {
             //get pages
             $fields = array('Image_Upload','Resource_Associator','Scan_Number');
             $kora = new Advanced_Search($pid, $pageSid, $fields);
-            if( $resource_type == 'Field journal' ) {
-                $kora->add_double_clause("Resource_Associator", "IN", $rKids,
-                    "Scan_Number", "=", "1");
-            }else {
-                $kora->add_clause("Resource_Associator", "IN", $rKids);
-            }
+
+            $allPages = array();
+
+            $temp_array['resource-type'] = $resource_type;
+            $kora->add_double_clause("Resource_Associator", "IN", $rKids,
+                "Scan_Number", "=", "1");
+                // TODO: make this work
             $allPages = json_decode($kora->search(), true);
 
-            //echo json_encode(array($allPages, $results));die;
+            if( $allPages == array() ){
+                $kora->add_clause("Resource_Associator", "IN", $rKids);
+                $allPages = json_decode($kora->search(), true);
+            };
+
             //link in the pages to the resources
             foreach( $allPages as $page ){
                 $thumb = $page['Image_Upload']['localName'];
                 $resourceAssociator = $page['Resource_Associator'][0];
-                if (isset($results[$resourceAssociator])) {
-                    $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
+                if (isset($results[$resourceAssociator]) && isset($page['Scan_Number'])) {
+                    if ($page['Scan_Number'] == '1') {
+                        $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
+                    }
+                } elseif (isset($results[$resourceAssociator]) && !isset($page['Scan_Number'])) {
+                      $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
                 }
             }
-
             //take care of resources without pages and data formatting
             foreach( $results as $key => $v ){
                 if( !isset($v['thumb']) ) {
                     $results[$key]['thumb'] = $this->smallThumb('');
                 }
-                $results[$key]['Title'] = $v['Resource_Identifier'];
+                if( isset($v['Resource_Identifier']) ) {
+                    $results[$key]['Title'] = $v['Resource_Identifier'];
+                }
             }
 
             $results = ['filters' => [], 'indicators' => $indicators, 'results' => $results, 'total'=>count($results)];
@@ -692,8 +702,11 @@ class ResourcesController extends AppController {
             foreach ($results['results'] as $key => $value) {
                 $results['results'][$key]['Title'] = $value['Page_Identifier'];
                 $results['results'][$key]['orphan'] = true;
-                if (is_array($value['Image_Upload'])) {
+                if (isset($value['Image_Upload']['localName']) && is_array($value['Image_Upload'])) {
                     $results['results'][$key]['thumb'] = $this->smallThumb($value['Image_Upload']['localName'], $value['kid']);
+                }
+                else{
+                    $results['results'][$key]['thumb'] = $this->smallThumb("");
                 }
                 $results['indicators'][$key] = array(
                   "hasFlags"=>false,
@@ -846,7 +859,6 @@ class ResourcesController extends AppController {
 
             //get project array
             $project_array = $this->getProject($project_kid);
-            //echo json_encode($project_array);die;
             $this->pushToArray($project_array, $projectsArray);
 
             //get pages and add to resource array
@@ -925,8 +937,6 @@ class ResourcesController extends AppController {
                     $pageThingKid = $p['kid'];
                 }
                 $p = AppController::smallThumb($p, $pageThingKid);
-                echo "thereererere";
-                die;
                 $resources[$kid]['thumbsrc'] = $p;
                 foreach ($r['page'] as $key => $page) {
                     $img = isset($page['Image_Upload']['localName']) ? $page['Image_Upload']['localName'] : "";
