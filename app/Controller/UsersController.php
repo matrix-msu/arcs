@@ -716,6 +716,11 @@ class UsersController extends AppController
             } else {
                 /* Logs user in */
                 $user = $this->User->findByRef($this->request->data['User']['username']);
+                if (!isset($user['User'])) {
+                    $this->Session->setFlash("Username not found.", 'flash_error');
+                    $this->redirect('/');
+                }
+
                 if($user['User']['status'] == 'active'){
                         if ($this->Auth->login()) {
                                 $this->User->id = $user['User']['id'];
