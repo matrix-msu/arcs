@@ -134,7 +134,14 @@
 						$resourceBlue = ' btn-blue';
 						$pKid = '/temp';
 					}else{ //everything else
-						$pKid = $this->request->params['pass'][0];
+						// echo "im hererererere";
+						// print_r($this->request->params);die;
+						if( isset($this->request->params['pass'][0]) ){
+	                    	$pKid = $this->request->params['pass'][0];
+	                    }else {
+	                    	$pKid = '';
+	                    }
+
 						if( $pKid === 'resources' ){
 							$pKid = $this->request->params['pass'][1];
 						}

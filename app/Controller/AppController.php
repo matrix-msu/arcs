@@ -20,8 +20,13 @@ class AppController extends Controller
     public $uses = array('Job');
     public $components = array(
         'Auth' => array(
+            'loginAction' => array(
+                'controller' => 'users',
+                'action' => 'special_login'
+            ),
             'authenticate' => array('Form'),
-            'authError' => "Sorry, you'll need to login to do that."
+            //'authError' => "Sorry, you'll need to login to do that.",
+            'authError' => "",
         ),
         'Session',
         'RequestHandler',
