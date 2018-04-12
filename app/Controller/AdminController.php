@@ -153,14 +153,22 @@ class AdminController extends AppController {
 
         $project_users = $this->Mapping->find('list', array(
             'fields' => array(
+
+
+                'Mapping.status',
+                'Mapping.role',
                 'Mapping.id_user',
-                'Mapping.role'
             ),
             'conditions' => array(
                     'Mapping.pid' => $pid
                 ),
             )
         );
+        foreach( $project_users as $id => $info ){
+            $status = key($info);
+            $role = $info[$status];
+            $project_users[$id] = array( 'role'=> $role, 'status' => $status );
+        }
 
         $mappingUserIds = array_keys($project_users);
         $userReturn = $this->User->find('all', array(
@@ -171,7 +179,8 @@ class AdminController extends AppController {
         ));
 
         foreach ($userReturn as $key => $user) {
-            $userReturn[$key]['User']['role'] = $project_users[$user['User']['id']];
+            $userReturn[$key]['User']['role'] = $project_users[$user['User']['id']]['role'];
+            $userReturn[$key]['User']['status'] = $project_users[$user['User']['id']]['status'];
         }
 
 
@@ -182,7 +191,6 @@ class AdminController extends AppController {
             $cleanedReturn[$i]['profilePic'] = parent::checkForProfilePicture($cleanedReturn[$i]['username'], $cleanedReturn[$i]['email']);
             $i++;
         }
-
         $this->set('users', $cleanedReturn);
     }
 
