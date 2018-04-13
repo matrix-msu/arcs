@@ -476,7 +476,7 @@ function annotationPrep() {
             return;
         }
         $(".annotateSearch ").hide()
-        var pKid = $('#PageImage').attr('src').split('/').pop();
+        var pKid = $('.selectedCurrentPage').find('img').attr('id');
         pid = getPidFromKid(pKid); //defined in bootstrap.php
         result_ids = [];
         current_offset = offset;
@@ -565,15 +565,15 @@ function annotationPrep() {
         var q = Array();
 
         $.each(data, function (key, value) {
-            if (value['Resource Identifier'] === undefined) {
+            if (value['Resource_Identifier'] === undefined) {
                 //skip pages without a resource Identifier
                 return;
             }
 
-            if (result_ids.indexOf(value.kid) == -1 && value['Resource Identifier'] != "") {
+            if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
                 result_ids.push(value.kid);
-                $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
-                q.push(['Resource Identifier', '=', value['Resource Identifier']]);
+                $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'].replace(/\./g, '-') + "'></div>");
+                q.push(['Resource_Identifier', '=', value['Resource_Identifier']]);
             }
         });
         return q
@@ -588,17 +588,17 @@ function annotationPrep() {
 
             if (scheme == "resource") {
                 $.each(data, function (key, value) {
-                    if (value['Resource Identifier'] === undefined) {
+                    if (value['Resource_Identifier'] === undefined) {
                         //skip pages without a resource Identifier
                         return;
                     }
-                    if (result_ids.indexOf(value.kid) == -1 && value['Resource Identifier'] != "") {
+                    if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
                         result_ids.push(value.kid);
 
-                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
-                        q.push(['Resource Identifier', '=', value['Resource Identifier']]);
+                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'].replace(/\./g, '-') + "'></div>");
+                        q.push(['Resource_Identifier', '=', value['Resource_Identifier']]);
 
-                        resource_info[value['Resource Identifier']] = {
+                        resource_info[value['Resource_Identifier']] = {
                             title: "Resource Title: " + value.Title,
                             scheme: "Relevant Scheme: Resource"
                         }
@@ -607,15 +607,15 @@ function annotationPrep() {
             }
             else if (scheme == "subject") {
                 $.each(data, function (key, value) {
-                    if (result_ids.indexOf(value.kid) == -1 && value['Pages Associator'] != "") {
+                    if (result_ids.indexOf(value.kid) == -1 && value['Pages_Associator'] != "") {
                         result_ids.push(value.kid);
-                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource Identifier'].replace(/\./g, '-') + "'></div>");
-                        $.each(value['Pages Associator'], function (i, page) {
+                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'].replace(/\./g, '-') + "'></div>");
+                        $.each(value['Pages_Associator'], function (i, page) {
                             q.push(['kid', 'like', page]);
                         });
 
-                        resource_info[value['Resource Identifier']] = {
-                            title: "Subject Description: " + value['Artifact - Structure Description'],
+                        resource_info[value['Resource_Identifier']] = {
+                            title: "Subject Description: " + value['Artifact_-_Structure_Description'],
                             scheme: "Relevant Scheme: Subject of Observation"
                         }
                     }
@@ -624,20 +624,26 @@ function annotationPrep() {
             index = 0;
             var counter = 0;
 
+            console.log('before each')
+            console.log('mapping', mapping);
+
             //Get related pages
             $.each(data, function (kid,v) {
+                console.log('each loop', v)
 
                 var tempPid = pid;
                 // could not find mapping
-                if (mapping[v['Resource Associator']] === undefined) {
+                if ( !('Resource_Associator' in v) || mapping[v['Resource_Associator'][0]] === undefined) {
+                    console.log('returned')
                     return;
                 }
 
                 if (index >= current_offset && index < current_offset + results_per_page) {
-                    $("#" + v['Resource Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                    console.log('inside page build')
+                    $("#" + v['Resource_Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
 					var page_sid = getSidFromKid(v.kid);
-                    var image = THUMBNAIL_URL + 'smallThumbs/' + v['Image Upload'].localName;
+                    var image = THUMBNAIL_URL + 'smallThumbs/' + v['Image_Upload'].localName;
                     var pageDisplay = $(".resultsContainer").find("#" + v.kid);
                     if (image === "") {
                         pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
@@ -651,8 +657,8 @@ function annotationPrep() {
                      Resource.Title
                      Page.Page Indentifier
                      */
-                    var ResourceTitle = mapping[v['Resource Associator']].title || "No Title"
-                    var surveyTitle = mapping[v['Resource Associator']].survey || "No Survey Name"
+                    var ResourceTitle = mapping[v['Resource_Associator'][0]].title || "No Title"
+                    var surveyTitle = mapping[v['Resource_Associator'][0]].survey || "No Survey Name"
                     pageDisplay.append(
                         "<div class='pageInfo'>" +
                         "<p>" + surveyTitle + "</p>" +
@@ -683,8 +689,8 @@ function annotationPrep() {
                             annotateData.page_kid = kid;
                             annotateData.resource_kid = resourceKid;
                             annotateData.resource_name = resourceIdentifier;
-                            annotateData.relation_resource_name = v['Resource Identifier'];
-                            annotateData.relation_resource_kid = v['Resource Associator'][0];
+                            annotateData.relation_resource_name = v['Resource_Identifier'];
+                            annotateData.relation_resource_kid = v['Resource_Associator'][0];
                             annotateData.relation_page_kid = v.kid;
                         }
 

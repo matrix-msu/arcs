@@ -608,11 +608,12 @@ class SearchController extends AppController {
             $isAnnotations = true;
             @$this->request->data = $data;
         }
+
         //$options = $this->parseParams();
         $this->autoRender = false;
         $pName = parent::convertKIDtoProjectName($this->request->data['pid']);
-        $pid = parent::getPIDFromProjectName($pName);
 
+        $pid = parent::getPIDFromProjectName($pName);
         if( $this->request->data['sid'] == 'resource' ){
             $sid = parent::getResourceSIDFromProjectName($pName);
         }elseif( $this->request->data['sid'] == 'subject' ){
@@ -626,7 +627,6 @@ class SearchController extends AppController {
         foreach ($this->request->data['q'] as $q) {
             $kora->add_clause($q[0], $q[1], $q[2]);
         }
-
         $results = $kora->search();
 
         // Get the Resource Type
@@ -643,9 +643,14 @@ class SearchController extends AppController {
                $tempRes = (array)json_decode($results, true);
                if( $this->request->data['sid'] == 'page' ) {
                    foreach ($tempRes as $key => $value) {
-                       $localName = $tempRes[$key]['Image_Upload']['localName'];
+                       $localName = '';
+                       if( isset($tempRes[$key]['Image_Upload']) && isset($tempRes[$key]['Image_Upload']['localName']) ){
+                           $localName = $tempRes[$key]['Image_Upload']['localName'];
+                       }
+
                        //$localName = $tempRes[$key]->{'Image Upload'}->localName;
-                       $tempRes[$key]['constructed_image'] = KORA_FILES_URI.$pid.'/'. $pageSid . '/'.$localName;
+                       //$tempRes[$key]['constructed_image'] = KORA_FILES_URI.$pid.'/'. $pageSid . '/'.$localName;
+                       $tempRes[$key]['constructed_image'] = $this->smallThumb($localName, $key);
                    }
                }
                $tempRes2 = json_decode($kora->return_json());
