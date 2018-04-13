@@ -7092,7 +7092,7 @@ h4 {
   height: 20px;
 }
 .alert {
-  margin-top: -60px;
+  margin: -60px auto 0 auto;
   border: 0;
   color: #0094BC;
   line-height: 2;

@@ -1014,7 +1014,7 @@ class ResourcesController extends AppController {
         } catch (Exception $e) {
             //throw new NotFoundException("Project \"$project\" was not found!");
         }
-                $pid = parent::getPIDFromProjectName($project);
+        $pid = parent::getPIDFromProjectName($project);
 
         $sid = parent::getProjectSIDFromProjectName($project);
         $names = array('Country',

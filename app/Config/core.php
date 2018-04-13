@@ -20,8 +20,8 @@
  */
  // echo phpversion();       // USE THIS TO CHECK THE PHP VERSION
  // die;
-// echo Configure::version();   // USE THIS TO CHECK THE CAKE VERSION
-// die;
+ // echo Configure::version();   // USE THIS TO CHECK THE CAKE VERSION
+ // die;
 /**
  * CakePHP Debug Level:
  *

@@ -13,6 +13,6 @@ class Mapping extends AppModel {
      */
     function getToken() {
         App::uses('String', 'Utility');
-        return String::uuid();
+        return CakeText::uuid();
     }
 }
