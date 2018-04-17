@@ -1,22 +1,294 @@
 window.JST = window.JST || {};
-JST["admin/flags"] = "<table class=\"table table-striped table-bordered\">"+
-    "<tr><th>Reason</th>"+
-    "<th>Explanation</th>"+
-    "<th>Status</th><th>Flagger</th><th>Created</th><th>Actions</th></tr><tr>"+
-    "<% _.each(flags, function(f, i) { %>  "+
-        "<td><%= f.reason %></td>"+
-        "<td><%= f.explanation %></td>"+
-        "<td class='flag-status'><%= f.status %></td>"+
-        "<td><%= f.user_username %></td>"+
-        "<td><%= f.created %></td>"+
-        "<td>"+
-            "<button class=\"delete-flag-btn btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
-            "<button class=\"edit-flag-btn btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Edit</button>"+
-        "</td>"+
-    "</tr><% }) %>"+
-    "</table>";
 
-JST["admin/metadata_edits"] = "<table class=\"table table-striped table-bordered\">"+
+JST["admin/users"] = 
+    "<div class=\"users-head\">"+ 
+        "<p class=\"name\">NAME</p>"+
+        "<p class=\"username\">USERNAME</p>"+
+        "<p class=\"joined\">JOINED</p>"+
+        "<input class=\"search admin-search users\" placeholder='Search for a user here'>"+
+    "</div>"+
+    "<div class=\"users-head pending\">"+
+        "<p class=\"decline-sel\">Decline Selected</p>"+
+        "<p class=\"accept-sel\">Accept Selected</p>"+
+        "<p class=\"select-all\">Select All</p>"+
+    "</div>"+
+	"<div class=\"admin-rows-wrap\">"+
+        "<div class=\"admin-rows-content users all-users\">"+
+            "<% _.each(users, function(f, i) { %>  "+
+                "<% if( f.status != 'unconfirmed') { %>"+
+                    "<div class=\"admin-row\">"+
+                        "<img style='height:45px;width:45px' src='<%= f.profilePic %>' />"+
+                        "<p class=\"name\"><%= f.name %></p>"+
+                        "<p class=\"username\"><%= f.username %></p>"+
+                        "<p class=\"joined\"><%= f.created %></p>"+
+                        "<a class=\"edit\" href=\"<%= arcs.baseURL + 'user/'+ f.username %>\">View / Edit Profile</a>"+
+                        "<p id=\"delete-btn\" class=\"delete\" data-id=\"<%= f.id %>\">Delete</p>"+
+                    "</div>"+
+                "<% } %>"+
+            "<% }) %>"+
+        "</div>"+
+		"<div class=\"admin-rows-content users pending-users\">"+
+            "<% _.each(users, function(f, i) { %>"+
+                "<% if( f.status == 'unconfirmed') { %>"+
+                    "<div class=\"admin-row\">"+
+                        "<div class='bullet'></div>"+
+                        "<p class=\"name\"><%= f.username %></p>"+
+                        "<p class=\"email\"><%= f.email %></p>"+
+                        "<p class=\"date\"><%= f.created %></p>"+
+                        "<p class=\"project\">projname</p>"+
+                        "<p class=\"role\"><%= f.role %></p>"+
+                        "<p id=\"confirm-btn\" class=\"accept\" data-id=\"<%= f.id %>\">Accept</p>"+
+                        "<p id=\"delete-btn\" class=\"decline\" data-id=\"<%= f.id %>\">Decline</p>"+
+                    "</div>"+
+                "<% } %>"+
+            "<% }) %>"+
+        "</div>"+
+        "<div class=\"create-user\">"+
+            "<form action=\"./filler.txt\">"+
+                "<label>First name <input type=\"text\" name=\"fname\"></label>"+
+                "<label>"+
+					"Last name"+
+					"<input type=\"text\" name=\"lname\">"+
+				"</label>"+
+				"<label id=\"profileImage\">"+
+					"Profile Image"+
+					"<input type=\"file\" name=\"profileImageDrop\" id=\"profileImageDrop\">"+
+					"<label for=\"profileImageDrop\"><strong>Select</strong> or Drop an Image</label>"+
+				"</label><br>"+
+                "<label style='width: 448px'>User Name <input type=\"text\" name=\"uname\" style='width: 448px'></label><br>"+
+                "<label style='width: 448px'>Email <input type=\"text\" name=\"email\" style='width: 448px'></label><br>"+
+                "<label>Password <input type=\"text\" name=\"pw\"></label>"+
+                "<label>Repeat Password <input type=\"text\" name=\"rpw\"></label><br>"+
+                "<p class='pnr'>Projects & Roles</p>"+
+                "<div class=\"pnr-container create\">"+
+                    "<div class=\"pnr-single\">"+
+                        "<label>Project "+
+                            "<select name=\"project\">"+
+                                "<option style='display:none;' selected>Select a project</option>"+
+                                "<option>Project 1</option>"+
+                                "<option>Project 2</option>"+
+                                "<option>Project 3</option>"+
+                            "</select></label>"+
+                        "<label>Role "+
+                            "<select name=\"role\">"+
+                                "<option style='display:none;' selected>Select a role</option>"+
+                                "<option>Researcher</option>"+
+                                "<option>Moderator</option>"+
+                                "<option>Admin</option>"+
+                            "</select></label>"+
+                        "<p class='removePR'>Remove This Project/Role</p><br>"+
+                    "</div>"+
+                "</div>"+
+                "<p class='anotherPR create'>Add User to Another Project</p>"+
+                "<input type=\"submit\" value=\"Create  User\">"+
+            "</form>"+
+        "</div>"+
+		"<div class=\"invite-user\">"+
+				"<form action=\"./filler.txt\">"+
+					"<label>First name <input type=\"text\" name=\"fname\"></label>"+
+					"<label>"+
+						"Last name"+
+						"<input type=\"text\" name=\"lname\">"+
+					"</label>"+
+					"<label id=\"instruction\">"+
+						"Provide an email address along with the invited user’s role and assigned projects and we’ll send them a link which will allow them to create an account."+
+					"</label><br>"+
+					"<label style='width: 448px'>Email <input type=\"text\" name=\"email\" style='width: 448px'></label><br>"+
+					"<p class='pnr'>Projects & Roles</p>"+
+					"<div class=\"pnr-container invite\">"+
+                        "<div class=\"pnr-single\">"+
+                            "<label>Project "+
+                                "<select name=\"project\">"+
+                                    "<option style='display:none;' selected>Select a project</option>"+
+                                    "<option>Project 1</option>"+
+                                    "<option>Project 2</option>"+
+                                    "<option>Project 3</option>"+
+                                "</select></label>"+
+                            "<label>Role "+
+                                "<select name=\"role\">"+
+                                    "<option style='display:none;' selected>Select a role</option>"+
+                                    "<option>Researcher</option>"+
+                                    "<option>Moderator</option>"+
+                                    "<option>Admin</option>"+
+                                "</select></label>"+
+                            "<p class='removePR'>Remove This Project/Role</p><br>"+
+                        "</div>"+
+                    "</div>"+
+					"<p class='anotherPR invite'>Add User to Another Project</p>"+
+					"<input type=\"submit\" value=\"Invite User\">"+
+				"</form>"+
+			"</div>"+
+		"</div>"+
+	"</div>"/*+
+    "<div class=\"admin-pagination users\">"+
+        "<div class=\"ipp\">"+
+            "<div class=\"menu\">"+
+                "<p class=\"curr\">25 ITEMS PER PAGE</p>"+
+                "<p>50 ITEMS PER PAGE</p>"+
+                "<p>75 ITEMS PER PAGE</p>"+
+                "<p>DISPLAY ALL</p>"+
+            "</div>"+
+    
+            "<div class=\"drop\">"+
+                "<p class=\"per\">25 ITEMS PER PAGE</p>"+
+                "<span class=\"chevron\"></span>"+
+            "</div>"+
+        "</div>"+
+    
+		"<div class=\"page-pick\">"+
+			"<div class='arrow-wrap left'><span class=\"chevron left\"></span></div>"+
+			"<div class=\"by-num\"></div>"+
+			"<div class='arrow-wrap right'><span class=\"chevron right\"></span></div>"+
+		"</div>"+
+	"</div>"*/
+	/*+
+	"<table class=\"table table-striped table-bordered\">"+
+    "<tr>" +
+      "<th>Picture</th>"+
+      "<th>Name</th>"+
+      "<th>Username</th>"+
+      "<th>Email</th>"+
+      "<th>Project Roles</th>"+
+      "<th>Status</th>"+
+      "<th>Actions</th></tr><tr>"+
+    "<% _.each(users, function(f, i) { %>  "+
+        "<td><img style='height:100px;width:100px' src='<%= f.profilePic %>' /></td>"+
+        "<td><%= f.name %></td>"+
+        "<td><%= f.username %></td>"+
+        "<td><%= f.email %></td>"+
+        "<td><%= f.role %></td>"+
+        "<td><%= f.status %></td>"+
+        "<td>"+
+            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
+
+            "<% if( f.status == 'active' ){ %>  "+
+                "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Edit</button>"+
+            "<% }else{ %>"+
+                "<button id=\"confirm-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Confirm</button>"+
+            "<% } %>"+
+        "</td>"+
+    "</tr><% }) %></table>"*/;
+
+JST["admin/activity"] = 
+    "<div class=\"admin-rows-wrap\">"+
+        "<div class=\"admin-rows-content activity\">"+
+            "<% _.each(activity, function(f, i) { %>  "+
+                "<div class=\"admin-row activity\">"+
+                    "<img style='height:45px;width:45px' src='<%= f.profilePic %>' />"+
+                    "<p class=\"username\"><%= f.name %></p>"+
+                    "<p class=\"date\"><%= f.date %></p>"+
+                    "<p class=\"type\"><%= f.type %></p>"+
+                    "<a class=\"link\" href=\"<%= arcs.baseURL + 'user/'+ f.username %>\">View User</a>"+
+                "</div>"+
+            "<% }) %>"+
+        "</div>"+
+    "</div>"+
+	"<div class=\"admin-pagination\">"+
+        "<div class=\"ipp\">"+
+            "<div class=\"menu\">"+
+                "<p id=\"twenty-five-per-page\" class=\"curr\">25 ITEMS PER PAGE</p>"+
+                "<p>50 ITEMS PER PAGE</p>"+
+                "<p>75 ITEMS PER PAGE</p>"+
+                "<p>DISPLAY ALL</p>"+
+            "</div>"+
+            "<div class=\"drop\">"+
+                "<p class=\"per\">25 ITEMS PER PAGE</p>"+
+                "<span class=\"chevron\"></span>"+
+            "</div>"+
+        "</div>"+
+		"<div class=\"page-pick\">"+
+			"<div class='arrow-wrap left'><span class=\"chevron left\"></span></div>"+
+			"<div class=\"by-num\"></div>"+
+			"<div class='arrow-wrap right'><span class=\"chevron right\"></span></div>"+
+		"</div>"+
+	"</div>";
+
+JST["admin/flags"] = 
+	"<div class=\"admin-rows-wrap\">"+
+		"<div class=\"admin-rows-content flag\">"+
+			"<% _.each(flags, function(f, i) { %>"+
+				"<div class=\"admin-row flag\">"+
+					"<p class=\"obj-name\"><%= f.resource_kid %></p>"+
+					"<a class=\"delete delete-flag-btn\" href=\"#\""+
+                                "data-id=\"<%= f.id %>\">Delete</a>"+
+					"<div class=\"status\" data-id=\"<%= f.id %>\">"+
+						"<p class=\"current\"><%= f.status %></p>"+
+						"<span class=\"chevron\"></span>"+
+					"<div class=\"pick-status\">"+
+						"<p class=\"pending\">pending</p>"+
+                        "<p class=\"unresolved\">unresolved</p>"+
+						"<p class=\"resolved\">resolved</p>"+
+					"</div>"+
+					"</div>"+
+					"<p class=\"out-rel\"><%= f.annotation_target %>: <%= f.reason %></p>"+
+					"<p class=\"flag-by\">"+
+						"Flagged by "+
+						"<a href=\"<%= arcs.baseURL + 'user/' + f.user_username %>\"><%= f.user_name %>: </a>"+
+						"<small><%= f.explanation %></small>"+
+					"</p>"+
+				"</div>"+
+			"<% }) %>"+
+		"</div>"+
+	"</div>"+
+	"<div class=\"admin-pagination\">"+
+        "<div class=\"ipp\">"+
+            "<div class=\"menu\">"+
+                "<p class=\"curr\">25 ITEMS PER PAGE</p>"+
+                "<p>50 ITEMS PER PAGE</p>"+
+                "<p>75 ITEMS PER PAGE</p>"+
+                "<p>DISPLAY ALL</p>"+
+            "</div>"+
+            "<div class=\"drop\">"+
+                "<p class=\"per\">25 ITEMS PER PAGE</p>"+
+                "<span class=\"chevron\"></span>"+
+            "</div>"+
+        "</div>"+
+		"<div class=\"page-pick\">"+
+			"<div class='arrow-wrap left'><span class=\"chevron left\"></span></div>"+
+			"<div class=\"by-num\"></div>"+
+			"<div class='arrow-wrap right'><span class=\"chevron right\"></span></div>"+
+		"</div>"+
+	"</div>";
+
+JST["admin/metadata_edits"] = 
+    "<div class=\"metadata-head\">"+ 
+        "<p class=\"resource-kid\">RESOURCE KID</p>"+
+        "<p class=\"username\">USERNAME</p>"+
+        "<p class=\"metadata-kid\">METADATA KID</p>"+
+        "<p class=\"field-name\">FIELD NAME</p>"+
+        "<p class=\"value-before\">OLD VALUE</p>"+
+        "<p class=\"new-value\">NEW VALUE</p>"+
+        "<input class=\"search admin-search meta\" placeholder='Search for a user'>"+
+    "</div>"+
+    "<div class=\"admin-rows-wrap\">"+
+        "<div class=\"admin-rows-content meta\">"+
+            "<% _.each(metadata_edits, function(f, i) { %>  "+
+                "<div class=\"admin-row meta\">"+
+                    "<p class=\"resource-kid\"><%= f.MetadataEdit.resource_kid %></p>"+
+                    "<p class=\"username\"><%= f.MetadataEdit.user_name %></p>"+
+                    "<p class=\"metadata-kid\"><%= f.MetadataEdit.metadata_kid %></p>"+
+                    "<p class=\"field-name\"><%= f.MetadataEdit.field_name %></p>"+
+                    "<p class=\"value-before\"><%= f.MetadataEdit.value_before %></p>"+
+                    "<p class=\"new-value\"><%= f.MetadataEdit.new_value %></p>"+
+                    "<div class=\"actions\">"+
+                        "<% if( f.MetadataEdit.rejected == 1 ){ %>"+
+                            "Rejected"+
+                        "<% }else if( f.MetadataEdit.approved == 1 ){ %>"+
+                            "Approved"+
+                        "<% }else{ %>"+
+                            "<a class=\"meta-delete delete-flag-btn\"" +
+                                "data-id=\"<%= f.MetadataEdit.id %>\"" +
+                                "data-email='<%= f.MetadataEdit.email %>'>Delete</a>"+
+                            "<a class=\"meta-approve approve-flag-btn\" " +
+                                "data-id=\"<%= f.MetadataEdit.id %>\">Approve</a>"+
+                        "<% } %>"+
+                    "</div>"+
+                "</div>"+
+            "<% }) %>"+
+        "</div>"+
+    "</div>"
+	/*    
+    "<table class=\"table table-striped table-bordered\">"+
     "<tr>" +
         "<th>Resource Kid</th>"+
         "<th>User Name</th>"+
@@ -47,51 +319,9 @@ JST["admin/metadata_edits"] = "<table class=\"table table-striped table-bordered
             "<% } %>"+
         "</td>"+
     "</tr><% }) %>"+
-    "</table>";
-
-JST["admin/activity"] = "<table class=\"table table-striped table-bordered\">"+
-    "<tr>" +
-        "<th>Picture</th>"+
-        "<th>Name</th>"+
-        "<th>Date</th>"+
-        "<th>Type</th>"+
-    "</tr><tr>"+
-    "<% _.each(activity, function(f, i) { %>  "+
-        "<td><img style='height:100px;width:100px' src='<%= f.profilePic %>' /></td>"+
-        "<td><%= f.name %></td>"+
-        "<td><%= f.date %></td>"+
-        "<td><%= f.type %></td>"+
-    "</tr><% }) %>"+
-    "</table>";
+    "</table>"*/;
 
 JST["admin/show_job"] = "<dl>  <dt>Job</dt>  <dd><%= name %></dd>  <dt>Status</dt>  <dd><%= status %></dd>  <dt>Created</dt>  <dd><%= created %></dd>  <dt>Lock</dt>  <dd><%= locked_at %></dd>  <dt>Data</dt>  <dd><pre><%= data %></pre></dd>  <dt>Error</dt>  <dd><pre><%= error %></pre></dd></dl>";
-JST["admin/users"] = "<table class=\"table table-striped table-bordered\">"+
-
-    "<tr>" +
-      "<th>Picture</th>"+
-      "<th>Name</th>"+
-      "<th>Username</th>"+
-      "<th>Email</th>"+
-      "<th>Project Roles</th>"+
-      "<th>Status</th>"+
-      "<th>Actions</th></tr><tr>"+
-    "<% _.each(users, function(f, i) { %>  "+
-        "<td><img style='height:100px;width:100px' src='<%= f.profilePic %>' /></td>"+
-        "<td><%= f.name %></td>"+
-        "<td><%= f.username %></td>"+
-        "<td><%= f.email %></td>"+
-        "<td><%= f.role %></td>"+
-        "<td><%= f.status %></td>"+
-        "<td>"+
-            "<button id=\"delete-btn\" class=\"btn btn-danger btn-mini \" data-id=\"<%= f.id %>\">Delete</button>"+
-
-            "<% if( f.status == 'active' ){ %>  "+
-                "<button id=\"edit-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Edit</button>"+
-            "<% }else{ %>"+
-                "<button id=\"confirm-btn\" class=\"btn btn-info btn-mini\" data-id=\"<%= f.id %>\">Confirm</button>"+
-            "<% } %>"+
-        "</td>"+
-    "</tr><% }) %></table>";
 
 JST["collections/list"] = "<% _.each(collections, function(c, i) { %>" +
     "<% if (i == -1) { %>  "+

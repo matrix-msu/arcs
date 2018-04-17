@@ -33,3 +33,94 @@
     })(Backbone.View);
 
 }).call(this);
+
+$(document).ready(function() {
+	$(document).on('click', function(e){
+		//sorting triggers
+		if ($('.sort-by-menu.activity p').is(e.target)){
+			if(!$(e.target).hasClass('active')){
+				$menu = $('.sort-by-menu');
+				if ($(e.target).hasClass('username')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.username').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.username');
+				} else if ($(e.target).hasClass('date')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.date').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortByDate();
+				} else if ($(e.target).hasClass('type')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.type').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.type');
+					reverseRows();
+				} else if ($(e.target).hasClass('ascending')) {
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					reverseRows(); // pagination.js
+				} else if ($(e.target).hasClass('descending')) {
+					$menu.find('.ascending').removeClass('active');
+					$menu.find('.descending').addClass('active');
+					reverseRows(); // pagination.js
+				}
+			}
+		} else if ($('.filter-menu p').is(e.target)){
+            if(!$(e.target).hasClass('active')){
+				$menu = $('.filter-menu');
+				if ($(e.target).hasClass('logins')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.logins').addClass('active');
+					filterBy('Logins', 'p.type');
+				} else if ($(e.target).hasClass('new-user')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.new-user').addClass('active');
+					filterBy('Create New User', 'p.type');
+				} else if ($(e.target).hasClass('new-annotation')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.new-annotation').addClass('active');
+					filterBy('Created New Annotation', 'p.type');
+				} else if ($(e.target).hasClass('new-flag')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.new-flag').addClass('active');
+					filterBy('Created New Flag', 'p.type');
+				} else if ($(e.target).hasClass('edited-metadata')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.edited-metadata').addClass('active');
+					filterBy('Edited Metadata', 'p.type');
+				} else if ($(e.target).hasClass('all-activity')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.all-activity').addClass('active');
+					filterBy('');
+				}
+                
+                $drop.removeClass('open');
+                $('.filter-by p.filter-by').text($(e.target).text());
+
+                $('.sort-by-menu p.cat.active').removeClass('active');
+                $('.sort-by-menu p.date').addClass('active');
+                $('.sort-by-menu p.descending').removeClass('active');
+                $('.sort-by-menu p.ascending').addClass('active');
+			}
+		}
+		
+	})
+	
+	//search trigger
+	$('.admin-search.activity').keyup(function(e){
+        search(this.value, 'p.username');
+        
+        $('.sort-by-menu p.cat.active').removeClass('active');
+        $('.sort-by-menu p.date').addClass('active');
+        $('.sort-by-menu p.descending').removeClass('active');
+        $('.sort-by-menu p.ascending').addClass('active');
+        
+        $('.filter-by p.filter-by').text('ALL ACTIVITY');
+        $('.filter-menu').find('.active').removeClass('active');
+        $('.filter-menu').find('.all-activity').addClass('active');
+	})
+})

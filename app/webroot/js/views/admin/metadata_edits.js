@@ -35,6 +35,117 @@
 }).call(this);
 
 $(document).ready(function() {
+    
+    $(document).on('click', function(e){
+		//sorting triggers
+		if ($('.sort-by-menu.meta p').is(e.target)){
+			if(!$(e.target).hasClass('active')){
+				$menu = $('.sort-by-menu');
+                if ($(e.target).hasClass('date')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.date').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortByDate();
+                } else if ($(e.target).hasClass('resource-kid')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.resource-kid').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.resource-kid');
+				} else if ($(e.target).hasClass('username')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.username').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.username');
+				} else if ($(e.target).hasClass('metadata-kid')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.metadata-kid').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortByDate('p.metadata-kid');
+                    reverseRows();
+				} else if ($(e.target).hasClass('field-name')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.field-name').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.field-name');
+                } else if ($(e.target).hasClass('old-value')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.old-value').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.value-before');
+                } else if ($(e.target).hasClass('new-value')) {
+					$menu.find('.cat.active').removeClass('active');
+					$menu.find('.new-value').addClass('active');
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					sortBy('p.new-value');
+				} else if ($(e.target).hasClass('ascending')) {
+					$menu.find('.descending').removeClass('active');
+					$menu.find('.ascending').addClass('active');
+					reverseRows(); // pagination.js
+				} else if ($(e.target).hasClass('descending')) {
+					$menu.find('.ascending').removeClass('active');
+					$menu.find('.descending').addClass('active');
+					reverseRows(); // pagination.js
+				}
+			}
+		} else if ($('.filter-menu.meta p').is(e.target)){
+            if(!$(e.target).hasClass('active')){
+				$menu = $('.filter-menu.meta');
+				if ($(e.target).hasClass('pending')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.pending').addClass('active');
+                    filterBy('');
+					filterOut('Approved', 'div.actions');
+                    filterOut('Rejected', 'div.actions');
+				} else if ($(e.target).hasClass('approved')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.approved').addClass('active');
+					filterBy('Approved', 'div.actions');
+				} else if ($(e.target).hasClass('rejected')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.rejected').addClass('active');
+					filterBy('Rejected', 'div.actions');
+				} else if ($(e.target).hasClass('all-edits')) {
+					$menu.find('.active').removeClass('active');
+					$menu.find('.all-edits').addClass('div.actions');
+					filterBy('');
+				}
+                
+                $drop.removeClass('open');
+                $('.filter-by p.filter-by').text($(e.target).text());
+
+                $('.sort-by-menu p.cat.active').removeClass('active');
+                $('.sort-by-menu p.date').addClass('active');
+                $('.sort-by-menu p.descending').removeClass('active');
+                $('.sort-by-menu p.ascending').addClass('active');
+			}
+		}
+		
+	})
+	
+	//search trigger
+	$('.admin-search.meta').keyup(function(e){
+        search(this.value, 'p.username');
+        
+        $('.sort-by-menu p.cat.active').removeClass('active');
+        $('.sort-by-menu p.date').addClass('active');
+        $('.sort-by-menu p.descending').removeClass('active');
+        $('.sort-by-menu p.ascending').addClass('active');
+        
+        $('.filter-by p.filter-by').text('ALL EDITS');
+        $('.filter-menu').find('.active').removeClass('active');
+        $('.filter-menu').find('.all-edits').addClass('active');
+	})
+    
+    
+    
+    
     $('#metadata_edits').on('click', '.delete-flag-btn', function(e){
         var flagID = ($(this).data('id'));
         $.ajax({
@@ -52,7 +163,26 @@ $(document).ready(function() {
             }
         });
     });
-
+    
+    $('#metadata_edits').on('click', '.approve-flag-btn', function(e){
+        //var updateTo = $(statusBox).find(" :selected").text();
+        var flagID = $(this).attr('data-id');
+        $.ajax({
+            url: arcs.baseURL + 'admin/editMetadata',
+            type: "POST",
+            data:  {
+                status: 'edit',
+                id: flagID,
+                api: true,
+                task: "approve"
+                //updateTo: updateTo
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    });
+/*
     $('#metadata_edits').on('click', '.edit-flag-btn', function(e){
         var oldSelect = $('.flag-select');
         if( $(oldSelect).length > 0 ){
@@ -83,4 +213,13 @@ $(document).ready(function() {
             }
         });
     });
+*/    
+    $('.admin-row').each( function() {
+        $text = $(this).find('.actions');
+        if( $text.html() == 'Approved') {
+            $text.css('color', 'red');
+        } else if ($text.html() == 'Rejected') {
+            $text.css('color', 'green');
+        }
+    })
 });

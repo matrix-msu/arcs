@@ -34,7 +34,190 @@
 
 }).call(this);
 
+//set color of current flag status
+//remove current status from pick-status drop down, show others
+function setStatus() {
+    $(this).find('.pick-status p').attr('style', 'display: block;');
+    $status = $(this).find('.status .current');
+    if ($status.html() == 'pending') {
+        $color = '#0094bc';
+        //$(this).find('.pending').attr('style', 'display: none');
+    } else if ($status.html() == 'unresolved') {
+        $color = '#e49a00';
+        //$(this).find('.unresolved').attr('style', 'display: none');
+    } else if ($status.html() == 'resolved') {
+        $color = '#00bc25';
+        //$(this).find('.resolved').attr('style', 'display: none');
+    }
+    $status.attr('style', 'color: ' + $color);
+    $status.parent().find('.chevron').attr('style', 'border-color: ' + $color);
+}
+
 $(document).ready(function() {
+    
+    $('.admin-row.flag').each(function(){		
+        setStatus.call($(this));
+	});
+    
+    //search trigger
+    $('.admin-search.flags').keyup(function(e){
+            search(this.value, 'p.flag-by a');
+
+            $('.sort-by-menu p.cat.active').removeClass('active');
+            $('.sort-by-menu p.date').addClass('active');
+            $('.sort-by-menu p.descending').removeClass('active');
+            $('.sort-by-menu p.ascending').addClass('active');
+
+            $('.filter-by p.filter-by').text('ALL FLAGS');
+            $('.filter-menu').find('.active').removeClass('active');
+            $('.filter-menu').find('.all-flags').addClass('active');
+    })
+    
+    $(document).on('click', function(e) {
+        
+        if($('.admin-header, .admin-header *').is(e.target)) {
+            //sorting triggers
+            if ($('.sort-by-menu.flags p').is(e.target)){
+                if(!$(e.target).hasClass('active')){
+                    $menu = $('.sort-by-menu');
+                    if ($(e.target).hasClass('date')) {
+                        $menu.find('.cat.active').removeClass('active');
+                        $menu.find('.date').addClass('active');
+                        $menu.find('.descending').removeClass('active');
+                        $menu.find('.ascending').addClass('active');
+                        sortByDate();
+                    } else if ($(e.target).hasClass('object')) {
+                        $menu.find('.cat.active').removeClass('active');
+                        $menu.find('.object').addClass('active');
+                        $menu.find('.descending').removeClass('active');
+                        $menu.find('.ascending').addClass('active');
+                        sortBy('p.obj-name');
+                    } else if ($(e.target).hasClass('relation')) {
+                        $menu.find('.cat.active').removeClass('active');
+                        $menu.find('.relation').addClass('active');
+                        $menu.find('.descending').removeClass('active');
+                        $menu.find('.ascending').addClass('active');
+                        sortBy('p.out-rel');
+                    } else if ($(e.target).hasClass('flagged-by')) {
+                        $menu.find('.cat.active').removeClass('active');
+                        $menu.find('.flagged-by').addClass('active');
+                        $menu.find('.descending').removeClass('active');
+                        $menu.find('.ascending').addClass('active');
+                        sortBy('p.flag-by a');
+                    } else if ($(e.target).hasClass('ascending')) {
+                        $menu.find('.descending').removeClass('active');
+                        $menu.find('.ascending').addClass('active');
+                        reverseRows(); // pagination.js
+                    } else if ($(e.target).hasClass('descending')) {
+                        $menu.find('.ascending').removeClass('active');
+                        $menu.find('.descending').addClass('active');
+                        reverseRows(); // pagination.js
+                    }
+                }
+            }
+            if ($('.sort-by').is(e.target)) {
+                $drop = $('.sort-by').first();
+
+                if ($drop.hasClass('open')) {
+                    $drop.removeClass('open');
+                } else {
+                    $('.drop').removeClass('open');
+                    $drop.addClass('open');
+                }
+            } else if ($('.filter-by').is(e.target)) {
+                $drop = $('.filter-by').first();
+
+                if ($drop.hasClass('open')) {
+                    $drop.removeClass('open');
+                } else {
+                    $('.drop').removeClass('open');
+                    $drop.addClass('open');
+                }
+            } else if ($('.filter-menu.flags p').is(e.target)){
+                if(!$(e.target).hasClass('active')){
+                    $menu = $('.filter-menu');
+                    if ($(e.target).hasClass('pending')) {
+                        $menu.find('.active').removeClass('active');
+                        $menu.find('.pending').addClass('active');
+                        filterBy('pending', 'p.current');
+                    } else if ($(e.target).hasClass('unresolved')) {
+                        $menu.find('.active').removeClass('active');
+                        $menu.find('.unresolved').addClass('active');
+                        filterBy('Unresolved', 'p.current');
+                    } else if ($(e.target).hasClass('resolved')) {
+                        $menu.find('.active').removeClass('active');
+                        $menu.find('.resolved').addClass('active');
+                        filterBy('resolved', 'p.current');
+                    } else if ($(e.target).hasClass('all-flags')) {
+                        $menu.find('.active').removeClass('active');
+                        $menu.find('.all-flags').addClass('active');
+                        filterBy('', 'p.current');
+                    }
+                    $drop.removeClass('open');
+                    $('.filter-by p.filter-by').text($(e.target).text());
+
+                    $('.sort-by-menu p.cat.active').removeClass('active');
+                    $('.sort-by-menu p.date').addClass('active');
+                    $('.sort-by-menu p.descending').removeClass('active');
+                    $('.sort-by-menu p.ascending').addClass('active');
+                }
+            } else if ($('.drop').hasClass('open')) {
+                $('.open').removeClass('open');
+            }
+        } else if($('.admin-row.flag .status, .admin-row.flag .status *').is(e.target)) {
+            //status interactions
+		    $status = $(e.target).closest('.status');  
+            
+            if ($('.admin-row.flag .status').hasClass('open')) {
+                var updateTo = '';
+                var flagID = $(e.target).closest('.status').attr('data-id');
+                console.log(flagID);
+                
+                if ($('.pending').is(e.target)){
+                    $status.find(".current").text("pending");
+                    updateTo = "pending";
+				} else if ($('.resolved').is(e.target)){
+                    $status.find(".current").text("resolved");
+                    updateTo = "resolved";
+				} else if ($('.unresolved').is(e.target)) {
+                    $status.find(".current").text("unresolved");
+                    updateTo = "unresolved";
+                }
+                
+                //close menu
+				$('.admin-row.flag .status').removeClass('open');
+                
+                //commmit status update
+                $.ajax({
+                    url: arcs.baseURL + 'admin/editFlags',
+                    type: "POST",
+                    data:  {
+                      status: 'edit',
+                      flagID: flagID,
+                      api: true,
+                      updateTo: updateTo
+                    },
+                    success: function (data) {
+                        //location.reload();
+                    }
+                });
+                
+                setStatus.call($(e.target).closest('.admin-row.flag'));
+                
+			} else {
+				$('.status').removeClass('open');
+				$status.addClass('open');
+			}
+		}
+    })
+
+	$('#admin-flags').on('click', function(e) {
+		if (!$('.status, .status p, .status span ').is(e.target) 
+                                && $('.status').hasClass('open')){
+			$('.status').removeClass('open');
+		}
+	});
+
     $('#flags').on('click', '.delete-flag-btn', function(e){
         var flagID = ($(this).data('id'));
         $.ajax({
@@ -50,7 +233,7 @@ $(document).ready(function() {
             }
         });
     });
-
+/*
     $('#flags').on('click', '.edit-flag-btn', function(e){
         var oldSelect = $('.flag-select');
         if( $(oldSelect).length > 0 ){
@@ -93,4 +276,5 @@ $(document).ready(function() {
             }
         });
     });
+*/	
 });

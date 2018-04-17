@@ -198,9 +198,173 @@
 
 }).call(this);
 
+function hideAll(t) {
+	$('.admin-header-users p').css('opacity', '.3');
+    $(t).css('opacity', '1');
+	$('.all-users, .pending-users, .users-head, .admin-pagination, .create-user, .invite-user').css('display', 'none');
+}
 
 $(document).ready(function() {
-    $('#users').on('click', '#confirm-btn', function(){
+    if($('#admin-users')[0]) {
+        $('#projectSelect').css({
+            'display' : 'block',
+            'float' : 'right',
+            'margin-top' : '135px',
+            'margin-right' : '9%',
+            'padding-right' : '20px',
+            'cursor' : 'pointer',
+            '-webkit-appearance' : 'none',
+            'border' : 'none',
+            'background' : '#fff',
+            'font-size' : '16px',
+            'text-transform' : 'capitalize'
+        });
+    }
+  
+    usersWrapWidth();
+    $(window).on('resize', function() {
+      usersWrapWidth();
+    }) 
+	
+    $('.admin-header-users').on('click', function(e){
+        if($('.allUsers').is(e.target)) {
+			hideAll(e.target);
+			
+            $('.active-line').css({
+                'width' : '97.09px' ,
+                'left'  : 'calc(9% - 1px)'
+            });
+            $('.users-head').not('.pending').css('display', 'block');
+            $('.all-users').css('display', 'block');
+            $('.admin-pagination').css('display', 'block');
+            
+            $('.admin-pagination .ipp .drop .per').text('25 ITEMS PER PAGE');
+            $('.admin-pagination .ipp .menu .curr').removeClass('curr');
+            $('.admin-pagination .ipp .menu p').first().addClass('curr');
+        } else if ($('.create').is(e.target)) {
+			hideAll(e.target);
+            $('.active-line').css({
+                'width' : '73.13px' ,
+                'left'  : 'calc(12.28% + 94.09px)'
+            });
+            $('.create-user').css('display', 'block');
+        } else if ($('.invite').is(e.target)) {
+			hideAll(e.target);
+            $('.active-line').css({
+                'width' : '59.34px' ,
+                'left'  : 'calc(15.56% + 165.22px)'
+            });
+           $('.invite-user').css('display', 'block');
+        } else if ($('.pending').is(e.target)) {
+			hideAll(e.target);
+            $('.active-line').css({
+                'width' : '90px' ,
+                'left'  : 'calc(18.84% + 222.56px)'
+            });
+			$('.pending').css('display', 'block');
+            $('.pending-users').css('display', 'block');
+            $('.admin-pagination').css('display', 'block');
+            
+            $('.admin-pagination .ipp .drop .per').text('25 ITEMS PER PAGE');
+            $('.admin-pagination .ipp .menu .curr').removeClass('curr');
+            $('.admin-pagination .ipp .menu p').first().addClass('curr');
+        }
+        
+        usersWrapWidth();
+    });
+    
+    $('#projectSelect').on('click', function(e) {
+        if($('.admin-header-users span.chevron').hasClass('open')) {
+            $('.admin-header-users span.chevron').removeClass('open');
+        } else {
+            $('.admin-header-users span.chevron').addClass('open');
+        }
+    })
+    
+	$('.users-head').on('click', function(e) {
+		if($('.name').is(e.target)) {
+			sortBy('p.name');
+		} else if($('.username').is(e.target)) {
+			sortBy('p.username');
+	
+		} else if($('.joined').is(e.target)) {
+			sortBy('p.joined');
+		} else if($('.select-all').is(e.target)) {
+			if($('.bullet').length == $('.bullet.selected').length) {
+				$('.bullet').removeClass('selected');
+			} else {
+				$('.bullet').addClass('selected');
+			}
+		}
+	})
+    
+    $(document).on('click', function(e) {
+        if($('.removePR').is(e.target)) {
+            $(e.target).closest('.pnr-single').remove();
+        } else if($('.bullet').is(e.target)){
+            $dot = $(e.target);
+            if($dot.hasClass('selected')){
+                $dot.removeClass('selected'); 
+            } else {
+               $dot.addClass('selected'); 
+            }
+        } else if($('.anotherPR.create').is(e.target)){
+            $('.pnr-container.create').append(
+                "<div class=\"pnr-single\">"+
+                    "<label>Project "+
+                        "<select name=\"project\">"+
+                            "<option style='display:none;' selected>Select a project</option>"+
+                            "<option>Project 1</option>"+
+                            "<option>Project 2</option>"+
+                            "<option>Project 3</option>"+
+                        "</select></label>"+
+                    "<label>Role "+
+                        "<select name=\"role\">"+
+                            "<option style='display:none;' selected>Select a role</option>"+
+                            "<option>Role A</option>"+
+                            "<option>Role B</option>"+
+                            "<option>Role C</option>"+
+                        "</select></label>"+
+                    "<p class='removePR'>Remove This Project/Role</p><br>"+
+                "</div>"
+            );
+        } else if($('.anotherPR.invite').is(e.target)){
+            $('.pnr-container.invite').append(
+                "<div class=\"pnr-single\">"+
+                    "<label>Project "+
+                        "<select name=\"project\">"+
+                            "<option style='display:none;' selected>Select a project</option>"+
+                            "<option>Project 1</option>"+
+                            "<option>Project 2</option>"+
+                            "<option>Project 3</option>"+
+                        "</select></label>"+
+                    "<label>Role "+
+                        "<select name=\"role\">"+
+                            "<option style='display:none;' selected>Select a role</option>"+
+                            "<option>Researcher</option>"+
+                            "<option>Moderator</option>"+
+                            "<option>Admin</option>"+
+                        "</select></label>"+
+                    "<p class='removePR'>Remove This Project/Role</p><br>"+
+                "</div>"
+            );
+        } else if($('#projectSelect').is(e.target)){
+            
+        } else {
+            $('.admin-header-users .open').removeClass('open');
+        }
+    })
+    
+	//display dropped image
+	document.getElementById('profileImageDrop').onchange = function () {
+  		var f = URL.createObjectURL(this.files[0]);
+		$(this).attr('style', 'background:  url("'+f+'");'+
+					 		  'border-color: #f9f9f9;'+
+					 		  'opacity: .5;' );
+		$(this).parent().find('label').attr('style', 'display: none;');
+	};
+	
+    $('#confirm-btn').on('click', function(){
         var userID = ($(this).data('id'));
         $.ajax({
             url: arcs.baseURL + 'admin/accept/'+userID,
@@ -210,11 +374,50 @@ $(document).ready(function() {
             }
         });
     });
-
+    
+    $('#users').on('click', '.accept-sel', function(e){
+        var length = $('.bullet.selected').length;
+        var i = 0;
+        $('.bullet.selected').each(function(){
+            var userID = $(this).parent().find('#confirm-btn').data('id')
+            $.ajax({
+                url: arcs.baseURL + 'admin/accept/'+userID,
+                type: "POST",
+                success: function () {
+                    i += 1;
+                    if(i >= length){
+                        window.location.reload();
+                    }
+                }
+            });
+        })
+    })
+    
     $('#users').on('click', '#delete-btn', function(e){
         setTimeout(function(){
             $('#modal').css('height', '380px');
             $('.modal-body').find('*').not('.dontDelete').remove();
         }, 1);
-    });
+    })
+    
+    $('#users').on('click', '.decline-sel', function() {
+                           
+    })
+	
+	$('.admin-search.users').keyup(function(e){
+        search(this.value, 'p.name');
+	})
+    
+    
 });
+
+function usersWrapWidth() {
+  if($('.all-users').is(':visible') && $(window).innerWidth() < 602) {
+    $('.admin-rows-wrap').css('width', 'fit-content');
+  } else if($('.pending-users').is(':visible') && $(window).outerWidth() < 944) {
+    $('.admin-rows-wrap').css('width', 'fit-content');
+  } else {
+    $('#users .admin-rows-wrap').css('width', 'unset');
+  }
+
+}
