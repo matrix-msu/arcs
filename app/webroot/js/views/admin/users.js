@@ -220,16 +220,16 @@ $(document).ready(function() {
             'text-transform' : 'capitalize'
         });
     }
-  
+
     usersWrapWidth();
     $(window).on('resize', function() {
       usersWrapWidth();
-    }) 
-	
+    })
+
     $('.admin-header-users').on('click', function(e){
         if($('.allUsers').is(e.target)) {
 			hideAll(e.target);
-			
+
             $('.active-line').css({
                 'width' : '97.09px' ,
                 'left'  : 'calc(9% - 1px)'
@@ -237,7 +237,7 @@ $(document).ready(function() {
             $('.users-head').not('.pending').css('display', 'block');
             $('.all-users').css('display', 'block');
             $('.admin-pagination').css('display', 'block');
-            
+
             $('.admin-pagination .ipp .drop .per').text('25 ITEMS PER PAGE');
             $('.admin-pagination .ipp .menu .curr').removeClass('curr');
             $('.admin-pagination .ipp .menu p').first().addClass('curr');
@@ -264,15 +264,15 @@ $(document).ready(function() {
 			$('.pending').css('display', 'block');
             $('.pending-users').css('display', 'block');
             $('.admin-pagination').css('display', 'block');
-            
+
             $('.admin-pagination .ipp .drop .per').text('25 ITEMS PER PAGE');
             $('.admin-pagination .ipp .menu .curr').removeClass('curr');
             $('.admin-pagination .ipp .menu p').first().addClass('curr');
         }
-        
+
         usersWrapWidth();
     });
-    
+
     $('#projectSelect').on('click', function(e) {
         if($('.admin-header-users span.chevron').hasClass('open')) {
             $('.admin-header-users span.chevron').removeClass('open');
@@ -280,13 +280,13 @@ $(document).ready(function() {
             $('.admin-header-users span.chevron').addClass('open');
         }
     })
-    
+
 	$('.users-head').on('click', function(e) {
 		if($('.name').is(e.target)) {
 			sortBy('p.name');
 		} else if($('.username').is(e.target)) {
 			sortBy('p.username');
-	
+
 		} else if($('.joined').is(e.target)) {
 			sortBy('p.joined');
 		} else if($('.select-all').is(e.target)) {
@@ -297,16 +297,16 @@ $(document).ready(function() {
 			}
 		}
 	})
-    
+
     $(document).on('click', function(e) {
         if($('.removePR').is(e.target)) {
             $(e.target).closest('.pnr-single').remove();
         } else if($('.bullet').is(e.target)){
             $dot = $(e.target);
             if($dot.hasClass('selected')){
-                $dot.removeClass('selected'); 
+                $dot.removeClass('selected');
             } else {
-               $dot.addClass('selected'); 
+               $dot.addClass('selected');
             }
         } else if($('.anotherPR.create').is(e.target)){
             $('.pnr-container.create').append(
@@ -349,21 +349,21 @@ $(document).ready(function() {
                 "</div>"
             );
         } else if($('#projectSelect').is(e.target)){
-            
+
         } else {
             $('.admin-header-users .open').removeClass('open');
         }
     })
-    
+
 	//display dropped image
-	document.getElementById('profileImageDrop').onchange = function () {
-  		var f = URL.createObjectURL(this.files[0]);
-		$(this).attr('style', 'background:  url("'+f+'");'+
-					 		  'border-color: #f9f9f9;'+
-					 		  'opacity: .5;' );
-		$(this).parent().find('label').attr('style', 'display: none;');
-	};
-	
+	// document.getElementById('profileImageDrop').onchange = function () {
+ //  		var f = URL.createObjectURL(this.files[0]);
+	// 	$(this).attr('style', 'background:  url("'+f+'");'+
+	// 				 		  'border-color: #f9f9f9;'+
+	// 				 		  'opacity: .5;' );
+	// 	$(this).parent().find('label').attr('style', 'display: none;');
+	// };
+
     $('#confirm-btn').on('click', function(){
         var userID = ($(this).data('id'));
         $.ajax({
@@ -374,7 +374,7 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     $('#users').on('click', '.accept-sel', function(e){
         var length = $('.bullet.selected').length;
         var i = 0;
@@ -392,23 +392,23 @@ $(document).ready(function() {
             });
         })
     })
-    
+
     $('#users').on('click', '#delete-btn', function(e){
         setTimeout(function(){
             $('#modal').css('height', '380px');
             $('.modal-body').find('*').not('.dontDelete').remove();
         }, 1);
     })
-    
+
     $('#users').on('click', '.decline-sel', function() {
-                           
+
     })
-	
+
 	$('.admin-search.users').keyup(function(e){
         search(this.value, 'p.name');
 	})
-    
-    
+
+
 });
 
 function usersWrapWidth() {
