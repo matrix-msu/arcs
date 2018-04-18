@@ -209,7 +209,7 @@ $(document).ready(function() {
         $('#projectSelect').css({
             'display' : 'block',
             'float' : 'right',
-            'margin-top' : '135px',
+            'margin-top' : '195px',
             'margin-right' : '9%',
             'padding-right' : '20px',
             'cursor' : 'pointer',

@@ -11009,7 +11009,7 @@ input[type=range]:focus::-ms-fill-upper {
   cursor: pointer;
 }
 .editInstructions {
-  display: none;
+  display: block;
   text-transform: none;
   color: #555;
   font-size: 10px;
@@ -11017,8 +11017,10 @@ input[type=range]:focus::-ms-fill-upper {
   padding-top: 30px;
 }
 .newTranscriptionForm {
-  display: none;
+  display: block;
   width: 100%;
+  position: absolute;
+  bottom: 0px;
 }
 .newTranscriptionForm button {
   width: 100%;
@@ -14827,9 +14829,6 @@ input.user-reg-btn.btn.btn-success:focus {
   display: block;
   color: #000;
 }
-.wrap {
-  padding-top: 60px !important;
-}
 #projectSelect {
   display: none;
 }
@@ -14982,7 +14981,7 @@ input.user-reg-btn.btn.btn-success:focus {
   width: 97.09px;
   border-bottom: 2px solid #0094bc;
   position: absolute;
-  top: 165px;
+  top: 225px;
   left: calc(9% - 1px);
   transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);
 }

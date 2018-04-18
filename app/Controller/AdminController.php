@@ -66,7 +66,7 @@ class AdminController extends AppController {
             $first = false;
         }
 
-        $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;margin-top:200px" >';
+        $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;" >';
 
         foreach ($mappings as $map) {
 
