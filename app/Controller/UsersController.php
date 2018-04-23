@@ -1341,8 +1341,8 @@ class UsersController extends AppController
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "<p>You've been invited to ARCS. </p>";
-        $message .= "<p>ARCS is an open-source web platform that enables individuals to collaborate 
-                    in creating and relating digitized primary evidence when conducting research 
+        $message .= "<p>ARCS is an open-source web platform that enables individuals to collaborate
+                    in creating and relating digitized primary evidence when conducting research
                     in the humanities.</P";
         $message .= "<p>To create your account, follow the link below:</p><br/>";
         $message .= "<a target='_blank' href='".$this->baseURL()."/register/".$token."'>
@@ -1354,7 +1354,7 @@ class UsersController extends AppController
         $headers .= "To: ".$data['email']."\r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
-        
+
         //TODO: remove cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
@@ -1381,8 +1381,8 @@ class UsersController extends AppController
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "<p>You've been invited to ARCS. </p>";
-        $message .= "<p>ARCS is an open-source web platform that enables individuals to collaborate 
-                    in creating and relating digitized primary evidence when conducting research 
+        $message .= "<p>ARCS is an open-source web platform that enables individuals to collaborate
+                    in creating and relating digitized primary evidence when conducting research
                     in the humanities.</P";
         $message .= "<p>To create your account, follow the link below:</p><br/>";
         $message .= "<a target='_blank' href='".$this->baseURL()."/invitation/register/".$token."'>
@@ -1394,7 +1394,7 @@ class UsersController extends AppController
         $headers .= "To: ".$data['email']."\r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
-        
+
         //TODO: remove cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
@@ -1429,7 +1429,7 @@ class UsersController extends AppController
         $headers .= "To: ".$data['email']."\r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
-        
+
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail('templated');
         $Email->viewVars(array('user' => $user['name'], 'link' => KORA_PLUGIN_USERS ))
@@ -1571,17 +1571,17 @@ class UsersController extends AppController
             ->subject('Missing Image Notification')
             ->to($formattedAdminEmails)
             ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));*/
-        
+
         $to = $formattedAdminEmails;
         $subject = "Missing Image Notification";
         $headers = '';
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html\r\n";
-        $headers .= "From: ".array('arcs@arcs.matrix.msu.edu' => 'ARCS');
+        $headers .= "From: ".print_r(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
         $headers .= "To: ".$formattedAdminEmails."\r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
-        
+
         if( $Email->send($content) ){
             echo true;
         }else{
