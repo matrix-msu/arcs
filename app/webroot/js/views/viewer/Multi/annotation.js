@@ -837,6 +837,62 @@ function annotationPrep() {
         });
     });
 
+    $(".transcriptSubmit").click(function () {
+
+  	      annotateData.transcript = $(".transcriptionTextarea").val();
+          annotateData.page_kid = kid;
+          annotateData.resource_kid = resourceKid;
+          annotateData.resource_name = resourceIdentifier;
+          annotateData.relation_id = null
+          //First relation
+          $.ajax({
+              url: arcs.baseURL + "api/annotations.json",
+              type: "POST",
+              data: annotateData,
+              success: function (data) {
+
+                  annotateData.relation_id = data.id
+                  if (annotateData.relation_resource_kid != "") {
+                      //Backwards relation
+                      $.ajax({
+                          url: arcs.baseURL + "api/annotations.json",
+                          type: "POST",
+                          data: {
+                              incoming: 'true',
+                              relation_id: annotateData.relation_id,
+                              resource_kid: annotateData.relation_resource_kid,
+                              page_kid: annotateData.relation_page_kid,
+                              resource_name: annotateData.relation_resource_name,
+                              relation_resource_kid: annotateData.resource_kid,
+                              relation_page_kid: annotateData.page_kid,
+                              relation_resource_name: annotateData.resource_name,
+                              transcript: annotateData.transcript,
+                              url: annotateData.url
+                          },
+                          success: function (data) {
+                              // save the relation_id to first reference
+                              $.ajax({
+                                  url: arcs.baseURL + "api/annotations/" +annotateData.relation_id+".json",
+                                  type: "POST",
+                                  data: {
+                                      relation_id: data.id
+                                  },
+                                  success: function (data) {
+                                  }
+                              });
+                          }
+                      });
+                  }
+  				//reset annotations and redraw
+  				$(".annotation_display").remove();
+  				$(".transcript_display").remove();
+  				$(".gen_box").remove();
+  				resetAnnotations();
+  				getAnnotationData();
+              }
+          });
+      });
+
 	$(document).on('click', ".trashTranscript", function () {
 		if( $(this).parent().hasClass('annotation_display') ){
 			$('.deleteBody').html('Are you sure you want to delete this annotation?');

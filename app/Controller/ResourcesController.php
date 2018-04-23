@@ -723,6 +723,7 @@ class ResourcesController extends AppController {
 
     // view multiple resources in a viewer
     public function multi_viewer($id='') {
+        //echo $id;die;
         $pName = NULL;
         $resources = array();
         $projectsArray = array();

@@ -348,7 +348,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     <div class="editInstructions">			Drag and drop transcriptions to reorder them.</div>
                     <form class="newTranscriptionForm">
                         <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>
-                        <button type="submit">SUBMIT NEW TRANSCRIPTION</button>
+                        <button class="transcriptSubmit" type="submit">SUBMIT NEW TRANSCRIPTION</button>
                     </form>
                 </div>
 
