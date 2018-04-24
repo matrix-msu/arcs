@@ -140,7 +140,7 @@
       </div>
 
       <div class="section-search-box">
-        <p>Earilest Date</p>
+        <p>Earliest Date</p>
         <div class="date-select" data-name="earliest_date">
           <select name="year">
             <option value="default">Select Year</option>

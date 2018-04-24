@@ -96,29 +96,39 @@ class AdvancedSearchController extends AppController
         $pid = parent::getPIDFromProjectName($project);
 
         $sid = parent::getSeasonSIDFromProjectName($project);
-        $query = "name = 'Type' OR name = 'Director'";
-        $sCid = $this->getControls($pid, $sid, $query);
+        $names = array( 'Type',
+                        'Director');
+        $sCid = $this->getControls($pid, $sid, $names, 'Season');
 
         $sid = parent::getSurveySIDProjectName($project);
-        $query = "name = 'Type' OR name = 'Supervisor'";
-        $eCid = $this->getControls($pid, $sid, $query);
+        $names = array( 'Type',
+                        'Supervisor');
+        $eCid = $this->getControls($pid, $sid, $names, 'Excavation_-_Survey');
+//        var_dump($eCid);
+//        die;
 
         $sid = parent::getResourceSIDFromProjectName($project);
-        $query = "name = 'Type' OR name = 'Creator' OR name = 'Creator Role' OR name = 'Language'";
-        $rCid = $this->getControls($pid, $sid, $query);
+        $names = array( 'Type',
+                        'Creator',
+                        'Creator Role',
+                        'Language');
+        $rCid = $this->getControls($pid, $sid, $names, 'Resource');
+//        var_dump($rCid);
+//        die;
 
         $sid = parent::getSubjectSIDFromProjectName($project);
-        $query = "name = 'Artifact - Structure Classification' OR
-                  name = 'Artifact - Structure Type' OR
-                  name = 'Artifact - Structure Material' OR
-                  name = 'Artifact - Structure Technique' OR
-                  name = 'Artifact - Structure Period'";
-        $sgCid = $this->getControls($pid, $sid, $query);
-
+        $names = array( 'Artifact - Structure Classification',
+                        'Artifact - Structure Type',
+                        'Artifact - Structure Material',
+                        'Artifact - Structure Technique',
+                        'Artifact - Structure Period');
+        $sgCid = $this->getControls($pid, $sid, $names,'Subject_of_Observation');
+//        var_dump($sgCid);
+//        die;
         $sid = parent::getSubjectSIDFromProjectName($project);
-        $query = "name = 'Artifact - Structure Current Location' OR
-                  name = 'Artifact - Structure Excavation Unit'";
-        $sdCid = $this->getControls($pid, $sid, $query);
+        $names = array( 'Artifact - Structure Current Location',
+                        'Artifact - Structure Excavation Unit');
+        $sdCid = $this->getControls($pid, $sid, $names, 'Subject_of_Observation');
 
         $this->set(array(
           "seasonTypeList"          => self::getControlArray($sCid, "Type"),
@@ -170,7 +180,7 @@ class AdvancedSearchController extends AppController
           // return configuration error code
           return json_encode(array(
             "Error" => $e->getMessage()
-          ));;
+          ));
         }
 
         if (is_null($query)) {
@@ -181,30 +191,11 @@ class AdvancedSearchController extends AppController
         $resources = $adv->executeSearch();
         return json_encode($resources);
     }
-    private function getControls($pid,$sid,$query) {
-        return array();
-      // require symlink to the kora db
-      /*
-      TODO KORA3TODO
-      Make this hack thing work to get controls
-      */
-      $kora = new Kora();
+    private function getControls($pid,$sid,$names,$form_name) {
 
-      global $db;
-      $controls = array();
+        $controls = parent::getK3Controls($pid,$sid,$names,$form_name);
+        return $controls;
 
-      $object = $db->query("SELECT * FROM p$pid" .
-      "Control WHERE schemeid = '$sid' " . "AND ($query)");
-      if (!$object){
-        return array();
-      }
-      while ($res = $object->fetch_assoc()) {
-        $cid = $res["cid"];
-        $list = new ListControl($pid, $cid);
-        $settings = $list->GetControlOptions();
-        $controls[$res['name']] =   (array)$settings->option;
-      }
-      return $controls;
     }
     private static function getControlArray($controlList, $controlName) {
       if (isset($controlList[$controlName]) && is_array($controlList[$controlName])) {

@@ -125,15 +125,89 @@ class CollectionsController extends AppController {
     //     return $allResources;
     // }
 
-/*    public function testK3Projects($pName = 'isthmia'){
+    public function testK3Projects($pName = 'isthmia'){
         $pid = parent::getPIDFromProjectName(strtolower($pName));
-        $sid = parent::getSeasonSIDFromProjectName(strtolower($pName));
+        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
         $fields = 'ALL';
-        $kora = new General_Search($pid, $sid, 'kid', '!=', '0', $fields);
+
+
+        $q = "<month>%</month><day>%</day><year>1971</year>";
+        $kora = new General_Search($pid, $sid, 'Earliest_Date', 'LIKE', $q, $fields);
+        $results = json_decode($kora->return_json(), true);
+
+//        $kora = new Advanced_Search($pid, $sid, $fields);
+//        $kora->add_date_clause("Earliest_Date", '1991', '7', '3');
+//        $results = json_decode($kora->search(), true);
+
+        echo json_encode($results);
+        die;
+
+
+//        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', '!=', '', $fields);
+
+
+//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%<month>9</month><day>16</day><year>2003</year>%', $fields);
+//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '<month>9</month><day>16</day><year>2003</year>', $fields);
+
+
+//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%<month>09</month><day>16</day><year>2003</year>%', $fields);
+//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '<month>09</month><day>16</day><year>2003</year>', $fields);
+//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%<month>9</month><day>16</day><year>2003</year>%', $fields);
+//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '<month>9</month><day>16</day><year>2003</year>', $fields);
+
+
+
+
+//        $kora = new General_Search($pid, $sid, 'Title', 'LIKE', '1970', $fields);
+//        $kora = new General_Search($pid, $sid, 'Sponsor', 'LIKE', 'Ohio', $fields);
+//        $kora = new General_Search($pid, $sid, 'Registrar', 'LIKE', 'Tzortzoupolou', $fields);
+//        $kora = new General_Search($pid, $sid, 'Director', 'LIKE', 'Gregory', $fields);
+//        $kora = new General_Search($pid, $sid, 'Type', 'LIKE', 'Excavation', $fields);
+
+//        $kora = new General_Search($pid, $sid, 'Project_Associator', 'LIKE', '34', $fields);
+//        $kora = new General_Search($pid, $sid, 'Project_Associator', 'LIKE', '34-168-198016', $fields);
+//        $kora = new General_Search($pid, $sid, 'Project Associator', 'LIKE', '34', $fields);
+//        $kora = new General_Search($pid, $sid, 'Project Associator', 'LIKE', '34-168-198016', $fields);
+//
+//                $clause1 = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '9', $fields);
+//                $clause2 = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '16', $fields);
+//                $clause3 = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '2003', $fields);
+//                $kora = new General_Search($clause1, 'AND', $clause2, 'AND', $clause3);
+
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%2004%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '9142004', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%9142004%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '09142004', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%09142004%', $fields);
+
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', 'CE', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '2004', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%2004%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '9142004', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%9142004%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '09142004', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%09142004%', $fields);
+
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '2004/09/14', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%2004/09/14%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '2004/09/14', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%2004/09/14%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '20040914', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%20040914%', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '20040914', $fields);
+//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%20040914%', $fields);
+
+
+
+
+
         $allResources = json_decode($kora->return_json(), true);
+
+
         echo json_encode($allResources);
         die;
-    }*/
+    }
 
     /**
      * Get all collections a resource is a part of
