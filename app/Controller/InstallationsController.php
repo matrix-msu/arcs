@@ -72,4 +72,39 @@ class InstallationsController extends AppController {
 		));
 		$this->render("arcs_config");
 	}
+
+    /**
+     * Returns Original Label from Permalink URL
+     */
+    public function periodo()   {
+        $url = 'http://n2t.net/ark:/99152/p0d.json';
+        $data = file_get_contents($url);
+        $out = json_decode($data, true);
+        $address = $_POST["input"];
+        $key = (explode('/',$address));
+
+        multiKeyExists($out, end($key));
+
+        function multiKeyExists($arr, $key)
+        {
+            // is in base array?
+            if (array_key_exists($key, $arr))
+            {
+                return json_encode($arr[$key]['label']);
+            }
+
+            // check arrays contained in this array
+            foreach ($arr as $element)
+            {
+                if (is_array($element))
+                {
+                    multiKeyExists($element, $key);
+                }
+            }
+            return false;
+        }
+    }
+
+
+
 }

@@ -393,9 +393,11 @@
         array('controller' => 'installations', 'action' => 'createProject')
     );
     Router::connect('/installation/config',
-         array('controller' => 'installations', 'action' => 'arcsConfig')
+        array('controller' => 'installations', 'action' => 'arcsConfig')
     );
-
+//    Router::connect('/installation/periodo',
+//        array('controller' => 'installations', 'action' => 'periodo')
+//    );
 
 
 
