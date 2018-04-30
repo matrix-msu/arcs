@@ -33,12 +33,11 @@ $(document).ready(function(){
 			$( '#log' ).css('top',$('#belowProjects').height()+"px");
 		}
 	}
-    
+
     $( '#hamburger' ).click(toggleMobileToolbar);
-    
-    
+
+
     $(' #log #menu[href="#loginModal"] ').on("mouseenter",function(){
-        console.log("hi");
         if($(window).width() < 944){
             $(' #log #menu[href="#loginModal"] ').on("click",function(){
                 $('#hamburger').removeClass('hamburgerActive');

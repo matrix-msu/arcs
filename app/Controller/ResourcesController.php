@@ -46,7 +46,7 @@ class ResourcesController extends AppController {
             'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
             'keywords', 'complete', 'zipped', 'download','checkExportDone', "loadNewResource",
             'createExportFile', 'downloadExportFile', 'viewtype', 'viewKid', 'viewcollection',
-            'getMetadataEditsControlOptions'
+            'getMetadataEditsControlOptions', 'countResources', 'KidTitleTime'
         );
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
@@ -560,73 +560,164 @@ class ResourcesController extends AppController {
         die;
     }
 
-    //collections show all button.. get all and send to search
-    public function viewcollection($collection_id = null){
-        $username = NULL;
-        $usersC = new UsersController();
-        if ($user = $usersC->getUser($this->Auth)) {
-            $username = $user['User']['username'];
+	//collections show all button.. get all and send to search
+	public function viewcollection($collection_id = null){
+		$username = NULL;
+		$usersC = new UsersController();
+		if ($user = $usersC->getUser($this->Auth)) {
+			$username = $user['User']['username'];
+		}
+
+		$this->Collection->recursive = -1;
+		$user_id =  $this->Session->read('Auth.User.id');
+		$collections = '';
+		if( $user_id !== null ) { //signed in
+			$collections = $this->Collection->find('all', array(
+				'order' => 'Collection.modified DESC',
+				'conditions' => array('OR' => array(
+					array( 'Collection.public' => '1'),
+					array( 'Collection.public' => '2'),
+					array( 'Collection.public' => '3'),
+					array( 'Collection.user_id' => $user_id)
+				),'Collection.collection_id' => $collection_id)
+			));
+			//remove all the public 3 collections that the user isn't a part of
+			$count = 0;
+			foreach( $collections as $collection ){
+				$bool_delete = 1;
+				if( array_values($collection)[0]['public'] == '3'){
+					$members =  explode(';', array_values($collection)[0]['members'] );
+					foreach( $members as $member ){
+						if( $member == $user_id){
+							$bool_delete = 0;
+						}
+					}
+					if( $bool_delete == 1 ){
+						array_splice($collections, $count, 1);
+					}
+				}
+				$count++;
+			}
+		} else { //not signed in
+			$collections = $this->Collection->find('all', array(
+				'order' => 'Collection.modified DESC',
+				'conditions' => array(
+					'Collection.public' => '1',
+					'Collection.collection_id' => $collection_id
+				)//,  //only get public collections
+				//'group' => 'collection_id'
+			));
+		}
+		$resourceKids = array();
+		foreach( $collections as $temp ){ //only keep the resource_kids.
+			$resourceKids[] = $temp['Collection']['resource_kid'];
+		}
+		if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
+			$resourceKids[0] = 'explode';
+		}
+		$pName = parent::convertKIDtoProjectName($resourceKids[0]);
+
+		$search = new Resource_Search($resourceKids, $pName);
+		$results = $search->getResultsAsArray();
+		static::filterByPermission($username, $results['results']);
+		$GLOBALS['current_project'] = $pName;
+		echo "<script> var results_to_display = ".json_encode($results)."; </script>";
+		$this->set("projectName", $pName);
+		$this->render("../Search/search");
+	}
+
+	public function KidTitleTime($projectName, $resource_type)
+	{
+		$resource_type = ucfirst(strtolower($resource_type));
+		$resource_type = str_replace('_', ' ', $resource_type);
+		$pid = parent::getPIDFromProjectName($projectName);
+		$sid = parent::getResourceSIDFromProjectName($projectName);
+
+        if ($resource_type == "Orphaned") {
+            $sid = parent::getPageSIDFromProjectName($projectName);
+            $fields = array('KID', 'systimestamp', 'Special_User', 'Permissions', 'Type');
+            $pages = new General_Search($pid, $sid, 'Orphan', '=', 'TRUE', $fields);
+            $pages = $pages->return_array();
+            return $pages;
         }
 
-        $this->Collection->recursive = -1;
-        $user_id =  $this->Session->read('Auth.User.id');
-        $collections = '';
-        if( $user_id !== null ) { //signed in
-            $collections = $this->Collection->find('all', array(
-                'order' => 'Collection.modified DESC',
-                'conditions' => array('OR' => array(
-                    array( 'Collection.public' => '1'),
-                    array( 'Collection.public' => '2'),
-                    array( 'Collection.public' => '3'),
-                    array( 'Collection.user_id' => $user_id)
-                ),'Collection.collection_id' => $collection_id)
-            ));
-            //remove all the public 3 collections that the user isn't a part of
-            $count = 0;
-            foreach( $collections as $collection ){
-                $bool_delete = 1;
-                if( array_values($collection)[0]['public'] == '3'){
-                    $members =  explode(';', array_values($collection)[0]['members'] );
-                    foreach( $members as $member ){
-                        if( $member == $user_id){
-                            $bool_delete = 0;
-                        }
-                    }
-                    if( $bool_delete == 1 ){
-                        array_splice($collections, $count, 1);
-                    }
-                }
-                $count++;
-            }
-        } else { //not signed in
-            $collections = $this->Collection->find('all', array(
-                'order' => 'Collection.modified DESC',
-                'conditions' => array(
-                    'Collection.public' => '1',
-                    'Collection.collection_id' => $collection_id
-                )//,  //only get public collections
-                //'group' => 'collection_id'
-            ));
-        }
-        $resourceKids = array();
-        foreach( $collections as $temp ){ //only keep the resource_kids.
-            $resourceKids[] = $temp['Collection']['resource_kid'];
-        }
-        if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
-            $resourceKids[0] = 'explode';
-        }
-        $pName = parent::convertKIDtoProjectName($resourceKids[0]);
+        $fields = array('Title','KID', 'systimestamp', 'Special_User', 'Permissions', 'Type');
+		$sort = array(array( 'field' => 'Title', 'direction' => SORT_ASC));
+        // $sort = array();
+		$search = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+		$search->add_clause('Type', '=', $resource_type);
+		$resultsByTitle = json_decode($search->search(), true);
+		return $resultsByTitle;
+	}
 
-        $search = new Resource_Search($resourceKids, $pName);
-        $results = $search->getResultsAsArray();
-        static::filterByPermission($username, $results['results']);
-        $GLOBALS['current_project'] = $pName;
-        echo "<script> var results_to_display = ".json_encode($results)."; </script>";
-        $this->set("projectName", $pName);
-        $this->render("../Search/search");
-    }
+	public function kidAndPermission($username, $resources)
+	{
+		if (empty($userName)) {
+            static::lockResourcesByPermission(Permissions::R_Member, $resources);
+            static::lockResourcesByPermission(Permissions::R_Special, $resources);
+
+        } else if (is_array($resources)) {
+			foreach($resources as $kid => $resource) {
+				// Permissions is Special User, but the user is not on
+				// the special user list
+				if (
+					isset($resource['Special_User']) &&
+					isset($resource['Permissions']) &&
+					$resource['Permissions'] === Permissions::R_Special &&
+					!static::isSpecial($resource['Special_User'], $userName)
+				  ) {
+					static::lockResource($kid, $resources);
+				  }
+			}
+		}
+		$lockedResources = array();
+		foreach ($resources as $kid => $value) {
+			if (isset($value['Locked']) && $value['Locked']) {
+				array_push($lockedResources, $kid);
+			}
+		}
+		return $lockedResources;
+	}
 
     public function viewtype($projectName, $resource_type){
+        if ($this->request->method() === "POST" && isset($this->request->data['kidArray'])) {
+            // The kids to grab the display info for
+			$displayKids = $this->request->data['kidArray'];
+        }else {
+            //getting the kids the first time the page laods
+        	$allByTitle = self::KidTitleTime($projectName, $resource_type);
+
+			$username = NULL;
+			$usersC = new UsersController();
+			if ($user = $usersC->getUser($this->Auth)) {
+				$username = $user['User']['username'];
+			}
+			$lockedResources = self::kidAndPermission($username, $allByTitle);
+
+            $allByTime = $allByTitle;
+            usort($allByTime, function ($a, $b){
+                return strcmp(strtotime($a['systimestamp']), strtotime($b['systimestamp']));
+            });
+
+            $allByTitle = array_column($allByTitle, 'kid');
+            $allByTime = array_column($allByTime, 'kid');
+
+            echo "<script>
+				var lockedResources = ".json_encode($lockedResources)."
+                var allByTitle = ".json_encode($allByTitle, true).";
+                var allByTime = ".json_encode($allByTime, true).";
+                var resourceType = '".$resource_type."';
+            </script>";
+            //return sorted arrays of kids by time and title
+            //return immediately
+            //only array of kids not the other information
+    $this->render("../Search/search");
+//die;
+            return;
+        }
+        //everything below here is for the api
+        //this should be accepting an array of 20-40 or 60 kids
+        //return the info
         $resource_type = ucfirst(strtolower($resource_type));
         $resource_type = str_replace('_', ' ', $resource_type);
 
@@ -641,13 +732,16 @@ class ResourcesController extends AppController {
             $sid = parent::getResourceSIDFromProjectName($projectName);
             $pageSid = parent::getPageSIDFromProjectName($projectName);
 
-            //get resources
-            $search = new General_Search($pid, $sid, 'Type', '=', $resource_type,['Type','Resource_Identifier', 'Permissions']);
-            $results = $search->return_array();
+            //get resources for the kids we are displaying
+            $search = new Advanced_Search($pid, $sid, ['Type','Resource_Identifier', 'Permissions']);
+            $search->add_clause('KID', 'IN', $displayKids);
+
+            $results = json_decode($search->search(), true);
             $rKids = array_keys($results);
 
             //get indicators
             $indicators = Resource::flag_analysis($results);
+            //$indicators = array();
 
             //get pages
             $fields = array('Image_Upload','Resource_Associator','Scan_Number');
@@ -668,7 +762,11 @@ class ResourcesController extends AppController {
 
             //link in the pages to the resources
             foreach( $allPages as $page ){
-                $thumb = $page['Image_Upload']['localName'];
+				if (!isset($page['Image_Upload'])) {
+					$thumb = "";
+				}else {
+                	$thumb = $page['Image_Upload']['localName'];
+				}
                 $resourceAssociator = $page['Resource_Associator'][0];
                 if (isset($results[$resourceAssociator]) && isset($page['Scan_Number'])) {
                     if ($page['Scan_Number'] == '1') {
@@ -688,25 +786,33 @@ class ResourcesController extends AppController {
                 }
             }
 
-            $results = ['filters' => [], 'indicators' => $indicators, 'results' => $results, 'total'=>count($results)];
+            $results = ['filters' => [], 'indicators' => $indicators, 'results' => array_values($results), 'total'=>count($results)];
             static::filterByPermission($username, $results['results']);
-            echo "<script>var results_to_display = " . json_encode($results) . ";</script>";
 
+            echo json_encode($results, true);
+            die;
+
+		//still have to do orphans
         }elseif( $resource_type == 'Orphaned' ) {
             $pid = parent::getPIDFromProjectName($projectName);
             $sid = parent::getPageSIDFromProjectName($projectName);
-            $pages = new General_Search($pid, $sid, 'Orphan', '=', 'TRUE', 'ALL');
+            // $pages = new General_Search($pid, $sid, 'Orphan', '=', 'TRUE', 'ALL');
+            $pages = new General_Search($pid, $sid, 'KID', 'IN', $displayKids, 'ALL');
             $pages = $pages->return_array();
-            $results = ['filters' => [], 'indicators' => [], 'results' => $pages];
+            $results = ['filters' => [], 'indicators' => [], 'results' => array()];
+            //$results = [];
             //static::filterByPermission($username, $results['results']);
-            foreach ($results['results'] as $key => $value) {
-                $results['results'][$key]['Title'] = $value['Page_Identifier'];
-                $results['results'][$key]['orphan'] = true;
+            $formattedArray = array();
+
+            foreach ($pages as $key => $value) {
+                $tempArray = $value;
+                $tempArray['Title'] = $value['Page_Identifier'];
+                $tempArray['orphan'] = true;
                 if (isset($value['Image_Upload']['localName']) && is_array($value['Image_Upload'])) {
-                    $results['results'][$key]['thumb'] = $this->smallThumb($value['Image_Upload']['localName'], $value['kid']);
+                    $tempArray['thumb'] = $this->smallThumb($value['Image_Upload']['localName'], $value['kid']);
                 }
                 else{
-                    $results['results'][$key]['thumb'] = $this->smallThumb("");
+                    $tempArray['thumb'] = $this->smallThumb("");
                 }
                 $results['indicators'][$key] = array(
                   "hasFlags"=>false,
@@ -715,15 +821,17 @@ class ResourcesController extends AppController {
                   "hasComments"=>false,
                   "hasKeywords"=>false
                 );
+                $formattedArray[] = $tempArray;
             }
-            echo "<script>var results_to_display = ".json_encode($results).";</script>";
+            // echo "<script>var results_to_display = ".json_encode($results).";</script>";
+            $results['results'] = $formattedArray;
+            echo json_encode($results, true);
+            die;
         }
-        $this->render("../Search/search");
     }
 
     // view multiple resources in a viewer
     public function multi_viewer($id='') {
-        //echo $id;die;
         $pName = NULL;
         $resources = array();
         $projectsArray = array();
