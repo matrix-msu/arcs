@@ -400,8 +400,23 @@ $(document).ready(function() {
         }, 1);
     })
 
-    $('#users').on('click', '.decline-sel', function() {
-
+    $('#users').on('click', '.decline-sel', function(e) {
+        var length = $('.bullet.selected').length;
+        var i = 0;
+        $('.bullet.selected').each(function(){
+            var userID = $(this).parent().find('#confirm-btn').data('id');
+            $.ajax({
+                url: arcs.baseURL + 'api/users/delete',
+                data: {'id':userID},
+                type: "POST",
+                success: function () {
+                    i += 1;
+                    if(i >= length){
+                        window.location.reload();
+                    }
+                }
+            });
+        })
     })
 
 	$('.admin-search.users').keyup(function(e){
