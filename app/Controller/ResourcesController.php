@@ -1042,18 +1042,18 @@ class ResourcesController extends AppController {
                 $p = $r['page'];
                 $p = isset(array_values($p)[0]['Image_Upload']['localName'])? array_values($p)[0]['Image_Upload']['localName'] : "";
                 $pageThingKid = '';
-                if( $p != "" && isset($p['kid'])){
-                    $pageThingKid = $p['kid'];
+                if( $p != "" && isset(array_values($r['page'])[0]['kid'])){
+                    $pageThingKid = array_values($r['page'])[0]['kid'];
                 }
-                $p = AppController::smallThumb($p, $pageThingKid);
+                $p = $this->smallThumb($p, $pageThingKid);
                 $resources[$kid]['thumbsrc'] = $p;
                 foreach ($r['page'] as $key => $page) {
                     $img = isset($page['Image_Upload']['localName']) ? $page['Image_Upload']['localName'] : "";
                     $pageThingKid = '';
-                    if( $p != "" && isset($p['kid'])){
-                        $pageThingKid = $p['kid'];
+                    if( $p != "" && isset(array_values($r['page'])[0]['kid']) ){
+                        $pageThingKid = array_values($r['page'])[0]['kid'];
                     }
-                    $resources[$kid]['page'][$key]['thumbsrc'] = AppController::smallThumb($img, $pageThingKid);
+                    $resources[$kid]['page'][$key]['thumbsrc'] = $this->smallThumb($img, $pageThingKid);
                 }
             }
             echo json_encode(['resources' => $resources,
