@@ -51,7 +51,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                 </div>
                 <hr>
                 <form id="flagForm" action="/">
-                    <p class="flagSuccess">Flag submitted successfully.</p>
+                    <p class="flagSuccess">Flag submitted successfully! Your flag will now be reviewed by an administrator and action will be taken accordingly. Thank you for helping us improve this project.</p>
                     <p class="formError reasonError">Select a reason for this flag.</p>
                     <select class="formInput" id="flagReason">
                         <option value="">SELECT REASON</option>

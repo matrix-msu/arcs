@@ -42,7 +42,7 @@
 	  	  <a href='#loginModal'>Back To Login</a>
 		</div>
                 <h1>&nbsp;</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam elit eu tincidunt dignissim. Proin tincidunt orci sed commodo scelerisque. Praesent ex ante, feugiat vitae augue nec, tempor tempor ex.</p>
+                <p>In order to register for an account, please provide us with your name, a username and password, as well as an email address. You also must select the project(s) in which you would like to participate. Once you have selected "register," you will receive a confirmation email. The project administrator(s) will contact you once they have confirmed your request. Your patience in this process is appreciated.</p>
 
                 <!-- g-recaptcha has to be inside the <form method="post"></form> (also form method has to be  post) -->
             <div class="g-recaptcha" data-sitekey="6LfP5hcTAAAAADZ4Je8NJ0LOoP2lE4JgYet3BOx1"></div>

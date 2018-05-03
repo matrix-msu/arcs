@@ -5,7 +5,7 @@
             <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
             <li>Field Configuration</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
-            <li>Create Project</li>
+            <li>Create Project Record</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
             <li>ARCS Configuration</li>
         </ul>

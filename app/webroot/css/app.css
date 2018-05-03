@@ -16017,18 +16017,28 @@ strong {
 .form-container .excavation {
   display: none;
 }
-.form-container .form-prompt-wrapper {
+.form-container .resource {
+  display: none;
+}
+.form-container .subject {
+  display: none;
+}
+.form-container .form-prompt {
+  height: auto;
+  padding-top: 45px;
+  width: 100%;
+}
+.form-container .form-prompt .form-prompt-wrapper {
   margin: 0 auto;
   color: #686868;
-  padding-top: 45px;
   text-align: left;
   max-width: 1300px;
-  width: 90%;
+  padding-left: 4.3%;
 }
-.form-container .form-prompt-wrapper .prompt1 {
+.form-container .form-prompt .form-prompt-wrapper .prompt1 {
   line-height: 28px;
 }
-.form-container .form-prompt-wrapper .prompt2 {
+.form-container .form-prompt .form-prompt-wrapper .prompt2 {
   font-size: 12px;
   line-height: 18px;
 }
@@ -16057,6 +16067,9 @@ strong {
   display: block;
   position: relative;
 }
+.form-container .form-wrapper #arcs-name {
+  margin-top: 70px;
+}
 .form-container .form-wrapper .row {
   width: 100%;
   display: inline-flex;
@@ -16075,6 +16088,46 @@ strong {
 .form-container .form-wrapper .row .input-full {
   width: 90%;
   margin: 0 auto;
+}
+.form-container .form-wrapper .row .input-full .create-project-dropdown {
+  border: 1px solid #D8D8D8;
+  display: block;
+  font-size: 12px;
+  height: 53px;
+  outline: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+.form-container .form-wrapper .row .input-full .date-select {
+  display: block;
+}
+.form-container .form-wrapper .row .input-full .date-select select {
+  border: 1px solid #D8D8D8;
+  display: inline-block;
+  font-size: 12px;
+  height: 53px;
+  outline: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 33.42%;
+}
+.form-container .form-wrapper .row .input-full .period-select {
+  display: block;
+}
+.form-container .form-wrapper .row .input-full .period-select .date-input {
+  display: inline-block;
+  width: 50%;
+}
+.form-container .form-wrapper .row .input-full .period-select .period-project-dropdown {
+  border: 1px solid #D8D8D8;
+  display: inline-block;
+  font-size: 12px;
+  height: 53px;
+  outline: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 49.6%;
 }
 .form-container .form-wrapper .row input {
   width: 100%;

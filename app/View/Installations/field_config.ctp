@@ -1,4 +1,4 @@
-<?php  $this->Html->script("views/installation/installation.js"); ?>
+<?php  echo $this->Html->script("views/installation/installation.js"); ?>
 <div class="field-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -6,7 +6,7 @@
             <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
             <li class="current-step">Field Configuration</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
-            <li>Create Project</li>
+            <li>Create Project Record</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
             <li>ARCS Configuration</li>
         </ul>
@@ -21,19 +21,21 @@
             <li class="dash">-</li>
             <li class="resource-nav">Resouce</li>
             <li class="dash">-</li>
-            <li>Subject of Observation</li>
+            <li class="subject-nav">Subject of Observation</li>
         </ul>
     </div>
     <div class="form-container">
         <div class="project field">
             <hr>
-            <div class="form-prompt-wrapper">
-                <p class="prompt1">
-                    Enter information about your Project form below
-                </p>
-                <p class="prompt2">
-                    For each field, type an option and then hit enter. Then add more options as needed.
-                </p>
+            <div class="form-prompt">
+                <div class="form-prompt-wrapper">
+                    <p class="prompt1">
+                        Enter information about your Project form below
+                    </p>
+                    <p class="prompt2">
+                        For each field, type an option and then hit enter. Then add more options as needed.
+                    </p>
+                </div>
             </div>
             <div class="form-wrapper">
                 <form>
@@ -74,13 +76,6 @@
                         </div>
                     </div>
                     <hr class="divider">
-<!--
-                    <div class="cont-btn-container" id="ctn-create">
-                        <button onclick="window.location.href= window.location.href.replace('field', 'create')" class="cont-install-btn" type="button" name="button">
-                            <p>Continue to Create Project</p>
-                        </button>
-                    </div>
--->
                     <div class="bottom">
                         <div class="required">
                             <span class="dot"></span>
@@ -97,13 +92,15 @@
         </div>
         <div class="season field">
             <hr>
-            <div class="form-prompt-wrapper">
-                <p class="prompt1">
-                    Enter information about your Season form below
-                </p>
-                <p class="prompt2">
-                    For each field, type an option and then hit enter. Then add more options as needed.
-                </p>
+            <div class="form-prompt">
+                <div class="form-prompt-wrapper">
+                    <p class="prompt1">
+                        Enter information about your Season form below
+                    </p>
+                    <p class="prompt2">
+                        For each field, type an option and then hit enter. Then add more options as needed.
+                    </p>
+                </div>
             </div>
             <div class="form-wrapper">
                 <form>
@@ -146,7 +143,7 @@
                         </div>
                         <div class="cont-btn-container">
                             <button class="cont-install-btn" id="excavation-step" type="button" name="button">
-                                <p>Continue to Excavation Confiuration</p>
+                                <p>Continue to Excavation Configuration</p>
                             </button>
                         </div>
                     </div>
@@ -155,13 +152,15 @@
         </div>
         <div class="excavation field">
             <hr>
-            <div class="form-prompt-wrapper">
-                <p class="prompt1">
-                    Enter information about your Excavation form below
-                </p>
-                <p class="prompt2">
-                    For each field, type an option and then hit enter. Then add more options as needed.
-                </p>
+            <div class="form-prompt">
+                <div class="form-prompt-wrapper">
+                    <p class="prompt1">
+                        Enter information about your Excavation form below
+                    </p>
+                    <p class="prompt2">
+                        For each field, type an option and then hit enter. Then add more options as needed.
+                    </p>
+                </div>
             </div>
             <div class="form-wrapper">
                 <form>
@@ -180,7 +179,189 @@
                         </div>
                         <div class="cont-btn-container">
                             <button class="cont-install-btn" id="resource-step" type="button" name="button">
-                                <p>Continue to Resource Confiuration</p>
+                                <p>Continue to Resource Configuration</p>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="resource field">
+            <hr>
+            <div class="form-prompt">
+                <div class="form-prompt-wrapper">
+                    <p class="prompt1">
+                        Enter information about your Resource form below
+                    </p>
+                    <p class="prompt2">
+                        For each field, type an option and then hit enter. Then add more options as needed.
+                    </p>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <form>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Type(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Creator(s)</p>
+                            <input type="text" placeholder="Enter the list options for creator(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Creator Role(s)</p>
+                            <input type="text" placeholder="Enter the list options for creator role(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Language(s)</p>
+                            <input type="text" placeholder="Enter the list options for language(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Right Holder(s)</p>
+                            <input type="text" placeholder="Enter the list options for rights holder(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Repository(s)</p>
+                            <input type="text" placeholder="Enter the list options for repository(s)"/>
+                        </div>
+                    </div>
+                    <hr class="divider">
+                    <div class="bottom">
+                        <div class="required">
+                            <span class="dot"></span>
+                            <p>= Required Field</p>
+                        </div>
+                        <div class="cont-btn-container">
+                            <button class="cont-install-btn" id="subject-step" type="button" name="button">
+                                <p>Continue to Subject of Observation Configuration</p>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="subject field">
+            <hr>
+            <div class="form-prompt">
+                <div class="form-prompt-wrapper">
+                    <p class="prompt1">
+                        Enter information about your Subject of Observation form below
+                    </p>
+                    <p class="prompt2">
+                        For each field, type an option and then hit enter. Then add more options as needed.
+                    </p>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <form>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Artifact - Structure Classification(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Artifact - Structure Type(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Artifact - Structure Material(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Artifact - Structure Technique(s)</p>
+                            <input type="text" placeholder="Enter the list options for language(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Archeological Culture(s)</p>
+                            <input type="text" placeholder="Enter the list options for rights holder(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Current Location(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Repository(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Creator(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Artifact - Structure Unit(s)</p>
+                            <input type="text" placeholder="Enter the list options for language(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <span class="dot"></span>
+                            <p>Artifact - Structure Location(s)</p>
+                            <input type="text" placeholder="Enter the list options for language(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Condition(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Subject(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full">
+                            <p>Artifact - Structure Origin(s)</p>
+                            <input type="text" placeholder="Enter the list options for type(s)"/>
+                        </div>
+                    </div>
+                    <hr class="divider">
+                    <div class="bottom">
+                        <div class="required">
+                            <span class="dot"></span>
+                            <p>= Required Field</p>
+                        </div>
+                        <div class="cont-btn-container">
+                            <button onclick="window.location.href= window.location.href.replace('field', 'create')" class="cont-install-btn" type="button" name="button">
+                                <p>Continue to Project Record Creation</p>
                             </button>
                         </div>
                     </div>

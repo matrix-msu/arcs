@@ -112,20 +112,30 @@
     .excavation{
         display: none;
     }
-    .form-prompt-wrapper {
-        margin: 0 auto;
-        color: #686868;
+    .resource{
+        display: none;
+    }
+    .subject{
+        display: none;
+    }
+    .form-prompt{
+        height: auto;
         padding-top: 45px;
-        text-align: left;
-        max-width: 1300px;
-        width: 90%;
-        
-        .prompt1 {
-            line-height: 28px;
-        }
-        .prompt2 {
-            font-size: 12px;
-            line-height: 18px;
+        width: 100%;
+        .form-prompt-wrapper {
+            margin: 0 auto;
+            color: #686868;
+            text-align: left;
+            max-width: 1300px;
+            padding-left: 4.3%;
+
+            .prompt1 {
+                line-height: 28px;
+            }
+            .prompt2 {
+                font-size: 12px;
+                line-height: 18px;
+            }
         }
     }
     
@@ -148,6 +158,9 @@
             display: block;
             position: relative;
         }
+        #arcs-name{
+            margin-top: 70px;
+        }
         .row {
             width: 100%;
             display: inline-flex;
@@ -167,6 +180,49 @@
             .input-full {
                 width: 90%;
                 margin: 0 auto;
+                
+                .create-project-dropdown{
+                    border: 1px solid #D8D8D8;
+                    display: block;
+                    font-size: 12px;
+                    height: 53px;
+                    outline: none;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    width: 100%;
+                }
+                .date-select{
+                    display: block;
+                    
+                    select{
+                        border: 1px solid #D8D8D8;
+                        display: inline-block;
+                        font-size: 12px;
+                        height: 53px;
+                        outline: none;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        width: 33.42%;
+                    }
+                }
+                .period-select{
+                    display: block;
+                    
+                    .date-input{
+                        display:inline-block;
+                        width: 50%;
+                    }
+                    .period-project-dropdown{
+                        border: 1px solid #D8D8D8;
+                        display: inline-block;
+                        font-size: 12px;
+                        height: 53px;
+                        outline: none;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        width: 49.6%;
+                    }
+                }
             }
             input {
                 width: 100%;
