@@ -41,6 +41,9 @@ _resource.SwapResource = function(kid) {
 
         }else{
             setTimeout(function(){$('#scroll').slideDown(300);}, 1)
+            console.log("hey");
+            $("#resources-nav").addClass("scroll-shift-nav");
+            $("#viewer-right").addClass("scroll-shift-viewer");
         }
     }, 1)
 
@@ -152,12 +155,18 @@ _resource.sliderMove.adjust = function(element) {
             setTimeout(function(){$('#scroll2').slideUp(300);}, 1)
         }else{
             setTimeout(function(){$('#scroll2').slideDown(300);}, 1)
+            console.log("hey");
+            $("#resources-nav").addClass("scroll-shift-nav");
+            $("#viewer-right").addClass("scroll-shift-viewer");
         }
     }if( $(element).hasClass('page-slider') ){
         if( checkBoth == 0 ){
             setTimeout(function(){$('#scroll').slideUp(300);}, 1)
         }else{
             setTimeout(function(){$('#scroll').slideDown(300);}, 1)
+            console.log("hey");
+            $("#resources-nav").addClass("scroll-shift-nav");
+            $("#viewer-right").addClass("scroll-shift-viewer");
         }
     }
 }
