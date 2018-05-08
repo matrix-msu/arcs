@@ -31,7 +31,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?=  $this->Html->script("views/viewer/Multi/newResource.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/export.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?>
-
+<?=  $this->Html->script("views/viewer/Multi/transcript.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/annotation.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/slider_helpers.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/edit_metadata.js") ?>
@@ -345,6 +345,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
                 <div class="level-content">
                     <div class="content_transcripts"></div>
+                    <div class="transcripts_clone" id="transcripts_clone"></div>
                     <div class="editInstructions">			Drag and drop transcriptions to reorder them.</div>
                     <form class="newTranscriptionForm">
                         <textarea name="transcript" class="transcriptionTextarea" placeholder="Enter New Transcription Here..."></textarea><br>

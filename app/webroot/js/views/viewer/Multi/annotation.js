@@ -837,62 +837,6 @@ function annotationPrep() {
         });
     });
 
-    $(".transcriptSubmit").click(function () {
-
-  	      annotateData.transcript = $(".transcriptionTextarea").val();
-          annotateData.page_kid = kid;
-          annotateData.resource_kid = resourceKid;
-          annotateData.resource_name = resourceIdentifier;
-          annotateData.relation_id = null
-          //First relation
-          $.ajax({
-              url: arcs.baseURL + "api/annotations.json",
-              type: "POST",
-              data: annotateData,
-              success: function (data) {
-
-                  annotateData.relation_id = data.id
-                  if (annotateData.relation_resource_kid != "") {
-                      //Backwards relation
-                      $.ajax({
-                          url: arcs.baseURL + "api/annotations.json",
-                          type: "POST",
-                          data: {
-                              incoming: 'true',
-                              relation_id: annotateData.relation_id,
-                              resource_kid: annotateData.relation_resource_kid,
-                              page_kid: annotateData.relation_page_kid,
-                              resource_name: annotateData.relation_resource_name,
-                              relation_resource_kid: annotateData.resource_kid,
-                              relation_page_kid: annotateData.page_kid,
-                              relation_resource_name: annotateData.resource_name,
-                              transcript: annotateData.transcript,
-                              url: annotateData.url
-                          },
-                          success: function (data) {
-                              // save the relation_id to first reference
-                              $.ajax({
-                                  url: arcs.baseURL + "api/annotations/" +annotateData.relation_id+".json",
-                                  type: "POST",
-                                  data: {
-                                      relation_id: data.id
-                                  },
-                                  success: function (data) {
-                                  }
-                              });
-                          }
-                      });
-                  }
-  				//reset annotations and redraw
-  				$(".annotation_display").remove();
-  				$(".transcript_display").remove();
-  				$(".gen_box").remove();
-  				resetAnnotations();
-  				getAnnotationData();
-              }
-          });
-      });
-
 	$(document).on('click', ".trashTranscript", function () {
 		if( $(this).parent().hasClass('annotation_display') ){
 			$('.deleteBody').html('Are you sure you want to delete this annotation?');
@@ -922,5 +866,70 @@ function annotationPrep() {
 			})
 		});
 	});
+
+  $(document).ready(function () {
+      $(".editTranscriptions").click(function () {
+          $(".editOptions").show();
+          $(".editTranscriptions").hide();
+
+          $(".content_transcripts").sortable({
+              disabled: false,
+              sort: function (e) {
+                  $(".newTranscriptionForm").hide();
+              }
+          });
+
+          $('.transcript_display').addClass("editable");
+          $(".editInstructions").show();
+      });
+
+      $(".newTranscription").click(function () {
+          $('.content_transcripts').append($(".newTranscriptionForm"));
+          $(".newTranscriptionForm").show();
+      });
+
+      $(".saveTranscription").click(function () {
+          $(".transcriptionTextarea").val('');
+          $(".newTranscriptionForm").hide();
+          $(".editOptions").hide();
+          $(".editTranscriptions").show();
+
+          var sortedIDs = $(".content_transcripts").sortable("toArray");
+          $.each(sortedIDs, function (k, v) {
+              $.ajax({
+                  url: arcs.baseURL + "api/annotations/" + v + ".json",
+                  type: "POST",
+                  data: {
+                      order_transcript: k
+                  }
+              });
+          });
+
+          $(".content_transcripts").sortable({disabled: true});
+          $('.transcript_display').removeClass("editable");
+          $(".editInstructions").hide();
+      });
+
+      $(".transcriptSubmit").click(function () {
+          //e.preventDefault();
+          annotateData.page_kid = kid;
+          annotateData.resource_kid = resourceKid;
+          annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+          annotateData.transcript = $(".transcriptionTextarea").val();
+          annotateData.order_transcript = 1000000;
+
+          if (annotateData.transcript.length > 0)
+              $.ajax({
+                  url: arcs.baseURL + "api/annotations.json",
+                  type: "POST",
+                  data: annotateData,
+                  success: function () {
+                      $(".transcriptionTextarea").val('');
+                      $(".newTranscriptionForm").hide();
+                      //GetDetails();
+                  }
+              });
+      });
+  });
 
 }

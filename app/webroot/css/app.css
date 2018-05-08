@@ -11017,7 +11017,7 @@ input[type=range]:focus::-ms-fill-upper {
   padding-top: 30px;
 }
 .newTranscriptionForm {
-  display: block;
+  display: none;
   width: 100%;
   position: absolute;
   bottom: 0px;
