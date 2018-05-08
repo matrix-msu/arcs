@@ -48,6 +48,8 @@ class ProjectsController extends AppController {
     } else {
       $user["role"] = 'Not';
     }
+//    json_encode($user);
+//    die;
     return $user;
     }
     public function checkIfAnyAdmin($id){
@@ -60,12 +62,17 @@ class ProjectsController extends AppController {
                 ),
             )
         ));
+//        var_dump($mappings);
+//        die;
         if( !empty($mappings) ){
             return true;
         }else{
             return false;
         }
+
     }
+
+
 	public function getProjects() {
 
         $projectstemp = array();
@@ -254,7 +261,7 @@ class ProjectsController extends AppController {
 			$tempUser["role"] = 'Not';
 		}
 
-		$this->set('user', $tempUser);
+//		$this->set('user', $tempUser);
 
 
 		$this->loadModel('Collection');

@@ -103,7 +103,7 @@ class UsersController extends AppController
 
       // push the emails to an array
       foreach ($res as $key => $value) {
-        array_push($mapping, $value['User']['email']);
+        array_push($mapping, $value['email']);
       }
       // return the admin emails
       return $mapping;
@@ -175,8 +175,10 @@ class UsersController extends AppController
         if ($resolve["isResource"]) {
           $message =
           "
-            <p>User ".$username." has request access to the resource ".$resource."on project ".$project."
-            <p>To permit the user to the project, visit the associated kora installation dashboard.<br>
+            <p>User ".$username." has requested access to the resource ".$resource."on project ".$project."
+            <p>To permit the user to the project, visit the associated kora installation dashboard.<br><br>
+            <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
+            Social Sciences with support from the National Endowment for the Humanities<br />
           ";
 
           // $template = 'requestAccessResource';
@@ -185,10 +187,11 @@ class UsersController extends AppController
         } else {
           $message =
           "
-          <p>User ".$username." has request access to the project ".$project."
+          <p>User ".$username." has requested access to the project ".$project."
           <p>To permit the user to the project, visit the associated kora installation dashboard.<br>
+          <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
+          Social Sciences with support from the National Endowment for the Humanities<br />
           ";
-
           // $template = 'requestAccessProject';
           // $viewVars = array('user' => $user, 'project' => $resolve["project"]);
         }
@@ -995,10 +998,10 @@ class UsersController extends AppController
 
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
                         //confirm breaks
-                        $this->confirmUserEmail($user, $id);
+                        $this->confirmUserEmail($user, $id, $project);
 
                         $this->Session->setFlash(
-                            "Thank you for registering!  You will recieve a confirmation email shortly.
+                            "Thank you for registering!  You will receive a confirmation email shortly.
                             <br>After you verify your email address, an administrator will activate your account. This could take some time.
                             <br>Once your account is fully activated, we will send you another email confirming your ARCS privileges.",
                              'flash_success');
@@ -1477,22 +1480,32 @@ class UsersController extends AppController
      * Send pending user email
      * @param array data
      */
-    public function confirmUserEmail($data, $id)
+    public function confirmUserEmail($data, $id, $project)
     {
+        $Users = new UsersController;
+        $adminEmails = $Users->getAdmins(strtolower(str_replace(" ","_",$project)));
         $to = $data['email'];
         $subject = "ARCS: Confirm your email";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
-        $message .= "Hi there, <br /><br /> Here's a link that you can follow to confirm
-                    your account: <br />";
+        $message .= "Hi there, <br /><br />
+            You've registered for the $project installation 
+            of the Archaeological Resource Cataloging System (ARCS). There are a couple of more steps before we 
+            can create your account.<br /><br />
+            First, click on this link to confirm your email:<br />";
         $message .= "<a target='_blank' href='" . $this->baseURL() .
                     "/users/confirm_user/" . $data['username'] ."'>".$this->baseURL().
                     "/users/confirm_user/".$data['username']."</a> <br /><br />";
-        $message .= "To read more about ARCS, check out our";
-        $message .= "<a target='_blank' href='http://arcs.dev.cal.msu.edu/about'> about </a> page";
-        $message .= "<br /><br /> ARCS has been developed at the MSU College of Arts
-                    and Letters in cooperation with the OSU Excavations at Isthmia and has
-                    been funded by a NEH Digital Humanities Startup Grant. <br />";
+        $message .= "After you confirm your email, your account will need to be approved by an administrator 
+            before it is fully activated. Once this happens, you'll receive a confirmation email - and 
+            you will be good to go!<br /><br />If you have any questions at all, please contact us at<br /><br />";
+        foreach ($adminEmails as $email) {
+            $message .= $email."<br>";
+        }
+        $message .="<br /><br />Sincerely,<br /><br />
+            $project Team<br /><br />";
+        $message .= "ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
+            Social Sciences with support from the National Endowment for the Humanities<br />";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
         $headers .= "From: arcs arcs@matrix.msu.edu \r\n";

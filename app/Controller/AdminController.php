@@ -230,17 +230,19 @@ class AdminController extends AppController {
         $login_url = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'#loginModal/';
 
         $txt = '';
-        $txt .= "<p>Hi there,</p>";
-        $txt .= "<p>An ARCS administrator approved your account.</p>";
-        $txt .= "<p>You should be good to go!</p>";
-        $txt .= "<p>If you have any questions at all, please contact us:</p>";
+        $txt .= "Hi there,<br /><br />
+            We're happy to let you know that your account for the $project installation of the 
+            Archaeological Resource Cataloging System (ARCS) has been fully approved. You now have 
+            $role level access to this project.<br /><br />
+            If you have any questions at all, please contact us at<br /><br />";
         foreach ($adminEmails as $email) {
             $txt .= $email."<br>";
         }
-        $txt .= '<br>';
-        $txt .= "<p>ARCS was developed by Michigan State University's MATRIX: ";
-        $txt .= "The Center for Digital Humanities & Social Sciences with support ";
-        $txt .= "from the National Endowment for the Humanities<p>";
+        $txt .= "Thanks much for your willingness to participate and collaborate on $project.<br /><br />
+            Sincerely,<br /><br />
+            $project Team<br /><br />";
+        $txt .= "ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
+            Social Sciences with support from the National Endowment for the Humanities<br />";
 
         $headers = '';
         $headers .= "MIME-Version: 1.0\r\n";

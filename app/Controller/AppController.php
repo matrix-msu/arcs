@@ -1,5 +1,6 @@
 <?php
 App::uses('Controller', 'Controller');
+//App::uses('Controller', 'ProjectsController');
 
 require_once LIB . "Arcs/ArcsException.php";
 
@@ -17,7 +18,7 @@ class AppController extends Controller
 {
     public $helpers = array('Html', 'Form', 'Session', 'Assets');
     public $viewClass = 'TwigView.Twig';
-    public $uses = array('Job');
+    public $uses = array('Job', 'Mapping');
     public $components = array(
         'Auth' => array(
             'loginAction' => array(
@@ -44,6 +45,8 @@ class AppController extends Controller
         if (substr($this->request->url, 0, 3) == 'api') {
             $this->Auth->authenticate = array('Basic');
         }
+//echo 'LOAD1';
+
 
         $this->set(
             array(
@@ -52,10 +55,13 @@ class AppController extends Controller
                 'id' => $this->Auth->user('id'),
                 'name' => $this->Auth->user('name'),
                 'email' => $this->Auth->user('email'),
+                'role' => $this->Auth->user('role'),
                 'role' => $this->Auth->loggedIn() ?
                     $this->Auth->user('role') : "Researcher",
                 'username' => $this->Auth->user('username'),
-                'gravatar' => md5(strtolower($this->Auth->user('email')))
+                'gravatar' => md5(strtolower($this->Auth->user('email'))),
+
+                'isAnyAdmin' => $this->checkIfAnyAdmin($this->Auth->user('id'))
             ),
             'toolbar' => array(
                 'logo' => true,
@@ -67,9 +73,42 @@ class AppController extends Controller
             'projects' => $projects
             )
         );
-
+////echo 'LOAD2';
         $this->RequestHandler->addInputType('json', array('json_decode', true));
+
+        if( $this->Session->read('Auth.User.isAdmin') === 1 ){
+            $user["role"] = 'Admin';
+        } else {
+            $user["role"] = 'Not';
+        }
+
+//        return $user;
+//        var_dump($user);
+//        echo json_encode($this);
+//        die;
     }
+    public function checkIfAnyAdmin($id){
+
+
+        $mappings = $this->Mapping->find('all', array(
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.id_user' => $id,
+                    'Mapping.status' => 'confirmed',
+                    'Mapping.role' => 'Admin'
+                ),
+            )
+        ));
+//        var_dump($mappings);
+//        die;
+        if( !empty($mappings) ){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 
     /**
      * Converts a KID to A Project Name from the bootstrap
