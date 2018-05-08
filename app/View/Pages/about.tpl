@@ -68,3 +68,7 @@
     <div class="spacer spacer-left"></div>
   </div>
 </div>
+
+<script>
+  $('.wrap').attr('style', 'padding-top:60px!important')
+</script>

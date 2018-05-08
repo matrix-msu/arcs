@@ -66,16 +66,16 @@ class PagesController extends AppController {
             $this->set('toolbar', false);
         }
 
-		$pid = parent::getPIDFromProjectName($pName);
-		$sid = parent::getResourceSIDFromProjectName($pName);
-		$types = parent::getK3Controls($pid, $sid, array('Type'), 'Resource');
-
-		$this->set("pid", $pid);
-		$this->set("sid", $sid);
-		$this->set("types", $types);
+        if( isset($pName) ) {
+            $pid = parent::getPIDFromProjectName($pName);
+            $sid = parent::getResourceSIDFromProjectName($pName);
+            $types = parent::getK3Controls($pid, $sid, array('Type'), 'Resource');
+            $this->set("pid", $pid);
+            $this->set("sid", $sid);
+            $this->set("types", $types);
+        }
 
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
-		//var_dump($path);die;
 		$this->render(implode('/', $path));
 	}
 }
