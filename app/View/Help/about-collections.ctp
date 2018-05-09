@@ -10,7 +10,7 @@ research; however they need not have anything in common.</p>
 is idiosyncratic and has a structural characteristic particular to an
 individual user or a group of users. It is technically a collection, but in
 many ways, ARCS treats it like a single resource. You can learn more about the
-notebook pages at the <a href="about-resources">Resources</a> section.</p>
+notebook pages at the <a href="/<?php echo BASE_URL;?>help/about-resources">Resources</a> section.</p>
 <h2 id="creating-collections">Creating Collections</h2>
 <p>You can create a collection on the search page, by selecting a set of desired
 resources and then clicking on <code>Collection</code> and selecting the <code>Create new
@@ -28,7 +28,7 @@ itself to the content of the resources.</p>
 <p><strong>Description</strong> : The description should be a short explanation of the
 resources and their association within the collection.</p>
 <p>You can flag or edit attributes of each resource in a collection as a single
-operation. You can learn more about it in the <a href="bulk-actions">Bulk Actions</a>
+operation. You can learn more about it in the <a href="/<?php echo BASE_URL;?>help/bulk-actions">Bulk Actions</a>
 section.</p>
 <h3 id="bookmark">Bookmark</h3>
 <p>A bookmark is a special form of collection which does not necessarily be a part

@@ -67,7 +67,7 @@ search page as shown below:</p>
 <p><img alt="list" src="../img/docs/list.png" /></p>
 <h2 id="uploading-resources">Uploading Resources</h2>
 <p>Add new resources to ARCS by using the uploader. For more on that, check out our
-<a href="uploading">Uploading</a> section.</p>
+<a href="/<?php echo BASE_URL;?>help/uploading">Uploading</a> section.</p>
 <h2 id="editing-resources">Editing Resources</h2>
 <p>A resource can be edited in the following ways:</p>
 <h4 id="flagging">Flagging</h4>
@@ -127,5 +127,5 @@ clicking on the <code>Edit</code> or by using Ctrl+E and then save it as shown b
 resource on the viewer. Any resource can be annotated by a Senior Researcher/
 Administrator any time. However, if you are a Researcher, you can annotate your
 own resource or flag another user’s annotation by selecting it and flagging it
-with a valid reason. For more details, check our <a href="annotating">Annotating</a>
+with a valid reason. For more details, check our <a href="/<?php echo BASE_URL;?>help/annotating">Annotating</a>
 section.</p>

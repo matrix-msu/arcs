@@ -219,7 +219,7 @@ The ones we've used frequently are also explained below:</p>
 <tbody>
 <tr>
 <td><code>category</code></td>
-<td>Facet category. See the Searching <a href="searching">documentation</a>.</td>
+<td>Facet category. See the Searching <a href="/<?php echo BASE_URL;?>help/searching">documentation</a>.</td>
 </tr>
 <tr>
 <td><code>value</code></td>

@@ -4,7 +4,7 @@
 a research collection. A resource can be any media format that a researcher is
 working with. Resources can have several types like Photographs, Notebook
 Pages, Inventory cards, Maps, Reports, etc. You can learn more about
-<a href="about-resources">Resources</a>.   </p>
+<a href="/<?php echo BASE_URL;?>help/about-resources">Resources</a>.   </p>
 <h4 id="what-is-the-difference-between-a-resource-and-a-collection">What is the difference between a resource and a collection?</h4>
 <p>A resource is a single digital data file whereas a collection is a group of
 resources like photographs and documents that are somehow related and call for
@@ -14,9 +14,9 @@ further study. A resource can be part of any number of collections.</p>
 create a collection by navigating through the <code>Search</code> tab. You can then select
 a group of resources by dragging over them, and clicking <code>Collection</code> &gt; <code>Create
 a New Collection</code>. You will then be prompted to provide a
-<a href="about-collections#title">Title</a> and a brief
-<a href="about-collections#description">Description</a> about the collection. You can
-learn more in the <a href="about-collections">Collections</a> section.</p>
+<a href="/<?php echo BASE_URL;?>help/about-collections#title">Title</a> and a brief
+<a href="/<?php echo BASE_URL;?>help/about-collections#description">Description</a> about the collection. You can
+learn more in the <a href="/<?php echo BASE_URL;?>help/about-collections">Collections</a> section.</p>
 <h4 id="what-is-a-bookmark">What is a bookmark?</h4>
 <p>A bookmark is a special collection of resources that you might want to revisit
 later, but don’t necessarily know if it is relevant for a specific research
@@ -25,7 +25,7 @@ collection.</p>
 <p>A bookmark can be created on the Search page. You can select the resources
 which you would want to view later and then click on <code>Collection</code> &gt; <code>Add to
 bookmarks</code> on the search page. You can view the
-<a href="about-collections">Collections</a> section for more information.</p>
+<a href="/<?php echo BASE_URL;?>help/about-collections">Collections</a> section for more information.</p>
 <h4 id="what-is-the-difference-between-a-bookmark-and-a-collection">What is the difference between a bookmark and a collection?</h4>
 <p>A collection is a set of resources which are associated to a particular area of
 research. A bookmark could be any resource which does not necessarily belong
@@ -41,17 +41,17 @@ flag. In either case, they leave a comment with an explanation for the user.</p>
 click+dragging over a particular section of any resource. You will then be
 prompted to add a description for your annotation.  You can also link your new
 annotation to any other resource which according to you can be associated with
-that particular annotation. You can check the <a href="annotating">Annotations</a> section
+that particular annotation. You can check the <a href="/<?php echo BASE_URL;?>help/annotating">Annotations</a> section
 for more details.</p>
 <h4 id="can-i-edit-other-peoples-annotations">Can I edit other people’s annotations?</h4>
 <p>No. You can only annotate your own resources or flag someone else’s annotation.</p>
 <h4 id="why-cant-i-just-edit-annotations">Why can’t I just edit annotations?</h4>
 <p>To avoid erratic changes in the data for resources, only Senior Researchers and
-Admins can change <a href="about-resources#keywording">Keywords</a> or
-<a href="annotating">Annotations</a>. This ensures that the standard of academic validity
+Admins can change <a href="/<?php echo BASE_URL;?>help/about-resources#keywording">Keywords</a> or
+<a href="/<?php echo BASE_URL;?>help/annotating">Annotations</a>. This ensures that the standard of academic validity
 of your research data is maintained. If you think something should be changed,
 and are not a Senior Researcher, feel free to flag the resource. Learn more
-about <a href="about-resources#flagging">Flagging Resources</a> .</p>
+about <a href="/<?php echo BASE_URL;?>help/about-resources#flagging">Flagging Resources</a> .</p>
 <h4 id="what-is-keywording">What is keywording?</h4>
 <p>Keywords are a very useful way to tag related resources and quickly tell a user
 about the resources. Keywords make it easier for users to search for a
@@ -64,7 +64,7 @@ pull all relevant resources with one query.</p>
 specific points of data that you can filter in ARCS. For example, you can
 filter ARCS resources based on their <code>type</code>. So you would search for <code>type</code>:
 <code>Notebook</code>. You can view the table of facets you can use to filter ARCS
-resources under the <a href="searching">Search</a> section.</p>
+resources under the <a href="/<?php echo BASE_URL;?>help/searching">Search</a> section.</p>
 <h4 id="what-is-the-difference-between-a-researcher-and-senior-researcher">What is the difference between a Researcher and Senior Researcher?</h4>
 <p>As a Researcher, you can view all resources in the system, and annotate and add
 keywords to resources. You cannot, however, edit or delete annotations of

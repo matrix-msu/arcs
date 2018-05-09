@@ -19,20 +19,20 @@ they deem to be problematic.</p>
 <p>A resource can be any form of digital data related to a research that a
 researcher is working on. It can be photographs, page spreads, inventory cards,
 maps, artifacts, reports, word documents, notebooks etc. You can learn more
-details at the <a href="about-resources">Resources</a> section. </p>
+details at the <a href="/<?php echo BASE_URL;?>help/about-resources">Resources</a> section. </p>
 <h2 id="annotation">Annotation</h2>
 <p>An annotation is a short explanatory note made by any researcher and they can
 be added by researchers to any resource when they are open to them. You can
-learn more details at the <a href="annotating">Annotation</a> section.</p>
+learn more details at the <a href="/<?php echo BASE_URL;?>help/annotating">Annotation</a> section.</p>
 <h2 id="collections">Collections</h2>
 <p>A collection can be formed by combining any form of the above mentioned
 resources relevant to a particular segment of a research. You can learn more
-details at the <a href="about-collections">Collections</a> section.</p>
+details at the <a href="/<?php echo BASE_URL;?>help/about-collections">Collections</a> section.</p>
 <h2 id="uploading">Uploading</h2>
 <p>Resources can be uploaded in ARCS in a very user-friendly manner. A researcher
 can upload multiple files of different formats at a time. You can learn more
-details at the <a href="Uploading">Uploading</a> section.</p>
+details at the <a href="/<?php echo BASE_URL;?>help/Uploading">Uploading</a> section.</p>
 <h2 id="searching">Searching</h2>
 <p>Searching any resource, collection or notebook has been made easier through a
 number of facets like user, filename, file type, keyword, title etc. You can
-learn more details in the <a href="searching">Search</a> section.</p>
+learn more details in the <a href="/<?php echo BASE_URL;?>help/searching">Search</a> section.</p>
