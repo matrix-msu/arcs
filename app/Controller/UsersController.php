@@ -169,8 +169,7 @@ class UsersController extends AppController
 
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
 
         if ($resolve["isResource"]) {
           $message =
@@ -1377,7 +1376,8 @@ class UsersController extends AppController
      */
     public function sendInviteEmail($data, $token)
     {
-        $to = $data['email'];
+        //$to = $data['email'];
+        $to = "newmanju@msu.edu";
         $subject = "Welcome to ARCS";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
@@ -1390,8 +1390,7 @@ class UsersController extends AppController
                     ".$this->baseURL()."/register/".$token."</a>";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
         $success = mail($to,$subject,$message,$headers);
 
         //TODO: remove cakeEmail
@@ -1428,8 +1427,7 @@ class UsersController extends AppController
                     ".$this->baseURL()."/invitation/register/".$token."</a>";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
         $success = mail($to,$subject,$message,$headers);
 
         //TODO: remove cakeEmail
@@ -1461,8 +1459,7 @@ class UsersController extends AppController
         $message .= "<a target='_blank' href='".$link."'>".$link."</a>";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
         $success = mail($to,$subject,$message,$headers);
 
         /*App::uses('CakeEmail', 'Network/Email');
@@ -1489,15 +1486,15 @@ class UsersController extends AppController
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "Hi there, <br /><br />
-            You've registered for the $project installation 
-            of the Archaeological Resource Cataloging System (ARCS). There are a couple of more steps before we 
+            You've registered for the $project installation
+            of the Archaeological Resource Cataloging System (ARCS). There are a couple of more steps before we
             can create your account.<br /><br />
             First, click on this link to confirm your email:<br />";
         $message .= "<a target='_blank' href='" . $this->baseURL() .
                     "/users/confirm_user/" . $data['username'] ."'>".$this->baseURL().
                     "/users/confirm_user/".$data['username']."</a> <br /><br />";
-        $message .= "After you confirm your email, your account will need to be approved by an administrator 
-            before it is fully activated. Once this happens, you'll receive a confirmation email - and 
+        $message .= "After you confirm your email, your account will need to be approved by an administrator
+            before it is fully activated. Once this happens, you'll receive a confirmation email - and
             you will be good to go!<br /><br />If you have any questions at all, please contact us at<br /><br />";
         foreach ($adminEmails as $email) {
             $message .= $email."<br>";
@@ -1508,8 +1505,7 @@ class UsersController extends AppController
             Social Sciences with support from the National Endowment for the Humanities<br />";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
 
         $success = mail($to,$subject,$message, $headers);
 
@@ -1557,8 +1553,7 @@ class UsersController extends AppController
           been funded by a NEH Digital Humanities Startup Grant. <br />";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
 
         $success = mail($to,$subject,$message,$headers);
         //echo $success; die;
@@ -1619,8 +1614,7 @@ class UsersController extends AppController
         $subject = "Missing Image Notification";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+        $headers .= "From: arcs@matrix.msu.edu \r\n";
         $success = mail($to,$subject,$message,$headers);
 
         if( $Email->send($content) ){

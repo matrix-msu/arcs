@@ -471,11 +471,11 @@ function annotationPrep() {
 
     function SubmitAnnotateSearch(offset){
         var annotateSearch = $(".annotateSearch");
-        var search = annotateSearch.val()
+        var search = annotateSearch.val();
         if( search == '' ){
             return;
         }
-        $(".annotateSearch ").hide()
+        $(".annotateSearch ").hide();
         var pKid = $('.selectedCurrentPage').find('img').attr('id');
         pid = getPidFromKid(pKid); //defined in bootstrap.php
         result_ids = [];
@@ -579,7 +579,8 @@ function annotationPrep() {
         return q
     }
 	function SetData(data, scheme, pid) {
-
+        console.log("hi here's data");
+        console.log(data);
         if (Object.keys(data).length > 0) {
             results_count = 0;
             //Iterate search results
@@ -643,7 +644,7 @@ function annotationPrep() {
                     $("#" + v['Resource_Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
 					var page_sid = getSidFromKid(v.kid);
-                    var image = THUMBNAIL_URL + 'smallThumbs/' + v['Image_Upload'].localName;
+                    var image = v['constructed_image'];
                     var pageDisplay = $(".resultsContainer").find("#" + v.kid);
                     if (image === "") {
                         pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
@@ -662,9 +663,9 @@ function annotationPrep() {
                     pageDisplay.append(
                         "<div class='pageInfo'>" +
                         "<p>" + surveyTitle + "</p>" +
-                        "<p>" + v['Resource Identifier']+ "</p>" +
+                        "<p>" + v['Resource_Identifier']+ "</p>" +
                         "<p>" + ResourceTitle + "</p>" +
-                        "<p>" + v['Page Identifier'] + "</p>" +
+                        "<p>" + v['Page_Identifier'] + "</p>" +
                         "</div>"
                     );
 
