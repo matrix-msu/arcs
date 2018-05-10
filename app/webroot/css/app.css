@@ -9701,10 +9701,13 @@ input[type=range]:focus::-ms-fill-upper {
 .viewer.standalone {
   background-color: #333;
 }
+#viewers-search {
+  height: auto;
+}
 .viewers-container {
   margin-top: -60px;
   position: relative;
-  height: auto;
+  height: 709px;
 }
 #viewer-left {
   float: left;

@@ -43,7 +43,7 @@
 </article>
 <a id="removeModal" href="#"></a>
 
-<div class="viewers-container">
+<div class="viewers-container" id="viewers-search">
 	<div class="collectionModalBackground" id="collectionModalBackground">
 		<div class="collectionWrap" style="margin-top:9em;">
 			<div id="collectionModal" style="width:35em;">
