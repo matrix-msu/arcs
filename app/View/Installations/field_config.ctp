@@ -41,6 +41,7 @@
                 <form>
                     <div class="row">
                         <div class="input-full">
+                            <span class="dot"></span>
                             <p>Country (Countries)</p>
                             <input type="text" placeholder="countries"/>
                         </div>
@@ -53,6 +54,7 @@
                     </div>
                     <div class="row">
                         <div class="input-full">
+                            <span class="dot"></span>
                             <p>Modern Name(s)</p>
                             <input type="text" placeholder="Kyras Vrisi"/>
                         </div>

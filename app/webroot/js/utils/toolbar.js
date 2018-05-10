@@ -112,7 +112,7 @@ $(document).ready(function(){
 		if(checkMobile()){
       $('#searchHeader').toggle();
       $('#log').css({
-        top: $('#searchHeader').css('display') === 'none' ? '244px' : '208px'
+        top: $('#searchHeader').css('display') === 'none' ? '180px' : '180px'
       })
 			if(($('#helpSearch').css('top') == '22px')){
 				$('#dropArrow').addClass( 'pointerUp' );

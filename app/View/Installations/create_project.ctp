@@ -149,6 +149,7 @@
                     </div>
                     <div class="row">
                         <div class="input-full">
+                          <span class="dot"></span>
                             <p>Persistent Name</p>
                             <input type="text" placeholder="Enter the Persistent Name"/>
                         </div>

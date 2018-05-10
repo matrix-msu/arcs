@@ -98,7 +98,7 @@
       display: block !important;
     }
     .viewers-container{
-      height: auto !important;
+      /* height: auto !important; */
     }
     a:hover{
       text-decoration: none;
@@ -444,5 +444,9 @@
 	href = href.split('/'); href.pop(); href = href.join('/');
 	var href = href+'/'+pName;
 	$('#search').attr('href', href);
+
+  $(document).ready(function(){
+    $(".viewers-container").attr("style","height:auto !important;");
+  })
 
 </script>
