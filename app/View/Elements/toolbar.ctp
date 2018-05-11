@@ -87,7 +87,7 @@
 
 
 	<div class="btn-group toolbar-btn">
-		 <div  id= "projects" class="btn btn-grey">
+		 <div id= "projects" class="btn btn-grey">
 			 <div id='projCage'>
                  <i class="icon-white icon-folder-open"></i>
                  <div id="toolbarHead" >
@@ -231,10 +231,11 @@
 			href="<?php echo $this->Html->url('/help')?>">
 			<i class="icon-white icon-book"></i> Help
 		</a>
-		<a id="searchHeader" class="btn btn-grey"
-				href="<?php echo $this->Html->url('/search')?>">
+
+		<a id="searchHeader" class="btn btn-grey" href="<?php echo $this->Html->url('/search').'/all/'?>">
 				<i class="icon-white icon-search"></i> Search
 			</a>
+
 		</div>
 		</div>
 
