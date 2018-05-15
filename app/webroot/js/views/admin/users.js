@@ -29,7 +29,7 @@
 
     Users.prototype.events = {
       'click #delete-btn': 'deleteUser',
-      'click #edit-btn': 'editUser',
+      'click .edit-prof-btn': 'editUser',
       'click #new-btn': 'newUser',
       'click #invite-btn': 'sendInvite'
     };
@@ -150,39 +150,40 @@
       });
     };
 
-    Users.prototype.sendInvite = function() {
-      return new arcs.views.Modal({
-        title: 'Invite someone to ARCS',
-        subtitle: "Provide an email address and we'll send them a link that will " + "allow them to create an account.",
-        inputs: {
-            name: {
-              focused: true
-            },
-          email: {
-            focused: true
-          },
-          role: {
-            type: 'select',
-            options: this.USER_ROLES
-          }
-        },
-        buttons: {
-          send: {
-            "class": 'btn btn-success',
-            callback: (function(_this) {
-              return function(vals) {
-                vals.email = $.trim(vals.email);
-                //console.log(vals);
-                return $.postJSON(arcs.baseURL + 'api/users/invite', vals, function() {
-                  return _this.collection.add(vals);
-                });
-              };
-            })(this)
-          },
-          cancel: function() {}
-        }
-      });
-    };
+    // Users.prototype.sendInvite = function() {
+	// 	console.log('hi im here');
+    //   return new arcs.views.Modal({
+    //     title: 'Invite someone to ARCS',
+    //     subtitle: "Provide an email address and we'll send them a link that will " + "allow them to create an account.",
+    //     inputs: {
+    //         name: {
+    //           focused: true
+    //         },
+    //       email: {
+    //         focused: true
+    //       },
+    //       role: {
+    //         type: 'select',
+    //         options: this.USER_ROLES
+    //       }
+    //     },
+    //     buttons: {
+    //       send: {
+    //         "class": 'btn btn-success',
+    //         callback: (function(_this) {
+    //           return function(vals) {
+    //             vals.email = $.trim(vals.email);
+    //             //console.log(vals);
+    //             return $.postJSON(arcs.baseURL + 'api/users/invite', vals, function() {
+    //               return _this.collection.add(vals);
+    //             });
+    //           };
+    //         })(this)
+    //       },
+    //       cancel: function() {}
+    //     }
+    //   });
+    // };
 
 
     Users.prototype.render = function() {
@@ -283,7 +284,7 @@ $(document).ready(function() {
 
 	$('.users-head').on('click', function(e) {
 		if($('.name').is(e.target)) {
-			sortBy('p.name');
+			sortBy('a.name');
 		} else if($('.username').is(e.target)) {
 			sortBy('p.username');
 
@@ -296,11 +297,23 @@ $(document).ready(function() {
 				$('.bullet').addClass('selected');
 			}
 		}
-	})
+	});
 
     $(document).on('click', function(e) {
         if($('.removePR').is(e.target)) {
-            $(e.target).closest('.pnr-single').remove();
+			var removedProject = $(e.target).closest('.pnr-single').find('.proj-select').find('option:selected').val();
+			if (removedProject != 'Select a project') {
+				// add the removed project back to the remaining project list
+				if (remainingProjectNames.indexOf(removedProject) == -1) {
+					remainingProjectNames.push(removedProject);
+				}
+			}
+			$(e.target).closest('.pnr-single').remove();
+			//add an add another project button
+			if (remainingProjectNames.length > 0) {
+				$('.anotherPR').css('display', 'block');
+			}
+
         } else if($('.bullet').is(e.target)){
             $dot = $(e.target);
             if($dot.hasClass('selected')){
@@ -309,34 +322,39 @@ $(document).ready(function() {
                $dot.addClass('selected');
             }
         } else if($('.anotherPR.create').is(e.target)){
+            var projectOptions = "";
+            remainingProjectNames.forEach(function(pName){
+                projectOptions += "<option>"+pName+"</option>";
+            });
             $('.pnr-container.create').append(
                 "<div class=\"pnr-single\">"+
                     "<label>Project "+
-                        "<select name=\"project\">"+
+                        "<select class = \"proj-select\" name=\"project\">"+
                             "<option style='display:none;' selected>Select a project</option>"+
-                            "<option>Project 1</option>"+
-                            "<option>Project 2</option>"+
-                            "<option>Project 3</option>"+
+                             projectOptions+
                         "</select></label>"+
                     "<label>Role "+
                         "<select name=\"role\">"+
                             "<option style='display:none;' selected>Select a role</option>"+
-                            "<option>Role A</option>"+
-                            "<option>Role B</option>"+
-                            "<option>Role C</option>"+
+                            "<option>Researcher</option>"+
+                            "<option>Moderator</option>"+
+                            "<option>Admin</option>"+
                         "</select></label>"+
                     "<p class='removePR'>Remove This Project/Role</p><br>"+
                 "</div>"
             );
+			$('.anotherPR.create').css('display', 'none');
         } else if($('.anotherPR.invite').is(e.target)){
+			var projectOptions = "";
+			remainingProjectNames.forEach(function(pName){
+				projectOptions += "<option>"+pName+"</option>";
+			});
             $('.pnr-container.invite').append(
                 "<div class=\"pnr-single\">"+
                     "<label>Project "+
-                        "<select name=\"project\">"+
+                        "<select class=\"proj-select\" name=\"project\">"+
                             "<option style='display:none;' selected>Select a project</option>"+
-                            "<option>Project 1</option>"+
-                            "<option>Project 2</option>"+
-                            "<option>Project 3</option>"+
+ 							 projectOptions+
                         "</select></label>"+
                     "<label>Role "+
                         "<select name=\"role\">"+
@@ -353,24 +371,172 @@ $(document).ready(function() {
         } else {
             $('.admin-header-users .open').removeClass('open');
         }
+
     })
 
-	//display dropped image
-	// document.getElementById('profileImageDrop').onchange = function () {
- //  		var f = URL.createObjectURL(this.files[0]);
-	// 	$(this).attr('style', 'background:  url("'+f+'");'+
-	// 				 		  'border-color: #f9f9f9;'+
-	// 				 		  'opacity: .5;' );
-	// 	$(this).parent().find('label').attr('style', 'display: none;');
-	// };
+	//hide the add another project until the first is chosen.
+	$('.anotherPR').css('display', 'none');
 
-    $('#confirm-btn').on('click', function(){
+	$('.create-user').on('change', '.proj-select', function(e){
+		var selectedProject = $(this).find('option:selected').val();
+		var index = remainingProjectNames.indexOf(selectedProject)
+		if (index > -1) {
+			//remove the selected project from the remaining project list
+			remainingProjectNames.splice(index, 1);
+		}
+		//decide if an add another project button should display
+		if (remainingProjectNames.length > 0) {
+			$('.anotherPR').css('display', 'block');
+		}else {
+			$('.anotherPR').css('display', 'none');
+		}
+	});
+
+
+
+
+    $('#create-user-submit').on('click', function(e){
+		e.preventDefault();
+        var formData = $('.create-user form').serializeArray();
+        var adjustedData = {
+            'form':{
+				'firstname': '',
+				'lastname': '',
+				'user': '',
+				'pass': '',
+				'email': '',
+                'projects': []
+            }
+        };
+
+        var currentProjectInput = '';
+        formData.forEach(function(input){
+            if (input.name == 'fname') {
+                adjustedData['form']['firstname'] = input.value;
+            }else if (input.name == 'lname') {
+                adjustedData['form']['lastname'] = input.value;
+            }else if (input.name == 'uname') {
+                adjustedData['form']['user'] = input.value;
+            }else if (input.name == 'email') {
+                adjustedData['form']['email'] = input.value;
+            }else if (input.name == 'pw') {
+                adjustedData['form']['pass'] = input.value;
+            }else if (input.name == 'project') {
+                currentProjectInput = input.value;
+            }else if (input.name == 'role') {
+                adjustedData['form']['projects'].push({
+                    'project': currentProjectInput,
+                    'role': input.value
+                });
+            }
+        });
+		$.ajax({
+			url: arcs.baseURL + 'api/users/add',
+			type: "POST",
+			data: adjustedData,
+			success: function (res) {
+				var image = document.getElementById('profileImageDrop').files[0];
+				var username = res['status']['User']['username'];
+				if (typeof(image) != 'undefined') {
+					var data = new FormData();
+					data.append('user_image', image);
+					data.append('username', username);
+					//upload the profile image after creating the account
+					$.ajax({
+						url: arcs.baseURL + 'api/users/upload',
+						type: "POST",
+						data: data,
+						cache: false,
+						processData: false,  // tell jQuery not to process the data
+						contentType: false,  // tell jQuery not to set contentType
+						success: function (res) {
+							console.log('upload successful');
+						}
+					});
+				}
+				window.location.reload();
+			}
+		});
+	});
+
+
+
+
+
+
+
+	$('#invite-btn').on('click', function(e){
+        e.preventDefault();
+        var formData = $('.invite-user form').serializeArray();
+        var adjustedData = {
+            'form':{
+				'name': '',
+				'firstname': '',
+				'lastname': '',
+				'user': '',
+				'pass': '',
+				'email': '',
+                'projects': []
+            }
+        };
+
+        var currentProjectInput = '';
+        formData.forEach(function(input){
+            if (input.name == 'fname') {
+                adjustedData['form']['firstname'] = input.value;
+            }else if (input.name == 'lname') {
+                adjustedData['form']['lastname'] = input.value;
+            }else if (input.name == 'uname') {
+                adjustedData['form']['user'] = input.value;
+            }else if (input.name == 'email') {
+                adjustedData['form']['email'] = input.value;
+            }else if (input.name == 'project') {
+                currentProjectInput = input.value;
+            }else if (input.name == 'role') {
+                adjustedData['form']['projects'].push({
+                    'project': currentProjectInput,
+                    'role': input.value
+                });
+            }
+        });
+		adjustedData['form']['name'] = adjustedData['form']['firstname']+' '+adjustedData['form']['lastname'];
+
+		console.log(adjustedData);
+
+		$.ajax({
+			url: arcs.baseURL + 'api/users/invite',
+			type: "POST",
+			data: adjustedData,
+			success: function (res) {
+				console.log('res', res);
+				// if (typeofimage != 'undefined') {
+				//
+				// }
+				//do the upload image thing hereerererer
+				window.location.reload();
+			}
+		});
+    });
+
+
+	// display dropped image
+	$('#profileImageDrop').on('change', function () {
+  		var f = URL.createObjectURL(this.files[0]);
+		$(this).attr('style', 'background:  url("'+f+'");'+
+					 		  'border-color: #f9f9f9;'+
+					 		  'opacity: .5;' );
+		$(this).parent().find('label').attr('style', 'display: none;');
+	});
+
+    $('.accept').on('click', function(){
+        var project = $('#projectSelect option[selected="selected"]').text();
         var userID = ($(this).data('id'));
         $.ajax({
             url: arcs.baseURL + 'admin/accept/'+userID,
             type: "POST",
+            data: {'project':project},
             success: function () {
-              window.location.reload();
+              // window.location.reload();
             }
         });
     });

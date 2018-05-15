@@ -15304,6 +15304,8 @@ strong {
 .admin-rows-wrap .admin-rows-content.users .admin-row p.name,
 .admin-rows-wrap .admin-rows-content.users .admin-row a.name {
   width: calc((95% - 45px)*0.24);
+  color: #0094bc;
+  cursor: pointer;
 }
 .admin-rows-wrap .admin-rows-content.users .admin-row p.username,
 .admin-rows-wrap .admin-rows-content.users .admin-row a.username {
@@ -15313,8 +15315,8 @@ strong {
 .admin-rows-wrap .admin-rows-content.users .admin-row a.joined {
   width: calc((95% - 45px)*0.16);
 }
-.admin-rows-wrap .admin-rows-content.users .admin-row p.edit,
-.admin-rows-wrap .admin-rows-content.users .admin-row a.edit {
+.admin-rows-wrap .admin-rows-content.users .admin-row p.edit-prof-btn,
+.admin-rows-wrap .admin-rows-content.users .admin-row a.edit-prof-btn {
   width: calc((95% - 45px)*0.28);
   color: #0094bc;
   text-align: center;

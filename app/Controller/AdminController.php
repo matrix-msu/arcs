@@ -68,18 +68,20 @@ class AdminController extends AppController {
 
         $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;" >';
 
-        foreach ($mappings as $map) {
+        $projectNameArray = array();
 
+        foreach ($mappings as $map) {
             $name = parent::getProjectNameFromPID($map['Mapping']['pid']);
 
             if ($name != '') {
-                if( $first == true ){
+                $projectNameArray[] = $name;
+                if( $first == true ) {
                     $_SESSION['currentProjectName'] = $name;
                 }
-                if ($_SESSION['currentProjectName'] == $name) {
+                if( $_SESSION['currentProjectName'] == $name ){
                     $first = false;
                     $projectPicker .= '<option selected="selected" disabled="" hidden="" value="" class="">' . $name . '</option>';
-                } else {
+                }else{
                     $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$name;
                     $projectPicker .= "<option value='" . $url . "' label='$name'>$name</option>";
                 }
@@ -105,6 +107,7 @@ class AdminController extends AppController {
           echo $projectPicker;
           echo $script;
         }
+        $this->set('projectNames', $projectNameArray);
 
     }
 
@@ -153,8 +156,6 @@ class AdminController extends AppController {
 
         $project_users = $this->Mapping->find('list', array(
             'fields' => array(
-
-
                 'Mapping.status',
                 'Mapping.role',
                 'Mapping.id_user',
@@ -191,11 +192,24 @@ class AdminController extends AppController {
             $cleanedReturn[$i]['profilePic'] = parent::checkForProfilePicture($cleanedReturn[$i]['username'], $cleanedReturn[$i]['email']);
             $i++;
         }
+        reset($cleanedReturn);
+        $firstKey = key($cleanedReturn);
+        $cleanedReturn[$firstKey]['projectNames'] = $this->viewVars['projectNames'];
         $this->set('users', $cleanedReturn);
     }
 
 
     public function accept($map_id) {
+        print_r($this->request->data);
+        $pName = $this->request->data['project'];
+        $isAdmin = self::isAdminOfProject($pName);
+
+        if (!$isAdmin) {
+          echo "bad";
+          die;
+        }
+        $pid = parent::getPIDFromProjectName($pName);
+
         include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
@@ -205,20 +219,59 @@ class AdminController extends AppController {
         $map = mysqli_fetch_array($mappings);
         $users = mysqli_query($con, "SELECT * FROM users WHERE id = '$map_id'");
         $user = mysqli_fetch_array($users);
-        $project = "";
 
 
-        foreach ($GLOBALS['PID_ARRAY'] as $name => $pid) {
-            if ($map["pid"] == $pid) {
-                $project = $name;
-            }
+
+        $response['db_info'] = $db_array['host'];
+        $mysqli = new mysqli($db_array['host'], $db_array['login'], $db_array['password'], $db_array['database']);
+
+        if ($mysqli->connect_error) {
+            die('Connect Error (' . $mysqli->connect_errno . ') '
+                . $mysqli->connect_error);
         }
 
-        self::acceptanceEmail($user, $project, $map['role']);
+        $sql = $mysqli->prepare("UPDATE mappings
+                  SET status = 'confirmed',
+                      activation = ''
+                  WHERE (id_user = ? AND pid = ?)");
+        $sql->bind_param("ss", $user['id'], $pid);
+        $sql->execute();
 
-        mysqli_query($con, "UPDATE users SET status = 'active' WHERE id = '" . $user['id'] . "'");
-        mysqli_query($con, "UPDATE mappings SET status = 'confirmed', activation = '' WHERE id_user = '" . $user['id'] . "'");
+        $sql = $mysqli->prepare("UPDATE users
+                  SET status = 'active'
+                  WHERE id = ?");
+        $sql->bind_param("s", $user['id']);
+        $sql->execute();
+
+        self::acceptanceEmail($user, $pName, $map['role']);
+
+        // mysqli_query($con, "UPDATE users SET status = 'active' WHERE id = '" . $user['id'] . "'");
+        // mysqli_query($con, "UPDATE mappings SET status = 'confirmed', activation = '' WHERE id_user = '" . $user['id'] . "'");
         die;
+    }
+
+    public function isAdminOfProject($pName) {
+      $Users = new UsersController;
+      $signedIn = $Users->getUser($this->Auth);
+      $id = $signedIn['User']['id'];
+      $pid;
+
+      try {
+        $pid = parent::getPIDFromProjectName($pName);
+      } catch (Exception $e) {
+        return false;
+      }
+      // sql query on admins on the project
+      $res = $this->Mapping->find('all', array(
+        'fields' => array('Mapping.id_user'),
+          'conditions' => array(
+          'Mapping.id_user' => $id,
+          'Mapping.role' => 'Admin',
+          'Mapping.pid'  => $pid,
+          'Mapping.status' => 'confirmed'
+        )
+      ));
+      return !empty($res);
     }
 
     public function acceptanceEmail($user, $project, $role) {
@@ -231,8 +284,8 @@ class AdminController extends AppController {
 
         $txt = '';
         $txt .= "Hi there,<br /><br />
-            We're happy to let you know that your account for the $project installation of the 
-            Archaeological Resource Cataloging System (ARCS) has been fully approved. You now have 
+            We're happy to let you know that your account for the $project installation of the
+            Archaeological Resource Cataloging System (ARCS) has been fully approved. You now have
             $role level access to this project.<br /><br />
             If you have any questions at all, please contact us at<br /><br />";
         foreach ($adminEmails as $email) {
@@ -252,6 +305,8 @@ class AdminController extends AppController {
 
         $success = mail($to, $subject, $txt, $headers);
     }
+
+
 
 
 

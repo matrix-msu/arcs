@@ -97,9 +97,9 @@
     #other-resources{
       display: block !important;
     }
-    .viewers-container{
+    /*.viewers-container{
       /* height: auto !important; */
-    }
+    }*/
     a:hover{
       text-decoration: none;
     }

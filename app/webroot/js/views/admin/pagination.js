@@ -18,13 +18,13 @@ $(document).ready( function() {
 		rows = $('.pending-users .admin-row');
 		setUpPagination(25);
 	});
-    
+
     /*
     ippDisplay();
     $(window).on('resize', function() {
         ippDisplay();
     })*/
-    
+
     $(document).on('click', function(e){
         if ($('.admin-pagination .ipp *').is(e.target)){    //change number per page
             $ipp = $('.admin-pagination .ipp');
@@ -58,15 +58,15 @@ $(document).ready( function() {
 
 });
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *                                                                                             * 
- *  Pagination                                                                                 * 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                             *
+ *  Pagination                                                                                 *
  *                                                                                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 //Calculate number of pages needed
 //where $n is number per page, or "DISPLAY" to show all
-function setUpPagination ($numPerPage) {                             
+function setUpPagination ($numPerPage) {
     if($numPerPage == "DISPLAY") {
         $perPage = rows.length;
         $numPages = 1;
@@ -75,7 +75,7 @@ function setUpPagination ($numPerPage) {
 	   $numPages = Math.ceil(rows.length / $perPage);
     }
     setPageNumbers($numPages);
-	showPagination(0);    
+	showPagination(0);
 }
 
 //Create page cycle numbers
@@ -94,16 +94,16 @@ function showPagination($on) {
 	var $navs = $('.by-num p');
 	$(rows).attr('style', 'display: none;');
 	$navs.removeClass('active');
-	$($navs[onPage]).addClass('active');	
+	$($navs[onPage]).addClass('active');
 	$base = onPage * $perPage;
 	for($i=0; $i<$perPage; $i++) {
 		$(rows[$base + $i]).attr('style', 'display: block;');
 	}
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *                                                                                             * 
- *  Sort                                                                                       * 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                             *
+ *  Sort                                                                                       *
  *                                                                                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -123,7 +123,7 @@ function sortByDate() {
 
 //sorts rows increasing by html of dom child specified by cat(ex.'p.username')
 function sortBy(cat) {
-    
+
     if($('.all-users')[0]) {
         $('.admin-rows-content.all-users').append(mergeSort(rows,cat));
         rows = $('.all-users .admin-row');
@@ -134,17 +134,17 @@ function sortBy(cat) {
 		$('.admin-rows-content').append(mergeSort(rows,cat));
 		rows = $('.admin-row');
 	}
-    
+
 	setUpPagination(25);
 }
 
-function mergeSort (arr, cat) {    
+function mergeSort (arr, cat) {
     if (arr.length < 2) return arr;
-    
+
     var mid = Math.floor(arr.length /2);
     var subLeft = mergeSort(arr.slice(0,mid),cat);
     var subRight = mergeSort(arr.slice(mid),cat);
-	
+
     return merge(subLeft, subRight, cat);
 }
 
@@ -163,9 +163,9 @@ function merge (a,b,cat) {
 }
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *                                                                                             * 
- *  Filter                                                                                     * 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                             *
+ *  Filter                                                                                     *
  *                                                                                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -182,10 +182,10 @@ function filterBy(key, cat) {
             }
         }
     }
-    
+
     updateRows();
     setUpPagination(25);
-    
+
     $('.admin-pagination .ipp .menu .curr').removeClass('curr');
     $('#twenty-five-per-page').addClass('curr');
     $('.admin-pagination .ipp .drop .per').text( '25 ITEMS PER PAGE' );
@@ -194,7 +194,7 @@ function filterBy(key, cat) {
 //Remove rows where text at cat matches key
 function filterOut(key, cat) {
     updateRows();
-    
+
     if(key == ''){
         $('.admin-rows-content').append(rowsOriginal);
     } else {
@@ -205,33 +205,33 @@ function filterOut(key, cat) {
             }
         }
     }
-    
+
     updateRows();
-    
+
     setUpPagination(25);
-    
+
     $('.admin-pagination .ipp .menu .curr').removeClass('curr');
     $('#twenty-five-per-page').addClass('curr');
     $('.admin-pagination .ipp .drop .per').text( '25 ITEMS PER PAGE' );
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- *                                                                                             * 
- *  Search                                                                                     * 
- *                                                                                             * 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                             *
+ *  Search                                                                                     *
+ *                                                                                             *
  *	From unsorted, unfiltered admin rows, find ones where dom child cat(ex. 'p.username')      *
- *  contains substring key                                                                     * 
- *                                                                                             * 
+ *  contains substring key                                                                     *
+ *                                                                                             *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function search(key, cat) {
     var result = []
-    
+
     if(key != "") {
         key = key.toLowerCase();
 /*
         if($('#users')[0]) {
-            var currentRows = $('.admin-rows-content.all-users').children();	
+            var currentRows = $('.admin-rows-content.all-users').children();
         } else {
             var currentRows = $('.admin-rows-content').children();
         }
@@ -246,8 +246,8 @@ function search(key, cat) {
     } else {
         result = rowsOriginal;
     }
-	
-    
+
+
 	if($('#users')[0]) {
         $('.admin-rows-content.all-users').empty();
         $('.admin-rows-content.all-users').prepend(result);

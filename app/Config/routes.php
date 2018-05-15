@@ -195,6 +195,9 @@
     Router::connect('/api/users/update',
         array('controller' => 'users', 'action' => 'ajaxUpdate')
     );
+	Router::connect('/api/users/upload',
+		array('controller' => 'users', 'action' => 'ajaxUploadProfImage')
+	);
     Router::connect('/users/getUsername',
         array('controller' => 'users', 'action' => 'getEmail')
     );

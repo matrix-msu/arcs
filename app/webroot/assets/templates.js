@@ -1,7 +1,7 @@
 window.JST = window.JST || {};
 
-JST["admin/users"] = 
-    "<div class=\"users-head\">"+ 
+JST["admin/users"] =
+    "<div class=\"users-head\">"+
         "<p class=\"name\">NAME</p>"+
         "<p class=\"username\">USERNAME</p>"+
         "<p class=\"joined\">JOINED</p>"+
@@ -18,10 +18,10 @@ JST["admin/users"] =
                 "<% if( f.status != 'unconfirmed') { %>"+
                     "<div class=\"admin-row\">"+
                         "<img style='height:45px;width:45px' src='<%= f.profilePic %>' />"+
-                        "<p class=\"name\"><%= f.name %></p>"+
+                        "<a class=\"name\" href=\"<%= arcs.baseURL + 'user/'+ f.username %>\"><%= f.name %></a>"+
                         "<p class=\"username\"><%= f.username %></p>"+
                         "<p class=\"joined\"><%= f.created %></p>"+
-                        "<a class=\"edit\" href=\"<%= arcs.baseURL + 'user/'+ f.username %>\">View / Edit Profile</a>"+
+                        "<a data-id=\"<%= f.id %>\" class=\"edit-prof-btn\">Edit Profile</a>"+
                         "<p id=\"delete-btn\" class=\"delete\" data-id=\"<%= f.id %>\">Delete</p>"+
                     "</div>"+
                 "<% } %>"+
@@ -44,7 +44,7 @@ JST["admin/users"] =
             "<% }) %>"+
         "</div>"+
         "<div class=\"create-user\">"+
-            "<form action=\"./filler.txt\">"+
+            "<form>"+
                 "<label>First name <input type=\"text\" name=\"fname\"></label>"+
                 "<label>"+
 					"Last name"+
@@ -63,11 +63,11 @@ JST["admin/users"] =
                 "<div class=\"pnr-container create\">"+
                     "<div class=\"pnr-single\">"+
                         "<label>Project "+
-                            "<select name=\"project\">"+
+                            "<select class=\"proj-select\" name=\"project\">"+
                                 "<option style='display:none;' selected>Select a project</option>"+
-                                "<option>Project 1</option>"+
-                                "<option>Project 2</option>"+
-                                "<option>Project 3</option>"+
+                                "<% _.each(users[0].projectNames, function(f, i) { %>  "+
+                                    "<option><%= f %></option>"+
+                                "<% }) %>"+
                             "</select></label>"+
                         "<label>Role "+
                             "<select name=\"role\">"+
@@ -80,11 +80,11 @@ JST["admin/users"] =
                     "</div>"+
                 "</div>"+
                 "<p class='anotherPR create'>Add User to Another Project</p>"+
-                "<input type=\"submit\" value=\"Create  User\">"+
+                "<input id=\"create-user-submit\" type=\"submit\" value=\"Create  User\">"+
             "</form>"+
         "</div>"+
 		"<div class=\"invite-user\">"+
-				"<form action=\"./filler.txt\">"+
+				"<form>"+
 					"<label>First name <input type=\"text\" name=\"fname\"></label>"+
 					"<label>"+
 						"Last name"+
@@ -98,11 +98,11 @@ JST["admin/users"] =
 					"<div class=\"pnr-container invite\">"+
                         "<div class=\"pnr-single\">"+
                             "<label>Project "+
-                                "<select name=\"project\">"+
+                                "<select class=\"proj-select\" name=\"project\">"+
                                     "<option style='display:none;' selected>Select a project</option>"+
-                                    "<option>Project 1</option>"+
-                                    "<option>Project 2</option>"+
-                                    "<option>Project 3</option>"+
+									"<% _.each(users[0].projectNames, function(f, i) { %>  "+
+	                                    "<option><%= f %></option>"+
+	                                "<% }) %>"+
                                 "</select></label>"+
                             "<label>Role "+
                                 "<select name=\"role\">"+
@@ -115,7 +115,7 @@ JST["admin/users"] =
                         "</div>"+
                     "</div>"+
 					"<p class='anotherPR invite'>Add User to Another Project</p>"+
-					"<input type=\"submit\" value=\"Invite User\">"+
+					"<input id=\"invite-btn\" type=\"submit\" value=\"Invite User\">"+
 				"</form>"+
 			"</div>"+
 		"</div>"+
@@ -128,13 +128,13 @@ JST["admin/users"] =
                 "<p>75 ITEMS PER PAGE</p>"+
                 "<p>DISPLAY ALL</p>"+
             "</div>"+
-    
+
             "<div class=\"drop\">"+
                 "<p class=\"per\">25 ITEMS PER PAGE</p>"+
                 "<span class=\"chevron\"></span>"+
             "</div>"+
         "</div>"+
-    
+
 		"<div class=\"page-pick\">"+
 			"<div class='arrow-wrap left'><span class=\"chevron left\"></span></div>"+
 			"<div class=\"by-num\"></div>"+
@@ -169,7 +169,7 @@ JST["admin/users"] =
         "</td>"+
     "</tr><% }) %></table>"*/;
 
-JST["admin/activity"] = 
+JST["admin/activity"] =
     "<div class=\"admin-rows-wrap\">"+
         "<div class=\"admin-rows-content activity\">"+
             "<% _.each(activity, function(f, i) { %>  "+
@@ -203,7 +203,7 @@ JST["admin/activity"] =
 		"</div>"+
 	"</div>";
 
-JST["admin/flags"] = 
+JST["admin/flags"] =
 	"<div class=\"admin-rows-wrap\">"+
 		"<div class=\"admin-rows-content flag\">"+
 			"<% _.each(flags, function(f, i) { %>"+
@@ -250,8 +250,8 @@ JST["admin/flags"] =
 		"</div>"+
 	"</div>";
 
-JST["admin/metadata_edits"] = 
-    "<div class=\"metadata-head\">"+ 
+JST["admin/metadata_edits"] =
+    "<div class=\"metadata-head\">"+
         "<p class=\"resource-kid\">RESOURCE KID</p>"+
         "<p class=\"username\">USERNAME</p>"+
         "<p class=\"metadata-kid\">METADATA KID</p>"+
@@ -287,7 +287,7 @@ JST["admin/metadata_edits"] =
             "<% }) %>"+
         "</div>"+
     "</div>"
-	/*    
+	/*
     "<table class=\"table table-striped table-bordered\">"+
     "<tr>" +
         "<th>Resource Kid</th>"+

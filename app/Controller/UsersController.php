@@ -21,7 +21,7 @@ class UsersController extends AppController
         $this->Auth->allow(
           'crop', 'signup', 'special_login', 'register', 'confirm_user',
           'register_no_invite', 'reset_password', 'display', 'getEmail',
-          'getUsername', 'ajaxAdd', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate',
+          'getUsername', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate', 'ajaxUploadProfImage',
           'profile', 'getAllUsers', 'findById', 'ajaxDelete', 'edit', 'adminOfUser'
           );
         $this->User->flatten = true;
@@ -108,6 +108,7 @@ class UsersController extends AppController
       // return the admin emails
       return $mapping;
     }
+
     /**
       * Takes a parameter which can be either (KID, PID, project name)
       * sends a permission request to the admins
@@ -169,7 +170,8 @@ class UsersController extends AppController
 
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
 
         if ($resolve["isResource"]) {
           $message =
@@ -315,13 +317,21 @@ class UsersController extends AppController
             return $this->json(400);
         $mappingProjects = array();
         foreach( $this->request->data['form']['projects'] as $p ){
-            array_push($mappingProjects, array('project'=>$p['project'], 'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+			$pid = parent::getPIDFromProjectName($p['project']);
+            array_push($mappingProjects, array(
+				'project'=>array('name'=>$p['project'], 'pid'=>$pid),
+				'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
         }
-        $authenticated = $this->pluginAuthentication(
-            $this->request->data['user'],
-            $this->request->data['pass'],
-            $this->request->data['form']['projects']
-        );
+
+		$authenticated = false;
+		foreach ($mappingProjects as $key => $value) {
+			if (!$this->isAdminOfProject($value['project']['name'])) {
+				echo "bad";
+				die;
+			}
+		}
+		$authenticated = true;
+
         $this->request->data = $this->request->data['form'];
         unset($this->request->data['projects']);
         $response["message"] = [];
@@ -330,7 +340,18 @@ class UsersController extends AppController
             $response["status"]["credentials"] = "Invalid Arcs Credentials";
             return $this->json(400, ($response));
         }
-        $response["status"] = $this->User->add($this->request->data);
+
+		$addUserData = array(
+			'name' => $this->request->data['firstname'].' '.$this->request->data['lastname'],
+			'username' => $this->request->data['user'],
+			'email' => $this->request->data['email'],
+			'password' => $this->request->data['pass'],
+			'isAdmin' => 0,
+			'last_login' => null,
+			'status' => 'confirmed'
+		);
+
+        $response["status"] = $this->User->add($addUserData);
         if ($response["status"] == false) {
             $response["message"] = $this->User->invalidFields();
             return $this->json(400, ($response));
@@ -338,6 +359,34 @@ class UsersController extends AppController
         $this->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
         $this->json(201, $response);
     }
+
+	public function isAdminOfProject($pName) {
+		$signedIn = $this->getUser($this->Auth);
+		$id = $signedIn['id'];
+		$pid;
+
+		try {
+			$pid = parent::getPIDFromProjectName($pName);
+		} catch (Exception $e) {
+			return false;
+		}
+
+		// sql query on admins on the project
+		$res = $this->Mapping->find('all', array(
+			'fields' => array('Mapping.id_user'),
+			'conditions' => array(
+				'Mapping.id_user' => $id,
+				'Mapping.role' => 'Admin',
+				'Mapping.pid'  => $pid,
+				'Mapping.status' => 'confirmed'
+			)
+		));
+		return !empty($res);
+	}
+
+
+
+
 
     /**
      * update user through ajax.
@@ -900,22 +949,20 @@ class UsersController extends AppController
      * Send an invite email and set up a skeleton account.
      */
     public function ajaxInvite(){
-        //print_r($this->request->data);die;
-        $role = $this->request->data['role'];
-        $project = $_SESSION['currentProjectName'];
-        $pid = parent::getPIDFromProjectName($project);
-        $this->request->data['addProjects'] = array(array('project' => $project, 'role' => $role));
-
-        //print_r($_SESSION);die;
         $signedIn = $this->getUser($this->Auth);
         $this->json(200, "inviting");
         $this->autoRender = false;
-        if (!$this->request->is('POST') || !isset($this->request->data['addProjects']) )
+        if (!$this->request->is('POST') || !isset($this->request->data['form']['projects']) ){
             return $this->json(400);
-        $mappingProjects = array();
-        foreach( $this->request->data['addProjects'] as $p ){
-            array_push($mappingProjects, array('project'=>array($p['project'], 'pid' => $pid),  'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+		}
+		$mappingProjects = array();
+        foreach( $this->request->data['form']['projects'] as $p ){
+			$pid = parent::getPIDFromProjectName($p['project']);
+            array_push($mappingProjects, array(
+				'project'=>array('name'=>$p['project'], 'pid'=>$pid),
+				'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
         }
+
         $authenticated = $this->pluginAuthentication(
             $signedIn['username'],
             $signedIn['password'],
@@ -929,19 +976,19 @@ class UsersController extends AppController
             return $this->json(400, ($response));
         }
 
+        $data = $this->request->data['form'];
+		unset($data['projects']);
 
-        $data = $this->request->data;
-        $data['isAdmin'] = 0;
-        if ($role == 'Admin'){
-            $data['isAdmin'] = 1;
-        }
-
+		// print_r($data);die;
+        $data['isAdmin'] = null;
 
         if (!($data && $data['email']))
             throw new BadRequestException();
         $token = $this->User->getToken();
         $this->User->permit('activation');
         $this->User->permit('isAdmin');
+
+
         $name = $data['name'];
         $response["message"] = [];
         $response["status"] = $this->User->add(array('name' => $name, 'isAdmin' => $data['isAdmin'], 'email' => $data['email'], 'activation' => $token, 'status' => "invited"));
@@ -961,7 +1008,6 @@ class UsersController extends AppController
      */
     public function register()
     {
-
         $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
@@ -981,7 +1027,6 @@ class UsersController extends AppController
                         $id = $allDat['id'];
                         $projects = explode(", ", $this->request->data['User']['project']);
                         $mappingArray = [];
-
 
                         foreach ($projects as $project) {
                             $mappingArray[] = array(
@@ -1294,6 +1339,63 @@ class UsersController extends AppController
 		die;
 	}
 
+	//Upload a profile image for a user
+	public function ajaxUploadProfImage() {
+		$username = $this->request->data['username'];
+		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
+
+		if (isset($_FILES['user_image'])) {
+			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
+			$nameEnd = explode('.',$_FILES['user_image']['name']);
+			$file_ext = strtolower(end($nameEnd));
+			if ($_FILES['user_image']['error'] > 0 ) {
+				$error    = $_FILES['user_image']['error'];
+				$errorOut = "Unknown upload error.";
+				if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+				elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+				elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
+				elseif ($error == 4) $errorOut = "No file was uploaded";
+				elseif ($error == 6) $errorOut = "Missing a temporary folder";
+				elseif ($error == 7) $errorOut = "Failed to write file to disk";
+				elseif ($error == 8) $errorOut = "File upload stopped by extension";
+				$this->Session->setFlash("Error: " . $errorOut, 'flash_error');
+			} elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
+				// check if image file exists
+				$this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
+			} elseif ($_FILES['user_image']['size'] > 500000) {
+				// check if file size is extremely large
+				$this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
+			} elseif (!in_array($file_ext, $vaildExtensions)) {
+				// check if file extension is valid
+				$this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
+			} else {
+				// try to upload the image.
+				$uploadFile = $uploads_path . $username . ".";
+
+				// each user is allowed one profile picture
+				if (count(glob($uploadFile."*")) > 0) {
+					foreach (glob($uploadFile."*") as $file) {
+						unlink($file);
+					}
+				}
+
+				if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
+					$this->Session->setFlash("Profile edited successfully.", 'flash_success');
+					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+					//$this->redirect($actual_link);
+					echo json_encode('ok');
+				} else {
+					$this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
+					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+					//$this->redirect($actual_link);
+				}
+			}
+		}
+		die;
+	}
+
+
+
 
     /**
      * Give users the options to crop profile image.
@@ -1376,8 +1478,7 @@ class UsersController extends AppController
      */
     public function sendInviteEmail($data, $token)
     {
-        //$to = $data['email'];
-        $to = "newmanju@msu.edu";
+        $to = $data['email'];
         $subject = "Welcome to ARCS";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
@@ -1390,7 +1491,8 @@ class UsersController extends AppController
                     ".$this->baseURL()."/register/".$token."</a>";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
         //TODO: remove cakeEmail
@@ -1427,7 +1529,8 @@ class UsersController extends AppController
                     ".$this->baseURL()."/invitation/register/".$token."</a>";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
         //TODO: remove cakeEmail
@@ -1459,7 +1562,8 @@ class UsersController extends AppController
         $message .= "<a target='_blank' href='".$link."'>".$link."</a>";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
         /*App::uses('CakeEmail', 'Network/Email');
@@ -1505,7 +1609,8 @@ class UsersController extends AppController
             Social Sciences with support from the National Endowment for the Humanities<br />";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
 
         $success = mail($to,$subject,$message, $headers);
 
@@ -1553,7 +1658,8 @@ class UsersController extends AppController
           been funded by a NEH Digital Humanities Startup Grant. <br />";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
 
         $success = mail($to,$subject,$message,$headers);
         //echo $success; die;
@@ -1614,7 +1720,8 @@ class UsersController extends AppController
         $subject = "Missing Image Notification";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs@matrix.msu.edu \r\n";
+        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
         if( $Email->send($content) ){
