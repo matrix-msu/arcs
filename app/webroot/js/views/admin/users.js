@@ -299,19 +299,18 @@ $(document).ready(function() {
 
     $(document).on('click', function(e) {
         if($('.removePR').is(e.target)) {
-			var removedProject = $(e.target).closest('.pnr-single').find('.proj-select').find('option:selected').val();
-			if (removedProject != 'Select a project') {
-				// add the removed project back to the remaining project list
-				if (remainingProjectNames.indexOf(removedProject) == -1) {
-					remainingProjectNames.push(removedProject);
-				}
-			}
-			$(e.target).closest('.pnr-single').remove();
-			//add an add another project button
-			if (remainingProjectNames.length > 0) {
-				$('.anotherPR').css('display', 'block');
-			}
-
+            var removedProject = $(e.target).closest('.pnr-single').find('.proj-select').find('option:selected').val();
+            if (removedProject != 'Select a project') {
+                // add the removed project back to the remaining project list
+                if (remainingProjectNames.indexOf(removedProject) == -1) {
+                    remainingProjectNames.push(removedProject);
+                }
+            }
+            $(e.target).closest('.pnr-single').remove();
+            //add an add another project button
+            if (remainingProjectNames.length > 0) {
+                $('.anotherPR').css('display', 'block');
+            }
         } else if($('.bullet').is(e.target)){
             $dot = $(e.target);
             if($dot.hasClass('selected')){
