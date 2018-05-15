@@ -628,7 +628,7 @@ class SearchController extends AppController {
             $kora->add_clause($q[0], $q[1], $q[2]);
         }
         $results = $kora->search();
-        
+
         // Get the Resource Type
         if (!empty($results)) {
             $temp = json_decode($results);

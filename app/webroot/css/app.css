@@ -9924,6 +9924,9 @@ input[type=range]:focus::-ms-fill-upper {
   border-bottom: 1px solid #cdcdcd !important;
   overflow: hidden;
 }
+.metadata .metadata-content .metadata-accordion .level-tab .drawer-inline-block {
+  display: inline-block;
+}
 .metadata .metadata-content .metadata-accordion .level-tab span {
   float: right;
   font-size: 90%;

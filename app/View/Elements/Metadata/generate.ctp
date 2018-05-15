@@ -263,7 +263,7 @@ $controlDisplayNames = array(
 ?>
 
     <h3 class="level-tab <?= $schemename ?>" >
-        <div class="drawer-name-text-<?= $schemename ?>">
+        <div class="drawer-inline-block drawer-name-text-<?= $schemename ?>">
         <?php
             if( $schemename == 'archival objects' ){
                 echo 'Resource (archival document)';

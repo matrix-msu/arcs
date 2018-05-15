@@ -494,6 +494,7 @@ function annotationPrep() {
             url: arcs.baseURL + "simple_search/"+pName+"/"+ encodeURIComponent(search) + "/1/20",
             type: "GET",
             success: function (data) {
+                console.log("first ajax", JSON.parse(data));
                 globalData = JSON.parse(data).results
                 if( globalData.length == 0 ){
                     loader.remove()
@@ -520,6 +521,7 @@ function annotationPrep() {
                         q: q
                     },
                     success: function (data) {
+                        //console.log("second ajax", JSON.parse(data));
 						try {
 							var pages = JSON.parse(data)
 						} catch(e) {
@@ -529,6 +531,11 @@ function annotationPrep() {
 							return;
 						}
                         globalData = pages;
+
+                        $.each(globalData, function(key, value) {
+                            $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['kid'] + "'></div>");
+                        });
+
                         SetData(globalData,"resource", pid)
                         loader.remove()
                         $(".annotateSearch ").show()
@@ -562,6 +569,7 @@ function annotationPrep() {
         }
     }
 	function addResourcesToQueue(data) {
+
         var q = Array();
 
         $.each(data, function (key, value) {
@@ -570,17 +578,19 @@ function annotationPrep() {
                 return;
             }
 
+            //console.log('add resource to que', value['Resource_Identifier']);
+
             if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
                 result_ids.push(value.kid);
-                $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'].replace(/\./g, '-') + "'></div>");
-                q.push(['Resource_Identifier', '=', value['Resource_Identifier']]);
+                //$(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'] + "'></div>");
+                q.push(['Resource_Associator', '=', value['kid']]);
             }
         });
         return q
     }
 	function SetData(data, scheme, pid) {
-        console.log("hi here's data");
-        console.log(data);
+         console.log("hi here's data");
+         console.log(data, scheme, pid);
         if (Object.keys(data).length > 0) {
             results_count = 0;
             //Iterate search results
@@ -591,15 +601,20 @@ function annotationPrep() {
                 $.each(data, function (key, value) {
                     if (value['Resource_Identifier'] === undefined) {
                         //skip pages without a resource Identifier
+                        console.log('hit the rerouce id undefined')
                         return;
                     }
                     if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
                         result_ids.push(value.kid);
 
-                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'].replace(/\./g, '-') + "'></div>");
+                        //console.log('set data add div', value['Resource_Identifier']);
+                        // if(!("#"+ value['kid']).length > 0) {
+                        //     console.log("did thing");
+                        //     $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['kid'] + "'></div>");
+                        // }
                         q.push(['Resource_Identifier', '=', value['Resource_Identifier']]);
 
-                        resource_info[value['Resource_Identifier']] = {
+                        resource_info[value['kid']] = {
                             title: "Resource Title: " + value.Title,
                             scheme: "Relevant Scheme: Resource"
                         }
@@ -610,7 +625,12 @@ function annotationPrep() {
                 $.each(data, function (key, value) {
                     if (result_ids.indexOf(value.kid) == -1 && value['Pages_Associator'] != "") {
                         result_ids.push(value.kid);
-                        $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'].replace(/\./g, '-') + "'></div>");
+
+                        //console.log('add subject to div', value['Resource_Identifier']);
+
+                        // if(!$(".resultsContainer").has("#"+ value['Resource_Identifier'])) {
+                        //     $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['kid'] + "'></div>");
+                        // }
                         $.each(value['Pages_Associator'], function (i, page) {
                             q.push(['kid', 'like', page]);
                         });
@@ -625,6 +645,8 @@ function annotationPrep() {
             index = 0;
             var counter = 0;
 
+
+
             console.log('before each')
             console.log('mapping', mapping);
 
@@ -635,41 +657,47 @@ function annotationPrep() {
                 var tempPid = pid;
                 // could not find mapping
                 if ( !('Resource_Associator' in v) || mapping[v['Resource_Associator'][0]] === undefined) {
-                    console.log('returned')
+                    console.log('returned');
                     return;
                 }
 
                 if (index >= current_offset && index < current_offset + results_per_page) {
-                    console.log('inside page build')
-                    $("#" + v['Resource_Identifier'].replace(/\./g, '-')).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                    console.log("this should be displaying", v);
+                    //console.log('inside page build')
+
+                    //$("div[id='"+v['Resource_Identifier']+"']").after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
+                    //justin-here $("#" + v['Resource_Identifier']).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
 					var page_sid = getSidFromKid(v.kid);
                     var image = v['constructed_image'];
-                    var pageDisplay = $(".resultsContainer").find("#" + v.kid);
-                    if (image === "") {
-                        pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
-                    }
-                    else {
-                        pageDisplay.append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
-                    }
-                    /**
-                     Scheme Name
-                     Resource.Identifer
-                     Resource.Title
-                     Page.Page Indentifier
-                     */
-                    var ResourceTitle = mapping[v['Resource_Associator'][0]].title || "No Title"
-                    var surveyTitle = mapping[v['Resource_Associator'][0]].survey || "No Survey Name"
-                    pageDisplay.append(
-                        "<div class='pageInfo'>" +
-                        "<p>" + surveyTitle + "</p>" +
-                        "<p>" + v['Resource_Identifier']+ "</p>" +
-                        "<p>" + ResourceTitle + "</p>" +
-                        "<p>" + v['Page_Identifier'] + "</p>" +
-                        "</div>"
-                    );
 
-                    pageDisplay.append("<hr class='resultDivider'>");
+                    var pageDisplay = $(".resultsContainer").find("#" + v.kid);
+                    if (!(pageDisplay.children().length > 0)){
+                        if (image === "") {
+                            pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
+                        }
+                        else {
+                            pageDisplay.append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
+                        }
+                        /**
+                         Scheme Name
+                         Resource.Identifer
+                         Resource.Title
+                         Page.Page Indentifier
+                         */
+                        var ResourceTitle = mapping[v['Resource_Associator'][0]].title || "No Title"
+                        var surveyTitle = mapping[v['Resource_Associator'][0]].survey || "No Survey Name"
+                        pageDisplay.append(
+                            "<div class='pageInfo'>" +
+                            "<p>" + surveyTitle + "</p>" +
+                            "<p>" + v['Resource_Identifier']+ "</p>" +
+                            "<p>" + ResourceTitle + "</p>" +
+                            "<p>" + v['Page_Identifier'] + "</p>" +
+                            "</div>"
+                        );
+
+                        pageDisplay.append("<hr class='resultDivider'>");
+                    }
 
                     //Clicked a page
                     pageDisplay.click(function () {
@@ -716,7 +744,9 @@ function annotationPrep() {
             index = counter;
 
             total_pages = Object.keys(globalData).length
-
+            // console.log("num pages", total_pages);
+            // console.log("offset", current_offset);
+            // console.log("results per page", results_per_page);
             // Display pagination
             if (current_offset < total_pages) {
                 $(".annotation_pagination").show();
@@ -726,7 +756,7 @@ function annotationPrep() {
                 $(".annotation_pagination").show();
                 $(".annotation_prev").show();
             }
-            if (current_offset >= total_pages) {
+            if ((current_offset+10) >= total_pages) {
                 $(".annotation_next").hide();
             }
             if (current_offset < results_per_page) {
@@ -737,6 +767,7 @@ function annotationPrep() {
             }
 
             page_nums = Math.ceil(total_pages / results_per_page);
+            //console.log("num pages", page_nums);
             var active_page = (current_offset / results_per_page) + 1;
 
             if (active_page > 1) {
@@ -759,6 +790,7 @@ function annotationPrep() {
                 if (active_page <= 5) {
                     max = 10;
                 }
+                //this is here to always show
                 if (i > active_page - 5 && i <= max) {
                     $(".annotation_numbers").append("<span class='" + class_string + "' id='" + i + "'>" + i + "</span>");
                 }
@@ -766,9 +798,27 @@ function annotationPrep() {
 
             $(".page_number").click(function() {
                 var num = parseInt($(this).attr('id'));
+                console.log("page clicked:", num);
                 current_offset = (num * results_per_page) - results_per_page
+                console.log("current offset:", current_offset);
                 SetData(globalData, "resource", pid);
             });
+
+            $(".annotation_next").click(function() {
+                //$(".page_active").next().click();
+            });
+
+            // $(".annotation_prev").click(function() {
+            //     $(".page_active").prev().click();
+            // });
+            //
+            // $(".annotation_begin").click(function() {
+            //     $(".annotation_numbers").first().click();
+            // });
+            //
+            // $(".annotation_end").click(function() {
+            //     $(".annotation_numbers").end().click();
+            // });
         }
         else {
             if ($(".resultsContainer").children().length > 0 ) {

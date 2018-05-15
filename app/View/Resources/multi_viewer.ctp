@@ -31,7 +31,6 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?=  $this->Html->script("views/viewer/Multi/newResource.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/export.js")  ?>
 <?=  $this->Html->script("views/viewer/Multi/keyword.js")  ?>
-<?=  $this->Html->script("views/viewer/Multi/transcript.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/annotation.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/slider_helpers.js") ?>
 <?=  $this->Html->script("views/viewer/Multi/edit_metadata.js") ?>

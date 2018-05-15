@@ -255,7 +255,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
   };
 
   var html = '<h3 class="level-tab '+schemename+'" >';
-  html += '<div class="drawer-name-text-'+schemename+'">';
+  html += '<div class="drawer-inline-block drawer-name-text-'+schemename+'">';
   if( schemename === 'archival objects' ){
       html += 'Resource (archival document)';
   }else{
