@@ -53,7 +53,6 @@
     Users.prototype.editUser = function(e) {
       var user;
       user = this.collection.get($(e.currentTarget).data('id'));
-      console.log(this.collection);
       new arcs.views.Modal({
         title: 'Edit user',
         subtitle: null,
@@ -83,7 +82,6 @@
                   return function (vals) {
                                     vals['adminapi'] = true;
                                     vals['id'] = user['id'];
-                                    //console.log(vals);
                       if (vals.password === '') {
                           delete vals.password;
                       }
@@ -501,18 +499,11 @@ $(document).ready(function() {
         });
 		adjustedData['form']['name'] = adjustedData['form']['firstname']+' '+adjustedData['form']['lastname'];
 
-		console.log(adjustedData);
-
 		$.ajax({
 			url: arcs.baseURL + 'api/users/invite',
 			type: "POST",
 			data: adjustedData,
 			success: function (res) {
-				console.log('res', res);
-				// if (typeofimage != 'undefined') {
-				//
-				// }
-				//do the upload image thing hereerererer
 				window.location.reload();
 			}
 		});
@@ -536,7 +527,7 @@ $(document).ready(function() {
             type: "POST",
             data: {'project':project},
             success: function () {
-              // window.location.reload();
+              window.location.reload();
             }
         });
     });

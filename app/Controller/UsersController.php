@@ -326,7 +326,7 @@ class UsersController extends AppController
 		$authenticated = false;
 		foreach ($mappingProjects as $key => $value) {
 			if (!$this->isAdminOfProject($value['project']['name'])) {
-				echo "bad";
+          // TODO: make an error message here
 				die;
 			}
 		}
@@ -977,9 +977,7 @@ class UsersController extends AppController
         }
 
         $data = $this->request->data['form'];
-		unset($data['projects']);
-
-		// print_r($data);die;
+		    unset($data['projects']);
         $data['isAdmin'] = null;
 
         if (!($data && $data['email']))
@@ -1081,7 +1079,6 @@ class UsersController extends AppController
      */
     public function registerByInvite($token)
     {
-        //print_r($this->data);die;
         $this->set('activation', $token);
         $this->set('error', false);
 

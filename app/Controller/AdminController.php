@@ -200,12 +200,11 @@ class AdminController extends AppController {
 
 
     public function accept($map_id) {
-        print_r($this->request->data);
         $pName = $this->request->data['project'];
         $isAdmin = self::isAdminOfProject($pName);
 
         if (!$isAdmin) {
-          echo "bad";
+          // TODO: make an error message here
           die;
         }
         $pid = parent::getPIDFromProjectName($pName);
