@@ -127,17 +127,20 @@ class CollectionsController extends AppController {
 
     public function testK3Projects($pName = 'isthmia'){
         $pid = parent::getPIDFromProjectName(strtolower($pName));
-        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
+        $sid = parent::getPageSIDFromProjectName(strtolower($pName));
+        //echo $sid;die;
         $fields = 'ALL';
 
 
-        $q = "<month>%</month><day>%</day><year>1971</year>";
-        $kora = new General_Search($pid, $sid, 'Earliest_Date', 'LIKE', $q, $fields);
+        $q = "";
+
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '34-171-208512', $fields);
+        //$kora = new General_Search($pid, $sid, 'kid', '=', '34-171-208512', $fields);
         $results = json_decode($kora->return_json(), true);
 
-//        $kora = new Advanced_Search($pid, $sid, $fields);
-//        $kora->add_date_clause("Earliest_Date", '1991', '7', '3');
-//        $results = json_decode($kora->search(), true);
+       // $kora = new Advanced_Search($pid, $sid, $fields);
+       // $kora->add_clause("kid", "!=", "");
+       // $results = json_decode($kora->search(), true);
 
         echo json_encode($results);
         die;

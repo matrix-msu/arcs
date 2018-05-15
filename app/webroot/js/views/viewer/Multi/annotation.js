@@ -4,6 +4,7 @@ function annotationPrep() {
     var pageKidGlobal;
     var isAnnotating = false;
     var resourceHasPermissions = false;
+    var selectedPage = null;
 
     //get annotate to support multi-pages.
     $('.page-slider').on('click', '.other-resource', function(){
@@ -33,7 +34,8 @@ function annotationPrep() {
                 var currentResource = $('.selectedCurrentResource').find('img');
                 resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
                 resourceKid = currentResource.attr('id').replace('identifier-', '');
-                resourceIdentifier = RESOURCES[resourceKid]['Resource Identifier'];
+                resourceIdentifier = RESOURCES[resourceKid]['Resource_Identifier'];
+                console.log("resource identifier", resourceIdentifier);
                 getAnnotationData();
             }
         });
@@ -49,6 +51,7 @@ function annotationPrep() {
             },
             success: function (data) {
                 annotationDataGlobal = JSON.parse(data);
+                console.log("annotation data", annotationDataGlobal);
                 displayAnnotations();
                 isAnnotating = false;
             }
@@ -319,6 +322,7 @@ function annotationPrep() {
         annotateData.y2 = "";
     }
     function prepareAddAnnotation(){
+        $(".annotateSubmit").hide();
         $('.other-resource, .other-resources').on('click.preventPageClicks', preventPageClicks);
         //$('.resource-reset-icon').click();
         //$('.resource-icons').css('display', 'none')
@@ -476,6 +480,8 @@ function annotationPrep() {
             return;
         }
         $(".annotateSearch ").hide();
+        $(".annotateSubmit").hide();
+        $(".annotation_pagination").hide();
         var pKid = $('.selectedCurrentPage').find('img').attr('id');
         pid = getPidFromKid(pKid); //defined in bootstrap.php
         result_ids = [];
@@ -494,7 +500,7 @@ function annotationPrep() {
             url: arcs.baseURL + "simple_search/"+pName+"/"+ encodeURIComponent(search) + "/1/20",
             type: "GET",
             success: function (data) {
-                console.log("first ajax", JSON.parse(data));
+                //console.log("first ajax", JSON.parse(data));
                 globalData = JSON.parse(data).results
                 if( globalData.length == 0 ){
                     loader.remove()
@@ -589,8 +595,8 @@ function annotationPrep() {
         return q
     }
 	function SetData(data, scheme, pid) {
-         console.log("hi here's data");
-         console.log(data, scheme, pid);
+         // console.log("hi here's data");
+         // console.log(data, scheme, pid);
         if (Object.keys(data).length > 0) {
             results_count = 0;
             //Iterate search results
@@ -647,8 +653,8 @@ function annotationPrep() {
 
 
 
-            console.log('before each')
-            console.log('mapping', mapping);
+            // console.log('before each')
+            // console.log('mapping', mapping);
 
             //Get related pages
             $.each(data, function (kid,v) {
@@ -657,12 +663,12 @@ function annotationPrep() {
                 var tempPid = pid;
                 // could not find mapping
                 if ( !('Resource_Associator' in v) || mapping[v['Resource_Associator'][0]] === undefined) {
-                    console.log('returned');
+                    //console.log('returned');
                     return;
                 }
 
                 if (index >= current_offset && index < current_offset + results_per_page) {
-                    console.log("this should be displaying", v);
+                    //console.log("this should be displaying", v);
                     //console.log('inside page build')
 
                     //$("div[id='"+v['Resource_Identifier']+"']").after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
@@ -700,9 +706,10 @@ function annotationPrep() {
                     }
 
                     //Clicked a page
-                    pageDisplay.click(function () {
-                        if ($(this).hasClass("selectedRelation")) {
-                            $(this).removeClass("selectedRelation");
+                    pageDisplay.off().click(function () {
+                        if (selectedPage == pageDisplay) {
+                            console.log("hey");
+                            selectedPage.removeClass("selectedRelation");
                             selected = false;
                             annotateData.page_kid = "";
                             annotateData.resource_kid = "";
@@ -710,10 +717,15 @@ function annotationPrep() {
                             annotateData.relation_resource_kid = "";
                             annotateData.relation_page_kid = "";
                             annotateData.relation_resource_name = "";
+                            selectedPage = null;
                         }
                         else {
-                            $(".annotateSearchResult").removeClass('selectedRelation');
-                            $(this).addClass("selectedRelation");
+                            console.log("oh hey");
+                            if(selectedPage != null){
+                                selectedPage.removeClass("selectedRelation");
+                            }
+                            selectedPage = pageDisplay;
+                            selectedPage.addClass("selectedRelation");
                             selected = true;
                             annotateData.page_kid = kid;
                             annotateData.resource_kid = resourceKid;
@@ -798,27 +810,26 @@ function annotationPrep() {
 
             $(".page_number").click(function() {
                 var num = parseInt($(this).attr('id'));
-                console.log("page clicked:", num);
                 current_offset = (num * results_per_page) - results_per_page
-                console.log("current offset:", current_offset);
                 SetData(globalData, "resource", pid);
             });
 
-            $(".annotation_next").click(function() {
-                //$(".page_active").next().click();
+            //click event was triggering multiple times, .off needed
+            $(".annotation_next").off().click(function() {
+                $(".page_active").next()[0].click();
             });
 
-            // $(".annotation_prev").click(function() {
-            //     $(".page_active").prev().click();
-            // });
-            //
-            // $(".annotation_begin").click(function() {
-            //     $(".annotation_numbers").first().click();
-            // });
-            //
-            // $(".annotation_end").click(function() {
-            //     $(".annotation_numbers").end().click();
-            // });
+            $(".annotation_prev").off().click(function() {
+                $(".page_active").prev()[0].click();
+            });
+
+            $(".annotation_begin").off().click(function() {
+                $(".annotation_numbers").children().first()[0].click();
+            });
+
+            $(".annotation_end").off().click(function() {
+                $(".annotation_numbers").children().last()[0].click();
+            });
         }
         else {
             if ($(".resultsContainer").children().length > 0 ) {
@@ -882,6 +893,7 @@ function annotationPrep() {
 				$(".annotation_display").remove();
 				$(".transcript_display").remove();
 				$(".gen_box").remove();
+                $(".annotateSubmit").hide();
 				resetAnnotations();
 				getAnnotationData();
             }
