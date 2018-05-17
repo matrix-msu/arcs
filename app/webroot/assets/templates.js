@@ -57,8 +57,9 @@ JST["admin/users"] =
 				"</label><br>"+
                 "<label style='width: 448px'>User Name <input type=\"text\" name=\"uname\" style='width: 448px'></label><br>"+
                 "<label style='width: 448px'>Email <input type=\"text\" name=\"email\" style='width: 448px'></label><br>"+
-                "<label>Password <input type=\"text\" name=\"pw\"></label>"+
-                "<label>Repeat Password <input type=\"text\" name=\"rpw\"></label><br>"+
+                "<label>Password <input type=\"password\" name=\"pw\"></label>"+
+                "<label>Repeat Password <input type=\"password\" name=\"rpw\"></label>"+
+                "<label class=\"matching-pw\"></label><br>"+
                 "<p class='pnr'>Projects & Roles</p>"+
                 "<div class=\"pnr-container create\">"+
                     "<div class=\"pnr-single\">"+
@@ -66,7 +67,7 @@ JST["admin/users"] =
                             "<select class=\"proj-select\" name=\"project\">"+
                                 "<option style='display:none;' selected>Select a project</option>"+
                                 "<% _.each(users[0].projectNames, function(f, i) { %>  "+
-                                    "<option><%= f %></option>"+
+                                    "<option data-name=<%= f %> ><%= f %></option>"+
                                 "<% }) %>"+
                             "</select></label>"+
                         "<label>Role "+
@@ -76,10 +77,9 @@ JST["admin/users"] =
                                 "<option>Moderator</option>"+
                                 "<option>Admin</option>"+
                             "</select></label>"+
-                        "<p class='removePR'>Remove This Project/Role</p><br>"+
                     "</div>"+
                 "</div>"+
-                "<p class='anotherPR create'>Add User to Another Project</p>"+
+                "<p id='createAdd' class='anotherPR create'>Add User to Another Project</p>"+
                 "<input id=\"create-user-submit\" type=\"submit\" value=\"Create  User\">"+
             "</form>"+
         "</div>"+
@@ -101,7 +101,7 @@ JST["admin/users"] =
                                 "<select class=\"proj-select\" name=\"project\">"+
                                     "<option style='display:none;' selected>Select a project</option>"+
 									"<% _.each(users[0].projectNames, function(f, i) { %>  "+
-	                                    "<option><%= f %></option>"+
+	                                    "<option data-name=<%= f %> ><%= f %></option>"+
 	                                "<% }) %>"+
                                 "</select></label>"+
                             "<label>Role "+
@@ -111,10 +111,9 @@ JST["admin/users"] =
                                     "<option>Moderator</option>"+
                                     "<option>Admin</option>"+
                                 "</select></label>"+
-                            "<p class='removePR'>Remove This Project/Role</p><br>"+
                         "</div>"+
                     "</div>"+
-					"<p class='anotherPR invite'>Add User to Another Project</p>"+
+					"<p id='createAdd' class='anotherPR invite'>Add User to Another Project</p>"+
 					"<input id=\"invite-btn\" type=\"submit\" value=\"Invite User\">"+
 				"</form>"+
 			"</div>"+

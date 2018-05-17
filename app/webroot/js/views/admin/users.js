@@ -204,6 +204,16 @@ function hideAll(t) {
 }
 
 $(document).ready(function() {
+    var remainingProjectsCreate = projectNames.slice();
+    var remainingProjectsInvite = projectNames.slice();
+    // var remainingProjectNames = projectNames.slice();
+
+    $('.proj-select > option').each(function(){
+        this.innerHTML = this.innerHTML.replace('_', ' ');
+
+    });
+
+
     if($('#admin-users')[0]) {
         $('#projectSelect').css({
             'display' : 'block',
@@ -299,7 +309,14 @@ $(document).ready(function() {
 
     $(document).on('click', function(e) {
         if($('.removePR').is(e.target)) {
-            var removedProject = $(e.target).closest('.pnr-single').find('.proj-select').find('option:selected').val();
+            var formID = e.target.id;
+            if (formID == 'createRemove') {
+                var remainingProjectNames = remainingProjectsCreate;
+            }
+            else {
+                var remainingProjectNames = remainingProjectsInvite;
+            }
+            var removedProject = $(e.target).closest('.pnr-single').find('.proj-select').find('option:selected').data('name');
             if (removedProject != 'Select a project') {
                 // add the removed project back to the remaining project list
                 if (remainingProjectNames.indexOf(removedProject) == -1) {
@@ -319,9 +336,11 @@ $(document).ready(function() {
                $dot.addClass('selected');
             }
         } else if($('.anotherPR.create').is(e.target)){
+            var remainingProjectNames = remainingProjectsCreate;
             var projectOptions = "";
             remainingProjectNames.forEach(function(pName){
-                projectOptions += "<option>"+pName+"</option>";
+                var displayName = pName.replace('_', ' ');
+                projectOptions += "<option data-name="+pName+">"+displayName+"</option>";
             });
             $('.pnr-container.create').append(
                 "<div class=\"pnr-single\">"+
@@ -337,15 +356,17 @@ $(document).ready(function() {
                             "<option>Moderator</option>"+
                             "<option>Admin</option>"+
                         "</select></label>"+
-                    "<p class='removePR'>Remove This Project/Role</p><br>"+
+                    "<p id='createRemove' class='removePR'>Remove This Project/Role</p><br>"+
                 "</div>"
             );
 			$('.anotherPR.create').css('display', 'none');
         } else if($('.anotherPR.invite').is(e.target)){
-			var projectOptions = "";
-			remainingProjectNames.forEach(function(pName){
-				projectOptions += "<option>"+pName+"</option>";
-			});
+            var remainingProjectNames = remainingProjectsInvite;
+            var projectOptions = "";
+            remainingProjectNames.forEach(function(pName){
+                var displayName = pName.replace('_', ' ');
+                projectOptions += "<option data-name="+pName+">"+displayName+"</option>";
+            });
             $('.pnr-container.invite').append(
                 "<div class=\"pnr-single\">"+
                     "<label>Project "+
@@ -360,41 +381,95 @@ $(document).ready(function() {
                             "<option>Moderator</option>"+
                             "<option>Admin</option>"+
                         "</select></label>"+
-                    "<p class='removePR'>Remove This Project/Role</p><br>"+
+                    "<p id='inviteRemove' class='removePR'>Remove This Project/Role</p><br>"+
                 "</div>"
             );
+            $('.anotherPR.invite').css('display', 'none');
         } else if($('#projectSelect').is(e.target)){
 
         } else {
             $('.admin-header-users .open').removeClass('open');
         }
-
     })
 
 	//hide the add another project until the first is chosen.
 	$('.anotherPR').css('display', 'none');
 
-	$('.create-user').on('change', '.proj-select', function(e){
-		var selectedProject = $(this).find('option:selected').val();
-		var index = remainingProjectNames.indexOf(selectedProject)
+
+    var previous = "";
+    $('.create-user').on('focus', '.proj-select', function(e){
+        previous = $(this).find('option:selected').data('name');
+    }).change(function(e){
+        if (projectNames.indexOf(previous) > -1 && remainingProjectsCreate.indexOf(previous) == -1) {
+            remainingProjectsCreate.push(previous);
+        }
+		var selectedProject = $(e.target).find('option:selected').data('name');
+		var index = remainingProjectsCreate.indexOf(selectedProject)
 		if (index > -1) {
 			//remove the selected project from the remaining project list
-			remainingProjectNames.splice(index, 1);
+			remainingProjectsCreate.splice(index, 1);
 		}
 		//decide if an add another project button should display
-		if (remainingProjectNames.length > 0) {
+		if (remainingProjectsCreate.length > 0) {
 			$('.anotherPR').css('display', 'block');
 		}else {
 			$('.anotherPR').css('display', 'none');
 		}
+        $('.proj-select').blur();
+	});
+
+    var previous = "";
+    $('.invite-user').on('focus', '.proj-select', function(e){
+        previous = $(this).find('option:selected').data('name');
+    }).change(function(e){
+        if (projectNames.indexOf(previous) > -1 && remainingProjectsInvite.indexOf(previous) == -1) {
+            remainingProjectsInvite.push(previous);
+        }
+		var selectedProject = $(e.target).find('option:selected').data('name');
+		var index = remainingProjectsInvite.indexOf(selectedProject)
+		if (index > -1) {
+			//remove the selected project from the remaining project list
+			remainingProjectsInvite.splice(index, 1);
+		}
+		//decide if an add another project button should display
+		if (remainingProjectsInvite.length > 0) {
+			$('.anotherPR').css('display', 'block');
+		}else {
+			$('.anotherPR').css('display', 'none');
+		}
+        $('.proj-select').blur();
 	});
 
 
+    $("[name='pw']").keyup(checkPasswordMatch);
+    $("[name='rpw']").keyup(checkPasswordMatch);
+    function checkPasswordMatch() {
+        var password = $("[name='pw']").val();
+        var confirmPassword = $("[name='rpw']").val();
+        if (password.length < 6) {
+            $(".matching-pw").html('Passwords must be at least 6 characters long');
+            $(".matching-pw").css('color','red');
+            return false;
+        }
+        if (password != confirmPassword){
+            $(".matching-pw").html('Passwords do not match');
+            $(".matching-pw").css('color','red');
+            return false;
+        }else{
+            $(".matching-pw").html('Passwords match!');
+            $(".matching-pw").css('color','green');
+            return true;
+        }
+    }
 
 
     $('#create-user-submit').on('click', function(e){
+        if (!checkPasswordMatch()) {
+            return;
+        }
 		e.preventDefault();
         var formData = $('.create-user form').serializeArray();
+        //adjusted data is formatted for the api to read it
         var adjustedData = {
             'form':{
 				'firstname': '',
@@ -407,26 +482,60 @@ $(document).ready(function() {
         };
 
         var currentProjectInput = '';
-        formData.forEach(function(input){
+        var formLength = formData.length;
+        //push the form data into adjusted data and check for required fields
+        for (var i = 0; i < formLength; i++) {
+            var input = formData[i];
             if (input.name == 'fname') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['firstname'] = input.value;
             }else if (input.name == 'lname') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['lastname'] = input.value;
             }else if (input.name == 'uname') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['user'] = input.value;
             }else if (input.name == 'email') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['email'] = input.value;
             }else if (input.name == 'pw') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['pass'] = input.value;
             }else if (input.name == 'project') {
-                currentProjectInput = input.value;
-            }else if (input.name == 'role') {
+                currentProjectInput = input.value.toLowerCase();
+                if (currentProjectInput.toLowerCase() == 'select a project') {
+                    currentProjectInput = "";
+                    alert('Please enter all required fields.');
+                    return;
+                }
+                currentProjectInput = currentProjectInput.replace(' ', '_');
+            }else if (input.name == 'role' && currentProjectInput != "") {
+                if (input.value.toLowerCase() == 'select a role') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['projects'].push({
                     'project': currentProjectInput,
                     'role': input.value
                 });
             }
-        });
+        }
+
 		$.ajax({
 			url: arcs.baseURL + 'api/users/add',
 			type: "POST",
@@ -457,11 +566,6 @@ $(document).ready(function() {
 	});
 
 
-
-
-
-
-
 	$('#invite-btn').on('click', function(e){
         e.preventDefault();
         var formData = $('.invite-user form').serializeArray();
@@ -476,26 +580,55 @@ $(document).ready(function() {
                 'projects': []
             }
         };
-
         var currentProjectInput = '';
-        formData.forEach(function(input){
+        var formLength = formData.length;
+        //push the form data into adjusted data and check for required fields
+        for (var i = 0; i < formLength; i++) {
+            var input = formData[i];
+
             if (input.name == 'fname') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['firstname'] = input.value;
             }else if (input.name == 'lname') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['lastname'] = input.value;
             }else if (input.name == 'uname') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['user'] = input.value;
             }else if (input.name == 'email') {
+                if (input.value.trim() == '') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['email'] = input.value;
             }else if (input.name == 'project') {
-                currentProjectInput = input.value;
+                currentProjectInput = input.value.toLowerCase();
+                if (currentProjectInput.toLowerCase() == 'select a project') {
+                    currentProjectInput = "";
+                    alert('Please enter all required fields.');
+                    return;
+                }
+                currentProjectInput = currentProjectInput.replace(' ', '_');
             }else if (input.name == 'role') {
+                if (input.value.toLowerCase() == 'select a role') {
+                    alert('Please enter all required fields.');
+                    return;
+                }
                 adjustedData['form']['projects'].push({
                     'project': currentProjectInput,
                     'role': input.value
                 });
             }
-        });
+        };
 		adjustedData['form']['name'] = adjustedData['form']['firstname']+' '+adjustedData['form']['lastname'];
 
 		$.ajax({

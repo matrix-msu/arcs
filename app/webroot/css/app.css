@@ -15579,6 +15579,20 @@ strong {
   border: none;
   margin-top: 108px;
 }
+.admin-rows-wrap .create-user .proj-select,
+.admin-rows-wrap .invite-user .proj-select {
+  text-transform: capitalize;
+}
+.admin-rows-wrap .create-user .proj-select option,
+.admin-rows-wrap .invite-user .proj-select option {
+  text-transform: capitalize;
+}
+.admin-rows-wrap .create-user .matching-pw,
+.admin-rows-wrap .invite-user .matching-pw {
+  color: red;
+  font-size: 13px;
+  margin-top: 10px;
+}
 .admin-pagination {
   height: 65px;
   width: 100%;

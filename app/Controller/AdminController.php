@@ -72,6 +72,7 @@ class AdminController extends AppController {
 
         foreach ($mappings as $map) {
             $name = parent::getProjectNameFromPID($map['Mapping']['pid']);
+            $displayName = str_replace('_', ' ', $name);
 
             if ($name != '') {
                 $projectNameArray[] = $name;
@@ -80,10 +81,10 @@ class AdminController extends AppController {
                 }
                 if( $_SESSION['currentProjectName'] == $name ){
                     $first = false;
-                    $projectPicker .= '<option selected="selected" disabled="" hidden="" value="" class="">' . $name . '</option>';
+                    $projectPicker .= '<option selected="selected" disabled="" hidden="" value="" class="">' . $displayName . '</option>';
                 }else{
                     $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$name;
-                    $projectPicker .= "<option value='" . $url . "' label='$name'>$name</option>";
+                    $projectPicker .= "<option value='" . $url . "' label='$name'>$displayName</option>";
                 }
             }
         }

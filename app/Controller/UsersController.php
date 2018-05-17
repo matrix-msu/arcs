@@ -103,7 +103,11 @@ class UsersController extends AppController
 
       // push the emails to an array
       foreach ($res as $key => $value) {
-        array_push($mapping, $value['User']['email']);
+          if (isset($value['User']['email'])) {
+              array_push($mapping, $value['User']['email']);
+          }else {
+              array_push($mapping, $value['email']);
+          }
       }
       // return the admin emails
       return $mapping;
@@ -1006,6 +1010,9 @@ class UsersController extends AppController
      */
     public function register()
     {
+        print_r($this->request->data);
+        die;
+
         $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
