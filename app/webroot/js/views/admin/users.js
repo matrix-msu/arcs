@@ -464,10 +464,10 @@ $(document).ready(function() {
 
 
     $('#create-user-submit').on('click', function(e){
+        e.preventDefault();
         if (!checkPasswordMatch()) {
             return;
         }
-		e.preventDefault();
         var formData = $('.create-user form').serializeArray();
         //adjusted data is formatted for the api to read it
         var adjustedData = {
