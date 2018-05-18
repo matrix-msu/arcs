@@ -204,6 +204,9 @@ function hideAll(t) {
 }
 
 $(document).ready(function() {
+    if (typeof(projectNames) == 'undefined') {
+        return;
+    }
     var remainingProjectsCreate = projectNames.slice();
     var remainingProjectsInvite = projectNames.slice();
     // var remainingProjectNames = projectNames.slice();

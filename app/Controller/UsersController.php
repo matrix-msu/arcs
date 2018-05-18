@@ -1010,9 +1010,6 @@ class UsersController extends AppController
      */
     public function register()
     {
-        print_r($this->request->data);
-        die;
-
         $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
