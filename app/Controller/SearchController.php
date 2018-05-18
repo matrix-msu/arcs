@@ -515,6 +515,14 @@ class SearchController extends AppController {
             if( $pages == array() ){
                 $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
                 $pages = json_decode($kora->search(), true);
+
+                $tempPagesArray = array();
+                foreach ($pages as $kid => $value) {
+                    if( $value['Scan_Number'] == '1' ){
+                        $tempPagesArray[$kid] = $value;
+                    }
+                }
+                $pages = $tempPagesArray;
             }
             if( $query_array[2] == 'Field journal' ) {
                 $tempPagesArray = array();

@@ -85,7 +85,7 @@ function getKidInfo(kidArray) {
 		success: function(response) {
             indicatorResults = JSON.parse(response)['indicators'];
 			results = JSON.parse(response)['results'];
-            // fill in the indicators that were found
+						// fill in the indicators that were found
             Object.keys(indicatorResults).forEach(function(kid){
                 indicators[kid] = indicatorResults[kid];
             });
