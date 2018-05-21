@@ -314,9 +314,11 @@ $(document).ready(function() {
         if($('.removePR').is(e.target)) {
             var formID = e.target.id;
             if (formID == 'createRemove') {
+				var invite = false;
                 var remainingProjectNames = remainingProjectsCreate;
             }
             else {
+				var invite = true;
                 var remainingProjectNames = remainingProjectsInvite;
             }
             var removedProject = $(e.target).closest('.pnr-single').find('.proj-select').find('option:selected').data('name');
@@ -331,6 +333,17 @@ $(document).ready(function() {
             if (remainingProjectNames.length > 0) {
                 $('.anotherPR').css('display', 'block');
             }
+			rePopulateTheOptions(invite);
+			if (invite) {
+				$('.invite-user').find('.proj-select').each(function(){
+					$(this).find('option').last().prop('selected', true);
+				});
+			}else{
+				$('.create-user').find('.proj-select').each(function(){
+					$(this).find('option').last().prop('selected', true);
+				});
+			}
+
         } else if($('.bullet').is(e.target)){
             $dot = $(e.target);
             if($dot.hasClass('selected')){
@@ -402,7 +415,7 @@ $(document).ready(function() {
     var previous = "";
     $('.create-user').on('focus', '.proj-select', function(e){
         previous = $(this).find('option:selected').data('name');
-    }).change(function(e){
+    }).on('change', '.proj-select', function(e){
         if (projectNames.indexOf(previous) > -1 && remainingProjectsCreate.indexOf(previous) == -1) {
             remainingProjectsCreate.push(previous);
         }
@@ -412,36 +425,81 @@ $(document).ready(function() {
 			//remove the selected project from the remaining project list
 			remainingProjectsCreate.splice(index, 1);
 		}
+		//all of the project dropdown boxes
+		var selectors = $('.create-user').find('.proj-select');
+
 		//decide if an add another project button should display
-		if (remainingProjectsCreate.length > 0) {
+		if (remainingProjectsCreate.length > 0 && selectors.length < projectNames.length) {
 			$('.anotherPR').css('display', 'block');
 		}else {
 			$('.anotherPR').css('display', 'none');
 		}
-        $('.proj-select').blur();
+
+		$('.proj-select').blur();
+		rePopulateTheOptions();
+		$(this).find('option').last().prop('selected', true);
 	});
 
-    var previous = "";
-    $('.invite-user').on('focus', '.proj-select', function(e){
-        previous = $(this).find('option:selected').data('name');
-    }).change(function(e){
-        if (projectNames.indexOf(previous) > -1 && remainingProjectsInvite.indexOf(previous) == -1) {
-            remainingProjectsInvite.push(previous);
-        }
+	//go to all of the project selects and redo all of the options from the remaining project array
+	function rePopulateTheOptions(invite = false){
+		if (invite) {
+			var selectors = $('.invite-user').find('.proj-select');
+		}else{
+			var selectors = $('.create-user').find('.proj-select');
+		}
+		for (var i = 0; i < selectors.length; i++) {
+			var selector = $(selectors[i]);
+			var project = selector.val();
+			if (invite) {
+				var remainingProjectNames = remainingProjectsInvite;
+
+			}else{
+				var remainingProjectNames = remainingProjectsCreate;
+
+			}
+			var projectOptions = "";
+			remainingProjectNames.forEach(function(pName){
+				var displayName = pName.replace('_', ' ');
+				projectOptions += "<option data-name="+pName+">"+displayName+"</option>";
+			});
+			projectOptions += $(selector).find('option:selected')[0].outerHTML;
+			selector.html(
+				"<select class = \"proj-select\" name=\"project\">"+
+				projectOptions+
+				"</select>"
+			);
+		}
+	}
+
+
+	var previous = "";
+	$('.invite-user').on('focus', '.proj-select', function(e){
+		previous = $(this).find('option:selected').data('name');
+	}).on('change', '.proj-select', function(e){
+		if (projectNames.indexOf(previous) > -1 && remainingProjectsInvite.indexOf(previous) == -1) {
+			remainingProjectsInvite.push(previous);
+		}
 		var selectedProject = $(e.target).find('option:selected').data('name');
 		var index = remainingProjectsInvite.indexOf(selectedProject)
 		if (index > -1) {
 			//remove the selected project from the remaining project list
 			remainingProjectsInvite.splice(index, 1);
 		}
+		//all of the project dropdown boxes
+		var selectors = $('.invite-user').find('.proj-select');
+
 		//decide if an add another project button should display
-		if (remainingProjectsInvite.length > 0) {
+		if (remainingProjectsInvite.length > 0 && selectors.length < projectNames.length) {
 			$('.anotherPR').css('display', 'block');
 		}else {
 			$('.anotherPR').css('display', 'none');
 		}
-        $('.proj-select').blur();
+
+		$('.proj-select').blur();
+		rePopulateTheOptions(true);
+		$(this).find('option').last().prop('selected', true);
 	});
+
 
 
     $("[name='pw']").keyup(checkPasswordMatch);
@@ -538,6 +596,8 @@ $(document).ready(function() {
                 });
             }
         }
+
+		// console.log(adjustedData);
 
 		$.ajax({
 			url: arcs.baseURL + 'api/users/add',

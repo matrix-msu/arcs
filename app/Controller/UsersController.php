@@ -954,7 +954,6 @@ class UsersController extends AppController
      */
     public function ajaxInvite(){
         $signedIn = $this->getUser($this->Auth);
-        $this->json(200, "inviting");
         $this->autoRender = false;
         if (!$this->request->is('POST') || !isset($this->request->data['form']['projects']) ){
             return $this->json(400);
