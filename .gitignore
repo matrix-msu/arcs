@@ -1,0 +1,11 @@
+# bootstrap
+app/Config/bootstrap.php
+
+# htaccess files
+.htaccess
+app/.htaccess
+app/webroot/.htaccess
+
+# Directories
+/app/tmp
+/app/webroot/img
