@@ -15370,12 +15370,14 @@ strong {
   text-align: center;
   color: #0094bc;
   cursor: pointer;
+  float: right;
 }
 .admin-rows-wrap .admin-rows-content.pending-users .admin-row p.decline {
   width: calc((98% - 16px)*0.1);
   text-align: center;
   color: #ED7474;
   cursor: pointer;
+  float: right;
 }
 .admin-rows-wrap .admin-rows-content.meta {
   padding: 6px 5% 43px 5%;
