@@ -35,10 +35,9 @@ JST["admin/users"] =
                         "<p class=\"name\"><%= f.username %></p>"+
                         "<p class=\"email\"><%= f.email %></p>"+
                         "<p class=\"date\"><%= f.created %></p>"+
-                        "<p class=\"project\">projname</p>"+
                         "<p class=\"role\"><%= f.role %></p>"+
+						"<p id=\"delete-btn\" class=\"decline\" data-id=\"<%= f.id %>\">Decline</p>"+
                         "<p id=\"confirm-btn\" class=\"accept\" data-id=\"<%= f.id %>\">Accept</p>"+
-                        "<p id=\"delete-btn\" class=\"decline\" data-id=\"<%= f.id %>\">Decline</p>"+
                     "</div>"+
                 "<% } %>"+
             "<% }) %>"+
