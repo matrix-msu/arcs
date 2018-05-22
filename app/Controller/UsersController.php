@@ -450,17 +450,20 @@ class UsersController extends AppController
                 return $this->json(404);
             }
         }
+
+		$addArray = array();
         foreach($add as $a){
             $map = array(
                 'id_user' => $userId,
                 'role' => $a['role']['name'],
                 'pid'=> $a['project']['pid'],
-                'status'=>'confirmed'
+                'status'=>'confirmed',
             );
-            if( !$this->Mapping->save($map) ){
-                return $this->json(404);
-            }
+			array_push($addArray, $map);
         }
+		if( !$this->Mapping->saveAll($addArray) ){
+			return $this->json(404);
+		}
     }
 
     /**
