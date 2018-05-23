@@ -19,230 +19,230 @@ class UsersController extends AppController
     {
         parent::beforeFilter();
         $this->Auth->allow(
-          'crop', 'signup', 'special_login', 'register', 'confirm_user',
-          'register_no_invite', 'reset_password', 'display', 'getEmail',
-          'getUsername', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate', 'ajaxUploadProfImage',
-          'profile', 'getAllUsers', 'findById', 'ajaxDelete', 'edit', 'adminOfUser'
-          );
+            'crop', 'signup', 'special_login', 'register', 'confirm_user',
+            'register_no_invite', 'reset_password', 'display', 'getEmail',
+            'getUsername', 'ajaxInvite', 'registerByInvite', 'ajaxUpdate', 'ajaxUploadProfImage',
+            'profile', 'getAllUsers', 'findById', 'ajaxDelete', 'edit', 'adminOfUser'
+        );
         $this->User->flatten = true;
         $this->User->recursive = -1;
     }
     /**
-      * Takes a parameter which can be either (KID, PID, project name)
-      * and resolves a project.
-      *
-      * @param $param either (KID, PID, project name)
-      *
-      * @return a map with project name and a bool value for $param type
-      */
+     * Takes a parameter which can be either (KID, PID, project name)
+     * and resolves a project.
+     *
+     * @param $param either (KID, PID, project name)
+     *
+     * @return a map with project name and a bool value for $param type
+     */
     public static function resolveProject($param) {
-      $project = NULL;
-      $isResource = false;
-      // test for project name
-      try {
-        parent::getPIDFromProjectName($param);
-        $project = $param;
+        $project = NULL;
+        $isResource = false;
+        // test for project name
+        try {
+            parent::getPIDFromProjectName($param);
+            $project = $param;
 
-      } catch (Exception $e) {
-        // test for a KID
-        if ($tmp = parent::convertKIDtoProjectName($param)) {
-          $project = $tmp;
-          $isResource = true;
+        } catch (Exception $e) {
+            // test for a KID
+            if ($tmp = parent::convertKIDtoProjectName($param)) {
+                $project = $tmp;
+                $isResource = true;
 
-        } else {
-          // test for a pid
-            try {
-              $projects = parent::getPIDArray();
-              if ($tmp = array_search($param, $projects)) {
-                  $project = $tmp;
-              }
-            } catch (Exception $e){}
+            } else {
+                // test for a pid
+                try {
+                    $projects = parent::getPIDArray();
+                    if ($tmp = array_search($param, $projects)) {
+                        $project = $tmp;
+                    }
+                } catch (Exception $e){}
+            }
         }
-      }
-      return array(
-        "project" => $project,
-        "isResource" => $isResource
-      );
+        return array(
+            "project" => $project,
+            "isResource" => $isResource
+        );
     }
     /**
-      * Takes a project name and finds the corresponding admins
-      *
-      * @param $project is the project name
-      *
-      * @return array of admin emails
-      */
+     * Takes a project name and finds the corresponding admins
+     *
+     * @param $project is the project name
+     *
+     * @return array of admin emails
+     */
     public function getAdmins($project) {
-      $pid;
-      $ids = array();
-      $mapping = array();
+        $pid;
+        $ids = array();
+        $mapping = array();
 
-      try {
-        $pid = parent::getPIDFromProjectName($project);
-      } catch (Exception $e) {
-        // indicate no admins
-        return array();
-      }
+        try {
+            $pid = parent::getPIDFromProjectName($project);
+        } catch (Exception $e) {
+            // indicate no admins
+            return array();
+        }
 
-      // sql query on admins on the project
-      $res = $this->Mapping->find('all', array(
-        'fields' => array('Mapping.id_user'),
-        'conditions' => array(
-          'Mapping.role' => 'Admin',
-          'Mapping.pid'  => $pid,
-          'Mapping.status' => 'confirmed'
-        )
-      ));
+        // sql query on admins on the project
+        $res = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.id_user'),
+            'conditions' => array(
+                'Mapping.role' => 'Admin',
+                'Mapping.pid'  => $pid,
+                'Mapping.status' => 'confirmed'
+            )
+        ));
 
-      // push the ID's to an array
-      foreach ($res as $key => $value) {
-        array_push($ids, $value['Mapping']['id_user']);
-      }
+        // push the ID's to an array
+        foreach ($res as $key => $value) {
+            array_push($ids, $value['Mapping']['id_user']);
+        }
 
-      // Find the ID's in the user table
-      $res = $this->User->findAllById($ids);
+        // Find the ID's in the user table
+        $res = $this->User->findAllById($ids);
 
-      // push the emails to an array
-      foreach ($res as $key => $value) {
-          if (isset($value['User']['email'])) {
-              array_push($mapping, $value['User']['email']);
-          }else {
-              array_push($mapping, $value['email']);
-          }
-      }
-      // return the admin emails
-      return $mapping;
+        // push the emails to an array
+        foreach ($res as $key => $value) {
+            if (isset($value['User']['email'])) {
+                array_push($mapping, $value['User']['email']);
+            }else {
+                array_push($mapping, $value['email']);
+            }
+        }
+        // return the admin emails
+        return $mapping;
     }
 
     /**
-      * Takes a parameter which can be either (KID, PID, project name)
-      * sends a permission request to the admins
-      *
-      * @param $project is the project name
-      *
-      * @return array of admin emails
-      */
+     * Takes a parameter which can be either (KID, PID, project name)
+     * sends a permission request to the admins
+     *
+     * @param $project is the project name
+     *
+     * @return array of admin emails
+     */
     public function requestPermission($param = null) {
-      if ($param == null){
-          if (!isset($_POST[0])){
-              die;
-          }
-          $param = $_POST[0];
-      }
+        if ($param == null){
+            if (!isset($_POST[0])){
+                die;
+            }
+            $param = $_POST[0];
+        }
 
-      $this->loadModel('Mapping');
-      $user = $this->getUser($this->Auth);
+        $this->loadModel('Mapping');
+        $user = $this->getUser($this->Auth);
 
-      try {
-          $pid = parent::getPIDFromProjectName($param);
-      } catch (Exception $e) {//if the project name is not valid
-          // return the flash message for frontend
-          $this->Session->setFlash('Error, Request was not set', 'flash_error');
-          return;
-      }
+        try {
+            $pid = parent::getPIDFromProjectName($param);
+        } catch (Exception $e) {//if the project name is not valid
+            // return the flash message for frontend
+            $this->Session->setFlash('Error, Request was not set', 'flash_error');
+            return;
+        }
 
-      $template; $viewVars; $admins;
+        $template; $viewVars; $admins;
 
-      //echo json_encode($param);
-      $resolve = static::resolveProject($param);
-      //echo json_encode($resolve);
-      $admins = $this->getAdmins($resolve["project"]);
-      //echo json_encode($admins);
-      // don't render a view
-      $this->autoRender = false;
-      $message;
-      // assert email dependencies
-      if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
-        // Set the template and view vars based on type
+        //echo json_encode($param);
+        $resolve = static::resolveProject($param);
+        //echo json_encode($resolve);
+        $admins = $this->getAdmins($resolve["project"]);
+        //echo json_encode($admins);
+        // don't render a view
+        $this->autoRender = false;
+        $message;
+        // assert email dependencies
+        if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
+            // Set the template and view vars based on type
 
-        $to = $admins;
+            $to = $admins;
 
-        $subject = "User Access Request";
+            $subject = "User Access Request";
 
-        $username = isset($user['username'])
-                    ? $user['username']
-                    : "(Error) No Username";
+            $username = isset($user['username'])
+                ? $user['username']
+                : "(Error) No Username";
 
-        $project = isset($resolve["project"])
-                   ? $resolve["project"]
-                   : "Invalid Project";
-        $project = str_replace("_", " ", $project);
-        $project = ucwords($project);
+            $project = isset($resolve["project"])
+                ? $resolve["project"]
+                : "Invalid Project";
+            $project = str_replace("_", " ", $project);
+            $project = ucwords($project);
 
-        $resource = isset($param)
-                  ? $param
-                  : "Invalid KID";
+            $resource = isset($param)
+                ? $param
+                : "Invalid KID";
 
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
+            $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
+            $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
 
-        if ($resolve["isResource"]) {
-          $message =
-          "
+            if ($resolve["isResource"]) {
+                $message =
+                    "
             <p>User ".$username." has requested access to the resource ".$resource."on project ".$project."
             <p>To permit the user to the project, visit the associated kora installation dashboard.<br><br>
             <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
             Social Sciences with support from the National Endowment for the Humanities<br />
           ";
 
-          // $template = 'requestAccessResource';
-          // $viewVars = array('user' => $user, 'project' => $resolve["project"], 'resource' => $param);
-          // else is project permissions
-        } else {
-          $message =
-          "
+                // $template = 'requestAccessResource';
+                // $viewVars = array('user' => $user, 'project' => $resolve["project"], 'resource' => $param);
+                // else is project permissions
+            } else {
+                $message =
+                    "
           <p>User ".$username." has requested access to the project ".$project."
           <p>To permit the user to the project, visit the associated kora installation dashboard.<br>
           <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
           Social Sciences with support from the National Endowment for the Humanities<br />
           ";
-          // $template = 'requestAccessProject';
-          // $viewVars = array('user' => $user, 'project' => $resolve["project"]);
-        }
-        $success = mail($to,$subject,$message,$headers);
+                // $template = 'requestAccessProject';
+                // $viewVars = array('user' => $user, 'project' => $resolve["project"]);
+            }
+            $success = mail($to,$subject,$message,$headers);
 
-          //TODO: remove cakeEmail
-        //Send emails to admins
-        // App::uses('CakeEmail', 'Network/Email');
-        // $Email = new CakeEmail();
-        // $Email->viewVars($viewVars)
-        //       ->template($template, 'default')
-        //       ->emailFormat('html')
-        //       ->subject('User Access Request')
-        //       ->to($admins)
-        //       ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        // $Email->send();
+            //TODO: remove cakeEmail
+            //Send emails to admins
+            // App::uses('CakeEmail', 'Network/Email');
+            // $Email = new CakeEmail();
+            // $Email->viewVars($viewVars)
+            //       ->template($template, 'default')
+            //       ->emailFormat('html')
+            //       ->subject('User Access Request')
+            //       ->to($admins)
+            //       ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
+            // $Email->send();
 
-        //check if there is already a request for this
-        $results = $this->Mapping->find('all', array(
-            'conditions' => array(
-                'AND' => array(
-                    'id_user' => $user['id'],
-                    'pid' => $pid,
+            //check if there is already a request for this
+            $results = $this->Mapping->find('all', array(
+                'conditions' => array(
+                    'AND' => array(
+                        'id_user' => $user['id'],
+                        'pid' => $pid,
+                    )
                 )
-            )
-        ));
+            ));
 
-        if (empty($results)){
-            //update the mappings table
-            $mappingArray = [
-            'id_user' => $user['id'],
-            'role' => 'Researcher',
-            'pid' => $pid,
-            'status' => 'unconfirmed',
-            'activation' => $this->Mapping->getToken()
-          ];
-          $this->Mapping->saveAll($mappingArray);
+            if (empty($results)){
+                //update the mappings table
+                $mappingArray = [
+                    'id_user' => $user['id'],
+                    'role' => 'Researcher',
+                    'pid' => $pid,
+                    'status' => 'unconfirmed',
+                    'activation' => $this->Mapping->getToken()
+                ];
+                $this->Mapping->saveAll($mappingArray);
+            }
+
+            // return the flash message for frontend
+            $this->Session->setFlash('Success, the request has been sent', 'flash_success');
+            return;
         }
-
         // return the flash message for frontend
-      	$this->Session->setFlash('Success, the request has been sent', 'flash_success');
+        $this->Session->setFlash('Error, Request was not set', 'flash_error');
         return;
-      }
-      // return the flash message for frontend
-      $this->Session->setFlash('Error, Request was not set', 'flash_error');
-      return;
     }
 
     public function getUser(&$auth){
@@ -321,20 +321,20 @@ class UsersController extends AppController
             return $this->json(400);
         $mappingProjects = array();
         foreach( $this->request->data['form']['projects'] as $p ){
-			$pid = parent::getPIDFromProjectName($p['project']);
+            $pid = parent::getPIDFromProjectName($p['project']);
             array_push($mappingProjects, array(
-				'project'=>array('name'=>$p['project'], 'pid'=>$pid),
-				'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+                'project'=>array('name'=>$p['project'], 'pid'=>$pid),
+                'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
         }
 
-		$authenticated = false;
-		foreach ($mappingProjects as $key => $value) {
-			if (!$this->isAdminOfProject($value['project']['name'])) {
-          // TODO: make an error message here
-				die;
-			}
-		}
-		$authenticated = true;
+        $authenticated = false;
+        foreach ($mappingProjects as $key => $value) {
+            if (!$this->isAdminOfProject($value['project']['name'])) {
+                // TODO: make an error message here
+                die;
+            }
+        }
+        $authenticated = true;
 
         $this->request->data = $this->request->data['form'];
         unset($this->request->data['projects']);
@@ -345,15 +345,15 @@ class UsersController extends AppController
             return $this->json(400, ($response));
         }
 
-		$addUserData = array(
-			'name' => $this->request->data['firstname'].' '.$this->request->data['lastname'],
-			'username' => $this->request->data['user'],
-			'email' => $this->request->data['email'],
-			'password' => $this->request->data['pass'],
-			'isAdmin' => 0,
-			'last_login' => null,
-			'status' => 'confirmed'
-		);
+        $addUserData = array(
+            'name' => $this->request->data['firstname'].' '.$this->request->data['lastname'],
+            'username' => $this->request->data['user'],
+            'email' => $this->request->data['email'],
+            'password' => $this->request->data['pass'],
+            'isAdmin' => 0,
+            'last_login' => null,
+            'status' => 'confirmed'
+        );
 
         $response["status"] = $this->User->add($addUserData);
         if ($response["status"] == false) {
@@ -364,29 +364,29 @@ class UsersController extends AppController
         $this->json(201, $response);
     }
 
-	public function isAdminOfProject($pName) {
-		$signedIn = $this->getUser($this->Auth);
-		$id = $signedIn['id'];
-		$pid;
+    public function isAdminOfProject($pName) {
+        $signedIn = $this->getUser($this->Auth);
+        $id = $signedIn['id'];
+        $pid;
 
-		try {
-			$pid = parent::getPIDFromProjectName($pName);
-		} catch (Exception $e) {
-			return false;
-		}
+        try {
+            $pid = parent::getPIDFromProjectName($pName);
+        } catch (Exception $e) {
+            return false;
+        }
 
-		// sql query on admins on the project
-		$res = $this->Mapping->find('all', array(
-			'fields' => array('Mapping.id_user'),
-			'conditions' => array(
-				'Mapping.id_user' => $id,
-				'Mapping.role' => 'Admin',
-				'Mapping.pid'  => $pid,
-				'Mapping.status' => 'confirmed'
-			)
-		));
-		return !empty($res);
-	}
+        // sql query on admins on the project
+        $res = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.id_user'),
+            'conditions' => array(
+                'Mapping.id_user' => $id,
+                'Mapping.role' => 'Admin',
+                'Mapping.pid'  => $pid,
+                'Mapping.status' => 'confirmed'
+            )
+        ));
+        return !empty($res);
+    }
 
 
 
@@ -514,7 +514,7 @@ class UsersController extends AppController
             $signedIn = self::adminOfUser($id);//return the user that you are editing only if you are an admin of the current project and that user
             if (empty($signedIn)){
                 $this->Session->setFlash('You are not an admin of that user.', 'flash_error');
-				            return;
+                return;
             }
         }else{
             $signedIn = $this->getUser($this->Auth);
@@ -544,10 +544,10 @@ class UsersController extends AppController
             $this->Mapping->saveAll($updateArray);
         }
 
-		$numberEdited = 0;
+        $numberEdited = 0;
 
-		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
-		$file_array = glob($uploads_path . $signedIn['username'] . '*');
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        $file_array = glob($uploads_path . $signedIn['username'] . '*');
 
         if (!empty($file_array)){
             foreach ($file_array as $file) {
@@ -558,64 +558,64 @@ class UsersController extends AppController
             }
         }
 
-		$userNames = $this->User->find('all', array(
-			'conditions' => array(
-				'username' => $this->request->data['username']
-			)
-		));
+        $userNames = $this->User->find('all', array(
+            'conditions' => array(
+                'username' => $this->request->data['username']
+            )
+        ));
 
-		$emails = $this->User->find('all', array(
-			'conditions' => array(
-				'email' => $this->request->data['email']
-			)
-		));
+        $emails = $this->User->find('all', array(
+            'conditions' => array(
+                'email' => $this->request->data['email']
+            )
+        ));
 
-    $changedEmail = false;
-		//Check if the email is taken
-		if (empty($emails)) {//nobody else has it
-			if (filter_var($this->request->data['email'], FILTER_VALIDATE_EMAIL)){
+        $changedEmail = false;
+        //Check if the email is taken
+        if (empty($emails)) {//nobody else has it
+            if (filter_var($this->request->data['email'], FILTER_VALIDATE_EMAIL)){
                 $changedEmail = true;
-				$this->Session->setFlash('Profile edited successfully.', 'flash_success');
-			}else {
-				$this->Session->setFlash('This email is not valid.', 'flash_error');
-				return;
-			}
-		} elseif (sizeof($emails) == 1) {
-			//if its not their own email
-			if ($emails[0]['id'] !== $signedIn['id']){
-				$this->Session->setFlash('This email is already in use.', 'flash_error');
-				return;
-			}
-		//more than one person has it. This shouldn't happen..
-		} else {
-			return;
-		}
+                $this->Session->setFlash('Profile edited successfully.', 'flash_success');
+            }else {
+                $this->Session->setFlash('This email is not valid.', 'flash_error');
+                return;
+            }
+        } elseif (sizeof($emails) == 1) {
+            //if its not their own email
+            if ($emails[0]['id'] !== $signedIn['id']){
+                $this->Session->setFlash('This email is already in use.', 'flash_error');
+                return;
+            }
+            //more than one person has it. This shouldn't happen..
+        } else {
+            return;
+        }
 
         $changedUsername = false;
-		//Check if the username is taken
-		if (empty($userNames)) {//nobody else has it
-			//make the profile picture connect to the new username
+        //Check if the username is taken
+        if (empty($userNames)) {//nobody else has it
+            //make the profile picture connect to the new username
             $changedUsername = true;
-			$this->Session->setFlash('Profile edited successfully.', 'flash_success');
-		} elseif (sizeof($userNames) == 1) {
-			//if its not their own username
-			if ($userNames[0]['id'] !== $signedIn['id']){
-				$this->Session->setFlash('This username is already taken.', 'flash_error');
-				return;
-			}
-		//more than one person has it. This shouldn't happen..
-		} else {
-			return;
-		}
+            $this->Session->setFlash('Profile edited successfully.', 'flash_success');
+        } elseif (sizeof($userNames) == 1) {
+            //if its not their own username
+            if ($userNames[0]['id'] !== $signedIn['id']){
+                $this->Session->setFlash('This username is already taken.', 'flash_error');
+                return;
+            }
+            //more than one person has it. This shouldn't happen..
+        } else {
+            return;
+        }
 
 
-		$save = $this->User->save($this->request->data);
+        $save = $this->User->save($this->request->data);
         if (!$save) {
-			$this->Session->setFlash('There was an error.', 'flash_error');
+            $this->Session->setFlash('There was an error.', 'flash_error');
             return $this->json(500);
         }elseif($save == array() ){
-			return $this->json(500);
-		}
+            return $this->json(500);
+        }
         if (!empty($file_array)){
             //assign their profile picture to their new username
             rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
@@ -753,10 +753,10 @@ class UsersController extends AppController
 
 
         # Update the Auth Session var, if necessary.
-       if ($id == $this->Auth->user('id'))
+        if ($id == $this->Auth->user('id'))
             $this->Session->write('Auth.User', $this->User->findById($id));
-            $this->Session->write('Auth.User2', $this->User->findById($id));
-        	$this->json(200, $this->User->findById($id));
+        $this->Session->write('Auth.User2', $this->User->findById($id));
+        $this->json(200, $this->User->findById($id));
     }
 
     /**
@@ -783,7 +783,7 @@ class UsersController extends AppController
     public function special_login()
     {
         $this->User->flatten = false;
-          if ($this->request->is('post')) {
+        if ($this->request->is('post')) {
 
             if ($this->request->data['User']['forgot_password']) {
                 /* Reset user's password */
@@ -816,19 +816,19 @@ class UsersController extends AppController
                 }
 
                 if($user['User']['status'] == 'active'){
-                        if ($this->Auth->login()) {
-                                $this->User->id = $user['User']['id'];
-                                $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                                return $this->redirect($this->referer());
-                                // return $this->redirect($this->Auth->redirect());
-                        } else {
-                                $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
-                                $this->redirect($this->referer());
-                        }
+                    if ($this->Auth->login()) {
+                        $this->User->id = $user['User']['id'];
+                        $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                        return $this->redirect($this->referer());
+                        // return $this->redirect($this->Auth->redirect());
+                    } else {
+                        $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                        $this->redirect($this->referer());
+                    }
                 }
                 else if($user['User']['status'] == 'pending') {
-                        $this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
-                        return $this->redirect('/');
+                    $this->Session->setFlash("You cannot log in until an administrator approves your account.", 'flash_error');
+                    return $this->redirect('/');
                 }
                 else if($user['User']['status'] == 'unconfirmed') {
 
@@ -846,8 +846,8 @@ class UsersController extends AppController
                 }
                 //Invited users will not be found by findByRef until activated
                 else if(!$user) {
-                        $this->Session->setFlash("Username not found.", 'flash_error');
-                        $this->redirect('/');
+                    $this->Session->setFlash("Username not found.", 'flash_error');
+                    $this->redirect('/');
                 }
             }
         }
@@ -954,16 +954,17 @@ class UsersController extends AppController
      */
     public function ajaxInvite(){
         $signedIn = $this->getUser($this->Auth);
+        $this->json(200, "inviting");
         $this->autoRender = false;
         if (!$this->request->is('POST') || !isset($this->request->data['form']['projects']) ){
             return $this->json(400);
-		}
-		$mappingProjects = array();
+        }
+        $mappingProjects = array();
         foreach( $this->request->data['form']['projects'] as $p ){
-			$pid = parent::getPIDFromProjectName($p['project']);
+            $pid = parent::getPIDFromProjectName($p['project']);
             array_push($mappingProjects, array(
-				'project'=>array('name'=>$p['project'], 'pid'=>$pid),
-				'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
+                'project'=>array('name'=>$p['project'], 'pid'=>$pid),
+                'role'=>array('name'=>$p['role'], 'value'=>$p['role'])));
         }
 
         $authenticated = $this->pluginAuthentication(
@@ -980,7 +981,7 @@ class UsersController extends AppController
         }
 
         $data = $this->request->data['form'];
-		    unset($data['projects']);
+        unset($data['projects']);
         $data['isAdmin'] = null;
 
         if (!($data && $data['email']))
@@ -1009,6 +1010,20 @@ class UsersController extends AppController
      */
     public function register()
     {
+        if (isset($this->request->data['isMobile'])){
+            $mobileData = Array(
+                'User' => Array(
+                    'name' => $this->request->data['User']['name2'],
+                    'usernameReg' => $this->request->data['User']['usernameReg2'],
+                    'email' => $this->request->data['User']['email2'],
+                    'password' => $this->request->data['User']['password2'],
+                    'project' => $this->request->data['User']['project'],
+                ),
+                'g-recaptcha-response' => $this->request->data['g-recaptcha-response']
+            );
+            $this->request->data = $mobileData;
+        }
+
         $this->loadModel('Mapping');
         if ($this->request->is('post')) {
             if ($this->request->data('g-recaptcha-response')) {
@@ -1019,7 +1034,8 @@ class UsersController extends AppController
                         'name' => $this->request->data['User']['name'],
                         'username' => $this->request->data['User']['usernameReg'],
                         'email' => $this->request->data['User']['email'],
-                        'password' => $this->request->data['User']['passwd'],
+                        'password' => $this->request->data['User']['password'],
+                        'project' => $this->request->data['User']['project'],
                         'isAdmin' => 0,
                         'last_login' => null,
                         'status' => 'unconfirmed'
@@ -1028,7 +1044,8 @@ class UsersController extends AppController
                         $id = $allDat['id'];
                         $projects = explode(", ", $this->request->data['User']['project']);
                         $mappingArray = [];
-
+//                        var_dump($projects);
+//                        die;
                         foreach ($projects as $project) {
                             $mappingArray[] = array(
                                 'id_user' => $id,
@@ -1038,6 +1055,8 @@ class UsersController extends AppController
                                 'activation' => $this->Mapping->getToken()
                             );
                         }
+//                        echo 'HERE';
+//                        die;
 
                         $this->Mapping->saveAll($mappingArray);
 
@@ -1049,7 +1068,7 @@ class UsersController extends AppController
                             "Thank you for registering!  You will receive a confirmation email shortly.
                             <br>After you verify your email address, an administrator will activate your account. This could take some time.
                             <br>Once your account is fully activated, we will send you another email confirming your ARCS privileges.",
-                             'flash_success');
+                            'flash_success');
 
                         $this->redirect($this->referer());
 
@@ -1095,51 +1114,51 @@ class UsersController extends AppController
         $this->set('email', $user['email']);
         $this->set('name', $user['name']);
 
-                if (isset($this->data['User'])) {
-                        //Check if passwords match
-                        if ($this->data['User']['password'] != $this->data['User']['password_confirm']) {
-                                $this->Session->setFlash('Passwords do not match', 'flash_error');
-                        } else {
-                                //Find user
-                                $conditions = array('User.activation' => $this->data['User']['activation']);
-                                $user = $this->User->find('first', array('conditions' => $conditions));
-                                $this->User->id = $user['id'];
+        if (isset($this->data['User'])) {
+            //Check if passwords match
+            if ($this->data['User']['password'] != $this->data['User']['password_confirm']) {
+                $this->Session->setFlash('Passwords do not match', 'flash_error');
+            } else {
+                //Find user
+                $conditions = array('User.activation' => $this->data['User']['activation']);
+                $user = $this->User->find('first', array('conditions' => $conditions));
+                $this->User->id = $user['id'];
 
-                                //Check if user was found
-                                if ($this->User->id) {
-                                        //Try to save data
-                                        $newUser = $this->data['User'];
-                                        $newUser['status'] = "active";
-                                        //$this->data['User']['status'] = "active";
-                                        // var_dump($newUser);
-                                        if (!$this->User->save($newUser)) {
-                                                //Print error messages
-                                                $error_message = "";
-                                                foreach (array_keys($this->User->validationErrors) as $key) {
-                                                   $error_message .= ucfirst($key) . ': ';
-                                                   for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
-                                                           $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
-                                                   $error_message .= "<br>";
-                                                }
-                                                $this->Session->setFlash($error_message, 'flash_error');
-                                        } else {
-                                                //Remove activation token from user
-                                                $this->User->saveField('activation', null);
-
-                                                //Login and redirect
-                                                $user = $this->User->findById($user['id']);
-                                                $this->Auth->login($user);
-                                                $this->Session->setFlash("Your account has been created successfully!", 'flash_success');
-                                                $this->redirect('/');
-                                        }
-                                } else {
-                                        //Error getting user
-                                        $this->Session->setFlash('Account could not be created.', 'flash_error');
-                                }
+                //Check if user was found
+                if ($this->User->id) {
+                    //Try to save data
+                    $newUser = $this->data['User'];
+                    $newUser['status'] = "active";
+                    //$this->data['User']['status'] = "active";
+                    // var_dump($newUser);
+                    if (!$this->User->save($newUser)) {
+                        //Print error messages
+                        $error_message = "";
+                        foreach (array_keys($this->User->validationErrors) as $key) {
+                            $error_message .= ucfirst($key) . ': ';
+                            for ($x = 0; $x < count($this->User->validationErrors[$key]); $x++)
+                                $error_message .= $this->User->validationErrors[$key][$x] . '.  ';
+                            $error_message .= "<br>";
                         }
+                        $this->Session->setFlash($error_message, 'flash_error');
+                    } else {
+                        //Remove activation token from user
+                        $this->User->saveField('activation', null);
+
+                        //Login and redirect
+                        $user = $this->User->findById($user['id']);
+                        $this->Auth->login($user);
+                        $this->Session->setFlash("Your account has been created successfully!", 'flash_success');
+                        $this->redirect('/');
+                    }
+                } else {
+                    //Error getting user
+                    $this->Session->setFlash('Account could not be created.', 'flash_error');
                 }
-                // $this->Session->setFlash('Account could not be created.', 'flash_error');
-                // $this->redirect('/');
+            }
+        }
+        // $this->Session->setFlash('Account could not be created.', 'flash_error');
+        // $this->redirect('/');
     }
 
     /**
@@ -1221,13 +1240,13 @@ class UsersController extends AppController
             try {
                 $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
             } catch (Exception $e) {
-               continue;
+                continue;
             }
             $project = parent::getProjectNameFromPID($mapping["Mapping"]['pid']);
             $role = $mapping["Mapping"]['role'];
             $user['mappings'][] = array("project" => $project,
-                                        "role" => $role,
-                                        'status' => $mapping["Mapping"]['status']);
+                "role" => $role,
+                'status' => $mapping["Mapping"]['status']);
 
             if( $role == 'Admin' ) {
                 $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" " .
@@ -1281,118 +1300,118 @@ class UsersController extends AppController
     }
 
 
-	//upload the profile picture function
-	public function uploadProfileImage() {
-		$signedIn = $this->getUser($this->Auth);
+    //upload the profile picture function
+    public function uploadProfileImage() {
+        $signedIn = $this->getUser($this->Auth);
 
-		$username = $signedIn['username'];
+        $username = $signedIn['username'];
 
-		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
         //$uploads_url  = Configure::read('uploads.url')  . "/profileImages/";
-		if (isset($_FILES['user_image'])) {
-			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
-			$nameEnd = explode('.',$_FILES['user_image']['name']);
-			$file_ext = strtolower(end($nameEnd));
-			if ($_FILES['user_image']['error'] > 0 ) {
-				$error    = $_FILES['user_image']['error'];
-				$errorOut = "Unknown upload error.";
-				if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
-				elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
-				elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
-				elseif ($error == 4) $errorOut = "No file was uploaded";
-				elseif ($error == 6) $errorOut = "Missing a temporary folder";
-				elseif ($error == 7) $errorOut = "Failed to write file to disk";
-				elseif ($error == 8) $errorOut = "File upload stopped by extension";
-				$this->Session->setFlash("Error: " . $errorOut, 'flash_error');
-			} elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
-				// check if image file exists
-				$this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
-			} elseif ($_FILES['user_image']['size'] > 500000) {
-				// check if file size is extremely large
-				$this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
-			} elseif (!in_array($file_ext, $vaildExtensions)) {
-				// check if file extension is valid
-				$this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
-			} else {
-				// try to upload the image.
-				$uploadFile = $uploads_path . $username . ".";
+        if (isset($_FILES['user_image'])) {
+            $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
+            $nameEnd = explode('.',$_FILES['user_image']['name']);
+            $file_ext = strtolower(end($nameEnd));
+            if ($_FILES['user_image']['error'] > 0 ) {
+                $error    = $_FILES['user_image']['error'];
+                $errorOut = "Unknown upload error.";
+                if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
+                elseif ($error == 4) $errorOut = "No file was uploaded";
+                elseif ($error == 6) $errorOut = "Missing a temporary folder";
+                elseif ($error == 7) $errorOut = "Failed to write file to disk";
+                elseif ($error == 8) $errorOut = "File upload stopped by extension";
+                $this->Session->setFlash("Error: " . $errorOut, 'flash_error');
+            } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
+                // check if image file exists
+                $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
+            } elseif ($_FILES['user_image']['size'] > 500000) {
+                // check if file size is extremely large
+                $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
+            } elseif (!in_array($file_ext, $vaildExtensions)) {
+                // check if file extension is valid
+                $this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
+            } else {
+                // try to upload the image.
+                $uploadFile = $uploads_path . $username . ".";
 
-				// each user is allowed one profile picture
-				if (count(glob($uploadFile."*")) > 0) {
-					foreach (glob($uploadFile."*") as $file) {
-						unlink($file);
-					}
-				}
+                // each user is allowed one profile picture
+                if (count(glob($uploadFile."*")) > 0) {
+                    foreach (glob($uploadFile."*") as $file) {
+                        unlink($file);
+                    }
+                }
 
-				if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
-					$this->Session->setFlash("Profile edited successfully.", 'flash_success');
-					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
-					//$this->redirect($actual_link);
-					echo json_encode('ok');
-				} else {
-					$this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
-					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
-					//$this->redirect($actual_link);
-				}
-			}
-		}
-		die;
-	}
+                if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
+                    $this->Session->setFlash("Profile edited successfully.", 'flash_success');
+                    $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+                    //$this->redirect($actual_link);
+                    echo json_encode('ok');
+                } else {
+                    $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
+                    $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+                    //$this->redirect($actual_link);
+                }
+            }
+        }
+        die;
+    }
 
-	//Upload a profile image for a user
-	public function ajaxUploadProfImage() {
-		$username = $this->request->data['username'];
-		$uploads_path = Configure::read('uploads.path') . "/profileImages/";
+    //Upload a profile image for a user
+    public function ajaxUploadProfImage() {
+        $username = $this->request->data['username'];
+        $uploads_path = Configure::read('uploads.path') . "/profileImages/";
 
-		if (isset($_FILES['user_image'])) {
-			$vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
-			$nameEnd = explode('.',$_FILES['user_image']['name']);
-			$file_ext = strtolower(end($nameEnd));
-			if ($_FILES['user_image']['error'] > 0 ) {
-				$error    = $_FILES['user_image']['error'];
-				$errorOut = "Unknown upload error.";
-				if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
-				elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
-				elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
-				elseif ($error == 4) $errorOut = "No file was uploaded";
-				elseif ($error == 6) $errorOut = "Missing a temporary folder";
-				elseif ($error == 7) $errorOut = "Failed to write file to disk";
-				elseif ($error == 8) $errorOut = "File upload stopped by extension";
-				$this->Session->setFlash("Error: " . $errorOut, 'flash_error');
-			} elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
-				// check if image file exists
-				$this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
-			} elseif ($_FILES['user_image']['size'] > 500000) {
-				// check if file size is extremely large
-				$this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
-			} elseif (!in_array($file_ext, $vaildExtensions)) {
-				// check if file extension is valid
-				$this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
-			} else {
-				// try to upload the image.
-				$uploadFile = $uploads_path . $username . ".";
+        if (isset($_FILES['user_image'])) {
+            $vaildExtensions = array('jpg', 'jpeg', 'gif', 'png');
+            $nameEnd = explode('.',$_FILES['user_image']['name']);
+            $file_ext = strtolower(end($nameEnd));
+            if ($_FILES['user_image']['error'] > 0 ) {
+                $error    = $_FILES['user_image']['error'];
+                $errorOut = "Unknown upload error.";
+                if     ($error == 1) $errorOut = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                elseif ($error == 2) $errorOut = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                elseif ($error == 3) $errorOut = "The uploaded file was only partially uploaded";
+                elseif ($error == 4) $errorOut = "No file was uploaded";
+                elseif ($error == 6) $errorOut = "Missing a temporary folder";
+                elseif ($error == 7) $errorOut = "Failed to write file to disk";
+                elseif ($error == 8) $errorOut = "File upload stopped by extension";
+                $this->Session->setFlash("Error: " . $errorOut, 'flash_error');
+            } elseif (!getimagesize($_FILES['user_image']['tmp_name'])) {
+                // check if image file exists
+                $this->Session->setFlash("Failed to upload the image.  Cannot find the temporary file.", 'flash_error');
+            } elseif ($_FILES['user_image']['size'] > 500000) {
+                // check if file size is extremely large
+                $this->Session->setFlash("Failed to upload the image.  The file size is too large.", 'flash_error');
+            } elseif (!in_array($file_ext, $vaildExtensions)) {
+                // check if file extension is valid
+                $this->Session->setFlash("Failed to upload the image.  The file extension is not supported.", 'flash_error');
+            } else {
+                // try to upload the image.
+                $uploadFile = $uploads_path . $username . ".";
 
-				// each user is allowed one profile picture
-				if (count(glob($uploadFile."*")) > 0) {
-					foreach (glob($uploadFile."*") as $file) {
-						unlink($file);
-					}
-				}
+                // each user is allowed one profile picture
+                if (count(glob($uploadFile."*")) > 0) {
+                    foreach (glob($uploadFile."*") as $file) {
+                        unlink($file);
+                    }
+                }
 
-				if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
-					$this->Session->setFlash("Profile edited successfully.", 'flash_success');
-					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
-					//$this->redirect($actual_link);
-					echo json_encode('ok');
-				} else {
-					$this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
-					$actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
-					//$this->redirect($actual_link);
-				}
-			}
-		}
-		die;
-	}
+                if (move_uploaded_file($_FILES['user_image']['tmp_name'], $uploadFile.$file_ext)) {
+                    $this->Session->setFlash("Profile edited successfully.", 'flash_success');
+                    $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+                    //$this->redirect($actual_link);
+                    echo json_encode('ok');
+                } else {
+                    $this->Session->setFlash("Failed to move the image to the approiate location.", 'flash_error');
+                    $actual_link = 'http://'.$_SERVER['HTTP_HOST'].'/'.BASE_URL.'user/'.$username;
+                    //$this->redirect($actual_link);
+                }
+            }
+        }
+        die;
+    }
 
 
 
@@ -1577,7 +1596,7 @@ class UsersController extends AppController
         $Email->send();*/
     }
 
-        /**
+    /**
      * Send pending user email
      * @param array data
      */
@@ -1595,8 +1614,8 @@ class UsersController extends AppController
             can create your account.<br /><br />
             First, click on this link to confirm your email:<br />";
         $message .= "<a target='_blank' href='" . $this->baseURL() .
-                    "/users/confirm_user/" . $data['username'] ."'>".$this->baseURL().
-                    "/users/confirm_user/".$data['username']."</a> <br /><br />";
+            "/users/confirm_user/" . $data['username'] ."'>".$this->baseURL().
+            "/users/confirm_user/".$data['username']."</a> <br /><br />";
         $message .= "After you confirm your email, your account will need to be approved by an administrator
             before it is fully activated. Once this happens, you'll receive a confirmation email - and
             you will be good to go!<br /><br />If you have any questions at all, please contact us at<br /><br />";
@@ -1649,8 +1668,8 @@ class UsersController extends AppController
         $message .= "Hi there, <br /><br /> Here's a link that you can follow to reset
           your password: <br />";
         $message .= "<a target='_blank' href='" . $this->baseURL() .
-          "/users/reset_password/" . $token ."'>".$this->baseURL().
-          "/users/reset_password/".$token."</a> <br /><br />";
+            "/users/reset_password/" . $token ."'>".$this->baseURL().
+            "/users/reset_password/".$token."</a> <br /><br />";
         $message .= "To read more about ARCS, check out our";
         $message .= "<a target='_blank' href='".$this->baseURL()."/about'> about </a> page";
         $message .= "<br /><br /> ARCS has been developed at the MSU College of Arts

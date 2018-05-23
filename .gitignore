@@ -9,3 +9,4 @@ app/webroot/.htaccess
 # Directories
 /app/tmp
 /app/webroot/img
+/.idea

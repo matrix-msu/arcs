@@ -15,7 +15,7 @@
 
 }
 .registerContainer input{
-    color:white !important;
+  color:white !important;
 }
 
 .loginContainer .input input{
@@ -74,11 +74,17 @@
   line-height: 48px;
 }
 @media screen and (max-width: 1000px) {
+  .register{
+    position:absolute!important;
+  }
+  .register-content-mobile{
+    display: block!important;
+  }
   .mobile-only{
     display: inherit !important;
   }
   .desktop-only{
-     display: none;
+    display: none;
   }
   .login-link{
     position: absolute;
@@ -118,11 +124,22 @@
     color:white !important;
   }
   #loginModal .login-content .loginSect{
-    width: 100%;
+    width: 100% !important;
+
+    .exit {
+      position: absolute;
+      z-index: 2;
+      top: 10px;
+      right: 10px;
+      height: 18px;
+      -webkit-filter: invert(60%);
+      filter: invert(60%);
+    }
   }
   #loginModal .login-content{
     height: 32em;
     position: absolute;
+    width:30em !important;
     right: 0;
     left: 0;
     top: 0;
@@ -142,7 +159,7 @@
     left: 0;
     top: 0;
     bottom: 0;
-    display: table;
+    display: none;
     margin: auto;
   }
   #registerModal .register-content .right {
@@ -151,16 +168,20 @@
   #registerModal .register-content {
     width: 30em;
   }
+
+
   /*#registerModal .register-content .left{
     width: 100%;
   }*/
   .reverse-filter-desktop img{
+    margin: auto;
     filter: invert(60%) !important;
     -webkit-filter: invert(60%) !important;
   }
 
   #registerModal .left{
-    width: 100% !important;
+    display: none;
+    //width: 100% !important;
   }
 
   #registerModal .left .requiredfield .register-content {
@@ -180,54 +201,86 @@
     */
   }
 
+  #registerModal .mobile{
+    width: 100% !important;
+  }
+
+  #registerModal .mobile .requiredfield .register-content {
+    margin-top: -15px !important;
+  }
+
+  #registerModal .mobile #projectDropdown2 {
+    position: absolute;
+    width: 85%;
+  }
+
+  #registerModal .mobile .selectDiv:after {
+    bottom: 158px;
+    /*
+    position: initial !important;
+    margin-bottom: 3px;
+    margin-left: 80px;
+    */
+  }
+
 }
 
 @media screen and (max-width: 430px) {
-  .register-content, .login-content{
+  .register-content, .login-content {
     width: 100% !important;
     display: inherit;
   }
-  .register-content input, .login-content input{
+
+  .register-content input, .login-content input {
     width: 100% !important;
+  }
+
+  .register-content-mobile {
+    width: 360px !important;
+    top: 20px !important;
+  }
+
+  .selectDiv:after{
+    bottom: 240px !important;
   }
 }
 
 
 #addProjectModal .register-content {
-    width: 34em;
-    height: 21em;
-    background: #0093be;
-    position: relative;
-    margin: 30% auto;
-    //box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
-    padding: 4%;
-    position: relative;
+  width: 34em;
+  height: 21em;
+  background: #0093be;
+  position: relative;
+  margin: 30% auto;
+  //box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
+  padding: 4%;
+  position: relative;
 }
 
 #addProjectModal .exit {
-    position: absolute;
-    z-index: 2;
-    top: 44px;
-    right: 44px;
-    height: 16px;
+  position: absolute;
+  z-index: 2;
+  top: 44px;
+  right: 44px;
+  height: 16px;
 }
 
 #addProjectModal img {
-    vertical-align: middle;
-    border: 0;
+  vertical-align: middle;
+  border: 0;
 }
 
 #addProjectModal #UserRegisterForm {
-    width: 800px;
-    margin: 0 auto;
+  width: 800px;
+  margin: 0 auto;
 }
 
 #addProjectModal .left {
-    position: relative;
-    float: left;
-    width: 100%;
-    height: 100%;
-    color: #fff;
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 100%;
+  color: #fff;
 }
 
 #addProjectModal .left #projectsDropdown {
@@ -236,29 +289,29 @@
 }
 
 #addProjectModal h3 {
-    color: white;
-    margin: 0px 0 30px 0;
-    font-weight: 200;
-    text-shadow: none;
+  color: white;
+  margin: 0px 0 30px 0;
+  font-weight: 200;
+  text-shadow: none;
 }
 
 #addProjectModal input {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    color: white !important;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: white !important;
 }
 #addProjectModal .registerContainer input{
-    text-align: center;
-    border: 2px solid white !important;
-    color:white !important;
+  text-align: center;
+  border: 2px solid white !important;
+  color:white !important;
 }
 
 #addProjectModal .selectDiv {
-    overflow: hidden;
-    padding: 0 2em;
-    line-height: 60px;
-    cursor: pointer;
+  overflow: hidden;
+  padding: 0 2em;
+  line-height: 60px;
+  cursor: pointer;
 }
 
 #addProjectModal .left .selectDiv:after {
@@ -273,26 +326,26 @@
 }
 
 #addProjectModal .selectDiv:after {
-    content: ' ';
-    display: inline-block;
-    color: #0093be;
-    padding: 4px;
-    border-bottom: 1px solid white;
-    border-right: 1px solid white;
-    transform: rotate(45deg);
+  content: ' ';
+  display: inline-block;
+  color: #0093be;
+  padding: 4px;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  transform: rotate(45deg);
 }
 
 #addProjectModal .register-content .left .selectDiv {
-    margin-top: 5.8%;
-    //padding: 1em 2em 1em 2em;
-    width: 360px;
-    height: 60px;
-    background: #0093be;
-    color: #fff;
-    border: 1px;
-    border-style: solid;
-    border-color: #fff;
-    font-size: 100%;
+  margin-top: 5.8%;
+  //padding: 1em 2em 1em 2em;
+  width: 360px;
+  height: 60px;
+  background: #0093be;
+  color: #fff;
+  border: 1px;
+  border-style: solid;
+  border-color: #fff;
+  font-size: 100%;
 }
 
 #addProjectModal .register-content .left .btn{
@@ -308,20 +361,20 @@
 }
 
 #addProjectModal .register-content .left #projectsDropdown{
-    border: 1px solid white;
-    background-color: #0093be;
-    width: 360px;
-    > p{
-        padding-left: 2em;
-        cursor: pointer;
-    }
-    > .selected{
-        color: #0093be;
-        background-color: white;
-    }
+  border: 1px solid white;
+  background-color: #0093be;
+  width: 360px;
+  > p{
+    padding-left: 2em;
+    cursor: pointer;
+  }
+  > .selected{
+    color: #0093be;
+    background-color: white;
+  }
 }
 
 #addProjectModal .register-content .left p{
-    margin-top: 2.5%;
-    line-height: 200%;
+  margin-top: 2.5%;
+  line-height: 200%;
 }

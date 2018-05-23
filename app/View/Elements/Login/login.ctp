@@ -1,8 +1,11 @@
 
 <div id="loginModal" class="login desktop-login">
     <div class="login-content reverse-filter-desktop">
-        <a id="#close" href="#"><?= $this->Html->image('Close.svg', array('class' => 'exit'));?></a>
+
         <div class="loginSect">
+            <a id="#close" class="exit" href="#" style="float:right;">
+                <?= $this->Html->image('Close.svg', array('class' => 'exit', 'alt' => 'Exit'));?>
+            </a>
             <div class="loginContainer">
 
                 <h1 id="loginHeader">Login</h1>
@@ -12,7 +15,7 @@
                 echo $this->Form->create('User', array('url' => array('controller'=>'users', 'action'=>'special_login')));
                 ?>
 
-				<p id="loginInfo"></p>
+                <p id="loginInfo"></p>
 
                 <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username')); ?>
 
@@ -30,6 +33,9 @@
         </div>
 
         <div class="registerSect">
+            <a id="#close" class="reverse-filter" href="#" style="float:right;">
+                <?= $this->Html->image('Close.svg', array('class' => 'exit', 'alt' => 'Exit'));?>
+            </a>
             <div class="loginContainer">
 
                 <h1>Register</h1>
