@@ -41,7 +41,7 @@ class AppController extends Controller
 
         $user_id =  $this->Session->read('Auth.User.id');
 
-        if ($GLOBALS['Configured'] == false && !in_array('installation', $linkParts) && $user_id !== null) {
+        if (isset($GLOBALS['Configured']) == false && !in_array('installation', $linkParts) && $user_id !== null) {
             $this->redirect('/installation');
         }
         //set the project Persistent Names for the toolbar.
