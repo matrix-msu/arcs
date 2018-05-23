@@ -13144,7 +13144,7 @@ ul.annotations li.annotation:hover {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
   position: absolute;
-  bottom: 58px;
+  bottom: 46px;
   right: 53px;
 }
 #registerModal .register-content .left #projectDropdown {
@@ -15589,12 +15589,14 @@ strong {
   text-align: center;
   color: #0094bc;
   cursor: pointer;
+  float: right;
 }
 .admin-rows-wrap .admin-rows-content.pending-users .admin-row p.decline {
   width: calc((98% - 16px)*0.1);
   text-align: center;
   color: #ED7474;
   cursor: pointer;
+  float: right;
 }
 .admin-rows-wrap .admin-rows-content.meta {
   padding: 6px 5% 43px 5%;
@@ -18669,9 +18671,6 @@ body {
   }
 }
 @media screen and (max-width: 700px) {
-  #reg {
-    font-size: 36px;
-  }
   h1 {
     font-size: 30px;
   }
