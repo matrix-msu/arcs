@@ -1,3 +1,4 @@
+<?php  echo $this->Html->script("views/installation/installation.js"); ?>
 <div class="create-body-content">
     <div class="install-progress-bar">
         <ul>

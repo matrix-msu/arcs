@@ -1,4 +1,20 @@
+var masterDict = JSON.parse(sessionStorage.getItem('masterDict'));
+if (masterDict == null){
+    masterDict = {};
+}
+
+var path = window.location.pathname;
+
 $(document).ready(function() {
+    $(".start-install-btn").on("click", function() {
+        if (path.substr(path.length - 1) == "/"){
+            window.location.href += 'kora'
+        }
+        else {
+            window.location.href += '/kora'
+        }
+    });
+
     $("#season-step").on("click", function() {
         $(".project").hide();
         $(".season").show();
@@ -30,7 +46,7 @@ $(document).ready(function() {
 
     //save user input into masterDict 
     $(".cont-install-btn").on("click", function() {
-        console.log('clicked');
+
         $(".inputDiv").each(function(){
 
             if ($(this).children().length == 0) {
