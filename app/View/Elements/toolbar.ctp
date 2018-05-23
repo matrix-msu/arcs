@@ -247,8 +247,10 @@
 </div>
   <?= $this->element("Login/login");?>
   <?= $this->element("Login/register");?>
-<script>
-    $(document).ready(function() {
-        console.log(PID_ARRAY);
-    })
-</script>
+
+
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        console.log(PID_ARRAY);-->
+<!--    })-->
+<!--</script>-->
