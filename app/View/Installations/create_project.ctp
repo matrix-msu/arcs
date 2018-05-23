@@ -26,13 +26,13 @@
             <div class="form-wrapper">
                 <form>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Name</p>
                             <input type="text" name="parameter[]" placeholder="countries"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Country</p>
                             <select class="create-project-dropdown">
                                 <option value="" disabled selected>Select Country</option>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Modern Name</p>
                             <select class="create-project-dropdown">
                                 <option value="" disabled selected>Select Modern Name</option>
@@ -56,31 +56,31 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Location Identifier</p>
                             <input type="text" placeholder="Bronze Age"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Location Identifier Scheme</p>
                             <input type="text" placeholder="Culture"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Geolocation(s)</p>
                             <input type="text" placeholder="Greek Ministry of Culture"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Elevation</p>
                             <input type="text" placeholder="Greek Ministry of Culture"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Earliest Date</p>
                             <div class="date-select">
                                 <select class="year-project-dropdown">
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Latest Date</p>
                             <div class="date-select">
                                 <select class="year-project-dropdown">
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Records Archive</p>
                             <select class="create-project-dropdown">
                                 <option value="" disabled selected>Select Records Archive</option>
@@ -148,20 +148,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                           <span class="dot"></span>
                             <p>Persistent Name</p>
                             <input type="text" placeholder="Enter the Persistent Name"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Complex Title</p>
                             <input type="text" placeholder="Enter the Complex Title"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Terminus Ante Quem</p>
                             <div class="period-select">
                                 <input class="date-input" type="text" placeholder="Enter the Date"/>
@@ -176,7 +176,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Terminus Post Quem</p>
                             <div class="period-select">
                                 <input class="date-input" type="text" placeholder="Enter the Date"/>
@@ -191,7 +191,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Period</p>
                             <select class="create-project-dropdown">
                                 <option value="" disabled selected>Select Period</option>
@@ -203,19 +203,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Description</p>
                             <input type="text" placeholder="Enter the list options for type(s)"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Brief Description</p>
                             <input type="text" placeholder="Enter the list options for type(s)"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-full">
+                        <div class="input-full inputDiv">
                             <p>Permitting Heritage Body</p>
                             <select class="create-project-dropdown">
                                 <option value="" disabled selected>Select Permitting Heritage Body</option>

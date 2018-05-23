@@ -20,48 +20,48 @@
         <div class="form-wrapper">
             <form>
                 <div class="row">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Host</p>
                         <input type="text" placeholder="Enter the kora database host url here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Name</p>
                         <input type="text" placeholder="Enter the kora database name here"/>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Username</p>
                         <input type="text" placeholder="Enter the kora database username here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Password</p>
                         <input type="text" placeholder="Enter the kora database Password here"/>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base URL</p>
                         <input type="text" placeholder="Enter the kora base URL here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base Path</p>
                         <input type="text" placeholder="Enter the kora base path here"/>
                     </div>
                 </div>
                 <div class="row" id="kora-name">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Project Name</p>
                         <input type="text" placeholder="Enter the kora Project Name here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                     </div>
                 </div>
                 <hr class="divider">

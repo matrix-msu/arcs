@@ -27,4 +27,48 @@ $(document).ready(function() {
         $(".subject-nav").addClass("current-step");
         $(window).scrollTop(0); 
     });
+
+    //save user input into masterDict 
+    $(".cont-install-btn").on("click", function() {
+        console.log('clicked');
+        $(".inputDiv").each(function(){
+
+            if ($(this).children().length == 0) {
+                return;
+            }
+            var text;
+            var pTag = $(this).find("p").text();
+            masterDict[pTag] = [];
+
+            if ($(this).find(".date-select").length > 0){
+                //handle date selection
+                $(this).find(".date-select").children().each(function(){
+                    text = $(this).val();
+                    masterDict[pTag].push(text);
+                });
+            }
+            else if ($(this).find(".period-select").length > 0){
+                //handle period selection
+                var parent = $(this).find(".period-select");
+
+                text = $(parent).find("input").val();
+                masterDict[pTag].push(text);
+
+                text = $(parent).find("select").val();
+                masterDict[pTag].push(text);
+            }
+            else if ($(this).find("input").length > 0){
+                //handle single input
+                text = $(this).find("input").val();
+                masterDict[pTag].push(text);
+            }
+            else if ($(this).find("select").length > 0){
+                //handle single select
+                text = $(this).find("select").val();
+                masterDict[pTag].push(text);
+            }
+        });
+        sessionStorage.setItem('masterDict', JSON.stringify(masterDict));
+        console.log(masterDict);
+    });
 });
