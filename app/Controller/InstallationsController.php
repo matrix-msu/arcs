@@ -36,11 +36,13 @@ class InstallationsController extends AppController {
 	 * Displays the Kora Configuration page
 	 */
 	public function koraConfig() {
+		print_r($_SESSION);
 		// if (!$this->Auth->loggedIn())) throw new UnauthorizedException();
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
 		$this->render("kora_config");
+
 	}
 
 	/**

@@ -72,7 +72,7 @@
                         <p>= Required Field</p>
                     </div>
                     <div class="cont-btn-container">
-                        <button  class="cont-install-btn" type="button" name="button">
+                        <button onclick="window.location.href= window.location.href.replace('kora', 'field')" class="cont-install-btn" type="button" name="button">
                             <p>Continue to Field Configuration</p>
                         </button>
                     </div>
@@ -81,4 +81,3 @@
         </div>
     </div>
 </div>
-<!-- onclick="window.location.href= window.location.href.replace('kora', 'field')" -->

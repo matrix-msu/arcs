@@ -2,6 +2,7 @@ var masterDict = JSON.parse(sessionStorage.getItem('masterDict'));
 if (masterDict == null){
     masterDict = {};
 }
+console.log(masterDict);
 
 var path = window.location.pathname;
 
