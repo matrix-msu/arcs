@@ -8144,6 +8144,12 @@ input.indexSearchBox {
   line-height: 48px;
 }
 @media screen and (max-width: 1000px) {
+  .register {
+    position: absolute!important;
+  }
+  .register-content-mobile {
+    display: block!important;
+  }
   .mobile-only {
     display: inherit !important;
   }
@@ -8187,11 +8193,21 @@ input.indexSearchBox {
     color: white !important;
   }
   #loginModal .login-content .loginSect {
-    width: 100%;
+    width: 100% !important;
+  }
+  #loginModal .login-content .loginSect .exit {
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    right: 10px;
+    height: 18px;
+    -webkit-filter: invert(60%);
+    filter: invert(60%);
   }
   #loginModal .login-content {
     height: 32em;
     position: absolute;
+    width: 30em !important;
     right: 0;
     left: 0;
     top: 0;
@@ -8207,7 +8223,7 @@ input.indexSearchBox {
     left: 0;
     top: 0;
     bottom: 0;
-    display: table;
+    display: none;
     margin: auto;
   }
   #registerModal .register-content .right {
@@ -8220,11 +8236,12 @@ input.indexSearchBox {
     width: 100%;
   }*/
   .reverse-filter-desktop img {
+    margin: auto;
     filter: invert(60%) !important;
     -webkit-filter: invert(60%) !important;
   }
   #registerModal .left {
-    width: 100% !important;
+    display: none;
   }
   #registerModal .left .requiredfield .register-content {
     margin-top: -15px !important;
@@ -8234,6 +8251,24 @@ input.indexSearchBox {
   }
   #registerModal .left .selectDiv:after {
     bottom: 158px !important;
+    /*
+    position: initial !important;
+    margin-bottom: 3px;
+    margin-left: 80px;
+    */
+  }
+  #registerModal .mobile {
+    width: 100% !important;
+  }
+  #registerModal .mobile .requiredfield .register-content {
+    margin-top: -15px !important;
+  }
+  #registerModal .mobile #projectDropdown2 {
+    position: absolute;
+    width: 85%;
+  }
+  #registerModal .mobile .selectDiv:after {
+    bottom: 158px;
     /*
     position: initial !important;
     margin-bottom: 3px;
@@ -8250,6 +8285,13 @@ input.indexSearchBox {
   .register-content input,
   .login-content input {
     width: 100% !important;
+  }
+  .register-content-mobile {
+    width: 360px !important;
+    top: 20px !important;
+  }
+  .selectDiv:after {
+    bottom: 240px !important;
   }
 }
 #addProjectModal .register-content {
@@ -12924,7 +12966,7 @@ ul.annotations li.annotation:hover {
   background: rgba(0, 0, 0, 0.25);
 }
 #loginModal .login-content {
-  width: 30em;
+  width: 60em;
   height: 30em;
   padding: 0;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
@@ -12933,9 +12975,9 @@ ul.annotations li.annotation:hover {
   padding: 30px;
 }
 #loginModal .login-content .loginSect {
-  display: block;
   position: relative;
-  width: 100%;
+  float: left;
+  width: 50%;
   height: 100%;
   background: #fff;
   color: #0093be;
@@ -13000,8 +13042,9 @@ ul.annotations li.annotation:hover {
 }
 #loginModal .login-content .registerSect {
   position: relative;
-  width: 100%;
-  height: 68%;
+  float: left;
+  width: 50%;
+  height: 100%;
   background: #0093be;
   color: #fff;
 }
@@ -13023,6 +13066,15 @@ ul.annotations li.annotation:hover {
   font-size: 120%;
   line-height: 50px;
 }
+#loginModal .login-content .registerSect .exit {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  right: 20px;
+  height: 18px;
+  -webkit-filter: invert(60%);
+  filter: invert(60%);
+}
 #registerModal {
   background: rgba(0, 0, 0, 0.25);
 }
@@ -13037,6 +13089,9 @@ ul.annotations li.annotation:hover {
   padding: 30px;
 }
 #registerModal .register-content .registerContainer2 {
+  padding: 30px;
+}
+#registerModal .register-content .registerContainer3 {
   padding: 30px;
 }
 #registerModal .register-content .left {
@@ -13074,6 +13129,9 @@ ul.annotations li.annotation:hover {
   line-height: 60px;
   cursor: pointer;
 }
+#registerModal .register-content .left .selectDiv2 {
+  padding: 0 0 2em 0;
+}
 #registerModal .register-content .left .selectDiv:after {
   content: ' ';
   display: inline-block;
@@ -13098,6 +13156,18 @@ ul.annotations li.annotation:hover {
   cursor: pointer;
 }
 #registerModal .register-content .left #projectDropdown > .selected {
+  color: #0093be;
+  background-color: white;
+}
+#registerModal .register-content .left #projectDropdown2 {
+  border: 1px solid white;
+  background-color: #0093be;
+}
+#registerModal .register-content .left #projectDropdown2 > p {
+  padding-left: 2em;
+  cursor: pointer;
+}
+#registerModal .register-content .left #projectDropdown2 > .selected {
   color: #0093be;
   background-color: white;
 }
@@ -13197,14 +13267,163 @@ ul.annotations li.annotation:hover {
   line-height: 50px;
   font-weight: bold;
 }
-.exit {
+#registerModal .register-content .exit {
   position: absolute;
   z-index: 2;
-  top: 30px;
-  right: 30px;
-  height: 16px;
+  top: 20px;
+  right: 20px;
+  height: 18px;
   -webkit-filter: invert(60%);
   filter: invert(60%);
+}
+#registerModal .register-content-mobile {
+  width: 420px;
+  height: 910px;
+  /*Was 30em*/
+  padding: 0;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
+  display: none;
+}
+#registerModal .register-content-mobile .registerContainer3 {
+  padding: 30px;
+}
+#registerModal .register-content-mobile .mobile {
+  position: relative;
+  float: left;
+  background: #0093be;
+  color: #fff;
+  max-width: 100%;
+  height: 100%;
+}
+#registerModal .register-content-mobile .mobile input[type="text"],
+#registerModal .register-content-mobile .mobile input[type="password"] {
+  margin-top: 5.8%;
+  padding: 1em 2em 1em 2em;
+  width: 360px;
+  height: 60px;
+  background: #0093be;
+  color: #fff;
+  border: 2px;
+  border-style: solid;
+  border-color: #fff;
+  font-size: 100%;
+}
+#registerModal .register-content-mobile .mobile input::-webkit-input-placeholder {
+  color: #fff;
+}
+#registerModal .register-content-mobile .mobile input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #fff;
+}
+#registerModal .register-content-mobile .mobile input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #fff;
+}
+#registerModal .register-content-mobile .mobile input:-ms-input-placeholder {
+  color: #fff;
+}
+#registerModal .register-content-mobile .mobile p {
+  margin-top: 2.5%;
+  line-height: 200%;
+}
+#registerModal .register-content-mobile .mobile .btn {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 85%;
+  height: 7%;
+  background: #fff;
+  color: #0093be;
+  border: none;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 120%;
+  line-height: 50px;
+  font-weight: bold;
+}
+#registerModal .register-content-mobile .mobile .exit {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  right: 20px;
+  height: 18px;
+  -webkit-filter: invert(60%);
+  filter: invert(60%);
+}
+#registerModal .register-content-mobile .mobile input[type="text"],
+#registerModal .register-content-mobile .mobile input[type="password"],
+#registerModal .register-content-mobile .mobile input[type="email"],
+#registerModal .register-content-mobile .mobile select,
+#registerModal .register-content-mobile .mobile .selectDiv {
+  margin-top: 5.8%;
+  padding: 1em 2em 1em 2em;
+  width: 100%;
+  height: 40px;
+  background: #0093be;
+  color: #fff;
+  border: 1px;
+  border-style: solid;
+  border-color: #fff;
+  font-size: 100%;
+  appearance: none;
+  -moz-appearance: none;
+  /* Firefox */
+  -webkit-appearance: none;
+  /* Safari and Chrome */
+}
+#registerModal .register-content-mobile .mobile .selectDiv {
+  overflow: hidden;
+  padding: 0 2em 2em;
+  line-height: 40px;
+  cursor: pointer;
+}
+#registerModal .register-content-mobile .mobile .selectDiv:after {
+  content: ' ';
+  display: inline-block;
+  color: #0093be;
+  padding: 4px;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  bottom: 275px;
+  right: 53px;
+}
+#registerModal .register-content-mobile .mobile #projectDropdown {
+  border: 1px solid white;
+  background-color: #0093be;
+}
+#registerModal .register-content-mobile .mobile #projectDropdown > p {
+  padding-left: 2em;
+  cursor: pointer;
+}
+#registerModal .register-content-mobile .mobile #projectDropdown > .selected {
+  color: #0093be;
+  background-color: white;
+}
+#registerModal .register-content-mobile .mobile #projectDropdown2 {
+  border: 1px solid white;
+  background-color: #0093be;
+}
+#registerModal .register-content-mobile .mobile #projectDropdown2 > p {
+  padding-left: 2em;
+  cursor: pointer;
+}
+#registerModal .register-content-mobile .mobile #projectDropdown2 > .selected {
+  color: #0093be;
+  background-color: white;
+}
+#registerModal .register-content-mobile .mobile .requiredfield {
+  float: right;
+  margin-top: -19px;
+  font-size: 80%;
+  color: rgba(255, 255, 255, 0.5);
+}
+#registerModal .register-content-mobile .mobile .login-link {
+  cursor: pointer;
 }
 #user-profile {
   width: 100%;
@@ -14565,7 +14784,7 @@ This file is generated by `grunt build`, do not edit it by hand.
 input#UserName {
   background-color: #fff;
   border: 1px solid #ccc;
-  width: 85%;
+  width: 100%;
   float: left;
   height: 50px;
   line-height: 50px;
@@ -15370,14 +15589,12 @@ strong {
   text-align: center;
   color: #0094bc;
   cursor: pointer;
-  float: right;
 }
 .admin-rows-wrap .admin-rows-content.pending-users .admin-row p.decline {
   width: calc((98% - 16px)*0.1);
   text-align: center;
   color: #ED7474;
   cursor: pointer;
-  float: right;
 }
 .admin-rows-wrap .admin-rows-content.meta {
   padding: 6px 5% 43px 5%;
@@ -18452,6 +18669,9 @@ body {
   }
 }
 @media screen and (max-width: 700px) {
+  #reg {
+    font-size: 36px;
+  }
   h1 {
     font-size: 30px;
   }
