@@ -19,48 +19,48 @@
             </p>
         </div>
         <div class="form-wrapper">
-            <form>
+            <form action="./field"  method="post">
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Host</p>
-                        <input type="text" placeholder="Enter the kora database host url here"/>
+                        <input name='KoraDBHost' type="text" placeholder="Enter the kora database host url here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Name</p>
-                        <input type="text" placeholder="Enter the kora database name here"/>
+                        <input name='KoraDBName' type="text" placeholder="Enter the kora database name here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Username</p>
-                        <input type="text" placeholder="Enter the kora database username here"/>
+                        <input name="KoraDBUsername" type="text" placeholder="Enter the kora database username here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Password</p>
-                        <input type="text" placeholder="Enter the kora database Password here"/>
+                        <input name="KoraDBPassword" type="text" placeholder="Enter the kora database Password here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base URL</p>
-                        <input type="text" placeholder="Enter the kora base URL here"/>
+                        <input name='KoraBaseURL' type="text" placeholder="Enter the kora base URL here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base Path</p>
-                        <input type="text" placeholder="Enter the kora base path here"/>
+                        <input name='KoraBasePath' type="text" placeholder="Enter the kora base path here"/>
                     </div>
                 </div>
                 <div class="row" id="kora-name">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Project Name</p>
-                        <input type="text" placeholder="Enter the kora Project Name here"/>
+                        <input name="KoraProjectName" type="text" placeholder="Enter the kora Project Name here"/>
                     </div>
                     <div class="input-right inputDiv">
                     </div>
@@ -72,7 +72,7 @@
                         <p>= Required Field</p>
                     </div>
                     <div class="cont-btn-container">
-                        <button onclick="window.location.href= window.location.href.replace('kora', 'field')" class="cont-install-btn" type="button" name="button">
+                        <button class="cont-install-btn" type="submit">
                             <p>Continue to Field Configuration</p>
                         </button>
                     </div>

@@ -8,6 +8,7 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 class InstallationsController extends AppController {
+	
 	public $name = 'Installations';
 
 	public function beforeFilter() {
@@ -36,8 +37,7 @@ class InstallationsController extends AppController {
 	 * Displays the Kora Configuration page
 	 */
 	public function koraConfig() {
-		print_r($_SESSION);
-		// if (!$this->Auth->loggedIn())) throw new UnauthorizedException();
+		
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
@@ -49,6 +49,9 @@ class InstallationsController extends AppController {
 	 * Displays the Field Configuration page
 	 */
 	public function fieldConfig() {
+		$_SESSION['KoraConfig'] = $_POST;
+		//print_r($_POST);die;
+		
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
@@ -59,6 +62,8 @@ class InstallationsController extends AppController {
 	 * Displays the Create Project page
 	 */
 	public function createProject() {
+		$_SESSION['FieldConfig'] = $_POST;
+
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
@@ -69,6 +74,8 @@ class InstallationsController extends AppController {
 	 * Displays the ARCS Configuration page
 	 */
 	public function arcsConfig() {
+		$_SESSION['ProjectConfig'] = $_POST;
+
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
@@ -107,6 +114,11 @@ class InstallationsController extends AppController {
         }
     }
 
+	//takes all user input and finalizes their kora installation by writing 
+	//straight to the kora DB
 
+	public function finalize() {
+		$_SESSION['ProjectConfig'] = $_POST;
+	}
 
 }
