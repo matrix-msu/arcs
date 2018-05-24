@@ -72,7 +72,7 @@
                 <?php echo $this->Form->input('email2', array('label' => false, 'placeholder' => 'Email *')); ?>
                 <?php echo "<p id='getEmail' hidden>".$this->Html->url(array('controller' => 'users', 'action' => 'getEmail'))."</p>";?>
 
-                <?php echo $this->Form->input('password2', array('label' => false, 'placeholder' => 'Password *'));?>
+                <?php echo $this->Form->input('password2', array('label' => false, 'placeholder' => 'Password2 *'));?>
                 <input type="hidden" id="UserProject2" name="data[User][project]">
                 <div class="selectDiv selectDiv2">
                     Select Project(s) to Register In *
