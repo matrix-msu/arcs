@@ -489,7 +489,7 @@ $(document).ready(function() {
                 dynamicPrep();
                 editMetaPrep();
                 annotationPrep();
-                collectionPrep();
+                // collectionPrep();
                 commentsPrep();
                 flagPrep();
                 keywordPrep();
@@ -503,7 +503,7 @@ $(document).ready(function() {
         dynamicPrep();
         editMetaPrep();
         annotationPrep();
-        collectionPrep();
+        // collectionPrep();
         commentsPrep();
         flagPrep();
         keywordPrep();
