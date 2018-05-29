@@ -466,8 +466,6 @@ class SearchController extends AppController {
             $kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
 
-
-
             $username = NULL;
             $usersC = new UsersController();
             if ($user = $usersC->getUser($this->Auth)) {
@@ -506,33 +504,31 @@ class SearchController extends AppController {
 
             $pages = array();
             //using the array and 'in' this way because it's much faster.
-            if( $query_array[2] == 'Field journal' ) {
-                $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
-                    "Scan_Number", "=", "1");
+            $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
+                "Scan_Number", "=", "1");
 //                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
-                $pages = json_decode($kora->search(), true);
-            }
+            $pages = json_decode($kora->search(), true);
+
             if( $pages == array() ){
                 $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
                 $pages = json_decode($kora->search(), true);
 
                 $tempPagesArray = array();
                 foreach ($pages as $kid => $value) {
-                    if( $value['Scan_Number'] == '1' ){
+                    if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
                         $tempPagesArray[$kid] = $value;
                     }
                 }
                 $pages = $tempPagesArray;
             }
-            if( $query_array[2] == 'Field journal' ) {
-                $tempPagesArray = array();
-                foreach ($pages as $kid => $value) {
-                    if( $value['Scan_Number'] == '1' ){
-                        $tempPagesArray[$kid] = $value;
-                    }
+
+            $tempPagesArray = array();
+            foreach ($pages as $kid => $value) {
+                if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
+                    $tempPagesArray[$kid] = $value;
                 }
-                $pages = $tempPagesArray;
             }
+            $pages = $tempPagesArray;
 
             //get the info from the resources and pages
             $returnResults = array();
@@ -552,8 +548,6 @@ class SearchController extends AppController {
                 if( isset($item['Locked']) ){
                     $temp['Locked'] = $item['Locked'];
                 }
-
-
 
                 $temp['title'] = 'Unknown Title';
                 if (array_key_exists('Title', $item) && $item['Title'] != '' ) {

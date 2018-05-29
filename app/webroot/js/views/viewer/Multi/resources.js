@@ -41,7 +41,6 @@ _resource.SwapResource = function(kid) {
 
         }else{
             setTimeout(function(){$('#scroll').slideDown(300);}, 1)
-            console.log("hey");
             $("#resources-nav").addClass("scroll-shift-nav");
             $("#viewer-right").addClass("scroll-shift-viewer");
         }
