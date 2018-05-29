@@ -207,7 +207,7 @@ class SearchController extends AppController {
      */
     public function resources() {
         $options = $this->parseParams();
-
+        
         if (!isset($this->request->query['q']))
             return $this->emptySearch($options);
 
@@ -221,6 +221,7 @@ class SearchController extends AppController {
         if (isset($this->request->query['pKid'])) {
             $pName = $this->request->query['pKid'];
         }
+
         //Collections search
         if ( substr($this->request->query['q'],0,13) == 'collection_id' ){
 
@@ -274,6 +275,7 @@ class SearchController extends AppController {
             $response['results'] = array();
 
             $first = 1;
+
             foreach( $test as $row){
                 $temp_array = array();
                 if( $first == 1 ) {
@@ -509,6 +511,9 @@ class SearchController extends AppController {
 //                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
             $pages = json_decode($kora->search(), true);
 
+            
+
+
             if( $pages == array() ){
                 $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
                 $pages = json_decode($kora->search(), true);
@@ -521,14 +526,6 @@ class SearchController extends AppController {
                 }
                 $pages = $tempPagesArray;
             }
-
-            $tempPagesArray = array();
-            foreach ($pages as $kid => $value) {
-                if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
-                    $tempPagesArray[$kid] = $value;
-                }
-            }
-            $pages = $tempPagesArray;
 
             //get the info from the resources and pages
             $returnResults = array();
