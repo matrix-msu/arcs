@@ -148,7 +148,7 @@ class ProjectsController extends AppController {
         $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
         // echo "srever out";
-        // print_r($server_output);
+        // echo json_encode($server_output);
         // die;
 
         $fields = 'KID';
@@ -208,6 +208,9 @@ class ProjectsController extends AppController {
 				$tempTitle = $result['Title'];
 			}
 
+            if (!isset($result['Permissions'])){
+                continue;
+            }
             $temp_array = ['kid' => $result['kid'], 'Type' => $tempType, 'Title' => $tempTitle,
                            'thumb' => $thumb, "Permissions" => $result['Permissions']];
             $resources[] = $temp_array;

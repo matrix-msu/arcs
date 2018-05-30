@@ -523,7 +523,7 @@ class AppController extends Controller
     //takes pid, sid, list of field names, and the internal form name in kora3
     //returns an object of key:value which are 'field name':[field options]
     public static function getK3Controls($pid, $sid, $names, $form_name) {
-        $url = KORA_RESTFUL_URL.'projects/'.$pid.'/forms/'.$form_name.'/fields';
+        $url = KORA_RESTFUL_URL.'projects/'.$pid.'/forms/'.$sid.'/fields';
         $ch = curl_init();
         $controls = array();
 
@@ -534,13 +534,13 @@ class AppController extends Controller
     	$result = curl_exec($ch);
         //make result an indexable array
         $result = json_decode($result, true);
-
-        curl_close($ch);
-
+        
         foreach($names as $name) {
-            foreach($result as $field) {
-                if ($field['name'] == $name){
-                    $controls[$name] = $field['options']['Options'];
+            if (isset($result)){
+                foreach($result as $field) {
+                    if ($field['name'] == $name){
+                        $controls[$name] = $field['options']['Options'];
+                    }
                 }
             }
         }
