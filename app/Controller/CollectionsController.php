@@ -138,9 +138,9 @@ class CollectionsController extends AppController {
         //$kora = new General_Search($pid, $sid, 'kid', '=', '34-171-208512', $fields);
         $results = json_decode($kora->return_json(), true);
 
-       // $kora = new Advanced_Search($pid, $sid, $fields);
-       // $kora->add_clause("kid", "!=", "");
-       // $results = json_decode($kora->search(), true);
+        // $kora = new Advanced_Search($pid, $sid, $fields);
+        // $kora->add_clause("kid", "!=", "");
+        // $results = json_decode($kora->search(), true);
 
         echo json_encode($results);
         die;
@@ -250,7 +250,7 @@ class CollectionsController extends AppController {
             // $result = $mysqli->query($sql);
             $collections = array();
             while($row = mysqli_fetch_assoc($result))
-              $collections[] = $row;
+                $collections[] = $row;
 
             $retval['collections'] = $collections;
             return $this->json(200, $retval);
@@ -408,7 +408,7 @@ class CollectionsController extends AppController {
         $this->set('resources', $this->Resource->find('all', array(
             'conditions' => array(
                 'Resource.id' => $rids
-        ))));
+            ))));
         $this->set('collection', $collection['Collection']);
         $this->set('toolbar', array(
             'actions' => true,
@@ -525,45 +525,52 @@ class CollectionsController extends AppController {
         //Get a collection_id from the id
         //Get the title
         //Get the oldest created date.
-        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members
+        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members, user_id
                         FROM collections
-                        WHERE user_id = ?
                         GROUP BY collection_id
                         ORDER BY min(created) DESC;");
-        $sql->bind_param("s", $this->request->data['id']);
+//        $sql->bind_param("s", $this->request->data['id']);
         $sql->execute();
         $result = $sql->get_result();
 
         while ($row = mysqli_fetch_assoc($result)) {
-            //Set the collection's last modified date
-            $date = $row['DATE'];
-            $year = substr($date, 0, 4);
-            $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-                'September', 'October', 'November', 'December');
-            $month = substr($date, 5, 2);
-            $day = substr($date, 8, 2);
-            $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
+//            echo json_encode($row['user_id']);
+//            echo 'IM HERE';
+//            echo json_encode($this->Session->read('Auth.User.id'));
+//            die;
 
-            $temp_array = array('id' => $row['collection_id'],
-                'title' => $row['title'],
-                'date' => $return_date,
-                'public' => $row['public'],
-                'members' => $row['members']);
-            $test[] = $temp_array;
+            if($row['user_id'] == $this->Session->read('Auth.User.id')) {
+                //Set the collection's last modified date
+                $date = $row['DATE'];
+                $year = substr($date, 0, 4);
+                $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                    'September', 'October', 'November', 'December');
+                $month = substr($date, 5, 2);
+                $day = substr($date, 8, 2);
+                $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
+
+                $temp_array = array('id' => $row['collection_id'],
+                    'title' => $row['title'],
+                    'date' => $return_date,
+                    'public' => $row['public'],
+                    'members' => $row['members']);
+                $test[] = $temp_array;
+            }
         }
 
-        $sql = $mysqli->prepare("SELECT COUNT(DISTINCT collection_id)
-                                FROM  collections
-                                WHERE user_id = ?;");
-        $sql->bind_param("s", $this->request->data['id']);
-        $sql->execute();
-        $result = $sql->get_result();
-
-        $count = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
-            $count = json_encode($row['COUNT(DISTINCT collection_id)']);
-            break;
-        }
+        $count = count($test);
+//        $sql = $mysqli->prepare("SELECT COUNT(DISTINCT collection_id)
+//                                FROM  collections
+//                                WHERE user_id = ?;");
+//        $sql->bind_param("s", $this->request->data['id']);
+//        $sql->execute();
+//        $result = $sql->get_result();
+//
+//        $count = 0;
+//        while ($row = mysqli_fetch_assoc($result)) {
+//            $count = json_encode($row['COUNT(DISTINCT collection_id)']);
+//            break;
+//        }
 
         if( isset($test) ) {
             $return = array( 'count'=>$count, 'data'=>json_encode($test) );
@@ -589,6 +596,23 @@ class CollectionsController extends AppController {
             die('Connect Error (' . $mysqli->connect_errno . ') '
                 . $mysqli->connect_error);
         }
+
+        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members, username
+                        FROM collections
+                        WHERE collection_id = ?
+                        GROUP BY collection_id
+                        ORDER BY min(created) DESC;");
+        $sql->bind_param("s", $_POST['id']);
+        $sql->execute();
+        $result = $sql->get_result();
+
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            if ($row['username'] != $this->Session->read('Auth.User.username')) {
+                die;
+            }
+        }
+
         //Update the collections permissions by collection_id
         $sql = $mysqli->prepare("UPDATE collections
                     SET collections.public = ?,
@@ -599,7 +623,7 @@ class CollectionsController extends AppController {
         $result = $sql->get_result();
         // $result = $mysqli->query($sql);
         //while($row = mysqli_fetch_assoc($result))
-            //$collections[] = $row;
+        //$collections[] = $row;
         $results['id'] = $_POST['id'];
         $results['permission'] = $_POST['permission'];
         //$results['sql'] = $sql;
