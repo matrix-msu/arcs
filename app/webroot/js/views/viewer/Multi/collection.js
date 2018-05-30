@@ -117,7 +117,7 @@ function collectionPrep() {
     }
 
     //add the resource to an existing collection from the search tab.
-    $(".collectionSearchSubmit").click(function () {
+    $(".collectionSearchSubmit").unbind().click(function () {
         var resource_kids = getAllResourceKids();
         var formdata = {
             collection: $('#collectionSearchObjects input:checked').val(),  //a collection_id
