@@ -511,9 +511,6 @@ class SearchController extends AppController {
 //                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
             $pages = json_decode($kora->search(), true);
 
-            
-
-
             if( $pages == array() ){
                 $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
                 $pages = json_decode($kora->search(), true);
@@ -573,6 +570,7 @@ class SearchController extends AppController {
                         }
                     }
                 }
+
                 if ($temp['thumb'] != '') {
                     $temp['thumb'] = $this->smallThumb($temp['thumb'], $temp['pageKid']);
                 } else {
