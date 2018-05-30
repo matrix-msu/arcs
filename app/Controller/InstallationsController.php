@@ -94,13 +94,15 @@ class InstallationsController extends AppController {
 		if($_POST){
 			$_SESSION['ArcsConfig'] = $_POST;
 		}
-		// print_r(json_encode($_SESSION));die;
+		//print_r(json_encode($_SESSION));die;
 
-		$host = "rush.matrix.msu.edu";
-		$username = "k3_alpha";
-		$password = "v13O21c2%j6P";
-		$dbName = "k3_alpha";
+		$host = $_SESSION['KoraConfig']['KoraDBHost'];
+		$username = $_SESSION['KoraConfig']['KoraDBUsername'];
+		$password = $_SESSION['KoraConfig']['KoraDBPassword'];
+		$dbName = $_SESSION['KoraConfig']['KoraDBName'];
 
+		$pName = strtolower(str_replace(" ", "_", $_SESSION['KoraConfig']['KoraProjectName']));
+		$pid = $GLOBALS['PID_ARRAY'][$pName];
 		$results = array();
 
 		// Create connection
@@ -110,34 +112,48 @@ class InstallationsController extends AppController {
 			die("Connection failed: " . $conn->connect_error);
 		}
 
-		$sql = "SELECT type FROM k3_alpha.kora3_fields";
-		$result = $conn->query($sql);
-
-		if ($result->num_rows > 0) {
-			// output data of each row
-			while($row = $result->fetch_assoc()) {
-				array_push($results, $row['type']);
+		foreach($_SESSION as $key => $value){
+			if ($key == "Config" || $key == "Message" || $key == "Auth"){			
+				continue;
 			}
-		} else {
-			echo "0 results";die;
+			foreach($value as $key2 => $value2){
+				$newKey = str_replace("_", " ", $key2);
+				$sql = "SELECT * FROM kora3_fields WHERE NAME = '$newKey' AND pid = '$pid'";
+				$result = $conn->query($sql);
+
+				if ($result->num_rows > 0) {
+					$insert = "";
+					$type = $result->fetch_assoc()['type'];
+					
+					if ($type == "List"  || $type == "Multi-Select List") {
+						$insert .= "[!Options!]";
+						$items = explode(",", $value2);
+
+						for ($i = 0; $i < sizeof($items); $i++){
+							$insert .= trim($items[$i]);
+
+							if (($i+1) != sizeof($items)) {
+								$insert .= "[!]";
+							}
+						}
+
+						$insert .= "[!Options!]";
+						array_push($results, $insert);
+						$sql = "INSERT INTO kora3_fields (pid) 
+						VALUES ('168')";
+
+						if ($conn->query($sql)) {
+							echo "New record created successfully";
+						} else {
+							echo "Error: " . $sql . "<br>" . $conn->error;
+						}
+					}
+				}
+			}
 		}
-
-		// array_push($results, $result);
-
-		// foreach($_SESSION as $key => $value){
-		// 	if ($key == "Config" || $key == "Message" || $key == "Auth"){
-		// 		continue;
-		// 	}
-		// 	foreach($value as $key2 => $value2){
-		// 		// $sql = "SELECT type FROM kora3_fields WHERE name = '" . $key2 . "'";
-		// 		// $result = $conn->query($sql);
-		// 		// array_push($results, $result);
-		// 		// array_push($results, $key2);
-		// 	}
-		// }
 		
-		$conn->close();
-		print_r(json_encode(array_unique($results)));die;
+		$conn->close();die;
+		//print_r(json_encode($results));die;
 	}
 
     /**

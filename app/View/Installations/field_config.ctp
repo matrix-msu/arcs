@@ -69,14 +69,14 @@
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
-                                <p>Archeaological Culture(s)</p>
-                                <input name="Archeaological Culture" type="text" placeholder="Culture"/>
+                                <p>Archaeological Culture(s)</p>
+                                <input name="Archaeological Culture" type="text" placeholder="Culture"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Permiting Heritage Culture(s)</p>
-                                <input name="Permiting Heritage Culture" type="text" placeholder="Greek Ministry of Culture"/>
+                                <input name="Permitting Heritage Culture" type="text" placeholder="Greek Ministry of Culture"/>
                             </div>
                         </div>
                         <hr class="divider">
@@ -303,8 +303,8 @@
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
-                                <p>Artifact - Structure Archeological Culture(s)</p>
-                                <input name="Artifact - Structure Archeological Culture" type="text" placeholder="Enter the list options for rights holder(s)"/>
+                                <p>Artifact - Structure Archaeological Culture(s)</p>
+                                <input name="Artifact - Structure Archaeological Culture" type="text" placeholder="Enter the list options for rights holder(s)"/>
                             </div>
                         </div>
                         <div class="row">

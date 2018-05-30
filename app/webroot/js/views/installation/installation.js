@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var path = window.location.pathname;
+
     $(".start-install-btn").on("click", function() {
         if (path.substr(path.length - 1) == "/"){
             window.location.href += 'kora'
