@@ -19,53 +19,53 @@
             </p>
         </div>
         <div class="form-wrapper">
-            <form>
+            <form action="./finalize" method="post">
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Host</p>
-                        <input type="text" placeholder="Enter the ARCS host name here"/>
+                        <input name="ArcsDBHost" type="text" placeholder="Enter the ARCS host name here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Name</p>
-                        <input type="text" placeholder="Enter the ARCS database name here"/>
+                        <input name="ArcsDBName" type="text" placeholder="Enter the ARCS database name here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Username</p>
-                        <input type="text" placeholder="Enter the ARCS database username here"/>
+                        <input name="ArcsDBUsername" type="text" placeholder="Enter the ARCS database username here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Password</p>
-                        <input type="text" placeholder="Enter the ARCS database Password here"/>
+                        <input name="ArcsDBPassword" type="text" placeholder="Enter the ARCS database Password here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Base URL</p>
-                        <input type="text" placeholder="Enter the ARCS base URL here"/>
+                        <input name="ArcsBaseURL" type="text" placeholder="Enter the ARCS base URL here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Base Path</p>
-                        <input type="text" placeholder="Enter the ARCS base path here"/>
+                        <input name="ArcsBasePath" type="text" placeholder="Enter the ARCS base path here"/>
                     </div>
                 </div>
                 <div class="row" id="arcs-name">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Create Admin Username</p>
-                        <input type="text" placeholder="Enter the admin username here"/>
+                        <input name="ArcsAdminUsername" type="text" placeholder="Enter the admin username here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Create Admin Password</p>
-                        <input type="text" placeholder="Enter the admin password here"/>
+                        <input name="AcsAdminPassword" type="text" placeholder="Enter the admin password here"/>
                     </div>
                 </div>
                 <hr class="divider">
@@ -75,7 +75,7 @@
                         <p>= Required Field</p>
                     </div>
                     <div class="cont-btn-container">
-                        <button class="cont-install-btn" type="button" name="button">
+                        <button class="cont-install-btn" type="submit">
                             <p>Submit Configuration</p>
                         </button>
                     </div>

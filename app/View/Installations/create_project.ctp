@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="form-wrapper">
-                <form>
+                <form action="./config" method="post">
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Name</p>
@@ -83,22 +83,22 @@
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Earliest Date</p>
-                            <div name="Earliest Date" class="date-select">
-                                <select class="year-project-dropdown">
+                            <div class="date-select">
+                                <select name="Earliest Date Year" class="year-project-dropdown">
                                 <option value="" disabled selected>Select Year</option>
                                 <option>Name 1</option>
                                 <option>Name 2</option>
                                 <option>Name 3</option>
                                 <option>Name 4</option>
                                 </select>
-                                <select class="month-project-dropdown">
+                                <select name="Earliest Date Month" class="month-project-dropdown">
                                 <option value="" disabled selected>Select Month</option>
                                 <option>Name 1</option>
                                 <option>Name 2</option>
                                 <option>Name 3</option>
                                 <option>Name 4</option>
                                 </select>
-                                <select class="day-project-dropdown">
+                                <select name="Earliest Date Day" class="day-project-dropdown">
                                 <option value="" disabled selected>Select Day</option>
                                 <option>Name 1</option>
                                 <option>Name 2</option>
@@ -111,22 +111,22 @@
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Latest Date</p>
-                            <div name="Latest Date" class="date-select">
-                                <select class="year-project-dropdown">
+                            <div class="date-select">
+                                <select name="Latest Date Year" class="year-project-dropdown">
                                 <option value="" disabled selected>Select Year</option>
                                 <option>Name 1</option>
                                 <option>Name 2</option>
                                 <option>Name 3</option>
                                 <option>Name 4</option>
                                 </select>
-                                <select class="month-project-dropdown">
+                                <select name="Latest Date Month" class="month-project-dropdown">
                                 <option value="" disabled selected>Select Month</option>
                                 <option>Name 1</option>
                                 <option>Name 2</option>
                                 <option>Name 3</option>
                                 <option>Name 4</option>
                                 </select>
-                                <select class="day-project-dropdown">
+                                <select name="Latest Date Day" class="day-project-dropdown">
                                 <option value="" disabled selected>Select Day</option>
                                 <option>Name 1</option>
                                 <option>Name 2</option>
@@ -164,14 +164,14 @@
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Terminus Ante Quem</p>
-                            <div name="Terminus Ante Quem" class="period-select">
-                                <input class="date-input" type="text" placeholder="Enter the Date"/>
-                                <select class="period-project-dropdown">
-                                <option value="" disabled selected>Select Period</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                            <div class="period-select">
+                                <input name="Terminus Ante Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>
+                                <select name="Terminus Ante Quem Period" class="period-project-dropdown">
+                                    <option value="" disabled selected>Select Period</option>
+                                    <option>Name 1</option>
+                                    <option>Name 2</option>
+                                    <option>Name 3</option>
+                                    <option>Name 4</option>
                                 </select>
                             </div>
                         </div>
@@ -179,9 +179,9 @@
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Terminus Post Quem</p>
-                            <div name="Terminus Post Quem" class="period-select">
-                                <input class="date-input" type="text" placeholder="Enter the Date"/>
-                                <select class="period-project-dropdown">
+                            <div class="period-select">
+                                <input name="Terminus Post Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>
+                                <select name="Terminus Post Quem Period" class="period-project-dropdown">
                                     <option value="" disabled selected>Select Period</option>
                                     <option>Name 1</option>
                                     <option>Name 2</option>
@@ -234,7 +234,7 @@
                             <p>= Required Field</p>
                         </div>
                         <div class="cont-btn-container">
-                            <button onclick="window.location.href= window.location.href.replace('create', 'config')" class="cont-install-btn" id="season-step" type="button" name="button">
+                            <button class="cont-install-btn" type="submit">
                                 <p>Continue to ARCS Confiuration</p>
                             </button>
                         </div>

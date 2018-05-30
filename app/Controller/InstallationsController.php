@@ -37,7 +37,6 @@ class InstallationsController extends AppController {
 	 * Displays the Kora Configuration page
 	 */
 	public function koraConfig() {
-		
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
@@ -49,8 +48,9 @@ class InstallationsController extends AppController {
 	 * Displays the Field Configuration page
 	 */
 	public function fieldConfig() {
-		$_SESSION['KoraConfig'] = $_POST;
-		//print_r($_POST);die;
+		if($_POST){
+			$_SESSION['KoraConfig'] = $_POST;
+		}
 		
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
@@ -62,7 +62,9 @@ class InstallationsController extends AppController {
 	 * Displays the Create Project page
 	 */
 	public function createProject() {
-		$_SESSION['FieldConfig'] = $_POST;
+		if($_POST){
+			$_SESSION['FieldConfig'] = $_POST;
+		}
 
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
@@ -74,12 +76,68 @@ class InstallationsController extends AppController {
 	 * Displays the ARCS Configuration page
 	 */
 	public function arcsConfig() {
-		$_SESSION['ProjectConfig'] = $_POST;
+		if($_POST){
+			$_SESSION['ProjectConfig'] = $_POST;
+		}
 
 		$this->set(array(
 			'title_for_layout' => 'Install ARCS'
 		));
 		$this->render("arcs_config");
+	}
+
+	/*
+	* takes all user input and finalizes their kora installation by writing 
+	* straight to the kora DB
+	*/
+	public function finalize() {
+		if($_POST){
+			$_SESSION['ArcsConfig'] = $_POST;
+		}
+		// print_r(json_encode($_SESSION));die;
+
+		$host = "rush.matrix.msu.edu";
+		$username = "k3_alpha";
+		$password = "v13O21c2%j6P";
+		$dbName = "k3_alpha";
+
+		$results = array();
+
+		// Create connection
+		$conn = new mysqli($host, $username, $password, $dbName);
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+
+		$sql = "SELECT type FROM k3_alpha.kora3_fields";
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				array_push($results, $row['type']);
+			}
+		} else {
+			echo "0 results";die;
+		}
+
+		// array_push($results, $result);
+
+		// foreach($_SESSION as $key => $value){
+		// 	if ($key == "Config" || $key == "Message" || $key == "Auth"){
+		// 		continue;
+		// 	}
+		// 	foreach($value as $key2 => $value2){
+		// 		// $sql = "SELECT type FROM kora3_fields WHERE name = '" . $key2 . "'";
+		// 		// $result = $conn->query($sql);
+		// 		// array_push($results, $result);
+		// 		// array_push($results, $key2);
+		// 	}
+		// }
+		
+		$conn->close();
+		print_r(json_encode(array_unique($results)));die;
 	}
 
     /**
@@ -113,12 +171,4 @@ class InstallationsController extends AppController {
             return false;
         }
     }
-
-	//takes all user input and finalizes their kora installation by writing 
-	//straight to the kora DB
-
-	public function finalize() {
-		$_SESSION['ProjectConfig'] = $_POST;
-	}
-
 }
