@@ -202,7 +202,7 @@ class UsersController extends AppController
             }
             $success = mail($to,$subject,$message,$headers);
 
-            //TODO: remove cakeEmail
+            //old cakeEmail
             //Send emails to admins
             // App::uses('CakeEmail', 'Network/Email');
             // $Email = new CakeEmail();
@@ -1514,7 +1514,7 @@ class UsersController extends AppController
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
-        //TODO: remove cakeEmail
+        //old cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->viewVars(array(
@@ -1552,7 +1552,7 @@ class UsersController extends AppController
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
-        //TODO: remove cakeEmail
+        //old cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->viewVars(array('activation' => $this->baseURL() . '/invitation/register/' . $token))
@@ -1727,7 +1727,7 @@ class UsersController extends AppController
         foreach( $adminEmails as $k => $v ){
             array_push( $formattedAdminEmails, $v['email'] );
         }
-        //TODO: remove cakeEmail
+        //old cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->emailFormat('html')

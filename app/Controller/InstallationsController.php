@@ -94,14 +94,14 @@ class InstallationsController extends AppController {
 		if($_POST){
 			$_SESSION['ArcsConfig'] = $_POST;
 		}
-		//print_r(json_encode($_SESSION));die;
+		print_r(json_encode($_SESSION));die;
 
 		$host = $_SESSION['KoraConfig']['KoraDBHost'];
 		$username = $_SESSION['KoraConfig']['KoraDBUsername'];
 		$password = $_SESSION['KoraConfig']['KoraDBPassword'];
 		$dbName = $_SESSION['KoraConfig']['KoraDBName'];
 
-		$pName = strtolower(str_replace(" ", "_", $_SESSION['KoraConfig']['KoraProjectName']));
+		$pName = trim(strtolower(str_replace(" ", "_", $_SESSION['KoraConfig']['KoraProjectName'])));
 		$pid = $GLOBALS['PID_ARRAY'][$pName];
 		$results = array();
 
@@ -111,7 +111,7 @@ class InstallationsController extends AppController {
 		if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 		}
-
+		//skip config, message, and auth which are automatically in a session variable
 		foreach($_SESSION as $key => $value){
 			if ($key == "Config" || $key == "Message" || $key == "Auth"){			
 				continue;
@@ -122,10 +122,12 @@ class InstallationsController extends AppController {
 				$result = $conn->query($sql);
 
 				if ($result->num_rows > 0) {
+
 					$insert = "";
 					$type = $result->fetch_assoc()['type'];
 					
 					if ($type == "List"  || $type == "Multi-Select List") {
+
 						$insert .= "[!Options!]";
 						$items = explode(",", $value2);
 
@@ -136,24 +138,20 @@ class InstallationsController extends AppController {
 								$insert .= "[!]";
 							}
 						}
-
-						$insert .= "[!Options!]";
-						array_push($results, $insert);
-						$sql = "INSERT INTO kora3_fields (pid) 
-						VALUES ('168')";
-
-						if ($conn->query($sql)) {
-							echo "New record created successfully";
-						} else {
-							echo "Error: " . $sql . "<br>" . $conn->error;
-						}
+						$insert .= "[!Options!]";  
+						
+						$sql = $conn->prepare(
+							"UPDATE kora3_fields 
+							SET options = ?
+							where name = '$newKey' and pid = '$pid'"
+						); 
+						$sql->bind_param('s', $insert);
+						$sql->execute();
 					}
 				}
 			}
 		}
-		
 		$conn->close();die;
-		//print_r(json_encode($results));die;
 	}
 
     /**
