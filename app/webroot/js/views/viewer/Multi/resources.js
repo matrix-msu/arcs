@@ -4,6 +4,7 @@ jQuery.fn.outerHTML = function() {
 var pageSet = typeof PAGESET !== 'undefined' ? PAGESET : false;
 //global resource
 var _resource = {};
+var first = true;
 
 _resource.pageSlider = ".other-page";
 _resource.resourceSlider = ".resource-slider";
@@ -27,6 +28,7 @@ _resource.SwapResource = function(kid) {
             });
         }
     });
+
 
     //trigger resize to fix the left/right arrows faster
     $(window).trigger('resize');
@@ -60,6 +62,9 @@ _resource.page_increment = function(page_link = $(_resource.pageSlider).find("a"
 }
 
 _resource.selectPage = function(pageNum) {
+    if( pageNum == 0 ){
+        pageNum = 1;
+    }
     var pageEvent = $(_resource.pageSlider)
         .find(".numberOverResources:" + "contains('" + pageNum + "')")
         .first().parent()
@@ -154,7 +159,6 @@ _resource.sliderMove.adjust = function(element) {
             setTimeout(function(){$('#scroll2').slideUp(300);}, 1)
         }else{
             setTimeout(function(){$('#scroll2').slideDown(300);}, 1)
-            console.log("hey");
             $("#resources-nav").addClass("scroll-shift-nav");
             $("#viewer-right").addClass("scroll-shift-viewer");
         }
@@ -163,7 +167,6 @@ _resource.sliderMove.adjust = function(element) {
             setTimeout(function(){$('#scroll').slideUp(300);}, 1)
         }else{
             setTimeout(function(){$('#scroll').slideDown(300);}, 1)
-            console.log("hey");
             $("#resources-nav").addClass("scroll-shift-nav");
             $("#viewer-right").addClass("scroll-shift-viewer");
         }
@@ -256,10 +259,20 @@ $(document).ready(function() {
     $(".numberOverResources").click(numberOverResourcesClick);
     // $('.other-resources').click(function() {
     var otherResourcesClick = function () {
+
+       
+
+
+
+
         //add a selected class to any clicked page or resource
         if($(this).parents('.page-slider').length > 0) {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
             $(this).addClass('selectedCurrentPage')
+            var id = $(this).find("img").attr("id");
+            var stateObj = { pageID: id };
+
+            history.replaceState(stateObj, "page 2", "?pageSet=" +id);
         }
         if($(this).parents('.resource-slider').length > 0) {
             $('.resource-slider').find('.other-resources').removeClass('selectedCurrentResource');
@@ -290,8 +303,22 @@ $(document).ready(function() {
         _resource.setPointer(id);
         _resource.page_increment();
         _resource.selectPage(1);
+
         if(pageSet) {
-            var page = $(_resource.pageSlider).find("#"+pageSet);
+            var page = $(_resource.pageSlider).find("#" + pageSet);
+            if (first){
+                var checkExist = setInterval(function () {
+                    page = $(_resource.pageSlider).find("#" + pageSet);
+                    var resourceId = page.parent().attr('id');
+                    if ($('#identifier-' + resourceId).length) {
+                        page = $(_resource.pageSlider).find("#" + pageSet);
+                        $('#identifier-' + resourceId).click();
+                        pageSet = false;
+                        clearInterval(checkExist);
+                    }
+                }, 300); 
+                first = false;
+            }
             if(page.length) {
                 var index = page.parent().find(".numberOverResources").html();
                 index = parseInt(index,10) || 0
@@ -303,9 +330,6 @@ $(document).ready(function() {
                     speed: 1000
                 }, (index-3)/2);
             }
-        }
-        else {
-            console.log("no Page SEt")
         }
     // });
     };
@@ -330,16 +354,7 @@ $(document).ready(function() {
       $('#ImageWrap').css('left','');
       $(".fullscreenImage").css('transform', 'rotate(' + angle + 'deg' + ')');
     });
-
-    // $(_resource.pageSlider + " img").click(function(e) {
-    //     var kid = $(this).attr("id");
-    //     var resource_kid = $(this).parent().parent().attr("id");
-    //     resource_kid = resource_kid.replace("resource-pagelevel-", "");
-    //     _resource.currentPage = parseInt(
-    //         $(this).parent().find(".numberOverResources").html()
-    //     );
-    //     GetNewResource(kid);
-    // });
+    
     $(_resource.pageSlider).on('click', 'img', function(e) {
         var kid = $(e.currentTarget).attr("id");
         var resource_kid = $(e.currentTarget).parent().parent().attr("id");
@@ -478,12 +493,6 @@ $(document).ready(function() {
                 var excavationsData = generateMetadata("excavations", results.excavations, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags, results.seasons);
                 var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags,results.excavations,results.seasons);
                 var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                // console.log(projectData);
-                // console.log(seasonsData);
-                // console.log(excavationsData);
-                // console.log(archivalData);
-                // console.log(subjectsData);
-                // console.log($('.accordion.metadata-accordion'));
                 $('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
                 prepAccordion(true);
                 dynamicPrep();
