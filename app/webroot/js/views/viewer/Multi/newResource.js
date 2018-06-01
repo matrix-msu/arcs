@@ -37,7 +37,7 @@ function GetNewResource(id) {
                     var pagePid = getPidFromKid(kid);
                     var pageSid = getSidFromKid(kid);
 
-                    ///FULL SCREEN IMAGE CHANGED HERE YOU SHIT HEAD
+                    ///FULL SCREEN IMAGE CHANGED HERE
                     $(image).attr('src', res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
                     $('#PageImagePreloader').css('display', 'none');
 
