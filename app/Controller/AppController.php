@@ -36,14 +36,11 @@ class AppController extends Controller
 
     public function beforeFilter()
     {
-        $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $linkParts = explode("/", $link);
-
-        $user_id =  $this->Session->read('Auth.User.id');
-
-//        if (isset($GLOBALS['Configured']) == false && !in_array('installation', $linkParts) && $user_id !== null) {
-//            $this->redirect('/installation');
-//        }
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $linkParts = explode("/", $actual_link);
+       if (CONFIGURED == 'false' && !in_array('installation', $linkParts)) {
+           $this->redirect('/installation');
+       }
         //set the project Persistent Names for the toolbar.
         $projects = array();
         foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {

@@ -1,4 +1,7 @@
 <?php
+
+//require_once("UsersController.php");
+
 /**
  * Installation Controller
  *
@@ -7,9 +10,13 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-class InstallationsController extends AppController {
+
+ App::import('Controller', 'Users');
+
+ class InstallationsController extends AppController {
 	
 	public $name = 'Installations';
+	public $uses = array('User', 'Mapping');
 
 	public function beforeFilter() {
         parent::beforeFilter();
@@ -94,7 +101,9 @@ class InstallationsController extends AppController {
 		if($_POST){
 			$_SESSION['ArcsConfig'] = $_POST;
 		}
-		print_r(json_encode($_SESSION));die;
+		//print_r(json_encode($_SESSION));die;
+
+		//write to koradb
 
 		$host = $_SESSION['KoraConfig']['KoraDBHost'];
 		$username = $_SESSION['KoraConfig']['KoraDBUsername'];
@@ -103,7 +112,6 @@ class InstallationsController extends AppController {
 
 		$pName = trim(strtolower(str_replace(" ", "_", $_SESSION['KoraConfig']['KoraProjectName'])));
 		$pid = $GLOBALS['PID_ARRAY'][$pName];
-		$results = array();
 
 		// Create connection
 		$conn = new mysqli($host, $username, $password, $dbName);
@@ -151,7 +159,41 @@ class InstallationsController extends AppController {
 				}
 			}
 		}
-		$conn->close();die;
+		$conn->close();
+
+		//create admin user
+
+		$usersC = new UsersController();
+
+		$mappingProjects = array();
+		array_push($mappingProjects, array(
+			'project' => array('name' => $pName, 'pid' => $pid),
+			'role' => array('name' => 'Admin', 'value' => 'Admin')
+		));
+
+		$addUserData = array(
+			'name' => '',
+            'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
+            'email' => '',
+            'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
+            'isAdmin' => 1,
+            'last_login' => null,
+            'status' => 'confirmed'
+		);
+
+		$response["status"] = $this->User->add($addUserData);
+        if ($response["status"] == false) {
+			$response["message"] = $this->User->invalidFields();
+			return $this->json(400, ($response));
+		}
+		
+        $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
+
+		$this->json(201, $response);
+
+		//TODO: write to bootstrap file so that configured = true
+
+		echo "complete";die;
 	}
 
     /**

@@ -65,7 +65,7 @@
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Create Admin Password</p>
-                        <input name="AcsAdminPassword" type="text" placeholder="Enter the admin password here"/>
+                        <input name="ArcsAdminPassword" type="text" placeholder="Enter the admin password here"/>
                     </div>
                 </div>
                 <hr class="divider">
