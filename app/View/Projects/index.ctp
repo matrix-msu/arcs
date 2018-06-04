@@ -60,49 +60,85 @@ echo $this->Session->flash('flash_success'); ?>
       popupAnchor: [2,-40]
     });
 	<?php
-		//$projects_array = json_decode($projects, true);
-        //echo json_encode($projects);
+		// $projects_array = json_decode($projects, true);
+		// echo 'hi';die;
+		// var_dump($projects_array);die;
 
-		foreach($projects as $item) {
 
-			$link = $this->Html->link(
-				'VIEW PROJECT',
-				array(
-					'controller' => 'projects',
-					'action' => 'single_project',
-					str_replace(' ', '_', strtolower($item["Persistent_Name"]))
-				)
-			);
+    
 
-			//Convert KORA Geolocation to array of coordinate pairs
+    foreach($projects as $item) {
+        $link = $this->Html->link(
+            'VIEW PROJECT',
+            array(
+                'controller' => 'projects',
+                'action' => 'single_project',
+                str_replace(' ', '_', strtolower($item["Persistent_Name"]))
+            )
+        );
+
+
+
+		//Convert KORA Geolocation to array of coordinate pairs
+		if (isset($item['Geolocation'])){
 			$geo = $item['Geolocation'];
-
-			//commented out markers in case we choose to reuse them later. Not using them as of 11/5/15
-			foreach($geo as $marker) {
-				$coords = explode(",", $marker);
-				//markers
-				$html = "";
-				$html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
-				$html .= ".addTo(map);";
-				$html .= "marker_array.push(marker);";
-				$html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
-				$brief = str_replace("'", "\'", $item['Description']);
-				$html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
-	            print $html; //print markers and set coords_array
-				//print "console.log('".$coords[0]."', '".$coords[1]."');";
-			}
-
-			//print polygon
-			$html = "";
-			$html = "var polygon = L.polygon(coords_array)";
-			$html .= ".addTo(map);";
-			$brief = str_replace("'", "\'", $item['Description']);
-			$html .= 'polygon.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
-			//$html .= '.removeLayer('.L.polyline().');';
-			print $html;
-			//print "console.log(coords_array);";
-            //break;
+		}else{
+			$geo = false;
 		}
+        $country = $item['Country'];
+
+
+        //commented out markers in case we choose to reuse them later. Not using them as of 11/5/15
+        if($geo){
+            foreach($geo as $marker) {
+                $coords = explode(",", $marker);
+                //markers
+                $html = "";
+                $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
+                $html .= ".addTo(map);";
+                $html .= "marker_array.push(marker);";
+                $html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
+                $brief = str_replace("'", "\'", $item['Description']);
+                $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+                print $html; //print markers and set coords_array
+                //print "console.log('".$coords[0]."', '".$coords[1]."');";
+            }
+        }else{
+            $setupurl = "https://restcountries.eu/rest/v2/name/";
+            
+            $url = $setupurl.$country;
+            
+            $page = file_get_contents($url);
+            
+            $obj = json_decode($page, true);
+
+            $coords1 = $obj[0]['latlng'][0];
+            $coords2 = $obj[0]['latlng'][1];
+            
+            $coords = $coords1.",".$coords2;
+            
+            $coords = explode(",", $coords);
+            $html = "";
+            $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
+            $html .= ".addTo(map);";
+            $html .= "marker_array.push(marker);";
+            $html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
+            $brief = str_replace("'", "\'", $item['Description']);
+            $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+            print $html;  
+        }
+
+        //print polygon
+        $html = "";
+        $html = "var polygon = L.polygon(coords_array)";
+        $html .= ".addTo(map);";
+        $brief = str_replace("'", "\'", $item['Description']);
+        $html .= 'polygon.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+        //$html .= '.removeLayer('.L.polyline().');';
+        print $html;
+        //print "console.log(coords_array);";
+        //break;
+    }
 	?>
 	window.map.removeLayer(window.polygon);
 
