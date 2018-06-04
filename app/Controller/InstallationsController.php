@@ -101,7 +101,6 @@
 		if($_POST){
 			$_SESSION['ArcsConfig'] = $_POST;
 		}
-		//print_r(json_encode($_SESSION));die;
 
 		//write to koradb
 
@@ -134,7 +133,7 @@
 					$insert = "";
 					$type = $result->fetch_assoc()['type'];
 					
-					if ($type == "List"  || $type == "Multi-Select List") {
+					if ($type == "List" || $type == "Multi-Select List") {
 
 						$insert .= "[!Options!]";
 						$items = explode(",", $value2);
@@ -189,11 +188,18 @@
 		
         $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
 
-		$this->json(201, $response);
+		//write to bootstrap file so that configured = true
 
-		//TODO: write to bootstrap file so that configured = true
+		$path = APP . "Config/bootstrap.php";
+		$contents = file_get_contents($path);
+		$contents = str_replace(
+			"define('CONFIGURED', 'false');", 
+			"define('CONFIGURED', 'true');",
+			$contents
+		);
+		file_put_contents($path, $contents);
 
-		echo "complete";die;
+		$this->redirect('/');
 	}
 
     /**

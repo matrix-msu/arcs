@@ -38,9 +38,12 @@ class AppController extends Controller
     {
         $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $linkParts = explode("/", $actual_link);
-       if (CONFIGURED == 'false' && !in_array('installation', $linkParts)) {
-           $this->redirect('/installation');
-       }
+        $signedIn = $this->Auth->loggedIn();
+
+        if (CONFIGURED == 'false' && !in_array('installation', $linkParts) && $signedIn) {
+            $this->redirect('/installation');
+        }
+
         //set the project Persistent Names for the toolbar.
         $projects = array();
         foreach( $GLOBALS['PID_ARRAY'] as $name => $pid ) {
