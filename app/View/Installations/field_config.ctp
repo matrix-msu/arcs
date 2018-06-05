@@ -1,4 +1,8 @@
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
+<head>
+    <?=  $this->Html->script("views/installation/keyword.js")  ?>
+    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+</head>
 <div class="field-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -40,18 +44,18 @@
                     </div>
                 </div>
                 <div class="form-wrapper">
-                    
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Country (Countries)</p>
-                                <input name="Country" type="text" placeholder="countries"/>
+                                <div class="keywords-uploadForm" enctype="multipart/form-data"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Region(s)</p>
-                                <input name="Region" type="text" placeholder="Corinthia"/>
+                                <!-- <input name="Region" type="text" placeholder="Corinthia"/> -->
+                                <div class="keywords-uploadForm" enctype="multipart/form-data"></div>
                             </div>
                         </div>
                         <div class="row">

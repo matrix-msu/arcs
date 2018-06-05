@@ -9,7 +9,6 @@ $(document).ready(function() {
             window.location.href += '/kora'
         }
     });
-
     $("#season-step").on("click", function() {
         $(".project").hide();
         $(".season").show();
