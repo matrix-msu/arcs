@@ -67,6 +67,7 @@
             annodata.forEach(function(a) {
               var d, date, linkText, monthNames, type, url;
               if (a['transcript'] === '' || a['transcript'] === null) {
+                console.log('wow');
                 activity.push({
                   time: a['created'],
                   time_string: a['time_string'],
@@ -132,9 +133,12 @@
                 }
                 count++;
               } else {
+                console.log('hererereer')
+                console.log(a)
                 transcriptionCount++;
                 activity.push({
                   time: a['created'],
+                  time_string: a['time_string'],
                   type: 'transcription',
                   kid: a['resource_kid'],
                   name: a['resource_name'],
@@ -306,6 +310,7 @@
           id: info.id
         },
         success: function(mdata) {
+          console.log('aaaaaa', mdata)
           var byResource = [];
           mdata.forEach(function(edit) {
             activity.push({

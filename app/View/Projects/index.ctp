@@ -32,7 +32,6 @@ echo $this->Session->flash('flash_success'); ?>
 
 <script>
     var map = L.map('map', { zoomControl:false });
-    console.log(map);
 
     map.scrollWheelZoom.disable();
 
