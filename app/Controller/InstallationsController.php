@@ -101,7 +101,7 @@
 		if($_POST){
 			$_SESSION['ArcsConfig'] = $_POST;
 		}
-
+		// /print_r(json_encode($_SESSION));die;
 		//write to koradb
 
 		$host = $_SESSION['KoraConfig']['KoraDBHost'];
@@ -120,10 +120,11 @@
 		}
 		//skip config, message, and auth which are automatically in a session variable
 		foreach($_SESSION as $key => $value){
-			if ($key == "Config" || $key == "Message" || $key == "Auth"){			
+			if ($key == "Config" || $key == "Message" || $key == "Auth" || $key == "currentProjectName"){			
 				continue;
 			}
 			foreach($value as $key2 => $value2){
+				
 				$newKey = str_replace("_", " ", $key2);
 				$sql = "SELECT * FROM kora3_fields WHERE NAME = '$newKey' AND pid = '$pid'";
 				$result = $conn->query($sql);
@@ -136,15 +137,16 @@
 					if ($type == "List" || $type == "Multi-Select List") {
 
 						$insert .= "[!Options!]";
-						$items = explode(",", $value2);
+						// $items = explode(",", $value2);
 
-						for ($i = 0; $i < sizeof($items); $i++){
-							$insert .= trim($items[$i]);
+						for ($i = 0; $i < sizeof($value2); $i++){
+							$insert .= trim($value2[$i]);
 
-							if (($i+1) != sizeof($items)) {
+							if (($i+1) != sizeof($value2)) {
 								$insert .= "[!]";
 							}
 						}
+
 						$insert .= "[!Options!]";  
 						
 						$sql = $conn->prepare(
@@ -170,11 +172,25 @@
 			'role' => array('name' => 'Admin', 'value' => 'Admin')
 		));
 
+		//TODO: cake is not able to generate a user id off just a username and password, or
+		//there is some check for valid name and email in the 'User->add($addUserData)' function
+		//for this to work we need to add fields on the arcs configuration form (part of the installation pages)
+		//for the user to enter an email and name
+		// $addUserData = array(
+		// 	'name' => '',
+        //     'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
+        //     'email' => '',
+        //     'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
+        //     'isAdmin' => 1,
+        //     'last_login' => null,
+        //     'status' => 'confirmed'
+		// );
+
 		$addUserData = array(
-			'name' => '',
-            'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
-            'email' => '',
-            'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
+			'name' => 'lets see hmm',
+            'username' => 'coolusername1234567',
+            'email' => 'verycoolemail@coolemail.com',
+            'password' => '123456',
             'isAdmin' => 1,
             'last_login' => null,
             'status' => 'confirmed'

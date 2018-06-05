@@ -2,20 +2,25 @@
 
 
 $(document).ready(function() {
-    var html4 = '<fieldset class="users-fieldset">';
-    html4 += '<select id ="urlAuthor" name="Country" data-placeholder="Country" multiple class="chosen-select" style="width:90%;">';
 
-    html4 += '</select></fieldset>';
+    $(".keywords-uploadForm").each(function() {
+        var id = $(this).attr('name');
+        var html4 = '<fieldset class="users-fieldset">';
+        html4 += '<select id ="'+ id +'" name="'+ id +'[]" data-placeholder="'+ id +'" multiple class="chosen-select" style="width:90%;">';
+        html4 += '</select></fieldset>';
+        $(this).html(html4);
+    });
+    
 
     //fill in the select
     $(".keywords-uploadForm").css('display','block');
-    $(".keywords-uploadForm").html(html4);
 
     /////uses the chosen.js to turn the select into a fancy thingy
     $(".chosen-select").chosen();
 
     //add new keyword with a comma
     $(".search-field").on('keyup', "input", function (e) {
+        var selectTag = $(this).parents().eq(3).children().eq(0)
         var id = $(this).val();
         if ((id == "" || id == ',') && e.key == 'Backspace') {
             //backspace will do nothing if no keyword
@@ -27,8 +32,10 @@ $(document).ready(function() {
                 return;
             }
 
-            $("#urlAuthor").append('<option selected="selected" data-id="' + id + '">' + id + '</option>');
+            $(selectTag).append('<option selected="selected" data-id="' + id + '">' + id + '</option>');
             $(".chosen-select").trigger("chosen:updated");
+
+            console.log($(selectTag).val());
         }
     });
 });

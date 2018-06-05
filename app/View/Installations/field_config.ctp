@@ -48,39 +48,43 @@
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Country (Countries)</p>
-                                <div class="keywords-uploadForm" enctype="multipart/form-data"></div>
+                                <div class="keywords-uploadForm" name="Country"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Region(s)</p>
                                 <!-- <input name="Region" type="text" placeholder="Corinthia"/> -->
-                                <div class="keywords-uploadForm" enctype="multipart/form-data"></div>
+                                <div class="keywords-uploadForm" name="Region"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Modern Name(s)</p>
-                                <input name="Modern Name" type="text" placeholder="Kyras Vrisi"/>
+                                <!-- <input name="Modern Name" type="text" placeholder="Kyras Vrisi"/> -->
+                                <div class="keywords-uploadForm" name="Modern Name"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Period(s)</p>
-                                <input name="Period" type="text" placeholder="Bronze Age"/>
+                                <!-- <input name="Period" type="text" placeholder="Bronze Age"/> -->
+                                <div class="keywords-uploadForm" name="Period"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Archaeological Culture(s)</p>
-                                <input name="Archaeological Culture" type="text" placeholder="Culture"/>
+                                <!-- <input name="Archaeological Culture" type="text" placeholder="Culture"/> -->
+                                <div class="keywords-uploadForm" name="Archaeological Culture"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Permiting Heritage Culture(s)</p>
-                                <input name="Permitting Heritage Culture" type="text" placeholder="Greek Ministry of Culture"/>
+                                <!-- <input name="Permitting Heritage Culture" type="text" placeholder="Greek Ministry of Culture"/> -->
+                                <div class="keywords-uploadForm" name="Permitting Heritage Culture"></div>
                             </div>
                         </div>
                         <hr class="divider">
@@ -116,31 +120,36 @@
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Director(s)</p>
-                                <input name="Director" type="text" placeholder="Ethan Watrall, Catherine Foley"/>
+                                <!-- <input name="Director" type="text" placeholder="Ethan Watrall, Catherine Foley"/> -->
+                                <div class="keywords-uploadForm" name="Director"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Registrar(s)</p>
-                                <input name="Registrar" type="text" placeholder="Corinthia"/>
+                                <!-- <input name="Registrar" type="text" placeholder="Corinthia"/> -->
+                                <div class="keywords-uploadForm" name="Registrar"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Sponsor(s)</p>
-                                <input name="Sponsor" type="text" placeholder="Kyras Vrisi"/>
+                                <!-- <input name="Sponsor" type="text" placeholder="Kyras Vrisi"/> -->
+                                <div class="keywords-uploadForm" name="Sponsor"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Contributor(s)</p>
-                                <input name="Contributor" type="text" placeholder="Bronze Age"/>
+                                <!-- <input name="Contributor" type="text" placeholder="Bronze Age"/> -->
+                                <div class="keywords-uploadForm" name="Contributor"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Contributor Role(s)</p>
-                                <input name="Contributor Role" type="text" placeholder="Culture"/>
+                                <!-- <input name="Contributor Role" type="text" placeholder="Culture"/> -->
+                                <div class="keywords-uploadForm" name="Contributor Role"></div>
                             </div>
                         </div>
                         <hr class="divider">
@@ -176,7 +185,8 @@
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Supervisor(s)</p>
-                                <input name="Supervisor" type="text" placeholder="Firstname Lastname"/>
+                                <!-- <input name="Supervisor" type="text" placeholder="Firstname Lastname"/> -->
+                                <div class="keywords-uploadForm" name="Supervisor"></div>
                             </div>
                         </div>
                         <hr class="divider">
@@ -212,40 +222,46 @@
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Type(s)</p>
-                                <input name="Type" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Type" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Type"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Creator(s)</p>
-                                <input name="Creator" type="text" placeholder="Enter the list options for creator(s)"/>
+                                <!-- <input name="Creator" type="text" placeholder="Enter the list options for creator(s)"/> -->
+                                <div class="keywords-uploadForm" name="Creator"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Creator Role(s)</p>
-                                <input name="Creator Role" type="text" placeholder="Enter the list options for creator role(s)"/>
+                                <!-- <input name="Creator Role" type="text" placeholder="Enter the list options for creator role(s)"/> -->
+                                <div class="keywords-uploadForm" name="Creator Role"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Language(s)</p>
-                                <input name="Language" type="text" placeholder="Enter the list options for language(s)"/>
+                                <!-- <input name="Language" type="text" placeholder="Enter the list options for language(s)"/> -->
+                                <div class="keywords-uploadForm" name="Language"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Right Holder(s)</p>
-                                <input name="Rights Holder" type="text" placeholder="Enter the list options for rights holder(s)"/>
+                                <!-- <input name="Rights Holder" type="text" placeholder="Enter the list options for rights holder(s)"/> -->
+                                <div class="keywords-uploadForm" name="Rights Holder"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Repository(s)</p>
-                                <input name="Repository" type="text" placeholder="Enter the list options for repository(s)"/>
+                                <!-- <input name="Repository" type="text" placeholder="Enter the list options for repository(s)"/> -->
+                                <div class="keywords-uploadForm" name="Repository"></div>
                             </div>
                         </div>
                         <hr class="divider">
@@ -281,84 +297,97 @@
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Classification(s)</p>
-                                <input name="Artifact - Structure Classification" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Classification" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Classification"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Type(s)</p>
-                                <input name="Artifact - Structure Type" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Type" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Type"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Material(s)</p>
-                                <input name="Artifact - Structure Material" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Material" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Material"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Technique(s)</p>
-                                <input name="Artifact - Structure Technique" type="text" placeholder="Enter the list options for language(s)"/>
+                                <!-- <input name="Artifact - Structure Technique" type="text" placeholder="Enter the list options for language(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Technique"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Archaeological Culture(s)</p>
-                                <input name="Artifact - Structure Archaeological Culture" type="text" placeholder="Enter the list options for rights holder(s)"/>
+                                <!-- <input name="Artifact - Structure Archaeological Culture" type="text" placeholder="Enter the list options for rights holder(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Archaeological Culture"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Current Location(s)</p>
-                                <input name="Artifact - Structure Current Location" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Current Location" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Current Location"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Repository(s)</p>
-                                <input name="Artifact - Structure Repository" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Repository" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Repository"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Creator(s)</p>
-                                <input name="Artifact - Structure Creator" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Creator" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Creator"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Unit(s)</p>
-                                <input name="Artifact - Structure Unit" type="text" placeholder="Enter the list options for language(s)"/>
+                                <!-- <input name="Artifact - Structure Unit" type="text" placeholder="Enter the list options for language(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Unit"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Location(s)</p>
-                                <input name="Artifact - Structure Location" type="text" placeholder="Enter the list options for language(s)"/>
+                                <!-- <input name="Artifact - Structure Location" type="text" placeholder="Enter the list options for language(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Location"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Condition(s)</p>
-                                <input name="Artifact - Structure Condition" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Condition" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Condition"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Subject(s)</p>
-                                <input name="Artifact - Structure Subject" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Subject" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Subject"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <p>Artifact - Structure Origin(s)</p>
-                                <input name="Artifact - Structure Origin" type="text" placeholder="Enter the list options for type(s)"/>
+                                <!-- <input name="Artifact - Structure Origin" type="text" placeholder="Enter the list options for type(s)"/> -->
+                                <div class="keywords-uploadForm" name="Artifact - Structure Origin"></div>
                             </div>
                         </div>
                         <hr class="divider">

@@ -1,4 +1,8 @@
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
+<head>
+    <?=  $this->Html->script("views/installation/keyword.js")  ?>
+    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+</head>
 <div class="create-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -71,7 +75,8 @@
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Geolocation(s)</p>
-                            <input name="Geolocation" type="text" placeholder="Greek Ministry of Culture"/>
+                            <!-- <input name="Geolocation" type="text" placeholder="Greek Ministry of Culture"/> -->
+                            <div class="keywords-uploadForm" name="Geolocation"></div>
                         </div>
                     </div>
                     <div class="row">
