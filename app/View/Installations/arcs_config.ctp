@@ -1,4 +1,7 @@
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
+<head>
+    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+</head>
 <div class="config-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -24,48 +27,60 @@
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Host</p>
-                        <input name="ArcsDBHost" type="text" placeholder="Enter the ARCS host name here"/>
+                        <input name="ArcsDBHost" class="req" type="text" placeholder="Enter the ARCS host name here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Name</p>
-                        <input name="ArcsDBName" type="text" placeholder="Enter the ARCS database name here"/>
+                        <input name="ArcsDBName" class="req" type="text" placeholder="Enter the ARCS database name here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Username</p>
-                        <input name="ArcsDBUsername" type="text" placeholder="Enter the ARCS database username here"/>
+                        <input name="ArcsDBUsername" class="req" type="text" placeholder="Enter the ARCS database username here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Database Password</p>
-                        <input name="ArcsDBPassword" type="text" placeholder="Enter the ARCS database Password here"/>
+                        <input name="ArcsDBPassword" class="req" type="text" placeholder="Enter the ARCS database Password here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Base URL</p>
-                        <input name="ArcsBaseURL" type="text" placeholder="Enter the ARCS base URL here"/>
+                        <input name="ArcsBaseURL" class="req" type="text" placeholder="Enter the ARCS base URL here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>ARCS Base Path</p>
-                        <input name="ArcsBasePath" type="text" placeholder="Enter the ARCS base path here"/>
+                        <input name="ArcsBasePath" class="req" type="text" placeholder="Enter the ARCS base path here"/>
                     </div>
                 </div>
                 <div class="row" id="arcs-name">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Create Admin Username</p>
-                        <input name="ArcsAdminUsername" type="text" placeholder="Enter the admin username here"/>
+                        <input name="ArcsAdminUsername" class="req" type="text" placeholder="Enter your admin username here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Create Admin Password</p>
-                        <input name="ArcsAdminPassword" type="text" placeholder="Enter the admin password here"/>
+                        <input name="ArcsAdminPassword" class="req" type="text" placeholder="Enter your admin password here"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-left inputDiv">
+                        <span class="dot"></span>
+                        <p>Create Admin Name</p>
+                        <input name="ArcsAdminName" class="req" type="text" placeholder="Enter your name here"/>
+                    </div>
+                    <div class="input-right inputDiv">
+                        <span class="dot"></span>
+                        <p>Create Admin Email</p>
+                        <input name="ArcsAdminEmail" class="req" type="text" placeholder="Enter your email here"/>
                     </div>
                 </div>
                 <hr class="divider">
@@ -75,6 +90,7 @@
                         <p>= Required Field</p>
                     </div>
                     <div class="cont-btn-container">
+                        <p class="required-notice">Please fill out all required fields.</p>
                         <button class="cont-install-btn" type="submit">
                             <p>Submit Configuration</p>
                         </button>

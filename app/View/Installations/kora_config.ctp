@@ -1,4 +1,7 @@
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
+<head>
+    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+</head>
 <div class="kora-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -24,43 +27,43 @@
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Host</p>
-                        <input name='KoraDBHost' type="text" placeholder="Enter the kora database host url here"/>
+                        <input name='KoraDBHost' class="req" type="text" placeholder="Enter the kora database host url here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Name</p>
-                        <input name='KoraDBName' type="text" placeholder="Enter the kora database name here"/>
+                        <input name='KoraDBName' class="req" type="text" placeholder="Enter the kora database name here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Username</p>
-                        <input name="KoraDBUsername" type="text" placeholder="Enter the kora database username here"/>
+                        <input name="KoraDBUsername" class="req" type="text" placeholder="Enter the kora database username here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Password</p>
-                        <input name="KoraDBPassword" type="text" placeholder="Enter the kora database Password here"/>
+                        <input name="KoraDBPassword" class="req" type="text" placeholder="Enter the kora database Password here"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base URL</p>
-                        <input name='KoraBaseURL' type="text" placeholder="Enter the kora base URL here"/>
+                        <input name='KoraBaseURL' class="req" type="text" placeholder="Enter the kora base URL here"/>
                     </div>
                     <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base Path</p>
-                        <input name='KoraBasePath' type="text" placeholder="Enter the kora base path here"/>
+                        <input name='KoraBasePath' class="req" type="text" placeholder="Enter the kora base path here"/>
                     </div>
                 </div>
                 <div class="row" id="kora-name">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Project Name</p>
-                        <input name="KoraProjectName" type="text" placeholder="Enter the kora Project Name here"/>
+                        <input name="KoraProjectName" class="req" type="text" placeholder="Enter the kora Project Name here"/>
                     </div>
                     <div class="input-right inputDiv">
                     </div>
@@ -70,8 +73,10 @@
                     <div class="required">
                         <span class="dot"></span>
                         <p>= Required Field</p>
+                        
                     </div>
                     <div class="cont-btn-container">
+                        <p class="required-notice">Please fill out all required fields.</p>
                         <button class="cont-install-btn" type="submit">
                             <p>Continue to Field Configuration</p>
                         </button>

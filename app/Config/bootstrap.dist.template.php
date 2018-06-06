@@ -94,6 +94,9 @@ define("KORA_PLUGIN_USERS"  ,  "KORA_PLUGIN_USERS_REPLACE"); //unique
 //define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
 //define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
 
+//flag for if arcs has been configured for user
+define('CONFIGURED', 'true');
+
 //new bootstrap setup
 $GLOBALS['PID_ARRAY'] = array(
     'isthmia' => 123,

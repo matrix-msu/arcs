@@ -1,8 +1,6 @@
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
-<head>
-    <?=  $this->Html->script("views/installation/keyword.js")  ?>
-    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
-</head>
+<script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+
 <div class="field-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -48,7 +46,7 @@
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
                                 <p>Country (Countries)</p>
-                                <div class="keywords-uploadForm" name="Country"></div>
+                                <div class="keywords-uploadForm needs-req" name="Country"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -63,7 +61,7 @@
                                 <span class="dot"></span>
                                 <p>Modern Name(s)</p>
                                 <!-- <input name="Modern Name" type="text" placeholder="Kyras Vrisi"/> -->
-                                <div class="keywords-uploadForm" name="Modern Name"></div>
+                                <div class="keywords-uploadForm needs-req" name="Modern Name"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -94,6 +92,7 @@
                                 <p>= Required Field</p>
                             </div>
                             <div class="cont-btn-container">
+                                <p class="required-notice">Please fill out all required fields.</p>
                                 <button class="cont-install-btn" id="season-step" type="button" name="button">
                                     <p>Continue to Season Confiuration</p>
                                 </button>
@@ -121,7 +120,7 @@
                                 <span class="dot"></span>
                                 <p>Director(s)</p>
                                 <!-- <input name="Director" type="text" placeholder="Ethan Watrall, Catherine Foley"/> -->
-                                <div class="keywords-uploadForm" name="Director"></div>
+                                <div class="keywords-uploadForm needs-req" name="Director"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -159,6 +158,7 @@
                                 <p>= Required Field</p>
                             </div>
                             <div class="cont-btn-container">
+                                <p class="required-notice">Please fill out all required fields.</p>
                                 <button class="cont-install-btn" id="excavation-step" type="button" name="button">
                                     <p>Continue to Excavation Configuration</p>
                                 </button>
@@ -186,7 +186,7 @@
                                 <span class="dot"></span>
                                 <p>Supervisor(s)</p>
                                 <!-- <input name="Supervisor" type="text" placeholder="Firstname Lastname"/> -->
-                                <div class="keywords-uploadForm" name="Supervisor"></div>
+                                <div class="keywords-uploadForm needs-req" name="Supervisor"></div>
                             </div>
                         </div>
                         <hr class="divider">
@@ -196,6 +196,7 @@
                                 <p>= Required Field</p>
                             </div>
                             <div class="cont-btn-container">
+                                <p class="required-notice">Please fill out all required fields.</p>
                                 <button class="cont-install-btn" id="resource-step" type="button" name="button">
                                     <p>Continue to Resource Configuration</p>
                                 </button>
@@ -223,7 +224,7 @@
                                 <span class="dot"></span>
                                 <p>Type(s)</p>
                                 <!-- <input name="Type" type="text" placeholder="Enter the list options for type(s)"/> -->
-                                <div class="keywords-uploadForm" name="Type"></div>
+                                <div class="keywords-uploadForm needs-req" name="Type"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -231,7 +232,7 @@
                                 <span class="dot"></span>
                                 <p>Creator(s)</p>
                                 <!-- <input name="Creator" type="text" placeholder="Enter the list options for creator(s)"/> -->
-                                <div class="keywords-uploadForm" name="Creator"></div>
+                                <div class="keywords-uploadForm needs-req" name="Creator"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -239,7 +240,7 @@
                                 <span class="dot"></span>
                                 <p>Creator Role(s)</p>
                                 <!-- <input name="Creator Role" type="text" placeholder="Enter the list options for creator role(s)"/> -->
-                                <div class="keywords-uploadForm" name="Creator Role"></div>
+                                <div class="keywords-uploadForm needs-req" name="Creator Role"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -247,7 +248,7 @@
                                 <span class="dot"></span>
                                 <p>Language(s)</p>
                                 <!-- <input name="Language" type="text" placeholder="Enter the list options for language(s)"/> -->
-                                <div class="keywords-uploadForm" name="Language"></div>
+                                <div class="keywords-uploadForm needs-req" name="Language"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -271,6 +272,7 @@
                                 <p>= Required Field</p>
                             </div>
                             <div class="cont-btn-container">
+                                <p class="required-notice">Please fill out all required fields.</p>
                                 <button class="cont-install-btn" id="subject-step" type="button" name="button">
                                     <p>Continue to Subject of Observation Configuration</p>
                                 </button>
@@ -298,7 +300,7 @@
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Classification(s)</p>
                                 <!-- <input name="Artifact - Structure Classification" type="text" placeholder="Enter the list options for type(s)"/> -->
-                                <div class="keywords-uploadForm" name="Artifact - Structure Classification"></div>
+                                <div class="keywords-uploadForm needs-req" name="Artifact - Structure Classification"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -306,7 +308,7 @@
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Type(s)</p>
                                 <!-- <input name="Artifact - Structure Type" type="text" placeholder="Enter the list options for type(s)"/> -->
-                                <div class="keywords-uploadForm" name="Artifact - Structure Type"></div>
+                                <div class="keywords-uploadForm needs-req" name="Artifact - Structure Type"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -314,7 +316,7 @@
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Material(s)</p>
                                 <!-- <input name="Artifact - Structure Material" type="text" placeholder="Enter the list options for type(s)"/> -->
-                                <div class="keywords-uploadForm" name="Artifact - Structure Material"></div>
+                                <div class="keywords-uploadForm needs-req" name="Artifact - Structure Material"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -322,7 +324,7 @@
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Technique(s)</p>
                                 <!-- <input name="Artifact - Structure Technique" type="text" placeholder="Enter the list options for language(s)"/> -->
-                                <div class="keywords-uploadForm" name="Artifact - Structure Technique"></div>
+                                <div class="keywords-uploadForm needs-req" name="Artifact - Structure Technique"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -358,7 +360,7 @@
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Unit(s)</p>
                                 <!-- <input name="Artifact - Structure Unit" type="text" placeholder="Enter the list options for language(s)"/> -->
-                                <div class="keywords-uploadForm" name="Artifact - Structure Unit"></div>
+                                <div class="keywords-uploadForm needs-req" name="Artifact - Structure Unit"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -366,7 +368,7 @@
                                 <span class="dot"></span>
                                 <p>Artifact - Structure Location(s)</p>
                                 <!-- <input name="Artifact - Structure Location" type="text" placeholder="Enter the list options for language(s)"/> -->
-                                <div class="keywords-uploadForm" name="Artifact - Structure Location"></div>
+                                <div class="keywords-uploadForm needs-req" name="Artifact - Structure Location"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -397,6 +399,7 @@
                                 <p>= Required Field</p>
                             </div>
                             <div class="cont-btn-container">
+                                <p class="required-notice">Please fill out all required fields.</p>
                                 <button class="cont-install-btn" type="submit">
                                     <p>Continue to Project Record Creation</p>
                                 </button>

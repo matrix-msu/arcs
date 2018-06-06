@@ -16431,6 +16431,10 @@ strong {
   height: auto;
   display: inline-block;
 }
+.form-container .form-wrapper .bottom .cont-btn-container .required-notice {
+  display: none;
+  color: red;
+}
 .form-container .form-wrapper .bottom .cont-btn-container .cont-install-btn {
   width: auto;
   height: 49px;

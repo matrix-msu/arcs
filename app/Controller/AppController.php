@@ -38,9 +38,8 @@ class AppController extends Controller
     {
         $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $linkParts = explode("/", $actual_link);
-        $signedIn = $this->Auth->loggedIn();
 
-        if (CONFIGURED == 'false' && !in_array('installation', $linkParts) && $signedIn) {
+        if (CONFIGURED == 'false' && !in_array('installation', $linkParts)) {
             $this->redirect('/installation');
         }
 

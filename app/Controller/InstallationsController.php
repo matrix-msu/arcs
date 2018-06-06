@@ -19,8 +19,21 @@
 	public $uses = array('User', 'Mapping');
 
 	public function beforeFilter() {
+		$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $linkParts = explode("/", $actual_link);
+
+        if (CONFIGURED == 'true' && in_array('installation', $linkParts)) {
+            $this->redirect('/');
+        }
+
         parent::beforeFilter();
-        $this->Auth->allow('display');
+        $this->Auth->allow(
+			'display', 'koraConfig', 'fieldConfig', 
+			'createProject', 'arcsConfig', 'finalize'
+		);
+		if( $this->request->params['action'] != 'periodo' && $this->request->params['action'] != 'finalize' ){
+			echo "<script>var JS_IS_INSTALTION_PAGE = true;</script>";
+		}
     }
 
 	public function register() {
@@ -101,7 +114,7 @@
 		if($_POST){
 			$_SESSION['ArcsConfig'] = $_POST;
 		}
-		// /print_r(json_encode($_SESSION));die;
+		//print_r(json_encode($_SESSION));die;
 		//write to koradb
 
 		$host = $_SESSION['KoraConfig']['KoraDBHost'];
@@ -111,6 +124,7 @@
 
 		$pName = trim(strtolower(str_replace(" ", "_", $_SESSION['KoraConfig']['KoraProjectName'])));
 		$pid = $GLOBALS['PID_ARRAY'][$pName];
+		
 
 		// Create connection
 		$conn = new mysqli($host, $username, $password, $dbName);
@@ -172,25 +186,11 @@
 			'role' => array('name' => 'Admin', 'value' => 'Admin')
 		));
 
-		//TODO: cake is not able to generate a user id off just a username and password, or
-		//there is some check for valid name and email in the 'User->add($addUserData)' function
-		//for this to work we need to add fields on the arcs configuration form (part of the installation pages)
-		//for the user to enter an email and name
-		// $addUserData = array(
-		// 	'name' => '',
-        //     'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
-        //     'email' => '',
-        //     'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
-        //     'isAdmin' => 1,
-        //     'last_login' => null,
-        //     'status' => 'confirmed'
-		// );
-
 		$addUserData = array(
-			'name' => 'lets see hmm',
-            'username' => 'coolusername1234567',
-            'email' => 'verycoolemail@coolemail.com',
-            'password' => '123456',
+			'name' => $_SESSION['ArcsConfig']['ArcsAdminName'],
+            'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
+            'email' => $_SESSION['ArcsConfig']['ArcsAdminEmail'],
+            'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
             'isAdmin' => 1,
             'last_login' => null,
             'status' => 'confirmed'
@@ -214,7 +214,7 @@
 			$contents
 		);
 		file_put_contents($path, $contents);
-
+		
 		$this->redirect('/');
 	}
 

@@ -1,6 +1,5 @@
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
 <head>
-    <?=  $this->Html->script("views/installation/keyword.js")  ?>
     <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 </head>
 <div class="create-body-content">
@@ -157,7 +156,7 @@
                         <div class="input-full inputDiv">
                           <span class="dot"></span>
                             <p>Persistent Name</p>
-                            <input name="Persistent Name" type="text" placeholder="Enter the Persistent Name"/>
+                            <input name="Persistent Name" class="req" type="text" placeholder="Enter the Persistent Name"/>
                         </div>
                     </div>
                     <div class="row">
@@ -239,6 +238,7 @@
                             <p>= Required Field</p>
                         </div>
                         <div class="cont-btn-container">
+                            <p class="required-notice">Please fill out all required fields.</p>
                             <button class="cont-install-btn" type="submit">
                                 <p>Continue to ARCS Confiuration</p>
                             </button>
