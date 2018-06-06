@@ -58,7 +58,7 @@ $(document).ready(function() {
 					$menu.find('.descending').removeClass('active');
 					$menu.find('.ascending').addClass('active');
 					sortBy('p.type');
-					reverseRows();
+					//reverseRows();
 				} else if ($(e.target).hasClass('ascending')) {
 					$menu.find('.descending').removeClass('active');
 					$menu.find('.ascending').addClass('active');
@@ -72,6 +72,7 @@ $(document).ready(function() {
 		} else if ($('.filter-menu p').is(e.target)){
             if(!$(e.target).hasClass('active')){
 				$menu = $('.filter-menu');
+				console.log('filter click', $(e.target))
 				if ($(e.target).hasClass('logins')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.logins').addClass('active');
@@ -83,15 +84,15 @@ $(document).ready(function() {
 				} else if ($(e.target).hasClass('new-annotation')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.new-annotation').addClass('active');
-					filterBy('Created New Annotation', 'p.type');
+					filterBy('Annotations', 'p.type');
 				} else if ($(e.target).hasClass('new-flag')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.new-flag').addClass('active');
-					filterBy('Created New Flag', 'p.type');
+					filterBy('Flags', 'p.type');
 				} else if ($(e.target).hasClass('edited-metadata')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.edited-metadata').addClass('active');
-					filterBy('Edited Metadata', 'p.type');
+					filterBy('Metadata', 'p.type');
 				} else if ($(e.target).hasClass('all-activity')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.all-activity').addClass('active');
