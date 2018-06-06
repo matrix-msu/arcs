@@ -361,9 +361,6 @@ class SearchController extends AppController {
                   $page2 = array_pop($page2);
                 }
 
-
-
-
                 //$page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results
                 $picture_url = '';
@@ -506,9 +503,10 @@ class SearchController extends AppController {
 
             $pages = array();
             //using the array and 'in' this way because it's much faster.
-            $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
-                "Scan_Number", "=", "1");
-//                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            //USE THIS INSTEAD WHEN IT WORKS
+            // $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
+            //     "Scan_Number", "=", "1");
             $pages = json_decode($kora->search(), true);
 
             if( $pages == array() ){
@@ -523,6 +521,7 @@ class SearchController extends AppController {
                 }
                 $pages = $tempPagesArray;
             }
+
 
             //get the info from the resources and pages
             $returnResults = array();
