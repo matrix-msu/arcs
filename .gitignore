@@ -10,3 +10,6 @@ app/webroot/.htaccess
 /app/tmp
 /app/webroot/img
 /.idea
+
+# Resource data files
+app/webroot/Resource_Data_*

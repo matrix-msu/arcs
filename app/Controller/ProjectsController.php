@@ -77,8 +77,7 @@ class ProjectsController extends AppController {
 
         $projectstemp = array();
         foreach( parent::getPIDArray() as $name => $pid ) {
-            $fields = array('Geolocation', "Persistent_Name", "Description", "Name");
-            $projectSid = parent::getProjectSIDFromProjectName($name);
+            $fields = array('Geolocation', "Persistent_Name", "Description", "Name", 'Country');            $projectSid = parent::getProjectSIDFromProjectName($name);
             $kora = new General_Search($pid, $projectSid, 'kid', '!=', '', $fields);
             $projectstemp[] = json_decode($kora->return_json(), true);
         }
@@ -148,7 +147,7 @@ class ProjectsController extends AppController {
         $kora->add_clause("kid", "!=", '');
         $server_output = json_decode($kora->search(), true);
         // echo "srever out";
-        // print_r($server_output);
+        // echo json_encode($server_output);
         // die;
 
         $fields = 'KID';
@@ -165,6 +164,7 @@ class ProjectsController extends AppController {
 
 
         $this->set("name",$project['Name']);
+        $this->set("locationID",$project['Location_Identifier']);
         $this->set("description",$project['Description']);
         $this->set("kid",$project['kid']);
         $this->set("pName",$proj);
@@ -208,6 +208,9 @@ class ProjectsController extends AppController {
 				$tempTitle = $result['Title'];
 			}
 
+            if (!isset($result['Permissions'])){
+                continue;
+            }
             $temp_array = ['kid' => $result['kid'], 'Type' => $tempType, 'Title' => $tempTitle,
                            'thumb' => $thumb, "Permissions" => $result['Permissions']];
             $resources[] = $temp_array;

@@ -489,6 +489,65 @@ class ResourcesController extends AppController {
 		return json_encode($page);
     }
 
+
+    public function getExportData($kidArray, $schemeArrayIndex) {
+        if (!isset($kidArray[0])){
+            return;
+        }
+        $pName = parent::convertKIDtoProjectName($kidArray[0]);
+        $pid = parent::getPIDFromProjectName($pName);
+        $token = parent::getTokenFromProjectName($pName);
+        $sid;
+
+        switch ($schemeArrayIndex){
+            case 0:
+                $sid = parent::getProjectSIDFromProjectName($pName);
+                break;
+            case 1:
+                $sid = parent::getSeasonSIDFromProjectName($pName);
+                break;
+            case 2:
+                $sid = parent::getSurveySIDProjectName($pName);
+                break;
+            case 3:
+                $sid = parent::getResourceSIDFromProjectName($pName);
+                break;
+            case 4:
+                $sid = parent::getPageSIDFromProjectName($pName);
+                break;
+            case 5:
+                $sid = parent::getSubjectSIDFromProjectName($pName);
+                break;
+        }
+        
+        $query = array(
+            'forms'=>json_encode(array(
+                array(
+                    'form'=>$sid,
+                    'token'=>$token,
+                    'query'=>array(
+                        array(
+                            'search'=>'kid',
+                            'kids'=>$kidArray 
+                        )
+                    )
+                )   
+            ))
+        );
+
+        $url = KORA_RESTFUL_URL.'search';
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        return $result;
+    }
+
     //create a file to be exported.
     public function createExportFile(){
         # create new zip opbject
@@ -497,36 +556,42 @@ class ResourcesController extends AppController {
         $zip = new ZipArchive();
 
         # create a temp file & open it
-        $tmp_file = tempnam('.','Resouce_Data_');
+        $tmp_file = tempnam('.','Resource_Data_');
         $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
 
         $count = 0;
-        $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
-            'Pages_data.xml', 'Subject_Of_Observation_data.xml'];
-        foreach (json_decode($this->request->data['xmls']) as $xml) {
-            $zip->addFromString($xmlNames[$count], $xml);
+        $xmlNames = ['Project_data.json', 'Season_data.json', 'Excavation_Survey_data.json', 'Resource_data.json',
+            'Pages_data.json', 'Subject_Of_Observation_data.json'];
+
+        $pages_data;
+
+        foreach (json_decode($this->request->data['xmls']) as $kidArray) {
+            $data_string = self::getExportData($kidArray, $count);
+            if($count == 4){
+                $pages_data = json_decode($data_string, true);
+            }
+            $zip->addFromString($xmlNames[$count], $data_string);
             $count++;
         }
 
-        if( isset($this->request->data['picUrls']) ){
-            foreach(json_decode($this->request->data['picUrls']) as $url){
-                # download file
-                // echo "url";
-                // echo $url;
-                // $pName = parent::convertKIDtoProjectName($url);
-                // echo "pname";
-                // echo $pName;
-                // $pid = parent::getPIDFromProjectName($pName);
-                //                                 echo "wtf";die;
-                // $sid = parent::getPageSIDFromProjectName($pName);
-                $string = KORA_FILES_URI.$url;
-                $download_file = @file_get_contents( $string );
-                $zip->addFromString('images/'.basename($url),$download_file);
-            }
+        $picUrls = array();
+        foreach ($pages_data['records'][0] as $kid=>$page){
+            $pName = parent::convertKIDtoProjectName($kid);
+            $pid = parent::getPIDFromProjectName($pName);
+            $sid = parent::getPageSIDFromProjectName($pName);
+            array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
         }
+
+      
+        foreach($picUrls as $url){
+            # download file
+            $download_file = @file_get_contents( $url );
+            $zip->addFromString('images/'.basename($url),$download_file);
+        }
+        
         $zip->close();
 		echo $tmp_file;
-		//die;
+		die;
     }
 
     //download the created export file and delete it

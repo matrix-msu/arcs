@@ -19,7 +19,7 @@
 
                 <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username')); ?>
 
-                <?php echo $this->Form->input('password', array('label' => false, 'placeholder' => 'Password')); ?>
+                <?php echo $this->Form->input('password', array('label' => false, 'id'=>'loginPassword', 'placeholder' => 'Password')); ?>
 
                 <p class="login-link" id="forgot-password">Forgot your password?</p>
                 <a class="login-link" id="register-mobile" href="#registerModal">Register</a>

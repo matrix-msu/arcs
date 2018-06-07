@@ -398,6 +398,9 @@
     Router::connect('/installation/config',
         array('controller' => 'installations', 'action' => 'arcsConfig')
     );
+    Router::connect('/installation/finalize',
+        array('controller' => 'installations', 'action' => 'finalize')
+    );
 //    Router::connect('/installation/periodo',
 //        array('controller' => 'installations', 'action' => 'periodo')
 //    );

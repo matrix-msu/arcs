@@ -19,7 +19,6 @@
             <span class="chevron filter-by"></span>
             <div class="filter-menu">
                 <p class="logins">Logins</p>
-                <p class="new-user">New Users</p>
                 <p class="new-annotation">New Annotations</p>
                 <p class="new-flag">New Flags</p>
                 <p class="edited-metadata">Metadata Edits</p>

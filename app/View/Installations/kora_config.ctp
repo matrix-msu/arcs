@@ -1,3 +1,7 @@
+<?php  echo $this->Html->script("views/installation/installation.js"); ?>
+<head>
+    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+</head>
 <div class="kora-body-content">
     <div class="install-progress-bar">
         <ul>
@@ -18,50 +22,50 @@
             </p>
         </div>
         <div class="form-wrapper">
-            <form>
+            <form action="./field"  method="post">
                 <div class="row">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Host</p>
-                        <input type="text" placeholder="Enter the kora database host url here"/>
+                        <input name='KoraDBHost' class="req" type="text" placeholder="Enter the kora database host url here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Name</p>
-                        <input type="text" placeholder="Enter the kora database name here"/>
+                        <input name='KoraDBName' class="req" type="text" placeholder="Enter the kora database name here"/>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Username</p>
-                        <input type="text" placeholder="Enter the kora database username here"/>
+                        <input name="KoraDBUsername" class="req" type="text" placeholder="Enter the kora database username here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Database Password</p>
-                        <input type="text" placeholder="Enter the kora database Password here"/>
+                        <input name="KoraDBPassword" class="req" type="text" placeholder="Enter the kora database Password here"/>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base URL</p>
-                        <input type="text" placeholder="Enter the kora base URL here"/>
+                        <input name='KoraBaseURL' class="req" type="text" placeholder="Enter the kora base URL here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                         <span class="dot"></span>
                         <p>Kora Base Path</p>
-                        <input type="text" placeholder="Enter the kora base path here"/>
+                        <input name='KoraBasePath' class="req" type="text" placeholder="Enter the kora base path here"/>
                     </div>
                 </div>
                 <div class="row" id="kora-name">
-                    <div class="input-left">
+                    <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Kora Project Name</p>
-                        <input type="text" placeholder="Enter the kora Project Name here"/>
+                        <input name="KoraProjectName" class="req" type="text" placeholder="Enter the kora Project Name here"/>
                     </div>
-                    <div class="input-right">
+                    <div class="input-right inputDiv">
                     </div>
                 </div>
                 <hr class="divider">
@@ -69,9 +73,11 @@
                     <div class="required">
                         <span class="dot"></span>
                         <p>= Required Field</p>
+                        
                     </div>
                     <div class="cont-btn-container">
-                        <button onclick="window.location.href= window.location.href.replace('kora', 'field')" class="cont-install-btn" type="button" name="button">
+                        <p class="required-notice">Please fill out all required fields.</p>
+                        <button class="cont-install-btn" type="submit">
                             <p>Continue to Field Configuration</p>
                         </button>
                     </div>

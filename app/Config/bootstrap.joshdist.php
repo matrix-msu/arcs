@@ -58,6 +58,9 @@ define ("KORA_RESTFUL_URL", "http://dev2.matrix.msu.edu/k3alpha/public/api/");
 define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
 
 
+//flag for if arcs has been configured for user
+define('CONFIGURED', 'true');
+
 //define ("PID", "123");
 //define ("PROJECT_SID", "734");
 //define ("SEASON_SID", "735");
