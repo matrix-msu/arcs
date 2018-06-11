@@ -503,19 +503,23 @@ class SearchController extends AppController {
 
             $pages = array();
             //using the array and 'in' this way because it's much faster.
-            $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            //$kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            // $kora->add_clause("Scan_Number", "=", "1");
             //USE THIS INSTEAD WHEN IT WORKS
-            // $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
-            //     "Scan_Number", "=", "1");
+            $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
+                 "Scan_Number", "=", "1");
             $pages = json_decode($kora->search(), true);
 
-            if( $pages == array() ){
-                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            if( empty($pages) ){
+                $kora = new Advanced_Search($pid, $sid, $fields);
+                $kora->add_clause("Resource Associator", "IN", $resourceKidArray);
                 $pages = json_decode($kora->search(), true);
 
                 $tempPagesArray = array();
                 foreach ($pages as $kid => $value) {
                     if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
+                        $tempPagesArray[$kid] = $value;
+                    }elseif( !isset($value['Scan_Number']) ){
                         $tempPagesArray[$kid] = $value;
                     }
                 }
