@@ -510,6 +510,9 @@ class SearchController extends AppController {
                  "Scan_Number", "=", "1");
             $pages = json_decode($kora->search(), true);
 
+            echo 'here';
+            echo json_encode($pages);die;
+
             if( empty($pages) ){
                 $kora = new Advanced_Search($pid, $sid, $fields);
                 $kora->add_clause("Resource Associator", "IN", $resourceKidArray);

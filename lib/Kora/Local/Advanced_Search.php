@@ -33,6 +33,9 @@ class Advanced_Search extends Kora{
     public function add_clause($query1, $query2, $query3) {
         array_push($this->clauses, new KORA_Clause($query1, $query2, $query3));
     }
+    public function add_kora_clause($clause){
+        array_push($this->clauses, $clause);
+    }
     public function add_double_clause($query1, $query2, $query3, $query4, $query5, $query6) {
         $koraClause1 = new KORA_Clause($query1, $query2, $query3);
         $koraClause2 = new KORA_Clause($query4, $query5, $query6);
@@ -69,5 +72,25 @@ class Advanced_Search extends Kora{
         parent::search_limited();
         // echo json_encode($this->comprehensive_results);die;
         return json_encode($this->comprehensive_results);
+    }
+
+    public function unformatted_search () {
+        //set up the kora search parameters for keyword search
+        $this->final_clause = array_shift($this->clauses);
+        foreach ($this->clauses as $clause) {
+            $this->final_clause = new KORA_Clause($this->final_clause, "OR", $clause);
+        }
+
+        $pName = parent::getProjectNameFromPID($this->pid);
+        $this->token = parent::getTokenFromProjectName($pName);
+        $this->projectMapping = $this->pid;
+        $this->schemeMapping = $this->sid;
+        $this->The_Clause = $this->final_clause;
+
+
+        // $this->formulatedResult = parent::search();
+        parent::search_limited();
+        // echo json_encode($this->comprehensive_results);die;
+        return $this->comprehensive_results;
     }
 }
