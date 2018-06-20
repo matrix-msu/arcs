@@ -588,6 +588,7 @@
       totalResults.sort(function(a, b) {
         return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
       });
+      console.log(totalResults);
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
       pageNum = currentPage;
@@ -609,6 +610,7 @@
       searching = false;
         $('.resource-thumb').each(function(){
             var atag = $(this).children().eq(0);
+            //console.log(atag);
             var darkBackground = $(atag).children().eq(0);
             if ($(this).find('.resourceLockedDarkBackgroundSearch').length > 0) {
               $(this).find('.circle-container').hide();
@@ -780,6 +782,7 @@
 
                     if (!(newData["filters"][filter]).includes(data[key][key2][filter][val] )){
                         newData["filters"][filter].push(data[key][key2][filter][val]);
+                        console.log(data[key][key2][filter][val]);
                     }
 
                   }
@@ -829,6 +832,7 @@
         'dataType': 'json',
         'url': arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl,
         'success': function(data) {
+          console.log(arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl);
           var key, ref, value;
           if (data['total'] === 0) {
             adjustPage([], 0);
@@ -851,6 +855,7 @@
             //#results-count only represents unlocked results
             $('#results-count').html(data['total'] - locked);
             filters = data['filters'];
+
             indicators = data['indicators'];
             filteredFilters = filters;
             ref = data['results'];
@@ -1139,12 +1144,14 @@
         excavationType = filtersApplied['Excavation Type'];
         creator = filtersApplied['Creator'];
         count = 0;
+        //console.log(unfilteredResults);
         for (key in unfilteredResults) {
+          //console.log(key);
           val = unfilteredResults[key];
-
-		 if (val.hasOwnProperty('Locked') === true) {
-			 continue;
-		}
+          //console.log(val);
+          if (val.hasOwnProperty('Locked') === true) {
+            continue;
+          }
 
           if (sites !== '') {
             if (val['project'] !== sites) {
@@ -1152,6 +1159,14 @@
             }
           }
           if (seasonName !== '') {
+            if(typeof(val['All_Seasons']) != 'undefined'){
+              for (key2 in val['All_Seasons']){
+                val2 = val['All_Seasons'][key2];
+                if (val2['Season Name'] == seasonName){
+                  totalResults.push(val2);
+                }
+              }
+            }
             if (val['Season Name'] !== seasonName) {
               continue;
             }
@@ -1162,6 +1177,14 @@
             }
           }
           if (excavationType !== '') {
+            if(typeof(val['All_Excavations']) != 'undefined'){
+              for (key2 in val['All_Excavations']){
+                val2 = val['All_Excavations'][key2];
+                if (val2['Excavation Name'] == excavationType){
+                  totalResults.push(val2);
+                }
+              }
+            }
             if (val['Excavation Name'] !== excavationType) {
               continue;
             }

@@ -140,8 +140,12 @@
 			foreach($value as $key2 => $value2){
 				
 				$newKey = str_replace("_", " ", $key2);
-				$sql = "SELECT * FROM kora3_fields WHERE NAME = '$newKey' AND pid = '$pid'";
-				$result = $conn->query($sql);
+				$sql = $conn->prepare(
+					"SELECT * FROM kora3_fields 
+					WHERE NAME = ? AND pid = ?"
+				);
+				$sql->bind_param('ss', $newKey, $pid);
+				$result = $sql->execute();
 
 				if ($result->num_rows > 0) {
 
@@ -166,9 +170,9 @@
 						$sql = $conn->prepare(
 							"UPDATE kora3_fields 
 							SET options = ?
-							where name = '$newKey' and pid = '$pid'"
+							where name = ? and pid = ?"
 						); 
-						$sql->bind_param('s', $insert);
+						$sql->bind_param('sss', $insert, $newKey, $pid);
 						$sql->execute();
 					}
 				}

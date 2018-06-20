@@ -125,6 +125,7 @@ class SearchController extends AppController {
             $keySearch->execute($query,$project);
 
             $result = $keySearch->getResultsAsArray();
+            
 
             ResourcesController::filterByPermission($username, $result['results']);
 
