@@ -801,7 +801,8 @@
         return newData;
     }
     search = function() {
-        searching = true;
+
+      searching = true;
       var pageNum, pageNumber, perPage, perPageUrl, resourcequery, val, wiating;
       wiating = true;
       val = $(".searchBoxInput").val();
@@ -822,6 +823,8 @@
       var currentState = window.history.state;
       window.history.replaceState(currentState, "Search Page", arcs.baseURL + 'search/' + globalproject + "/" + resourcequery);
 
+      
+
       pageNumber = encodeURIComponent("" + pageNum);
       perPageUrl = encodeURIComponent("" + perPage);
       $('.pageNumber').removeClass('currentPage');
@@ -832,7 +835,7 @@
         'dataType': 'json',
         'url': arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl,
         'success': function(data) {
-          console.log(arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl);
+          //console.log(arcs.baseURL + 'simple_search/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl);
           var key, ref, value;
           if (data['total'] === 0) {
             adjustPage([], 0);
@@ -879,6 +882,22 @@
             Search.prototype._render({
               results: totalResults
             });
+            //clear applied filters
+            $(".exit-btn").each(function() {
+              var e = $(this)
+              var filter = e.parent().data("field")
+              $(".filter-btn").each(function(){
+                  if (filter === $(this).data("field")) {
+                      filtersApplied[filter] = ""
+                      $(this).find(".filter").each(function(){
+                          if ($(this).html() == "all") {
+                              $(this).trigger("click")
+                          }
+                    })
+                  }
+              })
+              e.parent().remove()
+            })
             return adjustPage(totalResults, 1);
           }
         }
@@ -1159,16 +1178,23 @@
             }
           }
           if (seasonName !== '') {
-            if(typeof(val['All_Seasons']) != 'undefined'){
-              for (key2 in val['All_Seasons']){
-                val2 = val['All_Seasons'][key2];
-                if (val2['Season Name'] == seasonName){
-                  totalResults.push(val2);
+            var flag = false;
+            if (val['Season Name'] !== seasonName) {
+              if(typeof(val['All_Seasons']) != 'undefined'){
+                for (key2 in val['All_Seasons']){
+                  val2 = val['All_Seasons'][key2];
+                  if (val2['Season Name'] == seasonName){
+                    flag = true;
+                    break;
+                  }
                 }
               }
-            }
-            if (val['Season Name'] !== seasonName) {
-              continue;
+              else {
+                continue;
+              }
+              if (!flag){
+                continue;
+              }
             }
           }
           if (type !== '') {
@@ -1177,16 +1203,23 @@
             }
           }
           if (excavationType !== '') {
-            if(typeof(val['All_Excavations']) != 'undefined'){
-              for (key2 in val['All_Excavations']){
-                val2 = val['All_Excavations'][key2];
-                if (val2['Excavation Name'] == excavationType){
-                  totalResults.push(val2);
+            var flag = false;
+            if (val['Excavation Name'] !== excavationType) {
+              if(typeof(val['All_Excavations']) != 'undefined'){
+                for (key2 in val['All_Excavations']){
+                  val2 = val['All_Excavations'][key2];
+                  if (val2['Excavation Name'] === excavationType){
+                    flag = true;
+                    break;
+                  }
                 }
               }
-            }
-            if (val['Excavation Name'] !== excavationType) {
-              continue;
+              else {
+                continue;
+              }
+              if (!flag){
+                continue;
+              }
             }
           }
 
