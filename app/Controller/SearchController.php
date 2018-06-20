@@ -61,24 +61,24 @@ class SearchController extends AppController {
 
         $this->loadModel('Keyword');
 
-        $pages = $this->Keyword->find('all', array(
+        $resources = $this->Keyword->find('all', array(
          'conditions' => array('Keyword.keyword LIKE' => "%$query%"),
-         'fields' => array('Keyword.page_kid'),
+         'fields' => array('Keyword.resource_kid'),
          'recursive' => 1
         ));
-        $pageArray = array();
 
-        for ($i=0; $i < count($pages); $i++) {
-          $pageArray[$i] = $pages[$i]["Keyword"]["page_kid"];
+        $resourceArray = array();
+
+        for ($i=0; $i < count($resources); $i++) {
+            if( $resources[$i]["Keyword"]["resource_kid"] != '' ){
+                $resourceArray[$i] = $resources[$i]["Keyword"]["resource_kid"];
+            }
         }
-        if (empty($pageArray)) {
-          $pageArray = array("empty");
+        if (empty($resourceArray)) {
+            $resourceArray = array("empty");
         }
 
-        $util = new Utility_Search();
-        $resources = $util->getResourcesFromPages($pageArray, $project);
-
-        return $resources;
+        return $resourceArray;
     }
     /**
      * Display the search page
@@ -133,6 +133,7 @@ class SearchController extends AppController {
           echo json_encode($results);
 
         } else {
+            
           $preFilter = $this->getResourcesFromKeyword($project, $query);
           // Kora Search
           $keySearch = new Keyword_Search($preFilter);
