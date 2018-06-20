@@ -905,46 +905,53 @@ class ResourcesController extends AppController {
         $subjects = array();
         $resources_array = array();
         $showButNoEditArray = array();
-        //echo json_encode($this->request);die;
-        if($this->request->method() === "POST" && isset($this->request->data['resources'])){
-            $post_data = $this->request->data;
-            //create a new session variable and forward to a get request
-            //the array index is used as a new url
-            $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
-            end($_SESSION['multi_viewer_resources']);
-            $key = key($_SESSION['multi_viewer_resources']);
-            $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
-            header("Location:".$actual_link);
-            die();
-        }elseif($this->request->method() === "GET"){
-            if( $id == '' ){
-                throw new NotFoundException();
-            }
-            //check first if this is a multi-resource session url
-            $id = (string)$id;  //kid
-            if( isset($_SESSION['multi_viewer_resources']) ) {
-                foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
-                    if ($id === (string)$key) {
-                        $resources_array = $_SESSION['multi_viewer_resources'][$key];
-                        $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
-                        break;
+        // echo json_encode($this->request);die;
+        if (!isset($this->request->data['isExportAjax'])){
+    
+            if($this->request->method() === "POST" && isset($this->request->data['resources'])){
+                $post_data = $this->request->data;
+                //create a new session variable and forward to a get request
+                //the array index is used as a new url
+                $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
+                end($_SESSION['multi_viewer_resources']);
+                $key = key($_SESSION['multi_viewer_resources']);
+                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
+                header("Location:".$actual_link);
+                die();
+            }elseif($this->request->method() === "GET"){
+                if( $id == '' ){
+                    throw new NotFoundException();
+                }
+                //check first if this is a multi-resource session url
+                $id = (string)$id;  //kid
+                if( isset($_SESSION['multi_viewer_resources']) ) {
+                    foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
+                        if ($id === (string)$key) {
+                            $resources_array = $_SESSION['multi_viewer_resources'][$key];
+                            $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
+                            break;
+                        }
                     }
                 }
-            }
-            if (isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
-                $pageIndex = $this->request->query['pageSet'];
-                $this->set("pageSet", $pageIndex);
-            }
-            if( count($resources_array) < 1 ) {
-                $resources_array = array($id);
-            }
-            if( count($resources_array) == 0 ) {
+                if (isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
+                    $pageIndex = $this->request->query['pageSet'];
+                    $this->set("pageSet", $pageIndex);
+                }
+                if( count($resources_array) < 1 ) {
+                    $resources_array = array($id);
+                }
+                if( count($resources_array) == 0 ) {
+                    throw new NotFoundException();
+                }
+            }else{
+                //Not a post or get method
                 throw new NotFoundException();
             }
-        }else{
-            //Not a post or get method
-            throw new NotFoundException();
-        }
+      } else { //isset($this->request->data['isExportAjax'])
+        // echo json_encode($this->request);die;
+        $resources_array = json_decode($this->request->data['resources']);
+        // print_r($resources_array);die;
+      }
 
         $username = NULL;
         $usersC = new UsersController();

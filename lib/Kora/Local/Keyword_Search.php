@@ -147,7 +147,6 @@ class Keyword_Search extends Kora
             $clause = new KORA_Clause($clause, "OR", $sooClause);
         }
 
-        //TODO important! these should be pages not resource to cut down on prefilter
         //add in resources from the keywords filter
         if( $this->preFilter != array(0=>'empty') ){
           $keywordFilter = new KORA_Clause("kid", "IN", $this->preFilter);
@@ -523,10 +522,10 @@ class Keyword_Search extends Kora
         $season = array();
         $this->schemeMapping = $sid;
         $this->fields = array("Title", "Project_Associator");
-        $this->The_Clause = new KORA_Clause("kid", "=", $this->all_season_kids);
+        $this->The_Clause = new KORA_Clause("kid", "=", array_values($this->all_season_kids));
 
         self::search();
-
+        
         foreach ($this->comprehensive_results as $key => $value) {
             $projAssoc = isset($value["Project_Associator"][0])?$value["Project_Associator"][0]:"";
             if (isset($value['Title'])) {
@@ -586,14 +585,13 @@ class Keyword_Search extends Kora
     public function insertPages($page)
     {
         $this->fields = array("Image Upload", "Resource Associator", "Scan_Number");
-
+        $this->schemeMapping = $page;
         $resourceKids = array_keys($this->formulatedResult);
-        $scanNumberClasue = new KORA_Clause("Scan_Number", '=', '1');
+        $scanNumberClause = new KORA_Clause("Scan_Number", '=', '1');
         $kidClause = new KORA_Clause("Resource_Associator", "IN", $resourceKids);
-        $this->The_Clause = new KORA_Clause($scanNumberClasue, "AND", $kidClause);
-
+        $this->The_Clause = new KORA_Clause($kidClause, "AND", $scanNumberClause);
         $images = self::search();
-    //    echo json_encode($images);die;
+
         $pKid = $this->projectMapping.'-'.$page.'-';
 
         foreach ($images as $img) {
@@ -608,6 +606,9 @@ class Keyword_Search extends Kora
                             (isset($img["Scan_Number"]) && $img["Scan_Number"] == '1') ||
                             !isset($this->formulatedResult[$rKid]["thumb"])
                         ){
+                            if( $img['kid'] == '34-171-209991'){
+                                echo 'found';print_r($img);die;
+                            }
                             $this->formulatedResult[$rKid]["thumb"] = $this->smallThumb($img["Image_Upload"]['localName'], $pKid);
                         }
                     }
@@ -673,6 +674,8 @@ class Keyword_Search extends Kora
                             $this->formulatedResult[$key]["Season_Associator"],
                             $this->excavation_list[$excavation]["Season_Associator"]
                         ));
+
+                        //echo json_encode($this->formulatedResult);die;
                     }
                     $this->formulatedResult[$key]["All_Excavations"][$excavation] = $tmpArray;
                 }
@@ -701,10 +704,12 @@ class Keyword_Search extends Kora
                 $this->formulatedResult[$key]["Season Name"] = "";
                 $this->formulatedResult[$key]["Project Associator"] = "";
             }
-            $this->formulatedResult[$key]['All_Seasons'] = array();
+            if( !isset($this->formulatedResult[$key]['All_Seasons']) || !is_array($this->formulatedResult[$key]['All_Seasons']) ){
+                $this->formulatedResult[$key]['All_Seasons'] = array();
+            }
             foreach($value["Season_Associator"] as $season){
                 if (array_key_exists($season, $this->season_list)) {
-                    $this->formulatedResult[$key]["All_Seasons"][] = $this->season_list[$newkey]["Name"];
+                    $this->formulatedResult[$key]["All_Seasons"][] = $this->season_list[$season]["Name"];
                 }
             }
         }
