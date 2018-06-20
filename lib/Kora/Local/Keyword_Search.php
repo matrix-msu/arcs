@@ -588,10 +588,12 @@ class Keyword_Search extends Kora
         $this->fields = array("Image Upload", "Resource Associator", "Scan_Number");
 
         $resourceKids = array_keys($this->formulatedResult);
-        $this->The_Clause = new KORA_Clause("Resource_Associator", "IN", $resourceKids);
+        $scanNumberClasue = new KORA_Clause("Scan_Number", '=', '1');
+        $kidClause = new KORA_Clause("Resource_Associator", "IN", $resourceKids);
+        $this->The_Clause = new KORA_Clause($scanNumberClasue, "AND", $kidClause);
 
         $images = self::search();
-//        echo json_encode($images);die;
+    //    echo json_encode($images);die;
         $pKid = $this->projectMapping.'-'.$page.'-';
 
         foreach ($images as $img) {
