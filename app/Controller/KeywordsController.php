@@ -71,6 +71,7 @@ class KeywordsController extends MetaResourcesController {
             $this->request->data['keyword'] = $keyword;
             $this->Keyword->permit('count');
             $this->Keyword->create();
+            //echo json_encode($this->request->data);die;
             $this->Keyword->save($this->request->data);
 
             //update the count for all the keyword, project_kid combos

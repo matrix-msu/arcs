@@ -1,4 +1,6 @@
+console.log("outside of it");
 function keywordPrep(){
+    console.log('at top');
 
 	var keywordArray = []; //an array of the edited keywords
 	var keywordOriginalArray = []; //keep an array of the stored keywords
@@ -86,13 +88,16 @@ function keywordPrep(){
         });
     }
     function addKeywords(addArray){
+        var rkid = $("#"+keywordPageKid).parent().attr('id');
+        console.log("rkid");
         $.ajax({
             url: arcs.baseURL + "keywords/add",
             type: "POST",
             data: {
                 page_kid: keywordPageKid,
                 project_kid: keywordProjectKid,
-                keywords: addArray
+                keywords: addArray,
+                resource_kid: rkid
             },
             success: function (data) {
                 //update search links
@@ -104,6 +109,7 @@ function keywordPrep(){
         });
     }
     function deleteKeywords(deleteArray){
+        console.log('oh hello');
         $.ajax({
             url: arcs.baseURL + "keywords/deleteKeyword",
             type: "POST",
