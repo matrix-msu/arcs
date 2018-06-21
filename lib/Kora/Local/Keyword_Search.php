@@ -264,6 +264,34 @@ class Keyword_Search extends Kora
 //        return $kora->getResultsAsArray();
 //
 //    }
+
+    /**
+    * set the kora search paramaters
+    *
+    * @param string $project     | n/a
+    * @return void
+    */
+    protected function traverse_insert($project)
+    {
+
+        if (!empty($this->formulatedResult)) {
+
+            $page = parent::getPageSIDFromProjectName($project);
+            $this->insertPages($page);
+
+            $survey = parent::getSurveySIDProjectName($project);
+            $this->insertExcavations($survey);
+
+            $season = parent::getSeasonSIDFromProjectName($project);
+            $this->insertSeasons($season);
+
+            //$this->insertProjects();
+        }
+
+    }
+
+
+
     /**
     * executes a search on a query in a Subject of observation
     *

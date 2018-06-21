@@ -1700,6 +1700,7 @@ class UsersController extends AppController
         if( !isset($this->request->data['resourceKid']) ){
             echo false; die;
         }
+        
         $kid = $this->request->data['resourceKid'];
         $content = "A user has found that the resource with the kid '$kid' either does not have".
             " a page record associated to it, or one of the page records is missing its picture. Please fix the issue.";
@@ -1716,6 +1717,7 @@ class UsersController extends AppController
                 ),
             )
         ));
+        
         $mappings = array_values($mappings);
 
         $model = $this->modelClass;
@@ -1734,16 +1736,16 @@ class UsersController extends AppController
             ->subject('Missing Image Notification')
             ->to($formattedAdminEmails)
             ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));*/
-
+        
         $to = $formattedAdminEmails;
         $subject = "Missing Image Notification";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
         $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$message,$headers);
+        $success = mail($to,$subject,$content,$headers);
 
-        if( $Email->send($content) ){
+        if($success){
             echo true;
         }else{
             echo false;
