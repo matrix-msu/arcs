@@ -259,9 +259,9 @@
 ////////////////////////////////////////////////////////////////////////
 # search controller
 ////////////////////////////////////////////////////////////////////////
-    Router::connect('/search/keyword/*',
-        array('controller' => 'search', 'action' => 'keywordSearch')
-    );
+//    Router::connect('/search/keyword/*',
+//        array('controller' => 'search', 'action' => 'keywordSearch')
+//    );
 //    Router::connect('/simple_search/*',
 //        array('controller' => 'AdvancedSearch', 'action' => 'simpleSearchWrapper')
 //    );
@@ -397,6 +397,9 @@
     );
     Router::connect('/installation/config',
         array('controller' => 'installations', 'action' => 'arcsConfig')
+    );
+    Router::connect('/installation/finalize',
+        array('controller' => 'installations', 'action' => 'finalize')
     );
 //    Router::connect('/installation/periodo',
 //        array('controller' => 'installations', 'action' => 'periodo')

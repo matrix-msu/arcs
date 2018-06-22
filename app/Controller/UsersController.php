@@ -202,7 +202,7 @@ class UsersController extends AppController
             }
             $success = mail($to,$subject,$message,$headers);
 
-            //TODO: remove cakeEmail
+            //old cakeEmail
             //Send emails to admins
             // App::uses('CakeEmail', 'Network/Email');
             // $Email = new CakeEmail();
@@ -1514,7 +1514,7 @@ class UsersController extends AppController
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
-        //TODO: remove cakeEmail
+        //old cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->viewVars(array(
@@ -1552,7 +1552,7 @@ class UsersController extends AppController
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
         $success = mail($to,$subject,$message,$headers);
 
-        //TODO: remove cakeEmail
+        //old cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->viewVars(array('activation' => $this->baseURL() . '/invitation/register/' . $token))
@@ -1700,6 +1700,7 @@ class UsersController extends AppController
         if( !isset($this->request->data['resourceKid']) ){
             echo false; die;
         }
+        
         $kid = $this->request->data['resourceKid'];
         $content = "A user has found that the resource with the kid '$kid' either does not have".
             " a page record associated to it, or one of the page records is missing its picture. Please fix the issue.";
@@ -1716,6 +1717,7 @@ class UsersController extends AppController
                 ),
             )
         ));
+        
         $mappings = array_values($mappings);
 
         $model = $this->modelClass;
@@ -1727,23 +1729,23 @@ class UsersController extends AppController
         foreach( $adminEmails as $k => $v ){
             array_push( $formattedAdminEmails, $v['email'] );
         }
-        //TODO: remove cakeEmail
+        //old cakeEmail
         /*App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->emailFormat('html')
             ->subject('Missing Image Notification')
             ->to($formattedAdminEmails)
             ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));*/
-
+        
         $to = $formattedAdminEmails;
         $subject = "Missing Image Notification";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
         $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$message,$headers);
+        $success = mail($to,$subject,$content,$headers);
 
-        if( $Email->send($content) ){
+        if($success){
             echo true;
         }else{
             echo false;

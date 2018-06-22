@@ -406,7 +406,7 @@ class AdminController extends AppController {
             $pid = parent::getPIDFromProjectName($pName);
 
             $pid = explode('-', $pid)[0];
-            $hex = dechex($pid);
+            $hex = $pid;
 
             //get mappings
             if( $_POST['username'] == '' ){
@@ -441,13 +441,14 @@ class AdminController extends AppController {
                 $table = self::getTable(
                     "SELECT user_name as name,modified as date,user_username as username,resource_name,resource_kid,user_email as email ".
                     "FROM annotations ".
-                    "WHERE user_id IN (" .$mappingsArray. ") ".
+                    "WHERE user_id IN ($mappingsArray) ".
                     "AND resource_kid LIKE '$hex%' ".
                     "ORDER BY modified DESC",
                     $conn, 'annotations'
                 );
                 $resultsArray = array_merge($resultsArray, $table);
             }
+
             if(  $_POST['task'] == 'all' || $_POST['task'] == 'metadata_edits' ){
                 //get usernames because they aren't in the metadata table
                 $users = self::getTable("SELECT id,username,email FROM users WHERE id IN ($mappingsArray)", $conn);
@@ -552,19 +553,23 @@ class AdminController extends AppController {
             elseif ($_POST['task'] == 'approve') {
                 //add sql sanitization
                 //bindparam
-                $approve = mysqli_query($con, "UPDATE metadata_edits SET approved = '".decbin(1)."' WHERE id = '" . $_POST['id'] . "'");
-
-                echo json_encode($approve);die;
-
-//                $approve = $con->prepare("UPDATE metadata_edits SET status = ? WHERE id = ?");
-//                $approve->bindParam('decbin(1)', $_POST['id'], "");
-//                $approve->execute();
 
 
+//                $approve = mysqli_query($con, "UPDATE metadata_edits SET approved = '".decbin(1)."' WHERE id = '" . $_POST['id'] . "'");
+                $dec=decbin(1);
+                $approve = $con -> prepare("UPDATE metadata_edits SET approved = ? WHERE id = ?");
+                $approve->bind_param('si', $dec, $_POST['id']);
+                $approve->execute();
+
+//                $metadata_row = mysqli_fetch_assoc($mysqli_query($con, "SELECT * FROM metadata_edits WHERE id='".$_POST['id']."'"));
+                $mysqli = $con -> prepare("SELECT * FROM metadata_edits WHERE id=?");
+                $mysqli->bind_param('s',$_POST['id']);
+                $mysqli->execute();
+                $mysqli_result = $mysqli->get_result();
+                $metadata_row = $mysqli_result->fetch_assoc();
 
 
 
-                $metadata_row = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM metadata_edits WHERE id='".$_POST['id']."'"));
                 $metadata_kid = $metadata_row['metadata_kid'];
                 $scheme_id = $metadata_row['scheme_id'];
                 $field_name = $metadata_row['field_name'];

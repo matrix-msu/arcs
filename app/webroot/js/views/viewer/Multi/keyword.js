@@ -86,13 +86,15 @@ function keywordPrep(){
         });
     }
     function addKeywords(addArray){
+        var rkid = $("#"+keywordPageKid).parent().attr('id');
         $.ajax({
             url: arcs.baseURL + "keywords/add",
             type: "POST",
             data: {
                 page_kid: keywordPageKid,
                 project_kid: keywordProjectKid,
-                keywords: addArray
+                keywords: addArray,
+                resource_kid: rkid
             },
             success: function (data) {
                 //update search links

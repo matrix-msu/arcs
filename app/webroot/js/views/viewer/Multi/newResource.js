@@ -12,7 +12,6 @@ function GetNewResource(id) {
         var resourceKid = id.replace('-default-page', '');
         $('#missingPictureIcon').attr('data-kid', resourceKid);
         $('#missingPictureIcon').css('display', 'block');
-
     }else {
         $('#missingPictureIcon').css('display', 'none');
         $(image).css('display', 'none');
@@ -38,15 +37,28 @@ function GetNewResource(id) {
                     var pageSid = getSidFromKid(kid);
 
                     ///FULL SCREEN IMAGE CHANGED HERE
-                    $(image).attr('src', res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
-                    $('#PageImagePreloader').css('display', 'none');
+                    if (typeof(res["Image_Upload"]) === 'undefined'){
+                        res["Image_Upload"] =  {'localName': arcs.baseURL+'img/DefaultResourceImage.svg'};
+                        $('#missingPictureIcon').css('display', 'block');
+                        $(image).attr('src', res['Image_Upload']['localName']);
+                        $('#PageImagePreloader').css('display', 'none');
+                        $(image).css('display', 'block');
 
-                    $(image).css('display', 'block');
+                        var fullImage = document.getElementById('fullscreenImage');
+                        var imgUrl = res['Image_Upload']['localName'];
+                        fullImage.src = imgUrl;
+                    }
+                    else{
+                        $(image).attr('src', res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
+                        $('#PageImagePreloader').css('display', 'none');
 
-                    var fullImage = document.getElementById('fullscreenImage');
-                    var imgUrl = res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName'];
+                        $(image).css('display', 'block');
 
-                    fullImage.src = imgUrl;
+                        var fullImage = document.getElementById('fullscreenImage');
+                        var imgUrl = res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName'];
+
+                        fullImage.src = imgUrl;
+                    }
                 }
             }
         });

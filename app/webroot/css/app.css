@@ -16382,6 +16382,32 @@ strong {
   background-color: #fff;
   border: 1px solid #D8D8D8;
 }
+.form-container .form-wrapper .row .chosen-select {
+  display: none;
+}
+.form-container .form-wrapper .row .chosen-container {
+  background-color: white;
+}
+.form-container .form-wrapper .row .chosen-container .chosen-choices {
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: solid lightgrey 1px !important;
+}
+.form-container .form-wrapper .row .chosen-container .chosen-choices span {
+  text-transform: none;
+}
+.form-container .form-wrapper .row .chosen-container .chosen-choices .search-choice {
+  margin: 13px 0px 0px 15px;
+  font-size: 12px;
+}
+.form-container .form-wrapper .row .chosen-container .chosen-choices .search-field {
+  padding: 12px 12px 12px 15px;
+  font-size: 12px;
+}
+.form-container .form-wrapper .row .chosen-container .chosen-choices .search-field input {
+  color: #686868 !important;
+}
 .form-container .form-wrapper .divider {
   padding-top: 49px;
   margin-top: 61px;
@@ -16404,6 +16430,10 @@ strong {
   text-align: right;
   height: auto;
   display: inline-block;
+}
+.form-container .form-wrapper .bottom .cont-btn-container .required-notice {
+  display: none;
+  color: red;
 }
 .form-container .form-wrapper .bottom .cont-btn-container .cont-install-btn {
   width: auto;

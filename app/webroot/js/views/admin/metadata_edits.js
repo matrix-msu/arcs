@@ -171,7 +171,7 @@ $(document).ready(function() {
     $('#metadata_edits').on('click', '.approve-flag-btn', function(e){
         var resourceKid, metadataKid, fieldName, newValue;
         var id = $(this).parent().parent().attr('data-id');
-        $(this).parent().html("Approved").css('color','rgb(255,0,0)');
+        $(this).parent().html("Approved").css('color','green');
 
         $.ajax({
             url: arcs.baseURL + 'admin/editMetadata',

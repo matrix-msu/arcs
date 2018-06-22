@@ -977,7 +977,7 @@ function annotationPrep() {
           //e.preventDefault();
           annotateData.page_kid = kid;
           annotateData.resource_kid = resourceKid;
-          annotateData.resource_name = "<?php echo $resource['Resource Identifier']; ?>";
+          annotateData.resource_name = resourceIdentifier;
           annotateData.transcript = $(".transcriptionTextarea").val();
           annotateData.order_transcript = 1000000;
 
