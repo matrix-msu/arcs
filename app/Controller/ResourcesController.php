@@ -528,12 +528,16 @@ class ResourcesController extends AppController {
                     'query'=>array(
                         array(
                             'search'=>'kid',
-                            'kids'=>$kidArray 
+                            'kids'=>$kidArray
                         )
                     )
                 )   
             ))
         );
+
+//        echo json_encode($query);
+//        die;
+
 
         $url = KORA_RESTFUL_URL.'search';
         $ch = curl_init();
@@ -544,7 +548,7 @@ class ResourcesController extends AppController {
 
         $result = curl_exec($ch);
         curl_close($ch);
-        
+
         return $result;
     }
 

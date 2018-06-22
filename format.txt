@@ -1,0 +1,46 @@
+"forms":
+"
+[
+	{
+	\"_method\":\"put\",
+	\"form\":\"829\",
+	\"token\":\"sZGUHpfv56qlPGWli6yM1oRl\",
+	\"kid\":\"148-829-2299989\",
+	\"query\":
+		[
+		\"{\\\"legacy_kid\\\":\\\"A8-393-3\\\",
+		\\\"pid\\\":148,
+		\\\"schemeID\\\":829,
+		\\\"systimestamp\\\":\\\"2018-05-11 19:10:11\\\",
+		\\\"recordowner\\\":\\\"admin\\\",
+		\\\"linkers\\\":
+			[
+			\\\"148-830-2299994\\\",
+			\\\"148-830-2299995\\\"
+			],
+		\\\"Resource_Identifier\\\":
+		\\\"Dummy_Report_20170216\\\",
+		\\\"Title\\\":\\\"GROTTO\\\",
+		\\\"Sub-title\\\":\\\"Odysseus Cycle\\\",
+		\\\"Description\\\":\\\"This is a dummy report about the sculptures in the Grotto of Tiberius\\\",
+		\\\"Pages\\\":\\\"2\\\",
+		\\\"Rights\\\":\\\"Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)\\\",
+		\\\"Excavation_-_Survey_Name\\\":\\\"Dummy - Grotto Sculpture\\\",
+		\\\"Type\\\":\\\"Report\\\",
+		\\\"Condition\\\":\\\"Good\\\",
+		\\\"Permissions\\\":\\\"Public\\\",
+		\\\"Orphan\\\":\\\"FALSE\\\",
+		\\\"Creator\\\":[
+				\\\"Kenobi, Obi-Wan\\\",
+				\\\"Windu, Mace\\\"
+				],
+		\\\"Creator_Role\\\":[\\\"Field Director\\\"],
+		\\\"Language\\\":[\\\"English\\\"],
+		\\\"Earliest_Date\\\":{\\\"prefix\\\":\\\"0\\\",\\\"month\\\":\\\"2\\\",\\\"day\\\":\\\"16\\\",\\\"year\\\":\\\"2017\\\",\\\"era\\\":\\\"CE\\\",\\\"suffix\\\":\\\"\\\"},
+		\\\"Latest_Date\\\":{\\\"prefix\\\":\\\"0\\\",\\\"month\\\":\\\"2\\\",\\\"day\\\":\\\"16\\\",\\\"year\\\":\\\"2017\\\",\\\"era\\\":\\\"CE\\\",\\\"suffix\\\":\\\"\\\"},
+		\\\"Excavation_-_Survey_Associator\\\":[\\\"148-828-2299985\\\"]}\"],
+	\"keepFields\":true,
+	\"zipFile\":null
+	}
+]
+"

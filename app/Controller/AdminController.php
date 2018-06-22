@@ -507,9 +507,6 @@ class AdminController extends AppController {
             $this->set('activity', $resultsArray);
         }
 
-
-
-
     public function editMetadata(){
         include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
@@ -550,9 +547,23 @@ class AdminController extends AppController {
                 mail($_POST['email'], $email_subject, $msg, $headers);
 
                 echo json_encode($metadata_info);
+
             }
             elseif ($_POST['task'] == 'approve') {
+                //add sql sanitization
+                //bindparam
                 $approve = mysqli_query($con, "UPDATE metadata_edits SET approved = '".decbin(1)."' WHERE id = '" . $_POST['id'] . "'");
+
+                echo json_encode($approve);die;
+
+//                $approve = $con->prepare("UPDATE metadata_edits SET status = ? WHERE id = ?");
+//                $approve->bindParam('decbin(1)', $_POST['id'], "");
+//                $approve->execute();
+
+
+
+
+
                 $metadata_row = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM metadata_edits WHERE id='".$_POST['id']."'"));
                 $metadata_kid = $metadata_row['metadata_kid'];
                 $scheme_id = $metadata_row['scheme_id'];
@@ -561,170 +572,208 @@ class AdminController extends AppController {
                 $control_type = $metadata_row['control_type'];
 
                 //Get the resource from kora
-
+                //use the kora 3 api because that will be formatted for updating.
                 $pName = parent::convertKIDtoProjectName($metadata_kid);
-                $sid = parent::getResourceSIDFromProjectName($pName);
+//                $sid = parent::getResourceSIDFromProjectName($pName);
                 $pid = parent::getPIDFromProjectName($pName);
-                $fields = array('ALL');
-                $kora = new General_Search($pid, $sid, 'kid', '=', $metadata_kid, $fields);
-                $resource = json_decode($kora->return_json(), true);
-
-                //$resource = koraSearchKidWrapper($metadata_kid);
-
-                $resource = $resource[$metadata_kid];
-                $result['resource'] = $resource;
-                $result['new_value:'] = $new_value;
-                if( $resource['kid']) {
-                    unset($resource['kid']);
-                }
-
-                //change the edit to an array or object if needed
-                if( $control_type == 'multi_input' || $control_type == 'multi_select' || $control_type == 'associator' ){
-                    $temp = array();
-                    $temp = preg_split("/\\r\\n|\\r|\\n/", $new_value );
-                    $new_value = $temp;
-                }elseif( $control_type == 'date' || $control_type == 'terminus' ){
-                    $month = '';
-                    $day = '';
-                    $year = '';
-                    $prefix = '';
-                    $era = '';
-
-                    $valueArray = array();
-                    $valueArray = explode(" ", $new_value);
-                    $dateString = '';
-                    if( strpos($valueArray[0], '/') === false ){     // '/' does not exist in array value, it is the prefix
-                        $prefix = $valueArray[0];
-                        $dateString = $valueArray[1];
-                        if( array_key_exists(2,$valueArray) ) { //does exist
-                            $era = $valueArray[2];
-                        }
-
-                    }else{      // '/' does exit it is the date
-                        $dateString = $valueArray[0];
-                        if( array_key_exists(1,$valueArray) ) { //does exist
-                            $era = $valueArray[1];
-                        }
-                    }
-                    $dateArray = array();
-                    $dateArray = explode('/', $dateString);
-                    $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-                        'September', 'October', 'November', 'December');
-                    $month = strval( array_search($dateArray[0], $months) + 1 ); //+1 because in kora, january = 1
-                    $day = $dateArray[1];
-                    $year = $dateArray[2];
-                    $dateObject = new stdClass;
-                    $dateObject->month = $month;
-                    $dateObject->day = $day;
-                    $dateObject->year = $year;
-                    $dateObject->era = $era;
-                    $dateObject->prefix = $prefix;
-                    $dateArray2 = array();
-                    $dateArray2['month'] = $month;
-                    $dateArray2['day'] = $day;
-                    $dateArray2['year'] = $year;
-                    $dateArray2['era'] = $era;
-                    $dateArray2['prefix'] = $prefix;
-
-                    $new_value = $dateArray2;
-                }
-
-                //*** Do the actual edit here! then wrap in Record tag.
-                $resource[$field_name] = $new_value;
-                $result['new_value:'] = $new_value;
-                $result['resources after new value:'] = $resource;
-                $record_array = array();
-                $record_array['Record'] = $resource;
-                array_push($result, $record_array);
-                $json = json_encode($resource);
-                array_push($result, $json );
-                $json2 = json_decode($json);
-                array_push($result, $json2 );
-
-                //Build the XML
-                $xml =<<<XML
-<?xml version="1.0" encoding="ISO-8859-1"?><Data><ConsistentData/></Data>
-XML;
-
-                $xml_data = new SimpleXMLElement($xml);
-                self::array_to_xml($record_array, $xml_data, $result);
-                $xml = $xml_data->asXML();
-                $xml = str_replace("\n", '', $xml);
-
-                array_push($result, $xml);
-
-                //Update the resource in kora
                 $token = parent::getTokenFromProjectName($pName);
-                $url = KORA_RESTFUL_URL."?request=UPDATE&pid=".$pid."&sid=".$scheme_id."&token=".$token."&rid=".$metadata_kid."&xml=".urlencode($xml);
-                array_push($result, $url);
-                //initialize post request to KORA API using curl
-                $ch = curl_init($url);
+                $fields = 'ALL';
+                $kora_field_name = $field_name.'_'.$pid.'_'.$scheme_id.'_';
+
+//                echo json_encode($metadata_row);
+//                echo $pName;
+//                echo $field_name;
+//                die;
+                //api search have example
+
+                $query = array(
+                    'forms'=>json_encode(array(
+                        array(
+                            'form'=>$scheme_id,
+                            'token'=>$token,
+                            'query'=>array(
+                                array(
+                                    'search'=>'kid',
+                                    'fields'=>'name',
+                                    'kids'=>(array($metadata_kid)),
+                                )
+                            )
+                        )
+                    ))
+                );
+//                echo json_encode($query);
+//                echo json_encode($scheme_id);
+//                echo json_encode($metadata_kid);
+//                echo 'BWAHAHAHAHHAHAHAHA';
+//                die;
+                $url = KORA_RESTFUL_URL.'search';
+                $ch = curl_init();
+                curl_setopt($ch,CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_USERPWD, $user.':'.$pass);
-                //capture results and display
-                $update = json_decode(curl_exec($ch), true);
-                //array_push($result, $update);
 
-                echo json_encode($result);
+                $resource = curl_exec($ch);
+                curl_close($ch);
+
+				$controlMap = array(
+					'Text' => 'text',
+					'List' => 'option',
+					'Multi-Select List' => 'options',
+					'Associator' => 'records',
+                    'Generated List' => 'options'
+				);
+
+                $resource = json_decode($resource, true)['records'][0][$metadata_kid];
+                //echo json_encode($resource);die;
+
+				foreach( $resource as $field => $value ){
+					$resource[$field]['name'] = $field;
+					$control_type_kora = $resource[$field]['type'];
+					if( $control_type_kora == 'Date' ){
+						$resource[$field] = array_merge($resource[$field], $resource[$field]['value']);
+					}else{
+						$resource[$field][$controlMap[$control_type_kora]] = $resource[$field]['value'];
+					}
+				}
+
+				//echo 'here'; print_r($new_value);die;
+
+                $resource[$kora_field_name]['name'] = $kora_field_name;
+				//change the edit to an array or object if needed
+				if(  $control_type == 'multi_select' ){
+					$temp = array();
+					$temp = preg_split("/\\r\\n|\\r|\\n/", $new_value );
+					//$new_value = $temp;
+					$resource[$kora_field_name]['options'] = $temp;
+					$resource[$kora_field_name]['value'] = $temp;
+
+				 }elseif( $control_type == 'multi_input' ){
+				 	$temp = array();
+				 	$temp = preg_split("/\\r\\n\\r\\n|\\r\\r|\\n\\n/", $new_value );
+				 	$resource[$kora_field_name]['options'] = $temp;
+				 	$resource[$kora_field_name]['value'] = $temp;
+
+				}elseif(  $control_type == 'associator' ) {
+					$temp = array();
+					$temp = preg_split("/\\r\\n|\\r|\\n/", $new_value );
+					$resource[$kora_field_name]['records'] = $temp;
+					$resource[$kora_field_name]['value'] = $temp;
+
+				}elseif( $control_type == 'list' ){
+					$resource[$kora_field_name]['option'] = $new_value;
+					$resource[$kora_field_name]['value'] = $new_value;
+
+				}elseif( $control_type == 'date' || $control_type == 'terminus' ){
+					$month = '';
+					$day = '';
+					$year = '';
+					$prefix = '';
+					$era = '';
+
+					$valueArray = array();
+					$valueArray = explode(" ", $new_value);
+					$dateString = '';
+					if( strpos($valueArray[0], '/') === false ){     // '/' does not exist in array value, it is the prefix
+					    $prefix = $valueArray[0];
+					    $dateString = $valueArray[1];
+					    if( array_key_exists(2,$valueArray) ) { //does exist
+					        $era = $valueArray[2];
+					    }
+					}else{      // '/' does exit it is the date
+					    $dateString = $valueArray[0];
+					    if( array_key_exists(1,$valueArray) ) { //does exist
+					        $era = $valueArray[1];
+					    }
+					}
+					$check = $valueArray[0];
+					$era = $valueArray[1];
+					$dateArray = array();
+					$dateArray = explode('-', $check);
+					$months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+					    'September', 'October', 'November', 'December');
+					$month = strval( array_search($dateArray[2], $months) + 2 ); //+1 because in kora, january = 1
+					$day = $dateArray[2];
+					$year = $dateArray[0];
+
+					$resource[$kora_field_name]['year'] = $year;
+					$resource[$kora_field_name]['month'] = $month;
+					$resource[$kora_field_name]['day'] = $day;
+					$resource[$kora_field_name]['era'] = $era;
+					$resource[$kora_field_name]['circa'] = '0';
+					$resource[$kora_field_name]['value'] = $resource[$kora_field_name]['value'];
+
+				}elseif( $control_type == 'text' ){
+					$resource[$kora_field_name]['text'] = $new_value;
+					$resource[$kora_field_name]['value'] = $new_value;
+				}
+				// echo json_encode($resource);die;
+
+                $return = $this->editK3Metadata($metadata_kid, $resource, $scheme_id);
+                echo json_encode($return);
+//                return $return;
             }
-            elseif($_POST['task'] == 'updateEdit') {
-                $result = array();
-                $result[] = 'updateEdit';
-                $result['text'] = $_POST['text'];
-                $flags = mysqli_query($con, "UPDATE metadata_edits SET new_value = '".$_POST['text']."' WHERE id = '" . $_POST['id'] . "'");
-
-                echo json_encode($result);
-
-            }elseif ($_POST['task'] == 'deleteRow') {
-                $flags = mysqli_query($con, "DELETE FROM metadata_edits WHERE id = '" . $_POST['id'] . "'");
-                echo json_encode('Delete Metadata Sucess');
-            }
+//            elseif($_POST['task'] == 'updateEdit') {
+//                $result = array();
+//                $result[] = 'updateEdit';
+//                $result['text'] = $_POST['text'];
+//                $flags = mysqli_query($con, "UPDATE metadata_edits SET new_value = '".$_POST['text']."' WHERE id = '" . $_POST['id'] . "'");
+//
+//                echo json_encode($result);
+//
+//            }elseif ($_POST['task'] == 'deleteRow') {
+//                $flags = mysqli_query($con, "DELETE FROM metadata_edits WHERE id = '" . $_POST['id'] . "'");
+//                echo json_encode('Delete Metadata Success');
+//            }
         }
+
         die;
     }
-    //build the xml to send to kora
-    public function array_to_xml( $data, $xml_data, $result ) {
-        foreach( $data as $key => $value ) {
-            if($key == 'Record') {  //treat record tag specially
-                $subnode = $xml_data->addChild($key);
-                self::array_to_xml($value, $subnode, $result);
-            }elseif( is_array($value) ) {
-                if ( is_numeric(key($value)) ) {  //multi-select, multi-input, and associator controls here
-                    foreach ($value as $list_key => $list_value) {
-                        $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$list_value"));
-                    }
-                } else { //dates and terminus controls here
-                    $string = "";
-                    $was_there_prefix = 0;
-                    $prefix = '';
-                    foreach ($value as $list_key => $list_value) {
-                        if (strcmp($list_key, 'prefix') === 0 && strcmp($list_value, '') !== 0) {
-                            $prefix = $list_value;
-                            $was_there_prefix = 1;
 
-                        }elseif( strcmp($list_key, 'month') === 0 || strcmp($list_key, 'day') === 0 ) {
-                            $string = $string . $list_value . '/';
 
-                        }elseif( strcmp($list_key, 'year') === 0 ) {
-                            $string = $string . $list_value;
+    public function editK3Metadata($metadata_kid, $resource, $scheme_id){
+        $return = array();
+        //format the resource variable(array) to whatever kora expects
+        $return['formattedArray'] = $resource;
+        //set up kora api update call
+        $pName = parent::convertKIDtoProjectName($metadata_kid);
+        $pid = parent::getPIDFromProjectName($pName);
+        $token = parent::getTokenFromProjectName($pName);
+//        $sid = parent::getResourceSIDFromProjectName($pName);
 
-                        }elseif( strcmp($list_key, 'era') === 0 && strcmp($list_value, '') !== 0 ) {
-                            $string = $string . ' ' . $list_value;
-                        }
-                    }
-                    if ($was_there_prefix == 1) {
-                        $has_prefix = $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
-                        $has_prefix->addAttribute('prefix', $prefix);
-                    } else {
-                        $xml_data->addChild(str_replace(' ', '_', $key), htmlspecialchars("$string"));
-                    }
-                }
-            }elseif($value != "") { //text controls
-                $xml_data->addChild(str_replace(' ', '_', $key),htmlspecialchars("$value"));
-            }
-        }
+
+        //$resource = array($metadata_kid => $resource);
+
+        $query = array(
+            '_method'=>'put',
+            'form'=>$scheme_id,
+            'token'=>$token,
+            'kid'=> $metadata_kid,
+            'keepFields'=>"true",
+            'fields'=>json_encode($resource),
+        );
+
+        $return['query'] = $query;
+        $url = KORA_RESTFUL_URL.'edit';
+//        $url = 'http://dev2.matrix.msu.edu/k3beta/public/api/edit';
+        $return['url'] = $url;
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($query));
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($query));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+         echo ($result);
+         die;
+//         $return['curlReturn'] = $result;
+
+        return $return;
     }
-
 
     public function getTable($query, $conn, $type=''){
         $results = $conn->prepare($query);
