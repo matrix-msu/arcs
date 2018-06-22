@@ -1,7 +1,9 @@
 
 <?php echo $this->Session->flash();
 echo $this->Session->flash('flash_success'); ?>
-<?php $this->set('index_toolbar', true); ?>
+<?php $this->set('index_toolbar', true); 
+//echo json_encode($projects);die;
+?>
 
 <div class="intro">
     <div class="landing_header">The Archaeological Resource Cataloging System</div>
@@ -59,14 +61,9 @@ echo $this->Session->flash('flash_success'); ?>
       popupAnchor: [2,-40]
     });
 	<?php
-		// $projects_array = json_decode($projects, true);
-		// echo 'hi';die;
-		// var_dump($projects_array);die;
-
-
-    
 
     foreach($projects as $item) {
+        //print_r($item);
         $link = $this->Html->link(
             'VIEW PROJECT',
             array(
@@ -88,11 +85,15 @@ echo $this->Session->flash('flash_success'); ?>
 
 
         //commented out markers in case we choose to reuse them later. Not using them as of 11/5/15
-        if($geo){
+        if($geo && isset($geo[0]) && count(explode(",", $geo[0])) == 2){
             foreach($geo as $marker) {
                 $coords = explode(",", $marker);
+                if (count($coords) < 2) {
+                    continue;
+                }
                 //markers
                 $html = "";
+                //print_r($coords);
                 $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
                 $html .= ".addTo(map);";
                 $html .= "marker_array.push(marker);";
@@ -106,25 +107,29 @@ echo $this->Session->flash('flash_success'); ?>
             $setupurl = "https://restcountries.eu/rest/v2/name/";
             
             $url = $setupurl.$country;
-            
-            $page = file_get_contents($url);
-            
-            $obj = json_decode($page, true);
+            $headers = get_headers($url);
+            $response = substr($headers[0], 9, 3);
+            if ($response == "200"){
+                $page = file_get_contents($url);
+                if ($page != false){
+                    $obj = json_decode($page, true);
 
-            $coords1 = $obj[0]['latlng'][0];
-            $coords2 = $obj[0]['latlng'][1];
-            
-            $coords = $coords1.",".$coords2;
-            
-            $coords = explode(",", $coords);
-            $html = "";
-            $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
-            $html .= ".addTo(map);";
-            $html .= "marker_array.push(marker);";
-            $html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
-            $brief = str_replace("'", "\'", $item['Description']);
-            $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
-            print $html;  
+                    $coords1 = $obj[0]['latlng'][0];
+                    $coords2 = $obj[0]['latlng'][1];
+                    
+                    $coords = $coords1.",".$coords2;
+                    
+                    $coords = explode(",", $coords);
+                    $html = "";
+                    $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
+                    $html .= ".addTo(map);";
+                    $html .= "marker_array.push(marker);";
+                    $html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
+                    $brief = str_replace("'", "\'", $item['Description']);
+                    $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
+                    print $html;  
+                }
+            }
         }
 
         //print polygon

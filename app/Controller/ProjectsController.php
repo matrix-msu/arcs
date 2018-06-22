@@ -87,6 +87,7 @@ class ProjectsController extends AppController {
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
+        //echo json_encode($projects);die;
 		$this->set('projects', $projects);
 
 	}

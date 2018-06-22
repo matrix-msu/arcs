@@ -61,7 +61,7 @@
             $.ajax({
                 url: arcs.baseURL + "users/missingPictureNotifyAdmin",
                 type: "POST",
-                data: {resourceKid: $(".other-resource").attr("id")},
+                data: {resourceKid: $(".other-resource").attr("id")},blon
                 success: function (data) {
                     $('#missing_picture_notify').remove();
                     $('#missing_picture_cancel').remove();

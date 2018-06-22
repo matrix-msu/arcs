@@ -278,24 +278,40 @@ class SearchController extends AppController {
 
             $first = 1;
 
-            foreach( $test as $row){
+            $kids = [];
+            foreach($test as $obj){
+                array_push($kids, $obj['resource_kid']);
+            }
+
+            $pName = parent::convertKIDtoProjectName($kids[0]);
+            $pid = parent::getPIDFromProjectName($pName);
+            $sid = parent::getResourceSIDFromProjectName($pName);
+            $pageSid = parent::getPageSIDFromProjectName($pName);
+
+            //Get the Resources from Kora
+            $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
+            $kora = new General_Search($pid, $sid, "kid", "in", $kids, $fields);
+            $resources = json_decode($kora->return_json(), true);            
+
+            //grab all pages with the resource associator
+            $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
+            $kora = new Advanced_Search($pid, $pageSid, $fields);
+
+            $pages = array();
+            
+            $kora->add_double_clause("Resource_Associator", "in", $kids,
+                "Scan_Number", "=", "1");
+                // TODO: make this work
+            $pages = json_decode($kora->search(), true);
+            foreach( $resources as $resource){
+                
                 $temp_array = array();
                 if( $first == 1 ) {
                     $temp_array['more_results'] = $more_results;
                     $first = 0;
                 }
-                $temp_kid = $row['resource_kid'];
-                $pName = parent::convertKIDtoProjectName($temp_kid);
-                $pid = parent::getPIDFromProjectName($pName);
-                $sid = parent::getResourceSIDFromProjectName($pName);
-                $pageSid = parent::getPageSIDFromProjectName($pName);
-                //Get the Resources from Kora
-                $query = "kid,=,".$temp_kid;
-
-                $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
-                $query_array = explode(",", $query);
-                $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-                $resource = json_decode($kora->return_json(), true);
+                $temp_kid = $resource['kid'];
+                
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
                 //permissions stuffs.
                 $username = NULL;
@@ -306,7 +322,7 @@ class SearchController extends AppController {
                 ResourcesController::filterByPermission($username, $resource);
 
 
-                $r = $resource[$temp_kid];
+                $r = $resource;
 
                 //handle permissions sent to frontent
                 if( isset($r['Locked']) ){
@@ -333,39 +349,16 @@ class SearchController extends AppController {
 
                 $temp_array['collection_id'] = $row['id'];
 
-                //grab all pages with the resource associator
-                $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
-                $kora = new Advanced_Search($pid, $pageSid, $fields);
-
+                $temp_array['resource-type'] = $resource_type;
 
                 $page2 = array();
-                $temp_array['resource-type'] = $resource_type;
-                $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
-                    "Scan_Number", "=", "1");
-                    // TODO: make this work
-                $page2 = json_decode($kora->search(), true);
-
-                if( $page2 == array() ){
-                    $kora->add_clause("Resource_Associator", "=", $temp_kid);
-                    $page2 = json_decode($kora->search(), true);
-                };
-
-                if (count($page2) > 1) {
-                  $tempPagesArray = array();
-                  foreach ($page2 as $kid => $value) {
-                      if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
-                          $tempPagesArray[$kid] = $value;
-                      }
-                  }
-                  $page2 = $tempPagesArray;
-                }
-                if (!empty($page2)) {
-                  $page2 = array_pop($page2);
+                if (!empty($pages)) {
+                  $page2 = array_pop($pages);
                 }
 
-                //$page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results
                 $picture_url = '';
+                
                 if (isset(array_values($page2)[0])) {
                     $picture_url = $page2['Image_Upload']['localName'];
                     $picture_kid = $page2['kid'];
@@ -448,6 +441,7 @@ class SearchController extends AppController {
         }else {     // Resource type search - resources page
             //Get the Resources
             $query = $this->request->query['q'];
+            echo json_encode($query);die;
 
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getResourceSIDFromProjectName($pName);
@@ -512,8 +506,8 @@ class SearchController extends AppController {
                  "Scan_Number", "=", "1");
             $pages = json_decode($kora->search(), true);
 
-            echo 'here';
-            echo json_encode($pages);die;
+            // echo 'here';
+            // echo json_encode($pages);die;
 
             if( empty($pages) ){
                 $kora = new Advanced_Search($pid, $sid, $fields);
