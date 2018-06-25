@@ -1,7 +1,8 @@
 <?php
 require_once("Kora.php");
 use Lib\Kora;
-use \App\FieldHelpers\KORA_Clause;
+// use \App\FieldHelpers\KORA_Clause;
+// use \KORA_Clause;
 //use App\FieldHelpers\KORA_Search;
 
 class General_Search extends Kora{
@@ -13,16 +14,16 @@ class General_Search extends Kora{
       //call parent constructor 'kora'
       parent::__construct();
       /*print_r(array(
-        $pid, $sid, $query1, $query2, $query3, $fields
-    ));*/
-      //set up the kora search parameters for keyword search
-      $pName = parent::getProjectNameFromPID($pid);
-      $this->token = parent::getTokenFromProjectName($pName);
-      $this->projectMapping = $pid;
-      $this->schemeMapping = $sid;
-
-
-      $clause1 = new KORA_Clause($query1, $query2, $query3);
+          $pid, $sid, $query1, $query2, $query3, $fields
+        ));*/
+        //set up the kora search parameters for keyword search
+        $pName = parent::getProjectNameFromPID($pid);
+        $this->token = parent::getTokenFromProjectName($pName);
+        $this->projectMapping = $pid;
+        $this->schemeMapping = $sid;
+        
+        $clause1 = new KORA_Clause($query1, $query2, $query3);
+        
       $this->The_Clause = $clause1;
 
       $this->fields = $fields;

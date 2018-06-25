@@ -1,7 +1,7 @@
 <?php
 require_once("Kora.php");
 use Lib\Kora;
-use \App\FieldHelpers\KORA_Clause;
+// use \App\FieldHelpers\KORA_Clause;
 
 class Advanced_Search extends Kora{
 

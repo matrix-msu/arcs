@@ -29,7 +29,8 @@ require_once("Advanced_Search.php");
 
 use Lib\Kora;
 use Lib\Resource;
-use App\FieldHelpers\KORA_Clause;
+use \KORA_Clause;
+// use App\FieldHelpers\KORA_Clause;
 //use \SearchController;
 use arcs_e\ArcsException;
 use \App;

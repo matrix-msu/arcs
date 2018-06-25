@@ -52,7 +52,8 @@ define("BASE_URL",  "~josh.christ/arcs/" );
 define("KORA_FILES_URI"     ,  "http://dev2.matrix.msu.edu/k3alpha/public/app/files/"); //unique
 //define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
 //define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
-define ("KORA_SEARCH", "/matrix/dev/public_html/k3alpha/app/FieldHelpers/koraSearch.php");
+// define ("KORA_SEARCH", "/matrix/dev/public_html/k3alpha/app/FieldHelpers/koraSearch.php");
+define ("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
 //define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");maraland
 define ("KORA_RESTFUL_URL", "http://dev2.matrix.msu.edu/k3alpha/public/api/");
 define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
