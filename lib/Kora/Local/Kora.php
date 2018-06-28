@@ -49,11 +49,11 @@ class Kora extends AppController{
             //Create Symbolic link to local kora_search
             symlink(KORA_SEARCH,LIB . "Kora/search");
         }
-        $version = phpversion();
-        $first_num = (int)$version[0];
-        if ($first_num <= 5){
-            require_once(LIB . "Kora/search");
-        }
+//        $version = phpversion();
+//        $first_num = (int)$version[0];
+//        if ($first_num <= 5){
+//            require_once(LIB . "Kora/search");
+//        }
         $this->token = TOKEN;
         //$this->projectMapping = PID;
         //$this->schemeMapping = PROJECT_SID;
