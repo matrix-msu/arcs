@@ -125,7 +125,7 @@ class SearchController extends AppController {
             $keySearch->execute($query,$project);
 
             $result = $keySearch->getResultsAsArray();
-            
+
 
             ResourcesController::filterByPermission($username, $result['results']);
 
@@ -134,7 +134,7 @@ class SearchController extends AppController {
           echo json_encode($results);
 
         } else {
-            
+
           $preFilter = $this->getResourcesFromKeyword($project, $query);
           // Kora Search
           $keySearch = new Keyword_Search($preFilter);
@@ -209,7 +209,7 @@ class SearchController extends AppController {
      */
     public function resources() {
         $options = $this->parseParams();
-        
+
         if (!isset($this->request->query['q']))
             return $this->emptySearch($options);
 
@@ -291,27 +291,27 @@ class SearchController extends AppController {
             //Get the Resources from Kora
             $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
             $kora = new General_Search($pid, $sid, "kid", "in", $kids, $fields);
-            $resources = json_decode($kora->return_json(), true);            
+            $resources = json_decode($kora->return_json(), true);
 
             //grab all pages with the resource associator
             $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
             $kora = new Advanced_Search($pid, $pageSid, $fields);
 
             $pages = array();
-            
+
             $kora->add_double_clause("Resource_Associator", "in", $kids,
                 "Scan_Number", "=", "1");
                 // TODO: make this work
             $pages = json_decode($kora->search(), true);
             foreach( $resources as $resource){
-                
+
                 $temp_array = array();
                 if( $first == 1 ) {
                     $temp_array['more_results'] = $more_results;
                     $first = 0;
                 }
                 $temp_kid = $resource['kid'];
-                
+
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
                 //permissions stuffs.
                 $username = NULL;
@@ -358,7 +358,7 @@ class SearchController extends AppController {
 
                 //Get the picture URL from the page results
                 $picture_url = '';
-                
+
                 if (isset(array_values($page2)[0])) {
                     $picture_url = $page2['Image_Upload']['localName'];
                     $picture_kid = $page2['kid'];
@@ -441,8 +441,7 @@ class SearchController extends AppController {
         }else {     // Resource type search - resources page
             //Get the Resources
             $query = $this->request->query['q'];
-            echo json_encode($query);die;
-
+            
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getResourceSIDFromProjectName($pName);
             //$sid = parent::getProjectSIDFromProjectName($pName);

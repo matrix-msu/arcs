@@ -44,7 +44,7 @@ class Kora extends AppController{
     protected $end;
 
     function __construct(){
-       
+
         if(!is_link(LIB . "Kora/search")){
             //Create Symbolic link to local kora_search
             symlink(KORA_SEARCH,LIB . "Kora/search");
@@ -61,9 +61,9 @@ class Kora extends AppController{
         $this->results_per_page = 100;
     }
     public function search(){
-        
+
         $this->comprehensive_results = KORA_Search(
-            
+
             $this->token,
             $this->projectMapping,
             $this->schemeMapping,
@@ -74,14 +74,14 @@ class Kora extends AppController{
             null,
             array(),
             true
-            
+
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
         }
         return $this->comprehensive_results;
     }
-    
+
     protected function search_limited(){
         if( $this->start == 0 ){
             $this->start = null;
@@ -107,7 +107,7 @@ class Kora extends AppController{
         return $this->comprehensive_results;
     }
     protected function MPF(){
-        
+
         $this->comprehensive_results = MPF_Search(
             $this->token,
             $this->projectMapping,
@@ -145,19 +145,19 @@ class Kora extends AppController{
     public function setSortFields($array){
         $this->sortFields = $array;
     }
-    
+
     public function print_json(){
-        
+
         //start compression handler
         ob_start('ob_gzhandler');
-        
+
         if(!empty($this->comprehensive_results)){
             echo json_encode($this->comprehensive_results);
         }
         else{
             echo json_encode(array("empty"));
         }
-        
+
         //end compression
         ob_end_flush();
     }
