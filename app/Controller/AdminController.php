@@ -554,7 +554,6 @@ class AdminController extends AppController {
                 //add sql sanitization
                 //bindparam
 
-
 //                $approve = mysqli_query($con, "UPDATE metadata_edits SET approved = '".decbin(1)."' WHERE id = '" . $_POST['id'] . "'");
                 $dec=decbin(1);
                 $approve = $con -> prepare("UPDATE metadata_edits SET approved = ? WHERE id = ?");
@@ -585,12 +584,6 @@ class AdminController extends AppController {
                 $fields = 'ALL';
                 $kora_field_name = $field_name.'_'.$pid.'_'.$scheme_id.'_';
 
-//                echo json_encode($metadata_row);
-//                echo $pName;
-//                echo $field_name;
-//                die;
-                //api search have example
-
                 $query = array(
                     'forms'=>json_encode(array(
                         array(
@@ -606,11 +599,7 @@ class AdminController extends AppController {
                         )
                     ))
                 );
-//                echo json_encode($query);
-//                echo json_encode($scheme_id);
-//                echo json_encode($metadata_kid);
-//                echo 'BWAHAHAHAHHAHAHAHA';
-//                die;
+
                 $url = KORA_RESTFUL_URL.'search';
                 $ch = curl_init();
                 curl_setopt($ch,CURLOPT_URL, $url);
@@ -757,6 +746,7 @@ class AdminController extends AppController {
             'keepFields'=>"true",
             'fields'=>json_encode($resource),
         );
+	
 
         $return['query'] = $query;
         $url = KORA_RESTFUL_URL.'edit';
