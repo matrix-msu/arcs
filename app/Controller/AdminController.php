@@ -509,7 +509,7 @@ class AdminController extends AppController {
         }
 
     public function editMetadata(){
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};
