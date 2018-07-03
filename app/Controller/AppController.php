@@ -535,12 +535,15 @@ class AppController extends Controller
     	$result = curl_exec($ch);
         //make result an indexable array
         $result = json_decode($result, true);
-        
+
+
+        $emptyStringArray = array('');
         foreach($names as $name) {
             if (isset($result)){
                 foreach($result as $field) {
                     if ($field['name'] == $name){
-                        $controls[$name] = $field['options']['Options'];
+                        $options = $field['options']['Options'];
+                        $controls[$name] = array_diff($options, $emptyStringArray);;
                     }
                 }
             }

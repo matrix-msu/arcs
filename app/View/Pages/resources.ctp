@@ -23,6 +23,7 @@
         $types['Type'] = array_diff($types['Type'], ['Field journal']);
     }
 
+
     foreach ($types['Type'] as $type) { ?>
             <details class="back-color"  data-type="<?=$type?>" >
                 <summary class="rsc-sum">

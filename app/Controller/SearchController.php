@@ -451,7 +451,7 @@ class SearchController extends AppController {
             $fields = array('Title','Resource_Identifier', 'Permissions', 'Special_User', 'Type');
             //$fields = 'ALL';
             $query_array = explode(",", $query);
-            //$query_array = array('kid', '!=', '');
+            //$query_array = array('Title', '!=', '');
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($pid, $sid, $fields, null, $limit+1);
             }else{
@@ -459,6 +459,7 @@ class SearchController extends AppController {
             }
             $kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
+
 
             $username = NULL;
             $usersC = new UsersController();

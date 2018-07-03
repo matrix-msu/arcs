@@ -54,13 +54,18 @@ class Kora extends AppController{
 //        if ($first_num <= 5){
 //            require_once(LIB . "Kora/search");
 //        }
-        $this->token = TOKEN;
+
+        // $this->token = TOKEN;
+        //$this->token = $GLOBALS['TOKEN_ARRAY'];
         //$this->projectMapping = PID;
         //$this->schemeMapping = PROJECT_SID;
         $this->fields = "ALL";
         $this->results_per_page = 100;
     }
     public function search(){
+
+        $this->token = $this->getTOKENFromPid($this->projectMapping);
+
 
         $this->comprehensive_results = KORA_Search(
 
@@ -89,6 +94,8 @@ class Kora extends AppController{
         if( $this->end == 0 ){
             $this->end = null;
         }
+        $this->token = $this->getTOKENFromPid($this->projectMapping);
+
         $this->comprehensive_results = KORA_Search(
             $this->token,
             $this->projectMapping,
@@ -107,6 +114,8 @@ class Kora extends AppController{
         return $this->comprehensive_results;
     }
     protected function MPF(){
+
+        $this->token = $this->getTOKENFromPid($this->projectMapping);
 
         $this->comprehensive_results = MPF_Search(
             $this->token,
@@ -128,7 +137,6 @@ class Kora extends AppController{
     // public setter functions to change
     // search parameters.
     public function setToken($string){
-        $this->token = $string;
     }
     public function setProject($int){
         $this->projectMapping = $int;
@@ -177,5 +185,26 @@ class Kora extends AppController{
             $res[] = Kora3_Util::k3RecordToK2($record, $this->projectMapping, $this->schemeMapping);
         }
         return $res;
+    }
+
+    public static function getTOKENFromPid($pid){
+        if (isset($GLOBALS['PID_ARRAY'])) {
+            if ( array_search($pid, $GLOBALS['PID_ARRAY']) ) {
+                $name = array_search($pid, $GLOBALS['PID_ARRAY']);
+                if (isset($GLOBALS['TOKEN_ARRAY'])) {
+                    if (isset($GLOBALS['TOKEN_ARRAY'][$name])) {
+                        return $GLOBALS['TOKEN_ARRAY'][$name];
+                    } else {
+                        throw new Exception('Token not set');
+                    }
+                } else {
+                    throw new Exception('Token array set');
+                }
+            } else {
+                throw new Exception('Pid not set');
+            }
+        } else {
+            throw new Exception('Pid array set');
+        }
     }
 }
