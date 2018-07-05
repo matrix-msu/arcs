@@ -1,5 +1,4 @@
 function editMetaPrep() {
-    console.log('edit meta prep')
     //todo - make associators do the update without reloading thing.
 
     //data sent to arcs kora plugin---

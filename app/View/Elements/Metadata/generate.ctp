@@ -471,9 +471,9 @@ $controlDisplayNames = array(
                                 }
                                 $matchContributor = true;
                             }
-
-                            if( isset($controlOptions[$schemename][$tmpControl]) ){
-                                $options = ' data-options="'.$controlOptions[$schemename][$tmpControl].'"';
+                            $adjustedTmpControl = str_replace('_', ' ', $tmpControl);
+                            if( isset($controlOptions[$schemename][$adjustedTmpControl]) ){
+                                $options = ' data-options="'.$controlOptions[$schemename][$adjustedTmpControl].'"';
                             }
 
                             //check if the metadata has been flagged

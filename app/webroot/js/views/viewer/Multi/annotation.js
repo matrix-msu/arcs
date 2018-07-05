@@ -5,6 +5,7 @@ function annotationPrep() {
     var isAnnotating = false;
     var resourceHasPermissions = false;
     var selectedPage = null;
+    var hideAnnotations = false;
 
     //get annotate to support multi-pages.
     $('.page-slider').on('click', '.other-resource', function(){
@@ -472,6 +473,23 @@ function annotationPrep() {
         event.preventDefault();
         SubmitAnnotateSearch(0);
     });
+
+
+    //toggle the annotations on and off
+    $('.resources-annotate-icon').click(function (event) {
+        if (hideAnnotations){
+            $('.gen_box').each(function (box) {
+                $(this).css("display", "block");
+            });
+            hideAnnotations = false;
+        }else{
+            $('.gen_box').each(function (box) {
+                $(this).css("display", "none");
+            });
+            hideAnnotations = true;
+        }
+    });
+
 
     function SubmitAnnotateSearch(offset){
         var annotateSearch = $(".annotateSearch");

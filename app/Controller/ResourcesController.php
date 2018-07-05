@@ -1248,6 +1248,7 @@ class ResourcesController extends AppController {
                        'Artifact - Structure Technique',
                        'Artifact - Structure Archaeological Culture',
                        'Artifact - Structure Period',
+                       'Artifact - Structure Repository',
                        'Artifact - Structure Creator',
                        'Artifact - Structure Condition',
                        'Artifact - Structure Subject');
