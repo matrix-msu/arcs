@@ -107,12 +107,10 @@ function editMetaPrep() {
                             'id': 'meta_textarea'
                         }).val(meta_value_before);
 
-                        //There is something that preventing space on text input boxes.
-                        // So.. this could possibly break something but oh well.
-                        $('.level-content').unbind('keydown');
-
+                        $('.level-content, .ui-accordion-header, .ui-state-default, .ui-accordion-icons,' +
+                            '.ui-accordion-header-active, .ui-state-active, .ui-corner-top, #soo').unbind('keydown');
                         $(this).children('div').eq(1).html(html);
-
+                        
                     } else if (meta_control_type == 'date') {
                         html = '<div class="kora_control" id="meta_textarea">' +
                             '<select class="kcdc_year"  id="year_select">' +

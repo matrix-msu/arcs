@@ -421,7 +421,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <div id="resources-nav" class="pages-resource-nav" style="display:none;">
     <div class="button-left" id="button-left">
         <a id="left-button">
-            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px">
+            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px">
         </a>
     </div>
 
@@ -464,7 +464,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
   <div class="button-right" id="button-right">
       <a  id="right-button">
-          <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px">
+          <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px">
       </a>
   </div>
 </div>
@@ -480,7 +480,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
-            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px" />
+            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px" />
         </a>
     </div>
 
@@ -523,7 +523,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 <div class="button-right" id="button-right">
     <a id="right-button">
-        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px" />
+        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px" />
     </a>
 </div>
 </div>
