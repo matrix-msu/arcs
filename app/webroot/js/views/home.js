@@ -88,7 +88,7 @@
         query2 += "pKid=" + kid + "&";
       }
       return $.getJSON(query2 + ("q=" + query), function(response) {
-        if( response.results.length == 0 || response.results == 'No Results'){
+        if( typeof(response.results) === 'undefined' || response.results.length == 0 || response.results == 'No Results'){
           $el.children('div').html('No Results');
           return;
         }

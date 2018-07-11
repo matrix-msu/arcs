@@ -77,7 +77,7 @@ class ProjectsController extends AppController {
 
         $projectstemp = array();
         foreach( parent::getPIDArray() as $name => $pid ) {
-            $fields = array('Geolocation', "Persistent_Name", "Description", "Name", 'Country'); 
+            $fields = array('Geolocation', "Persistent_Name", "Description", "Name", 'Country');
             $projectSid = parent::getProjectSIDFromProjectName($name);
             $kora = new General_Search($pid, $projectSid, 'kid', '!=', '', $fields);
             $projectstemp[] = json_decode($kora->return_json(), true);

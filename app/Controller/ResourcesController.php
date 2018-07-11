@@ -307,8 +307,7 @@ class ResourcesController extends AppController {
                 $metadataedits[$row['metadata_kid']] = array($row['field_name']);
             }
         }
-        //print_r($metadataedits);
-        //die;
+
         return $metadataedits;
     }
 
@@ -481,7 +480,6 @@ class ResourcesController extends AppController {
 
         $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
         $page = json_decode($kora->return_json(), true);
-        //print_r($page);die;
 
         $page = $page[$id];
         $page['kora_url'] = KORA_FILES_URI;
@@ -491,6 +489,12 @@ class ResourcesController extends AppController {
 
 
     public function getExportData($kidArray, $schemeArrayIndex) {
+        //if 'diff' is in any array, remove it
+        if  (in_array('diff', $kidArray)){
+            $diffArray = array('diff');
+            $kidArray = array_diff($kidArray, $diffArray);
+        }
+
         if (!isset($kidArray[0])){
             return;
         }
@@ -568,7 +572,7 @@ class ResourcesController extends AppController {
             'Pages_data.json', 'Subject_Of_Observation_data.json'];
 
         $pages_data;
-
+        
         foreach (json_decode($this->request->data['xmls']) as $kidArray) {
             $data_string = self::getExportData($kidArray, $count);
             if($count == 4){
@@ -586,7 +590,6 @@ class ResourcesController extends AppController {
             array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
         }
 
-      
         foreach($picUrls as $url){
             # download file
             $download_file = @file_get_contents( $url );
@@ -1248,6 +1251,7 @@ class ResourcesController extends AppController {
                        'Artifact - Structure Technique',
                        'Artifact - Structure Archaeological Culture',
                        'Artifact - Structure Period',
+                       'Artifact - Structure Repository',
                        'Artifact - Structure Creator',
                        'Artifact - Structure Condition',
                        'Artifact - Structure Subject');

@@ -52,6 +52,13 @@ class Resource {
         }
       }
     }
+    sort($sites);
+    sort($seasons);
+    sort($type);
+    sort($excavation);
+    sort($creator);
+    sort($projects);
+    
     return array(
       "projects"=>$projects,
       "sites"=> $sites,

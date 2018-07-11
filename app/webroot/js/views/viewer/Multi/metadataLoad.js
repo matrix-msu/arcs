@@ -437,8 +437,9 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
                 matchContributor = true;
             }
 
-            if (typeof(controlOptions[schemename][tmpControl]) != undefined) {
-                options = ' data-options="'+controlOptions[schemename][tmpControl]+'"';
+            var adjustedTmpControl = tmpControl.replace(/_/g, ' ');
+            if (typeof (controlOptions[schemename][adjustedTmpControl]) != undefined) {
+                options = ' data-options="' + controlOptions[schemename][adjustedTmpControl]+'"';
             }
 
             //check if the metadata has been flagged

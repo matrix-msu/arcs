@@ -906,6 +906,7 @@
 
     $(function() {
       function displayResults(e){
+        $('#results-count').html('');
           selectedMap = {
             "unselected": [],
             "selected": []
