@@ -248,9 +248,11 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     <div id="viewer-left">
         <div id="viewer-tools">
+            <div class="annotateHelp">Click and drag to outline the area you would like to annotate.
+                <div class="annotationHelpOk">Cancel</div>
+            </div>
             <div class="container1">
                 <h3><?php  ?> </h3>
-
                 <div class="tools" style="visibility:hidden;" >
                     <a id="collection-modal-btn" href="#">
                                         <span class="content">
@@ -285,9 +287,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
         <div id="viewer-window">
 
-            <div class="annotateHelp">Click and drag to outline the area you would like to annotate.
-                <div class="annotationHelpOk">Cancel</div>
-            </div>
+
             <div id="ImageWrap" class="canvasGrabCursor">
                 <img src="<?php ?> " id="PageImage">
                 <div id="PageImagePreloader" style="display:none;height:100%;display:flex;align-items:center;">
