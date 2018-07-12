@@ -99,36 +99,44 @@ define('CONFIGURED', 'true');
 
 //new bootstrap setup
 $GLOBALS['PID_ARRAY'] = array(
-    'isthmia' => 123,
-    'grotto_tiberri' => 168
+    //'isthmia' => 123,
+    'isthmia' => 11,
+    'grotto_tiberri' => 7
 );
 $GLOBALS['PROJECT_SID_ARRAY'] = array(
-    'isthmia' => 734,
-    'grotto_tiberri' => 911
+    'isthmia' => 31,
+    //'isthmia' => 734,
+    'grotto_tiberri' => 19
 );
 $GLOBALS['SEASON_SID_ARRAY'] = array(
-    'isthmia' => 735,
-    'grotto_tiberri' => 913
+    'isthmia' => 32,
+    //'isthmia' => 735,
+    'grotto_tiberri' => 20
 );
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
-    'isthmia' => 740,
-    'grotto_tiberri' => 914
+    'isthmia' => 36,
+    //'isthmia' => 740,
+    'grotto_tiberri' => 22
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
-    'isthmia' => 736,
-    'grotto_tiberri' => 915
+    'isthmia' => 33,
+    //'isthmia' => 736,
+    'grotto_tiberri' => 22
 );
 $GLOBALS['PAGES_SID_ARRAY'] = array(
-    'isthmia' => 738,
-    'grotto_tiberri' => 916
+    'isthmia' => 34,
+    //'isthmia' => 738,
+    'grotto_tiberri' => 23
 );
 $GLOBALS['SUBJECT_SID_ARRAY'] = array(
-    'isthmia' => 739,
-    'grotto_tiberri' => 917
+    'isthmia' => 35,
+    //'isthmia' => 739,
+    'grotto_tiberri' => 24
 );
 $GLOBALS['TOKEN_ARRAY'] = array(
-    'isthmia' => "8b88eecedaa2d3708ebec77a",
-    'grotto_tiberri' => "8b88eecedaa2d3708ebec77a"
+    'isthmia' => "GPjkwxHb2zMss16JEmca2cg0",
+    //'isthmia' => "8b88eecedaa2d3708ebec77a",
+    'grotto_tiberri' => "GPjkwxHb2zMss16JEmca2cg0"
 );
 
 define ("TOKEN"        ,  "TOKEN_REPLACE");

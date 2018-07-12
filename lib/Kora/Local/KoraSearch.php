@@ -20,7 +20,7 @@
  * SITE VARIABLES - Fill these out to use remotely
  * @var string - Kora 3 API URL
  */
-// $kora3ApiURL = KORA_RESTFUL_URL . "search";
+//define("kora3ApiURL","FILL_THIS"); //"http://www.myKora3Install.com/api/search"
 class kora3ApiExternalTool {
     /*
     |--------------------------------------------------------------------------
@@ -465,12 +465,24 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
         $start,
         $number
     );
+//    echo json_encode($fsArray);die;
+//    array(
+//            $sid,
+//            $token,
+//            $filters,
+//            $fields,
+//            $newOrder,
+//            $queries,
+//            $koraClause->getLogic(),
+//            $start,
+//            $number
+//    ));die;
     array_push($output,$fsArray);
     $data = array();
     $data["forms"] = json_encode($output);
     $data["format"] = "KORA_OLD";
     $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, KORA_RESTFUL_URL . "search");
+    curl_setopt($curl, CURLOPT_URL, KORA_RESTFUL_URL."search");
     if(!empty($userInfo)) {
         curl_setopt($curl, CURLOPT_USERPWD, $userInfo["user"].":".$userInfo["pass"]);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);

@@ -49,15 +49,9 @@ define("BASE_URL",  "~josh.christ/arcs/" );
 //define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
 
 
-define("KORA_FILES_URI"     ,  "http://dev2.matrix.msu.edu/k3alpha/public/app/files/"); //unique
-//define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
-//define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
-// define ("KORA_SEARCH", "/matrix/dev/public_html/k3alpha/app/FieldHelpers/koraSearch.php");
+define("KORA_FILES_URI"     ,  "https://kora3.matrix.msu.edu/app/files/");
 define ("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
-//define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");maraland
-define ("KORA_RESTFUL_URL", "http://dev2.matrix.msu.edu/k3alpha/public/api/");
-define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
-
+define ("KORA_RESTFUL_URL", "https://kora3.matrix.msu.edu/api/");
 
 //flag for if arcs has been configured for user
 define('CONFIGURED', 'true');
@@ -71,44 +65,44 @@ define('CONFIGURED', 'true');
 //define ("SURVEY_SID", "740");
 
 $GLOBALS['PID_ARRAY'] = array(
-    //'isthmia' => 123
-    'isthmia' => 34
-    //'grotto_tiberri' => 168
+    //'isthmia' => 123,
+    'isthmia' => 11,
+    'grotto_tiberri' => 7
 );
 $GLOBALS['PROJECT_SID_ARRAY'] = array(
-    'isthmia' => 168,
+    'isthmia' => 31,
     //'isthmia' => 734,
-    'grotto_tiberri' => 911
+    'grotto_tiberri' => 19
 );
 $GLOBALS['SEASON_SID_ARRAY'] = array(
-    'isthmia' => 169,
+    'isthmia' => 32,
     //'isthmia' => 735,
-    'grotto_tiberri' => 913
+    'grotto_tiberri' => 20
 );
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
-    'isthmia' => 173,
+    'isthmia' => 36,
     //'isthmia' => 740,
-    'grotto_tiberri' => 914
+    'grotto_tiberri' => 22
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
-    'isthmia' => 170,
+    'isthmia' => 33,
     //'isthmia' => 736,
-    'grotto_tiberri' => 915
+    'grotto_tiberri' => 22
 );
 $GLOBALS['PAGES_SID_ARRAY'] = array(
-    'isthmia' => 171,
+    'isthmia' => 34,
     //'isthmia' => 738,
-    'grotto_tiberri' => 916
+    'grotto_tiberri' => 23
 );
 $GLOBALS['SUBJECT_SID_ARRAY'] = array(
-    'isthmia' => 172,
+    'isthmia' => 35,
     //'isthmia' => 739,
-    'grotto_tiberri' => 917
+    'grotto_tiberri' => 24
 );
 $GLOBALS['TOKEN_ARRAY'] = array(
-    'isthmia' => "sZGUHpfv56qlPGWli6yM1oRl",
+    'isthmia' => "GPjkwxHb2zMss16JEmca2cg0",
     //'isthmia' => "8b88eecedaa2d3708ebec77a",
-    'grotto_tiberri' => "8b88eecedaa2d3708ebec77a"
+    'grotto_tiberri' => "GPjkwxHb2zMss16JEmca2cg0"
 );
 
 define ("TOKEN", "8b88eecedaa2d3708ebec77a");
