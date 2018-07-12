@@ -178,7 +178,7 @@ class UsersController extends AppController
             if ($resolve["isResource"]) {
                 $message =
                     "
-            <p>User ".$username." has requested access to the resource ".$resource."on project ".$project."
+            <p>User ".$username." has requested access to the resource ".$resource." on project ".$project."
             <p>To permit the user to the project, visit the associated kora installation dashboard.<br><br>
             <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
             Social Sciences with support from the National Endowment for the Humanities<br />
