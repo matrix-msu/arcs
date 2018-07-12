@@ -13,7 +13,6 @@
 		<div class="intro">
            <h1><?php echo $name; ?></h1>
            <br>
-           <p class="intro_text"><?php echo $description; ?></p>
            <p class="intro_text"><?php echo $description; ?> <br><br> <a href=<?php echo $locationID ?>>Location Identifier</a></p>
             
 		</div>

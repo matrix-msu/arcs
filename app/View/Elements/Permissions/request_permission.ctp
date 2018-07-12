@@ -42,9 +42,9 @@
         $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
             $("#request_permission_model").show();
             $("#request_permission_model").css("pointer-events", "all");
-            var resourceThumb = $(this).closest('.resource-thumb').attr('data-resource-kid');
+            var resourceThumb = $(this).closest('.resource-thumb').attr('data-id');
             if( resourceThumb == undefined ){
-                resourceThumb = $(this).closest('.resource-pic').attr('data-resource-kid');
+                resourceThumb = $(this).closest('.resource-pic').attr('data-id');
             }
             currentlyClickedLockedResourceKid = resourceThumb;
         });

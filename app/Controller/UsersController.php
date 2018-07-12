@@ -132,21 +132,19 @@ class UsersController extends AppController
         $this->loadModel('Mapping');
         $user = $this->getUser($this->Auth);
 
+        $resolve = static::resolveProject($param);
+
         try {
-            $pid = parent::getPIDFromProjectName($param);
+            $pid = parent::getPIDFromProjectName($resolve['project']);
         } catch (Exception $e) {//if the project name is not valid
             // return the flash message for frontend
-            $this->Session->setFlash('Error, Request was not set', 'flash_error');
+            $this->Session->setFlash('Error, Request was not sent', 'flash_error');
             return;
         }
-
         $template; $viewVars; $admins;
 
-        //echo json_encode($param);
-        $resolve = static::resolveProject($param);
-        //echo json_encode($resolve);
         $admins = $this->getAdmins($resolve["project"]);
-        //echo json_encode($admins);
+        // $admins = "noah.girard@gmail.com";
         // don't render a view
         $this->autoRender = false;
         $message;
@@ -154,7 +152,7 @@ class UsersController extends AppController
         if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
             // Set the template and view vars based on type
 
-            $to = $admins;
+            $to = implode(', ', $admins);
 
             $subject = "User Access Request";
 
@@ -241,7 +239,7 @@ class UsersController extends AppController
             return;
         }
         // return the flash message for frontend
-        $this->Session->setFlash('Error, Request was not set', 'flash_error');
+        $this->Session->setFlash('Error, Request was not sent', 'flash_error');
         return;
     }
 
