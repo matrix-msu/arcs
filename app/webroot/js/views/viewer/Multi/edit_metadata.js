@@ -692,6 +692,22 @@ function editMetaPrep() {
         }
     });
 
+    //copy the resource url button
+    $('.copyUrlBtn').click(function(){
+        var url = $(this)[0].dataset.url;
+
+        const el = document.createElement('textarea');
+        el.value = url;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        $(this).text("Copied!");
+        // $(this).text("Copy linksss");
+    });
+
+
+
     function populateNumbers(i){
         var numbersHtml = '';
         $('.associator_numbers').html(numbersHtml);//clear

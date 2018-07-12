@@ -581,18 +581,45 @@ $('#viewer-right').on('click', '.stable-url', function(){
 //    copyTextarea.select();
 //    document.execCommand('copy')
 //});
-function myFunction() {
-    $('#myInput').css('display', 'block');
-    var copyText = document.getElementById("myInput");
-    copyText.select();
-    document.execCommand("Copy");
-    $("#myTooltip").text("Copied!");// + copyText.value;
-    $('#myInput').css('display', 'none');
-}
 
-function outFunc() {
-    //var tooltip = document.getElementById("myTooltip");
-    //$("#myTooltip").text("Copy to clipboard");
-}
+
+// function myFunction() {
+//
+//     console.log('HIHIHIHIHI');
+//
+//     $('#myInput').css('display', 'block');
+//     var copyText = document.getElementById("myInput");
+//     copyText.select();
+//     document.execCommand("Copy");
+//     $("#myTooltip").text("Copied!");// + copyText.value;
+//     $('#myInput').css('display', 'none');
+//
+//
+//
+//
+//     // console.log('link', link);
+//     // var uri_dec = decodeURIComponent(url);
+//     // console.log('hi i go t', url)
+//     // $('#myInput').css('display', 'block');
+//     // var copyText = document.getElementById("myInput");
+//     // copyText.select();
+//     // document.execCommand("Copy");
+//     // $('#myInput').css('display', 'none');
+//
+//     // var t = document.createTextNode(url);
+//
+//     // document.execCommand('copy', false, t);
+//
+//     // var url = $url;
+//     // var url = $('#viewer-right .stable-url').attr('href');
+//     //     console.log(url);
+//     // var win = window.open(url, '_blank');
+//     // win.focus();
+//
+// //     var copyText = $(".stable-url").attr("href");
+// //     var copyText = ('0');
+// //     console.log(copyText);
+// }
+
 
 </script>
