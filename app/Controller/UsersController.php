@@ -820,7 +820,7 @@ class UsersController extends AppController
                         return $this->redirect($this->referer());
                         // return $this->redirect($this->Auth->redirect());
                     } else {
-                        $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                        $this->Session->setFlash("The Username or Password you entered is incorrect.  Please try again.", 'flash_error');
                         $this->redirect($this->referer());
                     }
                 }
@@ -1245,11 +1245,6 @@ class UsersController extends AppController
             $user['mappings'][] = array("project" => $project,
                 "role" => $role,
                 'status' => $mapping["Mapping"]['status']);
-
-            if( $role == 'Admin' ) {
-                $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" " .
-                    "type=\"submit\" value=\"Create All $project Thumbnails\"></dd>";
-            }
         }
 
         if( $signedIn == FALSE ){
@@ -1809,52 +1804,6 @@ class UsersController extends AppController
             'order' => 'name'
         ));
         $this->json(200, $results);
-    }
-
-    //create all thumbnails for a project in kora
-    public function createThumbnails($projectName){
-        set_time_limit(0);
-        $signedIn = $this->getUser($this->Auth);
-
-        if( $signedIn == FALSE ){
-            echo 'You must be signed-in to do this.';
-            die;
-        }
-        $mappings = $this->Mapping->find('all', array(
-            'fields' => array('Mapping.role', 'Mapping.pid'),
-            'conditions' => array(
-                'AND' => array(
-                    'Mapping.id_user' => $signedIn['id'],
-                    'Mapping.status' => 'confirmed',
-                    'Mapping.role' => 'Admin'
-                ),
-            )
-        ));
-        $pid = parent::getPIDFromProjectName($projectName);
-        $pageSid = parent::getPageSIDFromProjectName($projectName);
-
-        $permissions = false;
-        foreach($mappings as $mapping) {
-            if( $pid == $mapping["Mapping"]['pid'] ){
-                $permissions = true;
-            }
-        }
-        if( $permissions == false ){
-            echo "You don't have the project permissions necessary to do this.";
-            die;
-        }
-        $search = new General_Search($pid, $pageSid, 'kid', '!=', '',['Image_Upload']);
-        $results = $search->return_array();
-        foreach( $results as $page ){
-            $localName = @$page['Image_Upload']['localName'];
-            $pageThingKid = '';
-            if( isset($page) && isset($page['kid']) ){
-                $pageThingKid = $page['kid'];
-            }
-            $this->smallThumb($localName, $pageThingKid);
-        }
-        print_r('All thumbnails have been successfully created!');
-        die;
     }
 
     //authenticate a plugin user
