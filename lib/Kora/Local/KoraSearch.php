@@ -246,7 +246,8 @@ class KORA_Clause {
             } else {
                 //second argument has complex query logic. We need to loop through and build new array where every index
                 //is increased by the size of query 1
-                $tmp = $this->recursizeLogicIndex($argQue2,$size);
+                $tmp = $this->recursizeLogicIndex($argLogic2,$size);
+                //$tmp = $this->recursizeLogicIndex($argQue2,$size);
                 array_push($newLogic,$tmp);
             }
             $this->logic = $newLogic;
@@ -349,7 +350,8 @@ class KORA_Clause {
     private function recursizeLogicIndex($queryArray,$size) {
         $returnArray = array();
         //part1
-        if(is_array($queryArray[0])) {
+        if( is_array($queryArray[0]) ){
+            //echo 'is array';die;
             $tmp = $this->recursizeLogicIndex($queryArray[0],$size);
             $returnArray[0] = $tmp;
         } else {

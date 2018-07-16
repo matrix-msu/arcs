@@ -122,8 +122,7 @@ class Keyword_Search extends Kora
     * @param int    $end     | the end index of results
     * @return void
     */
-    public function execute($query,$project=null,$start=1,$end=10000)
-    {
+    public function execute($query,$project=null,$start=1,$end=10000){
 
         $time_start = microtime(true);
         $mem_start =  memory_get_usage();
@@ -310,11 +309,12 @@ class Keyword_Search extends Kora
             "OR",
             "LIKE",
             array(
-            "Artifact - Structure Classification","Artifact - Structure Type",
-            "Artifact - Structure Material","Artifact - Structure Technique",
-            "Artifact - Structure Period","Artifact - Structure Terminus Ante Quem",
-            "Artifact - Structure Terminus Post Quem"
-            ), $query
+                "Artifact - Structure Classification","Artifact - Structure Type",
+                "Artifact - Structure Material","Artifact - Structure Technique",
+                "Artifact - Structure Period","Artifact - Structure Terminus Ante Quem",
+                "Artifact - Structure Terminus Post Quem"
+            ),
+            $query
         );
 
         $subject = parent::getSubjectSIDFromProjectName($project);
@@ -375,7 +375,6 @@ class Keyword_Search extends Kora
             for ($i = 1; $i < count($clauses); $i++) {
                 $joins = new KORA_Clause($joins, $join, $clauses[$i]);
             }
-
         } else {
             $clauses = array();
             foreach ($array as $term) {
@@ -387,7 +386,6 @@ class Keyword_Search extends Kora
                 $joins = new KORA_Clause($joins, $join, $clauses[$i]);
             }
         }
-
         return $joins;
     }
     /**
@@ -635,9 +633,6 @@ class Keyword_Search extends Kora
                             (isset($img["Scan_Number"]) && $img["Scan_Number"] == '1') ||
                             !isset($this->formulatedResult[$rKid]["thumb"])
                         ){
-                            if( $img['kid'] == '34-171-209991'){
-                                echo 'found';print_r($img);die;
-                            }
                             $this->formulatedResult[$rKid]["thumb"] = $this->smallThumb($img["Image_Upload"]['localName'], $pKid);
                         }
                     }
