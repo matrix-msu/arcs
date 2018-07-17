@@ -115,20 +115,21 @@
 								data: { 'filename': data },
 								statusCode: {
 									200: function () {
-										$('.icon-export').html('');
-										$('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
-										isExporting = 0;
-									}
+                                        console.log("success");
+                                    },
+                                    400: function () {
+                                        console.log("Bad Request");
+                                    },
+                                    405: function () {
+                                        console.log("Method Not Allowed");
+                                    }
 								}
 							});
-						}, 50);
+                        }, 50);
+                        $('.icon-export').html('');
+                        $('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
+                        isExporting = 0;
 					},
-					400: function () {
-						console.log("Bad Request");
-					},
-					405: function () {
-						console.log("Method Not Allowed");
-					}
 				}
 			});
 			//hide the loader
