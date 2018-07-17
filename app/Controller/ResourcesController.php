@@ -1238,7 +1238,8 @@ class ResourcesController extends AppController {
                        'Creator Role',
                        'Condition',
                        'Access Level',
-                       'Language');
+                       'Language',
+                       'Rights Holder');
 
         $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
 //structure subject, culture
@@ -1253,6 +1254,7 @@ class ResourcesController extends AppController {
                        'Artifact - Structure Period',
                        'Artifact - Structure Repository',
                        'Artifact - Structure Creator',
+                       'Artifact - Structure Creator Role',
                        'Artifact - Structure Condition',
                        'Artifact - Structure Subject');
 

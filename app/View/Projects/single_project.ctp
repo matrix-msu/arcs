@@ -225,10 +225,11 @@ arcs.user_viewer.render();
 $(document).ready(function(){
 
     //take care of the user profile chosen select
-    $(".chosen-select").chosen().change(function(e){
-        var index = $('.search-choice-close').data('option-array-index')
+    $(".chosen-select").chosen().unbind()
+
+    $('#urlAuthor').find('option').click(function(e){
         $('.search-choice').remove();
-        var username = $('.data-project-profiles-index-'+index).data('username')
+        var username = $(this).data('username');
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
         baseUrl += '/arcs/user/'+username;

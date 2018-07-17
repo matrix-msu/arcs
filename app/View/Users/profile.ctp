@@ -226,10 +226,3 @@
 <script type='text/javascript'>
 arcs.profileView2 = new arcs.views.users.Profile({id: '<?php echo $user_info['id']; ?>'});
 </script>
-
-<script type="text/javascript">
-    $('.createThumbnails').click(function(){
-        var project = $(this).attr('data-project');
-        window.location.href = arcs.baseURL+'admin/createthumbnails/'+project;
-    });
-</script>
