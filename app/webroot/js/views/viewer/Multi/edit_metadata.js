@@ -405,7 +405,7 @@ function editMetaPrep() {
         var associatorPreview = {
             'excavations' : 'Title',
             'archival objects' : 'Name',
-            'subjects' : 'Resource Identifier'//go ask kora for this pls
+            'subjects' : 'Resource_Identifier'//go ask kora for this pls
         };
         var populateCheckboxes = "<hr>";
         currentPage = currentPage-1; //pages start at 1, but array index starts at 0

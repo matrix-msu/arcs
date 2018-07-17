@@ -130,13 +130,15 @@ class CollectionsController extends AppController {
         set_time_limit(0);
         $pid = parent::getPIDFromProjectName(strtolower($pName));
         $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
+        $sid = parent::getProjectSIDFromProjectName(strtolower($pName));
         //echo $sid;die;
         $fields = array('Title');
+        $fields = 'ALL';
 
 
         $q = "";
 
-        $kora = new General_Search($pid, $sid, 'Title', 'LIKE', '69-246', $fields);
+        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         //$kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
         //$kora = new General_Search($pid, $sid, 'kid', '=', '34-171-208512', $fields);
         $results = json_decode($kora->return_json(), true);

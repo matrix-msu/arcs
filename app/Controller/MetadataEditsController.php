@@ -95,31 +95,35 @@ class MetadataEditsController extends AppController {
                 $sid = parent::getProjectSIDFromProjectName($pName);
                 $fields = array('Name','Country','Persistent_Name','Modern_Name');
 
-            }elseif( $this->request->data['scheme_name'] == 'Season Associator' ){
+            }elseif( $this->request->data['scheme_name'] == 'Season_Associator' ){
                 $sid = parent::getSeasonSIDFromProjectName($pName);
                 $fields = array('Title','Type','Director','Registrar');
 
-            }elseif( $this->request->data['scheme_name'] == 'Excavation_-_Survey Associator' ){
+            }elseif( $this->request->data['scheme_name'] == 'Excavation_-_Survey_Associator' ){
                 $sid = parent::getSurveySIDProjectName($pName);
                 $fields = array('Name','Type');
 
             }elseif( $this->request->data['scheme_name'] == 'Resource_Associator' ){
                 $sid = parent::getResourceSIDFromProjectName($pName);
-                $fields = array('Resource Identifier','Type','Title');
+                $fields = array('Resource_Identifier','Type','Title');
 
             }elseif( $this->request->data['scheme_name'] == 'Pages_Associator' ){
+                ini_set("memory_limit", "-1");
+                set_time_limit(0);
                 $sid = parent::getPageSIDFromProjectName($pName);
                 $fields = array('Format','Type','Image_Upload', 'Resource_Identifier');
 
             }elseif( $this->request->data['scheme_name'] == 'Subject_of_Observation_Associator' ){
+                ini_set("memory_limit", "-1");
+                set_time_limit(0);
                 $sid = parent::getSubjectSIDFromProjectName($pName);
-                $fields = array('Resource_Identifier','Artifact_-_Structure Location','Artifact_-_Structure_Description');
+                $fields = array('Resource_Identifier','Artifact_-_Structure_Location','Artifact_-_Structure_Description');
             }
 
             //Get the Resources from Kora
             $pid = parent::getPIDFromProjectName($pName);
             $kora = new Advanced_Search($pid, $sid, $fields, 0);
-            $kora->add_clause("kid", "!=", "1");
+            $kora->add_clause("kid", "!=", "");
 
             //do this nonsense so that php will return an array of objects and
             //not an object of objects.
