@@ -227,9 +227,11 @@ $(document).ready(function(){
     //take care of the user profile chosen select
     $(".chosen-select").chosen().unbind()
 
-    $('#urlAuthor').find('option').click(function(e){
+    //handle chosen choices
+    $('.chosen-results').on('click', 'li', function(){
         $('.search-choice').remove();
-        var username = $(this).data('username');
+        var index = $(this).data('option-array-index');
+        var username = $('.data-project-profiles-index-'+index).data('username');
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
         baseUrl += '/arcs/user/'+username;
@@ -240,7 +242,15 @@ $(document).ready(function(){
 
         window.location = baseUrl;
     });
+    //handle where chosen choices breaks.
+    $('#urlAuthor option').click(function(e){
+        var username = $(this).data('username');
+        var getUrl = window.location;
+        var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+        baseUrl += '/arcs/user/'+username;
+        window.location = baseUrl;
+    });
     $('.chosen-choices').prepend('<div class="searchIcon"></div>');
-    $('#urlform').css('visibility', '');
-});
+    $('#urlform').css('visibility', '');}, 100);
+
 </script>
