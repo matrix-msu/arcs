@@ -715,7 +715,7 @@ $(document).ready(function() {
 	});
 
     $('.accept').on('click', function(){
-        var project = $('#projectSelect option[selected="selected"]').text();
+        var project = $('#projectSelect option[selected="selected"]').text().replace(/ /g,"_");
         var userID = ($(this).data('id'));
         $.ajax({
             url: arcs.baseURL + 'admin/accept/'+userID,

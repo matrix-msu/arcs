@@ -210,7 +210,7 @@ class AdminController extends AppController {
         }
         $pid = parent::getPIDFromProjectName($pName);
 
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};
@@ -334,7 +334,7 @@ class AdminController extends AppController {
 
 
     public function editFlags() {
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};
@@ -387,7 +387,7 @@ class AdminController extends AppController {
          * View and re-run jobs.
          */
         public function activity() {
-            include_once("../Config/database.php");
+            // include_once("../Config/database.php");
             $db = new DATABASE_CONFIG();
 
             $_POST['task'] = "all";

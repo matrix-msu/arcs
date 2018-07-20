@@ -1042,26 +1042,29 @@ class UsersController extends AppController
                         $id = $allDat['id'];
                         $projects = explode(", ", $this->request->data['User']['project']);
                         $mappingArray = [];
-//                        var_dump($projects);
-//                        die;
+
                         foreach ($projects as $project) {
-                            $mappingArray[] = array(
+                            $map = array(
                                 'id_user' => $id,
                                 'role' => 'Researcher',
                                 'pid' => $this->getPIDFromProjectName(strtolower(str_replace(" ","_",$project))),
                                 'status' => 'unconfirmed',
                                 'activation' => $this->Mapping->getToken()
                             );
+                            array_push($mappingArray, $map);
                         }
-//                        echo 'HERE';
-//                        die;
+
 
                         $this->Mapping->saveAll($mappingArray);
 
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        //confirm breaks
-                        $this->confirmUserEmail($user, $id, $project);
 
+                        //confirm breaks
+                        //send confirmation email for each project
+                        foreach ($mappingArray as $projectArray) {
+                            $project = parent::getProjectNameFromPID($projectArray['pid']);
+                            $this->confirmUserEmail($user, $id, $project);
+                        }
                         $this->Session->setFlash(
                             "Thank you for registering!  You will receive a confirmation email shortly.
                             <br>After you verify your email address, an administrator will activate your account. This could take some time.
