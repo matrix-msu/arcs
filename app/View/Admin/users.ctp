@@ -4,7 +4,6 @@
     <p class="invite">Invite</p>
     <p class="pending">Pending</p>
     <span class='active-line'></span>
-    <span class="chevron"></span>
 </div>
 
 <div id="admin-users">

@@ -218,7 +218,7 @@ $(document).ready(function() {
 
 
     if($('#admin-users')[0]) {
-        $('#projectSelect').css({
+        $('#projectSelectContainer').css({
             'display' : 'block',
             'float' : 'right',
             'margin-top' : '195px',
@@ -231,6 +231,16 @@ $(document).ready(function() {
             'font-size' : '16px',
             'text-transform' : 'capitalize'
         });
+        $('#projectSelect').css({
+            'display' : 'inline-block',
+            'cursor' : 'pointer',
+            '-webkit-appearance' : 'none',
+            'border' : 'none',
+            'background' : '#fff',
+            'font-size' : '16px',
+            'text-transform' : 'capitalize'
+        });
+        //$('.chevron').css({'margin-left': '-11px'});
     }
 
     usersWrapWidth();
@@ -286,12 +296,12 @@ $(document).ready(function() {
     });
 
     $('#projectSelect').on('click', function(e) {
-        if($('.admin-header-users span.chevron').hasClass('open')) {
-            $('.admin-header-users span.chevron').removeClass('open');
+        if($('#projectSelectContainer span.chevron').hasClass('open')) {
+            $('#projectSelectContainer span.chevron').removeClass('open');
         } else {
-            $('.admin-header-users span.chevron').addClass('open');
+            $('#projectSelectContainer span.chevron').addClass('open');
         }
-    })
+    });
 
 	$('.users-head').on('click', function(e) {
 		if($('.name').is(e.target)) {
@@ -311,6 +321,10 @@ $(document).ready(function() {
 	});
 
     $(document).on('click', function(e) {
+        if( $('#projectSelect:focus').length == 0 ){
+            $('#projectSelectContainer span.chevron').removeClass('open');
+        }
+       // console.log('dfjklas')
         if($('.removePR').is(e.target)) {
             var formID = e.target.id;
             if (formID == 'createRemove') {

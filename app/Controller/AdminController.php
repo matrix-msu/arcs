@@ -66,7 +66,7 @@ class AdminController extends AppController {
             $first = false;
         }
 
-        $projectPicker = '<select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;" >';
+        $projectPicker = '<div id="projectSelectContainer" class="styled-select"><select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;" >';
 
         $projectNameArray = array();
 
@@ -89,7 +89,7 @@ class AdminController extends AppController {
             }
         }
 
-        $projectPicker .= "</select>";
+        $projectPicker .= "</select><span class=\"chevron\"></span></div>";
 
         $url = '/'.BASE_URL.'admintools/'.$this->request->params['action']."/".$_SESSION['currentProjectName']."/".$otherParams;
         if( $_SERVER['REQUEST_URI']!=$url && $_SERVER['REQUEST_URI']!=$url.'/' ){

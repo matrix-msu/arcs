@@ -15190,6 +15190,9 @@ input.user-reg-btn.btn.btn-success:focus {
 .admin-header .admin-sort-search input:-ms-input-placeholder {
   color: #3F3F3F;
 }
+#projectSelectContainer .open.chevron {
+  transform: rotate(-45deg);
+}
 .admin-header-users {
   margin: 0 9%;
   height: 150px;
