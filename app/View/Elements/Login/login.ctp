@@ -21,6 +21,11 @@
 
                 <?php echo $this->Form->input('password', array('label' => false, 'id'=>'loginPassword', 'placeholder' => 'Password')); ?>
 
+
+<!--                <input name="data[User][username]" placeholder="Username" maxlength="100" type="text" id="UserUsername" required="required">-->
+<!--                <input name="data[User][password]" id="loginPassword" placeholder="Password" type="password" required="required" class="unfocused">-->
+
+
                 <p class="login-link" id="forgot-password">Forgot your password?</p>
                 <a class="login-link" id="register-mobile" href="#registerModal">Register</a>
 
@@ -29,6 +34,15 @@
                 <?php echo $this->Form->submit('Login', array('class' => 'btn')); ?>
 
                 <?php echo $this->Form->end() ?>
+
+                <!--form action="/~josh.christ/arcs/users/special_login" id="UserSpecialLoginForm" method="post" accept-charset="utf-8">
+
+                    <input type="text" id="UserUsername" tabindex="0"></input>
+                    <input type="text" required="required" tabindex="1"></input>
+
+                </form-->
+
+
             </div>
         </div>
 
@@ -46,3 +60,38 @@
         </div>
     </div>
 </div>
+
+<script>
+//    $(document).unbind('keydown').off('keydown')
+//    $(document).on('keydown', function(e){
+//        console.log('keydown;')
+//        if ( e.which == 9 && !e.shiftKey && $("#UserUsername").is(":focus") ) {
+//            console.log('hi')
+//            e.preventDefault();
+//            e.stopPropagation();
+//            console.log('keydown in focus')
+//        }
+//    });
+    $(document).on('keyup', function(e){
+        var focus = false;
+        if( $('.desktop-login').find('#UserUsername:focus').length > 0 ){
+            focus = true;
+        }
+        if( $('#registerModal').find('#UserPassword:focus').length > 0){
+            focus = true;
+        }
+        var url = window.location.href;
+        var loginModal = false;
+        if( url.includes('#loginModal') ){
+            loginModal = true;
+        }
+        if ( e.which == 9 && !e.shiftKey && focus && loginModal ){
+            e.preventDefault();
+            e.stopPropagation();
+            $('#loginPassword').get(0).focus();
+            $('#loginPassword').get(0).select();
+        }
+        focus = false;
+        return;
+    });
+</script>
