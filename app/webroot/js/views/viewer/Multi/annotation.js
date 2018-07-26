@@ -207,7 +207,6 @@ function annotationPrep() {
         if( current.page_kid == kid && current.transcript != "" ){ //add in the flags for a transcription
             var flagTypeClass = ' details-transcript ';
             if( resourceHasPermissions == false ) flagTypeClass = '';
-            console.log('transcript', current)
             $(".content_transcripts").append(
                 "<div class='transcript_display' id='" + current.id + "'>" +
                     current.transcript +
