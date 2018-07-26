@@ -1033,9 +1033,11 @@ function annotationPrep() {
                   type: "POST",
                   data: annotateData,
                   success: function () {
+                      console.log('hererererer')
                       $(".transcriptionTextarea").val('');
                       $(".newTranscriptionForm").hide();
                       //GetDetails();
+                      window.location.href = location.href;
                   }
               });
       });
