@@ -999,6 +999,9 @@ class ResourcesController extends AppController {
                 $hasProjectPermission = true;
             }
 
+            if( !isset( $info_array[$resource]['Permissions'] ) ){
+                $info_array[$resource]['Permissions'] = 'Public';
+            }
             $isPublicResource = ( $info_array[$resource]['Permissions'] == 'Public' )? true:false;
 
             static::filterByPermission($username, $info_array);

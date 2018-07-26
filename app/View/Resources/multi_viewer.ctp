@@ -539,42 +539,52 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 <script>
 //set variables for multipage delayed loading
-var multiInfo = <?php echo $multiInfo; ?>;
+var multiInfo = <?php if(isset($multiInfo)){echo $multiInfo;}else{echo '""';} ?>;
 
 //update the toolbar page urls with project.
 
 //get project name
 var pName = $('#project1').find("[id='Persistent_Name']").html();
-pName = pName.replace(/ /g, '_').toLowerCase();
+if( typeof pName !== 'undefined' ) {
+    pName = pName.replace(/ /g, '_').toLowerCase();
 
 //add the project kid to the resources url.
-var href = $('#resources').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+pName;
-$('#resources').attr('href', href);
+    var href = $('#resources').attr('href');
+    href = href.split('/');
+    href.pop();
+    href = href.join('/');
+    var href = href + '/' + pName;
+    $('#resources').attr('href', href);
 
 //add project kid to the collections url.
-var href = $('#collections').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+pName;
-$('#collections').attr('href', href);
+    var href = $('#collections').attr('href');
+    href = href.split('/');
+    href.pop();
+    href = href.join('/');
+    var href = href + '/' + pName;
+    $('#collections').attr('href', href);
 
 //add project kid to the search url.
-var href = $('#search').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+pName;
-$('#search').attr('href', href);
+    var href = $('#search').attr('href');
+    href = href.split('/');
+    href.pop();
+    href = href.join('/');
+    var href = href + '/' + pName;
+    $('#search').attr('href', href);
+    
+    $('#soo').ready(function(){
+        $('.selectedCurrentPage').find('img')[0].click();
+    });
 
-$('#soo').ready(function(){
-    $('.selectedCurrentPage').find('img')[0].click();
-});
+
+    $('#viewer-right').on('click', '.stable-url', function(){
+        var url = $(this).attr('href');
+        var win = window.open(url, '_blank');
+        win.focus();
+    });
+}
 
 
-$('#viewer-right').on('click', '.stable-url', function(){
-    var url = $(this).attr('href');
-    var win = window.open(url, '_blank');
-    win.focus();
-});
 
 //$('#viewer-right').on('click', '.js-textareacopybtn', function(){
 //    var copyTextarea = document.querySelector('.js-copytextarea');

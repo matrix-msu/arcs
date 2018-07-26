@@ -19,6 +19,11 @@
     $(document).ready(function() {
         var currentlyClickedLockedResourceKid = '';
         $("#request_permission_model").find(".request").click(function(e){
+            var lastPart = window.location.href.split("/").pop().split("?")[0];
+            console.log('click', currentlyClickedLockedResourceKid)
+            if( lastPart.split('-').length == 3 ){
+                currentlyClickedLockedResourceKid = lastPart;
+            }
             if( currentlyClickedLockedResourceKid !== '' ){
                 $.ajax({
                     url: arcs.baseURL + "users/request_permission/" + currentlyClickedLockedResourceKid,
@@ -42,9 +47,9 @@
         $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
             $("#request_permission_model").show();
             $("#request_permission_model").css("pointer-events", "all");
-            var resourceThumb = $(this).closest('.resource-thumb').attr('data-id');
+            var resourceThumb = $(this).closest('.resource-thumb').attr('data-resource-kid');
             if( resourceThumb == undefined ){
-                resourceThumb = $(this).closest('.resource-pic').attr('data-id');
+                resourceThumb = $(this).closest('.resource-pic').attr('data-resource-kid');
             }
             currentlyClickedLockedResourceKid = resourceThumb;
         });

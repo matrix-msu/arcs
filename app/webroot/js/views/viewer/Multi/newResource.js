@@ -94,7 +94,9 @@ function pageSelectBuild(firstid) {
     $item[i].onclick = createFunc(i);
   }
 
-  $pics[0].style.borderWidth = "5px";
+  if( typeof $pics[0] !== 'undefined' ) {
+      $pics[0].style.borderWidth = "5px";
+  }
 
   function createFunc(i){
     return function(event){
