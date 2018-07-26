@@ -115,11 +115,6 @@ function annotationPrep() {
 
     //append the popup to the gen box
     function appendPopup(current){
-        console.log('diong this', current)
-        console.log(annotationDataGlobal)
-        console.log(current.relation_resource_kid)
-        console.log(annotationDataGlobal['resource_data'][current.id]['resource'])
-
         var resourceType = annotationDataGlobal['resource_data'][current.id]['resource'][current.relation_resource_kid]['Type'];
         var resourceIdentifier = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Resource_Identifier'];
         var pageScanNumber = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Scan_Number'];
@@ -241,7 +236,7 @@ function annotationPrep() {
                     "</div>"
                 );
             }else if (current.relation_page_kid != "" && current.incoming == "true") {//incoming
-                var text = current.x1 ? "Revert to whole resource" : "Define space";
+                var text = current.x1 ? "Revert" : "Define space";
                 var flagTypeClass = ' details-incoming ';
                 var defineSpaceStuff =
                     "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>"+
@@ -332,7 +327,6 @@ function annotationPrep() {
         //$('.resource-icons').css('display', 'none')
         $('.resource-icons:not(.resource-icon-zoom-in-out)').css('visibility', 'hidden')
         $('#prev-resource').css('display', 'none')
-        console.log('hiding')
         $('.tools').hide();
         $('.gen_box_temp').remove();
         $('.annotateHelp').show();
@@ -409,7 +403,6 @@ function annotationPrep() {
                 if (defineSpace == false){
                     $(".annotateModalBackground").show();
                 }else{
-                    console.log('finishing', annotateData);
                     submitDefineSpace(id, annotateData);
                 }
             }
@@ -499,31 +492,6 @@ function annotationPrep() {
         }
     });
 
-
-    // // Set incoming coordinates or reset incoming annotation coordinates to null
-    // $("." + value.id).find(".annotateLabel").click(function () {
-    //     console.log('clicekd dt a thing     ssss !! coool wowowowowowow!!!1');
-    //     $.ajax({
-    //         url: arcs.baseURL + "api/annotations/" + value.id + ".json",
-    //         type: "POST",
-    //         data: {
-    //             x1: null,
-    //             x2: null,
-    //             y1: null,
-    //             y2: null
-    //         },
-    //         success: function () {
-    //             DrawBoxes(kid);
-    //             GetDetails();
-    //         }
-    //     });
-    // })
-    // $("." + value.id).on('click', ".annotateLabel", function () {
-    //     if (!value.x1) {
-    //         Draw(false, value.id);
-    //     }
-    // });
-
     $('.content_annotations').on('click', '.annotateLabel', function(){
         var id = $(this).parent().attr('id');
         var text = $(this)[0].innerHTML;
@@ -543,24 +511,18 @@ function annotationPrep() {
                 y2: null
             },
             success: function () {
-                console.log('remove thing success');
-                // console.log($(canvas).find('#' + id).remove());
                 $(canvas).find('#' + id).remove();
                 resetAnnotations();
-                console.log($(button));
 
                 $(button).html("Define space");
 
             }
         });
         }
-        console.log($(this)[0].innerHTML);
         resetAnnotations();
     });
     
     function submitDefineSpace(id, annotateData){
-        console.log(id);
-        console.log('hererere');
         $.ajax({
             url: arcs.baseURL + "api/annotations/" + id + ".json",
             type: "POST",
@@ -571,9 +533,6 @@ function annotationPrep() {
                 y2: annotateData.y2
             },
             success: function () {
-                // DrawBoxes(kid);
-                // GetDetails();
-                console.log('nice');
                 //reset annotations and redraw
                 $(".annotation_display").remove();
                 $(".transcript_display").remove();
@@ -617,7 +576,6 @@ function annotationPrep() {
             url: arcs.baseURL + "simple_search/"+pName+"/"+ encodeURIComponent(search) + "/1/20",
             type: "GET",
             success: function (data) {
-                //console.log("first ajax", JSON.parse(data));
                 globalData = JSON.parse(data).results
                 if( globalData.length == 0 ){
                     loader.remove()
@@ -644,7 +602,6 @@ function annotationPrep() {
                         q: q
                     },
                     success: function (data) {
-                        //console.log("second ajax", JSON.parse(data));
 						try {
 							var pages = JSON.parse(data)
 						} catch(e) {
@@ -723,8 +680,6 @@ function annotationPrep() {
                     }
                     if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
                         result_ids.push(value.kid);
-
-                        //console.log('set data add div', value['Resource_Identifier']);
                         // if(!("#"+ value['kid']).length > 0) {
                         //     console.log("did thing");
                         //     $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['kid'] + "'></div>");
