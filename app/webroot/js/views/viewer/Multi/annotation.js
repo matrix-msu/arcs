@@ -36,7 +36,6 @@ function annotationPrep() {
                 resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
                 resourceKid = currentResource.attr('id').replace('identifier-', '');
                 resourceIdentifier = RESOURCES[resourceKid]['Resource_Identifier'];
-                console.log("resource identifier", resourceIdentifier);
                 getAnnotationData();
             }
         });
@@ -52,7 +51,6 @@ function annotationPrep() {
             },
             success: function (data) {
                 annotationDataGlobal = JSON.parse(data);
-                console.log("annotation data", annotationDataGlobal);
                 displayAnnotations();
                 isAnnotating = false;
             }
@@ -117,12 +115,17 @@ function annotationPrep() {
 
     //append the popup to the gen box
     function appendPopup(current){
+        console.log('diong this', current)
+        console.log(annotationDataGlobal)
+        console.log(current.relation_resource_kid)
+        console.log(annotationDataGlobal['resource_data'][current.id]['resource'])
+
         var resourceType = annotationDataGlobal['resource_data'][current.id]['resource'][current.relation_resource_kid]['Type'];
-        var resourceIdentifier = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Resource Identifier'];
-        var pageScanNumber = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Scan Number'];
+        var resourceIdentifier = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Resource_Identifier'];
+        var pageScanNumber = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Scan_Number'];
         var pageThumbSrc = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['constructed_image'];
         if( pageScanNumber != "" ){
-            pageScanNumber = "Page Number: " + pageScanNumber;
+            pageScanNumber = "Page Number: " + Math.floor(pageScanNumber);
         }
         //append in the popups
         $("#" + current.id).append(
@@ -322,13 +325,14 @@ function annotationPrep() {
         annotateData.y1 = "";
         annotateData.y2 = "";
     }
-    function prepareAddAnnotation(){
+    function prepareAddAnnotation(defineSpace = false, id=null){
         $(".annotateSubmit").hide();
         $('.other-resource, .other-resources').on('click.preventPageClicks', preventPageClicks);
         //$('.resource-reset-icon').click();
         //$('.resource-icons').css('display', 'none')
         $('.resource-icons:not(.resource-icon-zoom-in-out)').css('visibility', 'hidden')
         $('#prev-resource').css('display', 'none')
+        console.log('hiding')
         $('.tools').hide();
         $('.gen_box_temp').remove();
         $('.annotateHelp').show();
@@ -343,20 +347,20 @@ function annotationPrep() {
                 zoomScale = canvas.getBoundingClientRect().width / canvas.offsetWidth;
                 //zoomScale = 1;
                 startX = e.pageX;
-                console.log('realx', e.pageX);
+                // console.log('realx', e.pageX);
 
                 var imageWrap = $('#ImageWrap');
                 var imageDraggedLeft = parseFloat($(imageWrap).css('left'));
                 var imageDraggedTop = parseFloat($(imageWrap).css('top'));
 
-                console.log('draggedPos ' + imageDraggedLeft + ", " + imageDraggedTop);
+                // console.log('draggedPos ' + imageDraggedLeft + ", " + imageDraggedTop);
 
                 startX = startX - imageDraggedLeft;
 
-                console.log('scaleX', startX);
-                console.log('zoomscale', zoomScale);
-                console.log('x*scale', zoomScale*startX);
-                console.log('x/scale', startX/zoomScale);
+                // console.log('scaleX', startX);
+                // console.log('zoomscale', zoomScale);
+                // console.log('x*scale', zoomScale*startX);
+                // console.log('x/scale', startX/zoomScale);
                 startY = e.pageY;
             },
             stop: function (e) { //mouseup record the coordinates and draw a temp box.
@@ -402,7 +406,12 @@ function annotationPrep() {
 				annotateData.y2 = (parseFloat($(gen_box).css('top')) + height) / $(".canvas").height();
 
                 removeAddAnnotation(); //remove annotate ability
-                $(".annotateModalBackground").show();
+                if (defineSpace == false){
+                    $(".annotateModalBackground").show();
+                }else{
+                    console.log('finishing', annotateData);
+                    submitDefineSpace(id, annotateData);
+                }
             }
         });
     }
@@ -489,6 +498,96 @@ function annotationPrep() {
             hideAnnotations = true;
         }
     });
+
+
+    // // Set incoming coordinates or reset incoming annotation coordinates to null
+    // $("." + value.id).find(".annotateLabel").click(function () {
+    //     console.log('clicekd dt a thing     ssss !! coool wowowowowowow!!!1');
+    //     $.ajax({
+    //         url: arcs.baseURL + "api/annotations/" + value.id + ".json",
+    //         type: "POST",
+    //         data: {
+    //             x1: null,
+    //             x2: null,
+    //             y1: null,
+    //             y2: null
+    //         },
+    //         success: function () {
+    //             DrawBoxes(kid);
+    //             GetDetails();
+    //         }
+    //     });
+    // })
+    // $("." + value.id).on('click', ".annotateLabel", function () {
+    //     if (!value.x1) {
+    //         Draw(false, value.id);
+    //     }
+    // });
+
+    $('.content_annotations').on('click', '.annotateLabel', function(){
+        var id = $(this).parent().attr('id');
+        var text = $(this)[0].innerHTML;
+        var button = $(this);
+        
+        if (text == 'Define space'){
+            $('.tools').css('visibility', 'hidden');
+            prepareAddAnnotation(true, id);
+        }else{
+            $.ajax({
+            url: arcs.baseURL + "api/annotations/" + id + ".json",
+            type: "POST",
+            data: {
+                x1: null,
+                x2: null,
+                y1: null,
+                y2: null
+            },
+            success: function () {
+                console.log('remove thing success');
+                // console.log($(canvas).find('#' + id).remove());
+                $(canvas).find('#' + id).remove();
+                resetAnnotations();
+                console.log($(button));
+
+                $(button).html("Define space");
+
+            }
+        });
+        }
+        console.log($(this)[0].innerHTML);
+        resetAnnotations();
+    });
+    
+    function submitDefineSpace(id, annotateData){
+        console.log(id);
+        console.log('hererere');
+        $.ajax({
+            url: arcs.baseURL + "api/annotations/" + id + ".json",
+            type: "POST",
+            data: {
+                x1: annotateData.x1,
+                x2: annotateData.x2,
+                y1: annotateData.y1,
+                y2: annotateData.y2
+            },
+            success: function () {
+                // DrawBoxes(kid);
+                // GetDetails();
+                console.log('nice');
+                //reset annotations and redraw
+                $(".annotation_display").remove();
+                $(".transcript_display").remove();
+                $(".gen_box").remove();
+                $(".annotateSubmit").hide();
+                resetAnnotations();
+                getAnnotationData();
+                $('.tools').css('visibility', 'visible');
+
+            }
+        });
+    }
+
+
 
 
     function SubmitAnnotateSearch(offset){
@@ -601,9 +700,6 @@ function annotationPrep() {
                 //skip pages without a resource Identifier
                 return;
             }
-
-            //console.log('add resource to que', value['Resource_Identifier']);
-
             if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
                 result_ids.push(value.kid);
                 //$(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['Resource_Identifier'] + "'></div>");
@@ -613,8 +709,6 @@ function annotationPrep() {
         return q
     }
 	function SetData(data, scheme, pid) {
-         // console.log("hi here's data");
-         // console.log(data, scheme, pid);
         if (Object.keys(data).length > 0) {
             results_count = 0;
             //Iterate search results
@@ -625,7 +719,6 @@ function annotationPrep() {
                 $.each(data, function (key, value) {
                     if (value['Resource_Identifier'] === undefined) {
                         //skip pages without a resource Identifier
-                        console.log('hit the rerouce id undefined')
                         return;
                     }
                     if (result_ids.indexOf(value.kid) == -1 && value['Resource_Identifier'] != "") {
@@ -649,9 +742,6 @@ function annotationPrep() {
                 $.each(data, function (key, value) {
                     if (result_ids.indexOf(value.kid) == -1 && value['Pages_Associator'] != "") {
                         result_ids.push(value.kid);
-
-                        //console.log('add subject to div', value['Resource_Identifier']);
-
                         // if(!$(".resultsContainer").has("#"+ value['Resource_Identifier'])) {
                         //     $(".resultsContainer").append("<div class='annotateSearchResult' id='" + value['kid'] + "'></div>");
                         // }
@@ -669,26 +759,15 @@ function annotationPrep() {
             index = 0;
             var counter = 0;
 
-
-
-            // console.log('before each')
-            // console.log('mapping', mapping);
-
             //Get related pages
             $.each(data, function (kid,v) {
-                console.log('each loop', v)
-
                 var tempPid = pid;
                 // could not find mapping
                 if ( !('Resource_Associator' in v) || mapping[v['Resource_Associator'][0]] === undefined) {
-                    //console.log('returned');
                     return;
                 }
 
                 if (index >= current_offset && index < current_offset + results_per_page) {
-                    //console.log("this should be displaying", v);
-                    //console.log('inside page build')
-
                     //$("div[id='"+v['Resource_Identifier']+"']").after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
                     //justin-here $("#" + v['Resource_Identifier']).after("<div class='annotateSearchResult' id='" + v.kid + "'></div>");
 
@@ -726,7 +805,6 @@ function annotationPrep() {
                     //Clicked a page
                     pageDisplay.off().click(function () {
                         if (selectedPage == pageDisplay) {
-                            console.log("hey");
                             selectedPage.removeClass("selectedRelation");
                             selected = false;
                             annotateData.page_kid = "";
@@ -738,7 +816,6 @@ function annotationPrep() {
                             selectedPage = null;
                         }
                         else {
-                            console.log("oh hey");
                             if(selectedPage != null){
                                 selectedPage.removeClass("selectedRelation");
                             }
@@ -773,10 +850,7 @@ function annotationPrep() {
             });
             index = counter;
 
-            total_pages = Object.keys(globalData).length
-            // console.log("num pages", total_pages);
-            // console.log("offset", current_offset);
-            // console.log("results per page", results_per_page);
+            total_pages = Object.keys(globalData).length;
             // Display pagination
             if (current_offset < total_pages) {
                 $(".annotation_pagination").show();
@@ -797,7 +871,6 @@ function annotationPrep() {
             }
 
             page_nums = Math.ceil(total_pages / results_per_page);
-            //console.log("num pages", page_nums);
             var active_page = (current_offset / results_per_page) + 1;
 
             if (active_page > 1) {

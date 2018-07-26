@@ -10931,7 +10931,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 15px;
 }
 .flagAnnotation {
-  display: inline-block !important;
+  display: block !important;
   height: 27px;
   width: 27px;
   left: -1px;
@@ -10988,7 +10988,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 15px;
   position: relative;
   float: right;
-  margin-right: 15px;
+  margin-right: 20px;
   opacity: .4;
   cursor: pointer;
 }
@@ -11005,7 +11005,7 @@ input[type=range]:focus::-ms-fill-upper {
   float: right;
   opacity: .3;
   cursor: pointer;
-  left: -15px;
+  left: -11px;
 }
 .annotateLabel {
   position: relative;
