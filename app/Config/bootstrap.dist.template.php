@@ -116,7 +116,7 @@ $GLOBALS['SEASON_SID_ARRAY'] = array(
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
     'isthmia' => 36,
     //'isthmia' => 740,
-    'grotto_tiberri' => 22
+    'grotto_tiberri' => 21
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
     'isthmia' => 33,

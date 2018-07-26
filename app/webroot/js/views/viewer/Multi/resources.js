@@ -313,6 +313,7 @@ $(document).ready(function() {
                     if ($('#identifier-' + resourceId).length) {
                         page = $(_resource.pageSlider).find("#" + pageSet);
                         $('#identifier-' + resourceId).click();
+                        setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
                         pageSet = false;
                         clearInterval(checkExist);
                     }
