@@ -303,6 +303,14 @@ class SearchController extends AppController {
                 "Scan_Number", "=", "1");
                 // TODO: make this work
             $pages = json_decode($kora->search(), true);
+
+            $username = NULL;
+            $usersC = new UsersController();
+            if ($user = $usersC->getUser($this->Auth)) {
+                $username = $user['User']['username'];
+            }
+            ResourcesController::filterByPermission($username, $resources);
+
             foreach( $resources as $resource){
 
                 $temp_array = array();
@@ -313,14 +321,6 @@ class SearchController extends AppController {
                 $temp_kid = $resource['kid'];
 
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
-                //permissions stuffs.
-                $username = NULL;
-                $usersC = new UsersController();
-                if ($user = $usersC->getUser($this->Auth)) {
-                    $username = $user['User']['username'];
-                }
-                ResourcesController::filterByPermission($username, $resource);
-
 
                 $r = $resource;
 
@@ -466,6 +466,7 @@ class SearchController extends AppController {
             if ($user = $usersC->getUser($this->Auth)) {
                 $username = $user['User']['username'];
             }
+//            print_r($resources);die;
 
             ResourcesController::filterByPermission($username, $resources);
 
