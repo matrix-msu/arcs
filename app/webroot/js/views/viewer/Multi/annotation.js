@@ -895,6 +895,10 @@ function annotationPrep() {
         annotateData.page_kid = kid;
         annotateData.resource_kid = resourceKid;
         annotateData.resource_name = resourceIdentifier;
+
+        if (annotateData.resource_name == ''){
+            annotateData.resource_name =  $('.archival.objects-table[data-kid="'+resourceKid+'"]').find('#Title').html();
+        }
         annotateData.relation_id = null
         //First relation
         $.ajax({
