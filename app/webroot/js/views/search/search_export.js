@@ -18,9 +18,6 @@
 			resourceKidResults.push(e.kid);
 		});
 
-		console.log('resource kids', resourceKidResults);
-
-
 		var projects = {};
 		var seasons = {};
 		var excavations = {};

@@ -281,6 +281,23 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                                         </span>
                         <div class="icon-export"></div>
                     </a>
+
+
+                    <a class="export-options" id="export-json-btn" href="#">
+                                        <span class="content">
+                                                JSON
+                                        </span>
+                        <div class="icon-export"></div>
+                    </a>
+                    <a class="export-options" id="export-xml-btn" href="#">
+                                        <span class="content">
+                                                XML
+                                        </span>
+                        <div class="icon-export"></div>
+                    </a>
+
+
+
                 </div>
             </div>
         </div>

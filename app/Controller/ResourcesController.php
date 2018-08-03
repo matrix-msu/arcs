@@ -488,7 +488,12 @@ class ResourcesController extends AppController {
     }
 
 
-    public function getExportData($kidArray, $schemeArrayIndex) {
+    public function getExportData($kidArray, $schemeArrayIndex, $exportAsXML = false) {
+        if ($exportAsXML == 'true'){
+            $format = 'XML';
+        }else{
+            $format = 'JSON';
+        }
         //if 'diff' is in any array, remove it
         if  (in_array('diff', $kidArray)){
             $diffArray = array('diff');
@@ -523,7 +528,7 @@ class ResourcesController extends AppController {
                 $sid = parent::getSubjectSIDFromProjectName($pName);
                 break;
         }
-        
+
         $query = array(
             'forms'=>json_encode(array(
                 array(
@@ -535,13 +540,10 @@ class ResourcesController extends AppController {
                             'kids'=>$kidArray
                         )
                     )
-                )   
-            ))
+                )
+            )),
+            'format' => $format
         );
-
-//        echo json_encode($query);
-//        die;
-
 
         $url = KORA_RESTFUL_URL.'search';
         $ch = curl_init();
@@ -553,7 +555,27 @@ class ResourcesController extends AppController {
         $result = curl_exec($ch);
         curl_close($ch);
 
+        if ($exportAsXML == 'true'){
+            $result = json_decode($result);     //change string to stdClass
+            $result = self::cvf_convert_object_to_array($result);   //change stdClass to array
+            $result = $result['records'][0];
+        }
+
         return $result;
+    }
+
+    public function cvf_convert_object_to_array($data) {
+
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+
+        if (is_array($data)) {
+            return array_map(__METHOD__, $data);
+        }
+        else {
+            return $data;
+        }
     }
 
     //create a file to be exported.
@@ -571,14 +593,21 @@ class ResourcesController extends AppController {
         $xmlNames = ['Project_data.json', 'Season_data.json', 'Excavation_Survey_data.json', 'Resource_data.json',
             'Pages_data.json', 'Subject_Of_Observation_data.json'];
 
+        if ($this->request->data['exportAsXML'] == 'true'){
+            $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
+                'Pages_data.xml', 'Subject_Of_Observation_data.xml'];
+        }
+
         $pages_data;
-        
+
         foreach (json_decode($this->request->data['xmls']) as $kidArray) {
-            $data_string = self::getExportData($kidArray, $count);
+            $data_string = self::getExportData($kidArray, $count);  //return json
+            $data_xml_string = self::getExportData($kidArray, $count, $this->request->data['exportAsXML']); //return json or xml
+
             if($count == 4){
                 $pages_data = json_decode($data_string, true);
             }
-            $zip->addFromString($xmlNames[$count], $data_string);
+            $zip->addFromString($xmlNames[$count], $data_xml_string);
             $count++;
         }
 
