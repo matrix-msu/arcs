@@ -1056,15 +1056,18 @@ class ResourcesController extends AppController {
             }
 
 
-            if( isset($info_array[$resource]["Excavation_-_Survey_Associator"])) {
+            if( isset($info_array[$resource]["Excavation_-_Survey_Associator"]) && $info_array[$resource]["Excavation_-_Survey_Associator"] !== '' ){
                 $exc_kids = $this->getFromKey($info_array, "Excavation_-_Survey_Associator");
 
                 //get Season data
                 $excavation_array = $this->getExcavation($exc_kids);
                 $this->pushToArray($excavation_array, $excavations);
 
-                $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
-
+                if( empty($excavation_array) ){
+                    $season_kids = array();
+                }else {
+                    $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
+                }
             }else{
                 $season_kids = $this->getFromKey($info_array, "Season_Associator");
             }
@@ -1367,6 +1370,9 @@ class ResourcesController extends AppController {
         return $result->return_array();
     }
     protected function getSeason($kids){
+        if( $kids == '' || empty($kids) ){
+            return array();
+        }
         $pName = parent::convertKIDtoProjectName($kids[0]);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSeasonSIDFromProjectName($pName);
@@ -1376,6 +1382,9 @@ class ResourcesController extends AppController {
         return $result->return_array();
     }
     protected function getExcavation($kids){
+        if( $kids == '' || empty($kids) ){
+            return array();
+        }
         $pName = parent::convertKIDtoProjectName($kids[0]);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSurveySIDProjectName($pName);
