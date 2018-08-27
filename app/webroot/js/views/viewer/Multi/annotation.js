@@ -36,6 +36,8 @@ function annotationPrep() {
                 resourceHasPermissions = !(currentResource.hasClass('showButNoEdit'));
                 resourceKid = currentResource.attr('id').replace('identifier-', '');
                 resourceIdentifier = RESOURCES[resourceKid]['Resource_Identifier'];
+                var currentPageKid = $('.selectedCurrentPage').find('img').attr('id');
+                currentPageIdentifier = RESOURCES[resourceKid]['page'][currentPageKid]['Page_Identifier'];
                 getAnnotationData();
             }
         });
@@ -469,6 +471,7 @@ function annotationPrep() {
     };
     var resourceKid = '';
     var resourceIdentifier = '';
+    var currentPageIdentifier = '';
     //Annotation search for submitted
     $(".annotateSearchForm").submit(function (event) {
         event.stopPropagation();
@@ -781,8 +784,16 @@ function annotationPrep() {
                             annotateData.resource_kid = resourceKid;
                             annotateData.resource_name = resourceIdentifier;
                             annotateData.relation_resource_name = v['Resource_Identifier'];
+                            if( annotateData.relation_resource_name == '' ){
+                                annotateData.relation_resource_name = v['Page_Identifier'];
+                            }
+                            if( annotateData.resource_name == '' ){
+                                annotateData.resource_name = currentPageIdentifier;
+                            }
                             annotateData.relation_resource_kid = v['Resource_Associator'][0];
                             annotateData.relation_page_kid = v.kid;
+                            console.log('anndata', annotateData);
+                            return;
                         }
 
                         if (selected || annotateData.url.length > 0) {
