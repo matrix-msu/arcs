@@ -313,8 +313,10 @@ function getCollections( resourceKid='' ) {
         },
         success: function (data) {
             var numCollections = 0;
-            numCollections = data.collections.length;
-            if (data.collections.length > 0) {
+            if (typeof(data.collections) !== 'undefined'){
+                numCollections = data.collections.length;
+            }
+            if (typeof (data.collections) !== 'undefined' && data.collections.length > 0) {
                 var populateCollections = "<table><tbody>" +
                     "<tr><td colspan='2'>This resource is a part of the following " + numCollections + " collections...</td></tr>";
                 for (var i = numCollections - 1; i >= 0; i--) {

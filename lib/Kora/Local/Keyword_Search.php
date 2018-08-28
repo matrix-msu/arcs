@@ -29,7 +29,8 @@ require_once("Advanced_Search.php");
 
 use Lib\Kora;
 use Lib\Resource;
-use App\FieldHelpers\KORA_Clause;
+use \KORA_Clause;
+// use App\FieldHelpers\KORA_Clause;
 //use \SearchController;
 use arcs_e\ArcsException;
 use \App;
@@ -51,6 +52,7 @@ class Keyword_Search extends Kora
     protected $formulatedResult;
     protected $project_list = array();
     protected $season_list = array();
+    protected $all_season_kids = array();
     protected $excavation_list = array();
     protected $total = 0;
     protected $preFilter = false;
@@ -106,7 +108,7 @@ class Keyword_Search extends Kora
         //call parent constructor 'kora'
         parent::__construct();
 
-        // check for included resources;
+        // check for pages that have keywords that match
         if (!empty($preFilter) && is_array($preFilter)) {
           $this->preFilter = $preFilter;
         }
@@ -120,8 +122,7 @@ class Keyword_Search extends Kora
     * @param int    $end     | the end index of results
     * @return void
     */
-    public function execute($query,$project=null,$start=1,$end=10000)
-    {
+    public function execute($query,$project=null,$start=1,$end=10000){
 
         $time_start = microtime(true);
         $mem_start =  memory_get_usage();
@@ -130,7 +131,7 @@ class Keyword_Search extends Kora
         $terms = self::queryFilter($terms);
         $terms = self::dateFilter($terms);
 
-        $resourcesFromSOO = $this->_searchSOO($terms, $project);
+        $resourceKidsFromSoo = $this->_searchSOO($terms, $project);
 
         $clause = $this->_clauseGen(
             "OR", "LIKE",
@@ -140,13 +141,13 @@ class Keyword_Search extends Kora
             ), $terms
         );
 
-        //echo json_encode($terms);echo 'after';die;
+        //add in resources found from soo form
+        if( !empty($resourceKidsFromSoo) && $resourceKidsFromSoo != array() ){
+            $sooClause = new KORA_Clause("kid", "IN", $resourceKidsFromSoo);
+            $clause = new KORA_Clause($clause, "OR", $sooClause);
+        }
 
-
-//        print_r($clause);
-//        print_r($this->preFilter);
-//        die;
-
+        //add in resources from the keywords filter
         if( $this->preFilter != array(0=>'empty') ){
           $keywordFilter = new KORA_Clause("kid", "IN", $this->preFilter);
           $clause = new KORA_Clause($clause, "OR", $keywordFilter);
@@ -154,39 +155,54 @@ class Keyword_Search extends Kora
 
         //set up the kora search parameters for keyword search on RESOURCE
         $pid = parent::getPIDFromProjectName($project);
-        $rid = parent::getResourceSIDFromProjectName($project);
-        $token = parent::getTokenFromProjectName($project);
-        $this->set_search_parameters($query, $pid, $rid, $token, $clause);
-
-        //echo print_r(array($query, $pid, $rid, $token, $clause));
-
-        //do the keyword search
-        $resourcesFromResource = parent::search();
-
-        //echo json_encode($resourcesFromSOO);die;
-//        echo 'before return';
-        //echo json_encode($resourcesFromResource);die;
-
-
-
-        $this->formulatedResult = $this->koraSort(
-            array_merge($resourcesFromResource, $resourcesFromSOO),
+        $rSid = parent::getResourceSIDFromProjectName($project);
+        //$token = parent::getTokenFromProjectName($project);
+        $fields = array(
+            "Excavation_-_Survey_Associator",
+            "Season_Associator",
+            "Title",
+            "Type",
             "Resource_Identifier",
-            $pid,
-            $rid
+            "Accession_Number",
+            "Creator",
+            "Creator2",
+            "systimestamp",
+            "recordowner",
+            "Earliest_Date",
+            "Latest_Date",
+            "Permissions",
+        );
+        $sort = array(
+            array(
+                'field' => "Resource_Identifier",
+                'direction' => SORT_ASC
+            )
         );
 
-        //echo 'korasort:';
-        //echo json_encode($this->formulatedResult);die;
+        $kora = new Advanced_Search($pid, $rSid, $fields,null,null,$sort);
+        $kora->add_kora_clause($clause);
+        $this->formulatedResult = $kora->unformatted_search();
 
+        $sooResourceCount = count($resourceKidsFromSoo);
         $extra_data = array(
-            "Return_Count_SOO"=>count($resourcesFromSOO),
-            "Return_Count_Resource"=>count($resourcesFromResource),
+            "Return_Count_SOO"=>$sooResourceCount,
+            "Return_Count_Resource"=>count($this->formulatedResult)-$sooResourceCount,
         );
 
-        // traverse the database to include excavation,
-        // season and project associations;
-        $this->traverse_insert($project);
+        $this->projectMapping = parent::getPIDFromProjectName($project);
+
+        if( !empty($this->formulatedResult) ){
+
+            $page = parent::getPageSIDFromProjectName($project);
+            $this->insertPages($page);
+
+            $survey = parent::getSurveySIDProjectName($project);
+            $this->insertExcavations($survey);
+
+            $season = parent::getSeasonSIDFromProjectName($project);
+            $this->insertSeasons($season);
+        }
+
 
         // get resource filters
         $filters = Resource::filter_analysis($this->formulatedResult);
@@ -206,58 +222,85 @@ class Keyword_Search extends Kora
         $this->format_results($time, $total_mem, $filters, $indicators, $extra_data);
 
     }
-    private function koraSort($result, $field, $pid, $sid) {
-//        $fields = array("Title", "Type","Resource_Identifier", "Permissions", "Special_User");
-//        $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
-//        $sort = array();    //Use this to turn of the sorting
-//        $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
-//        $kora->add_clause("kid", "!=", '');
+//    private function koraSort($result, $field, $pid, $sid) {
+////        $fields = array("Title", "Type","Resource_Identifier", "Permissions", "Special_User");
+////        $sort = array(array( 'field' => 'systimestamp', 'direction' => SORT_DESC));
+////        $sort = array();    //Use this to turn of the sorting
+////        $kora = new Advanced_Search($pid, $sid, $fields, 0, 8, $sort);
+////        $kora->add_clause("kid", "!=", '');
+//
+//
+//
+//
+//        $result_keys = array_keys($result);
+//        if (empty($result_keys)) {
+//            $result_keys = array("empty");
+//        }
+//
+//        $sort = array(
+//            array(
+//                'field' => $field,
+//                'direction' => SORT_ASC
+//            )
+//        );
+//        $fields = array(
+//            "Excavation_-_Survey Associator",
+//            "Title",
+//            "Type",
+//            "Resource_Identifier",
+//            "Accession_Number",
+//            "Creator",
+//            "Creator2",
+//            "systimestamp",
+//            "recordowner",
+//            "Earliest_Date",
+//            "Latest_Date",
+//            "Permissions",
+//         );
+//
+//        $kora = new Advanced_Search($pid, $sid, $fields,null,null,$sort);
+//        $kora->add_clause("kid", "IN", $result_keys);
+//        $kora->search();
+//        return $kora->getResultsAsArray();
+//
+//    }
 
+    /**
+    * set the kora search paramaters
+    *
+    * @param string $project     | n/a
+    * @return void
+    */
+    protected function traverse_insert($project)
+    {
 
+        if (!empty($this->formulatedResult)) {
 
+            $page = parent::getPageSIDFromProjectName($project);
+            $this->insertPages($page);
 
-        $result_keys = array_keys($result);
-        if (empty($result_keys)) {
-            $result_keys = array("empty");
+            $survey = parent::getSurveySIDProjectName($project);
+            $this->insertExcavations($survey);
+
+            $season = parent::getSeasonSIDFromProjectName($project);
+            $this->insertSeasons($season);
+
+            //$this->insertProjects();
         }
 
-        $sort = array(
-            array(
-                'field' => $field,
-                'direction' => SORT_ASC
-            )
-        );
-        $fields = array(
-            "Excavation_-_Survey Associator",
-            "Title",
-            "Type",
-            "Resource_Identifier",
-            "Accession_Number",
-            "Creator",
-            "Creator2",
-            "systimestamp",
-            "recordowner",
-            "Earliest_Date",
-            "Latest_Date",
-            "Permissions",
-         );
-
-        $kora = new Advanced_Search($pid, $sid, $fields,null,null,$sort);
-        $kora->add_clause("kid", "IN", $result_keys);
-        $kora->search();
-        return $kora->getResultsAsArray();
-
     }
+
+
+
     /**
     * executes a search on a query in a Subject of observation
     *
     * @param string $query   | the query to search
     * @param string $project | the project name
-    * @return results as array
+    * @return $pages as array
     */
     private function _searchSOO($query, $project)
     {
-
         //set up the kora search parameters for keyword search on SOO
         $pid = parent::getPIDFromProjectName($project);
         $token = parent::getTokenFromProjectName($project);
@@ -266,11 +309,12 @@ class Keyword_Search extends Kora
             "OR",
             "LIKE",
             array(
-            "Artifact - Structure Classification","Artifact - Structure Type",
-            "Artifact - Structure Material","Artifact - Structure Technique",
-            "Artifact - Structure Period","Artifact - Structure Terminus Ante Quem",
-            "Artifact - Structure Terminus Post Quem"
-            ), $query
+                "Artifact - Structure Classification","Artifact - Structure Type",
+                "Artifact - Structure Material","Artifact - Structure Technique",
+                "Artifact - Structure Period","Artifact - Structure Terminus Ante Quem",
+                "Artifact - Structure Terminus Post Quem"
+            ),
+            $query
         );
 
         $subject = parent::getSubjectSIDFromProjectName($project);
@@ -282,27 +326,20 @@ class Keyword_Search extends Kora
         if (empty($soo)) {
             return array();
         }
-
-        $pages = $this->mergeIntoArray($soo, "Pages Associator");
+        $pages = $this->cheapMergeIntoArray($soo, "Pages_Associator");
 
         $clause = new KORA_Clause("kid", "IN", $pages);
         $pageSID = parent::getPageSIDFromProjectName($project);
         $this->set_search_parameters($query, $pid, $pageSID, $token, $clause, array("Resource Associator"));
 
-        $page = parent::search();
+        $pages = parent::search();
 
-        if (empty($page)) {
+        if (empty($pages)) {
             return array();
         }
+        $resourceKids = $this->cheapMergeIntoArray($pages, "Resource_Associator");
 
-        $resources = $this->mergeIntoArray($page, "Resource Associator");
-
-        $clause = new KORA_Clause("kid", "IN", $resources);
-        $rid = parent::getResourceSIDFromProjectName($project);
-        $this->set_search_parameters($query, $pid, $rid, $token, $clause, null);
-        $resourcesWithFields = parent::search();
-
-        return $resourcesWithFields;
+        return $resourceKids;
     }
     /**
     * generates a kora clause from a array of fields
@@ -311,7 +348,7 @@ class Keyword_Search extends Kora
     * @param string $condition | the field operator
     * @param int    $array     | the array of fields
     * @param int    $query     | the query
-    * @return void
+    * @return KORA_Clause\
     */
     private function _clauseGen($join,$condition,$array,$query)
     {
@@ -338,7 +375,6 @@ class Keyword_Search extends Kora
             for ($i = 1; $i < count($clauses); $i++) {
                 $joins = new KORA_Clause($joins, $join, $clauses[$i]);
             }
-
         } else {
             $clauses = array();
             foreach ($array as $term) {
@@ -350,7 +386,6 @@ class Keyword_Search extends Kora
                 $joins = new KORA_Clause($joins, $join, $clauses[$i]);
             }
         }
-
         return $joins;
     }
     /**
@@ -383,6 +418,32 @@ class Keyword_Search extends Kora
         //ensure array has no duplicates
         return  array_unique($return_array);
     }
+
+    private function cheapMergeIntoArray($input_array, $attribute)
+    {
+        $return_array = array();
+        //combine all results pages into an array
+        foreach ($input_array as $kid) {
+            if( isset($kid[$attribute]) && is_array($kid[$attribute]) && count($kid[$attribute]) > 0 ){
+                $return_array[] = $kid[$attribute][0];
+            }
+        }
+        return  $return_array;
+    }
+    private function fullMergeIntoArray($input_array, $attribute)
+    {
+        $return_array = array();
+        //combine all results pages into an array
+        foreach ($input_array as $value) {
+            if( isset($value[$attribute]) && is_array($value[$attribute]) ){
+                foreach( $value[$attribute] as $kid ){
+                    $return_array[] = $kid;
+                }
+            }
+        }
+        return  $return_array;
+    }
+
     /**
     * formats a return array with stats and performace data
     *
@@ -473,57 +534,6 @@ class Keyword_Search extends Kora
     }
 
     /**
-    * set the kora search paramaters
-    *
-    * @param string $project     | n/a
-    * @return void
-    */
-    protected function traverse_insert($project)
-    {
-
-        if (!empty($this->formulatedResult)) {
-
-            $page = parent::getPageSIDFromProjectName($project);
-            $this->insertPages($page);
-
-            $survey = parent::getSurveySIDProjectName($project);
-            $this->insertExcavations($survey);
-
-            $season = parent::getSeasonSIDFromProjectName($project);
-            $this->insertSeasons($season);
-
-            //$this->insertProjects();
-        }
-
-    }
-
-    /**
-    * returns project List as a key value array
-    *
-    *key 7B-2DF-0 would look like:
-    *
-    *[7B-2DF-0] = "1972"
-    *
-    * @return void
-    */
-    protected function getProjectList()
-    {
-
-        $projects = array();
-        $this->projectMapping = PID;
-        $this->schemeMapping = PROJECT_SID;
-        $this->fields =  array("Persistent Name");
-        $this->The_Clause = new KORA_Clause("kid", "!=", "");
-
-        self::search();
-
-        foreach ($this->comprehensive_results as $key => $value) {
-            $projects[$key] = $value['Persistent Name'];
-        }
-        return $projects;
-
-    }
-    /**
     *returns season List as a key value array
 
      *key 7B-2DF-0 would look like:
@@ -539,10 +549,10 @@ class Keyword_Search extends Kora
         $season = array();
         $this->schemeMapping = $sid;
         $this->fields = array("Title", "Project_Associator");
-        $this->The_Clause = new KORA_Clause("kid", "!=", "");
+        $this->The_Clause = new KORA_Clause("kid", "=", array_values($this->all_season_kids));
 
         self::search();
-
+        
         foreach ($this->comprehensive_results as $key => $value) {
             $projAssoc = isset($value["Project_Associator"][0])?$value["Project_Associator"][0]:"";
             if (isset($value['Title'])) {
@@ -571,98 +581,162 @@ class Keyword_Search extends Kora
     */
     protected function getExcavationList($survey)
     {
+        $excavationKids = self::fullMergeIntoArray($this->formulatedResult, "Excavation_-_Survey_Associator");
+
         $excavation = array();
         $this->schemeMapping = $survey;
-        $this->fields = array("Name", "Season Associator","Type");
-        $this->The_Clause = new KORA_Clause("kid", "!=", "");
+        $this->fields = array("Name", "Season_Associator","Type");
+        $this->The_Clause = new KORA_Clause("kid", "IN", $excavationKids);
 
         self::search();
 
         foreach ($this->comprehensive_results as $key => $value) {
-            $seasonAssoc = isset($value["Season Associator"][0])?$value["Season Associator"][0]:"";
+            $seasonAssoc = "";
+            if( isset($value["Season_Associator"]) ){
+                foreach( $value["Season_Associator"] as $season ){
+                    $this->all_season_kids[] = $season;
+                }
+            }
+            $seasonAssoc = isset($value["Season_Associator"])?$value["Season_Associator"]:array();
             $excavation[$key] = array(
-            "Name" => $value['Name'],
-            "Type" => $value['Type'],
-            "Season Associator" => $seasonAssoc
-
+                "Name" => $value['Name'],
+                "Type" => $value['Type'],
+                "Season_Associator" => $seasonAssoc
             );
         }
+        $this->all_season_kids = array_unique($this->all_season_kids);
         return $excavation;
 
     }
 
     public function insertPages($page)
     {
-
-        $pageArray = array();
+        $this->fields = array("Image Upload", "Resource Associator", "Scan_Number");
         $this->schemeMapping = $page;
-        $this->fields = array("Image Upload", "Resource Associator");
-        $this->The_Clause = new KORA_Clause("kid", "!=", "");
-
+        $resourceKids = array_keys($this->formulatedResult);
+        $scanNumberClause = new KORA_Clause("Scan_Number", '=', '1');
+        $kidClause = new KORA_Clause("Resource_Associator", "IN", $resourceKids);
+        $this->The_Clause = new KORA_Clause($kidClause, "AND", $scanNumberClause);
         $images = self::search();
 
+        $pKid = $this->projectMapping.'-'.$page.'-';
 
         foreach ($images as $img) {
-
-            $pKid = $img['kid'];
             if (isset($img["Resource_Associator"]) && is_array($img["Resource_Associator"])) {
                 foreach ($img["Resource_Associator"] as $rKid) {
-                    if (!isset($pageArray[$rKid])) {
-                        $pageArray[$rKid] = isset($img["Image_Upload"]['localName'])?
-                        $img["Image_Upload"]['localName'] : "none" ;
+                    if(
+                        isset($this->formulatedResult[$rKid]) &&
+                        isset($img["Image_Upload"]) &&
+                        isset($img["Image_Upload"]['localName'])
+                    ){
+                        if(
+                            (isset($img["Scan_Number"]) && $img["Scan_Number"] == '1') ||
+                            !isset($this->formulatedResult[$rKid]["thumb"])
+                        ){
+                            $this->formulatedResult[$rKid]["thumb"] = $this->smallThumb($img["Image_Upload"]['localName'], $pKid);
+                        }
                     }
                 }
             }
         }
-        foreach ($this->formulatedResult as $obj) {
-            if (isset($pageArray[$obj['kid']])) {
-                $this->formulatedResult[$obj['kid']]["thumb"] = $this->smallThumb($pageArray[$obj['kid']], $pKid);
-            } else {
-                $this->formulatedResult[$obj['kid']]["thumb"] = DEFAULT_THUMB;
+        //insert default images
+        $defaultImage = $this->smallThumb('', $pKid);
+        foreach ($this->formulatedResult as $kid => $resource) {
+            if( !isset($this->formulatedResult[$kid]["thumb"]) ){
+                $this->formulatedResult[$kid]["thumb"] = $defaultImage;
             }
         }
     }
 
     private function insertExcavations($survey)
     {
-
         $this->excavation_list = self::getExcavationList($survey);
 
         foreach ($this->formulatedResult as $key => $value) {
 
-            $newkey = isset($value["Excavation - Survey Associator"][0])?
-            $value["Excavation - Survey Associator"][0]: "";
+            $newkey = isset($value["Excavation_-_Survey_Associator"][0])?
+            $value["Excavation_-_Survey_Associator"][0]: "";
 
             if (array_key_exists($newkey, $this->excavation_list)) {
-
-                $this->formulatedResult[$key]["Excavation Name"] = $this->excavation_list[$newkey]["Name"];
-                $this->formulatedResult[$key]["Excavation Type"] = $this->excavation_list[$newkey]["Type"];
-                $this->formulatedResult[$key]["Season Associator"] = $this->excavation_list[$newkey]["Season Associator"];
+                if( isset($this->excavation_list[$newkey]["Name"]) ){
+                    $this->formulatedResult[$key]["Excavation Name"] = $this->excavation_list[$newkey]["Name"];
+                }
+                if( isset($this->excavation_list[$newkey]["Type"]) ){
+                    $this->formulatedResult[$key]["Excavation Type"] = $this->excavation_list[$newkey]["Type"];
+                }
+                if( isset($this->excavation_list[$newkey]["Season_Associator"]) ){
+//                    if( !isset($this->formulatedResult[$key]["Season_Associator"]) || !is_array($this->formulatedResult[$key]["Season_Associator"]) ){
+//                        $this->formulatedResult[$key]["Season_Associator"] = array();
+//                    }
+//                    $this->formulatedResult[$key]["Season_Associator"] = array_unique(array_merge(
+//                        $this->formulatedResult[$key]["Season_Associator"],
+//                        $this->excavation_list[$newkey]["Season_Associator"]
+//                    ));
+                }
             } else {
                 $this->formulatedResult[$key]["Excavation Name"] = "";
-                $this->formulatedResult[$key]["Season Associator"] = "";
+                $this->formulatedResult[$key]["Excavation Type"] = "";
+                //$this->formulatedResult[$key]["Season Associator"] = "";
+            }
+            $this->formulatedResult[$key]["All_Excavations"] = array();
+            if( isset($value["Excavation_-_Survey_Associator"]) && is_array($value["Excavation_-_Survey_Associator"]) ){
+                foreach($value["Excavation_-_Survey_Associator"] as $excavation){
+                    $tmpArray = array();
+                    if( isset($this->excavation_list[$excavation]["Name"]) ){
+                        $tmpArray["Excavation Name"] = $this->excavation_list[$excavation]["Name"];
+                    }
+                    if( isset($this->excavation_list[$excavation]["Type"]) ){
+                        $tmpArray["Excavation Type"] = $this->excavation_list[$excavation]["Type"];
+                    }
+                    if( isset($this->excavation_list[$excavation]["Season_Associator"]) ){
+                        $tmpArray["Season Associator"] = $this->excavation_list[$excavation]["Season_Associator"];
+
+                        if( !isset($this->formulatedResult[$key]["Season_Associator"]) || !is_array($this->formulatedResult[$key]["Season_Associator"]) ){
+                            $this->formulatedResult[$key]["Season_Associator"] = array();
+                        }
+                        $this->formulatedResult[$key]["Season_Associator"] = array_unique(array_merge(
+                            $this->formulatedResult[$key]["Season_Associator"],
+                            $this->excavation_list[$excavation]["Season_Associator"]
+                        ));
+
+                        //echo json_encode($this->formulatedResult);die;
+                    }
+                    $this->formulatedResult[$key]["All_Excavations"][$excavation] = $tmpArray;
+                }
+            }
+            if( isset($value["Season_Associator"]) && is_array($value["Season_Associator"]) ){
+                foreach( $value["Season_Associator"] as $seasonKid ){
+                    $this->all_season_kids[] = $seasonKid;
+                }
             }
         }
-
+        $this->all_season_kids = array_unique($this->all_season_kids);
     }
     private function insertSeasons($season)
     {
         $this->season_list = self::getSeasonList($season);
+
         foreach ($this->formulatedResult as $key => $value) {
-
-            $newkey = isset($value["Season Associator"])?
-            $value["Season Associator"]: "";
-
+            $newkey = "";
+            if( isset($value["Season_Associator"]) && is_array($value["Season_Associator"]) ){
+                $newkey = $value["Season_Associator"][0];
+            }
             if (array_key_exists($newkey, $this->season_list)) {
-
                 $this->formulatedResult[$key]["Season Name"] = $this->season_list[$newkey]["Name"];
                 $this->formulatedResult[$key]["Project Associator"] = $this->season_list[$newkey]["Project Associator"];
             } else {
                 $this->formulatedResult[$key]["Season Name"] = "";
                 $this->formulatedResult[$key]["Project Associator"] = "";
             }
+            if( !isset($this->formulatedResult[$key]['All_Seasons']) || !is_array($this->formulatedResult[$key]['All_Seasons']) ){
+                $this->formulatedResult[$key]['All_Seasons'] = array();
+            }
+            foreach($value["Season_Associator"] as $season){
+                if (array_key_exists($season, $this->season_list)) {
+                    $this->formulatedResult[$key]["All_Seasons"][] = $this->season_list[$season]["Name"];
+                }
+            }
         }
-
     }
     public function queryFilter($query)
     {

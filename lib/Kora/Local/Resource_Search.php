@@ -4,7 +4,7 @@ require_once("Resource.php");
 
 use Lib\Kora\Keyword_Search;
 use Lib\Resource;
-use App\FieldHelpers\KORA_Clause;
+// use App\FieldHelpers\KORA_Clause;
 
 class Resource_Search extends Keyword_Search {
 

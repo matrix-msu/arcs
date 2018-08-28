@@ -18,184 +18,86 @@
 			resourceKidResults.push(e.kid);
 		});
 
+		var projects = {};
+		var seasons = {};
+		var excavations = {};
+		var resources = {};
+		var pages = {};
+		var subjects = {};
+
+		var seasonKids = [];
+		var excavationKids = [];
+		var resourceKids = [];
+		var pageKids = [];
+		var subjectKids = [];
+		var projectKids = [];
+		var imagesArray = [];
+
+		var kidArray = [];
+
+
         //grab all of the data from a multi-resource call.
 		var schemeData = [];		
 		$.ajax({
             url: arcs.baseURL + "resource?ajax",
             type: "POST",
-            data: {'resources': JSON.stringify(resourceKidResults)},
+            data: {'resources': JSON.stringify(resourceKidResults), 'isExportAjax': true},
             statusCode: {
                 200: function (data) {
-                    //console.log('ajax success');
-                    schemeData = JSON.parse(data);
+					schemeData = JSON.parse(data);
+					console.log('ajax success', schemeData);
+					projects = schemeData[0];
+					seasons = schemeData[1];
+					excavations = schemeData[2];
+					resources = schemeData[3];
+					subjects = schemeData[4];
 					processExportData();
                 }
             }
-        })
+		})
 
 		function processExportData(){
-			//load data in variables
-			var xmlArray = [];
-			var xmlString = '';
+			for (var season in seasons) {
+				seasonKids.push(season);
+			}
 
-			var projectsObject = scheme2json(schemeData[0]);
+			for (var excavation in excavations) {
+				excavationKids.push(excavation);
+			}
+
+			for (var resource in resources) {
+				resourceKids.push(resource);
+				for (var page in resources[resource]['page']) {
+					pageKids.push(page);
+				}
+
+			}
+
+			for (var subject in subjects) {
+				subjectKids.push(subject);
+			}
+
+			for (var project in projects) {
+				projectKids.push(project);
+			}
+
+			kidArray = [projectKids, seasonKids, excavationKids, resourceKids, pageKids, subjectKids];
 			
-			var seasonsObject = [];
-			if( !jQuery.isEmptyObject(schemeData[1]) ) {
-				seasonsObject = scheme2json(schemeData[1]);
-			}
-			var excavationsObject = [];
-			if( !jQuery.isEmptyObject(schemeData[2]) ) {
-				excavationsObject = scheme2json(schemeData[2]);
-			}
-			var resourcesObject = scheme2json(schemeData[3]);
-			var pagesObject = [];
-			resourcesObject.forEach(function (tempdata) {
-				if ('page' in tempdata) {
-					for( var key in tempdata['page'] ){
-						pagesObject.push(tempdata['page'][key]);
-					}
-					delete tempdata['page'];
-				}
-			})
-			var pageUrls = [];
-			var subjectsObjectsArray = [];
-			if( !jQuery.isEmptyObject(schemeData[4]) ) {
-				subjectsObjectsArray = scheme2json(schemeData[4]);
-			}
-
-			//turn the data into xmls--
-			// handle project
-			projectsObject.forEach(function (tempdata) {
-				if( 'linkers' in tempdata ) {
-					tempdata.linkers.forEach(function (linker) {
-						seasonsObject.forEach(function (record) {
-							if (linker == record.kid) {
-								var data = '';
-								if ('Name' in tempdata) {
-									data = tempdata.Name;
-								}
-								record['Project Associator'] = data;
-							}
-						})
-					})
-				}
-			})
-			xmlString = objects2xmlString(projectsObject);
-			xmlArray.push(xmlString);
-
-			// handle season
-			seasonsObject.forEach(function (tempdata) {
-				if( 'linkers' in tempdata ) {
-					tempdata.linkers.forEach(function (linker) {
-						excavationsObject.forEach(function (record) {
-							if (linker == record.kid) {
-								var data = '';
-								if ('Title' in tempdata) {
-									data = tempdata.Title;
-								}
-								record['Season Associator'] = data;
-							}
-						})
-						resourcesObject.forEach(function (record) {
-							if (linker == record.kid) {
-								var data = '';
-								if ('Title' in tempdata) {
-									data = tempdata.Title;
-								}
-								record['Season Associator'] = data;
-							}
-						})
-					})
-				}
-			})
-			xmlString = '';
-			xmlString = objects2xmlString(seasonsObject);
-			xmlArray.push(xmlString);
-
-			// handle excavation
-			excavationsObject.forEach(function (tempdata) {
-				if( 'linkers' in tempdata ) {
-					tempdata.linkers.forEach(function (linker) {
-						resourcesObject.forEach(function (record) {
-							if (linker == record.kid) {
-								var data = '';
-								if ('Name' in tempdata) {
-									data = tempdata.Name;
-								}
-								record['Excavation - Survey Associator'] = data;
-							}
-						})
-					})
-				}
-			})
-			xmlString = '';
-			xmlString = objects2xmlString(excavationsObject);
-			xmlArray.push(xmlString);
-
-			//handle resource
-			resourcesObject.forEach(function (tempdata) {
-				if( 'linkers' in tempdata ) {
-					tempdata.linkers.forEach(function (linker) {
-						pagesObject.forEach(function (record) {
-							if (linker == record.kid) {
-								var data = '';
-								if ('Resource Identifier' in tempdata) {
-									data = tempdata['Resource Identifier'];
-								}
-								record['Resource Identifier'] = data;
-							}
-						})
-					})
-				}
-			})
-			xmlString = '';
-			xmlString = objects2xmlString(resourcesObject);
-			xmlArray.push(xmlString);
-
-			//take care of the multiple pages
-			pagesObject.forEach(function (tempdata) {
-				if( 'linkers' in tempdata ) {
-					tempdata.linkers.forEach(function (linker) {
-						subjectsObjectsArray.forEach(function (record) {
-							if (linker == record.kid) {
-								var data = '';
-								if ('Page Identifier' in tempdata) {
-									data = tempdata['Page Identifier'];
-								}
-								record['Pages Associator'] = data;
-							}
-						})
-					})
-				}
-				pageUrls.push(tempdata['Image Upload']['localName']); //collect image url stuff for later
-				var uploadObject = {originalName:tempdata['Image Upload']['originalName'],text:tempdata['Image Upload']['localName']};
-				tempdata['Image Upload'] = uploadObject;
-			})
-			xmlString = '';
-			xmlString = objects2xmlString(pagesObject);
-			xmlArray.push(xmlString);
-
-			//nothing fancy for subject since it doesn't have a scheme below.
-			xmlString = '';
-			xmlString = objects2xmlString(subjectsObjectsArray);
-			xmlArray.push(xmlString);
-
 			//create file
 			$.ajax({
 				url: arcs.baseURL + "resources/createExportFile",
 				type: "POST",
-				data: {'xmls': JSON.stringify(xmlArray), 'picUrls': JSON.stringify(pageUrls)},
+				data: { 'xmls': JSON.stringify(kidArray) },
 				statusCode: {
 					200: function (data) {
 						//download created file
 						$('<form />')
 							.hide()
-							.attr({ method : "post" })
-							.attr({ action : arcs.baseURL + "resources/downloadExportFile"})
+							.attr({ method: "post" })
+							.attr({ action: arcs.baseURL + "resources/downloadExportFile" })
 							.append($('<input />')
-								.attr("type","hidden")
-								.attr({ "name" : "filename" })
+								.attr("type", "hidden")
+								.attr({ "name": "filename" })
 								.val(data)
 							)
 							.append('<input type="submit" />')
@@ -203,31 +105,35 @@
 							.submit();
 
 						//check when the export finishes
-						setTimeout(function(){ //give time for jquery form click
+						setTimeout(function () { //give time for jquery form click
 							$.ajax({
 								url: arcs.baseURL + "resources/checkExportDone",
 								type: "POST",
-								data: {'filename': data},
+								data: { 'filename': data },
 								statusCode: {
 									200: function () {
-										$('#options-btn').html('Export');
-										isExporting = 0;
-									}
+                                        console.log("success");
+                                    },
+                                    400: function () {
+                                        console.log("Bad Request");
+                                    },
+                                    405: function () {
+                                        console.log("Method Not Allowed");
+                                    }
 								}
 							});
-						}, 50);
+                        }, 50);
+                        $('.icon-export').html('');
+                        $('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
+                        isExporting = 0;
 					},
-					400: function () {
-						console.log("Bad Request");
-					},
-					405: function () {
-						console.log("Method Not Allowed");
-					}
 				}
 			});
-			return;
+			//hide the loader
+			$('#options-btn').css("display", "none");
 		}
 	});
+	
 	function scheme2json(scheme){
 		//build the all the records into a json encoded array.
             var schemeString = '[';

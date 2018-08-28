@@ -33,7 +33,7 @@ class KeywordsController extends MetaResourcesController {
         if (!$this->request->data) {$this->json(400); throw new BadRequestException();}
 
         //increment the count for all rows with the same project_kid and keyword
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};
@@ -71,6 +71,7 @@ class KeywordsController extends MetaResourcesController {
             $this->request->data['keyword'] = $keyword;
             $this->Keyword->permit('count');
             $this->Keyword->create();
+            //echo json_encode($this->request->data);die;
             $this->Keyword->save($this->request->data);
 
             //update the count for all the keyword, project_kid combos
@@ -93,7 +94,7 @@ class KeywordsController extends MetaResourcesController {
 
         //// Start SQL Area
         ///////////////////
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};
@@ -113,8 +114,8 @@ class KeywordsController extends MetaResourcesController {
         $result = $mysqli->query($sql);
         $keywords = array();
         while($row = mysqli_fetch_assoc($result))
-            $keywords[] = $row{'keyword'};
-
+        $keywords[] = $row{'keyword'};
+        
         $this->json(201, $keywords);
     }
 
@@ -127,7 +128,7 @@ class KeywordsController extends MetaResourcesController {
 
         //// Start SQL Area
         ///////////////////
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};
@@ -162,7 +163,7 @@ class KeywordsController extends MetaResourcesController {
 
         //// Start SQL Area
         ///////////////////
-        include_once("../Config/database.php");
+        // include_once("../Config/database.php");
         $db = new DATABASE_CONFIG();
         $db_object =  (object) $db;
         $db_array = $db_object->{'default'};

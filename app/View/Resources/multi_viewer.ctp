@@ -248,9 +248,11 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     <div id="viewer-left">
         <div id="viewer-tools">
+            <div class="annotateHelp">Click and drag to outline the area you would like to annotate.
+                <div class="annotationHelpOk">Cancel</div>
+            </div>
             <div class="container1">
                 <h3><?php  ?> </h3>
-
                 <div class="tools" style="visibility:hidden;" >
                     <a id="collection-modal-btn" href="#">
                                         <span class="content">
@@ -279,15 +281,30 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                                         </span>
                         <div class="icon-export"></div>
                     </a>
+
+
+                    <a class="export-options" id="export-json-btn" href="#">
+                                        <span class="content">
+                                                JSON
+                                        </span>
+                        <div class="icon-export"></div>
+                    </a>
+                    <a class="export-options" id="export-xml-btn" href="#">
+                                        <span class="content">
+                                                XML
+                                        </span>
+                        <div class="icon-export"></div>
+                    </a>
+
+
+
                 </div>
             </div>
         </div>
 
         <div id="viewer-window">
 
-            <div class="annotateHelp">Click and drag to outline the area you would like to annotate.
-                <div class="annotationHelpOk">Cancel</div>
-            </div>
+
             <div id="ImageWrap" class="canvasGrabCursor">
                 <img src="<?php ?> " id="PageImage">
                 <div id="PageImagePreloader" style="display:none;height:100%;display:flex;align-items:center;">
@@ -421,7 +438,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <div id="resources-nav" class="pages-resource-nav" style="display:none;">
     <div class="button-left" id="button-left">
         <a id="left-button">
-            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px">
+            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px">
         </a>
     </div>
 
@@ -464,7 +481,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
   <div class="button-right" id="button-right">
       <a  id="right-button">
-          <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px">
+          <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px">
       </a>
   </div>
 </div>
@@ -480,7 +497,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
-            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" height="110px" width="10px" />
+            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px" />
         </a>
     </div>
 
@@ -523,7 +540,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 <div class="button-right" id="button-right">
     <a id="right-button">
-        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="110px" width="10px" />
+        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px" />
     </a>
 </div>
 </div>
@@ -539,60 +556,97 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
 <script>
 //set variables for multipage delayed loading
-var multiInfo = <?php echo $multiInfo; ?>;
+var multiInfo = <?php if(isset($multiInfo)){echo $multiInfo;}else{echo '""';} ?>;
 
 //update the toolbar page urls with project.
 
 //get project name
 var pName = $('#project1').find("[id='Persistent_Name']").html();
-pName = pName.replace(/ /g, '_').toLowerCase();
+if( typeof pName !== 'undefined' ) {
+    pName = pName.replace(/ /g, '_').toLowerCase();
 
 //add the project kid to the resources url.
-var href = $('#resources').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+pName;
-$('#resources').attr('href', href);
+    var href = $('#resources').attr('href');
+    href = href.split('/');
+    href.pop();
+    href = href.join('/');
+    var href = href + '/' + pName;
+    $('#resources').attr('href', href);
 
 //add project kid to the collections url.
-var href = $('#collections').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+pName;
-$('#collections').attr('href', href);
+    var href = $('#collections').attr('href');
+    href = href.split('/');
+    href.pop();
+    href = href.join('/');
+    var href = href + '/' + pName;
+    $('#collections').attr('href', href);
 
 //add project kid to the search url.
-var href = $('#search').attr('href');
-href = href.split('/'); href.pop(); href = href.join('/');
-var href = href+'/'+pName;
-$('#search').attr('href', href);
+    var href = $('#search').attr('href');
+    href = href.split('/');
+    href.pop();
+    href = href.join('/');
+    var href = href + '/' + pName;
+    $('#search').attr('href', href);
+    
+    $('#soo').ready(function(){
+        $('.selectedCurrentPage').find('img')[0].click();
+    });
 
-$('#soo').ready(function(){
-    $('.selectedCurrentPage').find('img')[0].click();
-});
+
+    $('#viewer-right').on('click', '.stable-url', function(){
+        var url = $(this).attr('href');
+        var win = window.open(url, '_blank');
+        win.focus();
+    });
+}
 
 
-$('#viewer-right').on('click', '.stable-url', function(){
-    var url = $(this).attr('href');
-    var win = window.open(url, '_blank');
-    win.focus();
-});
 
 //$('#viewer-right').on('click', '.js-textareacopybtn', function(){
 //    var copyTextarea = document.querySelector('.js-copytextarea');
 //    copyTextarea.select();
 //    document.execCommand('copy')
 //});
-function myFunction() {
-    $('#myInput').css('display', 'block');
-    var copyText = document.getElementById("myInput");
-    copyText.select();
-    document.execCommand("Copy");
-    $("#myTooltip").text("Copied!");// + copyText.value;
-    $('#myInput').css('display', 'none');
-}
 
-function outFunc() {
-    //var tooltip = document.getElementById("myTooltip");
-    //$("#myTooltip").text("Copy to clipboard");
-}
+
+// function myFunction() {
+//
+//     console.log('HIHIHIHIHI');
+//
+//     $('#myInput').css('display', 'block');
+//     var copyText = document.getElementById("myInput");
+//     copyText.select();
+//     document.execCommand("Copy");
+//     $("#myTooltip").text("Copied!");// + copyText.value;
+//     $('#myInput').css('display', 'none');
+//
+//
+//
+//
+//     // console.log('link', link);
+//     // var uri_dec = decodeURIComponent(url);
+//     // console.log('hi i go t', url)
+//     // $('#myInput').css('display', 'block');
+//     // var copyText = document.getElementById("myInput");
+//     // copyText.select();
+//     // document.execCommand("Copy");
+//     // $('#myInput').css('display', 'none');
+//
+//     // var t = document.createTextNode(url);
+//
+//     // document.execCommand('copy', false, t);
+//
+//     // var url = $url;
+//     // var url = $('#viewer-right .stable-url').attr('href');
+//     //     console.log(url);
+//     // var win = window.open(url, '_blank');
+//     // win.focus();
+//
+// //     var copyText = $(".stable-url").attr("href");
+// //     var copyText = ('0');
+// //     console.log(copyText);
+// }
+
 
 </script>

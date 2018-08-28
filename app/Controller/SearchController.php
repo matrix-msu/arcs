@@ -61,24 +61,24 @@ class SearchController extends AppController {
 
         $this->loadModel('Keyword');
 
-        $pages = $this->Keyword->find('all', array(
+        $resources = $this->Keyword->find('all', array(
          'conditions' => array('Keyword.keyword LIKE' => "%$query%"),
-         'fields' => array('Keyword.page_kid'),
+         'fields' => array('Keyword.resource_kid'),
          'recursive' => 1
         ));
-        $pageArray = array();
 
-        for ($i=0; $i < count($pages); $i++) {
-          $pageArray[$i] = $pages[$i]["Keyword"]["page_kid"];
+        $resourceArray = array();
+
+        for ($i=0; $i < count($resources); $i++) {
+            if( $resources[$i]["Keyword"]["resource_kid"] != '' ){
+                $resourceArray[$i] = $resources[$i]["Keyword"]["resource_kid"];
+            }
         }
-        if (empty($pageArray)) {
-          $pageArray = array("empty");
+        if (empty($resourceArray)) {
+            $resourceArray = array("empty");
         }
 
-        $util = new Utility_Search();
-        $resources = $util->getResourcesFromPages($pageArray, $project);
-
-        return $resources;
+        return $resourceArray;
     }
     /**
      * Display the search page
@@ -126,6 +126,7 @@ class SearchController extends AppController {
 
             $result = $keySearch->getResultsAsArray();
 
+
             ResourcesController::filterByPermission($username, $result['results']);
 
             $results[$project] = $result;
@@ -133,6 +134,7 @@ class SearchController extends AppController {
           echo json_encode($results);
 
         } else {
+
           $preFilter = $this->getResourcesFromKeyword($project, $query);
           // Kora Search
           $keySearch = new Keyword_Search($preFilter);
@@ -207,7 +209,7 @@ class SearchController extends AppController {
      */
     public function resources() {
         $options = $this->parseParams();
-        
+
         if (!isset($this->request->query['q']))
             return $this->emptySearch($options);
 
@@ -276,35 +278,51 @@ class SearchController extends AppController {
 
             $first = 1;
 
-            foreach( $test as $row){
+            $kids = [];
+            foreach($test as $obj){
+                array_push($kids, $obj['resource_kid']);
+            }
+
+            $pName = parent::convertKIDtoProjectName($kids[0]);
+            $pid = parent::getPIDFromProjectName($pName);
+            $sid = parent::getResourceSIDFromProjectName($pName);
+            $pageSid = parent::getPageSIDFromProjectName($pName);
+
+            //Get the Resources from Kora
+            $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
+            $kora = new General_Search($pid, $sid, "kid", "in", $kids, $fields);
+            $resources = json_decode($kora->return_json(), true);
+
+            //grab all pages with the resource associator
+            $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
+            $kora = new Advanced_Search($pid, $pageSid, $fields);
+
+            $pages = array();
+
+            $kora->add_double_clause("Resource_Associator", "in", $kids,
+                "Scan_Number", "=", "1");
+                // TODO: make this work
+            $pages = json_decode($kora->search(), true);
+
+            $username = NULL;
+            $usersC = new UsersController();
+            if ($user = $usersC->getUser($this->Auth)) {
+                $username = $user['User']['username'];
+            }
+            ResourcesController::filterByPermission($username, $resources);
+
+            foreach( $resources as $resource){
+
                 $temp_array = array();
                 if( $first == 1 ) {
                     $temp_array['more_results'] = $more_results;
                     $first = 0;
                 }
-                $temp_kid = $row['resource_kid'];
-                $pName = parent::convertKIDtoProjectName($temp_kid);
-                $pid = parent::getPIDFromProjectName($pName);
-                $sid = parent::getResourceSIDFromProjectName($pName);
-                $pageSid = parent::getPageSIDFromProjectName($pName);
-                //Get the Resources from Kora
-                $query = "kid,=,".$temp_kid;
+                $temp_kid = $resource['kid'];
 
-                $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
-                $query_array = explode(",", $query);
-                $kora = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-                $resource = json_decode($kora->return_json(), true);
                 $resource[$temp_kid]['thumb'] = ''; //set the thumb so that permissions will work
-                //permissions stuffs.
-                $username = NULL;
-                $usersC = new UsersController();
-                if ($user = $usersC->getUser($this->Auth)) {
-                    $username = $user['User']['username'];
-                }
-                ResourcesController::filterByPermission($username, $resource);
 
-
-                $r = $resource[$temp_kid];
+                $r = $resource;
 
                 //handle permissions sent to frontent
                 if( isset($r['Locked']) ){
@@ -331,39 +349,16 @@ class SearchController extends AppController {
 
                 $temp_array['collection_id'] = $row['id'];
 
-                //grab all pages with the resource associator
-                $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
-                $kora = new Advanced_Search($pid, $pageSid, $fields);
-
+                $temp_array['resource-type'] = $resource_type;
 
                 $page2 = array();
-                $temp_array['resource-type'] = $resource_type;
-                $kora->add_double_clause("Resource_Associator", "=", $temp_kid,
-                    "Scan_Number", "=", "1");
-                    // TODO: make this work
-                $page2 = json_decode($kora->search(), true);
-
-                if( $page2 == array() ){
-                    $kora->add_clause("Resource_Associator", "=", $temp_kid);
-                    $page2 = json_decode($kora->search(), true);
-                };
-
-                if (count($page2) > 1) {
-                  $tempPagesArray = array();
-                  foreach ($page2 as $kid => $value) {
-                      if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
-                          $tempPagesArray[$kid] = $value;
-                      }
-                  }
-                  $page2 = $tempPagesArray;
-                }
-                if (!empty($page2)) {
-                  $page2 = array_pop($page2);
+                if (!empty($pages)) {
+                  $page2 = array_pop($pages);
                 }
 
-                //$page2 = json_decode($kora->search(), true);
                 //Get the picture URL from the page results
                 $picture_url = '';
+
                 if (isset(array_values($page2)[0])) {
                     $picture_url = $page2['Image_Upload']['localName'];
                     $picture_kid = $page2['kid'];
@@ -446,7 +441,7 @@ class SearchController extends AppController {
         }else {     // Resource type search - resources page
             //Get the Resources
             $query = $this->request->query['q'];
-
+            
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getResourceSIDFromProjectName($pName);
             //$sid = parent::getProjectSIDFromProjectName($pName);
@@ -456,7 +451,7 @@ class SearchController extends AppController {
             $fields = array('Title','Resource_Identifier', 'Permissions', 'Special_User', 'Type');
             //$fields = 'ALL';
             $query_array = explode(",", $query);
-            //$query_array = array('kid', '!=', '');
+            //$query_array = array('Title', '!=', '');
             if( $limit != -1 ) {
                 $kora = new Advanced_Search($pid, $sid, $fields, null, $limit+1);
             }else{
@@ -465,11 +460,13 @@ class SearchController extends AppController {
             $kora->add_clause($query_array[0], $query_array[1], $query_array[2] );
             $resources = json_decode($kora->search(), true);
 
+
             $username = NULL;
             $usersC = new UsersController();
             if ($user = $usersC->getUser($this->Auth)) {
                 $username = $user['User']['username'];
             }
+//            print_r($resources);die;
 
             ResourcesController::filterByPermission($username, $resources);
 
@@ -503,19 +500,26 @@ class SearchController extends AppController {
 
             $pages = array();
             //using the array and 'in' this way because it's much faster.
-            $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            //$kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            // $kora->add_clause("Scan_Number", "=", "1");
             //USE THIS INSTEAD WHEN IT WORKS
-            // $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
-            //     "Scan_Number", "=", "1");
+            $kora->add_double_clause("Resource_Associator", "IN", $resourceKidArray,
+                 "Scan_Number", "=", "1");
             $pages = json_decode($kora->search(), true);
 
-            if( $pages == array() ){
-                $kora->add_clause("Resource_Associator", "IN", $resourceKidArray);
+            // echo 'here';
+            // echo json_encode($pages);die;
+
+            if( empty($pages) ){
+                $kora = new Advanced_Search($pid, $sid, $fields);
+                $kora->add_clause("Resource Associator", "IN", $resourceKidArray);
                 $pages = json_decode($kora->search(), true);
 
                 $tempPagesArray = array();
                 foreach ($pages as $kid => $value) {
                     if( isset($value['Scan_Number']) && $value['Scan_Number'] == '1' ){
+                        $tempPagesArray[$kid] = $value;
+                    }elseif( !isset($value['Scan_Number']) ){
                         $tempPagesArray[$kid] = $value;
                     }
                 }

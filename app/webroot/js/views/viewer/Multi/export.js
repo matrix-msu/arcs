@@ -1,19 +1,36 @@
 $(document).ready(function(){
     //export all schemes and jpgs
-    var isExporting = 0;
     $("#export-btn").click(function () {
+        $(this).hide();
+        $('.export-options').show();
+    });
+
+
+    $(".export-options").click(function () {
+        var isExporting = 0;
+        var exportAsXML = false;
+        var $clicked = $(this);
+
+        if ($(this).attr('id') == 'export-xml-btn'){
+            exportAsXML = true;
+            $('#export-json-btn').hide();
+        }else{
+            $('#export-xml-btn').hide();
+        }
+
         if(isExporting == 1){
             return;
         }
+
         isExporting = 1;
         var loaderHtml = $(ARCS_LOADER_HTML);
         //$(loaderHtml).css({'height':'inherit', 'margin-top':'-6px'});
         $(loaderHtml).css({'height':'13px', 'width':'13px'});
         $(loaderHtml).find('.sk-folding-cube').css({'height':'11px', 'width':'11px'});
-        $('.icon-export').css('background-image','none').css('padding-left', '2px');
-        $('.icon-export').html(loaderHtml);
-        //load data in variables
+        $(this).find('.icon-export').css('background-image','none').css('padding-left', '2px');
+        $(this).find('.icon-export').html(loaderHtml);
 
+        // load data in variables
 		var projects = PROJECTS;
         var seasons = SEASONS;
         var excavations = EXCAVATIONS;
@@ -62,7 +79,10 @@ $(document).ready(function(){
         $.ajax({
             url: arcs.baseURL + "resources/createExportFile",
             type: "POST",
-            data: {'xmls': JSON.stringify(kidArray)},
+            data: {
+                'xmls': JSON.stringify(kidArray),
+                'exportAsXML': exportAsXML
+            },
             statusCode: {
                 200: function (data) {
                     //download created file
@@ -87,20 +107,26 @@ $(document).ready(function(){
                             data: {'filename': data},
                             statusCode: {
                                 200: function () {
-                                    $('.icon-export').html('');
-                                    $('.icon-export').css('background-image','url(/'+BASE_URL+'img/export.svg)');
-                                    isExporting = 0;
+                                    console.log("success");
+                                },
+                                400: function () {
+                                    console.log("Bad Request");
+                                },
+                                405: function () {
+                                    console.log("Method Not Allowed");
                                 }
                             }
                         });
                     }, 50);
+
+                    $clicked.find('.icon-export').html('');
+                    $clicked.find('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
+                    $clicked.hide();
+                    $("#export-btn").show();
+
+                    isExporting = 0;
                 },
-                400: function () {
-                    console.log("Bad Request");
-                },
-                405: function () {
-                    console.log("Method Not Allowed");
-                }
+
             }
         });
         return;

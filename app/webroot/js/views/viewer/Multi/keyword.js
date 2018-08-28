@@ -86,13 +86,15 @@ function keywordPrep(){
         });
     }
     function addKeywords(addArray){
+        var rkid = $("#"+keywordPageKid).parent().attr('id');
         $.ajax({
             url: arcs.baseURL + "keywords/add",
             type: "POST",
             data: {
                 page_kid: keywordPageKid,
                 project_kid: keywordProjectKid,
-                keywords: addArray
+                keywords: addArray,
+                resource_kid: rkid
             },
             success: function (data) {
                 //update search links
@@ -208,7 +210,7 @@ function keywordPrep(){
                     }
                     $('#keyword-search-links').html(keywordHtml);
                 } else { //display the keywords as editing
-                    $('#keyword-text').html('Enter keywords below. Use commas to separate keywords.');
+                    $('#keyword-text').html('Enter keywords below. Press enter to confirm a word.');
                     $('#keyword-common').css('display', 'block');
                     //use the chosen select thing for editing.
                     if (keywordArray instanceof Array) {
@@ -232,8 +234,8 @@ function keywordPrep(){
                         if ((id == "" || id == ',') && e.key == 'Backspace') {
                             //backspace will do nothing if no keyword
 
-                        } else if (e.key == ',') {
-                            id = id.substring(0, id.length - 1);  //remove comma
+                        } else if (e.keyCode == 13) {
+                            // id = id.substring(0, id.length - 1);  //remove comma
                             if (id == '') { //keyword is empty, so ignore.
                                 $(this).val('');
                                 return;

@@ -307,8 +307,7 @@ class ResourcesController extends AppController {
                 $metadataedits[$row['metadata_kid']] = array($row['field_name']);
             }
         }
-        //print_r($metadataedits);
-        //die;
+
         return $metadataedits;
     }
 
@@ -481,7 +480,6 @@ class ResourcesController extends AppController {
 
         $kora = new General_Search($pid, $sid, 'kid', '=', $id, $fields);
         $page = json_decode($kora->return_json(), true);
-        //print_r($page);die;
 
         $page = $page[$id];
         $page['kora_url'] = KORA_FILES_URI;
@@ -490,7 +488,18 @@ class ResourcesController extends AppController {
     }
 
 
-    public function getExportData($kidArray, $schemeArrayIndex) {
+    public function getExportData($kidArray, $schemeArrayIndex, $exportAsXML = false) {
+        if ($exportAsXML == 'true'){
+            $format = 'XML';
+        }else{
+            $format = 'JSON';
+        }
+        //if 'diff' is in any array, remove it
+        if  (in_array('diff', $kidArray)){
+            $diffArray = array('diff');
+            $kidArray = array_diff($kidArray, $diffArray);
+        }
+
         if (!isset($kidArray[0])){
             return;
         }
@@ -519,7 +528,7 @@ class ResourcesController extends AppController {
                 $sid = parent::getSubjectSIDFromProjectName($pName);
                 break;
         }
-        
+
         $query = array(
             'forms'=>json_encode(array(
                 array(
@@ -528,11 +537,12 @@ class ResourcesController extends AppController {
                     'query'=>array(
                         array(
                             'search'=>'kid',
-                            'kids'=>$kidArray 
+                            'kids'=>$kidArray
                         )
                     )
-                )   
-            ))
+                )
+            )),
+            'format' => $format
         );
 
         $url = KORA_RESTFUL_URL.'search';
@@ -544,8 +554,28 @@ class ResourcesController extends AppController {
 
         $result = curl_exec($ch);
         curl_close($ch);
-        
+
+        if ($exportAsXML == 'true'){
+            $result = json_decode($result);     //change string to stdClass
+            $result = self::cvf_convert_object_to_array($result);   //change stdClass to array
+            $result = $result['records'][0];
+        }
+
         return $result;
+    }
+
+    public function cvf_convert_object_to_array($data) {
+
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+
+        if (is_array($data)) {
+            return array_map(__METHOD__, $data);
+        }
+        else {
+            return $data;
+        }
     }
 
     //create a file to be exported.
@@ -563,14 +593,21 @@ class ResourcesController extends AppController {
         $xmlNames = ['Project_data.json', 'Season_data.json', 'Excavation_Survey_data.json', 'Resource_data.json',
             'Pages_data.json', 'Subject_Of_Observation_data.json'];
 
+        if ($this->request->data['exportAsXML'] == 'true'){
+            $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
+                'Pages_data.xml', 'Subject_Of_Observation_data.xml'];
+        }
+
         $pages_data;
 
         foreach (json_decode($this->request->data['xmls']) as $kidArray) {
-            $data_string = self::getExportData($kidArray, $count);
+            $data_string = self::getExportData($kidArray, $count);  //return json
+            $data_xml_string = self::getExportData($kidArray, $count, $this->request->data['exportAsXML']); //return json or xml
+
             if($count == 4){
                 $pages_data = json_decode($data_string, true);
             }
-            $zip->addFromString($xmlNames[$count], $data_string);
+            $zip->addFromString($xmlNames[$count], $data_xml_string);
             $count++;
         }
 
@@ -582,7 +619,6 @@ class ResourcesController extends AppController {
             array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
         }
 
-      
         foreach($picUrls as $url){
             # download file
             $download_file = @file_get_contents( $url );
@@ -905,46 +941,53 @@ class ResourcesController extends AppController {
         $subjects = array();
         $resources_array = array();
         $showButNoEditArray = array();
-        //echo json_encode($this->request);die;
-        if($this->request->method() === "POST" && isset($this->request->data['resources'])){
-            $post_data = $this->request->data;
-            //create a new session variable and forward to a get request
-            //the array index is used as a new url
-            $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
-            end($_SESSION['multi_viewer_resources']);
-            $key = key($_SESSION['multi_viewer_resources']);
-            $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
-            header("Location:".$actual_link);
-            die();
-        }elseif($this->request->method() === "GET"){
-            if( $id == '' ){
-                throw new NotFoundException();
-            }
-            //check first if this is a multi-resource session url
-            $id = (string)$id;  //kid
-            if( isset($_SESSION['multi_viewer_resources']) ) {
-                foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
-                    if ($id === (string)$key) {
-                        $resources_array = $_SESSION['multi_viewer_resources'][$key];
-                        $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
-                        break;
+        // echo json_encode($this->request);die;
+        if (!isset($this->request->data['isExportAjax'])){
+    
+            if($this->request->method() === "POST" && isset($this->request->data['resources'])){
+                $post_data = $this->request->data;
+                //create a new session variable and forward to a get request
+                //the array index is used as a new url
+                $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
+                end($_SESSION['multi_viewer_resources']);
+                $key = key($_SESSION['multi_viewer_resources']);
+                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
+                header("Location:".$actual_link);
+                die();
+            }elseif($this->request->method() === "GET"){
+                if( $id == '' ){
+                    throw new NotFoundException();
+                }
+                //check first if this is a multi-resource session url
+                $id = (string)$id;  //kid
+                if( isset($_SESSION['multi_viewer_resources']) ) {
+                    foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
+                        if ($id === (string)$key) {
+                            $resources_array = $_SESSION['multi_viewer_resources'][$key];
+                            $_SESSION['multi_viewer_resources'][$key] = $resources_array;//refresh the session
+                            break;
+                        }
                     }
                 }
-            }
-            if (isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
-                $pageIndex = $this->request->query['pageSet'];
-                $this->set("pageSet", $pageIndex);
-            }
-            if( count($resources_array) < 1 ) {
-                $resources_array = array($id);
-            }
-            if( count($resources_array) == 0 ) {
+                if (isset($this->request->query['pageSet']) && !empty($this->request->query['pageSet'])) {
+                    $pageIndex = $this->request->query['pageSet'];
+                    $this->set("pageSet", $pageIndex);
+                }
+                if( count($resources_array) < 1 ) {
+                    $resources_array = array($id);
+                }
+                if( count($resources_array) == 0 ) {
+                    throw new NotFoundException();
+                }
+            }else{
+                //Not a post or get method
                 throw new NotFoundException();
             }
-        }else{
-            //Not a post or get method
-            throw new NotFoundException();
-        }
+      } else { //isset($this->request->data['isExportAjax'])
+        // echo json_encode($this->request);die;
+        $resources_array = json_decode($this->request->data['resources']);
+        // print_r($resources_array);die;
+      }
 
         $username = NULL;
         $usersC = new UsersController();
@@ -985,6 +1028,9 @@ class ResourcesController extends AppController {
                 $hasProjectPermission = true;
             }
 
+            if( !isset( $info_array[$resource]['Permissions'] ) ){
+                $info_array[$resource]['Permissions'] = 'Public';
+            }
             $isPublicResource = ( $info_array[$resource]['Permissions'] == 'Public' )? true:false;
 
             static::filterByPermission($username, $info_array);
@@ -1010,15 +1056,18 @@ class ResourcesController extends AppController {
             }
 
 
-            if( isset($info_array[$resource]["Excavation_-_Survey_Associator"])) {
+            if( isset($info_array[$resource]["Excavation_-_Survey_Associator"]) && $info_array[$resource]["Excavation_-_Survey_Associator"] !== '' ){
                 $exc_kids = $this->getFromKey($info_array, "Excavation_-_Survey_Associator");
 
                 //get Season data
                 $excavation_array = $this->getExcavation($exc_kids);
                 $this->pushToArray($excavation_array, $excavations);
 
-                $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
-
+                if( empty($excavation_array) ){
+                    $season_kids = array();
+                }else {
+                    $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
+                }
             }else{
                 $season_kids = $this->getFromKey($info_array, "Season_Associator");
             }
@@ -1224,7 +1273,8 @@ class ResourcesController extends AppController {
                        'Creator Role',
                        'Condition',
                        'Access Level',
-                       'Language');
+                       'Language',
+                       'Rights Holder');
 
         $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
 //structure subject, culture
@@ -1237,7 +1287,9 @@ class ResourcesController extends AppController {
                        'Artifact - Structure Technique',
                        'Artifact - Structure Archaeological Culture',
                        'Artifact - Structure Period',
+                       'Artifact - Structure Repository',
                        'Artifact - Structure Creator',
+                       'Artifact - Structure Creator Role',
                        'Artifact - Structure Condition',
                        'Artifact - Structure Subject');
 
@@ -1318,6 +1370,9 @@ class ResourcesController extends AppController {
         return $result->return_array();
     }
     protected function getSeason($kids){
+        if( $kids == '' || empty($kids) ){
+            return array();
+        }
         $pName = parent::convertKIDtoProjectName($kids[0]);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSeasonSIDFromProjectName($pName);
@@ -1327,6 +1382,9 @@ class ResourcesController extends AppController {
         return $result->return_array();
     }
     protected function getExcavation($kids){
+        if( $kids == '' || empty($kids) ){
+            return array();
+        }
         $pName = parent::convertKIDtoProjectName($kids[0]);
         $pid = parent::getPIDFromProjectName($pName);
         $sid = parent::getSurveySIDProjectName($pName);

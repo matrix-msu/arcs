@@ -89,11 +89,13 @@ class AppController extends Controller
             $user["role"] = 'Not';
         }
 
-//        return $user;
-//        var_dump($user);
-//        echo json_encode($this);
-//        die;
+        $url = $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $getQuery = urldecode(parse_url($url, PHP_URL_QUERY));
+        if (!empty($getQuery)){
+            $this->xss_clean($getQuery);
+        }
     }
+
     public function checkIfAnyAdmin($id){
 
 
@@ -533,18 +535,81 @@ class AppController extends Controller
     	$result = curl_exec($ch);
         //make result an indexable array
         $result = json_decode($result, true);
-        
+
+
+        $emptyStringArray = array('');
         foreach($names as $name) {
             if (isset($result)){
                 foreach($result as $field) {
                     if ($field['name'] == $name){
-                        $controls[$name] = $field['options']['Options'];
+                        $options = $field['options']['Options'];
+                        $controls[$name] = array_diff($options, $emptyStringArray);;
                     }
                 }
             }
         }
 
         return $controls;
+    }
+
+    function xss_clean($data)
+    {
+        // Fix &entity\n;
+        $data = str_replace(array('&amp;','&lt;','&gt;'), array('&amp;amp;','&amp;lt;','&amp;gt;'), $data);
+        $data = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $data);
+        $data = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $data);
+        $data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');
+        $count=0;
+
+        // Remove any attribute starting with "on" or xmlns
+
+        $data = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[^>]*+>#iu', '$1>', $data,-1 ,$count);
+        if ($count>0)
+            die("Wrong attribute");
+
+        // Remove javascript: and vbscript: protocols
+        $data = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([`\'"]*)[\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2nojavascript...', $data,-1 ,$count);
+
+        if ($count>0)
+            die("Bad js input");
+        $data = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu', '$1=$2novbscript...', $data,-1 ,$count);
+
+        if ($count>0)
+            die("Bad js input");
+        $data = preg_replace('#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*-moz-binding[\x00-\x20]*:#u', '$1=$2nomozbinding...', $data,-1 ,$count);
+        if ($count>0)
+            die("Bad js input");
+
+        // Only works in IE: <span style="width: expression(alert('Ping!'));"></span>
+        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?expression[\x00-\x20]*\([^>]*+>#i', '$1>', $data,-1 ,$count);
+        if ($count>0)
+            die("Bad input");
+        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?behaviour[\x00-\x20]*\([^>]*+>#i', '$1>', $data,-1 ,$count);
+        if ($count>0)
+            die("Bad input");
+        $data = preg_replace('#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*+>#iu', '$1>', $data,-1 ,$count);
+        if ($count>0)
+            die("Bad input");
+
+        // Remove namespaced elements (we do not need them)
+        $data = preg_replace('#</*\w+:\w[^>]*+>#i', '', $data,-1 ,$count);
+        if ($count>0)
+            die("Bad parameter");
+        do
+        {
+            // Remove really unwanted tags
+            $old_data = $data;
+            $data = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data,-1 ,$count);
+
+            if ($count>0){
+                die("unwanted parameters");
+            }
+
+        }
+        while ($old_data !== $data);
+
+        // we are done...
+        return $data;
     }
 
 

@@ -14,6 +14,9 @@ function flagPrep() {
         if( el.hasClass('flagged') ){ //already flagged so no clicks
             return;
         }
+        if( el.find('img').hasClass('flagged') ){ //canvas flag is already flagged
+            return;
+        }
         el.find('img').attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Blue.svg')
             .removeClass('icon-meta-flag')
             .addClass('icon-meta-flag-blue')
@@ -169,15 +172,20 @@ function flagPrep() {
                 $('.icon-meta-flag-blue')
                     .removeClass('icon-meta-flag-blue')
                     .addClass('icon-meta-flag-red')
+                    .addClass('flagged')
                     .css('background-image', 'url('+arcs.baseURL+'app/webroot/img/flagToolTip_Red.svg)')
                     .unbind();
             }else{ //is a annotation or details tab flag
                 annotationFlags.push(currentId);
+                console.log('this is ann')
                 $('.flagAnnotationId').each(function(){
+                    // console.log($(this))
                     if( $(this).attr('data-annid') == currentId ){
+                        console.log($(this));
                         $(this).attr('src', arcs.baseURL+'app/webroot/img/flagToolTip_Red.svg')
                             .removeClass('icon-meta-flag-blue')
-                            .addClass('icon-meta-flag-red');
+                            .addClass('icon-meta-flag-red')
+                            .addClass('flagged');
                     }
                 });
             }

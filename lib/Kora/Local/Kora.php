@@ -22,8 +22,8 @@ Author: Austin Rix
 
 namespace Lib;
 use \AppController;
-require_once(KORA_SEARCH);
-use function \App\FieldHelpers\KORA_Search;
+require_once("KoraSearch.php");
+// use function \App\FieldHelpers\KORA_Search;
 
 require_once(KORA_LIB . "Kora3_Util.php");
 use Lib\Kora3\Kora3_Util;
@@ -44,23 +44,28 @@ class Kora extends AppController{
     protected $end;
 
     function __construct(){
+
         if(!is_link(LIB . "Kora/search")){
             //Create Symbolic link to local kora_search
             symlink(KORA_SEARCH,LIB . "Kora/search");
         }
-        
-        $version = phpversion();
-        $first_num = (int)$version[0];
-        if ($first_num <= 5){
-            require_once(LIB . "Kora/search");
-        }
-        $this->token = TOKEN;
+//        $version = phpversion();
+//        $first_num = (int)$version[0];
+//        if ($first_num <= 5){
+//            require_once(LIB . "Kora/search");
+//        }
+
+        // $this->token = TOKEN;
+        //$this->token = $GLOBALS['TOKEN_ARRAY'];
         //$this->projectMapping = PID;
         //$this->schemeMapping = PROJECT_SID;
         $this->fields = "ALL";
         $this->results_per_page = 100;
     }
     public function search(){
+
+        $this->token = $this->getTOKENFromPid($this->projectMapping);
+
 
         $this->comprehensive_results = KORA_Search(
 
@@ -89,6 +94,8 @@ class Kora extends AppController{
         if( $this->end == 0 ){
             $this->end = null;
         }
+        $this->token = $this->getTOKENFromPid($this->projectMapping);
+
         $this->comprehensive_results = KORA_Search(
             $this->token,
             $this->projectMapping,
@@ -107,6 +114,8 @@ class Kora extends AppController{
         return $this->comprehensive_results;
     }
     protected function MPF(){
+
+        $this->token = $this->getTOKENFromPid($this->projectMapping);
 
         $this->comprehensive_results = MPF_Search(
             $this->token,
@@ -128,7 +137,6 @@ class Kora extends AppController{
     // public setter functions to change
     // search parameters.
     public function setToken($string){
-        $this->token = $string;
     }
     public function setProject($int){
         $this->projectMapping = $int;
@@ -164,18 +172,39 @@ class Kora extends AppController{
     public static function to_json($array){
         return json_encode($array);
     }
-  public function getResultsAsArray(){
-    return $this->comprehensive_results;
-  }
-  public function kora2LegacyResults() {
-    $res = array();
-    if (empty($this->comprehensive_results)){
-        return;
+    public function getResultsAsArray(){
+        return $this->comprehensive_results;
     }
-    $recordsK3 = $this->comprehensive_results->Records;
-    foreach ($recordsK3 as $record) {
-        $res[] = Kora3_Util::k3RecordToK2($record, $this->projectMapping, $this->schemeMapping);
+    public function kora2LegacyResults() {
+        $res = array();
+        if (empty($this->comprehensive_results)){
+            return;
+        }
+        $recordsK3 = $this->comprehensive_results->Records;
+        foreach ($recordsK3 as $record) {
+            $res[] = Kora3_Util::k3RecordToK2($record, $this->projectMapping, $this->schemeMapping);
+        }
+        return $res;
     }
-    return $res;
-  }
+
+    public static function getTOKENFromPid($pid){
+        if (isset($GLOBALS['PID_ARRAY'])) {
+            if ( array_search($pid, $GLOBALS['PID_ARRAY']) ) {
+                $name = array_search($pid, $GLOBALS['PID_ARRAY']);
+                if (isset($GLOBALS['TOKEN_ARRAY'])) {
+                    if (isset($GLOBALS['TOKEN_ARRAY'][$name])) {
+                        return $GLOBALS['TOKEN_ARRAY'][$name];
+                    } else {
+                        throw new Exception('Token not set');
+                    }
+                } else {
+                    throw new Exception('Token array set');
+                }
+            } else {
+                throw new Exception('Pid not set');
+            }
+        } else {
+            throw new Exception('Pid array set');
+        }
+    }
 }

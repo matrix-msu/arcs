@@ -57,7 +57,8 @@ class AnnotationsController extends MetaResourcesController {
         );
 	    $user_id = $this->Auth->user('id');
         $results = $this->$model->find('all', array(
-            'conditions' => array('page_kid' => $this->request->data['kid'])
+            'conditions' => array('page_kid' => $this->request->data['kid']),
+            'order' => array('order_transcript'),
         ));
         if( !empty($results) && $user_id != null ){
             $pName = parent::convertKIDtoProjectName($results[0]['page_kid']);

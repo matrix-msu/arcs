@@ -12,7 +12,6 @@ function GetNewResource(id) {
         var resourceKid = id.replace('-default-page', '');
         $('#missingPictureIcon').attr('data-kid', resourceKid);
         $('#missingPictureIcon').css('display', 'block');
-
     }else {
         $('#missingPictureIcon').css('display', 'none');
         $(image).css('display', 'none');
@@ -40,7 +39,7 @@ function GetNewResource(id) {
                     ///FULL SCREEN IMAGE CHANGED HERE
                     if (typeof(res["Image_Upload"]) === 'undefined'){
                         res["Image_Upload"] =  {'localName': arcs.baseURL+'img/DefaultResourceImage.svg'};
-
+                        $('#missingPictureIcon').css('display', 'block');
                         $(image).attr('src', res['Image_Upload']['localName']);
                         $('#PageImagePreloader').css('display', 'none');
                         $(image).css('display', 'block');
@@ -95,7 +94,9 @@ function pageSelectBuild(firstid) {
     $item[i].onclick = createFunc(i);
   }
 
-  $pics[0].style.borderWidth = "5px";
+  if( typeof $pics[0] !== 'undefined' ) {
+      $pics[0].style.borderWidth = "5px";
+  }
 
   function createFunc(i){
     return function(event){

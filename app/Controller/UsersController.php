@@ -132,21 +132,19 @@ class UsersController extends AppController
         $this->loadModel('Mapping');
         $user = $this->getUser($this->Auth);
 
+        $resolve = static::resolveProject($param);
+
         try {
-            $pid = parent::getPIDFromProjectName($param);
+            $pid = parent::getPIDFromProjectName($resolve['project']);
         } catch (Exception $e) {//if the project name is not valid
             // return the flash message for frontend
-            $this->Session->setFlash('Error, Request was not set', 'flash_error');
+            $this->Session->setFlash('Error, Request was not sent', 'flash_error');
             return;
         }
-
         $template; $viewVars; $admins;
 
-        //echo json_encode($param);
-        $resolve = static::resolveProject($param);
-        //echo json_encode($resolve);
         $admins = $this->getAdmins($resolve["project"]);
-        //echo json_encode($admins);
+        // $admins = "noah.girard@gmail.com";
         // don't render a view
         $this->autoRender = false;
         $message;
@@ -154,7 +152,7 @@ class UsersController extends AppController
         if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
             // Set the template and view vars based on type
 
-            $to = $admins;
+            $to = implode(', ', $admins);
 
             $subject = "User Access Request";
 
@@ -180,7 +178,7 @@ class UsersController extends AppController
             if ($resolve["isResource"]) {
                 $message =
                     "
-            <p>User ".$username." has requested access to the resource ".$resource."on project ".$project."
+            <p>User ".$username." has requested access to the resource ".$resource." on project ".$project."
             <p>To permit the user to the project, visit the associated kora installation dashboard.<br><br>
             <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
             Social Sciences with support from the National Endowment for the Humanities<br />
@@ -241,7 +239,7 @@ class UsersController extends AppController
             return;
         }
         // return the flash message for frontend
-        $this->Session->setFlash('Error, Request was not set', 'flash_error');
+        $this->Session->setFlash('Error, Request was not sent', 'flash_error');
         return;
     }
 
@@ -822,7 +820,7 @@ class UsersController extends AppController
                         return $this->redirect($this->referer());
                         // return $this->redirect($this->Auth->redirect());
                     } else {
-                        $this->Session->setFlash("Wrong username or password.  Please try again.", 'flash_error');
+                        $this->Session->setFlash("The Username or Password you entered is incorrect.  Please try again.", 'flash_error');
                         $this->redirect($this->referer());
                     }
                 }
@@ -1044,26 +1042,29 @@ class UsersController extends AppController
                         $id = $allDat['id'];
                         $projects = explode(", ", $this->request->data['User']['project']);
                         $mappingArray = [];
-//                        var_dump($projects);
-//                        die;
+
                         foreach ($projects as $project) {
-                            $mappingArray[] = array(
+                            $map = array(
                                 'id_user' => $id,
                                 'role' => 'Researcher',
                                 'pid' => $this->getPIDFromProjectName(strtolower(str_replace(" ","_",$project))),
                                 'status' => 'unconfirmed',
                                 'activation' => $this->Mapping->getToken()
                             );
+                            array_push($mappingArray, $map);
                         }
-//                        echo 'HERE';
-//                        die;
+
 
                         $this->Mapping->saveAll($mappingArray);
 
                         $user = $this->User->findByRef($this->request->data['User']['usernameReg']);
-                        //confirm breaks
-                        $this->confirmUserEmail($user, $id, $project);
 
+                        //confirm breaks
+                        //send confirmation email for each project
+                        foreach ($mappingArray as $projectArray) {
+                            $project = parent::getProjectNameFromPID($projectArray['pid']);
+                            $this->confirmUserEmail($user, $id, $project);
+                        }
                         $this->Session->setFlash(
                             "Thank you for registering!  You will receive a confirmation email shortly.
                             <br>After you verify your email address, an administrator will activate your account. This could take some time.
@@ -1247,11 +1248,6 @@ class UsersController extends AppController
             $user['mappings'][] = array("project" => $project,
                 "role" => $role,
                 'status' => $mapping["Mapping"]['status']);
-
-            if( $role == 'Admin' ) {
-                $thumbnails .= "<dd><input class=\"createThumbnails\" data-project=\"$project\" " .
-                    "type=\"submit\" value=\"Create All $project Thumbnails\"></dd>";
-            }
         }
 
         if( $signedIn == FALSE ){
@@ -1700,6 +1696,7 @@ class UsersController extends AppController
         if( !isset($this->request->data['resourceKid']) ){
             echo false; die;
         }
+        
         $kid = $this->request->data['resourceKid'];
         $content = "A user has found that the resource with the kid '$kid' either does not have".
             " a page record associated to it, or one of the page records is missing its picture. Please fix the issue.";
@@ -1716,6 +1713,7 @@ class UsersController extends AppController
                 ),
             )
         ));
+        
         $mappings = array_values($mappings);
 
         $model = $this->modelClass;
@@ -1734,16 +1732,16 @@ class UsersController extends AppController
             ->subject('Missing Image Notification')
             ->to($formattedAdminEmails)
             ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));*/
-
+        
         $to = $formattedAdminEmails;
         $subject = "Missing Image Notification";
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
         $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
         $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$message,$headers);
+        $success = mail($to,$subject,$content,$headers);
 
-        if( $Email->send($content) ){
+        if($success){
             echo true;
         }else{
             echo false;
@@ -1809,52 +1807,6 @@ class UsersController extends AppController
             'order' => 'name'
         ));
         $this->json(200, $results);
-    }
-
-    //create all thumbnails for a project in kora
-    public function createThumbnails($projectName){
-        set_time_limit(0);
-        $signedIn = $this->getUser($this->Auth);
-
-        if( $signedIn == FALSE ){
-            echo 'You must be signed-in to do this.';
-            die;
-        }
-        $mappings = $this->Mapping->find('all', array(
-            'fields' => array('Mapping.role', 'Mapping.pid'),
-            'conditions' => array(
-                'AND' => array(
-                    'Mapping.id_user' => $signedIn['id'],
-                    'Mapping.status' => 'confirmed',
-                    'Mapping.role' => 'Admin'
-                ),
-            )
-        ));
-        $pid = parent::getPIDFromProjectName($projectName);
-        $pageSid = parent::getPageSIDFromProjectName($projectName);
-
-        $permissions = false;
-        foreach($mappings as $mapping) {
-            if( $pid == $mapping["Mapping"]['pid'] ){
-                $permissions = true;
-            }
-        }
-        if( $permissions == false ){
-            echo "You don't have the project permissions necessary to do this.";
-            die;
-        }
-        $search = new General_Search($pid, $pageSid, 'kid', '!=', '',['Image_Upload']);
-        $results = $search->return_array();
-        foreach( $results as $page ){
-            $localName = @$page['Image_Upload']['localName'];
-            $pageThingKid = '';
-            if( isset($page) && isset($page['kid']) ){
-                $pageThingKid = $page['kid'];
-            }
-            $this->smallThumb($localName, $pageThingKid);
-        }
-        print_r('All thumbnails have been successfully created!');
-        die;
     }
 
     //authenticate a plugin user

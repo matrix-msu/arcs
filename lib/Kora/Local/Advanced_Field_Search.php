@@ -24,14 +24,24 @@ require_once "Resource_Search.php";
 
 require_once LIB . "Kora/Class/AdvancedFieldDataStructure.php";
 
-use Lib\Kora;
-//use Lib\KORA_Clause;
-use \App\FieldHelpers\KORA_Clause;
-use Lib\Resource;
+//use Lib\Kora;
+////use Lib\KORA_Clause;
+//// use \App\FieldHelpers\KORA_Clause;
+//use Lib\Resource;
 use kora\classes\AdvancedFieldDataStructure as AdvancedDS;
 use kora\classes\AdvancedFieldMap;
-use \Resource_Search;
-use Exception;
+//use \Resource_Search;
+//use Exception;
+
+use Lib\Kora;
+use Lib\Resource;
+use \KORA_Clause;
+// use App\FieldHelpers\KORA_Clause;
+//use \SearchController;
+use arcs_e\ArcsException;
+use \App;
+use \Exception;
+use \Advanced_Search;
 
 /**
  * Advanced Field Search performs searches by AdvancedFieldDataStructure

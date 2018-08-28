@@ -261,7 +261,7 @@ JST["admin/metadata_edits"] =
     "<div class=\"admin-rows-wrap\">"+
         "<div class=\"admin-rows-content meta\">"+
             "<% _.each(metadata_edits, function(f, i) { %>  "+
-                "<div class=\"admin-row meta\">"+
+                "<div class=\"admin-row meta\" data-id=\"<%= f.MetadataEdit.id %>\">"+
                     "<p class=\"resource-kid\"><%= f.MetadataEdit.resource_kid %></p>"+
                     "<p class=\"username\"><%= f.MetadataEdit.user_name %></p>"+
                     "<p class=\"metadata-kid\"><%= f.MetadataEdit.metadata_kid %></p>"+

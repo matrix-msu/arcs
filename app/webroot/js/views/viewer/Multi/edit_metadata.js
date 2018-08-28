@@ -1,5 +1,4 @@
 function editMetaPrep() {
-    console.log('edit meta prep')
     //todo - make associators do the update without reloading thing.
 
     //data sent to arcs kora plugin---
@@ -107,12 +106,10 @@ function editMetaPrep() {
                             'id': 'meta_textarea'
                         }).val(meta_value_before);
 
-                        //There is something that preventing space on text input boxes.
-                        // So.. this could possibly break something but oh well.
-                        $('.level-content').unbind('keydown');
-
+                        $('.level-content, .ui-accordion-header, .ui-state-default, .ui-accordion-icons,' +
+                            '.ui-accordion-header-active, .ui-state-active, .ui-corner-top, #soo').unbind('keydown');
                         $(this).children('div').eq(1).html(html);
-
+                        
                     } else if (meta_control_type == 'date') {
                         html = '<div class="kora_control" id="meta_textarea">' +
                             '<select class="kcdc_year"  id="year_select">' +
@@ -408,7 +405,7 @@ function editMetaPrep() {
         var associatorPreview = {
             'excavations' : 'Title',
             'archival objects' : 'Name',
-            'subjects' : 'Resource Identifier'//go ask kora for this pls
+            'subjects' : 'Resource_Identifier'//go ask kora for this pls
         };
         var populateCheckboxes = "<hr>";
         currentPage = currentPage-1; //pages start at 1, but array index starts at 0
@@ -692,6 +689,22 @@ function editMetaPrep() {
             }
         }
     });
+
+    //copy the resource url button
+    $('.copyUrlBtn').click(function(){
+        var url = $(this)[0].dataset.url;
+
+        const el = document.createElement('textarea');
+        el.value = url;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        $(this).text("Copied!");
+        // $(this).text("Copy linksss");
+    });
+
+
 
     function populateNumbers(i){
         var numbersHtml = '';

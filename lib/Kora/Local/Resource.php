@@ -29,14 +29,20 @@ class Resource {
         if( !empty($value["Type"]) && !in_array($value["Type"], $type) ){
           array_push($type, $value["Type"]);
         }
-        if( !empty($value["Season Name"]) && !in_array($value["Season Name"], $seasons) ){
-          array_push($seasons, $value["Season Name"]);
+        foreach( $value["All_Seasons"] as $seasonName ){
+            if( !in_array($seasonName, $seasons) ){
+                array_push($seasons, $seasonName);
+            }
         }
-        if( !empty($value["Excavation Name"]) && !in_array($value["Excavation Name"], $sites) ){
-          array_push($sites, $value["Excavation Name"]);
+        foreach( $value["All_Excavations"] as $ex ){
+          if( isset($ex['Excavation Name']) && !in_array($ex['Excavation Name'], $sites) ){
+              array_push($sites, $ex['Excavation Name']);
+          }
         }
-        if( !empty($value["Excavation Type"]) && !in_array($value["Excavation Type"], $excavation) ){
-          array_push($excavation, $value["Excavation Type"]);
+        foreach( $value["All_Excavations"] as $ex ){
+          if( isset($ex['Excavation Type']) && !in_array($ex['Excavation Type'], $excavation) ){
+              array_push($excavation, $ex['Excavation Type']);
+          }
         }
         if( !empty($value["Creator"]) ){
           foreach($value["Creator"] as $person){
@@ -46,6 +52,13 @@ class Resource {
         }
       }
     }
+    sort($sites);
+    sort($seasons);
+    sort($type);
+    sort($excavation);
+    sort($creator);
+    sort($projects);
+    
     return array(
       "projects"=>$projects,
       "sites"=> $sites,

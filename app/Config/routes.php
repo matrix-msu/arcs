@@ -259,9 +259,9 @@
 ////////////////////////////////////////////////////////////////////////
 # search controller
 ////////////////////////////////////////////////////////////////////////
-    Router::connect('/search/keyword/*',
-        array('controller' => 'search', 'action' => 'keywordSearch')
-    );
+//    Router::connect('/search/keyword/*',
+//        array('controller' => 'search', 'action' => 'keywordSearch')
+//    );
 //    Router::connect('/simple_search/*',
 //        array('controller' => 'AdvancedSearch', 'action' => 'simpleSearchWrapper')
 //    );

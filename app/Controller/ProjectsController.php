@@ -77,7 +77,8 @@ class ProjectsController extends AppController {
 
         $projectstemp = array();
         foreach( parent::getPIDArray() as $name => $pid ) {
-            $fields = array('Geolocation', "Persistent_Name", "Description", "Name", 'Country');            $projectSid = parent::getProjectSIDFromProjectName($name);
+            $fields = array('Geolocation', "Persistent_Name", "Description", "Name", 'Country');
+            $projectSid = parent::getProjectSIDFromProjectName($name);
             $kora = new General_Search($pid, $projectSid, 'kid', '!=', '', $fields);
             $projectstemp[] = json_decode($kora->return_json(), true);
         }
@@ -87,13 +88,14 @@ class ProjectsController extends AppController {
         foreach($projectstemp as $value){
             $projects[] = reset($value);
         }
+        //echo json_encode($projects);die;
 		$this->set('projects', $projects);
 
 	}
   public function index() {
 
-    $this->getProjects();
 
+    $this->getProjects();
 
     $user = $this->getUser();
     $this->set("user", $user);

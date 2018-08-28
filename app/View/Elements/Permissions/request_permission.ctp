@@ -19,6 +19,11 @@
     $(document).ready(function() {
         var currentlyClickedLockedResourceKid = '';
         $("#request_permission_model").find(".request").click(function(e){
+            var lastPart = window.location.href.split("/").pop().split("?")[0];
+            console.log('click', currentlyClickedLockedResourceKid)
+            if( lastPart.split('-').length == 3 ){
+                currentlyClickedLockedResourceKid = lastPart;
+            }
             if( currentlyClickedLockedResourceKid !== '' ){
                 $.ajax({
                     url: arcs.baseURL + "users/request_permission/" + currentlyClickedLockedResourceKid,

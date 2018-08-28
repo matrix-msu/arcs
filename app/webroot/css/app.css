@@ -7092,7 +7092,7 @@ h4 {
   height: 20px;
 }
 .alert {
-  margin: -60px auto 0 auto;
+  margin: -50px auto 0 auto;
   border: 0;
   color: #0094BC;
   line-height: 2;
@@ -9821,6 +9821,9 @@ input[type=range]:focus::-ms-fill-upper {
   font-size: 80%;
   display: inline-block;
 }
+#viewer-tools .tools .export-options {
+  display: none;
+}
 #viewer-tools .tools .icon-annotate {
   width: 13px;
   height: 13px;
@@ -10644,10 +10647,13 @@ input[type=range]:focus::-ms-fill-upper {
 }
 /** Annotate **/
 .annotateHelp {
-  position: absolute;
-  right: 5px;
+  position: relative;
+  float: right;
+  top: 28px;
+  width: 465px;
   display: none;
   height: 30px;
+  line-height: 20px;
   background-color: #333;
   color: #fff;
   padding: 0px 0px 0px 5px;
@@ -10928,7 +10934,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 15px;
 }
 .flagAnnotation {
-  display: inline-block !important;
+  display: block !important;
   height: 27px;
   width: 27px;
   left: -1px;
@@ -10985,7 +10991,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 15px;
   position: relative;
   float: right;
-  margin-right: 15px;
+  margin-right: 20px;
   opacity: .4;
   cursor: pointer;
 }
@@ -11002,7 +11008,7 @@ input[type=range]:focus::-ms-fill-upper {
   float: right;
   opacity: .3;
   cursor: pointer;
-  left: -15px;
+  left: -11px;
 }
 .annotateLabel {
   position: relative;
@@ -15186,6 +15192,9 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 .admin-header .admin-sort-search input:-ms-input-placeholder {
   color: #3F3F3F;
+}
+#projectSelectContainer .open.chevron {
+  transform: rotate(-45deg);
 }
 .admin-header-users {
   margin: 0 9%;
