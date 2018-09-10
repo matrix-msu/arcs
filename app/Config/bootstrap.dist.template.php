@@ -1,103 +1,53 @@
 <?php
 /**
-*           _____                    _____                    _____                    _____
-*          /\    \                  /\    \                  /\    \                  /\    \
-*         /::\    \                /::\    \                /::\    \                /::\    \
-*        /::::\    \              /::::\    \              /::::\    \              /::::\    \
-*       /::::::\    \            /::::::\    \            /::::::\    \            /::::::\    \
-*      /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \
-*     /:::/__\:::\    \        /:::/__\:::\    \        /:::/  \:::\    \        /:::/__\:::\    \
-*    /::::\   \:::\    \      /::::\   \:::\    \      /:::/    \:::\    \       \:::\   \:::\    \
-*   /::::::\   \:::\    \    /::::::\   \:::\    \    /:::/    / \:::\    \    ___\:::\   \:::\    \
-*  /:::/\:::\   \:::\    \  /:::/\:::\   \:::\____\  /:::/    /   \:::\    \  /\   \:::\   \:::\    \
-* /:::/  \:::\   \:::\____\/:::/  \:::\   \:::|    |/:::/____/     \:::\____\/::\   \:::\   \:::\____\
-* \::/    \:::\  /:::/    /\::/   |::::\  /:::|____|\:::\    \      \::/    /\:::\   \:::\   \::/    /
-* \/____/ \:::\/:::/    /  \/____|:::::\/:::/    /  \:::\    \      \/____/  \:::\   \:::\   \/____/
-*          \::::::/    /         |:::::::::/    /    \:::\    \               \:::\   \:::\    \
-*           \::::/    /          |::|\::::/    /      \:::\    \               \:::\   \:::\____\
-*           /:::/    /           |::| \::/____/        \:::\    \               \:::\  /:::/    /
-*          /:::/    /            |::|  ~|               \:::\    \               \:::\/:::/    /
-*         /:::/    /             |::|   |                \:::\    \               \::::::/    /
-*        /:::/    /              \::|   |                 \:::\____\               \::::/    /
-*        \::/    /                \:|   |                  \::/    /                \::/    /
-*         \/____/                  \|___|                   \/____/                  \/____/
-*
-*
-* This file is loaded automatically by the app/webroot/index.php file after core.php
-*
-* This file should load/create any application wide configuration settings, such as
-* Caching, Logging, loading additional configuration files.
-*
-* You should also use this file to include any files that provide global functions/constants
-* that your application uses.
-*
-* PHP 5
-*
-*
-* CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
-* Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
-*
-* Licensed under The MIT License
-* Redistributions of files must retain the above copyright notice.
-*
-* @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
-* @link          http://cakephp.org CakePHP(tm) Project
-* @package       app.Config
-* @since         CakePHP(tm) v 0.10.8.2117
-* @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
-*
-* @author SOFTWARE LEAD: SEILA GONZALEZ
-*					SOFTWARE DEVS: AUSTIN RIX, CHARLIE DENEUA, JOSH CHRIST, MATT SCHLEUSENER
-*												 ARNOLD MUTAYOBA, JACOB BUCKLEY
-* @design AUSTIN TRUCHAN, ALEXIS REININGER
-* @documentation https://wiki.matrix.msu.edu/index.php/Arcs_Documentation
-*
-*/
-/*///////////////////////////////////////////////////////////////////////
-APPLICATION
-///////////////////////////////////////////////////////////////////////*/
-$base = $_SERVER['SERVER_NAME'];
-$encrypted = false;
-$protocol = $encrypted ? "https" : "http";
-define("BASE_URL"      ,  "BASE_URL_REPLACE" );
-define("DEFAULT_THUMB" ,  "img/DefaultResourceImage.svg");
-/*///////////////////////////////////////////////////////////////////////
-CAKE Configure
-///////////////////////////////////////////////////////////////////////*/
+ * This file is loaded automatically by the app/webroot/index.php file after core.php
+ *
+ * This file should load/create any application wide configuration settings, such as
+ * Caching, Logging, loading additional configuration files.
+ *
+ * You should also use this file to include any files that provide global functions/constants
+ * that your application uses.
+ *
+ * PHP 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       app.Config
+ * @since         CakePHP(tm) v 0.10.8.2117
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+# Kora search include
+
+
+
 # Setup a 'default' cache configuration for use in the application.
-Cache::config('default'     ,  array('engine' => 'File'));
-App::uses('IniReader'       ,  'Configure', 'Security');
-App::uses('CakeLog'         ,  'Log');
-Configure::config('default' ,  new IniReader(APP . 'Config' . DS));
+Cache::config('default', array('engine' => 'File'));
+App::uses('IniReader', 'Configure', 'Security');
+App::uses('CakeLog', 'Log');
+Configure::config('default', new IniReader(APP . 'Config' . DS));
 # Load additional config files.
 Configure::load('arcs');
 Configure::load('assets');
 
-define("TWIG_VIEW_CACHE", APP . 'tmp');
-define("LIB", CORE_PATH);
-CakePlugin::load('TwigView');
+# Basic Kora Information
+define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
+define("KORA_LIB", CORE_PATH . "Kora/Local/");
+define("BASE_URL",  "~josh.christ/arcs/" );
 
-/*///////////////////////////////////////////////////////////////////////
-KORA
-///////////////////////////////////////////////////////////////////////*/
-define("KORA_FILES_URI"     ,  "KORA_FILES_URI_REPLACE"); //unique
-define("KORA_SEARCH"        ,  "KORA_SEARCH_REPLACE"); //unique
-define ("KORA_RESTFUL_URL"  ,  "KORA_RESTFUL_URL_REPLACE"); //unique
-define("KORA_PLUGIN_USERS"  ,  "KORA_PLUGIN_USERS_REPLACE"); //unique
-
-#PRJOECT AND SCHEME DATA - old, not used.
-//define ("PID"          ,  "PID_REPLACE");
-//define ("PROJECT_SID"  ,  "PROJECT_SID_REPLACE");
-//define ("SEASON_SID"   ,  "SEASON_SID_REPLACE");
-//define ("RESOURCE_SID" ,  "RESOURCE_SID_REPLACE");
-//define ("PAGES_SID"    ,  "PAGES_SID_REPLACE");
-//define ("SUBJECT_SID"  ,  "SUBJECT_SID_REPLACE");
-//define ("SURVEY_SID"   ,  "SURVEY_SID_REPLACE");
+define("KORA_FILES_URI"     ,  "https://kora3.matrix.msu.edu/app/files/");
+define ("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
+define ("KORA_RESTFUL_URL", "https://kora3.matrix.msu.edu/api/");
 
 //flag for if arcs has been configured for user
-define('CONFIGURED', 'true');
+define('CONFIGURED', 'false');
 
-//new bootstrap setup
 $GLOBALS['PID_ARRAY'] = array(
     //'isthmia' => 123,
     'isthmia' => 11,
@@ -139,12 +89,15 @@ $GLOBALS['TOKEN_ARRAY'] = array(
     'grotto_tiberri' => "GPjkwxHb2zMss16JEmca2cg0"
 );
 
-define ("TOKEN"        ,  "TOKEN_REPLACE");
+define ("TOKEN", "GPjkwxHb2zMss16JEmca2cg0");
 
-define("KORA_LIB"      ,  LIB . "Kora/Local/");
 # Thumbnail location
-define("THUMBS_URL", "$protocol://$base/".BASE_URL."app/webroot/thumbs/");
-define("THUMBS", APP."webroot/thumbs/");
+define("THUMBS_URL", "http://dev2.matrix.msu.edu/arcs/app/webroot/thumbs/");
+define("THUMBS", "/matrix/dev/public_html/arcs/app/webroot/thumbs/");
+
+define("TWIG_VIEW_CACHE", APP . 'tmp');
+define("LIB", CORE_PATH);
+CakePlugin::load('TwigView');
 
 define("ARCS_LOADER_HTML",
     "<div class='sk-cube-container'>".
@@ -157,9 +110,6 @@ define("ARCS_LOADER_HTML",
     "</div>"
 );
 
-/*///////////////////////////////////////////////////////////////////////
-JAVASCRIPT
-///////////////////////////////////////////////////////////////////////*/
 define("globaljsvars",
     "<script type='text/javascript'>" .
     "var BASE_URL ='".BASE_URL."';" .

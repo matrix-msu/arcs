@@ -38,31 +38,15 @@ Configure::load('assets');
 
 # Basic Kora Information
 define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
-//define("KORA_FILES_URI", "http://kora.matrix.msu.edu/files/");
-//define("KORA_SEARCH","/matrix/www/kora/public_html/includes/koraSearch.php");
 define("KORA_LIB", CORE_PATH . "Kora/Local/");
-//define ("KORA_RESTFUL_URL", "http://kora.matrix.msu.edu/api/restful.php");
-//define ("KORA_BASE", "http://dev2.matrix.msu.edu/");
-//define ("LOCAL_URI", "~josh.christ/arcs/webroot/");
 define("BASE_URL",  "~josh.christ/arcs/" );
-
-//define("KORA_PLUGIN_USERS", "http://dev2.matrix.msu.edu/~josh.christ/kora/plugins/arcs_plugin/#/users/pending");
-
 
 define("KORA_FILES_URI"     ,  "https://kora3.matrix.msu.edu/app/files/");
 define ("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
 define ("KORA_RESTFUL_URL", "https://kora3.matrix.msu.edu/api/");
 
 //flag for if arcs has been configured for user
-define('CONFIGURED', 'true');
-
-//define ("PID", "123");
-//define ("PROJECT_SID", "734");
-//define ("SEASON_SID", "735");
-//define ("RESOURCE_SID", "736");
-//define ("PAGES_SID", "738");
-//define ("SUBJECT_SID", "739");
-//define ("SURVEY_SID", "740");
+define('CONFIGURED', 'false');
 
 $GLOBALS['PID_ARRAY'] = array(
     //'isthmia' => 123,
@@ -82,7 +66,7 @@ $GLOBALS['SEASON_SID_ARRAY'] = array(
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
     'isthmia' => 36,
     //'isthmia' => 740,
-    'grotto_tiberri' => 22
+    'grotto_tiberri' => 21
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
     'isthmia' => 33,
@@ -105,7 +89,7 @@ $GLOBALS['TOKEN_ARRAY'] = array(
     'grotto_tiberri' => "GPjkwxHb2zMss16JEmca2cg0"
 );
 
-define ("TOKEN", "8b88eecedaa2d3708ebec77a");
+define ("TOKEN", "GPjkwxHb2zMss16JEmca2cg0");
 
 # Thumbnail location
 define("THUMBS_URL", "http://dev2.matrix.msu.edu/arcs/app/webroot/thumbs/");

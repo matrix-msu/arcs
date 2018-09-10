@@ -15065,11 +15065,7 @@ input.user-reg-btn.btn.btn-success:focus {
   display: block;
   color: #000;
 }
-#projectSelect {
-  display: none;
-}
 .admin-header {
-  position: relative;
   padding: 0 9%;
   height: 134px;
   color: #6D6D6D;

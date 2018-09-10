@@ -35,8 +35,15 @@
 }).call(this);
 
 $(document).ready(function() {
-    
+
+    if( $('#metadata_edits').length > 0 ) {
+        $('#projectSelectContainer').css('margin-top', '173px');
+    }
+
     $(document).on('click', function(e){
+        if( $('#projectSelect:focus').length == 0 ){
+            $('#projectSelectContainer span.chevron').removeClass('open');
+        }
 		//sorting triggers
 		if ($('.sort-by-menu.meta p').is(e.target)){
 			if(!$(e.target).hasClass('active')){
@@ -94,29 +101,29 @@ $(document).ready(function() {
 					reverseRows(); // pagination.js
 				}
 			}
-		} else if ($('.filter-menu.meta p').is(e.target)){
-            if(!$(e.target).hasClass('active')){
-				$menu = $('.filter-menu.meta');
-				if ($(e.target).hasClass('pending')) {
-					$menu.find('.active').removeClass('active');
-					$menu.find('.pending').addClass('active');
+		} else if ($('.filter-menu.meta p').is(e.target)) {
+            if (!$(e.target).hasClass('active')) {
+                $menu = $('.filter-menu.meta');
+                if ($(e.target).hasClass('pending')) {
+                    $menu.find('.active').removeClass('active');
+                    $menu.find('.pending').addClass('active');
                     filterBy('');
-					filterOut('Approved', 'div.actions');
+                    filterOut('Approved', 'div.actions');
                     filterOut('Rejected', 'div.actions');
-				} else if ($(e.target).hasClass('approved')) {
-					$menu.find('.active').removeClass('active');
-					$menu.find('.approved').addClass('active');
-					filterBy('Approved', 'div.actions');
-				} else if ($(e.target).hasClass('rejected')) {
-					$menu.find('.active').removeClass('active');
-					$menu.find('.rejected').addClass('active');
-					filterBy('Rejected', 'div.actions');
-				} else if ($(e.target).hasClass('all-edits')) {
-					$menu.find('.active').removeClass('active');
-					$menu.find('.all-edits').addClass('div.actions');
-					filterBy('');
-				}
-                
+                } else if ($(e.target).hasClass('approved')) {
+                    $menu.find('.active').removeClass('active');
+                    $menu.find('.approved').addClass('active');
+                    filterBy('Approved', 'div.actions');
+                } else if ($(e.target).hasClass('rejected')) {
+                    $menu.find('.active').removeClass('active');
+                    $menu.find('.rejected').addClass('active');
+                    filterBy('Rejected', 'div.actions');
+                } else if ($(e.target).hasClass('all-edits')) {
+                    $menu.find('.active').removeClass('active');
+                    $menu.find('.all-edits').addClass('div.actions');
+                    filterBy('');
+                }
+
                 $drop.removeClass('open');
                 $('.filter-by p.filter-by').text($(e.target).text());
 
@@ -124,10 +131,16 @@ $(document).ready(function() {
                 $('.sort-by-menu p.date').addClass('active');
                 $('.sort-by-menu p.descending').removeClass('active');
                 $('.sort-by-menu p.ascending').addClass('active');
-			}
-		}
-		
+            }
+        }
 	})
+    $('#projectSelect').on('click', function(e) {
+        if($('#projectSelectContainer span.chevron').hasClass('open')) {
+            $('#projectSelectContainer span.chevron').removeClass('open');
+        } else {
+            $('#projectSelectContainer span.chevron').addClass('open');
+        }
+    });
 	
 	//search trigger
 	$('.admin-search.meta').keyup(function(e){
