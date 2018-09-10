@@ -45,6 +45,7 @@ class AdminController extends AppController {
             )
         ));
 
+
         if( empty($mappings) ){
             $this->Session->setFlash('You must be an Admin to access the Admin ' .
                 ' console.', 'flash_error');
@@ -66,7 +67,25 @@ class AdminController extends AppController {
             $first = false;
         }
 
-        $projectPicker = '<div id="projectSelectContainer" class="styled-select"><select id="projectSelect" class="styled-select" style="color:rgb(124, 124, 124) !important;" >';
+        $projectPicker = '<div id="projectSelectContainer" class="styled-select" style="display: block;
+    float: right;
+    margin-top: 185px;
+    margin-right: 9%;
+    margin-left: 15px;
+    padding-right: 20px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    border: none;
+    background: rgb(255, 255, 255);
+    font-size: 16px;
+    text-transform: capitalize;"><select id="projectSelect" class="styled-select" style="    color: rgb(124, 124, 124) !important;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-appearance: none;
+    border: none;
+    background: rgb(255, 255, 255);
+    font-size: 16px;
+    text-transform: capitalize;" >';
 
         $projectNameArray = array();
 
