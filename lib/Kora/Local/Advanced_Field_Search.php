@@ -418,7 +418,8 @@ class Advanced_Field_Search extends Kora
 
 
 
-        print_r($this->The_Clause);
+//        print_r($this->The_Clause);
+//        die;
 
 
 
