@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 #open-colview-btn:hover{
-  color: #0094BC;
+  color: #0094BC !important;
 }
 .advanced-display-header {
   width: 70%;
@@ -95,7 +95,7 @@ is from here to ...
     </section>
     <section id="field-selctor1">
       <ul>
-        <span id="result-info">Showing 20 of 100 resutls for </span>
+        <span id="result-info">Showing 20 of 100 result(s) for </span>
       </ul>
     </section>
   </article>
@@ -375,7 +375,7 @@ is from here to ...
       ul = $(ul)
       ul.empty()
       ul.append(
-        "<span id=\"result-info\">Showing "+min+" of "+max+" resutls for </span>"
+        "<span id=\"result-info\">Showing "+min+" of "+max+" result(s) for </span>"
       )
 
 
