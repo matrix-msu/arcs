@@ -13,11 +13,12 @@
   cursor: pointer;
 }
 #open-colview-btn:hover{
-  color:#337ab7;
+  color: #0094BC;
 }
 .advanced-display-header {
   width: 70%;
   margin: auto;
+	padding-top: 5px;
 }
 
 
@@ -33,7 +34,8 @@
 
 #page-title {
   color: #3F3F3F;
-  font-size: 24px;
+  font-size: 38px;
+  font-weight: 500;
 }
 #page-description {
   color: #686868;

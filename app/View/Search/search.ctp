@@ -13,7 +13,8 @@
   cursor: pointer;
 }
 #open-colview-btn:hover{
-  color:#337ab7;
+	color: #0094BC;
+	text-decoration: none;
 }
 </style>
 
