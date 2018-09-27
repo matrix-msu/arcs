@@ -289,6 +289,9 @@ $(document).ready(function() {
         CM_R_ID = id //sets the global Resource ID
         getComments()
 
+        console.log('click',id)
+
+        $('#res-header').html($('.archival[data-kid="'+id+'"]').find('#Title').html());
 
         //initialize scroll
         $(_resource.pageSlider).parent().scrollLeft(0);

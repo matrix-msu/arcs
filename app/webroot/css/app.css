@@ -1536,7 +1536,7 @@ kbd kbd {
   box-shadow: none;
 }
 pre {
-  display: block;
+  display: none;
   padding: 9.5px;
   margin: 0 0 10px;
   font-size: 13px;
@@ -9752,7 +9752,7 @@ input[type=range]:focus::-ms-fill-upper {
   background-color: #333;
 }
 #viewers-search {
-  height: auto;
+  height: 559px;
 }
 .viewers-container {
   margin-top: -60px;
@@ -9807,7 +9807,8 @@ input[type=range]:focus::-ms-fill-upper {
 #viewer-tools h3 {
   display: inline;
   line-height: 60px;
-  font-size: 16px;
+  margin-left: 25px;
+  font-size: 20px;
   font-weight: bold;
 }
 #viewer-tools .tools {
@@ -9961,7 +9962,6 @@ input[type=range]:focus::-ms-fill-upper {
   float: right;
 }
 .metadata .metadata-content .metadata-accordion {
-  float: left;
   position: relative;
 }
 .metadata .metadata-content .metadata-accordion .level-tab {
