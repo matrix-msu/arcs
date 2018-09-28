@@ -1536,7 +1536,7 @@ kbd kbd {
   box-shadow: none;
 }
 pre {
-  display: block;
+  display: none;
   padding: 9.5px;
   margin: 0 0 10px;
   font-size: 13px;
@@ -6405,7 +6405,7 @@ button.close {
   background-color: #84BAFA !important;
 }
 .unfocused {
-  color: #888 !important;
+  color: #fff !important;
 }
 .hidden {
   display: none;
@@ -6746,7 +6746,7 @@ h4 {
   font-size: 11px;
 }
 .footer .footer-contact {
-  color: #32CD32;
+  color: #0093be;
 }
 @media screen and (max-width: 400px) {
   div.footer {
@@ -7398,11 +7398,13 @@ div#toolbar h1#logo {
   padding-left: 60px;
   padding-bottom: 5px;
   color: #444;
-  background: no-repeat top left url('img/arcs-icon.png');
+  background: no-repeat top left url('img/new-arcs-logo.svg');
   background-position: 10px 0px;
-  margin-top: 15px;
+  height: 40px;
+  margin-top: 10px;
   margin-right: 10px;
   float: left;
+  width: 140px;
 }
 div#toolbar .btn {
   padding-right: 30px;
@@ -7481,7 +7483,7 @@ div#toolbar .btn-blue {
 .dropped-menu a {
   color: #808080;
   display: block;
-  padding-left: 30px;
+  padding-left: 0px;
 }
 .dropped-menu a:hover {
   text-decoration: none;
@@ -7518,15 +7520,15 @@ div#toolbar .btn-blue {
   border-width: 2.5px 2.5px 0 0;
 }
 .whiteArrow {
-  border: solid white;
+  border: solid grey;
   border-width: 2.5px 2.5px 0 0;
 }
 .projects-menu {
   display: none;
   background: #F4F4F4;
   position: absolute;
-  width: 130% !important;
-  left: -12.5%;
+  width: 100% !important;
+  left: 0;
   margin-top: 5px;
   border: 1px solid #e9e9e9;
 }
@@ -7553,9 +7555,13 @@ div#toolbar .btn-blue {
   border-bottom: 1px solid #e9e9e9 !important;
   border-left: 1px solid #e9e9e9 !important;
   border-radius: 0;
+  border-right: 1px solid #e9e9e9;
   text-transform: uppercase;
   font-size: 12px;
   line-height: 48px;
+}
+#searchBar {
+  margin: 0;
 }
 .indexSearchIcon {
   cursor: pointer;
@@ -7636,9 +7642,9 @@ input.indexSearchBox {
     padding-left: 60px;
     padding-bottom: 5px;
     color: #444;
-    background: no-repeat top left url('img/arcs-icon.png');
+    background: no-repeat top left url('img/new-arcs-logo.svg');
     background-position: 10px 0px;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-right: 10px;
     float: left;
   }
@@ -8287,11 +8293,9 @@ input.indexSearchBox {
     width: 100% !important;
   }
   .register-content-mobile {
+    color: #fff !important;
     width: 360px !important;
     top: 20px !important;
-  }
-  .selectDiv:after {
-    bottom: 240px !important;
   }
 }
 #addProjectModal .register-content {
@@ -8688,22 +8692,26 @@ div#searchCriteria ul {
 .advanced-search-container {
   width: 70%;
   margin: auto;
+  padding-top: 5px;
 }
 #backToSearch {
   font-size: 12px;
-  color: #0094BC;
   margin-bottom: 16px;
+}
+#backToSearch a {
+  color: #0094BC;
 }
 #search-box {
   margin-bottom: 140px;
 }
 #page-title {
   color: #3F3F3F;
-  font-size: 24px;
+  font-size: 38px;
+  font-weight: 500;
 }
 #page-description {
   color: #686868;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 24px;
   margin-top: 16px;
 }
@@ -9744,7 +9752,7 @@ input[type=range]:focus::-ms-fill-upper {
   background-color: #333;
 }
 #viewers-search {
-  height: auto;
+  height: 559px;
 }
 .viewers-container {
   margin-top: -60px;
@@ -9799,7 +9807,8 @@ input[type=range]:focus::-ms-fill-upper {
 #viewer-tools h3 {
   display: inline;
   line-height: 60px;
-  font-size: 16px;
+  margin-left: 25px;
+  font-size: 20px;
   font-weight: bold;
 }
 #viewer-tools .tools {
@@ -9953,7 +9962,6 @@ input[type=range]:focus::-ms-fill-upper {
   float: right;
 }
 .metadata .metadata-content .metadata-accordion {
-  float: left;
   position: relative;
 }
 .metadata .metadata-content .metadata-accordion .level-tab {
@@ -13430,6 +13438,16 @@ ul.annotations li.annotation:hover {
 }
 #registerModal .register-content-mobile .mobile .login-link {
   cursor: pointer;
+}
+@media screen and (max-width: 700px) {
+  #registerModal .register-content-mobile .mobile .selectDiv:after {
+    bottom: 285px;
+  }
+}
+@media screen and (max-width: 430px) {
+  #registerModal .register-content-mobile .mobile .selectDiv:after {
+    bottom: 247px;
+  }
 }
 #user-profile {
   width: 100%;
@@ -16948,6 +16966,9 @@ input[type="text"]:focus {
   color: #3F3F3F;
   margin-top: 50px;
 }
+.intro .landing_header_two a {
+  color: #0093be;
+}
 .intro .landing_body_text {
   text-align: justify;
   text-align-last: center;
@@ -18574,7 +18595,10 @@ div.proper-width {
 p.login_msg {
   margin: 20px auto;
   color: #898989;
-  font-size: 13px;
+  font-size: 14px;
+}
+p.login_msg a {
+  color: #0094BC;
 }
 a.view-colc {
   text-decoration: none;
@@ -18751,4 +18775,7 @@ body {
   .collection-list-wrapper details[open] summary:after {
     margin: 5px 0;
   }
+}
+.collection-list-wrapper {
+  margin: 0px auto 50px auto;
 }

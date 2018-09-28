@@ -252,7 +252,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                 <div class="annotationHelpOk">Cancel</div>
             </div>
             <div class="container1">
-                <h3><?php  ?> </h3>
+                <h3 id="res-header"> </h3>
                 <div class="tools" style="visibility:hidden;" >
                     <a id="collection-modal-btn" href="#">
                                         <span class="content">

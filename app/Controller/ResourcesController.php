@@ -939,6 +939,8 @@ class ResourcesController extends AppController {
         $seasons = array();
         $excavations = array();
         $subjects = array();
+		$kora_resources = array();
+		$groupPages = array();
         $resources_array = array();
         $showButNoEditArray = array();
         // echo json_encode($this->request);die;
@@ -1012,9 +1014,112 @@ class ResourcesController extends AppController {
 
         $hasARealResource = false;
 
-        foreach($resources_array as $resource){
-            //get resource information
-            $info_array = $this->getResource($resource);
+		$pidsArray = array();
+		foreach( $resources_array as $rKid ){
+			$pName = parent::convertKIDtoProjectName($rKid);
+			if( isset($pidsArray[$pName]) ){
+				$pidsArray[$pName][] = $rKid;
+			}else{
+				$pidsArray[$pName] = array($rKid);
+			}
+		}
+
+		foreach( $pidsArray as $pName => $projectResourceKids ){
+			$pid = parent::getPIDFromProjectName($pName);
+			//get all resources
+			$sid = parent::getResourceSIDFromProjectName($pName);
+			$query_array = array("kid","IN",$resources_array);
+			$fields = "ALL";
+			$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+			$kora_resources = array_merge($kora_resources, $result->return_array());
+			
+			//get all excavations at once
+			$kids = array();
+			$seasonKids = array();
+			$pageKids = array();
+			foreach( $kora_resources as $kid => $record ){
+				if( isset($kora_resources[$kid]["Excavation_-_Survey_Associator"]) && $kora_resources[$kid]["Excavation_-_Survey_Associator"] !== '' ){
+					$kids = array_merge( $kids, $kora_resources[$kid]["Excavation_-_Survey_Associator"] );
+				}
+				if( isset($kora_resources[$kid]["Season_Associator"]) && $kora_resources[$kid]["Season_Associator"] !== '' ){
+					$seasonKids = array_merge( $seasonKids, $kora_resources[$kid]["Season_Associator"] );
+				}
+				if( isset($kora_resources[$kid]["linkers"]) && $kora_resources[$kid]["linkers"] !== '' ){
+					$pageKids = array_merge( $pageKids, $kora_resources[$kid]["linkers"] );
+				}
+			}
+			$kids = array_values(array_unique($kids));
+			if( $kids != '' && !empty($kids) ){
+				$sid = parent::getSurveySIDProjectName($pName);
+				$query_array = array("kid","IN",$kids);
+				$fields = "ALL";
+				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+				$excavations = array_merge($excavations, $result->return_array());
+			}
+			
+			//get all seasons at once
+			foreach( $excavations as $kid => $record ){
+				if( isset($excavations[$kid]["Season_Associator"]) && $excavations[$kid]["Season_Associator"] !== '' ){
+					$seasonKids = array_merge( $seasonKids, $excavations[$kid]["Season_Associator"] );
+				}
+			}
+			$seasonKids = array_values(array_unique($seasonKids));
+			if( $seasonKids != '' && !empty($seasonKids) ){
+				$sid = parent::getSeasonSIDFromProjectName($pName);
+				$query_array = array("kid","IN",$seasonKids);
+				$fields = "ALL";
+				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+				$seasons = array_merge($seasons, $result->return_array());
+			}
+			
+			//get all projects at once
+			$kids = array();
+			foreach( $seasons as $kid => $record ){
+				if( isset($seasons[$kid]["Project_Associator"]) && $seasons[$kid]["Project_Associator"] !== '' ){
+					$kids = array_merge( $kids, $seasons[$kid]["Project_Associator"] );
+				}
+			}
+			$kids = array_values(array_unique($kids));
+			if( $kids != '' && !empty($kids) ){
+				$sid = parent::getProjectSIDFromProjectName($pName);
+				$query_array = array("kid","IN",$kids);
+				$fields = "ALL";
+				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+				$projectsArray = array_merge($projectsArray, $result->return_array());
+			}
+			
+			//get all pages at once
+			$pageKids = array_values(array_unique($pageKids));
+			if( $pageKids != '' && !empty($pageKids) ){
+				//grab all pages with the resource associator
+				$sid = parent::getPageSIDFromProjectName($pName);
+				$fields = 'ALL';
+				$sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
+				$kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+				$kora->add_clause("Resource_Associator", "IN", $resources_array);
+				$tempGroupPages = $kora->search();
+				if( $tempGroupPages == "[]" ){
+					$sort = array();
+					$kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+					$kora->add_clause("Resource_Associator", "IN", $resources_array);
+					$groupPages = array_merge($groupPages, json_decode($kora->search(), true));
+				}else{
+					$groupPages = array_merge($groupPages, json_decode($tempGroupPages, true));
+				}
+			}
+			//get all soo at once
+			if( $pageKids != '' && !empty($pageKids) ){			
+				$sid = parent::getSubjectSIDFromProjectName($pName);
+				$query_array = array("Pages Associator", "IN", $pageKids);
+				$fields = "ALL";
+				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+				$subjects = array_merge($subjects, $result->return_array());
+			}
+		}
+
+        foreach($kora_resources as $resource => $info_array ){
+			
+			$info_array = array( $resource => $info_array );
 
             if( empty($info_array) ){ //check if a real resource
                 continue;
@@ -1055,55 +1160,30 @@ class ResourcesController extends AppController {
                 }
             }
 
-
-            if( isset($info_array[$resource]["Excavation_-_Survey_Associator"]) && $info_array[$resource]["Excavation_-_Survey_Associator"] !== '' ){
-                $exc_kids = $this->getFromKey($info_array, "Excavation_-_Survey_Associator");
-
-                //get Season data
-                $excavation_array = $this->getExcavation($exc_kids);
-                $this->pushToArray($excavation_array, $excavations);
-
-                if( empty($excavation_array) ){
-                    $season_kids = array();
-                }else {
-                    $season_kids = $this->getFromKey($excavation_array, "Season_Associator");
-                }
-            }else{
-                $season_kids = $this->getFromKey($info_array, "Season_Associator");
-            }
-
-            //get Season data
-            $season_array = $this->getSeason($season_kids);
-            $this->pushToArray($season_array, $seasons);
-
-            $project_kid = $this->getFromKey($season_array,"Project_Associator")[0];
-            $info_array[$resource]['project_kid'] = $project_kid;
-            $pName = parent::convertKIDtoProjectName($project_kid);
-
-            //get project array
-            $project_array = $this->getProject($project_kid);
-            $this->pushToArray($project_array, $projectsArray);
-
             //get pages and add to resource array
-            $page = $this->getPages($resource);
-
+            $page = array();
+			foreach( $groupPages as $kid => $record ){
+				if( in_array($kid, $info_array[$resource]['linkers']) ){
+					$page[$kid] = $record;
+				}
+			}
             if(empty($page)) {
                 // creates a hacky solution to display a default page
                 // when there are no pages associated with the resource
                 // missing a lot of other information typically associated with a page
                 $page["DefaultPage"] = array();
-            }else{
-                $pageKids = array_keys($page);
             }
-
             $info_array[$resource]["page"] = $page;
-            //get SOO
-            if( !empty($pageKids) ){
-                $soo = $this->getSubjectOfObservation($pageKids);
-            }else{
-                $soo = array();
-            }
-            $this->pushToArray($soo, $subjects);
+			
+			foreach( $pidsArray as $pname => $projectResourceKids2 ){
+				if( in_array($resource, $projectResourceKids2) ){
+					foreach( $projectsArray as $pkid => $pvalue) {
+						if( $pvalue['pid'] == parent::getPIDFromProjectName($pname) ){
+							$info_array[$resource]['project_kid'] = $pkid;
+						}
+					}
+				}
+			}
 
             //push to array
             $this->pushToArray($info_array, $resources);
