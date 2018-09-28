@@ -9,17 +9,13 @@
 		$this->request->params['action'] == 'display'
 	){$helpBlue = ' btn-blue';}
 ?>
-<div id="toolbar" class="row">
-    <?php if (!isset($logo) || $logo): ?>
+<div id="toolbar" class="row"> 
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
             <h1 id="logo">
-                <?php echo isset($logo) && is_string($logo) ? $logo : "ARCS" ?>
             </h1>
         </a>
 
 	<h1 id= "hamburger" class='hamburger'></h1>
-
-  <?php endif ?>
 
   <?php
     // Check if $nobutton is set and its value
@@ -75,7 +71,7 @@
 	</div>
   <?php if (isset($index_toolbar) && $index_toolbar) :?>
     <div class="search-bar">
-      <input data-project-kid="all" type="text" id="searchBar" class="search-bar indexSearchBox search-bar-js" placeholder="|&nbsp;&nbsp;Search">
+      <input data-project-kid="all" type="text" id="searchBar" class="search-bar indexSearchBox search-bar-js" placeholder="Search">
       <div class="indexSearchIcon"></div>
     </div>
   <?php endif ?>

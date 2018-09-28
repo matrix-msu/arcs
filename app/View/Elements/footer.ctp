@@ -37,7 +37,7 @@
 		<?php echo $this->Html->link('Login', '/#loginModal') ?> |
 		<?php echo $this->Html->link('Privacy Statement', 'https://msu.edu/privacy/', array('target' => '_blank') ) ?> |
 		<?php echo $this->Html->link(
-                            'Site Accssibility',
+                            'Site Accessibility',
                             'https://webaccess.msu.edu/Policy_and_Guidelines/web-accessibility-policy.html',
                             array('target' => '_blank')
                         ) ?>

@@ -22,7 +22,7 @@
 			<div class="projectIntro">
 		        <h1 class="title">Recently Added Resources</h1>
 		    </div>
-
+ 
 		<div class="pic-display">
 			<ul class="recent-resource">
 			    <?php foreach($resources as $r): ?>

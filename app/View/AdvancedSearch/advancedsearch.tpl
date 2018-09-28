@@ -13,11 +13,12 @@
   cursor: pointer;
 }
 #open-colview-btn:hover{
-  color:#337ab7;
+  color: #0094BC !important;
 }
 .advanced-display-header {
   width: 70%;
   margin: auto;
+	padding-top: 5px;
 }
 
 
@@ -33,7 +34,8 @@
 
 #page-title {
   color: #3F3F3F;
-  font-size: 24px;
+  font-size: 38px;
+  font-weight: 500;
 }
 #page-description {
   color: #686868;
@@ -93,7 +95,7 @@ is from here to ...
     </section>
     <section id="field-selctor1">
       <ul>
-        <span id="result-info">Showing 20 of 100 resutls for </span>
+        <span id="result-info">Showing 20 of 100 result(s) for </span>
       </ul>
     </section>
   </article>
@@ -373,7 +375,7 @@ is from here to ...
       ul = $(ul)
       ul.empty()
       ul.append(
-        "<span id=\"result-info\">Showing "+min+" of "+max+" resutls for </span>"
+        "<span id=\"result-info\">Showing "+min+" of "+max+" result(s) for </span>"
       )
 
 
