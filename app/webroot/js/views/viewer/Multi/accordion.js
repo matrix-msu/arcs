@@ -1,6 +1,8 @@
 // <!-- Give the resource array to the client-side code -->
+console.log('load prep file');
 
 function prepAccordion(delayedFire){
+	console.log('prep accordion');
     $(function () {
         $("#tabs").tabs();
         function prepAccordionInner(){
@@ -20,10 +22,11 @@ function prepAccordion(delayedFire){
         }
     });
     $(function () {
-        $(".accordion").accordion({
-            heightStyle: "fill",
-            active: 3
-        });
+		// $( ".accordion" ).accordion( "refresh" );
+        // $(".accordion").accordion({
+            // heightStyle: "fill"//,
+            // //active: 4
+        // });
     });
     //height of the viewer window - the height of the tabs - 2 for the border width
     $('.metadata-accordion').height($('#viewer-left').height() - $(".metadata-tabs").height() - 2);
