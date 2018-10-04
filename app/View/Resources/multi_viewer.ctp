@@ -97,7 +97,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 				<div class='fullscreenInner'>
 				                <img id='fullscreenImage' class='fullscreenImage' src=''>
 				    <div class='leftHalf'>
-						<div class='expandedArrowBoxLeft'>
+						<!-- <div class='expandedArrowBoxLeft'>
 							<img class='leftExpandedArrow' src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="220px" width="10px" />
 						</div>
 
@@ -105,7 +105,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 					<div class="rightHalf">
 						<div class='expandedArrowBoxRight'>
 							<img class='rightExpandedArrow' src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="220px" width="10px" />
-						</div>
+						</div> -->
 
 					</div>
 				</div>
