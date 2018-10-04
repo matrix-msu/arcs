@@ -1013,6 +1013,12 @@ class ResourcesController extends AppController {
         }
 
         $hasARealResource = false;
+		
+		if (!isset($_GET['getRest'])) {
+			$temp = count($resources_array) > 1 ? $id : 'false';
+			$this->set("multiInfo", $temp);
+            $resources_array = array($resources_array[0]);
+        }
 
 		$pidsArray = array();
 		foreach( $resources_array as $rKid ){
@@ -1188,11 +1194,11 @@ class ResourcesController extends AppController {
             //push to array
             $this->pushToArray($info_array, $resources);
 
-            if (!isset($_GET['getRest'])) {
-                $temp = count($resources_array) > 1 ? $id : 'false';
-                $this->set("multiInfo", $temp);
-                break;
-            }
+            //if (!isset($_GET['getRest'])) {
+                //$temp = count($resources_array) > 1 ? $id : 'false';
+                //$this->set("multiInfo", $temp);
+            //    break;
+            //}
         }
 
         if( !$hasARealResource ){
@@ -1223,8 +1229,8 @@ class ResourcesController extends AppController {
         }
 
         else if (isset($_GET['getRest'])) {
-            $metadataedits = $this->getEditMetadata();
-            if($pName != '') {
+            $metadataedits = array();
+            if(true){//$pName != '') {
                 $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
             }else{
                 $metadataeditsControlOptions = array();

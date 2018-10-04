@@ -34,6 +34,8 @@ class AdvancedSearchController extends AppController
         );
     }
     public function viewer($project = null) {
+		ini_set("memory_limit", "-1");
+		set_time_limit(0);
         $title = 'Advanced Search';
         // check bootstrap configuration
 
@@ -51,13 +53,31 @@ class AdvancedSearchController extends AppController
         }
 
         echo "<script>var globalproject = \"$project\" </script>";
+		
+		try {
+          parent::verifyGlobals($project);
+        } catch (Exception $e) {
+          // return configuration error code
+          return json_encode(array(
+            "Error" => $e->getMessage()
+          ));
+        }
 
-        $json = $this->SearchAPI(
-          $project,
-          $this->request->query
-        );
-
-        $resources = json_decode($json);
+		$times = array();
+		$time_start = microtime(true);
+		 
+        if (is_null($this->request->query)) {
+          $query = $this->request->query;
+        }
+        $dataStructure = AFDSFactory::create($this->request->query);
+        $adv = new Advanced_Field_Search($project, $dataStructure);
+        $resources = $adv->executeSearch();
+		
+		$time_end = microtime(true);
+        $times['search'] = $time_end - $time_start;
+		
+		//echo $json;die;
+		$time_start = microtime(true);
 
         if (empty($resources) || is_null($resources)) {
           $resources = array("empty");
@@ -65,8 +85,17 @@ class AdvancedSearchController extends AppController
 
         $search = new Resource_Search($resources, $project);
         $results = $search->getResultsAsArray();
+		
+		$time_end = microtime(true);
+        $times['resource search'] = $time_end - $time_start;
 
+		
+		$time_start = microtime(true);
         ResourcesController::filterByPermission($username, $results['results']);
+		$time_end = microtime(true);
+        $times['filter by perm'] = $time_end - $time_start;
+		
+		//var_dump($times);die;
 
         echo "<script>var results_to_display = ".json_encode($results).";</script>";
 

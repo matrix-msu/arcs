@@ -11,6 +11,9 @@ var PAGESET = "<?php echo isset($pageSet)? $pageSet : "0";?>";
 //console.log(PROJECTS);
 var showButNoEditArray = <?=json_encode($showButNoEditArray)?>;
 var annotationFlags = <?php echo json_encode($flags['annotationFlags']);?>;
+var controllerFlags = <?php echo json_encode($flags);?>;
+var controllerMetadataEdits = <?php echo json_encode($metadataEdits);?>;
+var controllerMetadataOptions = <?php echo json_encode($metadataEditsControlOptions);?>;
 
 var resourceKid = "";
  var ADMIN = 0;
@@ -503,10 +506,13 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     <div id="other-resources-container" class = "resource-container-level">
         <div id="other-resources" class="resource-slider" style="position:relative;">
-          <span class="p-select">
-            <div class="select-pointer pointer-border"></div>
-            <div class="select-pointer"></div>
-          </span>
+			<div id="resource-drawer-loader" style="float:right;position:relative;top:-5px;right:-10px;}">
+				<?php echo ARCS_LOADER_HTML; ?>
+			</div>
+			<span class="p-select">
+				<div class="select-pointer pointer-border"></div>
+				<div class="select-pointer"></div>
+			</span>
 
 		<?php  $cnt = 0; ?>
         <?php  foreach($resources as $r):  ?>
