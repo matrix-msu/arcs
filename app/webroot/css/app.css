@@ -16686,7 +16686,8 @@ ul.resource-thumbs li.resource-thumb:hover a {
 .collection-list-wrapper .collection-list details summary p.rsc-name,
 .collection-list-wrapper .collection-list details[open] summary p.rsc-name {
   text-shadow: none;
-  font-size: 18px;
+  font-size: 24px;
+  font-weight: 300;
   display: inline;
   margin: 20px 20px;
 }
@@ -16745,6 +16746,9 @@ li.Locked .lock-overlay {
   background-position: center;
   background-image: url("../assets/img/Locked.svg");
   background-size: 40px 40px;
+}
+.btn-show-all {
+  cursor: pointer;
 }
 @media screen and (max-width: 550px) {
   .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon img.lock-icon-img,
@@ -17894,8 +17898,12 @@ footer#standard-MSU-footer {
   text-transform: uppercase;
   text-align: left;
   margin-bottom: -5px;
+  outline: none;
   border-radius: 0;
   padding-left: 0;
+}
+.collection-list-wrapper .dropdown .dropdown-toggle:active {
+  box-shadow: none;
 }
 .collection-list-wrapper .dropdown .dropdown-open {
   z-index: 1;
@@ -18548,6 +18556,9 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
   height: 100px;
   border: 1px solid #E2E2E2;
 }
+li.resource-thumb a:hover {
+  box-shadow: 2px 10px 25px 0px rgba(0, 0, 0, 0.15);
+}
 .recent-resource .resource-pic .resource-title {
   color: #6D6E70;
   font-size: 13px;
@@ -18577,6 +18588,9 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
 .resource-thumbs .resource-thumb .view-title {
   color: #6D6E70;
   font-size: 12px;
+}
+.resource-thumbs {
+  margin-top: 55px !important;
 }
 div.proper-width {
   margin: auto;
@@ -18649,7 +18663,7 @@ a.view-colc {
   margin: 25px 0 0;
   border: 1px solid #e2e2e2;
   background: #f4f4f4;
-  padding: 13px 15px 13px 20px;
+  padding: 13px 0px 13px 0px;
 }
 .back-color[open] ul.resource-thumbs li.resource-thumb:hover {
   background-color: transparent;
@@ -18776,7 +18790,8 @@ body {
     display: block;
   }
   .collection-list-wrapper .collection-list details summary h3 {
-    font-size: 16px;
+    font-size: 24px;
+    font-weight: 300;
   }
   .collection-list-wrapper summary:after,
   .collection-list-wrapper details[open] summary:after {
