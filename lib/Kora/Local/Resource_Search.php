@@ -12,6 +12,7 @@ class Resource_Search extends Keyword_Search {
   function __construct($array, $projectName){
     //call parent constructor 'kora'
     parent::__construct();
+	$resourceSearchTimes = array();
     $time_start = microtime(true);
     $mem_start =  memory_get_usage();
 
@@ -21,15 +22,30 @@ class Resource_Search extends Keyword_Search {
     $this->schemeMapping = parent::getResourceSIDFromProjectName($projectName);
     $this->The_Clause = new KORA_Clause("kid","IN",$array);
     $this->formulatedResult = parent::search();
+	
+	$time_end_temp = microtime(true);
+	 $resourceSearchTimes['resources kora search'] = $time_end_temp - $time_start;
 
     // traverse the database to include excavation,
     // season and project associations;
+	$time_start_temp = microtime(true);
     $this->traverse_insert($projectName);
+	
+	$time_end_temp = microtime(true);
+	 $resourceSearchTimes['resources traverse insert'] = $time_end_temp - $time_start_temp;
 
+	 $time_start_temp = microtime(true);
     // get resource filters
     $filters = Resource::filter_analysis($this->formulatedResult);
     //get indicators
     $indicators = Resource::flag_analysis($this->formulatedResult);
+	
+	$time_end_temp = microtime(true);
+	 $resourceSearchTimes['resources filter and flag'] = $time_end_temp - $time_start_temp;
+	 
+	 // echo 'resources.php search times';
+	 // var_dump($resourceSearchTimes);
+
 
     $this->adjust_requested_limits(1,100000000);
 

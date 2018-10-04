@@ -96,6 +96,12 @@ class Advanced_Field_Search extends Kora
         $mem_start =  memory_get_usage();
 
         $resourcesFromSeasons     = $this->_seasonLevelSearch();
+		
+		// var_dump($resourcesFromSeasons);
+		// die;
+		
+		// echo 'here';
+		// die;
 
         $resourcesFromExcavations = $this->_excavationLevelSearch();
 
@@ -105,7 +111,7 @@ class Advanced_Field_Search extends Kora
 
         $resourcesFromSubGen      = $this->_subjectGeneralLevelSearch();
 
-        $resourcesFromSubDet      = $this->_subjectDetailedLevelSearch();;
+        $resourcesFromSubDet      = $this->_subjectDetailedLevelSearch();
 
 
         $intersect = self::getVectorIntersection(
@@ -115,6 +121,10 @@ class Advanced_Field_Search extends Kora
             $resourcesFromSubGen, $resourcesFromSubDet
             )
         );
+		
+		// echo 'done';
+		// var_dump($intersect);
+		// die;
 
         $time_end = microtime(true);
         $mem_end = memory_get_usage();
@@ -357,27 +367,23 @@ class Advanced_Field_Search extends Kora
 
             $this->schemeMapping = parent::getSeasonSIDFromProjectName($this->_project);
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
-            $this->fields        = array("Title", "Type");
+            $this->fields        = array("kid");  //array("Title", "Type");
 
             $seasons = parent::search();
+			// echo 'season results';
+			// var_dump($seasons);
+			// die;
 //            echo 'before seasons';
 //            print_r(array_keys($seasons));
 //            echo 'after seasons';
             if (!empty($seasons)) {
 
                   $linkers = $this->getLinkers($seasons);
-//                echo 'linkers: <br><br>';
-//                echo json_encode($linkers);
-//                echo 'after   linkers: <br><br>';
-
-                  // get direct resource linkers
-                  $scheme = parent::getResourceSIDFromProjectName($this->_project);
-                  $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
-
-//                  echo 'resources: <br><br>';
-//                  echo json_encode($resources);
-//                  die;
-
+				  
+                  // // get direct resource linkers
+                  // $scheme = parent::getResourceSIDFromProjectName($this->_project);
+                  // $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
+				  
                   // get excavation linkers return null;
                   $this->schemeMapping = parent::getSurveySIDProjectName($this->_project);
                   $excavations = $this->_resolveSchemeFromLinkers($linkers, $this->schemeMapping, array("Type"), false);
@@ -386,10 +392,10 @@ class Advanced_Field_Search extends Kora
 
                   // get indirect resource linkers
                   $scheme = parent::getResourceSIDFromProjectName($this->_project);
-                  $resources2 = $this->_resolveSchemeFromLinkers($linkers2, $scheme, array("Title"));
+                  return $this->_resolveSchemeFromLinkers(array_unique(array_merge($linkers, $linkers2)), $scheme, array("Title"));
                   // print_r($seasons);exit();
                   // print_r(array_unique(array_merge($resources, $resources2)));exit();
-                  return array_unique(array_merge($resources, $resources2));
+                  // return array_unique(array_merge($resources, $resources2));
 
             }
             return array();
@@ -412,30 +418,10 @@ class Advanced_Field_Search extends Kora
 
         $this->schemeMapping = $scheme;
         $this->The_Clause    = new KORA_Clause("KID", "IN", $linkers);
-        //$this->The_Clause    = new KORA_Clause("KID", "!=", '');
-        ///$this->The_Clause    = new KORA_Clause("KID", "=", '34-173-226344');
 
-
-
-
-//        print_r($this->The_Clause);
-//        die;
-
-
-
-        $this->fields        = $fields;
+        $this->fields        = array("kid");
         $resolvedKIDS        = parent::search();
-
-//
-//        echo "<br><br>";
-//        var_dump($resolvedKIDS);
-//
-//        echo "<br><br>";
-//        echo var_dump($fields);
-//
-//        die;
-        
-
+		
         // rebase array with keys
         if ($rebase) {
             return array_keys($resolvedKIDS);

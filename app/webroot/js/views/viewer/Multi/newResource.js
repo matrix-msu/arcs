@@ -3,6 +3,9 @@ var waits = [];
 var _NewResource = {};
 function GetNewResource(id) {
     image = document.getElementById('PageImage');
+	if( $(image).hasClass('multiInfo') ){
+		return;
+	}
     if(id == null) {
         return;
     }
@@ -17,24 +20,15 @@ function GetNewResource(id) {
         $(image).css('display', 'none');
         $('#PageImagePreloader').css('display', 'flex');
         waitingId++;
-
-        $.ajax({
-            url: arcs.baseURL + "resources/loadNewResource/" + id,
-            type: 'GET',
-            beforeSend: function () {
-                waits[this.url] = waitingId;
-            },
-            success: function (res) {
-                if (waits[this.url] >= waitingId) {
-                    res = JSON.parse(res);
-                    kid = res['kid'];
-                    kids = [];
-                    //display obervatoins that apply to the selected page
-                    var cnt = 0;
-                    var pageNum = 1;
-
-                    var pagePid = getPidFromKid(kid);
+		
+		console.log('new resource ajax call', id);
+		
+		for( var resind in RESOURCES ){
+			for( var kid in RESOURCES[resind]['page'] ){
+				if( kid == id ){
+					var pagePid = getPidFromKid(kid);
                     var pageSid = getSidFromKid(kid);
+					var res = RESOURCES[resind]['page'][kid];
 
                     ///FULL SCREEN IMAGE CHANGED HERE
                     if (typeof(res["Image_Upload"]) === 'undefined'){
@@ -49,19 +43,19 @@ function GetNewResource(id) {
                         fullImage.src = imgUrl;
                     }
                     else{
-                        $(image).attr('src', res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
+                        $(image).attr('src', KORA_FILES_URI+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
                         $('#PageImagePreloader').css('display', 'none');
 
                         $(image).css('display', 'block');
 
                         var fullImage = document.getElementById('fullscreenImage');
-                        var imgUrl = res["kora_url"]+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName'];
+                        var imgUrl = KORA_FILES_URI+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName'];
 
                         fullImage.src = imgUrl;
                     }
-                }
-            }
-        });
+				}
+			}
+		}
     }
 }
 
