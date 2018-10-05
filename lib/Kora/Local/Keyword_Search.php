@@ -611,13 +611,19 @@ class Keyword_Search extends Kora
 
     public function insertPages($page)
     {
+		$linkers = array();
+		foreach( $this->formulatedResult as $kid => $value ){
+			if( isset($value['linkers']) ){
+				$linkers = array_merge($linkers, $value['linkers']);
+			}
+		}
         $this->fields = array("Image Upload", "Resource Associator", "Scan_Number");
         $this->schemeMapping = $page;
-        $resourceKids = array_keys($this->formulatedResult);
         $scanNumberClause = new KORA_Clause("Scan_Number", '=', '1');
-        $kidClause = new KORA_Clause("Resource_Associator", "IN", $resourceKids);
+        $kidClause = new KORA_Clause("kid", "IN", $linkers);
         $this->The_Clause = new KORA_Clause($kidClause, "AND", $scanNumberClause);
         $images = self::search();
+		$time_end = microtime(true);
 
         $pKid = $this->projectMapping.'-'.$page.'-';
 

@@ -270,6 +270,7 @@ $(document).ready(function() {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
             $(this).addClass('selectedCurrentPage')
             var id = $(this).find("img").attr("id");
+			pageSet = id;
             var stateObj = { pageID: id };
 
             history.replaceState(stateObj, "page 2", "?pageSet=" +id);
@@ -439,6 +440,29 @@ $(document).ready(function() {
     }
 
     if (multiInfo !== false) {
+		//console.log('first resource', $('.other-resource') );
+		prepAccordion(true);
+		$(".accordion").accordion({
+            heightStyle: "fill",
+            active: 3,
+			autoHeight: false
+        });
+		scrollPrep();
+		dynamicPrep();
+		var currentImageKid = '';
+		for( var ind in RESOURCES[Object.keys(RESOURCES)[0]]['page'] ){
+			if( RESOURCES[Object.keys(RESOURCES)[0]]['page'][ind]['Scan_Number'] == "1.000000000000000000000000000000" ){
+				currentImageKid = ind;
+			}
+		}
+		if( currentImageKid == '' ){
+			currentImageKid = RESOURCES[Object.keys(RESOURCES)[0]]['page'][Object.keys(RESOURCES[Object.keys(RESOURCES)[0]]['page'])][0];
+		}
+		GetNewResource(currentImageKid);
+		$('#PageImage').css('display', 'block').addClass('multiInfo');
+		 $('.resource-nav-level').css('display', 'block');
+		 $('.selectedCurrentResource').click();
+		//return;
         $.ajax({
             url: arcs.baseURL + "view/" + multiInfo,
             type: 'GET',
@@ -446,14 +470,22 @@ $(document).ready(function() {
                 'getRest' : true
             },
             success: function (results) {
+				$('#PageImage').removeClass('multiInfo');
                 results = JSON.parse(results);
-                PROJECTS = results.projectsArray;
-                SEASONS = results.seasons;
-                RESOURCES = results.resources;
-                EXCAVATIONS = results.excavations;
-                SUBJECTS = results.subjects;
-                showButNoEditArray = results.showButNoEditArray;
-                annotationFlags = results.flags['annotationFlags'];
+				PROJECTS = Object.assign(results.projectsArray, PROJECTS);
+				SEASONS = Object.assign(results.seasons, SEASONS);
+				RESOURCES = Object.assign(results.resources, RESOURCES);
+				EXCAVATIONS = Object.assign(results.excavations, EXCAVATIONS);
+				SUBJECTS = Object.assign(results.subjects, SUBJECTS);
+				showButNoEditArray = Object.assign(results.showButNoEditArray, showButNoEditArray);
+				annotationFlags = Object.assign(results.flags['annotationFlags'], annotationFlags);
+				controllerFlags = Object.assign(results.flags, controllerFlags);
+                //SEASONS = results.seasons;
+                //RESOURCES = results.resources;
+                //EXCAVATIONS = results.excavations;
+                //SUBJECTS = results.subjects;
+                //showButNoEditArray = results.showButNoEditArray;
+                //annotationFlags = results.flags['annotationFlags'];
                 var firstid = $('#other-resources.other-page a').length - 1;
                 var cnt = 1;
                 for (resource in results.resources) {
@@ -482,6 +514,7 @@ $(document).ready(function() {
                         html += (++pagecnt)+"</div></a>";
                         $('#other-resources.other-page').append(html);
                     }
+					$('#resource-drawer-loader').remove();
                 }
                 $('#resources-nav.resource-nav-level').show();
                 _resource.setPointer(Object.keys(results.resources)[0]);
@@ -492,13 +525,32 @@ $(document).ready(function() {
                 $('.other-resources').unbind('click', otherResourcesClick);
                 $('.other-resources').click(otherResourcesClick);
                 pageSelectBuild(firstid);
-                var projectData = generateMetadata("project", results.projectsArray, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                var seasonsData = generateMetadata("Seasons", results.seasons, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                var excavationsData = generateMetadata("excavations", results.excavations, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags, results.seasons);
-                var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags,results.excavations,results.seasons);
-                var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                //var projectData = generateMetadata("project", results.projectsArray, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                //var seasonsData = generateMetadata("Seasons", results.seasons, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+                //var excavationsData = generateMetadata("excavations", results.excavations, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags, results.seasons);
+                //var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags,results.excavations,results.seasons);
+                //var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
+				
+				
+				//NOAH do this --- 
+				//change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
+				var projectData = generateMetadata("project", PROJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
+                var seasonsData = generateMetadata("Seasons", SEASONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
+                var excavationsData = generateMetadata("excavations", EXCAVATIONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS);
+                var archivalData = generateMetadata("archival objects", RESOURCES, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,EXCAVATIONS,SEASONS);
+                var subjectsData = generateMetadata("subjects", SUBJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
+                
+				
+				$(".accordion").accordion('destroy')
                 $('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
-                prepAccordion(true);
+                
+				$(".accordion").accordion({
+					heightStyle: "fill",
+					active: 3
+				});				
+				
+				//---to here ----
+				
                 dynamicPrep();
                 editMetaPrep();
                 annotationPrep();
@@ -521,5 +573,9 @@ $(document).ready(function() {
         flagPrep();
         keywordPrep();
         scrollPrep();
+		$(".accordion").accordion({
+			heightStyle: "fill",
+			active: 3
+		});		
     }
 });

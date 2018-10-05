@@ -290,7 +290,7 @@ class ResourcesController extends AppController {
                 . $mysqli->connect_error);
         }
         //Get a collection_id from the id
-        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = 0 AND approved = 0");
+        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM metadata_edits WHERE rejected = 0 AND approved = 0");
         $sql->execute();
         $result = $sql->get_result();
         // $result = $mysqli->query($sql);
@@ -933,6 +933,7 @@ class ResourcesController extends AppController {
 
     // view multiple resources in a viewer
     public function multi_viewer($id='') {
+//echo 'multi_view';die;
         $pName = NULL;
         $resources = array();
         $projectsArray = array();
@@ -989,7 +990,7 @@ class ResourcesController extends AppController {
         // echo json_encode($this->request);die;
         $resources_array = json_decode($this->request->data['resources']);
         // print_r($resources_array);die;
-      }
+     }
 
         $username = NULL;
         $usersC = new UsersController();
@@ -1013,6 +1014,12 @@ class ResourcesController extends AppController {
         }
 
         $hasARealResource = false;
+		
+		if (!isset($_GET['getRest'])) {
+			$temp = count($resources_array) > 1 ? $id : 'false';
+			$this->set("multiInfo", $temp);
+            $resources_array = array($resources_array[0]);
+        }
 
 		$pidsArray = array();
 		foreach( $resources_array as $rKid ){
@@ -1188,11 +1195,11 @@ class ResourcesController extends AppController {
             //push to array
             $this->pushToArray($info_array, $resources);
 
-            if (!isset($_GET['getRest'])) {
-                $temp = count($resources_array) > 1 ? $id : 'false';
-                $this->set("multiInfo", $temp);
-                break;
-            }
+            //if (!isset($_GET['getRest'])) {
+                //$temp = count($resources_array) > 1 ? $id : 'false';
+                //$this->set("multiInfo", $temp);
+            //    break;
+            //}
         }
 
         if( !$hasARealResource ){
@@ -1223,8 +1230,8 @@ class ResourcesController extends AppController {
         }
 
         else if (isset($_GET['getRest'])) {
-            $metadataedits = $this->getEditMetadata();
-            if($pName != '') {
+            $metadataedits = array();
+            if(true){//$pName != '') {
                 $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
             }else{
                 $metadataeditsControlOptions = array();

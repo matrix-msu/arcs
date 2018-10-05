@@ -9881,6 +9881,10 @@ input[type=range]:focus::-ms-fill-upper {
   padding-left: 10px;
   background-repeat: no-repeat;
 }
+.other-resource,
+.other-resources {
+  cursor: pointer;
+}
 .metadata {
   float: left;
   border: 0;
@@ -17979,6 +17983,9 @@ footer#standard-MSU-footer {
 }
 .collection-list-wrapper .collection-list details summary h3 {
   text-shadow: none;
+}
+.collection-list-wrapper .collection-list details summary a {
+  color: #0094BC;
 }
 .collection-list-wrapper .collection-list details summary.large {
   padding: 15px 25px;
