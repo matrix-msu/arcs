@@ -22,13 +22,23 @@ function GetNewResource(id) {
         waitingId++;
 		
 		console.log('new resource ajax call', id);
-		
+
+        var hideDrawer = true;
+
 		for( var resind in RESOURCES ){
 			for( var kid in RESOURCES[resind]['page'] ){
 				if( kid == id ){
 					var pagePid = getPidFromKid(kid);
                     var pageSid = getSidFromKid(kid);
 					var res = RESOURCES[resind]['page'][kid];
+
+                    // check if we have multiple pages
+                    if (hideDrawer){
+                        var numPages = Object.keys(RESOURCES[resind]['page']).length;
+                        if (numPages > 1){
+                            hideDrawer = false
+                        }
+                    }
 
                     ///FULL SCREEN IMAGE CHANGED HERE
                     if (typeof(res["Image_Upload"]) === 'undefined'){
@@ -56,6 +66,12 @@ function GetNewResource(id) {
 				}
 			}
 		}
+        // hide drawer if there are no multi-page resources
+        if (hideDrawer){
+            $('#resources-nav').hide();
+        }else{
+            $('#resources-nav').show();
+        }
     }
 }
 
