@@ -74,7 +74,6 @@
             display    : 'initial'
         });
 
-
 		var locked = 0;
 		for (var kid in data['results']) {
 		  if (data['results'][kid].hasOwnProperty('Locked')) {

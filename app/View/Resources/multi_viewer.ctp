@@ -438,7 +438,18 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 
     </div>
 </div>
-<div id="resources-nav" class="pages-resource-nav" style="display:none;">
+<?php
+    $hideDrawer = 1;
+    foreach($resources as $r) {
+        $page = $r['page'];
+        $length = sizeof($page);
+        if ($length > 1){
+            $hideDrawer = 0;
+            break;
+        }
+    }
+?>
+<div id="resources-nav" class="pages-resource-nav" data-hideFirstDrawer="<?php echo $hideDrawer; ?>" style="display:none;">
     <div class="button-left" id="button-left">
         <a id="left-button">
             <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px">

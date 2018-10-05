@@ -175,6 +175,9 @@ function useResults(){
 	results_to_display = {};
 	displayKids.forEach(function(kid) {
 		// fill results to display with the information
+		if (lockedResources.indexOf(kid) != -1){
+			informationMap[kid]['Locked'] = '1';
+		}
 		results_to_display[kid] = informationMap[kid];
 	});
 
@@ -379,7 +382,7 @@ function selectAllDisplay() {
 	$(this).css('width', w)
 	})
 
-	Object.keys(results_to_display).forEach(function(kid) {
+	selectedMap['selected'].forEach(function(kid) {
 			var li = $('li[data-id="'+kid+'"]');
 			if (li.length) {
 			  li.find(".circle-container").css('background', 'transparent')
@@ -399,7 +402,6 @@ function render(results, append) {
 	if (append == null) {
 	append = false;
 	}
-
 
 	$results = $('.flex-container');
 
@@ -560,7 +562,6 @@ function render(results, append) {
 			color: 'black'
 			});
 			selectedMap['selected'] = [];
-
 			//get all unlocked resources
 			for (kid in informationMap) {
 				if(!lockedResources.includes(kid)) {

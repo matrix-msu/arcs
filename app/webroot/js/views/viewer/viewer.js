@@ -9,7 +9,6 @@
     function Viewer() {
       return Viewer.__super__.constructor.apply(this, arguments);
     }
-
     Viewer.prototype.initialize = function(options) {
       var ref;
       _.extend(this.options, _.pick(options, 'model', 'collection', 'collectionModel', "el"));

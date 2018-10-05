@@ -117,6 +117,7 @@
 		//print_r(json_encode($_SESSION));die;
 		//write to koradb
 
+		// HI JOSH THIS IS GOING TO BREAK
 		$host = $_SESSION['KoraConfig']['KoraDBHost'];
 		$username = $_SESSION['KoraConfig']['KoraDBUsername'];
 		$password = $_SESSION['KoraConfig']['KoraDBPassword'];

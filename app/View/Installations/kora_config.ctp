@@ -6,20 +6,20 @@
     <div class="install-progress-bar">
         <ul>
             <li class="current-step">Kora Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>Field Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>Create Project Record</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>ARCS Configuration</li>
         </ul>
     </div>
     <div class="form-container">
         <hr>
         <div class="form-prompt-wrapper">
-            <p>
-                Enter information about your Kora 3 Installation below. The following information can be found within the Kora 3 .env file. The .env file is located in the root directory of the Kora 3 installation.
-            </p>
+            <p class="prompt0">
+            Enter information about your Kora 3 Installation below. The following information can be found within the Kora 3 .env file. The .env file is located in the root directory of the Kora 3 installation.
+        </p>
         </div>
         <div class="form-wrapper">
             <form action="./field"  method="post">
