@@ -5,11 +5,11 @@
     <div class="install-progress-bar">
         <ul>
             <li>Kora Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li class="current-step">Field Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>Create Project Record</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>ARCS Configuration</li>
         </ul>
     </div>
@@ -37,7 +37,7 @@
                             Enter information about your Project form below
                         </p>
                         <p class="prompt2">
-                            For each field, type an option and then hit enter. Then add more options as needed.
+                            For each field, type an option followed by a comma. Then add more options as needed.
                         </p>
                     </div>
                 </div>

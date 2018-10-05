@@ -16294,22 +16294,25 @@ strong {
 .form-container .subject {
   display: none;
 }
-.form-container .form-prompt {
-  height: auto;
-  padding-top: 45px;
-  width: 100%;
-}
-.form-container .form-prompt .form-prompt-wrapper {
+.form-container .form-prompt-wrapper {
   margin: 0 auto;
   color: #686868;
   text-align: left;
   max-width: 1300px;
   padding-left: 4.3%;
 }
-.form-container .form-prompt .form-prompt-wrapper .prompt1 {
+.form-container .form-prompt-wrapper .form-prompt {
+  height: auto;
+  padding-top: 45px;
+  width: 100%;
+}
+.form-container .form-prompt-wrapper .form-prompt .prompt0 {
   line-height: 28px;
 }
-.form-container .form-prompt .form-prompt-wrapper .prompt2 {
+.form-container .form-prompt-wrapper .form-prompt .prompt1 {
+  line-height: 28px;
+}
+.form-container .form-prompt-wrapper .form-prompt .prompt2 {
   font-size: 12px;
   line-height: 18px;
 }
@@ -16344,6 +16347,7 @@ strong {
 .form-container .form-wrapper .row {
   width: 100%;
   display: inline-flex;
+  padding-bottom: 25px;
 }
 .form-container .form-wrapper .row p {
   display: inline-block;
