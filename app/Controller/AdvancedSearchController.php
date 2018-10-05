@@ -29,7 +29,8 @@ class AdvancedSearchController extends AppController
             array(
             'display',
             "viewer",
-            'SearchAPI'
+            'SearchAPI',
+			"advancedGetRest"
             )
         );
     }
@@ -83,24 +84,31 @@ class AdvancedSearchController extends AppController
           $resources = array("empty");
         }
 
-        $search = new Resource_Search($resources, $project);
-        $results = $search->getResultsAsArray();
+        // $search = new Resource_Search($resources, $project);
+        // $results = $search->getResultsAsArray();
 		
 		$time_end = microtime(true);
         $times['resource search'] = $time_end - $time_start;
 
 		
 		$time_start = microtime(true);
-        ResourcesController::filterByPermission($username, $results['results']);
+        // ResourcesController::filterByPermission($username, $results['results']);
 		$time_end = microtime(true);
         $times['filter by perm'] = $time_end - $time_start;
 		
 		//var_dump($times);die;
 
-        echo "<script>var results_to_display = ".json_encode($results).";</script>";
+        echo "<script>var results_to_display = ".json_encode(array("empty")).";</script>";
+        echo "<script>var kids_to_get = ".json_encode($resources).";</script>";
 
         $this->render("/AdvancedSearch/advancedsearch");
     }
+	public function advancedGetRest() {
+		// var_dump($_POST);
+		// echo count($_POST);
+		echo count(json_decode($_POST)['kids']);
+		die;
+	}
     /**
     * Display the advanced search page
     *

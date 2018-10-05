@@ -389,10 +389,23 @@ class Advanced_Field_Search extends Kora
                   $excavations = $this->_resolveSchemeFromLinkers($linkers, $this->schemeMapping, array("Type"), false);
                   // get the excavation linkers resource linkers
                   $linkers2 = $this->getLinkers($excavations);
+				  
 
                   // get indirect resource linkers
                   $scheme = parent::getResourceSIDFromProjectName($this->_project);
-                  return $this->_resolveSchemeFromLinkers(array_unique(array_merge($linkers, $linkers2)), $scheme, array("Title"));
+				  // echo 'sid: '. $scheme;
+				  // var_dump($linkers);
+				  $return = array();
+				  foreach( array_merge($linkers, $linkers2) as $kid ){
+					  $temp = explode('-', $kid);
+					  if( $temp[1] == $scheme ){
+						  $return[] = $kid;
+					  }
+				  }
+				  return array_unique($return);
+				  // die;
+				  
+                  //return $this->_resolveSchemeFromLinkers(array_unique(array_merge($linkers, $linkers2)), $scheme, array("Title"));
                   // print_r($seasons);exit();
                   // print_r(array_unique(array_merge($resources, $resources2)));exit();
                   // return array_unique(array_merge($resources, $resources2));

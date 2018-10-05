@@ -620,7 +620,8 @@ class Keyword_Search extends Kora
         $scanNumberClause = new KORA_Clause("Scan_Number", '=', '1');
         $kidClause = new KORA_Clause("kid", "IN", $linkers);
         $this->The_Clause = new KORA_Clause($kidClause, "AND", $scanNumberClause);
-        $images = self::search();
+        //$images = self::search();
+		$images = array();
 		$time_end = microtime(true);
 
         $pKid = $this->projectMapping.'-'.$page.'-';

@@ -21,6 +21,8 @@ class Resource_Search extends Keyword_Search {
     $this->projectMapping = parent::getPIDFromProjectName($projectName);
     $this->schemeMapping = parent::getResourceSIDFromProjectName($projectName);
     $this->The_Clause = new KORA_Clause("kid","IN",$array);
+	//$this->fields = array('kid','Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier');
+	$this->fields = array('ALL');
     $this->formulatedResult = parent::search();
 	
 	$time_end_temp = microtime(true);
@@ -44,7 +46,7 @@ class Resource_Search extends Keyword_Search {
 	 $resourceSearchTimes['resources filter and flag'] = $time_end_temp - $time_start_temp;
 	 
 	 // echo 'resources.php search times';
-	 // var_dump($resourceSearchTimes);
+	  // var_dump($resourceSearchTimes);
 
 
     $this->adjust_requested_limits(1,100000000);
