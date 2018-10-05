@@ -573,5 +573,9 @@ $(document).ready(function() {
         flagPrep();
         keywordPrep();
         scrollPrep();
+		$(".accordion").accordion({
+			heightStyle: "fill",
+			active: 3
+		});		
     }
 });

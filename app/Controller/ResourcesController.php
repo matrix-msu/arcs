@@ -290,7 +290,7 @@ class ResourcesController extends AppController {
                 . $mysqli->connect_error);
         }
         //Get a collection_id from the id
-        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM arcs_dev.metadata_edits WHERE rejected = 0 AND approved = 0");
+        $sql = $mysqli->prepare("SELECT metadata_kid, field_name FROM metadata_edits WHERE rejected = 0 AND approved = 0");
         $sql->execute();
         $result = $sql->get_result();
         // $result = $mysqli->query($sql);
@@ -933,6 +933,7 @@ class ResourcesController extends AppController {
 
     // view multiple resources in a viewer
     public function multi_viewer($id='') {
+//echo 'multi_view';die;
         $pName = NULL;
         $resources = array();
         $projectsArray = array();
@@ -989,7 +990,7 @@ class ResourcesController extends AppController {
         // echo json_encode($this->request);die;
         $resources_array = json_decode($this->request->data['resources']);
         // print_r($resources_array);die;
-      }
+     }
 
         $username = NULL;
         $usersC = new UsersController();

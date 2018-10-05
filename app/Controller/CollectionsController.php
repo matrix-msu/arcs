@@ -653,7 +653,7 @@ class CollectionsController extends AppController {
         }
         //get the collection id from the id
         $sql = $mysqli->prepare("SELECT collections.collection_id
-                    FROM arcs_dev.collections
+                    FROM collections
                     WHERE collections.id = ?");
         $sql->bind_param("s", $_POST['id']);
         $sql->execute();

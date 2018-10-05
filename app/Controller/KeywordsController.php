@@ -50,7 +50,7 @@ class KeywordsController extends MetaResourcesController {
         foreach($keywords as $keyword ) {
             //get the current count fo the keyword project_kid combo
             $sql = $mysqli->prepare("SELECT keywords.count
-                    FROM arcs_dev.keywords
+                    FROM keywords
                     WHERE keywords.project_kid = ?
                         AND keywords.keyword = ?
                     LIMIT 1;");
@@ -108,7 +108,7 @@ class KeywordsController extends MetaResourcesController {
 
         //get all the keywords with the page_kid
         $sql = "SELECT keywords.keyword
-                    FROM arcs_dev.keywords
+                    FROM keywords
                     WHERE keywords.page_kid ='".$this->request->data['page_kid']."'
                     ORDER BY keywords.created;";
         $result = $mysqli->query($sql);
@@ -142,7 +142,7 @@ class KeywordsController extends MetaResourcesController {
 
         //get all the keywords with the page_kid
         $sql = "SELECT DISTINCT keywords.keyword
-                    FROM arcs_dev.keywords
+                    FROM keywords
                     WHERE keywords.project_kid ='".$this->request->data['project_kid']."'
                     ORDER BY keywords.count DESC, keywords.created
                     LIMIT 10;";
@@ -177,7 +177,7 @@ class KeywordsController extends MetaResourcesController {
         foreach($this->request->data['keywords'] as $keyword ) {
 
             //delete 1 keyword with the page_kid, project_kid
-            $sql = "DELETE FROM arcs_dev.keywords
+            $sql = "DELETE FROM keywords
                     WHERE keywords.page_kid ='" . $this->request->data['page_kid'] . "'
                         AND keywords.project_kid ='" . $this->request->data['project_kid'] . "'
                         AND keywords.keyword ='" . $keyword . "'
@@ -187,7 +187,7 @@ class KeywordsController extends MetaResourcesController {
             ////////update the count for the rest of the project_kid, keyword combos
             //get the current count for the keyword project_kid combo
             $sql = "SELECT keywords.count
-                    FROM arcs_dev.keywords
+                    FROM keywords
                     WHERE keywords.project_kid ='" . $this->request->data['project_kid'] . "'
                         AND keywords.keyword = '" . $keyword . "'
                     LIMIT 1;";
