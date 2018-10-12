@@ -1,19 +1,14 @@
 @ArcsBlue: rgb(0, 147, 190);
 @Font-Color: #808080;
 
-#resource_permission_model {
+#resource_permission_model, #collection_permission_model {
   transition: .5s opacity;
   transition-delay: inherit;
-}
-#resource_permission_model {
   background: rgba(0, 0, 0, 0.25);
-  //opacity: 0;
-}
-#resource_permission_model {
   top: 0;
 }
 
-.permissionModal{
+.permissionModal, .permissionModal2 {
   position: fixed;
   font-family: Arial, Helvetica, sans-serif;
   top: 0;
@@ -25,22 +20,28 @@
   display: none;
 }
 
-#resource_permission_model{
-  .permission-content {
+#resource_permission_model, #collection_permission_model{
+  .permission-content{
     width: 500px;
-    height: 255px;}
-  .permission-modal-content{
+    height: 255px;
+  }
+  .permission-content2 {
+    width: 500px;
+    height: 265px;
+  }
+
+  .permission-modal-content, .permission-modal-content2{
     width: 72%;
   }
 
 }
-.permissionModal {
+.permissionModal, .permissionModal2 {
   background: rgba(0, 0, 0, 0.25);
   a:hover{
     text-decoration: none;
   }
 
-  .modal-exit {
+  .modal-exit, .modal-exit2 {
     position: absolute;
     right: 15px;
     top: 15px;
@@ -49,7 +50,7 @@
     -webkit-filter: invert(70%);
     filter: invert(70%);
   }
-  .permission-content {
+  .permission-content, .permission-content2 {
     width: 500px;
     height: 300px;
     background-color: white;
@@ -63,7 +64,7 @@
     text-align: center;
     box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
   }
-  .permission-modal-header{
+  .permission-modal-header, .permission-modal-header2{
     color: @Font-Color;
     width: 75%;
     margin: auto;
@@ -73,7 +74,7 @@
     }
   }
 
-  .permission-modal-content{
+  .permission-modal-content, .permission-modal-content2{
     width: 62%;
     margin: auto;
     margin-top:30px;
@@ -82,7 +83,7 @@
     }
   }
 
-  .permission-modal-responseButtons{
+  .permission-modal-responseButtons, .permission-modal-responseButtons2 {
     margin-top:30px;
     p {
       button {
@@ -98,10 +99,10 @@
         background: white;
       }
 
-      .request{
+      .request, .request2{
         color: @ArcsBlue;
       }
-      .login{
+      .login, .login2{
         color: @ArcsBlue;
         cursor: pointer;
       }

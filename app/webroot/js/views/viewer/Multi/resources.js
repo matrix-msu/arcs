@@ -725,9 +725,10 @@ function addResources(loaded){
 
 
     //create subjects bubbles
+    //create subjects bubbles
     var html = '';
     var count = subjectsCount;
-
+    var page_associator = '';
     console.log('loading subjects', subjectsToLoad)
 
     for (var subjectKid in subjectsToLoad) {
