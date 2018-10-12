@@ -51,7 +51,7 @@ function dynamicPrep() {
     })
 
     // //excavation radio button clicked. change css and show the correct excavations table.
-    $('.excavation-li').click(function () { //soo radio button click
+    $('.excavation-li').click(function () { //excavation radio button click
         $('.excavation-li').each(function(){  //unclick all radio button css
             $(this).css('background-color','#f9f9f9');
             $(this).css('color','#555555');
