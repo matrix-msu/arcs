@@ -21,39 +21,23 @@ class Resource_Search extends Keyword_Search {
     $this->projectMapping = parent::getPIDFromProjectName($projectName);
     $this->schemeMapping = parent::getResourceSIDFromProjectName($projectName);
     $this->The_Clause = new KORA_Clause("kid","IN",$array);
-	//$this->fields = array('kid','Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier');
-	$this->fields = array('ALL');
+	$this->fields = array('kid','Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier');
+	//$this->fields = array('ALL');
     $this->formulatedResult = parent::search();
-	
-	$time_end_temp = microtime(true);
-	 $resourceSearchTimes['resources kora search'] = $time_end_temp - $time_start;
 
     // traverse the database to include excavation,
     // season and project associations;
-	$time_start_temp = microtime(true);
     $this->traverse_insert($projectName);
-	
-	$time_end_temp = microtime(true);
-	 $resourceSearchTimes['resources traverse insert'] = $time_end_temp - $time_start_temp;
 
-	 $time_start_temp = microtime(true);
     // get resource filters
     $filters = Resource::filter_analysis($this->formulatedResult);
     //get indicators
     $indicators = Resource::flag_analysis($this->formulatedResult);
-	
-	$time_end_temp = microtime(true);
-	 $resourceSearchTimes['resources filter and flag'] = $time_end_temp - $time_start_temp;
-	 
-	 // echo 'resources.php search times';
-	  // var_dump($resourceSearchTimes);
-
 
     $this->adjust_requested_limits(1,100000000);
 
     $time_end = microtime(true);
     $mem_end = memory_get_usage();
-
     $time = $time_end - $time_start;
     $total_mem = ($mem_end - $mem_start) / pow(10,9);
 

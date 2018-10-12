@@ -4,7 +4,7 @@
  $(document).ready(function() {
 	var isExporting = 0;
 	$('#options-btn').click(function(){ //do export.
-		if(isExporting == 1){
+		if(isExporting == 1 || $(this).hasClass('search-loading') ){
             return;
         }
         isExporting = 1;

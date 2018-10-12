@@ -398,6 +398,9 @@ class Advanced_Field_Search extends Kora
 				  $return = array();
 				  foreach( array_merge($linkers, $linkers2) as $kid ){
 					  $temp = explode('-', $kid);
+					  if( $temp[0] == 'empty' ){
+						  continue;
+					  }
 					  if( $temp[1] == $scheme ){
 						  $return[] = $kid;
 					  }

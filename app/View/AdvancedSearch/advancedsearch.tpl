@@ -373,10 +373,10 @@ is from here to ...
         min = max
       }
       ul = $(ul)
-      ul.empty()
-      ul.append(
-        "<span id=\"result-info\">Showing "+min+" of "+max+" result(s) for </span>"
-      )
+      //ul.empty()
+      //ul.append(
+      //  "<span id=\"result-info\">Showing "+min+" of "+max+" result(s) for </span>"
+      //)
 
 
       paramArray.forEach(function(element) {

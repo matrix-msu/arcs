@@ -613,9 +613,7 @@ class Keyword_Search extends Kora
     {
 		$linkers = array();
 		foreach( $this->formulatedResult as $kid => $value ){
-			if( isset($value['linkers']) ){
-				$linkers = array_merge($linkers, $value['linkers']);
-			}
+			$linkers = array_merge($linkers, $value['linkers']);
 		}
         $this->fields = array("Image Upload", "Resource Associator", "Scan_Number");
         $this->schemeMapping = $page;

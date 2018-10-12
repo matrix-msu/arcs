@@ -30,6 +30,7 @@ class AdvancedSearchController extends AppController
             'display',
             "viewer",
             'SearchAPI',
+			"advancedGetRestImages",
 			"advancedGetRest"
             )
         );
@@ -98,15 +99,69 @@ class AdvancedSearchController extends AppController
 		
 		//var_dump($times);die;
 
-        echo "<script>var results_to_display = ".json_encode(array("empty")).";</script>";
+        echo "<script>var results_to_display = false;</script>";
         echo "<script>var kids_to_get = ".json_encode($resources).";</script>";
+        echo "<script>var controllerProject = ".json_encode($project).";</script>";
 
         $this->render("/AdvancedSearch/advancedsearch");
     }
+	public function advancedGetRestImages() {
+		$resourceKids = json_decode($_POST['kids'], true);
+		$linkers = array();
+		foreach( $resourceKids as $kid => $value ){
+			$linkers = array_merge($linkers, $value);
+		}
+		$pid = parent::getPIDFromProjectName($_POST['project']);
+		$pSid = parent::getPageSIDFromProjectName($_POST['project']);
+		$fields = array("Image Upload", "Resource Associator", "Scan_Number");
+		$kora = new Advanced_Search($pid, $pSid, $fields);
+		$kora->add_double_clause("kid", "in", $linkers,
+                "Scan_Number", "=", "1");
+        $images = $kora->unformatted_search();
+		
+
+        $pKid = $pid.'-'.$pSid.'-';
+
+        foreach ($images as $img) {
+            if (isset($img["Resource_Associator"]) && is_array($img["Resource_Associator"])) {
+                foreach ($img["Resource_Associator"] as $rKid) {
+                    if(
+                        isset($resourceKids[$rKid]) &&
+                        isset($img["Image_Upload"]) &&
+                        isset($img["Image_Upload"]['localName'])
+                    ){
+                        if(
+                            (isset($img["Scan_Number"]) && $img["Scan_Number"] == '1') ||
+                            !isset($resourceKids[$rKid]["thumb"])
+                        ){
+                            $resourceKids[$rKid] = array( 'thumb' => $this->smallThumb($img["Image_Upload"]['localName'], $pKid) );
+                        }
+                    }
+                }
+            }
+        }
+        //insert default images
+        $defaultImage = $this->smallThumb('', $pKid);
+        foreach ($resourceKids as $kid => $resource) {
+            if( !isset($resourceKids[$kid]["thumb"]) ){
+                $resourceKids[$kid]["thumb"] = $defaultImage;
+            }
+        }
+		echo json_encode($resourceKids);
+		die;
+	}
 	public function advancedGetRest() {
-		// var_dump($_POST);
-		// echo count($_POST);
-		echo count(json_decode($_POST)['kids']);
+		$username = NULL;
+        $usersC = new UsersController();
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
+		
+		$resourceKids = json_decode($_POST['kids']);
+		$search = new Resource_Search($resourceKids, $_POST['project']);
+        $results = $search->getResultsAsArray();
+		ResourcesController::filterByPermission($username, $results['results']);
+		echo json_encode($results);
 		die;
 	}
     /**
