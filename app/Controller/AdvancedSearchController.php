@@ -39,14 +39,6 @@ class AdvancedSearchController extends AppController
 		ini_set("memory_limit", "-1");
 		set_time_limit(0);
         $title = 'Advanced Search';
-        // check bootstrap configuration
-
-        $username = NULL;
-        $usersC = new UsersController();
-
-        if ($user = $usersC->getUser($this->Auth)) {
-            $username = $user['User']['username'];
-        }
 
         try {
           parent::getPIDFromProjectName($project);
@@ -59,7 +51,6 @@ class AdvancedSearchController extends AppController
 		try {
           parent::verifyGlobals($project);
         } catch (Exception $e) {
-          // return configuration error code
           return json_encode(array(
             "Error" => $e->getMessage()
           ));
@@ -93,11 +84,8 @@ class AdvancedSearchController extends AppController
 
 		
 		$time_start = microtime(true);
-        // ResourcesController::filterByPermission($username, $results['results']);
 		$time_end = microtime(true);
         $times['filter by perm'] = $time_end - $time_start;
-		
-		//var_dump($times);die;
 
         echo "<script>var results_to_display = false;</script>";
         echo "<script>var kids_to_get = ".json_encode($resources).";</script>";
@@ -107,21 +95,20 @@ class AdvancedSearchController extends AppController
     }
 	public function advancedGetRestImages() {
 		$resourceKids = json_decode($_POST['kids'], true);
-		$linkers = array();
-		foreach( $resourceKids as $kid => $value ){
-			$linkers = array_merge($linkers, $value);
-		}
+//		$linkers = array();
+//		foreach( $resourceKids as $kid => $value ){
+//			$linkers = array_merge($linkers, $value);
+//		}
+		$searchArray = array_keys($resourceKids);
 		$pid = parent::getPIDFromProjectName($_POST['project']);
 		$pSid = parent::getPageSIDFromProjectName($_POST['project']);
-		$fields = array("Image Upload", "Resource Associator", "Scan_Number");
+		$fields = array("Image Upload", "Resource_Associator", "Scan_Number");
 		$kora = new Advanced_Search($pid, $pSid, $fields);
-		$kora->add_double_clause("kid", "in", $linkers,
+		$kora->add_double_clause("Resource_Associator", "IN", $searchArray,
                 "Scan_Number", "=", "1");
         $images = $kora->unformatted_search();
-		
 
         $pKid = $pid.'-'.$pSid.'-';
-
         foreach ($images as $img) {
             if (isset($img["Resource_Associator"]) && is_array($img["Resource_Associator"])) {
                 foreach ($img["Resource_Associator"] as $rKid) {

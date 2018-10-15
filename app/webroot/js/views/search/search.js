@@ -108,7 +108,7 @@ $(window).bind("mousewheel", function() {
 		for( var key in results ){
 			if( ajaxImagesGotten.indexOf(key) == -1 ){
 				var value = results[key];
-				data[key] = value.linkers;
+				data[key] = [];
 				ajaxImagesGotten.push(key);
 			}
 		}
