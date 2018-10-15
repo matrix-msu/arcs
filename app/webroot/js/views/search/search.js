@@ -1309,6 +1309,7 @@ $(window).bind("mousewheel", function() {
             color: '#C1C1C1'
           });
         } else { //clickable
+
           $('#selected-all, #open-colview-btn').css({
             color: 'black'
           });
@@ -1604,6 +1605,16 @@ $(document).ready(function() {
         url= arcs.baseURL + 'advanced_search';
         window.location.replace(url);
     }
+
+    //collection permission modal
+    var closeImg = arcs.baseURL + 'img/Close.svg';
+    $('.close-img2').attr('src', closeImg);
+    $(".modal-exit2").click(function () {
+       $("#collection_permission_model").hide();
+    });
+    $(".logModalBtn2, .reg2").click(function () {
+        $(".modal-exit2").click();
+    });
 
 });
 

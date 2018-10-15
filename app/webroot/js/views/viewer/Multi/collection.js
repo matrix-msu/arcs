@@ -26,7 +26,7 @@ function collectionPrep() {
         if (!signedIn){
             $("#collection_permission_model").show();
         }
-        if (parseInt($('#selected-count').html()) > 0) {
+        else if (parseInt($('#selected-count').html()) > 0) {
             $(".collectionModalBackground").show();
         }
     });
