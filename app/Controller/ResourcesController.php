@@ -61,6 +61,8 @@ class ResourcesController extends AppController {
      *
      */
      public static function filterByPermission($userName, &$resources) {
+		 
+		 //print_r($resources);die;
 
         if (empty($userName)) {
             static::lockResourcesByPermission(Permissions::R_Member, $resources);
@@ -69,10 +71,20 @@ class ResourcesController extends AppController {
         } else if (is_array($resources)) {
 
             $KIDs = array();
+            $KIDs2 = array();
             $i = 0;
             foreach($resources as $resource) {
                 if(isset($resource['kid'])) {
-                    $KIDs[$i++] = $resource['kid'];
+					if( 
+						!isset($resource['Special_User']) ||
+						!isset($resource['Permissions']) ||
+						!isset($resource['Type']) ||
+						!isset($resource['Title'])
+						
+					){
+						$KIDs2[$i++] = $resource['kid'];
+					}
+					$KIDs[$i++] = $resource['kid'];
                 }
             }
 
@@ -84,12 +96,18 @@ class ResourcesController extends AppController {
 
             $projects = array_keys($projects);
             foreach($projects as $project) {
-                $pid = parent::getPIDFromProjectName($project);
-                $sid = parent::getResourceSIDFromProjectName($project);
-                $fields = array('Special_User', 'Permissions', 'Type','Title');
-                $kora = new Advanced_Search($pid, $sid, $fields);
-                $kora->add_clause("kid", "IN", $KIDs);
-                $res = json_decode($kora->search(), true);
+				$res = array();
+				if( !empty($KIDs2) ){
+					$pid = parent::getPIDFromProjectName($project);
+					$sid = parent::getResourceSIDFromProjectName($project);
+					$fields = array('Special_User', 'Permissions', 'Type','Title');
+					$kora = new Advanced_Search($pid, $sid, $fields);
+					$kora->add_clause("kid", "IN", $KIDs2);
+					$res = json_decode($kora->search(), true);
+				}
+				$res = array_merge($res, $resources);
+				// print_r($res);
+				// die;
                 foreach($res as $kid => $resource) {
                     // Permissions is Special User, but the user is not on
                     // the special user list
@@ -137,6 +155,11 @@ class ResourcesController extends AppController {
                   "Type"        => isset($resources[$kid]['Type'])        ? $resources[$kid]['Type']        : "",
                   "Title"       => isset($resources[$kid]['Title'])       ? $resources[$kid]['Title']       : "",
                   "thumb"       => isset($resources[$kid]['thumb'])       ? $resources[$kid]['thumb']       : "",
+                  "Season Name"       => isset($resources[$kid]['Season Name'])       ? $resources[$kid]['Season Name']       : "",
+                  "Excavation Name"       => isset($resources[$kid]['Excavation Name'])       ? $resources[$kid]['Excavation Name']       : "",
+                  "Excavation Type"       => isset($resources[$kid]['Excavation Type'])       ? $resources[$kid]['Excavation Type']       : "",
+                  "All_Seasons"       => isset($resources[$kid]['All_Seasons'])       ? $resources[$kid]['All_Seasons']       : "",
+                  "All_Excavations"       => isset($resources[$kid]['All_Excavations'])       ? $resources[$kid]['All_Excavations']       : "",
                   "Locked"      => true,
             );
         }

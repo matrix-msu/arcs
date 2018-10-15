@@ -462,7 +462,39 @@ $(document).ready(function() {
 		$('#PageImage').css('display', 'block').addClass('multiInfo');
 		 $('.resource-nav-level').css('display', 'block');
 		 $('.selectedCurrentResource').click();
-		//return;
+
+        var loaded = {
+            projects : [],
+            seasons : [],
+            excavations : [],
+            resources : [],
+            subjects : []
+        };
+
+        //console.log('before')
+        //console.log('resss', RESOURCES)
+        //console.log('SEAS', SEASONS)
+        //console.log('EXCA', EXCAVATIONS)
+        //console.log('PRO', PROJECTS)
+        //console.log('SUBS', SUBJECTS)
+
+
+        for (var kid in PROJECTS){
+            loaded.projects.push(kid);
+        }
+        for (var kid in SEASONS){
+            loaded.seasons.push(kid);
+        }
+        for (var kid in EXCAVATIONS){
+            loaded.excavations.push(kid);
+        }
+        for (var kid in RESOURCES){
+            loaded.resources.push(kid);
+        }
+        for (var kid in SUBJECTS){
+            loaded.subjects.push(kid);
+        }
+
         $.ajax({
             url: arcs.baseURL + "view/" + multiInfo,
             type: 'GET',
@@ -531,25 +563,43 @@ $(document).ready(function() {
                 //var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags,results.excavations,results.seasons);
                 //var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
 				
-				
-				//NOAH do this --- 
-				//change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
-				var projectData = generateMetadata("project", PROJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                var seasonsData = generateMetadata("Seasons", SEASONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                var excavationsData = generateMetadata("excavations", EXCAVATIONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS);
-                var archivalData = generateMetadata("archival objects", RESOURCES, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,EXCAVATIONS,SEASONS);
-                var subjectsData = generateMetadata("subjects", SUBJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
+				console.log('resss', RESOURCES)
+				console.log('SEAS', SEASONS)
+				console.log('EXCA', EXCAVATIONS)
+				console.log('PRO', PROJECTS)
+				console.log('SUBS', SUBJECTS)
+				//NOAH do this ---
+
+
+                //var loadedResourcesKids = [];
+                //var loadedResourcesKids = [];
+                //var loadedResourcesKids = [];
+                //var loadedResourcesKids = [];
+
+                addResources(loaded);
+
+                ////change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
+                //var projectData = generateMetadata("project", PROJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
+                //var seasonsData = generateMetadata("Seasons", SEASONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
+                //var excavationsData = generateMetadata("excavations", EXCAVATIONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS);
+                //var archivalData = generateMetadata("archival objects", RESOURCES, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,EXCAVATIONS,SEASONS);
+                //var subjectsData = generateMetadata("subjects", SUBJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
                 
-				
-				$(".accordion").accordion('destroy')
-                $('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
-                
-				$(".accordion").accordion({
-					heightStyle: "fill",
-					active: 3
-				});				
-				
-				//---to here ----
+                //$('.archival.objects-table').parent().append(archivalData);
+                //$('.project-table').parent().append(projectData);
+                //$('.excavation-tab-content').append(excavationsData);
+                //$('.season-tab-content').append(seasonsData);
+                //$('.level-content.soo').parent().append(subjectsData);
+                ////return;
+				//$(".accordion").accordion('destroy')
+                ////$('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
+                //
+				//$(".accordion").accordion({
+				//	heightStyle: "fill",
+				//	active: 3
+				//});
+
+                //---to here ----
 				
                 dynamicPrep();
                 editMetaPrep();
@@ -579,3 +629,154 @@ $(document).ready(function() {
 		});		
     }
 });
+
+function addResources(loaded){
+    var projectsToLoad = {};
+    var projectsCount = loaded.projects.length;
+    for (var kid in PROJECTS){
+        if (loaded.projects.includes(kid)) {
+        } else {
+            projectsToLoad[kid] = PROJECTS[kid];
+            loaded.projects.push(kid)
+        }
+    }
+
+    var excavationsToLoad = {};
+    var excavationsCount = loaded.excavations.length;
+    for (var kid in EXCAVATIONS){
+        if (loaded.excavations.includes(kid)) {
+        } else {
+            excavationsToLoad[kid] = EXCAVATIONS[kid];
+            loaded.excavations.push(kid)
+        }
+    }
+
+    var seasonsToLoad = {};
+    var seasonsCount = loaded.seasons.length;
+    for (var kid in SEASONS){
+        if (loaded.seasons.includes(kid)) {
+        } else {
+            seasonsToLoad[kid] = SEASONS[kid];
+            loaded.seasons.push(kid)
+        }
+    }
+
+    var resourcesToLoad = {};
+    var resourcesCount = loaded.resources.length;
+    for (var kid in RESOURCES){
+        if (loaded.resources.includes(kid)) {
+        } else {
+            resourcesToLoad[kid] = RESOURCES[kid];
+            loaded.resources.push(kid)
+        }
+    }
+
+    var subjectsToLoad = {};
+    var subjectsCount = loaded.subjects.length;
+    for (var kid in SUBJECTS){
+        if (loaded.subjects.includes(kid)) {
+        } else {
+            subjectsToLoad[kid] = SUBJECTS[kid];
+            loaded.subjects.push(kid)
+        }
+    }
+    console.log('loading', loaded)
+
+    //change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
+    //var projectData = generateMetadata("project", projectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, projectsCount);
+    //var seasonsData = generateMetadata("Seasons", seasonsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, seasonsCount);
+    //var excavationsData = generateMetadata("excavations", excavationsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, seasonsToLoad, false, excavationsCount);
+    //var archivalData = generateMetadata("archival objects", resourcesToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,excavationsToLoad,seasonsToLoad, resourcesCount);
+    //var subjectsData = generateMetadata("subjects", subjectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, subjectsCount);
+
+    var projectData = generateMetadata("project", projectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, projectsCount);
+    var seasonsData = generateMetadata("Seasons", seasonsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, seasonsCount);
+    var excavationsData = generateMetadata("excavations", excavationsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS, false, excavationsCount);
+    var archivalData = generateMetadata("archival objects", resourcesToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,EXCAVATIONS,SEASONS, resourcesCount);
+    var subjectsData = generateMetadata("subjects", subjectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, subjectsCount);
+
+
+    $('.archival.objects-table').parent().append(archivalData);
+    $('.project-table').parent().append(projectData);
+    $('.excavation-tab-content').append(excavationsData);
+    $('.season-tab-content').append(seasonsData);
+    console.log('adding sss',  $('.level-content.soo').parent())
+    $('.level-content.soo').parent().append(subjectsData);
+
+
+
+    // create excavation bubbles
+    var html = '';
+    var count = excavationsCount;
+    for (var excavationKid in excavationsToLoad) {
+        count++;
+        html += '<li class="excavation-li" class="metadata-accordion ul" data-kid="' + excavationKid + '">';
+        html += '<a href="#excavations' + count + '" class="excavation-click' + count + ' excavation-click">';
+        html += count + '</a></li>';
+    }
+
+    //add the excavation bubbles
+    $('.excavation-tab-content').prev().append(html);
+    $('.excavation-tab-content').prev('destroy')
+    $('.excavation-tab-content').prev({
+        heightStyle: "fill",
+        active: 3
+    });
+
+
+    //create subjects bubbles
+    //create subjects bubbles
+    var html = '';
+    var count = subjectsCount;
+    var page_associator = '';
+    console.log('loading subjects', subjectsToLoad)
+
+    for (var subjectKid in subjectsToLoad) {
+        count++;
+        var subject = subjectsToLoad[subjectKid];
+        html += '<li class="soo-li"';
+        if (subject['Pages_Associator'] != undefined && subject['Pages_Associator'][0] != undefined) {
+            html += 'data-pageKid="' + subject['Pages_Associator'][0] + '" data-sooKid="' + subject['kid'] + '"';
+        }
+        html += '><a href="#soo-' + count + '" class="soo-click' + count + ' soo-click">';
+        if (subject['Pages_Associator'][0] != page_associator) {
+            page_associator = subject['Pages_Associator'][0];
+        }
+        html += count + '</a></li>';
+    }
+
+    //add the subject bubbles
+    $('.level-content.soo').prev().append(html);
+    $('.level-content.soo').prev('destroy')
+    $('.level-content.soo').prev({
+        heightStyle: "fill",
+        active: 3
+    });
+
+    //create seasons bubbles
+    var html = '';
+    var count = seasonsCount;
+    var page_associator = '';
+    for (var seasonKid in seasonsToLoad) {
+       count++;
+       var season = seasonsToLoad[seasonKid];
+       html += '<li class="season-li season-li-bubble-css"  class="metadata-accordion ul" ';
+       html += ' data-kid = ' + season["kid"] + '>';
+       html += '<a href="#Seasons' + count + '" class="season-a-bubble-css season-click' + count + '  season-click">';
+       html += count + '</a></li>';
+   }
+
+   //add the season bubbles
+    $('.season-tab-content').prev().append(html);
+    $('.season-tab-content').prev('destroy')
+    $('.season-tab-content').prev({
+        heightStyle: "fill",
+        active: 3
+    });
+
+    $(".accordion").accordion('destroy')
+    $(".accordion").accordion({
+        heightStyle: "fill",
+        active: 3
+    });
+}

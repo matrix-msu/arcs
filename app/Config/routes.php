@@ -25,9 +25,9 @@
  ////////////////////////////////////////////////////////////////////////
  # Test Controller
  ////////////////////////////////////////////////////////////////////////
-     router::connect('/test/*',
-        array('controller' => 'test', 'action' => 'test')
-     );
+     // router::connect('/test/*',
+        // array('controller' => 'test', 'action' => 'test')
+     // );
 
 ////////////////////////////////////////////////////////////////////////
 # pages controller
@@ -254,6 +254,12 @@
     );
     Router::connect('/api/search/advanced/*',
         array('controller' => 'AdvancedSearch', 'action' => 'searchAPI')
+    );
+    Router::connect('/api/search/get_rest/advanced/images',
+        array('controller' => 'AdvancedSearch', 'action' => 'advancedGetRestImages')
+    );
+    Router::connect('/api/search/get_rest/advanced',
+        array('controller' => 'AdvancedSearch', 'action' => 'advancedGetRest')
     );
 
 ////////////////////////////////////////////////////////////////////////

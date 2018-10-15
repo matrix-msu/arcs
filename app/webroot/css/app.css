@@ -7961,17 +7961,15 @@ input.indexSearchBox {
 .hotkeys-modal .modal-body table th {
   font-weight: bold;
 }
-#resource_permission_model {
+#resource_permission_model,
+#collection_permission_model {
   transition: .5s opacity;
   transition-delay: inherit;
-}
-#resource_permission_model {
   background: rgba(0, 0, 0, 0.25);
-}
-#resource_permission_model {
   top: 0;
 }
-.permissionModal {
+.permissionModal,
+.permissionModal2 {
   position: fixed;
   font-family: Arial, Helvetica, sans-serif;
   top: 0;
@@ -7982,20 +7980,34 @@ input.indexSearchBox {
   z-index: 99998;
   display: none;
 }
-#resource_permission_model .permission-content {
+#resource_permission_model .permission-content,
+#collection_permission_model .permission-content {
   width: 500px;
   height: 255px;
 }
-#resource_permission_model .permission-modal-content {
+#resource_permission_model .permission-content2,
+#collection_permission_model .permission-content2 {
+  width: 500px;
+  height: 265px;
+}
+#resource_permission_model .permission-modal-content,
+#collection_permission_model .permission-modal-content,
+#resource_permission_model .permission-modal-content2,
+#collection_permission_model .permission-modal-content2 {
   width: 72%;
 }
-.permissionModal {
+.permissionModal,
+.permissionModal2 {
   background: rgba(0, 0, 0, 0.25);
 }
-.permissionModal a:hover {
+.permissionModal a:hover,
+.permissionModal2 a:hover {
   text-decoration: none;
 }
-.permissionModal .modal-exit {
+.permissionModal .modal-exit,
+.permissionModal2 .modal-exit,
+.permissionModal .modal-exit2,
+.permissionModal2 .modal-exit2 {
   position: absolute;
   right: 15px;
   top: 15px;
@@ -8004,7 +8016,10 @@ input.indexSearchBox {
   -webkit-filter: invert(70%);
   filter: invert(70%);
 }
-.permissionModal .permission-content {
+.permissionModal .permission-content,
+.permissionModal2 .permission-content,
+.permissionModal .permission-content2,
+.permissionModal2 .permission-content2 {
   width: 500px;
   height: 300px;
   background-color: white;
@@ -8018,27 +8033,45 @@ input.indexSearchBox {
   text-align: center;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
 }
-.permissionModal .permission-modal-header {
+.permissionModal .permission-modal-header,
+.permissionModal2 .permission-modal-header,
+.permissionModal .permission-modal-header2,
+.permissionModal2 .permission-modal-header2 {
   color: #808080;
   width: 75%;
   margin: auto;
   margin-top: 60px;
 }
-.permissionModal .permission-modal-header h1 {
+.permissionModal .permission-modal-header h1,
+.permissionModal2 .permission-modal-header h1,
+.permissionModal .permission-modal-header2 h1,
+.permissionModal2 .permission-modal-header2 h1 {
   font-size: 24px;
 }
-.permissionModal .permission-modal-content {
+.permissionModal .permission-modal-content,
+.permissionModal2 .permission-modal-content,
+.permissionModal .permission-modal-content2,
+.permissionModal2 .permission-modal-content2 {
   width: 62%;
   margin: auto;
   margin-top: 30px;
 }
-.permissionModal .permission-modal-content p {
+.permissionModal .permission-modal-content p,
+.permissionModal2 .permission-modal-content p,
+.permissionModal .permission-modal-content2 p,
+.permissionModal2 .permission-modal-content2 p {
   color: #808080;
 }
-.permissionModal .permission-modal-responseButtons {
+.permissionModal .permission-modal-responseButtons,
+.permissionModal2 .permission-modal-responseButtons,
+.permissionModal .permission-modal-responseButtons2,
+.permissionModal2 .permission-modal-responseButtons2 {
   margin-top: 30px;
 }
-.permissionModal .permission-modal-responseButtons p button {
+.permissionModal .permission-modal-responseButtons p button,
+.permissionModal2 .permission-modal-responseButtons p button,
+.permissionModal .permission-modal-responseButtons2 p button,
+.permissionModal2 .permission-modal-responseButtons2 p button {
   padding: 0 20px;
   outline: 0;
   border: 0;
@@ -8049,10 +8082,24 @@ input.indexSearchBox {
   margin: -2px 0 0 0;
   background: white;
 }
-.permissionModal .permission-modal-responseButtons p .request {
+.permissionModal .permission-modal-responseButtons p .request,
+.permissionModal2 .permission-modal-responseButtons p .request,
+.permissionModal .permission-modal-responseButtons2 p .request,
+.permissionModal2 .permission-modal-responseButtons2 p .request,
+.permissionModal .permission-modal-responseButtons p .request2,
+.permissionModal2 .permission-modal-responseButtons p .request2,
+.permissionModal .permission-modal-responseButtons2 p .request2,
+.permissionModal2 .permission-modal-responseButtons2 p .request2 {
   color: #0093be;
 }
-.permissionModal .permission-modal-responseButtons p .login {
+.permissionModal .permission-modal-responseButtons p .login,
+.permissionModal2 .permission-modal-responseButtons p .login,
+.permissionModal .permission-modal-responseButtons2 p .login,
+.permissionModal2 .permission-modal-responseButtons2 p .login,
+.permissionModal .permission-modal-responseButtons p .login2,
+.permissionModal2 .permission-modal-responseButtons p .login2,
+.permissionModal .permission-modal-responseButtons2 p .login2,
+.permissionModal2 .permission-modal-responseButtons2 p .login2 {
   color: #0093be;
   cursor: pointer;
 }

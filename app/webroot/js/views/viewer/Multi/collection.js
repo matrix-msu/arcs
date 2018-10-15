@@ -17,6 +17,15 @@ function collectionPrep() {
 
     //search page, open collection modal
     $('#selected-all').click(function(){
+
+        var signedIn = false;
+        if ($('#menu').html() != 'Login / Register'){
+            signedIn = true
+        }
+
+        if (!signedIn){
+            $("#collection_permission_model").show();
+        }
         if (parseInt($('#selected-count').html()) > 0) {
             $(".collectionModalBackground").show();
         }
