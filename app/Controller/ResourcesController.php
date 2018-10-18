@@ -1401,7 +1401,9 @@ class ResourcesController extends AppController {
                        'Artifact - Structure Creator',
                        'Artifact - Structure Creator Role',
                        'Artifact - Structure Condition',
-                       'Artifact - Structure Subject');
+                       'Artifact - Structure Subject',
+                        'Artifact - Structure Classification'
+            );
 
         $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
 
