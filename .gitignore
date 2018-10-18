@@ -1,5 +1,7 @@
 # bootstrap
 app/Config/bootstrap.php
+app/Config/database.php
+app/View/Layouts/default.php
 
 # htaccess files
 .htaccess
