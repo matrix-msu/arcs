@@ -44,6 +44,29 @@
 </article>
 <a id="removeModal" href="#"></a>
 
+
+<div id="collection_permission_model" class="permissionModal2">
+	<div class="permission-content2">
+		<div class="modal-exit2"><p><a id="#close2"><img class="close-img2" src="" alt=""></a></p></div>
+		<div class="permission-modal-header2">
+			<h1 id="resourcePermHeader2">Whoops. You must be logged in to add to a collection.</h1>
+		</div>
+		<div class="permission-modal-content2">
+			<p id="resourcePermPara2">You will need to login in order to add resources to a collection.</p>
+		</div>
+		<div class="permission-modal-responseButtons2">
+			<p>
+				<a href="#registerModal">
+					<button class="reg2">REGISTER</button>
+				</a>
+				<a href="#loginModal">
+					<button class="request2 logModalBtn2">LOGIN</button>
+				</a>
+			</p>
+		</div>
+	</div>
+</div>
+
 <div class="viewers-container" id="viewers-search">
 	<div class="collectionModalBackground" id="collectionModalBackground">
 		<div class="collectionWrap" style="margin-top:9em;">

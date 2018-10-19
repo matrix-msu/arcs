@@ -1,7 +1,10 @@
 $( document ).ready(function() {
 
     //hide the resources slider if there is only one resource.
-    $('.pages-resource-nav').css('display', 'block');
+    var hideFirstDrawer = $('.pages-resource-nav').attr('data-hideFirstDrawer');
+    if (!hideFirstDrawer){
+        $('.pages-resource-nav').css('display', 'block');
+    }
     if($('.resource-slider').find('.other-resources').length > 1){
         $('.resource-nav-level').css('display', 'block');
         var resource_kid = $('.selectedCurrentResource').find('img').attr('id');

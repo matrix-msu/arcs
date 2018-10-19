@@ -611,7 +611,7 @@ class AdminController extends AppController {
                             'query'=>array(
                                 array(
                                     'search'=>'kid',
-                                    'fields'=>'name',
+//                                    'fields'=>'name',
                                     'kids'=>(array($metadata_kid)),
                                 )
                             )

@@ -17,7 +17,16 @@ function collectionPrep() {
 
     //search page, open collection modal
     $('#selected-all').click(function(){
-        if (parseInt($('#selected-count').html()) > 0) {
+
+        var signedIn = false;
+        if ($('#menu').html() != 'Login / Register'){
+            signedIn = true
+        }
+
+        if (!signedIn){
+            $("#collection_permission_model").show();
+        }
+        else if (parseInt($('#selected-count').html()) > 0) {
             $(".collectionModalBackground").show();
         }
     });

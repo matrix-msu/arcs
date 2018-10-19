@@ -179,8 +179,10 @@
 	Configure::write('Session', array(
         'defaults' => 'php',
         'cookie' => 'ARCS',
-        'timeout' => 1440000
+        'timeout' => 1440
 	));
+
+//Configure::write('Session.timeout', '0');
 
 /**
  * The level of CakePHP security.

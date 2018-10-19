@@ -6,11 +6,11 @@
     <div class="install-progress-bar">
         <ul>
             <li>Kora Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>Field Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li class="current-step">Create Project Record</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="/<?php echo BASE_URL; ?>img/ArrowRight.svg"></li>
+            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>ARCS Configuration</li>
         </ul>
     </div>
@@ -23,7 +23,7 @@
                         Enter information about your first ARCS project below. Maybe some brief info on this process could go here.
                     </p>
                     <p class="prompt2">
-                        For each field, type an option and then hit enter or choose from the dropdown.
+                        For each field, type an option followed by a comma or choose from the dropdown.
                     </p>
                 </div>
             </div>

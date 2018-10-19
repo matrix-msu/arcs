@@ -128,12 +128,9 @@ class UsersController extends AppController
             }
             $param = $_POST[0];
         }
-
         $this->loadModel('Mapping');
         $user = $this->getUser($this->Auth);
-
         $resolve = static::resolveProject($param);
-
         try {
             $pid = parent::getPIDFromProjectName($resolve['project']);
         } catch (Exception $e) {//if the project name is not valid
@@ -141,76 +138,56 @@ class UsersController extends AppController
             $this->Session->setFlash('Error, Request was not sent', 'flash_error');
             return;
         }
-        $template; $viewVars; $admins;
-
         $admins = $this->getAdmins($resolve["project"]);
         // $admins = "noah.girard@gmail.com";
         // don't render a view
         $this->autoRender = false;
-        $message;
+        $message = '';
         // assert email dependencies
         if (($user = $this->getUser($this->Auth)) && !is_null($resolve["project"]) && !empty($admins)) {
-            // Set the template and view vars based on type
-
             $to = implode(', ', $admins);
-
             $subject = "User Access Request";
-
             $username = isset($user['username'])
                 ? $user['username']
                 : "(Error) No Username";
-
             $project = isset($resolve["project"])
                 ? $resolve["project"]
                 : "Invalid Project";
             $project = str_replace("_", " ", $project);
             $project = ucwords($project);
-
             $resource = isset($param)
                 ? $param
                 : "Invalid KID";
 
-            $headers = "MIME-Version: 1.0\r\n";
-            $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-            $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-            $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-
             if ($resolve["isResource"]) {
                 $message =
-                    "
-            <p>User ".$username." has requested access to the resource ".$resource." on project ".$project."
-            <p>To permit the user to the project, visit the associated kora installation dashboard.<br><br>
-            <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
-            Social Sciences with support from the National Endowment for the Humanities<br />
-          ";
+                            "
+                    <p>User ".$username." has requested access to the resource ".$resource." on project ".$project."
+                    <p>To permit the user to the project, visit the associated kora installation dashboard.<br><br>
+                    <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
+                    Social Sciences with support from the National Endowment for the Humanities<br />
+                  ";
+                $viewVars = array('user' => $user, 'project' => $resolve["project"], 'resource' => $param);
 
-                // $template = 'requestAccessResource';
-                // $viewVars = array('user' => $user, 'project' => $resolve["project"], 'resource' => $param);
-                // else is project permissions
-            } else {
+            } else {  // else is project permissions
                 $message =
                     "
-          <p>User ".$username." has requested access to the project ".$project."
-          <p>To permit the user to the project, visit the associated kora installation dashboard.<br>
-          <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
-          Social Sciences with support from the National Endowment for the Humanities<br />
-          ";
-                // $template = 'requestAccessProject';
-                // $viewVars = array('user' => $user, 'project' => $resolve["project"]);
+                  <p>User ".$username." has requested access to the project ".$project."
+                  <p>To permit the user to the project, visit the associated kora installation dashboard.<br>
+                  <p>ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
+                  Social Sciences with support from the National Endowment for the Humanities<br />
+                  ";
+                  $viewVars = array('user' => $user, 'project' => $resolve["project"]);
             }
-            $success = mail($to,$subject,$message,$headers);
 
-            //old cakeEmail
             //Send emails to admins
-            // App::uses('CakeEmail', 'Network/Email');
-            // $Email = new CakeEmail();
-            // $Email->viewVars($viewVars)
-            //       ->template($template, 'default')
-            //       ->emailFormat('html')
-            //       ->subject('User Access Request')
-            //       ->to($admins)
-            //       ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-            // $Email->send();
+            App::uses('CakeEmail', 'Network/Email');
+            $Email = new CakeEmail('smtp');
+            $Email->viewVars($viewVars)
+                ->emailFormat('html')
+                ->subject('User Access Request')
+                ->to($admins)
+                ->send($message);
 
             //check if there is already a request for this
             $results = $this->Mapping->find('all', array(
@@ -1493,35 +1470,22 @@ class UsersController extends AppController
      */
     public function sendInviteEmail($data, $token)
     {
-        $to = $data['email'];
-        $subject = "Welcome to ARCS";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "<p>You've been invited to ARCS. </p>";
         $message .= "<p>ARCS is an open-source web platform that enables individuals to collaborate
                     in creating and relating digitized primary evidence when conducting research
-                    in the humanities.</P";
+                    in the humanities.</p>";
         $message .= "<p>To create your account, follow the link below:</p><br/>";
         $message .= "<a target='_blank' href='".$this->baseURL()."/register/".$token."'>
                     ".$this->baseURL()."/register/".$token."</a>";
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$message,$headers);
-
-        //old cakeEmail
-        /*App::uses('CakeEmail', 'Network/Email');
-        $Email = new CakeEmail();
-        $Email->viewVars(array(
-            'activation' => $this->baseURL() . '/register/' . $token
-        ))
-            ->template('welcome', 'default')
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail('smtp');
+        $Email->viewVars(array('activation' => $this->baseURL() . '/register/' . $token))
             ->emailFormat('html')
             ->subject('Welcome to ARCS')
             ->to($data['email'])
-            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        $Email->send();*/
+            ->send($message);
     }
 
     /**
@@ -1531,8 +1495,6 @@ class UsersController extends AppController
      */
     public function ajaxSendInviteEmail($data, $token)
     {
-        $to = $data['email'];
-        $subject = "Welcome to ARCS";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "<p>You've been invited to ARCS. </p>";
@@ -1542,22 +1504,13 @@ class UsersController extends AppController
         $message .= "<p>To create your account, follow the link below:</p><br/>";
         $message .= "<a target='_blank' href='".$this->baseURL()."/invitation/register/".$token."'>
                     ".$this->baseURL()."/invitation/register/".$token."</a>";
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$message,$headers);
-
-        //old cakeEmail
-        /*App::uses('CakeEmail', 'Network/Email');
+        App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         $Email->viewVars(array('activation' => $this->baseURL() . '/invitation/register/' . $token))
-              ->emailFormat('html')
-              ->template('welcome', 'default')
-              ->subject('Welcome to ARCS')
-              ->to($data['email'])
-              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        $Email->send();*/
+            ->emailFormat('html')
+            ->subject('Welcome to ARCS')
+            ->to($data['email'])
+            ->send($message);
     }
 
     /**
@@ -1567,29 +1520,20 @@ class UsersController extends AppController
      */
     public function pendingUserEmail($data, $user)
     {
-        $to = $data['email'];
         $link = $this->baseURL() . "/admintools/users";
-        $subject = "ARCS: New User Has Registered";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "A new user, ".$user['name'].", has registered an account on ARCS.";
         $message .= "<br/><br/> Please follow the link below to add the user.<br/><br/>";
         $message .= "<a target='_blank' href='".$link."'>".$link."</a>";
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$message,$headers);
-
-        /*App::uses('CakeEmail', 'Network/Email');
-        $Email = new CakeEmail('templated');
-        $Email->viewVars(array('user' => $user['name'], 'link' => KORA_PLUGIN_USERS ))
-              ->emailFormat('html')
-              ->template('pending_user', 'default')
-              ->subject('ARCS New User Has Registered')
-              ->to($data['email'])
-              ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        $Email->send();*/
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail('smtp');
+        $Email->viewVars(array('user' => $user['name'], 'link' => $link ))
+            ->emailFormat('html')
+            //->template('pending_user', 'default')
+            ->subject('ARCS New User Has Registered')
+            ->to($data['email'])
+            ->send($message);
     }
 
     /**
@@ -1600,8 +1544,6 @@ class UsersController extends AppController
     {
         $Users = new UsersController;
         $adminEmails = $Users->getAdmins(strtolower(str_replace(" ","_",$project)));
-        $to = $data['email'];
-        $subject = "ARCS: Confirm your email";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "Hi there, <br /><br />
@@ -1622,31 +1564,14 @@ class UsersController extends AppController
             $project Team<br /><br />";
         $message .= "ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
             Social Sciences with support from the National Endowment for the Humanities<br />";
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
 
-        $success = mail($to,$subject,$message, $headers);
-
-        //App::uses('CakeEmail', 'Network/Email');
-        // echo "here";
-        // //die;
-        // //line below is breaking registering
-        // $Email = new CakeEmail();
-        //
-        // $Email->viewVars(array('link' => $this->baseURL() . '/users/confirm_user/' . $data['username']))
-        //       ->emailFormat('html')
-        //       ->template('confirm_user', 'default')
-        //       ->subject('ARCS Registration')
-        //       ->to($data['email'])
-        //       ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        //
-        // /* Here is where the problem is. liar it's above*/
-        // $Email->send();
-        // echo 'after';
-        //
-        // die;
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail('smtp');
+        $Email->viewVars(array('link' => $this->baseURL() . '/users/confirm_user/' . $data['username']))
+            ->emailFormat('html')
+            ->subject('ARCS Registration')
+            ->to($data['email'])
+            ->send($message);
     }
 
     /**
@@ -1657,8 +1582,6 @@ class UsersController extends AppController
      */
     public function sendEmailResetPassword($email, $token)
     {
-        $to = $email;
-        $subject = "ARCS: Reset your password";
         $message = "<h1 style='margin:0 auto; font-weight:200; color:#555'>ARCS</h1>";
         $message .= "<hr style='border:2px solid #555'>";
         $message .= "Hi there, <br /><br /> Here's a link that you can follow to reset
@@ -1671,22 +1594,13 @@ class UsersController extends AppController
         $message .= "<br /><br /> ARCS has been developed at the MSU College of Arts
           and Letters in cooperation with the OSU Excavations at Isthmia and has
           been funded by a NEH Digital Humanities Startup Grant. <br />";
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-
-        $success = mail($to,$subject,$message,$headers);
-        //echo $success; die;
-        // App::uses('CakeEmail', 'Network/Email');
-        // $Email = new CakeEmail();
-        // $Email->viewVars(array('reset' => $this->baseURL() . '/users/reset_password/' . $token))
-        //       ->emailFormat('html')
-        //       ->template('reset_password', 'default')
-        //       ->subject('Reset Password')
-        //       ->to($email)
-        //       ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));
-        // $Email->send();
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail('smtp');
+        $Email->viewVars(array('reset' => $this->baseURL() . '/users/reset_password/' . $token))
+            ->emailFormat('html')
+            ->subject('ARCS: Reset your password')
+            ->to($email)
+            ->send($message);
     }
 
     /**
@@ -1726,26 +1640,14 @@ class UsersController extends AppController
             array_push( $formattedAdminEmails, $v['email'] );
         }
         //old cakeEmail
-        /*App::uses('CakeEmail', 'Network/Email');
-        $Email = new CakeEmail();
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail('smtp');
         $Email->emailFormat('html')
             ->subject('Missing Image Notification')
             ->to($formattedAdminEmails)
-            ->from(array('arcs@arcs.matrix.msu.edu' => 'ARCS'));*/
-        
-        $to = $formattedAdminEmails;
-        $subject = "Missing Image Notification";
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=iso-8859-1 \r\n";
-        $headers .= "From: arcs arcs@matrix.msu.edu \r\n";
-        $headers .= "Reply-To: arcs@arcs.matrix.msu.edu\r\n";
-        $success = mail($to,$subject,$content,$headers);
+            ->send($content);
 
-        if($success){
-            echo true;
-        }else{
-            echo false;
-        }
+        echo true;
         die;
     }
 

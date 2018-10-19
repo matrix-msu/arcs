@@ -56,6 +56,7 @@ class Keyword_Search extends Kora
     protected $excavation_list = array();
     protected $total = 0;
     protected $preFilter = false;
+    protected $advancedSearch = true;
 
     protected $months = [
     "January","February","March","April","May","June","July","August",
@@ -123,6 +124,7 @@ class Keyword_Search extends Kora
     * @return void
     */
     public function execute($query,$project=null,$start=1,$end=10000){
+        $this->advancedSearch = false;
 
         $time_start = microtime(true);
         $mem_start =  memory_get_usage();
@@ -273,7 +275,6 @@ class Keyword_Search extends Kora
     */
     protected function traverse_insert($project)
     {
-
         if (!empty($this->formulatedResult)) {
 
             $page = parent::getPageSIDFromProjectName($project);
@@ -582,6 +583,7 @@ class Keyword_Search extends Kora
     protected function getExcavationList($survey)
     {
         $excavationKids = self::fullMergeIntoArray($this->formulatedResult, "Excavation_-_Survey_Associator");
+        //echo 'hi';var_dump($excavationKids);die;
 
         $excavation = array();
         $this->schemeMapping = $survey;
@@ -611,33 +613,36 @@ class Keyword_Search extends Kora
 
     public function insertPages($page)
     {
-		$linkers = array();
-		foreach( $this->formulatedResult as $kid => $value ){
-			$linkers = array_merge($linkers, $value['linkers']);
-		}
-        $this->fields = array("Image Upload", "Resource Associator", "Scan_Number");
-        $this->schemeMapping = $page;
-        $scanNumberClause = new KORA_Clause("Scan_Number", '=', '1');
-        $kidClause = new KORA_Clause("kid", "IN", $linkers);
-        $this->The_Clause = new KORA_Clause($kidClause, "AND", $scanNumberClause);
-        $images = self::search();
-		$time_end = microtime(true);
-
+        $images = array();
         $pKid = $this->projectMapping.'-'.$page.'-';
 
-        foreach ($images as $img) {
-            if (isset($img["Resource_Associator"]) && is_array($img["Resource_Associator"])) {
-                foreach ($img["Resource_Associator"] as $rKid) {
-                    if(
-                        isset($this->formulatedResult[$rKid]) &&
-                        isset($img["Image_Upload"]) &&
-                        isset($img["Image_Upload"]['localName'])
-                    ){
+        if( $this->advancedSearch == false ){
+            $linkers = array();
+            foreach( $this->formulatedResult as $kid => $value ){
+                if( isset($value['linkers']) ) {
+                    $linkers = array_merge($linkers, $value['linkers']);
+                }
+            }
+            $this->fields = array("Image_Upload", "Resource_Associator", "Scan_Number");
+            $this->schemeMapping = $page;
+            $scanNumberClause = new KORA_Clause("Scan_Number", '=', '1');
+            $kidClause = new KORA_Clause("kid", "IN", $linkers);
+            $this->The_Clause = new KORA_Clause($kidClause, "AND", $scanNumberClause);
+            $images = self::search();
+            foreach ($images as $img) {
+                if (isset($img["Resource_Associator"]) && is_array($img["Resource_Associator"])) {
+                    foreach ($img["Resource_Associator"] as $rKid) {
                         if(
-                            (isset($img["Scan_Number"]) && $img["Scan_Number"] == '1') ||
-                            !isset($this->formulatedResult[$rKid]["thumb"])
+                            isset($this->formulatedResult[$rKid]) &&
+                            isset($img["Image_Upload"]) &&
+                            isset($img["Image_Upload"]['localName'])
                         ){
-                            $this->formulatedResult[$rKid]["thumb"] = $this->smallThumb($img["Image_Upload"]['localName'], $pKid);
+                            if(
+                                (isset($img["Scan_Number"]) && $img["Scan_Number"] == '1') ||
+                                !isset($this->formulatedResult[$rKid]["thumb"])
+                            ){
+                                $this->formulatedResult[$rKid]["thumb"] = $this->smallThumb($img["Image_Upload"]['localName'], $pKid);
+                            }
                         }
                     }
                 }
