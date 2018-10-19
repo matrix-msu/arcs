@@ -301,6 +301,10 @@
 		$(".searchIntro").css("display","block");
 	}
 
+	if (viewCollection == true) {
+		$("#search-again").css("display","none");
+	}
+
 
     $(document).ready(function() {
         var projectURL = window.location.href.split("/search/")[1];
