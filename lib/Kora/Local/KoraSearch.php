@@ -550,9 +550,9 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
     }
 
 
-    
-    $time_end = microtime(true);
-    $execution_time = ($time_end - $time_start);
+
+//    $time_end = microtime(true);
+//    $execution_time = ($time_end - $time_start);
 //    echo 'seconds: '. $execution_time;
 //    echo 'results:';
 //    var_dump($result);
