@@ -15,8 +15,8 @@
 
       <meta charset="utf-8">
         <title><?php echo $title_for_layout; ?> - ARCS</title>
-        <link rel="shortcut icon"
-            href="<?php echo $this->Html->url('/favicon.ico') ?>"
+        <link rel="icon"
+            href="<?php echo 'http://projects.arcs.matrix.msu.edu/favicon.ico'; ?>"
             type="image/x-icon" />
         <meta name="language" http-equiv="language" content="english" />
         <!-- ios devices go full screen! -->
