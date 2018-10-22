@@ -316,13 +316,12 @@ class AdminController extends AppController {
         $txt .= "ARCS was developed by Michigan State University's MATRIX: The Center for Digital Humanities &
             Social Sciences with support from the National Endowment for the Humanities<br />";
 
-        $headers = '';
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html\r\n";
-        $headers .= "From: \"ARCS\" <arcs@arcs.matrix.msu.edu>\r\n";
-        $headers .= "To: " . $user['email'] . "\r\n";
-
-        $success = mail($to, $subject, $txt, $headers);
+        App::uses('CakeEmail', 'Network/Email');
+        $Email = new CakeEmail();
+        $Email->emailFormat('html')
+            ->subject($subject)
+            ->to($user['email'])
+            ->send($txt);
     }
 
 
@@ -557,36 +556,29 @@ class AdminController extends AppController {
                 foreach( $metadata_info as $key => $value ){
                     $msg .= '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $key . ' : ' . $value . "</p>";
                 }
-
-                // send email
-                $headers = 'MIME-Version: 1.0' . "\r\n";
-                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $headers .= 'From: Noreply <noreply@matrix.msu.edu>' . "\r\n";
                 $email_subject = "Your ARCS Metadata Edit was Rejected";
-
-                mail($_POST['email'], $email_subject, $msg, $headers);
-
+                App::uses('CakeEmail', 'Network/Email');
+                $Email = new CakeEmail();
+                $Email->emailFormat('html')
+                    ->subject($email_subject)
+                    ->to($_POST['email'])
+                    ->send($msg);
                 echo json_encode($metadata_info);
 
             }
             elseif ($_POST['task'] == 'approve') {
                 //add sql sanitization
                 //bindparam
-
-//                $approve = mysqli_query($con, "UPDATE metadata_edits SET approved = '".decbin(1)."' WHERE id = '" . $_POST['id'] . "'");
                 $dec=decbin(1);
                 $approve = $con -> prepare("UPDATE metadata_edits SET approved = ? WHERE id = ?");
                 $approve->bind_param('si', $dec, $_POST['id']);
                 $approve->execute();
 
-//                $metadata_row = mysqli_fetch_assoc($mysqli_query($con, "SELECT * FROM metadata_edits WHERE id='".$_POST['id']."'"));
                 $mysqli = $con -> prepare("SELECT * FROM metadata_edits WHERE id=?");
                 $mysqli->bind_param('s',$_POST['id']);
                 $mysqli->execute();
                 $mysqli_result = $mysqli->get_result();
                 $metadata_row = $mysqli_result->fetch_assoc();
-
-
 
                 $metadata_kid = $metadata_row['metadata_kid'];
                 $scheme_id = $metadata_row['scheme_id'];
@@ -757,6 +749,13 @@ class AdminController extends AppController {
 
         //$resource = array($metadata_kid => $resource);
 
+//       $resource['Title_11_33_'] = array (
+//           'value' => 'TEST -- Trench on completion of excavation --test3',
+//           'type' => 'Text',
+//           'name' => 'Title_11_33_',
+//           'text' => 'TEST -- Trench on completion of excavation --test3',
+//       );
+
         $query = array(
             '_method'=>'put',
             'form'=>$scheme_id,
@@ -765,7 +764,11 @@ class AdminController extends AppController {
             'keepFields'=>"true",
             'fields'=>json_encode($resource),
         );
-	
+
+     //   print_r($resource);
+//        print_r($query);
+//        die;
+//
 
         $return['query'] = $query;
         $url = KORA_RESTFUL_URL.'edit';
