@@ -571,7 +571,7 @@ class AdminController extends AppController {
                 //bindparam
                 $dec=decbin(1);
                 $approve = $con -> prepare("UPDATE metadata_edits SET approved = ? WHERE id = ?");
-                $approve->bind_param('si', $dec, $_POST['id']);
+                $approve->bind_param('is', $dec, $_POST['id']);
                 $approve->execute();
 
                 $mysqli = $con -> prepare("SELECT * FROM metadata_edits WHERE id=?");
