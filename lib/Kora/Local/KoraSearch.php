@@ -456,7 +456,7 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
     else
         $filters = array("data","meta");
 
-    if(true) {
+    //if(true) {
         $output = array();
         $tool = new kora3ApiExternalTool();
         $fsArray = $tool->formSearchBuilder(
@@ -490,64 +490,64 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
             return curl_error($curl);
         curl_close($curl);
         $result = json_decode($result, true);
-    }else{
-        $fields = array('Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier','linkers');
-        $pid = parent::getPIDFromProjectName($projectName);
-        $sid = parent::getResourceSIDFromProjectName($projectName);
-        $tempFields = array();
-        $fieldExt = '_'.$pid.'_'.$sid.'_';
-        foreach( $fields as $index => $field ) {
-            $tempFields[$index] = $fields[$index] . $fieldExt;
-        }
-        $query = array(
-            'forms'=>json_encode(array(
-                array(
-                    'form'=>parent::getResourceSIDFromProjectName($projectName),
-                    'token'=>parent::getTokenFromProjectName($projectName),
-                    'fields'=>$tempFields,
-                    //'format'=>'KORA_OLD',
-                    'query'=>array(
-                        array(
-                            'search'=>'kid',
-                            'kids'=>$array,
-                        )
-                    )
-                )
-            ))
-        );
-
-        $url = KORA_RESTFUL_URL.'search';
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $resource = curl_exec($ch);
-        curl_close($ch);
-
-        $this->formulatedResult = array();
-        foreach( json_decode($resource, true)['records'][0] as $kid => $value ){
-            $template = array(
-                'Title' => '',
-                'Type' => '',
-                'Excavation_-_Survey_Associator' => '',
-                'Season_Associator' => '',
-                'Permissions' => '',
-                'Special_User' => '',
-                'Resource_Identifier' => ''
-            );
-            foreach( $fields as $field ){
-                if( isset($value[$field.$fieldExt]) ){
-                    $template[$field] = $value[$field.$fieldExt]['value'];
-                }else{
-                    unset($template[$field]);
-                }
-            }
-            $template['kid'] = $kid;
-            $this->formulatedResult[$kid] = $template;
-        }
-        unset($resource);
-    }
+//    }else{
+//        $fields = array('Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier','linkers');
+//        $pid = parent::getPIDFromProjectName($projectName);
+//        $sid = parent::getResourceSIDFromProjectName($projectName);
+//        $tempFields = array();
+//        $fieldExt = '_'.$pid.'_'.$sid.'_';
+//        foreach( $fields as $index => $field ) {
+//            $tempFields[$index] = $fields[$index] . $fieldExt;
+//        }
+//        $query = array(
+//            'forms'=>json_encode(array(
+//                array(
+//                    'form'=>parent::getResourceSIDFromProjectName($projectName),
+//                    'token'=>parent::getTokenFromProjectName($projectName),
+//                    'fields'=>$tempFields,
+//                    //'format'=>'KORA_OLD',
+//                    'query'=>array(
+//                        array(
+//                            'search'=>'kid',
+//                            'kids'=>$array,
+//                        )
+//                    )
+//                )
+//            ))
+//        );
+//
+//        $url = KORA_RESTFUL_URL.'search';
+//        $ch = curl_init();
+//        curl_setopt($ch,CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_POST, 1);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        $resource = curl_exec($ch);
+//        curl_close($ch);
+//
+//        $this->formulatedResult = array();
+//        foreach( json_decode($resource, true)['records'][0] as $kid => $value ){
+//            $template = array(
+//                'Title' => '',
+//                'Type' => '',
+//                'Excavation_-_Survey_Associator' => '',
+//                'Season_Associator' => '',
+//                'Permissions' => '',
+//                'Special_User' => '',
+//                'Resource_Identifier' => ''
+//            );
+//            foreach( $fields as $field ){
+//                if( isset($value[$field.$fieldExt]) ){
+//                    $template[$field] = $value[$field.$fieldExt]['value'];
+//                }else{
+//                    unset($template[$field]);
+//                }
+//            }
+//            $template['kid'] = $kid;
+//            $this->formulatedResult[$kid] = $template;
+//        }
+//        unset($resource);
+//    }
 
 
 
