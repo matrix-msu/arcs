@@ -232,7 +232,7 @@ $(window).bind("mousewheel", function() {
 				}
 				selectedMap['unselected'] = totalResults;
 				waiting = false;
-				$('#search-loading-percent').html(Math.ceil(totalResults.length*100/kids_to_get.length)+'%');
+				//$('#search-loading-percent').html(Math.ceil(totalResults.length*100/kids_to_get.length)+'%');
 
 				//set the results into a global variable for export
 				arcs.views.search.exportResults = totalResults;
@@ -250,7 +250,7 @@ $(window).bind("mousewheel", function() {
 					adjustPage(1, false);
 					var loaderHtml = $(ARCS_LOADER_HTML);
 					$(loaderHtml).css({'height':'inherit','position':'relative','float':'right','top':'30px','right':'48px'});
-					$(loaderHtml).append('<span id="search-loading-percent" style="position: relative;font-size: 16px;top: -45px;left: -50px;">0%</span>');
+					//$(loaderHtml).append('<span id="search-loading-percent" style="position: relative;font-size: 16px;top: -45px;left: -50px;">0%</span>');
 					//$(loaderHtml).find('.sk-folding-cube').css({'height':'36.43px', 'width':'36.43px'});
 					$('#backToSearch').append(loaderHtml);
 					getRestOfData(sliceEnd, limit);
