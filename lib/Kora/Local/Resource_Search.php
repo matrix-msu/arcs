@@ -15,17 +15,10 @@ class Resource_Search extends Keyword_Search {
     $time_start = microtime(true);
     $mem_start =  memory_get_usage();
 
-    //print_r($array);
-//    $this->token = parent::getTokenFromProjectName($projectName);
     $this->projectMapping = parent::getPIDFromProjectName($projectName);
     $this->schemeMapping = parent::getResourceSIDFromProjectName($projectName);
-//    $this->The_Clause = new KORA_Clause("kid","IN",$array);
-//	$this->fields = array('kid','Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier');
-//	$this->fields = array('ALL');
-
 
     $fields = array('Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier','linkers');
-    //$fields = array('Title');
     $pid = parent::getPIDFromProjectName($projectName);
     $sid = parent::getResourceSIDFromProjectName($projectName);
     $tempFields = array();
@@ -56,20 +49,12 @@ class Resource_Search extends Keyword_Search {
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
     $resource = curl_exec($ch);
     curl_close($ch);
 
-//    echo 'hi';
-//      var_dump($query);
-//      die;
-//    print_r(json_decode($resource, true)['records'][0]);
-//die;
     $this->formulatedResult = array();
     foreach( json_decode($resource, true)['records'][0] as $kid => $value ){
         $template = array(
-//            'kid' => '',
-//            'pid' => '',
             'Title' => '',
             'Type' => '',
             'Excavation_-_Survey_Associator' => '',
@@ -86,17 +71,9 @@ class Resource_Search extends Keyword_Search {
             }
         }
         $template['kid'] = $kid;
-//        $template['pid'] = $kid;
         $this->formulatedResult[$kid] = $template;
     }
     unset($resource);
-//    print_r($this->formulatedResult);
-//    die;
-
-
-    //$this->formulatedResult = parent::search();
-
-    //var_dump($this->formulatedResult);die;
 
     // traverse the database to include excavation,
     // season and project associations;
