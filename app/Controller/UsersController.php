@@ -744,7 +744,6 @@ class UsersController extends AppController
     public function delete($id = null)
     {
         if (!$this->request->is('delete')) return $this->json(405);
-        if (!$this->Access->isAdmin()) return $this->json(403);
         if (!$this->User->findById($id)) return $this->json(404);
         if (!$this->User->delete($id)) return $this->json(500);
         $this->json(204);
@@ -811,8 +810,35 @@ class UsersController extends AppController
                     $this->User->id = $user['User']['id'];
                     $this->User->saveField('status', "pending");
 
-                    // notify admins of the new user
-                    $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
+                    $mappings = $this->Mapping->find('all', array(
+                        'fields' => array('Mapping.pid'),
+                        'conditions' => array(
+                            'AND' => array(
+                                'Mapping.id_user' => $user['User']['id']
+                            ),
+                        )
+                    ));
+                    $pidArray = array();
+                    foreach( $mappings as $mapping ){
+                        $pidArray[] = $mapping['Mapping']['pid'];
+                    }
+                    $adminIds = $this->Mapping->find('list', array(
+                        'fields' => array('Mapping.id_user'),
+                        'conditions' => array(
+                            'AND' => array(
+                                'Mapping.pid' => $pidArray,
+                                'Mapping.role' => 'Admin',
+                                'Mapping.status' => 'confirmed'
+                            ),
+                        )
+                    ));
+                    $admins = $this->User->find('all', array(
+                        'conditions' => array(
+                            'AND' => array(
+                                'User.id' => $adminIds
+                            ),
+                        )
+                    ));
                     foreach ($admins as $admin) {
                         $this->pendingUserEmail($admin, $user);
                     }
@@ -868,25 +894,48 @@ class UsersController extends AppController
     public function confirm_user($username = null)
     {
         $user = $this->User->findByRef($username);
-
         if($user['status'] == 'pending' ){  //user clicked the confirm link a second time.
             $this->Session->setFlash("Your account is confirmed, the admins will be notified of your request.", 'flash_success');
             $this->redirect('/');
             return;
         }
-
         if ($username == null || !$user || $user['status'] != 'unconfirmed') throw new BadRequestException();
-
         // change status of user
         $this->User->id = $user['id'];
         $this->User->saveField('status', "pending");
 
-        // notify admins of the new user
-        $admins = $this->User->find('all', array('conditions' => array('User.isAdmin' => 1)));
+        $mappings = $this->Mapping->find('all', array(
+            'fields' => array('Mapping.pid'),
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.id_user' => $user['id']
+                ),
+            )
+        ));
+        $pidArray = array();
+        foreach( $mappings as $mapping ){
+            $pidArray[] = $mapping['Mapping']['pid'];
+        }
+        $adminIds = $this->Mapping->find('list', array(
+            'fields' => array('Mapping.id_user'),
+            'conditions' => array(
+                'AND' => array(
+                    'Mapping.pid' => $pidArray,
+                    'Mapping.role' => 'Admin',
+                    'Mapping.status' => 'confirmed'
+                ),
+            )
+        ));
+        $admins = $this->User->find('all', array(
+            'conditions' => array(
+                'AND' => array(
+                    'User.id' => $adminIds
+                ),
+            )
+        ));
         foreach ($admins as $admin) {
             $this->pendingUserEmail($admin, $user);
         }
-
         $this->Session->setFlash("Thank you for confirming your registration!  Your account is waiting for administrator approval.", 'flash_success');
         $this->redirect('/');
         return;
@@ -906,7 +955,6 @@ class UsersController extends AppController
      */
     public function invite()
     {
-        if (!$this->Access->isAdmin()) throw new ForbiddenException();
         if (!$this->request->is('post')) throw new MethodNotAllowedException();
         $data = $this->request->data;
 
@@ -1432,7 +1480,7 @@ class UsersController extends AppController
 
         if ($ref == "" || !$user)
             throw new NotFoundException();
-        if (!($user['id'] == $this->Auth->user('id') || $this->Access->isAdmin()))
+        if (!($user['id'] == $this->Auth->user('id')))
             throw new ForbiddenException();
 
         // get current profile picture
