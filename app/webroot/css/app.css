@@ -15440,6 +15440,9 @@ strong {
 .metadata-head button:focus {
   outline: none;
 }
+.searchForUser {
+  float: right;
+}
 .users-head.pending {
   display: none;
 }
