@@ -221,6 +221,8 @@ $(document).ready(function(){
 		$( '#about' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/collections' )) {
 		$( '#collections' ).addClass( 'btn-blue' );
+	} else if (pathname.includes( 'arcs/search/collection' )) {
+		$( '#collections' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/search' )) {
 		$( '#search' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'arcs/help/' )) {

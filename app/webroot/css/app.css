@@ -3440,16 +3440,16 @@ tbody.collapse.in {
 }
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: -125px;
   left: 0;
   z-index: 1000;
   display: none;
   float: left;
   min-width: 160px;
-  padding: 5px 0;
+  padding: 5px 14px;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 12px;
   text-align: left;
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -8954,10 +8954,10 @@ div#searchCriteria ul {
   transform: rotate(315deg);
 }
 .pointerSearch {
-  margin: 5px 0 0 30px;
+  margin: 2px 0 0 30px;
   margin-left: 10px;
   border: solid grey;
-  border-width: 2.5px 2.5px 0 0;
+  border-width: 1.5px 1.5px 0 0;
 }
 .SearchBar {
   background: #f4f4f4;
@@ -8995,6 +8995,7 @@ div#search-results-wrapper div#search-actions {
 div#search-results-wrapper div#search-actions .btn {
   background: transparent;
   border: 0;
+  font-size: 12px;
   outline: none;
   box-shadow: none;
   text-transform: uppercase;
@@ -9081,7 +9082,7 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu {
   box-shadow: none !important;
   border-radius: 0 !important;
   width: auto !important;
-  left: 10px;
+  left: -2px;
   max-height: 400px;
   overflow: auto;
 }
@@ -9094,8 +9095,8 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   color: #333333;
   white-space: nowrap;
   text-transform: uppercase;
-  font-size: 13px;
-  padding: 18px;
+  font-size: 12px;
+  padding: 5px;
 }
 div#search-results-wrapper .toolbar-fixed {
   border-bottom: 1px solid #eee;
@@ -9146,7 +9147,7 @@ a.search-again-link {
   text-transform: uppercase;
   color: #6f6f6f !important;
   /* margin-bottom: 4em; */
-  font-size: 12px;
+  font-size: 14px;
   vertical-align: middle;
   justify-content: center;
   text-align: center;
@@ -16742,7 +16743,8 @@ ul.resource-thumbs li.resource-thumb:hover a {
 .collection-list-wrapper .collection-list details summary p.rsc-name,
 .collection-list-wrapper .collection-list details[open] summary p.rsc-name {
   text-shadow: none;
-  font-size: 18px;
+  font-size: 24px;
+  font-weight: 300;
   display: inline;
   margin: 20px 20px;
 }
@@ -16801,6 +16803,9 @@ li.Locked .lock-overlay {
   background-position: center;
   background-image: url("../assets/img/Locked.svg");
   background-size: 40px 40px;
+}
+.btn-show-all {
+  cursor: pointer;
 }
 @media screen and (max-width: 550px) {
   .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon img.lock-icon-img,
@@ -17950,8 +17955,12 @@ footer#standard-MSU-footer {
   text-transform: uppercase;
   text-align: left;
   margin-bottom: -5px;
+  outline: none;
   border-radius: 0;
   padding-left: 0;
+}
+.collection-list-wrapper .dropdown .dropdown-toggle:active {
+  box-shadow: none;
 }
 .collection-list-wrapper .dropdown .dropdown-open {
   z-index: 1;
@@ -18304,8 +18313,8 @@ div#collection-actions ul.dropdown-menu li a {
   color: #333333;
   white-space: nowrap;
   text-transform: uppercase;
-  font-size: 13px;
-  padding: 18px;
+  font-size: 12px;
+  padding: 11px;
 }
 div#collection-bottom-bar {
   float: left;
@@ -18604,6 +18613,9 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
   height: 100px;
   border: 1px solid #E2E2E2;
 }
+li.resource-thumb a:hover {
+  box-shadow: 2px 10px 25px 0px rgba(0, 0, 0, 0.15);
+}
 .recent-resource .resource-pic .resource-title {
   color: #6D6E70;
   font-size: 13px;
@@ -18633,6 +18645,9 @@ ul.resource-thumbs li.resource-thumb a img.resource_imginfo_2 {
 .resource-thumbs .resource-thumb .view-title {
   color: #6D6E70;
   font-size: 12px;
+}
+.resource-thumbs {
+  margin-top: 55px !important;
 }
 div.proper-width {
   margin: auto;
@@ -18705,7 +18720,7 @@ a.view-colc {
   margin: 25px 0 0;
   border: 1px solid #e2e2e2;
   background: #f4f4f4;
-  padding: 13px 15px 13px 20px;
+  padding: 13px 0px 13px 0px;
 }
 .back-color[open] ul.resource-thumbs li.resource-thumb:hover {
   background-color: transparent;
@@ -18832,7 +18847,8 @@ body {
     display: block;
   }
   .collection-list-wrapper .collection-list details summary h3 {
-    font-size: 16px;
+    font-size: 24px;
+    font-weight: 300;
   }
   .collection-list-wrapper summary:after,
   .collection-list-wrapper details[open] summary:after {
