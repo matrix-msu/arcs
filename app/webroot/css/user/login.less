@@ -14,22 +14,32 @@
     }
 }
 
-#login-header {
-    width: 300px;
-    margin-top: 10%;
-    .centered();
+.headers {
+    display: block;
     position: relative;
-    left: 30px;
-    img {
-        margin-bottom: 15px;
-    }
+
     h1 {
+        position: relative;
+        display: inline-block;
         font-family: 'Pontano Sans', sans-serif;
-        display: inline;
         font-weight: 100;
         .text-shadow(#fff);
+        vertical-align: top;
     }
 }
+
+.login-err {
+    color: red;
+    display: inline-block;
+    margin-top: 0 !important;
+    position: absolute;
+    right: 8%;
+    text-align: right;
+    top: 0;
+    width: 66%;
+}
+
+
 
 #login-footer {
     width: 300px;

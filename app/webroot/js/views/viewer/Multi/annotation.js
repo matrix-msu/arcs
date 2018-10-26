@@ -185,6 +185,7 @@ function annotationPrep() {
 
     //clear the details drawer and populate
     function populateDetailsDrawer(current){
+        console.log('populate', current);
         var trashButton = '';
         // if( isAdmin == 1 ){
         //     trashButton = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>";

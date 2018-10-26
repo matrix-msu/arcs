@@ -780,6 +780,8 @@ class UsersController extends AppController
      */
     public function special_login()
     {
+        session_start();
+        $_SESSION['LoginError'] = '';
         $this->User->flatten = false;
         if ($this->request->is('post')) {
 
@@ -809,8 +811,9 @@ class UsersController extends AppController
                 /* Logs user in */
                 $user = $this->User->findByRef($this->request->data['User']['username']);
                 if (!isset($user['User'])) {
-                    $this->Session->setFlash("Username not found.", 'flash_error');
-                    $this->redirect('/');
+                    $_SESSION['LoginError'] = "Username not found.";
+//                    $this->Session->setFlash("Username not found.", 'flash_error');
+                    $this->redirect('/#loginModal');
                 }
 
                 if($user['User']['status'] == 'active'){
@@ -820,8 +823,10 @@ class UsersController extends AppController
                         return $this->redirect($this->referer());
                         // return $this->redirect($this->Auth->redirect());
                     } else {
-                        $this->Session->setFlash("The Username or Password you entered is incorrect.  Please try again.", 'flash_error');
-                        $this->redirect($this->referer());
+                        $_SESSION['LoginError'] = "The Username or Password you entered is incorrect.  Please try again.";
+//                    $this->Session->setFlash("Username not found.", 'flash_error');
+//                        $this->Session->setFlash("The Username or Password you entered is incorrect.  Please try again.", 'flash_error');
+                        $this->redirect($this->referer().'#loginModal');
                     }
                 }
                 else if($user['User']['status'] == 'pending') {
@@ -844,8 +849,9 @@ class UsersController extends AppController
                 }
                 //Invited users will not be found by findByRef until activated
                 else if(!$user) {
-                    $this->Session->setFlash("Username not found.", 'flash_error');
-                    $this->redirect('/');
+                    $_SESSION['LoginError'] = "Username not found.";
+//                    $this->Session->setFlash("Username not found.", 'flash_error');
+                    $this->redirect('/#loginModal');
                 }
             }
         }
