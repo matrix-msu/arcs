@@ -3440,7 +3440,7 @@ tbody.collapse.in {
 }
 .dropdown-menu {
   position: absolute;
-  top: -85px;
+  top: -125px;
   left: 0;
   z-index: 1000;
   display: none;
@@ -5683,9 +5683,6 @@ button.close {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
-}
-.modal-open {
-  overflow: hidden;
 }
 .modal {
   display: none;
@@ -12999,22 +12996,27 @@ ul.annotations li.annotation:hover {
   font-size: 70%;
   color: #333;
 }
-#login-header {
-  width: 300px;
-  margin-top: 10%;
-  margin-left: auto;
-  margin-right: auto;
+.headers {
+  display: block;
   position: relative;
-  left: 30px;
 }
-#login-header img {
-  margin-bottom: 15px;
-}
-#login-header h1 {
+.headers h1 {
+  position: relative;
+  display: inline-block;
   font-family: 'Pontano Sans', sans-serif;
-  display: inline;
   font-weight: 100;
   text-shadow: 0 1px 1px #ffffff;
+  vertical-align: top;
+}
+.login-err {
+  color: red;
+  display: inline-block;
+  margin-top: 0 !important;
+  position: absolute;
+  right: 8%;
+  text-align: right;
+  top: 0;
+  width: 66%;
 }
 #login-footer {
   width: 300px;
@@ -15434,6 +15436,9 @@ strong {
 .metadata-head textarea:focus,
 .metadata-head button:focus {
   outline: none;
+}
+.searchForUser {
+  float: right;
 }
 .users-head.pending {
   display: none;

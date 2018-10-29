@@ -8,7 +8,16 @@
             </a>
             <div class="loginContainer">
 
-                <h1 id="loginHeader">Login</h1>
+                <div class="headers">
+                    <h1 id="loginHeader">Login</h1>
+                    <p class="login-err">
+                        <?php if(isset($_SESSION['LoginError'])){
+                            echo $_SESSION['LoginError'];
+                            $_SESSION['LoginError'] = '';
+                        }?>
+                    </p>
+                </div>
+
 
                 <?php
                 // echo $this->Form->create('User', array('controller' => 'users', 'url' => 'special_login'));
