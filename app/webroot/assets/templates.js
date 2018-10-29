@@ -249,11 +249,6 @@ JST["admin/flags"] =
 	"</div>";
 
 JST["admin/metadata_edits"] =
-
-    "<input class=\"search admin-search meta searchForUser\" placeholder='Search for a user'>"+
-    "<br>"+
-    "<br>"+
-
     "<div class=\"metadata-head\">"+
     "<p class=\"resource-kid\">RESOURCE KID</p>"+
         "<p class=\"username\">USERNAME</p>"+
