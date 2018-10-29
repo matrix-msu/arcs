@@ -327,7 +327,7 @@ class UsersController extends AppController
             'password' => $this->request->data['pass'],
             'isAdmin' => 0,
             'last_login' => null,
-            'status' => 'confirmed'
+            'status' => 'active'
         );
 
         $response["status"] = $this->User->add($addUserData);
@@ -756,11 +756,13 @@ class UsersController extends AppController
      */
     public function special_login()
     {
-        session_start();
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $_SESSION['LoginError'] = '';
         $this->User->flatten = false;
         if ($this->request->is('post')) {
-
             if ($this->request->data['User']['forgot_password']) {
                 /* Reset user's password */
                 $email = $this->request->data['User']['username']; // actually is email because the reset form overrides the login form
@@ -785,6 +787,7 @@ class UsersController extends AppController
                 }
             } else {
                 /* Logs user in */
+                print_r($this->request->data);
                 $user = $this->User->findByRef($this->request->data['User']['username']);
                 if (!isset($user['User'])) {
                     $_SESSION['LoginError'] = "Username not found.";
