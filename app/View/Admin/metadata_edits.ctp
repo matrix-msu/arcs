@@ -3,6 +3,7 @@
 <div class="admin-header">
     <h1>Metadata Edits</h1>
     <div class="admin-sort-search">
+        <input class="search admin-search meta searchForUser" placeholder='Search for a user'>
         <div class="drop sort-by">
             <p class="sort-by">SORT BY</p>
             <span class="chevron sort-by"></span>

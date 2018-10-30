@@ -61,7 +61,7 @@
 
     .admin-sort-search {
         float: right;
-        margin-top: 54px;
+        margin-top: 40px;
 
         p {
             display: inline-block;
@@ -353,7 +353,8 @@ strong {
             width:  calc(16% *90/95);
         }
         &.new-value {
-            width:  calc(11% *90/95);
+            width: calc(17.421053%);
+            //width:  calc(11% *90/95);
         }
         &.search {
             cursor: text;
@@ -375,10 +376,6 @@ strong {
 	button:focus {
         outline: none;
 	}
-}
-
-.searchForUser {
-  float: right;
 }
 
 .users-head.pending {
@@ -1273,11 +1270,24 @@ strong {
 
 		.admin-sort-search {
 			input {
-				float: none;
-				display: block;
-				margin-top: 2px;
-				margin-left: 0;
-				max-width: none;
+				//float: none;
+				//display: block;
+				//margin-top: 2px;
+				//margin-left: 0;
+				//max-width: none;
+              display: inline-block;
+              background: #fff;
+              border: 1px solid #E2E2E2;
+              float: left;
+              margin-right: 20px;
+              color: black;
+              top: -12px;
+              color: black!important;
+              position: relative;
+              padding: 11px 8px 10px 19px;
+              margin-left: 10px;
+              font-size: 14px;
+
 			}
 		}
 	}

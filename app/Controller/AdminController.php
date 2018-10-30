@@ -69,7 +69,7 @@ class AdminController extends AppController {
 
         $projectPicker = '<div id="projectSelectContainer" class="styled-select" style="display: block;
     float: right;
-    margin-top: 185px;
+    margin-top: 173px;
     margin-right: 9%;
     margin-left: 15px;
     padding-right: 20px;
