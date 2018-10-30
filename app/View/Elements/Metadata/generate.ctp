@@ -401,7 +401,7 @@ $controlDisplayNames = array(
                                 $link .= '<input type="text" style="display:none;" value="'.$url.'" id="myInput">
                                         <div class="tooltip" title="Copy to Clipboard" style="opacity:1;">
                                             <button class="copyUrlBtn" id="myTooltip" data-url="'.$url.'">
-                                                  Copy link
+                                                  COPY LINK
                                               </button>
                                         </div>';
                                 $text = $link;
