@@ -227,15 +227,16 @@ function filterOut(key, cat) {
 function search(key, cat) {
     var result = []
 
+    console.log('searching', key, cat)
     if(key != "") {
         key = key.toLowerCase();
-/*
-        if($('#users')[0]) {
-            var currentRows = $('.admin-rows-content.all-users').children();
-        } else {
-            var currentRows = $('.admin-rows-content').children();
-        }
-*/
+
+        //if($('#users')[0]) {
+        //    var currentRows = $('.admin-rows-content.all-users').children();
+        //} else {
+        //    var currentRows = $('.admin-rows-content').children();
+        //}
+
         for($i = 0; $i < rowsOriginal.length; $i++) {
             if($(rowsOriginal[$i]).find(cat).html().toLowerCase().indexOf(key) < 0){
 

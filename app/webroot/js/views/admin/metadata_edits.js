@@ -35,10 +35,10 @@
 }).call(this);
 
 $(document).ready(function() {
-
-    if( $('#metadata_edits').length > 0 ) {
-        $('#projectSelectContainer').css('margin-top', '173px');
-    }
+    //
+    //if( $('#metadata_edits').length > 0 ) {
+    //    $('#projectSelectContainer').css('margin-top', '173px');
+    //}
 
     $(document).on('click', function(e){
         if( $('#projectSelect:focus').length == 0 ){

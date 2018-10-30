@@ -69,7 +69,7 @@ class AdminController extends AppController {
 
         $projectPicker = '<div id="projectSelectContainer" class="styled-select" style="display: block;
     float: right;
-    margin-top: 185px;
+    margin-top: 173px;
     margin-right: 9%;
     margin-left: 15px;
     padding-right: 20px;
@@ -737,6 +737,10 @@ class AdminController extends AppController {
 
 
     public function editK3Metadata($metadata_kid, $resource, $scheme_id){
+        echo 'in herererere';
+        echo "kid $metadata_kid";
+        print_r($resource);
+        print_r($scheme_id);
         $return = array();
         //format the resource variable(array) to whatever kora expects
         $return['formattedArray'] = $resource;
@@ -785,8 +789,9 @@ class AdminController extends AppController {
         $result = curl_exec($ch);
         curl_close($ch);
 
+
          echo ($result);
-         die;
+//         die;
 //         $return['curlReturn'] = $result;
 
         return $return;

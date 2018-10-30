@@ -278,65 +278,6 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table kora3_migrations
-# ------------------------------------------------------------
-
-LOCK TABLES `kora3_migrations` WRITE;
-/*!40000 ALTER TABLE `kora3_migrations` DISABLE KEYS */;
-
-INSERT INTO `kora3_migrations` (`id`, `migration`, `batch`)
-VALUES
-	(1,'2015_00_00_000000_create_combo_list_fields_table',1),
-	(2,'2015_00_00_000001_create_datefields_table',1),
-	(3,'2015_00_00_000002_create_documentsfields_table',1),
-	(4,'2015_00_00_000003_create_galleryfields_table',1),
-	(5,'2015_00_00_000004_create_generatedlistfields_table',1),
-	(6,'2015_00_00_000005_create_geolocatorfields_table',1),
-	(7,'2015_00_00_000006_create_listfields_table',1),
-	(8,'2015_00_00_000007_create_modelfields_table',1),
-	(9,'2015_00_00_000008_create_multiselectlistfields_table',1),
-	(10,'2015_00_00_000009_create_numberfields_table',1),
-	(11,'2015_00_00_000010_create_playlistfields_table',1),
-	(12,'2015_00_00_000011_create_richtextfields_table',1),
-	(13,'2015_00_00_000012_create_schedulefields_table',1),
-	(14,'2015_00_00_000013_create_textfields_table',1),
-	(15,'2015_00_00_000014_create_videofields_table',1),
-	(16,'2015_04_03_151510_CreateProjectsTable',1),
-	(17,'2015_04_03_151648_create_password_resets_table',1),
-	(18,'2015_04_03_152745_CreateFormsTable',1),
-	(19,'2015_05_01_140126_CreateFieldsTable',1),
-	(20,'2015_05_18_173954_create_records_table',1),
-	(21,'2015_06_17_134524_CreateUsersTable',1),
-	(22,'2015_06_19_152400_CreateTokensTable',1),
-	(23,'2015_07_01_122103_CreateMetadataTable',1),
-	(24,'2015_07_09_171601_create_project_groups_table',1),
-	(25,'2015_07_15_172743_create_form_groups_table',1),
-	(26,'2015_07_23_181833_create_revisions_table',1),
-	(27,'2015_08_21_154839_create_recordpresets_table',1),
-	(28,'2015_08_21_194838_create_associatorfields_table',1),
-	(29,'2015_09_14_201213_create_optionpresets_table',1),
-	(30,'2015_10_07_175909_create_associations_table',1),
-	(31,'2015_11_23_193021_create_versions_table',1),
-	(32,'2016_05_10_205219_backup_support',1),
-	(33,'2016_05_20_204314_create_backup_progress_tables',1),
-	(34,'2016_05_23_204821_create_jobs_table',1),
-	(35,'2016_05_23_204859_create_failed_jobs_table',1),
-	(36,'2016_08_16_180221_create_plugins_table',1),
-	(37,'2016_09_23_162317_create_download_trackers_table',1),
-	(38,'2016_10_27_193957_CreateRestoreProgressTables',1),
-	(39,'2016_12_08_171347_CreateExodusProgressTables',1),
-	(40,'2017_01_12_190618_CreateDashboardTables',1),
-	(41,'2017_03_28_185021_CreatePagesTable',1),
-	(42,'2017_08_10_175125_CreateGlobalCacheTable',1),
-	(43,'2017_08_25_171638_CreateProjectCustomTable',1),
-	(44,'2017_08_30_171426_CreateFormCustomTable',1),
-	(45,'9999_99_99_999999_create_preferences_table',1),
-	(46,'9999_99_99_999999_create_scripts_table',1);
-
-/*!40000 ALTER TABLE `kora3_migrations` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
 # Dump of table kora3_pages
 # ------------------------------------------------------------
 

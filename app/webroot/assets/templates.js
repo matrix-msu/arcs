@@ -250,13 +250,13 @@ JST["admin/flags"] =
 
 JST["admin/metadata_edits"] =
     "<div class=\"metadata-head\">"+
-        "<p class=\"resource-kid\">RESOURCE KID</p>"+
+    "<p class=\"resource-kid\">RESOURCE KID</p>"+
         "<p class=\"username\">USERNAME</p>"+
         "<p class=\"metadata-kid\">METADATA KID</p>"+
         "<p class=\"field-name\">FIELD NAME</p>"+
         "<p class=\"value-before\">OLD VALUE</p>"+
         "<p class=\"new-value\">NEW VALUE</p>"+
-        "<input class=\"search admin-search meta\" placeholder='Search for a user'>"+
+        "<p class=\"decision\">DECISION</p>"+
     "</div>"+
     "<div class=\"admin-rows-wrap\">"+
         "<div class=\"admin-rows-content meta\">"+

@@ -327,7 +327,7 @@ class UsersController extends AppController
             'password' => $this->request->data['pass'],
             'isAdmin' => 0,
             'last_login' => null,
-            'status' => 'confirmed'
+            'status' => 'active'
         );
 
         $response["status"] = $this->User->add($addUserData);
@@ -756,9 +756,13 @@ class UsersController extends AppController
      */
     public function special_login()
     {
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION['LoginError'] = '';
         $this->User->flatten = false;
         if ($this->request->is('post')) {
-
             if ($this->request->data['User']['forgot_password']) {
                 /* Reset user's password */
                 $email = $this->request->data['User']['username']; // actually is email because the reset form overrides the login form
@@ -783,10 +787,12 @@ class UsersController extends AppController
                 }
             } else {
                 /* Logs user in */
+                print_r($this->request->data);
                 $user = $this->User->findByRef($this->request->data['User']['username']);
                 if (!isset($user['User'])) {
-                    $this->Session->setFlash("Username not found.", 'flash_error');
-                    $this->redirect('/');
+                    $_SESSION['LoginError'] = "Username not found.";
+//                    $this->Session->setFlash("Username not found.", 'flash_error');
+                    $this->redirect('/#loginModal');
                 }
 
                 if($user['User']['status'] == 'active'){
@@ -796,8 +802,10 @@ class UsersController extends AppController
                         return $this->redirect($this->referer());
                         // return $this->redirect($this->Auth->redirect());
                     } else {
-                        $this->Session->setFlash("The Username or Password you entered is incorrect.  Please try again.", 'flash_error');
-                        $this->redirect($this->referer());
+                        $_SESSION['LoginError'] = "The Username or Password you entered is incorrect.  Please try again.";
+//                    $this->Session->setFlash("Username not found.", 'flash_error');
+//                        $this->Session->setFlash("The Username or Password you entered is incorrect.  Please try again.", 'flash_error');
+                        $this->redirect($this->referer().'#loginModal');
                     }
                 }
                 else if($user['User']['status'] == 'pending') {
@@ -847,8 +855,9 @@ class UsersController extends AppController
                 }
                 //Invited users will not be found by findByRef until activated
                 else if(!$user) {
-                    $this->Session->setFlash("Username not found.", 'flash_error');
-                    $this->redirect('/');
+                    $_SESSION['LoginError'] = "Username not found.";
+//                    $this->Session->setFlash("Username not found.", 'flash_error');
+                    $this->redirect('/#loginModal');
                 }
             }
         }

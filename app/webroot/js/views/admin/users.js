@@ -221,7 +221,7 @@ $(document).ready(function() {
         $('#projectSelectContainer').css({
             'display' : 'block',
             'float' : 'right',
-            'margin-top' : '195px',
+            'margin-top' : '173px',
             'margin-right' : '9%',
             'padding-right' : '20px',
             'cursor' : 'pointer',
