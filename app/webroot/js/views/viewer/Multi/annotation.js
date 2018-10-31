@@ -207,7 +207,7 @@ function annotationPrep() {
             trashString = '';
             flagFlagged = '';
         }
-        if( current.page_kid == kid && current.transcript != "" ){ //add in the flags for a transcription
+        if( current.page_kid == $('.selectedCurrentPage').find('img').attr('id') && current.transcript != "" ){ //add in the flags for a transcription
             var flagTypeClass = ' details-transcript ';
             if( resourceHasPermissions == false ) flagTypeClass = '';
             $(".content_transcripts").append(
@@ -336,7 +336,7 @@ function annotationPrep() {
         $('#ImageWrap').draggable('destroy');
         var startX,startY,endX,endY,height,width;
         //this is where the actual user annotating code is
-        $("#canvas").css('cursor', 'move');
+        $("#canvas").css('cursor', 'default');
         var zoomScale;
         var canvas = $('#canvas')[0];
         $("#canvas").selectable({
@@ -608,6 +608,24 @@ function annotationPrep() {
                     success: function (data) {
 						try {
 							var pages = JSON.parse(data)
+
+                            var newSorted = [];
+                            for (var resource in globalData) {
+                               var tempResourcePages = [];
+                                for (var page in pages){
+                                    if (typeof(pages[page].Resource_Associator) == 'undefined'){
+                                        continue;
+                                    }
+                                    if (pages[page].Resource_Associator[0] == resource){
+                                        tempResourcePages.push(pages[page]);
+                                        delete pages[page];
+                                    }
+                                }
+                                tempResourcePages.sort((a,b) => (parseFloat(a.Scan_Number) > parseFloat(b.Scan_Number)) ? 1 : ((parseFloat(b.Scan_Number) > parseFloat(a.Scan_Number)) ? -1 : 0));
+                                newSorted = newSorted.concat(tempResourcePages)
+                            }
+                            pages = newSorted;
+
 						} catch(e) {
 							loader.remove()
 							$(".annotateSearch ").show()
@@ -794,7 +812,7 @@ function annotationPrep() {
                             annotateData.relation_resource_kid = v['Resource_Associator'][0];
                             annotateData.relation_page_kid = v.kid;
                             console.log('anndata', annotateData);
-                            return;
+                            //return;
                         }
 
                         if (selected || annotateData.url.length > 0) {
@@ -904,14 +922,15 @@ function annotationPrep() {
 	    if( $('.annotateUrlContainer').css('display') == 'block' ){
             annotateData.url = $(".annotateUrl").val();
         }
-        annotateData.page_kid = kid;
+        annotateData.page_kid = $('.selectedCurrentPage').find('img').attr('id');
+        console.log(annotateData)
         annotateData.resource_kid = resourceKid;
         annotateData.resource_name = resourceIdentifier;
 
         if (annotateData.resource_name == ''){
             annotateData.resource_name =  $('.archival.objects-table[data-kid="'+resourceKid+'"]').find('#Title').html();
         }
-        annotateData.relation_id = null
+        annotateData.relation_id = null;
         //First relation
         $.ajax({
             url: arcs.baseURL + "api/annotations.json",
@@ -919,7 +938,7 @@ function annotationPrep() {
             data: annotateData,
             success: function (data) {
 
-                annotateData.relation_id = data.id
+                annotateData.relation_id = data.id;
                 if (annotateData.relation_resource_kid != "") {
                     //Backwards relation
                     $.ajax({
