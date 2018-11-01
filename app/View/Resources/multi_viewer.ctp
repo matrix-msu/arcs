@@ -252,7 +252,8 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
     <div id="viewer-left">
         <div id="viewer-tools">
             <div class="annotateHelp">Click and drag to outline the area you would like to annotate.
-                <div class="annotationHelpOk">Cancel</div>
+                <div class="annotationHelpOk">OK</div>
+                <div class="annotateDontShowAgain">Dont Show Again</div>
             </div>
             <div class="container1">
                 <h3 id="res-header"> </h3>
