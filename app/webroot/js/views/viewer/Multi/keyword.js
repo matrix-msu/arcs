@@ -197,7 +197,7 @@ function keywordPrep(){
                     if (keywordArray instanceof Array) {
                         var check = 0;
                         keywordArray.forEach(function (keyword) {
-                            keywordHtml += '<a href="' + arcs.baseURL + 'search/' + pName + '/' + keyword + '" style="display:inline-block;margin-right:5px;color:#0093be;text-decoration: underline;">' +
+                            keywordHtml += '<a href="' + arcs.baseURL + 'search/' + pName + '/' + keyword + '" style="display:inline-block;margin-right:10px;color:#0093be;text-decoration: underline;">' +
                                 keyword +
                                 '</a>';
                             check = 1;

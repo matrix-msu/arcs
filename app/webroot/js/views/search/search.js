@@ -492,12 +492,14 @@ $(window).bind("mousewheel", function() {
       }, time);
     };
     Search.prototype.searchAgain = function(e) {
-      var textbox = $(".searchBoxInput").val() || ""
-      if (window.globalquery) {
-        window.location.href = textbox
-      } else {
-        window.location.href = window.globalproject + "/" + textbox
-      }
+      var textbox = $(".searchBoxInput");
+      // if (window.globalquery) {
+      //   window.location.href = textbox
+      // } else {
+      //   window.location.href = window.globalproject + "/" + textbox
+      // }
+      textbox.focus();
+      $("html,body").animate({scrollTop:0}, "slow");
 
     };
 
