@@ -392,9 +392,9 @@
     Router::connect('/installation/register',
        array('controller' => 'installations', 'action' => 'register')
     );
-   Router::connect('/installation/kora',
-      array('controller' => 'installations', 'action' => 'koraConfig')
-    );
+//   Router::connect('/installation/kora',
+//      array('controller' => 'installations', 'action' => 'koraConfig')
+//    );
     Router::connect('/installation/field',
        array('controller' => 'installations', 'action' => 'fieldConfig')
     );

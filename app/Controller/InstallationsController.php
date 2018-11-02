@@ -28,7 +28,7 @@
 
         parent::beforeFilter();
         $this->Auth->allow(
-			'display', 'koraConfig', 'fieldConfig', 
+			'display', 'fieldConfig',
 			'createProject', 'arcsConfig', 'finalize'
 		);
 		if( $this->request->params['action'] != 'periodo' && $this->request->params['action'] != 'finalize' ){
