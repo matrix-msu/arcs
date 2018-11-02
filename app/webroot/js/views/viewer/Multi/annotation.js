@@ -336,7 +336,7 @@ function annotationPrep() {
         $('#ImageWrap').draggable('destroy');
         var startX,startY,endX,endY,height,width;
         //this is where the actual user annotating code is
-        $("#canvas").css('cursor', 'default');
+        $("#canvas").css('cursor', 'crosshair');
         var zoomScale;
         var canvas = $('#canvas')[0];
         $("#canvas").selectable({
