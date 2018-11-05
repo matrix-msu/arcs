@@ -3,6 +3,7 @@
     <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 </head>
 <div class="create-body-content">
+<!--    --><?php //print_r($_SESSION);die; ?>
     <div class="install-progress-bar">
         <ul>
 <!--            <li>Kora Configuration</li>-->
@@ -32,7 +33,7 @@
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Name</p>
-                            <input type="text" name="Name" placeholder="countries"/>
+                            <input type="text" name="Name" placeholder="Name"/>
                         </div>
                     </div>
                     <div class="row">
@@ -40,10 +41,12 @@
                             <p>Country</p>
                             <select name="Country" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Country</option>
-                                <option>Country 1</option>
-                                <option>Country 2</option>
-                                <option>Country 3</option>
-                                <option>Country 4</option>
+                                    <?php
+                                        $countries = $_SESSION['FieldConfig']['Country'];
+                                    foreach ($countries as $country) {
+                                        echo "<option>$country</option>";
+                                        }
+                                    ?>
                             </select>
                         </div>
                     </div>
@@ -52,10 +55,12 @@
                             <p>Modern Name</p>
                             <select name="Modern Name" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Modern Name</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                <?php
+                                $modern_names = $_SESSION['FieldConfig']['Modern_Name'];
+                                foreach ($modern_names as $mName) {
+                                    echo "<option>$mName</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -90,24 +95,28 @@
                             <div class="date-select">
                                 <select name="Earliest Date Year" class="year-project-dropdown">
                                 <option value="" disabled selected>Select Year</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                    <?php
+                                        $currentYear = intval(date("Y"));
+                                        for ($year = 1930; $year <= $currentYear; $year++){
+                                            echo "<option>$year</option>";
+                                    }
+                                    ?>
                                 </select>
                                 <select name="Earliest Date Month" class="month-project-dropdown">
-                                <option value="" disabled selected>Select Month</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                    <option value="" disabled selected>Select Month</option>
+                                    <?php
+                                    for ($month = 1; $month <= 12; $month++){
+                                        echo "<option>$month</option>";
+                                    }
+                                    ?>
                                 </select>
                                 <select name="Earliest Date Day" class="day-project-dropdown">
                                 <option value="" disabled selected>Select Day</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                    <?php
+                                    for ($day = 1; $day <= 31; $day++){
+                                        echo "<option>$day</option>";
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -118,24 +127,40 @@
                             <div class="date-select">
                                 <select name="Latest Date Year" class="year-project-dropdown">
                                 <option value="" disabled selected>Select Year</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                    <?php
+                                    $currentYear = intval(date("Y"));
+                                    for ($year = 1930; $year <= $currentYear; $year++){
+                                        echo "<option>$year</option>";
+                                    }
+                                    ?>
                                 </select>
                                 <select name="Latest Date Month" class="month-project-dropdown">
                                 <option value="" disabled selected>Select Month</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+<!--                                    <option>January</option>-->
+<!--                                    <option>February</option>-->
+<!--                                    <option>March</option>-->
+<!--                                    <option>April</option>-->
+<!--                                    <option>May</option>-->
+<!--                                    <option>June</option>-->
+<!--                                    <option>July</option>-->
+<!--                                    <option>August</option>-->
+<!--                                    <option>September</option>-->
+<!--                                    <option>October</option>-->
+<!--                                    <option>November</option>-->
+<!--                                    <option>December</option>-->
+                                    <?php
+                                    for ($month = 1; $month <= 12; $month++){
+                                        echo "<option>$month</option>";
+                                    }
+                                    ?>
                                 </select>
                                 <select name="Latest Date Day" class="day-project-dropdown">
                                 <option value="" disabled selected>Select Day</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                    <?php
+                                    for ($day = 1; $day <= 31; $day++){
+                                        echo "<option>$day</option>";
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -145,10 +170,15 @@
                             <p>Records Archive</p>
                             <select name="Records Archive" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Records Archive</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                <?php
+                                if (isset($_SESSION['FieldConfig']['Repository'])){
+                                    $repos = $_SESSION['FieldConfig']['Repository'];
+
+                                    foreach ($repos as $repo){
+                                        echo "<option>$repo</option>";
+                                    }
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -165,45 +195,126 @@
                             <input name="Complex Title" type="text" placeholder="Enter the Complex Title"/>
                         </div>
                     </div>
+<!--                    -->
+<!--                    <div class="row">-->
+<!--                        <div class="input-full inputDiv">-->
+<!--                            <p>Terminus Ante Quem</p>-->
+<!--                            <div class="period-select">-->
+<!--                                <input name="Terminus Ante Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>-->
+<!--                                <select name="Terminus Ante Quem Period" class="period-project-dropdown">-->
+<!--                                    <option value="" disabled selected>Select Period</option>-->
+<!--                                    <option>BCE</option>-->
+<!--                                    <option>CE</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Terminus Ante Quem</p>
                             <div class="period-select">
-                                <input name="Terminus Ante Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>
+                                <select name="Terminus Ante Quem Year" class="year-project-dropdown">
+                                    <option value="" disabled selected>Select Year</option>
+                                    <?php
+                                    for ($year = 1; $year <= 9999; $year++){
+                                        echo "<option>$year</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select name="Terminus Ante Quem Month" class="month-project-dropdown">
+                                    <option value="" disabled selected>Select Month</option>
+                                    <?php
+                                    for ($month = 1; $month <= 12; $month++){
+                                        echo "<option>$month</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select name="Terminus Ante Quem Day" class="day-project-dropdown">
+                                    <option value="" disabled selected>Select Day</option>
+                                    <?php
+                                    for ($day = 1; $day <= 31; $day++){
+                                        echo "<option>$day</option>";
+                                    }
+                                    ?>
+                                </select>
                                 <select name="Terminus Ante Quem Period" class="period-project-dropdown">
                                     <option value="" disabled selected>Select Period</option>
-                                    <option>Name 1</option>
-                                    <option>Name 2</option>
-                                    <option>Name 3</option>
-                                    <option>Name 4</option>
+                                    <option>BCE</option>
+                                    <option>CE</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+<!---->
+<!--                    <div class="row">-->
+<!--                        <div class="input-full inputDiv">-->
+<!--                            <p>Terminus Post Quem</p>-->
+<!--                            <div class="period-select">-->
+<!--                                <input name="Terminus Post Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>-->
+<!--                                <select name="Terminus Post Quem Period" class="period-project-dropdown">-->
+<!--                                    <option value="" disabled selected>Select Period</option>-->
+<!--                                    <option>BCE</option>-->
+<!--                                    <option>CE</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Terminus Post Quem</p>
                             <div class="period-select">
-                                <input name="Terminus Post Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>
+                                <select name="Terminus Post Quem Year" class="year-project-dropdown">
+                                    <option value="" disabled selected>Select Year</option>
+                                    <?php
+                                    for ($year = 1; $year <= 9999; $year++){
+                                        echo "<option>$year</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select name="Terminus Post Quem Month" class="month-project-dropdown">
+                                    <option value="" disabled selected>Select Month</option>
+                                    <?php
+                                    for ($month = 1; $month <= 12; $month++){
+                                        echo "<option>$month</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select name="Terminus Post Quem Day" class="day-project-dropdown">
+                                    <option value="" disabled selected>Select Day</option>
+                                    <?php
+                                    for ($day = 1; $day <= 31; $day++){
+                                        echo "<option>$day</option>";
+                                    }
+                                    ?>
+                                </select>
                                 <select name="Terminus Post Quem Period" class="period-project-dropdown">
                                     <option value="" disabled selected>Select Period</option>
-                                    <option>Name 1</option>
-                                    <option>Name 2</option>
-                                    <option>Name 3</option>
-                                    <option>Name 4</option>
+                                    <option>BCE</option>
+                                    <option>CE</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+
+
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Period</p>
                             <select name="Period" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Period</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                <?php
+                                if (isset($_SESSION['FieldConfig']['Period'])){
+                                    $periods = $_SESSION['FieldConfig']['Period'];
+
+                                    foreach ($periods as $period){
+                                        echo "<option>$period</option>";
+                                    }
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -224,10 +335,15 @@
                             <p>Permitting Heritage Body</p>
                             <select name="Permitting Heritage Body" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Permitting Heritage Body</option>
-                                <option>Name 1</option>
-                                <option>Name 2</option>
-                                <option>Name 3</option>
-                                <option>Name 4</option>
+                                <?php
+                                if (isset($_SESSION['FieldConfig']['Permitting_Heritage_Culture'])){
+                                    $phcs = $_SESSION['FieldConfig']['Permitting_Heritage_Culture'];
+                                    foreach ($phcs as $phc){
+                                        echo "<option>$phc</option>";
+                                    }
+                                }
+
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -240,7 +356,7 @@
                         <div class="cont-btn-container">
                             <p class="required-notice">Please fill out all required fields.</p>
                             <button class="cont-install-btn" type="submit">
-                                <p>Continue to ARCS Confiuration</p>
+                                <p>Continue to ARCS Configuration</p>
                             </button>
                         </div>
                     </div>

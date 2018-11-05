@@ -118,126 +118,239 @@
                         $_SESSION['ArcsConfig'] = $_POST;
                 }
 
-                $host = KORA_HOST;
-                $username = KORA_USER;
-                $password = KORA_PASS;
-                $dbName = KORA_DB;
+//                $host = KORA_HOST;
+//                $username = KORA_USER;
+//                $password = KORA_PASS;
+//                $dbName = KORA_DB;
 
                 $pName = trim(strtolower(str_replace(" ", "_", $_SESSION['ProjectConfig']['Persistent_Name'])));
                 $pid = $GLOBALS['PID_ARRAY']['arcs'];
 
+            /*
+                           // Create connection
+                           $conn = new mysqli($host, $username, $password, $dbName);
+                           // Check connection
+                           if ($conn->connect_error) {
+                                   die("Connection failed: " . $conn->connect_error);
+                           }
 
-                // Create connection
-                $conn = new mysqli($host, $username, $password, $dbName);
-                // Check connection
-                if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                }
-                //skip config, message, and auth which are automatically in a session variable
-                foreach($_SESSION as $key => $value){
-                        if ($key=="Config"||$key=="Message"||$key=="Auth"||$key=="currentProjectName"||$key=="ProjectConfig"||$key=="ArcsConfig"){     
-                                continue;
-                        }
-                        foreach($value as $key2 => $value2){
 
-                                $newKey = str_replace("_", " ", $key2);
-                                $sql = $conn->prepare(
-                                  
-                                        "SELECT * FROM kora3_fields
-                                        WHERE NAME = ? AND pid = ?"
-                                );
-//$sql = $conn->prepare("SELECT * FROM kora3_fields;");
-//var_dump('hi');die;
-                                $sql->bind_param('ss', $newKey, $pid);
-                                $sql->execute();
-                                $result = $sql->get_result();
-//var_dump($result);die;
-//var_dump($sql->fetch_assoc());die;
+                           //skip config, message, and auth which are automatically in a session variable
+                           foreach($_SESSION as $key => $value){
+                                   if ($key=="Config"||$key=="Message"||$key=="Auth"||$key=="currentProjectName"||$key=="ProjectConfig"||$key=="ArcsConfig"){
+                                           continue;
+                                   }
+                                   foreach($value as $key2 => $value2){
 
-                                if ($sql->num_rows > 0) {
+                                           $newKey = str_replace("_", " ", $key2);
+                                           $sql = $conn->prepare(
 
-                                        $insert = "";
-                                        $type = $sql->fetch_assoc()['type'];
+                                                   "SELECT * FROM kora3_fields
+                                                   WHERE NAME = ? AND pid = ?"
+                                           );
+           //$sql = $conn->prepare("SELECT * FROM kora3_fields;");
+           //var_dump('hi');die;
+                                           $sql->bind_param('ss', $newKey, $pid);
+                                           $sql->execute();
+                                           $result = $sql->get_result();
+           //var_dump($result);die;
+           //var_dump($sql->fetch_assoc());die;
 
-                                        if ($type == "List" || $type == "Multi-Select List") {
+                                           if ($sql->num_rows > 0) {
 
-                                                $insert .= "[!Options!]";
-                                                // $items = explode(",", $value2);
+                                                   $insert = "";
+                                                   $type = $sql->fetch_assoc()['type'];
 
-                                                for ($i = 0; $i < sizeof($value2); $i++){
-                                                        $insert .= trim($value2[$i]);
+                                                   if ($type == "List" || $type == "Multi-Select List") {
 
-                                                        if (($i+1) != sizeof($value2)) {
-                                                                $insert .= "[!]";
-                                                        }
-                                                }
+                                                           $insert .= "[!Options!]";
+                                                           // $items = explode(",", $value2);
 
-                                                $insert .= "[!Options!]";
+                                                           for ($i = 0; $i < sizeof($value2); $i++){
+                                                                   $insert .= trim($value2[$i]);
 
-                                                $sql = $conn->prepare(
-                                                        "UPDATE kora3_fields
-                                                        SET options = ?
-                                                        where name = ? and pid = ?"
-                                                );
-                                                $sql->bind_param('sss', $insert, $newKey, $pid);
-                                                $sql->execute();
-                                        }
-                                }
-                        }
-                }
-                $conn->close();
+                                                                   if (($i+1) != sizeof($value2)) {
+                                                                           $insert .= "[!]";
+                                                                   }
+                                                           }
 
-                //create admin user
+                                                           $insert .= "[!Options!]";
 
-                $usersC = new UsersController();
+                                                           $sql = $conn->prepare(
+                                                                   "UPDATE kora3_fields
+                                                                   SET options = ?
+                                                                   where name = ? and pid = ?"
+                                                           );
+                                                           $sql->bind_param('sss', $insert, $newKey, $pid);
+                                                           $sql->execute();
+                                                   }
+                                           }
+                                   }
+                           }
+                           $conn->close();
 
-                $mappingProjects = array();
-                array_push($mappingProjects, array(
-                        'project' => array('name' => $pName, 'pid' => $pid),
-                        'role' => array('name' => 'Admin', 'value' => 'Admin')
-                ));
+                           //create admin user
 
-                $addUserData = array(
-                        'name' => $_SESSION['ArcsConfig']['ArcsAdminName'],
-                        'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
-                        'email' => $_SESSION['ArcsConfig']['ArcsAdminEmail'],
-                        'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
-                        'isAdmin' => 1,
-                        'last_login' => null,
-                        'status' => 'confirmed'
-                );
+                           $usersC = new UsersController();
 
-                $response["status"] = $this->User->add($addUserData);
-        if ($response["status"] == false) {
-                        $response["message"] = $this->User->invalidFields();
-                        return $this->json(400, ($response));
-                }
+                           $mappingProjects = array();
+                           array_push($mappingProjects, array(
+                                   'project' => array('name' => $pName, 'pid' => $pid),
+                                   'role' => array('name' => 'Admin', 'value' => 'Admin')
+                           ));
 
-        $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
+                           $addUserData = array(
+                                   'name' => $_SESSION['ArcsConfig']['ArcsAdminName'],
+                                   'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
+                                   'email' => $_SESSION['ArcsConfig']['ArcsAdminEmail'],
+                                   'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
+                                   'isAdmin' => 1,
+                                   'last_login' => null,
+                                   'status' => 'confirmed'
+                           );
 
-                //write to bootstrap file so that configured = true
+                           $response["status"] = $this->User->add($addUserData);
+                   if ($response["status"] == false) {
+                                   $response["message"] = $this->User->invalidFields();
+                                   return $this->json(400, ($response));
+                           }
 
-                $path = APP . "Config/bootstrap.php";
-                $contents = file_get_contents($path);
-                $contents = str_replace(
-                        "define('CONFIGURED', 'false');",
-                        "define('CONFIGURED', 'true');",
-                        $contents
-                );
-                $contents = str_replace(
-                        "'arcs' =>",
-                        "'".$pName."' =>",
-                        $contents
-                );
-                $contents = str_replace(
-                        'define("BASE_BOTH", "");',
-                        'define("BASE_BOTH", "'.$_SESSION['ArcsConfig']['ArcsBaseURL'].'");',
-                        $contents
-                );
-                file_put_contents($path, $contents);
+                   $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
 
-//jecho $content;
-//die;
+                           //write to bootstrap file so that configured = true
+
+                           $path = APP . "Config/bootstrap.php";
+                           $contents = file_get_contents($path);
+                           $contents = str_replace(
+                                   "define('CONFIGURED', 'false');",
+                                   "define('CONFIGURED', 'true');",
+                                   $contents
+                           );
+                           $contents = str_replace(
+                                   "'arcs' =>",
+                                   "'".$pName."' =>",
+                                   $contents
+                           );
+                           $contents = str_replace(
+                                   'define("BASE_BOTH", "");',
+                                   'define("BASE_BOTH", "'.$_SESSION['ArcsConfig']['ArcsBaseURL'].'");',
+                                   $contents
+                           );
+                           file_put_contents($path, $contents);
+
+
+           */
+            // Create a new project record in kora
+
+//            print_r($_SESSION['ProjectConfig']);
+//            echo json_encode($_SESSION['ProjectConfig']);
+//             print_r($_SESSION['ProjectConfig']);
+//            die;
+//
+//
+//            $fields;
+
+
+            $projectSid = $GLOBALS['PROJECT_SID_ARRAY']['arcs'];
+
+            $pidSid = "_".$pid."_".$projectSid."_";
+
+            $query = array();
+            $query['Name'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Name"];
+            $query['Name'.$pidSid]["type"] = 'Text';
+            $query['Location_Identifier'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Location_Identifier"];
+            $query['Location_Identifier'.$pidSid]["value"] = 'Text';
+            $query['Location_Identifier_Scheme'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Location_Identifier_Scheme"];
+            $query['Location_Identifier_Scheme'.$pidSid]["type"] = 'Text';
+            $query['Elevation'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Elevation"];
+            $query['Elevation'.$pidSid]["type"] = 'Text';
+            $query['Persistent_Name'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Persistent_Name"];
+            $query['Persistent_Name'.$pidSid]["type"] = 'Text';
+            $query['Complex_Title'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Complex_Title"];
+            $query['Complex_Title'.$pidSid]["type"] = 'Text';
+            $query['Description'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Description"];
+            $query['Description'.$pidSid]["type"] = 'Text';
+            $query['Brief_Description'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Brief_Description"];
+            $query['Brief_Description'.$pidSid]["type"] = 'Text';
+            $query['Country'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Country"];
+            $query['Country'.$pidSid]["type"] = 'List';
+//            $query['Region'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Region"];
+//            $query['Region'.$pidSid]["type"] = 'List';
+            $query['Modern_Name'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Modern_Name"];
+            $query['Modern_Name'.$pidSid]["type"] = 'List';
+            $query['Records_Archive'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Records_Archive"];
+            $query['Records_Archive'.$pidSid]["type"] = 'Multi-Select List';
+            if (isset($_SESSION['ProjectConfig']["Period"])){
+                $query['Period'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Period"];
+                $query['Period'.$pidSid]["type"] = 'Multi-Select List';
+            }
+            if (isset($_SESSION['ProjectConfig']["Permitting_Heritage_Body"])){
+                $query['Permitting_Heritage_Body'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Permitting_Heritage_Body"];
+                $query['Permitting_Heritage_Body'.$pidSid]["type"] = 'Multi-Select List';
+            }
+            $query['Geolocation'.$pidSid]["value"] = $_SESSION['ProjectConfig']["Geolocation"];
+            $query['Geolocation'.$pidSid]["type"] = 'Generated List';
+            $query['Earliest_Date'.$pidSid]["value"] = array(
+                                                            'circa' => "0",
+                                                            'month' => $_SESSION['ProjectConfig']["Earliest_Date_Month"],
+                                                            'day' => $_SESSION['ProjectConfig']["Earliest_Date_Day"],
+                                                            'year' => $_SESSION['ProjectConfig']["Earliest_Date_Year"],
+                                                            'era' => "CE"
+                                                        );
+            $query['Earliest_Date'.$pidSid]["type"] = 'Date';
+            $query['Latest_Date'.$pidSid]["value"] = array(
+                                                            'circa' => "0",
+                                                            'month' => $_SESSION['ProjectConfig']["Latest_Date_Month"],
+                                                            'day' => $_SESSION['ProjectConfig']["Latest_Date_Day"],
+                                                            'year' => $_SESSION['ProjectConfig']["Latest_Date_Year"],
+                                                            'era' => "CE"
+                                                        );
+            $query['Latest_Date'.$pidSid]["type"] = 'Date';
+            $query['Terminus_Ante_Quem'.$pidSid]["value"] = array(
+                                                            'circa' => "0",
+                                                            'month' => $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"],
+                                                            'day' => $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"],
+                                                            'year' => $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"],
+                                                            'era' => $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"]
+                                                        );
+            $query['Terminus_Ante_Quem'.$pidSid]["type"] = 'Date';
+            $query['Terminus_Post_Quem'.$pidSid]["value"] = array(
+                                                        'circa' => "0",
+                                                        'month' => $_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"],
+                                                        'day' => $_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"],
+                                                        'year' => $_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"],
+                                                        'era' => $_SESSION['ProjectConfig']["Terminus_Post_Quem_Period"]
+                                                    );
+            $query['Terminus_Post_Quem'.$pidSid]["type"] = 'Date';
+
+
+
+            $query = '['.json_encode($query).']';   //json string of the query
+            $query = json_encode($query);   //json string of the query
+
+//echo $query;die;
+            $data = ['form' => $pid,
+                'token' => $GLOBALS['TOKEN_ARRAY']['arcs'],
+                'fields' => $query];
+
+
+            $ch = curl_init(KORA_RESTFUL_URL.'create');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+
+            $result = curl_exec($ch);
+            curl_close($ch);
+            echo $result;
+//            var_dump($result);
+            die;
+            return $result;
+
+
+
+
+
 
                 $this->redirect('/');
         }
