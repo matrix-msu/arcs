@@ -4,10 +4,10 @@ if( typeof JS_IS_INSTALTION_PAGE !== 'undefined'){
 
         $(".start-install-btn").on("click", function() {
             if (path.substr(path.length - 1) == "/"){
-                window.location.href += 'kora'
+                window.location.href += 'field'
             }
             else {
-                window.location.href += '/kora'
+                window.location.href += '/field'
             }
         });
 
