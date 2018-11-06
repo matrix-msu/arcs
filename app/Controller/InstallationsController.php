@@ -19,9 +19,8 @@
         public $uses = array('User', 'Mapping');
 
         public function beforeFilter() {
-            $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
-            $linkParts = explode("/", $actual_link);
+                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $linkParts = explode("/", $actual_link);
 
         if (CONFIGURED == 'true' && in_array('installation', $linkParts)) {
             $this->redirect('/');
@@ -347,6 +346,90 @@
             die;
             return $result;
 
+                // Create connection
+                $conn = new mysqli($host, $username, $password, $dbName);
+                // Check connection
+                if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                }
+                //skip config, message, and auth which are automatically in a session variable
+                foreach($_SESSION as $key => $value){
+                        if ($key=="Config"||$key=="Message"||$key=="Auth"||$key=="currentProjectName"||$key=="ProjectConfig"||$key=="ArcsConfig"){     
+                                continue;
+                        }
+                        foreach($value as $key2 => $value2){
+
+                                $newKey = str_replace("_", " ", $key2);
+                                $sql = $conn->prepare(
+                                        "SELECT * FROM kora3_fields
+                                        WHERE NAME = ? AND pid = ?"
+                                );
+//$sql = $conn->prepare("SELECT * FROM kora3_fields;");
+//var_dump('hi');die;
+                                $sql->bind_param('ss', $newKey, $pid);
+                                $sql->execute();
+                                $result = $sql->get_result();
+//var_dump($result);die;
+//var_dump($sql->fetch_assoc());die;
+
+                                if ($sql->num_rows > 0) {
+
+                                        $insert = "";
+                                        $type = $sql->fetch_assoc()['type'];
+
+                                        if ($type == "List" || $type == "Multi-Select List") {
+
+                                                $insert .= "[!Options!]";
+                                                // $items = explode(",", $value2);
+
+                                                for ($i = 0; $i < sizeof($value2); $i++){
+                                                        $insert .= trim($value2[$i]);
+
+                                                        if (($i+1) != sizeof($value2)) {
+                                                                $insert .= "[!]";
+                                                        }
+                                                }
+
+                                                $insert .= "[!Options!]";
+
+                                                $sql = $conn->prepare(
+                                                        "UPDATE kora3_fields
+                                                        SET options = ?
+                                                        where name = ? and pid = ?"
+                                                );
+                                                $sql->bind_param('sss', $insert, $newKey, $pid);
+                                                $sql->execute();
+                                        }
+                                }
+                        }
+                }
+                $conn->close();
+
+                //create admin user
+
+                $usersC = new UsersController();
+
+                $mappingProjects = array();
+                array_push($mappingProjects, array(
+                        'project' => array('name' => $pName, 'pid' => $pid),
+                        'role' => array('name' => 'Admin', 'value' => 'Admin')
+                ));
+
+                $addUserData = array(
+                        'name' => $_SESSION['ArcsConfig']['ArcsAdminName'],
+                        'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
+                        'email' => $_SESSION['ArcsConfig']['ArcsAdminEmail'],
+                        'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
+                        'isAdmin' => 1,
+                        'last_login' => null,
+                        'status' => 'confirmed'
+                );
+
+                $response["status"] = $this->User->add($addUserData);
+        if ($response["status"] == false) {
+                        $response["message"] = $this->User->invalidFields();
+                        return $this->json(400, ($response));
+                }
 
 
 
