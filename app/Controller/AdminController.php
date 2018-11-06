@@ -383,7 +383,7 @@ class AdminController extends AppController {
 
     public function metadata_edits(){
         echo "<script>console.log('test');</script>";
-        $metadata = $this->MetadataEdit->find('all', array());
+        $metadata = $this->MetadataEdit->find('all', array(  'order' => 'modified DESC' ));
         $resultsArray = array();
         $count = 0;
         foreach($metadata as $row) {

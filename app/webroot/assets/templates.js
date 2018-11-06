@@ -256,6 +256,7 @@ JST["admin/metadata_edits"] =
         "<p class=\"field-name\">FIELD NAME</p>"+
         "<p class=\"value-before\">OLD VALUE</p>"+
         "<p class=\"new-value\">NEW VALUE</p>"+
+        "<p class=\"metadata-time\">TIME</p>"+
         "<p class=\"decision\">DECISION</p>"+
     "</div>"+
     "<div class=\"admin-rows-wrap\">"+
@@ -268,6 +269,7 @@ JST["admin/metadata_edits"] =
                     "<p class=\"field-name\"><%= f.MetadataEdit.field_name %></p>"+
                     "<p class=\"value-before\"><%= f.MetadataEdit.value_before %></p>"+
                     "<p class=\"new-value\"><%= f.MetadataEdit.new_value %></p>"+
+                    "<p class=\"metadata-time\"><%= f.MetadataEdit.modified %></p>"+
                     "<div class=\"actions\">"+
                         "<% if( f.MetadataEdit.rejected == 1 ){ %>"+
                             "Rejected"+

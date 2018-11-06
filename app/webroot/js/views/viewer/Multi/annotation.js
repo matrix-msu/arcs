@@ -6,6 +6,7 @@ function annotationPrep() {
     var resourceHasPermissions = false;
     var selectedPage = null;
     var hideAnnotations = false;
+    var dontShowHelp = false;   // decides if the annotate help text will display
 
     //get annotate to support multi-pages.
     $('.page-slider').on('click', '.other-resource', function(){
@@ -290,13 +291,23 @@ function annotationPrep() {
         prepareAddAnnotation();
     });
     $('.annotationHelpOk').click(function(){
-        removeAddAnnotation();
-        resetAnnotations();
+        //removeAddAnnotation();
+        //resetAnnotations();
+        $('.annotateHelp').hide();
+    });
+    $('.annotateDontShowAgain').click(function(){
+        dontShowHelp = true;
+        //removeAddAnnotation();
+        //resetAnnotations();
+        $('.annotateHelp').hide();
+
+
     });
     $('.annotationClose').click(function(){
         resetAnnotations();
     });
     function removeAddAnnotation(){
+        console.log('removeadd')
         $('.annotateHelp').hide();
         $('#canvas').css('cursor', '').selectable('destroy');
         $('#ImageWrap').draggable();
@@ -331,12 +342,16 @@ function annotationPrep() {
         $('.resource-icons:not(.resource-icon-zoom-in-out)').css('visibility', 'hidden')
         $('#prev-resource').css('display', 'none')
         $('.tools').hide();
+
+        console.log('prepare')
         $('.gen_box_temp').remove();
-        $('.annotateHelp').show();
+        if (!dontShowHelp){
+            $('.annotateHelp').show();
+        }
         $('#ImageWrap').draggable('destroy');
         var startX,startY,endX,endY,height,width;
         //this is where the actual user annotating code is
-        $("#canvas").css('cursor', 'default');
+        $("#canvas").css('cursor', 'crosshair');
         var zoomScale;
         var canvas = $('#canvas')[0];
         $("#canvas").selectable({

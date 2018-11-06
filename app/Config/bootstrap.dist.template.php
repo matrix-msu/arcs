@@ -39,61 +39,48 @@ Configure::load('assets');
 # Basic Kora Information
 define("DEFAULT_THUMB", "img/DefaultResourceImage.svg");
 define("KORA_LIB", CORE_PATH . "Kora/Local/");
-define("BASE_URL",  "~josh.christ/arcs/" );
+define("BASE_BOTH", "");
+define("BASE_URL",  BASE_BOTH . "arcs/" );
 
-define("KORA_FILES_URI"     ,  "https://kora3.matrix.msu.edu/app/files/");
+define("KORA_FILES_URI",  BASE_BOTH . "kora3/app/files/");
 define ("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
-define ("KORA_RESTFUL_URL", "https://kora3.matrix.msu.edu/api/");
+define ("KORA_RESTFUL_URL", BASE_BOTH . "kora3/api/");
+
+define("KORA_HOST", "localhost");
+define("KORA_USER", "kora3");
+define("KORA_PASS", "kora3");
+define("KORA_DB", "kora3");
 
 //flag for if arcs has been configured for user
 define('CONFIGURED', 'false');
 
 $GLOBALS['PID_ARRAY'] = array(
-    //'isthmia' => 123,
-    'isthmia' => 11,
-    'grotto_tiberri' => 7
+    'arcs' => 1
 );
 $GLOBALS['PROJECT_SID_ARRAY'] = array(
-    'isthmia' => 31,
-    //'isthmia' => 734,
-    'grotto_tiberri' => 19
+    'arcs' => 1
 );
 $GLOBALS['SEASON_SID_ARRAY'] = array(
-    'isthmia' => 32,
-    //'isthmia' => 735,
-    'grotto_tiberri' => 20
+    'arcs' => 2
 );
 $GLOBALS['SURVEY_SID_ARRAY'] = array(
-    'isthmia' => 36,
-    //'isthmia' => 740,
-    'grotto_tiberri' => 21
+    'arcs' => 6
 );
 $GLOBALS['RESOURCE_SID_ARRAY'] = array(
-    'isthmia' => 33,
-    //'isthmia' => 736,
-    'grotto_tiberri' => 22
+    'arcs' => 3
 );
 $GLOBALS['PAGES_SID_ARRAY'] = array(
-    'isthmia' => 34,
-    //'isthmia' => 738,
-    'grotto_tiberri' => 23
+    'arcs' => 4
 );
 $GLOBALS['SUBJECT_SID_ARRAY'] = array(
-    'isthmia' => 35,
-    //'isthmia' => 739,
-    'grotto_tiberri' => 24
+    'arcs' => 5
 );
 $GLOBALS['TOKEN_ARRAY'] = array(
-    'isthmia' => "GPjkwxHb2zMss16JEmca2cg0",
-    //'isthmia' => "8b88eecedaa2d3708ebec77a",
-    'grotto_tiberri' => "GPjkwxHb2zMss16JEmca2cg0"
+    'arcs' => "WTI4VtJabtjOcpt4ke0OgPvU"
 );
 
-define ("TOKEN", "GPjkwxHb2zMss16JEmca2cg0");
+define ("TOKEN", "WTI4VtJabtjOcpt4ke0OgPvU");
 
-# Thumbnail location
-define("THUMBS_URL", "http://dev2.matrix.msu.edu/arcs/app/webroot/thumbs/");
-define("THUMBS", "/matrix/dev/public_html/arcs/app/webroot/thumbs/");
 
 define("TWIG_VIEW_CACHE", APP . 'tmp');
 define("LIB", CORE_PATH);
@@ -113,7 +100,6 @@ define("ARCS_LOADER_HTML",
 define("globaljsvars",
     "<script type='text/javascript'>" .
     "var BASE_URL ='".BASE_URL."';" .
-    "var THUMBNAIL_URL ='".THUMBS_URL."';" .
     "var PID_ARRAY ='".json_encode($GLOBALS['PID_ARRAY'])."';" .
     "var PROJECT_SID_ARRAY ='".json_encode($GLOBALS['PROJECT_SID_ARRAY'])."';" .
     "var SEASON_SID_ARRAY ='".json_encode($GLOBALS['SEASON_SID_ARRAY'])."';" .

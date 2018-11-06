@@ -21,6 +21,11 @@ if( typeof JS_IS_INSTALTION_PAGE !== 'undefined'){
         /////uses the chosen.js to turn the select into a fancy thingy
         $(".chosen-select").chosen();
 
+        //$('.form-wrapper').find('input').each(function(e){
+        //    $(this).click();
+        //});
+
+
         //add new keyword with a comma
         $(".search-field").on('keyup', "input", function (e) {
             var selectTag = $(this).parents().eq(3).children().eq(0)

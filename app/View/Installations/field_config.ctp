@@ -4,8 +4,8 @@
 <div class="field-body-content">
     <div class="install-progress-bar">
         <ul>
-            <li>Kora Configuration</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
+<!--            <li>Kora Configuration</li>-->
+<!--            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>-->
             <li class="current-step">Field Configuration</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>Create Project Record</li>

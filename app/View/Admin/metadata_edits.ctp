@@ -15,8 +15,8 @@
 				<p class="field-name cat">FIELD NAME</p>
 				<p class="old-value cat">OLD VALUE</p>
 				<p class="new-value cat">NEW VALUE</p>
-                <p class="ascending active">Ascending</p>
-				<p class="descending">Descending</p>
+                <p class="ascending">Ascending</p>
+				<p class="descending active">Descending</p>
 			</div>
         </div>
         <div class="drop filter-by">
