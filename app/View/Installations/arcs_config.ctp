@@ -50,8 +50,12 @@
                 <div class="row">
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
-                        <p>ARCS Base URL</p>
-                        <input name="ArcsBaseURL" class="req" type="text" placeholder="Enter the ARCS base URL here"/>
+                        <p>Base URL -</p>
+                        <br>
+                        <p style="font-size:13px;">* Copy from browser: https://example.com/arcs/installation/config
+                        <br>
+                        Input: https://example.com/</p>
+                        <input name="ArcsBaseURL" class="req" type="text" placeholder="Enter the base URL here"/>
                     </div>
                     <!--<div class="input-right inputDiv">-->
                         <!--<span class="dot"></span>-->
@@ -63,6 +67,8 @@
                     <div class="input-left inputDiv">
                         <span class="dot"></span>
                         <p>Create Admin Username</p>
+                        <br>
+                        <p style="font-size:13px;">* "Admin" is taken with password = "arcspassw0rd"</p>
                         <input name="ArcsAdminUsername" class="req" type="text" placeholder="Enter your admin username here"/>
                     </div>
                     <div class="input-right inputDiv">
