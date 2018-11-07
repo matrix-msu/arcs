@@ -193,7 +193,7 @@ class AdminController extends AppController {
 
         $mappingUserIds = array_keys($project_users);
         $userReturn = $this->User->find('all', array(
-            'order' => 'User.created',
+            'order' => 'User.created DESC',
             'conditions' => array(
                     'User.id' => $mappingUserIds
                     ),
