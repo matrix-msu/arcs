@@ -5684,6 +5684,9 @@ button.close {
   border: 0;
   -webkit-appearance: none;
 }
+.modal-open {
+  overflow: hidden;
+}
 .modal {
   display: none;
   overflow: hidden;
@@ -6760,6 +6763,7 @@ h4 {
 }
 #modal {
   padding: 0;
+  overflow-y: scroll;
 }
 .modal-backdrop.in {
   opacity: 1;
@@ -6772,7 +6776,7 @@ h4 {
   background-color: #0093be;
   color: #fff;
   width: 600px;
-  height: 680px;
+  max-height: 680px !important;
   margin: auto;
   margin-top: 138.688px;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.25);
@@ -6796,7 +6800,7 @@ h4 {
   float: left;
   width: 100%;
   padding: 0 30px;
-  min-height: 52%;
+  min-height: 73%;
 }
 .modal .modal-body .span-6 {
   float: left;
