@@ -184,6 +184,11 @@ class Keyword_Search extends Kora
         $kora = new Advanced_Search($pid, $rSid, $fields,null,null,$sort);
         $kora->add_kora_clause($clause);
         $this->formulatedResult = $kora->unformatted_search();
+		
+		if( isset($this->formulatedResult['11-33-0']) ){
+			unset($this->formulatedResult['11-33-0']);
+		}
+		//echo json_encode($this->formulatedResult);die;
 
         $sooResourceCount = count($resourceKidsFromSoo);
         $extra_data = array(
@@ -205,6 +210,7 @@ class Keyword_Search extends Kora
             $this->insertSeasons($season);
         }
 
+		//echo json_encode($this->formulatedResult);die;
 
         // get resource filters
         $filters = Resource::filter_analysis($this->formulatedResult);
@@ -724,6 +730,8 @@ class Keyword_Search extends Kora
     private function insertSeasons($season)
     {
         $this->season_list = self::getSeasonList($season);
+		
+		//var_dump($this->formulatedResult);die;
 
         foreach ($this->formulatedResult as $key => $value) {
             $newkey = "";
@@ -740,11 +748,13 @@ class Keyword_Search extends Kora
             if( !isset($this->formulatedResult[$key]['All_Seasons']) || !is_array($this->formulatedResult[$key]['All_Seasons']) ){
                 $this->formulatedResult[$key]['All_Seasons'] = array();
             }
-            foreach($value["Season_Associator"] as $season){
-                if (array_key_exists($season, $this->season_list)) {
-                    $this->formulatedResult[$key]["All_Seasons"][] = $this->season_list[$season]["Name"];
-                }
-            }
+			//if(is_array($value["Season_Associator"])){
+				foreach($value["Season_Associator"] as $season){
+					if (array_key_exists($season, $this->season_list)) {
+						$this->formulatedResult[$key]["All_Seasons"][] = $this->season_list[$season]["Name"];
+					}
+				}
+			//}
         }
     }
     public function queryFilter($query)

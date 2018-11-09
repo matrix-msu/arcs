@@ -400,8 +400,8 @@ class KORA_Clause {
  * @param  bool $underScores - Determines if a search should return the field names with underscores or spaces
  * @return array - The records to return from the search
  */
-function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=0,$number=0,$userInfo = array(),$underScores=false) {
-    $time_start = microtime(true);
+function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=0,$number=0,$userInfo = array(),$underScores=false,$kidsNoData) {
+    
     if(!$koraClause instanceof KORA_Clause) {
         die("The query clause you provided must be an object of class KORA_Clause");
     }
@@ -455,6 +455,10 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
         $filters = array("data","meta","under");
     else
         $filters = array("data","meta");
+	
+	if($kidsNoData){
+		$filters = array();
+	}
 
     //if(true) {
         $output = array();
@@ -474,6 +478,10 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
         $data = array();
         $data["forms"] = json_encode($output);
         $data["format"] = "KORA_OLD";
+		if( $kidsNoData ){
+			unset($data['format']);
+		}
+		//var_dump($data);
         $curl = curl_init();
 //        echo 'data: ';
 //        var_dump($data);
@@ -486,9 +494,13 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
+		$time_start = microtime(true);
         if (!$result = curl_exec($curl))
             return curl_error($curl);
         curl_close($curl);
+		// $time_end = microtime(true);
+		// $execution_time = ($time_end - $time_start);
+		// echo 'seconds: ' . $execution_time;
         $result = json_decode($result, true);
 //    }else{
 //        $fields = array('Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier','linkers');
