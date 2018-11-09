@@ -33,7 +33,6 @@ if( typeof kids_to_get != 'undefined' ){
 				return;
 			}
 		});
-		
 	});
 }
 

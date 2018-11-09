@@ -201,6 +201,16 @@
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Export
 		      </button>
+			<button class="export-options" id="export-json-btn" href="#">
+				<span class="content">
+						JSON
+				</span>
+			</button>
+			<button class="export-options" id="export-xml-btn" href="#">
+				<span class="content">
+						XML
+				</span>
+			</button>
 		  </div>
 
 		    <div id="view-buttons" class="btn-group actions-right">
@@ -338,6 +348,15 @@
             advancedSection.style.display = "none";
         }
 
+
+		console.log('beofre')
+
+		$('#options-btn').click(function() { //do export.
+			console.log('init')
+
+			$(this).hide();
+			$('.export-options').show();
+		});
 
         $("#pageHelpModal").click(function(e) {
             if (e.target.nodeName === "ARTICLE") {

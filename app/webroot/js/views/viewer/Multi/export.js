@@ -2,11 +2,11 @@ $(document).ready(function(){
     //export all schemes and jpgs
     $("#export-btn").click(function () {
         $(this).hide();
-        $('.export-options').show();
+        $('.viewer-export-options').show();
     });
 
 
-    $(".export-options").click(function () {
+    $(".viewer-export-options").click(function () {
         var isExporting = 0;
         var exportAsXML = false;
         var $clicked = $(this);

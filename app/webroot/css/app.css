@@ -9892,7 +9892,7 @@ input[type=range]:focus::-ms-fill-upper {
   font-size: 80%;
   display: inline-block;
 }
-#viewer-tools .tools .export-options {
+#viewer-tools .tools .viewer-export-options {
   display: none;
 }
 #viewer-tools .tools .icon-annotate {

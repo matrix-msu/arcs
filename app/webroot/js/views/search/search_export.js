@@ -2,8 +2,23 @@
  * Created by josh.christ on 3/14/2017.
  */
  $(document).ready(function() {
-	var isExporting = 0;
-	$('#options-btn').click(function(){ //do export.
+     $("#export-btn").click(function () {
+         $(this).hide();
+         $('.export-options').show();
+     });
+
+	$('.export-options').click(function(){ //do export.
+        var isExporting = 0;
+        var exportAsXML = false;
+        var $clicked = $(this);
+
+        if ($(this).attr('id') == 'export-xml-btn'){
+            exportAsXML = true;
+            $('#export-json-btn').hide();
+        }else{
+            $('#export-xml-btn').hide();
+        }
+
 		if(isExporting == 1 || $(this).hasClass('search-loading') ){
             return;
         }
@@ -11,12 +26,14 @@
         var loaderHtml = $(ARCS_LOADER_HTML);
         $(loaderHtml).css({'height':'inherit', 'margin-top':'-6px'});
         $(loaderHtml).find('.sk-folding-cube').css({'height':'36.43px', 'width':'36.43px'});
-        $('#options-btn').html(loaderHtml);
+        $(this).html(loaderHtml);
 		//get all resource kids
 		var resourceKidResults = [];
 		arcs.views.search.exportResults.forEach(function(e){
 			resourceKidResults.push(e.kid);
 		});
+
+        console.log('the stuff', resourceKidResults)
 
 		var projects = {};
 		var seasons = {};
@@ -82,12 +99,15 @@
 			}
 
 			kidArray = [projectKids, seasonKids, excavationKids, resourceKids, pageKids, subjectKids];
-			
+			console.log(JSON.stringify(kidArray));
+            //return
 			//create file
 			$.ajax({
 				url: arcs.baseURL + "resources/createExportFile",
 				type: "POST",
-				data: { 'xmls': JSON.stringify(kidArray) },
+				data: { 'xmls': JSON.stringify(kidArray),
+                        'exportAsXML': exportAsXML
+                },
 				statusCode: {
 					200: function (data) {
 						//download created file
@@ -123,14 +143,23 @@
 								}
 							});
                         }, 50);
-                        $('.icon-export').html('');
-                        $('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
+                        $clicked.find('.icon-export').html('');
+                        $clicked.find('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
+                        $clicked.hide();
+                        $("#export-btn").show();
+
+                        $('.export-options').hide();
+
+
+
+
+
                         isExporting = 0;
 					},
 				}
 			});
-			//hide the loader
-			$('#options-btn').css("display", "none");
+			////hide the loader
+			//$('#options-btn').css("display", "none");
 		}
 	});
 	
