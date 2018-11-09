@@ -190,13 +190,15 @@ class Advanced_Field_Search extends Kora
                 if (!empty($pages)) {
                     //echo json_encode(count($pages));exit();
                     $associators = self::getAssociatorLinks($pages, "Resource_Associator");
+					
+					return array_unique($associators);
 
-                    $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
-                    $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
-                    $this->fields        = array("Title");
-                    $resources = parent::search();
-                    //echo json_encode(array_keys($resources);exit();
-                    return array_keys($resources);
+                    // $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
+                    // $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
+                    // $this->fields        = array("Title");
+                    // $resources = parent::search();
+                    // //echo json_encode(array_keys($resources);exit();
+                    // return array_keys($resources);
 
                 }
 
@@ -234,12 +236,14 @@ class Advanced_Field_Search extends Kora
 
                 if (!empty($pages)) {
                     $associators = self::getAssociatorLinks($pages, "Resource_Associator");
+					
+					return array_unique($associators);
 
-                    $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
-                    $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
-                    $this->fields        = array("Title");
-                    $resources = parent::search();
-                    return array_keys($resources);
+                    // $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
+                    // $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
+                    // $this->fields        = array("Title");
+                    // $resources = parent::search();
+                    // return array_keys($resources);
 
                 }
 
@@ -271,13 +275,15 @@ class Advanced_Field_Search extends Kora
             if (!empty($pages)) {
 
                 $associators = self::getAssociatorLinks($pages, "Resource_Associator");
+				
+				return array_unique($associators);
 
-                $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
-                $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
-                $this->fields        = array("Title");
-                $resources = parent::search();
+                // $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
+                // $this->The_Clause    = new KORA_Clause("kid", "IN", $associators);
+                // $this->fields        = array("Title");
+                // $resources = parent::search();
 
-                return array_keys($resources);
+                // return array_keys($resources);
 
             }
             return array();
@@ -309,14 +315,8 @@ class Advanced_Field_Search extends Kora
             if (!empty($excavations)) {
 
                 $linkers = $this->getLinkers($excavations);
-
-                // get direct resource linkers
-                $scheme = parent::getResourceSIDFromProjectName($this->_project);
-                ///echo 'here';die;
-                $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
-                // print_r(count($excavations));exit();
-
-                return $resources;
+				
+				return array_unique($linkers);
 
             }
             return array();
@@ -343,7 +343,9 @@ class Advanced_Field_Search extends Kora
             $this->schemeMapping = parent::getResourceSIDFromProjectName($this->_project);
             $this->The_Clause    = self::clauseJoin($clauses, "AND");
             $this->fields        = array("Title");
+			$this->kidsNoData = true;
             $resources = parent::search();
+			$this->kidsNoData = false;
             return array_keys($resources);
         }
         return null;
@@ -361,7 +363,8 @@ class Advanced_Field_Search extends Kora
         $season    = $this->_ds->season;
         $map       = $this->_map->season;
         $clauses   = $this->generateKoraClauseFromMap($season, $map);
-        // print_r($clauses);exit();
+		//echo 'hdfda';
+        //print_r($clauses);die;
 
         if (!empty($clauses)) {
 
@@ -378,41 +381,16 @@ class Advanced_Field_Search extends Kora
 //            echo 'after seasons';
             if (!empty($seasons)) {
 
-                  $linkers = $this->getLinkers($seasons);
-				  
-                  // // get direct resource linkers
-                  // $scheme = parent::getResourceSIDFromProjectName($this->_project);
-                  // $resources = $this->_resolveSchemeFromLinkers($linkers, $scheme, array("Title"));
-				  
-                  // get excavation linkers return null;
-                  $this->schemeMapping = parent::getSurveySIDProjectName($this->_project);
-                  $excavations = $this->_resolveSchemeFromLinkers($linkers, $this->schemeMapping, array("Type"), false);
-                  // get the excavation linkers resource linkers
-                  $linkers2 = $this->getLinkers($excavations);
-				  
+				$linkers = $this->getLinkers($seasons);
+				
+				$this->schemeMapping = parent::getSurveySIDProjectName($this->_project);
+				$excavations = $this->_resolveSchemeFromLinkers($linkers, $this->schemeMapping, array("Type"), false);
+				
+				// get the excavation linkers resource linkers
+				$linkers2 = $this->getLinkers($excavations);
 
-                  // get indirect resource linkers
-                  $scheme = parent::getResourceSIDFromProjectName($this->_project);
-				  // echo 'sid: '. $scheme;
-				  // var_dump($linkers);
-				  $return = array();
-				  foreach( array_merge($linkers, $linkers2) as $kid ){
-					  $temp = explode('-', $kid);
-					  if( $temp[0] == 'empty' ){
-						  continue;
-					  }
-					  if( $temp[1] == $scheme ){
-						  $return[] = $kid;
-					  }
-				  }
-				  return array_unique($return);
-				  // die;
-				  
-                  //return $this->_resolveSchemeFromLinkers(array_unique(array_merge($linkers, $linkers2)), $scheme, array("Title"));
-                  // print_r($seasons);exit();
-                  // print_r(array_unique(array_merge($resources, $resources2)));exit();
-                  // return array_unique(array_merge($resources, $resources2));
-
+				// get indirect resource linkers
+				return array_unique(array_merge($this->returnResourceKids($linkers,$this->_project),$linkers2));
             }
             return array();
 
@@ -436,7 +414,11 @@ class Advanced_Field_Search extends Kora
         $this->The_Clause    = new KORA_Clause("KID", "IN", $linkers);
 
         $this->fields        = array("kid");
+		if($rebase){
+			$this->kidsNoData = true;
+		}
         $resolvedKIDS        = parent::search();
+		$this->kidsNoData = false;
 		
         // rebase array with keys
         if ($rebase) {
@@ -535,6 +517,21 @@ class Advanced_Field_Search extends Kora
         }
         return $clauses;
     }
+	public static function returnResourceKids($kids, $pName){
+		$scheme = parent::getResourceSIDFromProjectName($pName);
+		$return = array();
+		foreach( $kids as $kid ){
+			$temp = explode('-', $kid);
+			if( $temp[0] == 'empty' ){
+			    continue;
+			}
+			if( $temp[1] == $scheme ){
+			    $return[] = $kid;
+			}
+		}
+		return array_unique($return);
+	}
+	
     /**
      * Get linkers from a kora return
      *

@@ -32,11 +32,10 @@ class Resource_Search extends Keyword_Search {
               'form'=>parent::getResourceSIDFromProjectName($projectName),
               'token'=>parent::getTokenFromProjectName($projectName),
               'fields'=>$tempFields,
-              //'format'=>'KORA_OLD',
               'query'=>array(
                   array(
                       'search'=>'kid',
-                      'kids'=>$array,
+                      'kids'=>$array
                   )
               )
           )
@@ -51,7 +50,6 @@ class Resource_Search extends Keyword_Search {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $resource = curl_exec($ch);
     curl_close($ch);
-
     $this->formulatedResult = array();
     foreach( json_decode($resource, true)['records'][0] as $kid => $value ){
         $template = array(
