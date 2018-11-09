@@ -956,7 +956,9 @@ class ResourcesController extends AppController {
 
     // view multiple resources in a viewer
     public function multi_viewer($id='') {
-//echo 'multi_view';die;
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $pName = NULL;
         $resources = array();
         $projectsArray = array();
@@ -1009,12 +1011,11 @@ class ResourcesController extends AppController {
                 //Not a post or get method
                 throw new NotFoundException();
             }
-      } else { //isset($this->request->data['isExportAjax'])
-        // echo json_encode($this->request);die;
-        $resources_array = json_decode($this->request->data['resources']);
-        // print_r($resources_array);die;
-     }
-
+        } else { //isset($this->request->data['isExportAjax'])
+            // echo json_encode($this->request);die;
+            $resources_array = json_decode($this->request->data['resources']);
+            // print_r($resources_array);die;
+        }
         $username = NULL;
         $usersC = new UsersController();
 
@@ -1055,14 +1056,16 @@ class ResourcesController extends AppController {
 		}
 
 		foreach( $pidsArray as $pName => $projectResourceKids ){
+
 			$pid = parent::getPIDFromProjectName($pName);
 			//get all resources
 			$sid = parent::getResourceSIDFromProjectName($pName);
 			$query_array = array("kid","IN",$resources_array);
 			$fields = "ALL";
 			$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+
 			$kora_resources = array_merge($kora_resources, $result->return_array());
-			
+
 			//get all excavations at once
 			$kids = array();
 			$seasonKids = array();
