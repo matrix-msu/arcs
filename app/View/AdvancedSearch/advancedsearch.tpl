@@ -225,6 +225,16 @@ is from here to ...
 						<button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 							Export
 						</button>
+						<button class="export-options" id="export-json-btn" href="#">
+							<span class="content">
+									JSON
+							</span>
+						</button>
+						<button class="export-options" id="export-xml-btn" href="#">
+							<span class="content">
+									XML
+							</span>
+						</button>
 					</div>
 
 					<div id="view-buttons" class="btn-group actions-right">

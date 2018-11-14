@@ -603,6 +603,7 @@ class ResourcesController extends AppController {
 
     //create a file to be exported.
     public function createExportFile(){
+
         # create new zip opbject
         ini_set('memory_limit', '-1');
         set_time_limit(0);
@@ -623,23 +624,25 @@ class ResourcesController extends AppController {
 
         $pages_data;
 
+
         foreach (json_decode($this->request->data['xmls']) as $kidArray) {
             $data_string = self::getExportData($kidArray, $count);  //return json
             $data_xml_string = self::getExportData($kidArray, $count, $this->request->data['exportAsXML']); //return json or xml
-
             if($count == 4){
                 $pages_data = json_decode($data_string, true);
             }
             $zip->addFromString($xmlNames[$count], $data_xml_string);
             $count++;
         }
-
         $picUrls = array();
-        foreach ($pages_data['records'][0] as $kid=>$page){
-            $pName = parent::convertKIDtoProjectName($kid);
-            $pid = parent::getPIDFromProjectName($pName);
-            $sid = parent::getPageSIDFromProjectName($pName);
-            array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
+
+        if (isset($pages_data['records'])){
+            foreach ($pages_data['records'][0] as $kid=>$page){
+                $pName = parent::convertKIDtoProjectName($kid);
+                $pid = parent::getPIDFromProjectName($pName);
+                $sid = parent::getPageSIDFromProjectName($pName);
+                array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
+            }
         }
 
         foreach($picUrls as $url){
@@ -647,7 +650,7 @@ class ResourcesController extends AppController {
             $download_file = @file_get_contents( $url );
             $zip->addFromString('images/'.basename($url),$download_file);
         }
-        
+
         $zip->close();
 		echo $tmp_file;
 		die;
@@ -741,10 +744,11 @@ class ResourcesController extends AppController {
 		}
 		$pName = parent::convertKIDtoProjectName($resourceKids[0]);
 
-		$search = new Resource_Search($resourceKids, $pName);
+		$search = new Resource_Search($resourceKids, $pName, false);
 		$results = $search->getResultsAsArray();
 		static::filterByPermission($username, $results['results']);
 		$GLOBALS['current_project'] = $pName;
+
 		echo "<script> var results_to_display = ".json_encode($results)."; </script>";
 		$this->set("projectName", $pName);
 		$this->render("../Search/search");

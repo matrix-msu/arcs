@@ -5,7 +5,6 @@
 
   arcs.views.Viewer = (function(superClass) {
     extend(Viewer, superClass);
-
     function Viewer() {
       return Viewer.__super__.constructor.apply(this, arguments);
     }

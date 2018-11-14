@@ -478,6 +478,7 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
         $data = array();
         $data["forms"] = json_encode($output);
         $data["format"] = "KORA_OLD";
+//        var_dump($data);die;
 		if( $kidsNoData ){
 			unset($data['format']);
 		}

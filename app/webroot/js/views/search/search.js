@@ -33,6 +33,13 @@ if( typeof kids_to_get != 'undefined' ){
 				return;
 			}
 		});
+
+
+        $('#options-btn').click(function() { //do export.
+            $(this).hide();
+            $('.export-options').show();
+        });
+
 	});
 }
 
@@ -235,6 +242,7 @@ $(window).bind("mousewheel", function() {
 
 				//set the results into a global variable for export
 				arcs.views.search.exportResults = totalResults;
+                console.log('export resultsssss', arcs.views.search.exportResults)
 				arcs.views.search.exportRawResults = jQuery.extend(ref,arcs.views.search.exportRawResults);
 
 				pageNum = ajaxCurrentPage;

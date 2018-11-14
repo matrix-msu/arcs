@@ -598,14 +598,20 @@ class Keyword_Search extends Kora
 
         self::search();
 
+//        var_dump($this->comprehensive_results);die;
         foreach ($this->comprehensive_results as $key => $value) {
             $seasonAssoc = "";
-            if( isset($value["Season_Associator"]) ){
+            if( isset($value["Season_Associator"]) && is_array($value["Season_Associator"]) ){
                 foreach( $value["Season_Associator"] as $season ){
                     $this->all_season_kids[] = $season;
                 }
+            } else {
+                $this->comprehensive_results[$key]['Season_Associator'] = array();
             }
             $seasonAssoc = isset($value["Season_Associator"])?$value["Season_Associator"]:array();
+            if ($seasonAssoc == ''){
+                $seasonAssoc = array();
+            }
             $excavation[$key] = array(
                 "Name" => $value['Name'],
                 "Type" => $value['Type'],
@@ -627,6 +633,9 @@ class Keyword_Search extends Kora
             foreach( $this->formulatedResult as $kid => $value ){
                 if( isset($value['linkers']) ) {
                     $linkers = array_merge($linkers, $value['linkers']);
+                }
+                elseif( isset($value['reverseAssociations']) ) {
+                    $linkers = array_merge($linkers, $value['reverseAssociations']);
                 }
             }
             $this->fields = array("Image_Upload", "Resource_Associator", "Scan_Number");
@@ -709,12 +718,13 @@ class Keyword_Search extends Kora
                         if( !isset($this->formulatedResult[$key]["Season_Associator"]) || !is_array($this->formulatedResult[$key]["Season_Associator"]) ){
                             $this->formulatedResult[$key]["Season_Associator"] = array();
                         }
+                        if (!is_array($this->excavation_list[$excavation]["Season_Associator"])){
+                            var_dump($this->excavation_list);die;
+                        }
                         $this->formulatedResult[$key]["Season_Associator"] = array_unique(array_merge(
                             $this->formulatedResult[$key]["Season_Associator"],
                             $this->excavation_list[$excavation]["Season_Associator"]
                         ));
-
-                        //echo json_encode($this->formulatedResult);die;
                     }
                     $this->formulatedResult[$key]["All_Excavations"][$excavation] = $tmpArray;
                 }

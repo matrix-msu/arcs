@@ -340,7 +340,9 @@
 
 
     $(document).ready(function() {
-        var projectURL = window.location.href.split("/search/")[1];
+		console.log('hii', results_to_display)
+
+		var projectURL = window.location.href.split("/search/")[1];
         projectURL = projectURL.split(/[/#]/)[0];
 
         if (projectURL == "all") { //don't show the advanced search section if it's an all project search
@@ -348,12 +350,7 @@
             advancedSection.style.display = "none";
         }
 
-
-		console.log('beofre')
-
 		$('#options-btn').click(function() { //do export.
-			console.log('init')
-
 			$(this).hide();
 			$('.export-options').show();
 		});

@@ -33,7 +33,7 @@
 			resourceKidResults.push(e.kid);
 		});
 
-        console.log('the stuff', resourceKidResults)
+        console.log('kids', resourceKidResults)
 
 		var projects = {};
 		var seasons = {};
@@ -83,23 +83,31 @@
 			}
 
 			for (var resource in resources) {
-				resourceKids.push(resource);
+                if (resource != "unique"){
+                    resourceKids.push(resource);
+                }
 				for (var page in resources[resource]['page']) {
-					pageKids.push(page);
+                    if (page != "unique"){
+                        pageKids.push(page);
+                    }
 				}
 
 			}
 
 			for (var subject in subjects) {
-				subjectKids.push(subject);
-			}
+                if (subject != "unique"){
+                    subjectKids.push(subject);
+                }
+            }
 
 			for (var project in projects) {
 				projectKids.push(project);
 			}
 
 			kidArray = [projectKids, seasonKids, excavationKids, resourceKids, pageKids, subjectKids];
+            console.log('befroe', kidArray)
 			console.log(JSON.stringify(kidArray));
+
             //return
 			//create file
 			$.ajax({
