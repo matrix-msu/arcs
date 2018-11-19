@@ -401,7 +401,7 @@ class KORA_Clause {
  * @return array - The records to return from the search
  */
 function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=0,$number=0,$userInfo = array(),$underScores=false,$kidsNoData) {
-    
+
     if(!$koraClause instanceof KORA_Clause) {
         die("The query clause you provided must be an object of class KORA_Clause");
     }
@@ -455,54 +455,53 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
         $filters = array("data","meta","under");
     else
         $filters = array("data","meta");
-	
-	if($kidsNoData){
-		$filters = array();
-	}
+
+    if($kidsNoData){
+        $filters = array();
+    }
 
     //if(true) {
-        $output = array();
-        $tool = new kora3ApiExternalTool();
-        $fsArray = $tool->formSearchBuilder(
-            $sid,
-            $token,
-            $filters,
-            $fields,
-            $newOrder,
-            $queries,
-            $koraClause->getLogic(),
-            $start,
-            $number
-        );
-        array_push($output, $fsArray);
-        $data = array();
-        $data["forms"] = json_encode($output);
-        $data["format"] = "KORA_OLD";
-//        var_dump($data);die;
-		if( $kidsNoData ){
-			unset($data['format']);
-		}
-		//var_dump($data);
-        $curl = curl_init();
+    $output = array();
+    $tool = new kora3ApiExternalTool();
+    $fsArray = $tool->formSearchBuilder(
+        $sid,
+        $token,
+        $filters,
+        $fields,
+        $newOrder,
+        $queries,
+        $koraClause->getLogic(),
+        $start,
+        $number
+    );
+    array_push($output, $fsArray);
+    $data = array();
+    $data["forms"] = json_encode($output);
+    $data["format"] = "KORA_OLD";
+    if( $kidsNoData ){
+        unset($data['format']);
+    }
+    //var_dump($data);
+    $curl = curl_init();
 //        echo 'data: ';
 //        var_dump($data);
-        curl_setopt($curl, CURLOPT_URL, KORA_RESTFUL_URL . "search");
-        if (!empty($userInfo)) {
-            curl_setopt($curl, CURLOPT_USERPWD, $userInfo["user"] . ":" . $userInfo["pass"]);
-            curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        }
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($curl, CURLOPT_URL, KORA_RESTFUL_URL . "search");
+    if (!empty($userInfo)) {
+        curl_setopt($curl, CURLOPT_USERPWD, $userInfo["user"] . ":" . $userInfo["pass"]);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    }
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
-		$time_start = microtime(true);
-        if (!$result = curl_exec($curl))
-            return curl_error($curl);
-        curl_close($curl);
-		// $time_end = microtime(true);
-		// $execution_time = ($time_end - $time_start);
-		// echo 'seconds: ' . $execution_time;
-        $result = json_decode($result, true);
+    $time_start = microtime(true);
+    if (!$result = curl_exec($curl))
+        return curl_error($curl);
+    curl_close($curl);
+    // $time_end = microtime(true);
+    // $execution_time = ($time_end - $time_start);
+    // echo 'seconds: ' . $execution_time;
+    $result = json_decode($result, true);
 //    }else{
 //        $fields = array('Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier','linkers');
 //        $pid = parent::getPIDFromProjectName($projectName);

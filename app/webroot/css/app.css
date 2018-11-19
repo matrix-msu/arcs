@@ -8980,6 +8980,7 @@ button#sites-btn {
   margin-left: -10px;
 }
 button#options-btn {
+  display: none;
   margin-right: -10px;
 }
 #search-actions #items-per-pages-buttons .dropdown-menu {

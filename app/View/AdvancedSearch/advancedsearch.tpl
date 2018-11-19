@@ -369,6 +369,16 @@ is from here to ...
 				$(".modal-exit2").click();
 			});
 
+
+			var signedIn = false;
+			if ($('#menu').html() != 'Login / Register'){
+				signedIn = true;
+			}
+
+			if (signedIn){
+				$('#options-btn').show();
+			}
+
         });
 
 

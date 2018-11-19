@@ -340,8 +340,6 @@
 
 
     $(document).ready(function() {
-		console.log('hii', results_to_display)
-
 		var projectURL = window.location.href.split("/search/")[1];
         projectURL = projectURL.split(/[/#]/)[0];
 
@@ -350,7 +348,17 @@
             advancedSection.style.display = "none";
         }
 
+		var signedIn = false;
+		if ($('#menu').html() != 'Login / Register'){
+			signedIn = true;
+		}
+
+		if (signedIn){
+			$('#options-btn').show();
+		}
+
 		$('#options-btn').click(function() { //do export.
+			console.log('doing this export')
 			$(this).hide();
 			$('.export-options').show();
 		});
