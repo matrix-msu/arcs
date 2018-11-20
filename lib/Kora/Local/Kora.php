@@ -42,6 +42,7 @@ class Kora extends AppController{
     protected $fields;
     protected $start;
     protected $end;
+    protected $kidsNoData = false;
 
     function __construct(){
 
@@ -78,7 +79,8 @@ class Kora extends AppController{
             null,
             null,
             array(),
-            true
+            true,
+			$this->kidsNoData
 
         );
         if( $this->comprehensive_results == null ){
@@ -106,7 +108,8 @@ class Kora extends AppController{
             $this->start,
             $this->end,
             array(),
-            true
+            true,
+			$this->kidsNoData
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();
@@ -127,7 +130,8 @@ class Kora extends AppController{
             null,
             null,
             array(),
-            true
+            true,
+			$this->kidsNoData
         );
         if( $this->comprehensive_results == null ){
             $this->comprehensive_results = array();

@@ -107,6 +107,8 @@ class AdvancedSearchController extends AppController
 		$kora->add_double_clause("Resource_Associator", "IN", $searchArray,
                 "Scan_Number", "=", "1");
         $images = $kora->unformatted_search();
+		
+		//echo json_encode($images);die;
 
         $pKid = $pid.'-'.$pSid.'-';
         foreach ($images as $img) {
