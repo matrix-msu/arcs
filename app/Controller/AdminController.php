@@ -383,9 +383,14 @@ class AdminController extends AppController {
 
     public function metadata_edits(){
         echo "<script>console.log('test');</script>";
-        $metadata = $this->MetadataEdit->find('all', array(  'order' => 'modified DESC' ));
+        $pid = parent::getPIDFromProjectName($_SESSION['currentProjectName']);
+        $pName = parent::getProjectNameFromPID($pid);
+        $conditions = array( 'resource_kid LIKE' => "$pid-%");
+        $metadata = $this->MetadataEdit->find('all', array(  'conditions' => $conditions, 'order' => 'modified DESC'));
         $resultsArray = array();
         $count = 0;
+        $kidArray = array();
+
         foreach($metadata as $row) {
             $count++;
             if ($row['MetadataEdit']["user_id"]) {
@@ -396,7 +401,15 @@ class AdminController extends AppController {
                 $row['MetadataEdit']['email'] = $user['User']['email'];
             }
             array_push($resultsArray, $row);
+            array_push($kidArray, $row['MetadataEdit']['resource_kid']);
         }
+
+//        print_r($kidArray);die;
+//        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
+//        $fields = array('Title');
+//        $kora = new General_Search($pid, $sid, "kid", "in", $kidArray, $fields);
+//        $resources = json_decode($kora->return_json(), true);
+//        print_r($resources);die;
 
         $this->set('metadata', $resultsArray);
     }
