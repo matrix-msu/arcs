@@ -360,7 +360,7 @@ class SearchController extends AppController {
                 //Get the picture URL from the page results
                 $picture_url = '';
 
-                if (isset(array_values($page2)[0])) {
+                if (isset(array_values($page2)[0])  && isset($page2['Image_Upload']['localName']) ){
                     $picture_url = $page2['Image_Upload']['localName'];
                     $picture_kid = $page2['kid'];
                 }
