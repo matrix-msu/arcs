@@ -201,6 +201,16 @@
 		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Export
 		      </button>
+			<button class="export-options" id="export-json-btn" href="#">
+				<span class="content">
+						JSON
+				</span>
+			</button>
+			<button class="export-options" id="export-xml-btn" href="#">
+				<span class="content">
+						XML
+				</span>
+			</button>
 		  </div>
 
 		    <div id="view-buttons" class="btn-group actions-right">
@@ -330,7 +340,7 @@
 
 
     $(document).ready(function() {
-        var projectURL = window.location.href.split("/search/")[1];
+		var projectURL = window.location.href.split("/search/")[1];
         projectURL = projectURL.split(/[/#]/)[0];
 
         if (projectURL == "all") { //don't show the advanced search section if it's an all project search
@@ -338,6 +348,20 @@
             advancedSection.style.display = "none";
         }
 
+		var signedIn = false;
+		if ($('#menu').html() != 'Login / Register'){
+			signedIn = true;
+		}
+
+		if (signedIn){
+			$('#options-btn').show();
+		}
+
+		$('#options-btn').click(function() { //do export.
+			console.log('doing this export')
+			$(this).hide();
+			$('.export-options').show();
+		});
 
         $("#pageHelpModal").click(function(e) {
             if (e.target.nodeName === "ARTICLE") {

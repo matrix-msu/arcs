@@ -10,15 +10,15 @@
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
 
- require_once(KORA_LIB . "Advanced_Search.php");
- require_once(KORA_LIB . "Resource.php");
- require_once(KORA_LIB . "Resource_Search.php");
- require_once(KORA_LIB . "../Class/Benchmark.php");
- require_once(KORA_LIB . "Kora.php");
+require_once(KORA_LIB . "Advanced_Search.php");
+require_once(KORA_LIB . "Resource.php");
+require_once(KORA_LIB . "Resource_Search.php");
+require_once(KORA_LIB . "../Class/Benchmark.php");
+require_once(KORA_LIB . "Kora.php");
 
- use mb\Benchmark;
- use Lib\Kora;
- use Lib\Resource;
+use mb\Benchmark;
+use Lib\Kora;
+use Lib\Resource;
 
 
 App::import('Controller', 'Users');
@@ -60,9 +60,9 @@ class ResourcesController extends AppController {
      * @param array  $resources is a reference to the results returned from a kora search
      *
      */
-     public static function filterByPermission($userName, &$resources) {
-		 
-		 //print_r($resources);die;
+    public static function filterByPermission($userName, &$resources) {
+
+        //print_r($resources);die;
 
         if (empty($userName)) {
             static::lockResourcesByPermission(Permissions::R_Member, $resources);
@@ -75,16 +75,16 @@ class ResourcesController extends AppController {
             $i = 0;
             foreach($resources as $resource) {
                 if(isset($resource['kid'])) {
-					if( 
-						!isset($resource['Special_User']) ||
-						!isset($resource['Permissions']) ||
-						!isset($resource['Type']) ||
-						!isset($resource['Title'])
-						
-					){
-						$KIDs2[$i++] = $resource['kid'];
-					}
-					$KIDs[$i++] = $resource['kid'];
+                    if(
+                        !isset($resource['Special_User']) ||
+                        !isset($resource['Permissions']) ||
+                        !isset($resource['Type']) ||
+                        !isset($resource['Title'])
+
+                    ){
+                        $KIDs2[$i++] = $resource['kid'];
+                    }
+                    $KIDs[$i++] = $resource['kid'];
                 }
             }
 
@@ -96,18 +96,18 @@ class ResourcesController extends AppController {
 
             $projects = array_keys($projects);
             foreach($projects as $project) {
-				$res = array();
-				if( !empty($KIDs2) ){
-					$pid = parent::getPIDFromProjectName($project);
-					$sid = parent::getResourceSIDFromProjectName($project);
-					$fields = array('Special_User', 'Permissions', 'Type','Title');
-					$kora = new Advanced_Search($pid, $sid, $fields);
-					$kora->add_clause("kid", "IN", $KIDs2);
-					$res = json_decode($kora->search(), true);
-				}
-				$res = array_merge($res, $resources);
-				// print_r($res);
-				// die;
+                $res = array();
+                if( !empty($KIDs2) ){
+                    $pid = parent::getPIDFromProjectName($project);
+                    $sid = parent::getResourceSIDFromProjectName($project);
+                    $fields = array('Special_User', 'Permissions', 'Type','Title');
+                    $kora = new Advanced_Search($pid, $sid, $fields);
+                    $kora->add_clause("kid", "IN", $KIDs2);
+                    $res = json_decode($kora->search(), true);
+                }
+                $res = array_merge($res, $resources);
+                // print_r($res);
+                // die;
                 foreach($res as $kid => $resource) {
                     // Permissions is Special User, but the user is not on
                     // the special user list
@@ -116,9 +116,9 @@ class ResourcesController extends AppController {
                         isset($resource['Permissions']) &&
                         $resource['Permissions'] === Permissions::R_Special &&
                         !static::isSpecial($resource['Special_User'], $userName)
-                      ) {
+                    ) {
                         static::lockResource($kid, $resources);
-                      }
+                    }
                 }
             }
         }
@@ -150,17 +150,17 @@ class ResourcesController extends AppController {
     public static function lockResource($kid, &$resources) {
         if (isset($resources[$kid])) {
             $resources[$kid] = array(
-                  "kid"         => isset($resources[$kid]['kid'])         ? $resources[$kid]['kid']         : "",
-                  "Permissions" => isset($resources[$kid]['Permissions']) ? $resources[$kid]['Permissions'] : "",
-                  "Type"        => isset($resources[$kid]['Type'])        ? $resources[$kid]['Type']        : "",
-                  "Title"       => isset($resources[$kid]['Title'])       ? $resources[$kid]['Title']       : "",
-                  "thumb"       => isset($resources[$kid]['thumb'])       ? $resources[$kid]['thumb']       : "",
-                  "Season Name"       => isset($resources[$kid]['Season Name'])       ? $resources[$kid]['Season Name']       : "",
-                  "Excavation Name"       => isset($resources[$kid]['Excavation Name'])       ? $resources[$kid]['Excavation Name']       : "",
-                  "Excavation Type"       => isset($resources[$kid]['Excavation Type'])       ? $resources[$kid]['Excavation Type']       : "",
-                  "All_Seasons"       => isset($resources[$kid]['All_Seasons'])       ? $resources[$kid]['All_Seasons']       : "",
-                  "All_Excavations"       => isset($resources[$kid]['All_Excavations'])       ? $resources[$kid]['All_Excavations']       : "",
-                  "Locked"      => true,
+                "kid"         => isset($resources[$kid]['kid'])         ? $resources[$kid]['kid']         : "",
+                "Permissions" => isset($resources[$kid]['Permissions']) ? $resources[$kid]['Permissions'] : "",
+                "Type"        => isset($resources[$kid]['Type'])        ? $resources[$kid]['Type']        : "",
+                "Title"       => isset($resources[$kid]['Title'])       ? $resources[$kid]['Title']       : "",
+                "thumb"       => isset($resources[$kid]['thumb'])       ? $resources[$kid]['thumb']       : "",
+                "Season Name"       => isset($resources[$kid]['Season Name'])       ? $resources[$kid]['Season Name']       : "",
+                "Excavation Name"       => isset($resources[$kid]['Excavation Name'])       ? $resources[$kid]['Excavation Name']       : "",
+                "Excavation Type"       => isset($resources[$kid]['Excavation Type'])       ? $resources[$kid]['Excavation Type']       : "",
+                "All_Seasons"       => isset($resources[$kid]['All_Seasons'])       ? $resources[$kid]['All_Seasons']       : "",
+                "All_Excavations"       => isset($resources[$kid]['All_Excavations'])       ? $resources[$kid]['All_Excavations']       : "",
+                "Locked"      => true,
             );
         }
     }
@@ -249,9 +249,9 @@ class ResourcesController extends AppController {
             $resource = $this->getResource($kid)[$kid];
             $pages = $this->getPages($kid);
             $page1 = reset($pages);
-             if (!empty($page1['Image_Upload']['localName'])) {
-                 $resource['thumb'] = $this->smallThumb($page1['Image_Upload']['localName'],$page1['kid']);
-             }
+            if (!empty($page1['Image_Upload']['localName'])) {
+                $resource['thumb'] = $this->smallThumb($page1['Image_Upload']['localName'],$page1['kid']);
+            }
         }
         $this->json(200, $resource);
     }
@@ -415,7 +415,7 @@ class ResourcesController extends AppController {
             return $this->json(200, $this->Resource->Metadatum->find('all', array(
                 'conditions' => array(
                     'Metadatum.resource_id' => $id
-            ))));
+                ))));
         throw new BadRequestException();
     }
 
@@ -507,7 +507,7 @@ class ResourcesController extends AppController {
         $page = $page[$id];
         $page['kora_url'] = KORA_FILES_URI;
 
-		return json_encode($page);
+        return json_encode($page);
     }
 
 
@@ -647,27 +647,27 @@ class ResourcesController extends AppController {
             $download_file = @file_get_contents( $url );
             $zip->addFromString('images/'.basename($url),$download_file);
         }
-        
+
         $zip->close();
-		echo $tmp_file;
-		die;
+        echo $tmp_file;
+        die;
     }
 
     //download the created export file and delete it
-	public function downloadExportFile(){
-		header('Content-Description: File Transfer');
-		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment; filename="'.'Resource_Data.zip'.'"');
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate');
-		header('Pragma: public');
-		header('Content-Length: ' . filesize($this->request->data['filename'].'.zip'));
-		readfile($this->request->data['filename'].'.zip');
+    public function downloadExportFile(){
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.'Resource_Data.zip'.'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($this->request->data['filename'].'.zip'));
+        readfile($this->request->data['filename'].'.zip');
 
         unlink($this->request->data['filename'].'.zip');
         unlink($this->request->data['filename']);
-		die;
-	}
+        die;
+    }
 
     /*
      * check for when the export file is done downloading
@@ -684,78 +684,78 @@ class ResourcesController extends AppController {
         die;
     }
 
-	//collections show all button.. get all and send to search
-	public function viewcollection($collection_id = null){
-		$username = NULL;
-		$usersC = new UsersController();
-		if ($user = $usersC->getUser($this->Auth)) {
-			$username = $user['User']['username'];
-		}
+    //collections show all button.. get all and send to search
+    public function viewcollection($collection_id = null){
+        $username = NULL;
+        $usersC = new UsersController();
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
 
-		$this->Collection->recursive = -1;
-		$user_id =  $this->Session->read('Auth.User.id');
-		$collections = '';
-		if( $user_id !== null ) { //signed in
-			$collections = $this->Collection->find('all', array(
-				'order' => 'Collection.modified DESC',
-				'conditions' => array('OR' => array(
-					array( 'Collection.public' => '1'),
-					array( 'Collection.public' => '2'),
-					array( 'Collection.public' => '3'),
-					array( 'Collection.user_id' => $user_id)
-				),'Collection.collection_id' => $collection_id)
-			));
-			//remove all the public 3 collections that the user isn't a part of
-			$count = 0;
-			foreach( $collections as $collection ){
-				$bool_delete = 1;
-				if( array_values($collection)[0]['public'] == '3'){
-					$members =  explode(';', array_values($collection)[0]['members'] );
-					foreach( $members as $member ){
-						if( $member == $user_id){
-							$bool_delete = 0;
-						}
-					}
-					if( $bool_delete == 1 ){
-						array_splice($collections, $count, 1);
-					}
-				}
-				$count++;
-			}
-		} else { //not signed in
-			$collections = $this->Collection->find('all', array(
-				'order' => 'Collection.modified DESC',
-				'conditions' => array(
-					'Collection.public' => '1',
-					'Collection.collection_id' => $collection_id
-				)//,  //only get public collections
-				//'group' => 'collection_id'
-			));
-		}
-		$resourceKids = array();
-		foreach( $collections as $temp ){ //only keep the resource_kids.
-			$resourceKids[] = $temp['Collection']['resource_kid'];
-		}
-		if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
-			$resourceKids[0] = 'explode';
-		}
-		$pName = parent::convertKIDtoProjectName($resourceKids[0]);
+        $this->Collection->recursive = -1;
+        $user_id =  $this->Session->read('Auth.User.id');
+        $collections = '';
+        if( $user_id !== null ) { //signed in
+            $collections = $this->Collection->find('all', array(
+                'order' => 'Collection.modified DESC',
+                'conditions' => array('OR' => array(
+                    array( 'Collection.public' => '1'),
+                    array( 'Collection.public' => '2'),
+                    array( 'Collection.public' => '3'),
+                    array( 'Collection.user_id' => $user_id)
+                ),'Collection.collection_id' => $collection_id)
+            ));
+            //remove all the public 3 collections that the user isn't a part of
+            $count = 0;
+            foreach( $collections as $collection ){
+                $bool_delete = 1;
+                if( array_values($collection)[0]['public'] == '3'){
+                    $members =  explode(';', array_values($collection)[0]['members'] );
+                    foreach( $members as $member ){
+                        if( $member == $user_id){
+                            $bool_delete = 0;
+                        }
+                    }
+                    if( $bool_delete == 1 ){
+                        array_splice($collections, $count, 1);
+                    }
+                }
+                $count++;
+            }
+        } else { //not signed in
+            $collections = $this->Collection->find('all', array(
+                'order' => 'Collection.modified DESC',
+                'conditions' => array(
+                    'Collection.public' => '1',
+                    'Collection.collection_id' => $collection_id
+                )//,  //only get public collections
+                //'group' => 'collection_id'
+            ));
+        }
+        $resourceKids = array();
+        foreach( $collections as $temp ){ //only keep the resource_kids.
+            $resourceKids[] = $temp['Collection']['resource_kid'];
+        }
+        if (count($resourceKids) == 0) {// If no project, throw exception to give error page without showing users the php errors
+            $resourceKids[0] = 'explode';
+        }
+        $pName = parent::convertKIDtoProjectName($resourceKids[0]);
 
-		$search = new Resource_Search($resourceKids, $pName);
-		$results = $search->getResultsAsArray();
-		static::filterByPermission($username, $results['results']);
-		$GLOBALS['current_project'] = $pName;
-		echo "<script> var results_to_display = ".json_encode($results)."; </script>";
-		$this->set("projectName", $pName);
-		$this->render("../Search/search");
-	}
+        $search = new Resource_Search($resourceKids, $pName);
+        $results = $search->getResultsAsArray();
+        static::filterByPermission($username, $results['results']);
+        $GLOBALS['current_project'] = $pName;
+        echo "<script> var results_to_display = ".json_encode($results)."; </script>";
+        $this->set("projectName", $pName);
+        $this->render("../Search/search");
+    }
 
-	public function KidTitleTime($projectName, $resource_type)
-	{
-		$resource_type = ucfirst(strtolower($resource_type));
-		$resource_type = str_replace('_', ' ', $resource_type);
-		$pid = parent::getPIDFromProjectName($projectName);
-		$sid = parent::getResourceSIDFromProjectName($projectName);
+    public function KidTitleTime($projectName, $resource_type)
+    {
+        $resource_type = ucfirst(strtolower($resource_type));
+        $resource_type = str_replace('_', ' ', $resource_type);
+        $pid = parent::getPIDFromProjectName($projectName);
+        $sid = parent::getResourceSIDFromProjectName($projectName);
 
         if ($resource_type == "Orphaned") {
             $sid = parent::getPageSIDFromProjectName($projectName);
@@ -766,57 +766,57 @@ class ResourcesController extends AppController {
         }
 
         $fields = array('Title','KID', 'systimestamp', 'Special_User', 'Permissions', 'Type');
-		$sort = array(array( 'field' => 'Title', 'direction' => SORT_ASC));
+        $sort = array(array( 'field' => 'Title', 'direction' => SORT_ASC));
         // $sort = array();
-		$search = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
-		$search->add_clause('Type', '=', $resource_type);
-		$resultsByTitle = json_decode($search->search(), true);
-		return $resultsByTitle;
-	}
+        $search = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+        $search->add_clause('Type', '=', $resource_type);
+        $resultsByTitle = json_decode($search->search(), true);
+        return $resultsByTitle;
+    }
 
-	public function kidAndPermission($username, $resources)
-	{
-		if (empty($userName)) {
+    public function kidAndPermission($username, $resources)
+    {
+        if (empty($userName)) {
             static::lockResourcesByPermission(Permissions::R_Member, $resources);
             static::lockResourcesByPermission(Permissions::R_Special, $resources);
 
         } else if (is_array($resources)) {
-			foreach($resources as $kid => $resource) {
-				// Permissions is Special User, but the user is not on
-				// the special user list
-				if (
-					isset($resource['Special_User']) &&
-					isset($resource['Permissions']) &&
-					$resource['Permissions'] === Permissions::R_Special &&
-					!static::isSpecial($resource['Special_User'], $userName)
-				  ) {
-					static::lockResource($kid, $resources);
-				  }
-			}
-		}
-		$lockedResources = array();
-		foreach ($resources as $kid => $value) {
-			if (isset($value['Locked']) && $value['Locked']) {
-				array_push($lockedResources, $kid);
-			}
-		}
-		return $lockedResources;
-	}
+            foreach($resources as $kid => $resource) {
+                // Permissions is Special User, but the user is not on
+                // the special user list
+                if (
+                    isset($resource['Special_User']) &&
+                    isset($resource['Permissions']) &&
+                    $resource['Permissions'] === Permissions::R_Special &&
+                    !static::isSpecial($resource['Special_User'], $userName)
+                ) {
+                    static::lockResource($kid, $resources);
+                }
+            }
+        }
+        $lockedResources = array();
+        foreach ($resources as $kid => $value) {
+            if (isset($value['Locked']) && $value['Locked']) {
+                array_push($lockedResources, $kid);
+            }
+        }
+        return $lockedResources;
+    }
 
     public function viewtype($projectName, $resource_type){
         if ($this->request->method() === "POST" && isset($this->request->data['kidArray'])) {
             // The kids to grab the display info for
-			$displayKids = $this->request->data['kidArray'];
+            $displayKids = $this->request->data['kidArray'];
         }else {
             //getting the kids the first time the page laods
-        	$allByTitle = self::KidTitleTime($projectName, $resource_type);
+            $allByTitle = self::KidTitleTime($projectName, $resource_type);
 
-			$username = NULL;
-			$usersC = new UsersController();
-			if ($user = $usersC->getUser($this->Auth)) {
-				$username = $user['User']['username'];
-			}
-			$lockedResources = self::kidAndPermission($username, $allByTitle);
+            $username = NULL;
+            $usersC = new UsersController();
+            if ($user = $usersC->getUser($this->Auth)) {
+                $username = $user['User']['username'];
+            }
+            $lockedResources = self::kidAndPermission($username, $allByTitle);
 
             $allByTime = $allByTitle;
             usort($allByTime, function ($a, $b){
@@ -835,7 +835,7 @@ class ResourcesController extends AppController {
             //return sorted arrays of kids by time and title
             //return immediately
             //only array of kids not the other information
-    $this->render("../Search/search");
+            $this->render("../Search/search");
 //die;
             return;
         }
@@ -876,7 +876,7 @@ class ResourcesController extends AppController {
             $temp_array['resource-type'] = $resource_type;
             $kora->add_double_clause("Resource_Associator", "IN", $rKids,
                 "Scan_Number", "=", "1");
-                // TODO: make this work
+            // TODO: make this work
             $allPages = json_decode($kora->search(), true);
 
             if( $allPages == array() ){
@@ -886,18 +886,18 @@ class ResourcesController extends AppController {
 
             //link in the pages to the resources
             foreach( $allPages as $page ){
-				if (!isset($page['Image_Upload'])) {
-					$thumb = "";
-				}else {
-                	$thumb = $page['Image_Upload']['localName'];
-				}
+                if (!isset($page['Image_Upload'])) {
+                    $thumb = "";
+                }else {
+                    $thumb = $page['Image_Upload']['localName'];
+                }
                 $resourceAssociator = $page['Resource_Associator'][0];
                 if (isset($results[$resourceAssociator]) && isset($page['Scan_Number'])) {
                     if ($page['Scan_Number'] == '1') {
                         $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
                     }
                 } elseif (isset($results[$resourceAssociator]) && !isset($page['Scan_Number'])) {
-                      $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
+                    $results[$resourceAssociator]['thumb'] = $this->smallThumb($thumb, $page['kid']);
                 }
             }
             //take care of resources without pages and data formatting
@@ -916,7 +916,7 @@ class ResourcesController extends AppController {
             echo json_encode($results, true);
             die;
 
-		//still have to do orphans
+            //still have to do orphans
         }elseif( $resource_type == 'Orphaned' ) {
             $pid = parent::getPIDFromProjectName($projectName);
             $sid = parent::getPageSIDFromProjectName($projectName);
@@ -939,11 +939,11 @@ class ResourcesController extends AppController {
                     $tempArray['thumb'] = $this->smallThumb("");
                 }
                 $results['indicators'][$key] = array(
-                  "hasFlags"=>false,
-                  "hasAnnotations"=>false,
-                  "hasCollections"=>false,
-                  "hasComments"=>false,
-                  "hasKeywords"=>false
+                    "hasFlags"=>false,
+                    "hasAnnotations"=>false,
+                    "hasCollections"=>false,
+                    "hasComments"=>false,
+                    "hasKeywords"=>false
                 );
                 $formattedArray[] = $tempArray;
             }
@@ -965,13 +965,13 @@ class ResourcesController extends AppController {
         $seasons = array();
         $excavations = array();
         $subjects = array();
-		$kora_resources = array();
-		$groupPages = array();
+        $kora_resources = array();
+        $groupPages = array();
         $resources_array = array();
         $showButNoEditArray = array();
         // echo json_encode($this->request);die;
         if (!isset($this->request->data['isExportAjax'])){
-    
+
             if($this->request->method() === "POST" && isset($this->request->data['resources'])){
                 $post_data = $this->request->data;
                 //create a new session variable and forward to a get request
@@ -1038,121 +1038,131 @@ class ResourcesController extends AppController {
         }
 
         $hasARealResource = false;
-		
-		if (!isset($_GET['getRest'])) {
-			$temp = count($resources_array) > 1 ? $id : 'false';
-			$this->set("multiInfo", $temp);
+
+        if (!isset($_GET['getRest'])) {
+           // var_dump($resources_array);die;
+            $temp = count($resources_array) > 1 ? $id : 'false';
+            $this->set("multiInfo", $temp);
+            //$resources_array = array($resources_array[0]);
+        }
+        if( !isset($_GET['getRest']) && !isset($this->request->data['isExportAjax']) ){
             $resources_array = array($resources_array[0]);
         }
 
-		$pidsArray = array();
-		foreach( $resources_array as $rKid ){
-			$pName = parent::convertKIDtoProjectName($rKid);
-			if( isset($pidsArray[$pName]) ){
-				$pidsArray[$pName][] = $rKid;
-			}else{
-				$pidsArray[$pName] = array($rKid);
-			}
-		}
+        $pidsArray = array();
+        foreach( $resources_array as $rKid ){
+            $pName = parent::convertKIDtoProjectName($rKid);
+            if( isset($pidsArray[$pName]) ){
+                $pidsArray[$pName][] = $rKid;
+            }else{
+                $pidsArray[$pName] = array($rKid);
+            }
+        }
 
-		foreach( $pidsArray as $pName => $projectResourceKids ){
+        //var_dump($resources_array);die;
 
-			$pid = parent::getPIDFromProjectName($pName);
-			//get all resources
-			$sid = parent::getResourceSIDFromProjectName($pName);
-			$query_array = array("kid","IN",$resources_array);
-			$fields = "ALL";
-			$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+        foreach( $pidsArray as $pName => $projectResourceKids ){
 
-			$kora_resources = array_merge($kora_resources, $result->return_array());
+            $pid = parent::getPIDFromProjectName($pName);
+            //get all resources
+            $sid = parent::getResourceSIDFromProjectName($pName);
+            $query_array = array("kid","IN",$resources_array);
+            $fields = "ALL";
+            $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
 
-			//get all excavations at once
-			$kids = array();
-			$seasonKids = array();
-			$pageKids = array();
-			foreach( $kora_resources as $kid => $record ){
-				if( isset($kora_resources[$kid]["Excavation_-_Survey_Associator"]) && $kora_resources[$kid]["Excavation_-_Survey_Associator"] !== '' ){
-					$kids = array_merge( $kids, $kora_resources[$kid]["Excavation_-_Survey_Associator"] );
-				}
-				if( isset($kora_resources[$kid]["Season_Associator"]) && $kora_resources[$kid]["Season_Associator"] !== '' ){
-					$seasonKids = array_merge( $seasonKids, $kora_resources[$kid]["Season_Associator"] );
-				}
-				if( isset($kora_resources[$kid]["linkers"]) && $kora_resources[$kid]["linkers"] !== '' ){
-					$pageKids = array_merge( $pageKids, $kora_resources[$kid]["linkers"] );
-				}
-			}
-			$kids = array_values(array_unique($kids));
-			if( $kids != '' && !empty($kids) ){
-				$sid = parent::getSurveySIDProjectName($pName);
-				$query_array = array("kid","IN",$kids);
-				$fields = "ALL";
-				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-				$excavations = array_merge($excavations, $result->return_array());
-			}
-			
-			//get all seasons at once
-			foreach( $excavations as $kid => $record ){
-				if( isset($excavations[$kid]["Season_Associator"]) && $excavations[$kid]["Season_Associator"] !== '' ){
-					$seasonKids = array_merge( $seasonKids, $excavations[$kid]["Season_Associator"] );
-				}
-			}
-			$seasonKids = array_values(array_unique($seasonKids));
-			if( $seasonKids != '' && !empty($seasonKids) ){
-				$sid = parent::getSeasonSIDFromProjectName($pName);
-				$query_array = array("kid","IN",$seasonKids);
-				$fields = "ALL";
-				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-				$seasons = array_merge($seasons, $result->return_array());
-			}
-			
-			//get all projects at once
-			$kids = array();
-			foreach( $seasons as $kid => $record ){
-				if( isset($seasons[$kid]["Project_Associator"]) && $seasons[$kid]["Project_Associator"] !== '' ){
-					$kids = array_merge( $kids, $seasons[$kid]["Project_Associator"] );
-				}
-			}
-			$kids = array_values(array_unique($kids));
-			if( $kids != '' && !empty($kids) ){
-				$sid = parent::getProjectSIDFromProjectName($pName);
-				$query_array = array("kid","IN",$kids);
-				$fields = "ALL";
-				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-				$projectsArray = array_merge($projectsArray, $result->return_array());
-			}
-			
-			//get all pages at once
-			$pageKids = array_values(array_unique($pageKids));
-			if( $pageKids != '' && !empty($pageKids) ){
-				//grab all pages with the resource associator
-				$sid = parent::getPageSIDFromProjectName($pName);
-				$fields = 'ALL';
-				$sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
-				$kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
-				$kora->add_clause("Resource_Associator", "IN", $resources_array);
-				$tempGroupPages = $kora->search();
-				if( $tempGroupPages == "[]" ){
-					$sort = array();
-					$kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
-					$kora->add_clause("Resource_Associator", "IN", $resources_array);
-					$groupPages = array_merge($groupPages, json_decode($kora->search(), true));
-				}else{
-					$groupPages = array_merge($groupPages, json_decode($tempGroupPages, true));
-				}
-			}
-			//get all soo at once
-			if( $pageKids != '' && !empty($pageKids) ){			
-				$sid = parent::getSubjectSIDFromProjectName($pName);
-				$query_array = array("Pages Associator", "IN", $pageKids);
-				$fields = "ALL";
-				$result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
-				$subjects = array_merge($subjects, $result->return_array());
-			}
-		}
+            $kora_resources = array_merge($kora_resources, $result->return_array());
+
+            //get all excavations at once
+            $kids = array();
+            $seasonKids = array();
+            $pageKids = array();
+            foreach( $kora_resources as $kid => $record ){
+                if( isset($kora_resources[$kid]["linkers"]) && $kora_resources[$kid]["linkers"] !== '' ){
+                    $pageKids = array_merge( $pageKids, $kora_resources[$kid]["linkers"] );
+                } else {
+                    unset($kora_resources[$kid]);
+                    continue;
+                }
+                if( isset($kora_resources[$kid]["Excavation_-_Survey_Associator"]) && $kora_resources[$kid]["Excavation_-_Survey_Associator"] !== '' ){
+                    $kids = array_merge( $kids, $kora_resources[$kid]["Excavation_-_Survey_Associator"] );
+                }
+                if( isset($kora_resources[$kid]["Season_Associator"]) && $kora_resources[$kid]["Season_Associator"] !== '' ){
+                    $seasonKids = array_merge( $seasonKids, $kora_resources[$kid]["Season_Associator"] );
+                }
+
+            }
+            $kids = array_values(array_unique($kids));
+            if( $kids != '' && !empty($kids) ){
+                $sid = parent::getSurveySIDProjectName($pName);
+                $query_array = array("kid","IN",$kids);
+                $fields = "ALL";
+                $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $excavations = array_merge($excavations, $result->return_array());
+            }
+
+            //get all seasons at once
+            foreach( $excavations as $kid => $record ){
+                if( isset($excavations[$kid]["Season_Associator"]) && $excavations[$kid]["Season_Associator"] !== '' ){
+                    $seasonKids = array_merge( $seasonKids, $excavations[$kid]["Season_Associator"] );
+                }
+            }
+            $seasonKids = array_values(array_unique($seasonKids));
+            if( $seasonKids != '' && !empty($seasonKids) ){
+                $sid = parent::getSeasonSIDFromProjectName($pName);
+                $query_array = array("kid","IN",$seasonKids);
+                $fields = "ALL";
+                $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $seasons = array_merge($seasons, $result->return_array());
+            }
+
+            //get all projects at once
+            $kids = array();
+            foreach( $seasons as $kid => $record ){
+                if( isset($seasons[$kid]["Project_Associator"]) && $seasons[$kid]["Project_Associator"] !== '' ){
+                    $kids = array_merge( $kids, $seasons[$kid]["Project_Associator"] );
+                }
+            }
+            $kids = array_values(array_unique($kids));
+            if( $kids != '' && !empty($kids) ){
+                $sid = parent::getProjectSIDFromProjectName($pName);
+                $query_array = array("kid","IN",$kids);
+                $fields = "ALL";
+                $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $projectsArray = array_merge($projectsArray, $result->return_array());
+            }
+
+            //get all pages at once
+            $pageKids = array_values(array_unique($pageKids));
+            if( $pageKids != '' && !empty($pageKids) ){
+                //grab all pages with the resource associator
+                $sid = parent::getPageSIDFromProjectName($pName);
+                $fields = 'ALL';
+                $sort = array(array( 'field' => 'Scan_Number', 'direction' => SORT_ASC));
+                $kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+                $kora->add_clause("Resource_Associator", "IN", $resources_array);
+                $tempGroupPages = $kora->search();
+                if( $tempGroupPages == "[]" ){
+                    $sort = array();
+                    $kora = new Advanced_Search($pid, $sid, $fields, null, null, $sort);
+                    $kora->add_clause("Resource_Associator", "IN", $resources_array);
+                    $groupPages = array_merge($groupPages, json_decode($kora->search(), true));
+                }else{
+                    $groupPages = array_merge($groupPages, json_decode($tempGroupPages, true));
+                }
+            }
+            //get all soo at once
+            if( $pageKids != '' && !empty($pageKids) ){
+                $sid = parent::getSubjectSIDFromProjectName($pName);
+                $query_array = array("Pages Associator", "IN", $pageKids);
+                $fields = "ALL";
+                $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
+                $subjects = array_merge($subjects, $result->return_array());
+            }
+        }
 
         foreach($kora_resources as $resource => $info_array ){
-			
-			$info_array = array( $resource => $info_array );
+
+            $info_array = array( $resource => $info_array );
 
             if( empty($info_array) ){ //check if a real resource
                 continue;
@@ -1195,11 +1205,11 @@ class ResourcesController extends AppController {
 
             //get pages and add to resource array
             $page = array();
-			foreach( $groupPages as $kid => $record ){
-				if( in_array($kid, $info_array[$resource]['linkers']) ){
-					$page[$kid] = $record;
-				}
-			}
+            foreach( $groupPages as $kid => $record ){
+                if( in_array($kid, $info_array[$resource]['linkers']) ){
+                    $page[$kid] = $record;
+                }
+            }
             if(empty($page)) {
                 // creates a hacky solution to display a default page
                 // when there are no pages associated with the resource
@@ -1207,23 +1217,23 @@ class ResourcesController extends AppController {
                 $page["DefaultPage"] = array();
             }
             $info_array[$resource]["page"] = $page;
-			
-			foreach( $pidsArray as $pname => $projectResourceKids2 ){
-				if( in_array($resource, $projectResourceKids2) ){
-					foreach( $projectsArray as $pkid => $pvalue) {
-						if( $pvalue['pid'] == parent::getPIDFromProjectName($pname) ){
-							$info_array[$resource]['project_kid'] = $pkid;
-						}
-					}
-				}
-			}
+
+            foreach( $pidsArray as $pname => $projectResourceKids2 ){
+                if( in_array($resource, $projectResourceKids2) ){
+                    foreach( $projectsArray as $pkid => $pvalue) {
+                        if( $pvalue['pid'] == parent::getPIDFromProjectName($pname) ){
+                            $info_array[$resource]['project_kid'] = $pkid;
+                        }
+                    }
+                }
+            }
 
             //push to array
             $this->pushToArray($info_array, $resources);
 
             //if (!isset($_GET['getRest'])) {
-                //$temp = count($resources_array) > 1 ? $id : 'false';
-                //$this->set("multiInfo", $temp);
+            //$temp = count($resources_array) > 1 ? $id : 'false';
+            //$this->set("multiInfo", $temp);
             //    break;
             //}
         }
@@ -1284,22 +1294,22 @@ class ResourcesController extends AppController {
                 }
             }
             echo json_encode(['resources' => $resources,
-                                'projectsArray' => $projectsArray,
-                                'seasons' => $seasons,
-                                'excavations' => $excavations,
-                                'subjects' => $subjects,
-                                'metadataedits' => $metadataedits,
-                                'metadataeditsControlOptions' => $metadataeditsControlOptions,
-                                'flags' => $flags,
-                                'showButNoEditArray' => $showButNoEditArray]);
+                'projectsArray' => $projectsArray,
+                'seasons' => $seasons,
+                'excavations' => $excavations,
+                'subjects' => $subjects,
+                'metadataedits' => $metadataedits,
+                'metadataeditsControlOptions' => $metadataeditsControlOptions,
+                'flags' => $flags,
+                'showButNoEditArray' => $showButNoEditArray]);
             die;
         }
         else {  //this is for getting the data for a export data
             echo json_encode([$projectsArray,
-                                $seasons,
-                                $excavations,
-                                $resources,
-                                $subjects]);
+                $seasons,
+                $excavations,
+                $resources,
+                $subjects]);
             die;
         }
     }
@@ -1354,23 +1364,23 @@ class ResourcesController extends AppController {
 
         $sid = parent::getProjectSIDFromProjectName($project);
         $names = array('Country',
-                       'Region',
-                       'Modern Name',
-                       'Records Archive',
-                       'Period',
-                       'Archaeological Culture',
-                       'Permitting Heritage Body');
+            'Region',
+            'Modern Name',
+            'Records Archive',
+            'Period',
+            'Archaeological Culture',
+            'Permitting Heritage Body');
 
         $pCid = parent::getK3Controls($pid, $sid, $names, 'Project');
 
         $sid = parent::getSeasonSIDFromProjectName($project);
 
         $names = array('Type',
-                       'Director',
-                       'Registrar',
-                       'Sponsor',
-                       'Contributor',
-                       'Contributor Role');
+            'Director',
+            'Registrar',
+            'Sponsor',
+            'Contributor',
+            'Contributor Role');
 
         $sCid = parent::getK3Controls($pid, $sid, $names, 'Season');
 
@@ -1382,31 +1392,31 @@ class ResourcesController extends AppController {
         $sid = parent::getResourceSIDFromProjectName($project);
 
         $names = array('Type',
-                       'Creator',
-                       'Creator Role',
-                       'Condition',
-                       'Access Level',
-                       'Language',
-                       'Rights Holder');
+            'Creator',
+            'Creator Role',
+            'Condition',
+            'Access Level',
+            'Language',
+            'Rights Holder');
 
         $rCid = parent::getK3Controls($pid, $sid, $names, 'Resource');
 //structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
 
         $names = array('Artifact - Structure Type',
-                       'Artifact - Structure Excavation Unit',
-                       'Artifact - Structure Location',
-                       'Artifact - Structure Material',
-                       'Artifact - Structure Technique',
-                       'Artifact - Structure Archaeological Culture',
-                       'Artifact - Structure Period',
-                       'Artifact - Structure Repository',
-                       'Artifact - Structure Creator',
-                       'Artifact - Structure Creator Role',
-                       'Artifact - Structure Condition',
-                       'Artifact - Structure Subject',
-                        'Artifact - Structure Classification'
-            );
+            'Artifact - Structure Excavation Unit',
+            'Artifact - Structure Location',
+            'Artifact - Structure Material',
+            'Artifact - Structure Technique',
+            'Artifact - Structure Archaeological Culture',
+            'Artifact - Structure Period',
+            'Artifact - Structure Repository',
+            'Artifact - Structure Creator',
+            'Artifact - Structure Creator Role',
+            'Artifact - Structure Condition',
+            'Artifact - Structure Subject',
+            'Artifact - Structure Classification'
+        );
 
         $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
 

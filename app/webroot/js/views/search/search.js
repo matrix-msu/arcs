@@ -8,6 +8,10 @@ if( typeof kids_to_get != 'undefined' ){
 		}
 	}
 	$(document).ready(function(){
+        if (kids_to_get[0] == "empty"){
+            kids_to_get = [];
+        }
+
 		$('#options-btn').addClass('search-loading');
 		$(".searchIntro").css("display","none")
 		$("#searchBox").css("display","none")
@@ -33,7 +37,13 @@ if( typeof kids_to_get != 'undefined' ){
 				return;
 			}
 		});
-		
+
+
+        $('#options-btn').click(function() { //do export.
+            $(this).hide();
+            $('.export-options').show();
+        });
+
 	});
 }
 
@@ -142,12 +152,13 @@ $(window).bind("mousewheel", function() {
 		doSort = false;
 		 getRestOfData(0, 20);
 	}
+
 	function getRestOfData(index, limit){
 		var sliceEnd = index + limit;
 		if( sliceEnd >= kids_to_get.length ){
 		  sliceEnd = kids_to_get.length;
 		}
-		if( index >= kids_to_get.length -1){
+		if( index > kids_to_get.length -1){
 			//finished all loading
 			filters.excavations.sort();
 			filters.projects.sort();
@@ -227,8 +238,12 @@ $(window).bind("mousewheel", function() {
 				  if (value['Title'] === '') {
 					value['Title'] = "No title given";
 				  }
-				  totalResults.push(value);
-				  unfilteredResults.push(value);
+
+
+                if (typeof(value) != 'function'){
+                    totalResults.push(value);
+                    unfilteredResults.push(value);
+                }
 				}
 				selectedMap['unselected'] = totalResults;
 				waiting = false;

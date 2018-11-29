@@ -121,10 +121,6 @@ class Advanced_Field_Search extends Kora
             $resourcesFromSubGen, $resourcesFromSubDet
             )
         );
-		
-		// echo 'done';
-		// var_dump($intersect);
-		// die;
 
         $time_end = microtime(true);
         $mem_end = memory_get_usage();
@@ -345,6 +341,8 @@ class Advanced_Field_Search extends Kora
             $this->fields        = array("Title");
 			$this->kidsNoData = true;
             $resources = parent::search();
+//            echo 'here';
+//            var_dump($resources);die;
 			$this->kidsNoData = false;
             return array_keys($resources);
         }

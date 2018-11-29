@@ -28,7 +28,7 @@ indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l;
 
 //kick off the entire search.js file
 $(document).ready(function(){
-    if (resourceType.toLowerCase() == 'orphaned') {
+	if (resourceType.toLowerCase() == 'orphaned') {
         $('.toolbar-fixed').css('display','none');
     }
     $('.Searchbar').css('display','none');
