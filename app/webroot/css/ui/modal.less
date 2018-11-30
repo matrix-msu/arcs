@@ -3,6 +3,7 @@
 
 #modal {
     padding: 0;
+    overflow-y: scroll;
 }
 
 .modal-backdrop.in {
@@ -18,7 +19,7 @@
     background-color: @ArcsBlue;
     color: #fff;
     width: 600px;
-    height: 680px;
+    max-height: 680px !important;
     margin: auto;
     margin-top: 138.688px;
     box-shadow: 0px 0px 100px rgba(0, 0, 0, .25);
@@ -42,7 +43,7 @@
         float: left;
         width: 100%;
         padding: 0 30px;
-        min-height: 52%;
+        min-height: 73%;
 
         .span-6 {
             float: left;
@@ -96,6 +97,7 @@
         textarea {
             margin: 1em 0;
             padding: 1em;
+            min-width: 80%;
             min-width: 80%;
             min-height: 6em;
             height: 4em;

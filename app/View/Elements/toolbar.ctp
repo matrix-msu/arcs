@@ -184,7 +184,7 @@
 			<?php } ?>
 
 			<a id="help" class="btn btn-grey<?php echo $helpBlue ?>"
-				href="<?php echo $this->Html->url('/help')?>">
+				href="https://github.com/matrix-msu/arcs/wiki">
 				<i class="icon-white icon-book"></i> Help
 			</a>
 
@@ -196,7 +196,7 @@
 	<!--Display three buttons for index page with search bar-->
 	<div class="btn-group toolbar-btn">
 		<a id="about" class="btn btn-grey"
-			href="<?php echo $this->Html->url('/about')?>">
+			href="https://github.com/matrix-msu/arcs/wiki">
 			<i class="icon-white icon-folder-open"></i> About ARCS
 		</a>
 
@@ -224,7 +224,7 @@
 		</div>
 		<div id='helpSearch'>
 		<a id="help" class="btn btn-grey<?php echo $helpBlue ?>"
-			href="<?php echo $this->Html->url('/help')?>">
+			href="https://github.com/matrix-msu/arcs/wiki">
 			<i class="icon-white icon-book"></i> Help
 		</a>
 

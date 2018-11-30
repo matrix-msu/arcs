@@ -45,10 +45,10 @@
     Router::connect('/500',
         array('controller' => 'pages', 'action' => 'display', '500')
     );
-    # About
-    Router::connect('/about',
-        array('controller' => 'pages', 'action' => 'display', 'about')
-    );
+//    # About
+//    Router::connect('/about',
+//        array('controller' => 'pages', 'action' => 'display', 'about')
+//    );
     # Upload
     Router::connect('/upload',
         array('controller' => 'uploads', 'action' => 'batch')
@@ -310,13 +310,13 @@
 ////////////////////////////////////////////////////////////////////////
 # help Controller
 ////////////////////////////////////////////////////////////////////////
-    # Docs routes
-    Router::connect('/help',
-        array('controller' => 'help', 'action' => 'display', 'index')
-    );
-    Router::connect('/help/*',
-        array('controller' => 'help', 'action' => 'display')
-    );
+//    # Docs routes
+//    Router::connect('/help',
+//        array('controller' => 'help', 'action' => 'display', 'index')
+//    );
+//    Router::connect('/help/*',
+//        array('controller' => 'help', 'action' => 'display')
+//    );
 ////////////////////////////////////////////////////////////////////////
 # annotations Controller
 ////////////////////////////////////////////////////////////////////////

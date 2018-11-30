@@ -261,9 +261,9 @@ JST["admin/metadata_edits"] =
     "</div>"+
     "<div class=\"admin-rows-wrap\">"+
         "<div class=\"admin-rows-content meta\">"+
-            "<% _.each(metadata_edits, function(f, i) { %>  "+
+            "<% _.each(metadata_edits, function(f, i) { console.log(f) %>  "+
                 "<div class=\"admin-row meta\" data-id=\"<%= f.MetadataEdit.id %>\">"+
-                    "<p class=\"resource-kid\"><%= f.MetadataEdit.resource_kid %></p>"+
+                    "<a class=\"resource-kid\" target=\"_blank\" href=\"<%= arcs.baseURL + 'resource/'+ f.MetadataEdit.resource_kid %>\"><%= f.MetadataEdit.resource_kid %></a>"+
                     "<p class=\"username\"><%= f.MetadataEdit.user_name %></p>"+
                     "<p class=\"metadata-kid\"><%= f.MetadataEdit.metadata_kid %></p>"+
                     "<p class=\"field-name\"><%= f.MetadataEdit.field_name %></p>"+
