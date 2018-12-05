@@ -32,7 +32,7 @@ class SearchController extends AppController {
     }
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('search', 'resources', 'advanced_resources', 'simple_search','advance_search','getProjects', "keywordSearch");
+        $this->Auth->allow('search', 'resources', 'advanced_resources', 'simple_search','advance_search','getProjects', "keywordSearch", "simple_search_no_data");
         if (!isset($this->request->query['related'])) {
             $this->Resource->recursive = -1;
             $this->Resource->flatten = true;
@@ -100,6 +100,8 @@ class SearchController extends AppController {
 		   echo "<script type='text/javascript'>var globalquery = '".$query."';</script>";
 	    }
 	    echo "<script type='text/javascript'>var globalproject = '".$project."';</script>";
+	    echo "<script type='text/javascript'>var kids_to_get = 'keywordSearch';</script>";
+        echo "<script>var controllerProject = ".json_encode($project).";</script>";
     }
 
     public function simple_search($project, $query="", $page, $perPage) {
@@ -149,6 +151,44 @@ class SearchController extends AppController {
 
     }
 
+
+    public function simple_search_no_data($project, $query="", $page, $perPage) {
+        ini_set("memory_limit", "-1");
+        set_time_limit(0);
+        $this->autoRender = false;
+        $username = NULL;
+
+        $usersC = new UsersController();
+
+        if ($user = $usersC->getUser($this->Auth)) {
+            $username = $user['User']['username'];
+        }
+
+        if ($project === "all") {
+
+            $projects = array_keys(parent::getPIDArray());
+            $results = array();
+
+            foreach ($projects as $project) {
+                // Kora Search
+                $preFilter = $this->getResourcesFromKeyword($project, $query);
+                $keySearch = new Keyword_Search($preFilter);
+                $result = $keySearch->execute($query,$project, null, null, true);
+
+                //$result = $keySearch->getResultsAsArray();
+//                ResourcesController::filterByPermission($username, $result['results']);
+                $results[$project] = $result;
+            }
+            echo json_encode($results);
+        } else {
+            $preFilter = $this->getResourcesFromKeyword($project, $query);
+            // Kora Search
+            $keySearch = new Keyword_Search($preFilter);
+            $results = $keySearch->execute($query,$project, null, null, true);
+
+            echo json_encode($results);
+        }
+    }
 
     /**
      *

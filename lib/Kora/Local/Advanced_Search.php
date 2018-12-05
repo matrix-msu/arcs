@@ -11,7 +11,7 @@ class Advanced_Search extends Kora{
     private $sid;
 	private $pid;
 
-    function __construct($pid, $sid, $fields = 'ALL', $start = null, $limit = null, $sort = array() ){
+    function __construct($pid, $sid, $fields = 'ALL', $start = null, $limit = null, $sort = array()){
         //call parent constructor 'kora'
         parent::__construct();
 
@@ -74,7 +74,7 @@ class Advanced_Search extends Kora{
         return json_encode($this->comprehensive_results);
     }
 
-    public function unformatted_search () {
+    public function unformatted_search ($kidsNoData=false) {
         //set up the kora search parameters for keyword search
         $this->final_clause = array_shift($this->clauses);
         foreach ($this->clauses as $clause) {
@@ -86,6 +86,7 @@ class Advanced_Search extends Kora{
         $this->projectMapping = $this->pid;
         $this->schemeMapping = $this->sid;
         $this->The_Clause = $this->final_clause;
+        $this->kidsNoData = $kidsNoData;
 
 
         // $this->formulatedResult = parent::search();

@@ -123,7 +123,7 @@ class Keyword_Search extends Kora
     * @param int    $end     | the end index of results
     * @return void
     */
-    public function execute($query,$project=null,$start=1,$end=10000){
+    public function execute($query,$project=null,$start=1,$end=10000, $kidsNoData=false){
         $this->advancedSearch = false;
 
         $time_start = microtime(true);
@@ -181,14 +181,17 @@ class Keyword_Search extends Kora
             )
         );
 
-        $kora = new Advanced_Search($pid, $rSid, $fields,null,null,$sort);
+        $kora = new Advanced_Search($pid, $rSid, $fields,null,null,$sort,true);
         $kora->add_kora_clause($clause);
-        $this->formulatedResult = $kora->unformatted_search();
-		
+        $this->formulatedResult = $kora->unformatted_search($kidsNoData);
+
 		if( isset($this->formulatedResult['11-33-0']) ){
 			unset($this->formulatedResult['11-33-0']);
 		}
-		//echo json_encode($this->formulatedResult);die;
+        if( $kidsNoData === true){
+            return array_keys($this->formulatedResult);
+        }
+//		echo json_encode($this->formulatedResult);die;
 
         $sooResourceCount = count($resourceKidsFromSoo);
         $extra_data = array(
@@ -325,7 +328,7 @@ class Keyword_Search extends Kora
         );
 
         $subject = parent::getSubjectSIDFromProjectName($project);
-        $this->set_search_parameters($query, $pid, $subject, $token, $clause, array("Pages Associator"));
+        $this->set_search_parameters($query, $pid, $subject, $token, $clause, array("Pages Associator"), false);
 
         //search on soo level
         $soo = parent::search();
@@ -337,7 +340,7 @@ class Keyword_Search extends Kora
 
         $clause = new KORA_Clause("kid", "IN", $pages);
         $pageSID = parent::getPageSIDFromProjectName($project);
-        $this->set_search_parameters($query, $pid, $pageSID, $token, $clause, array("Resource Associator"));
+        $this->set_search_parameters($query, $pid, $pageSID, $token, $clause, array("Resource Associator"), false);
 
         $pages = parent::search();
 
@@ -345,7 +348,6 @@ class Keyword_Search extends Kora
             return array();
         }
         $resourceKids = $this->cheapMergeIntoArray($pages, "Resource_Associator");
-
         return $resourceKids;
     }
     /**
@@ -506,12 +508,13 @@ class Keyword_Search extends Kora
     * @param string $fields    | n/a
     * @return void
     */
-    private function set_search_parameters($query,$project,$scheme,$token,$clause=null,$fields=null)
+    private function set_search_parameters($query,$project,$scheme,$token,$clause=null,$fields=null, $kidNoData=false)
     {
 
         $this->token = $token;
         $this->projectMapping = $project;
         $this->schemeMapping = $scheme;
+        $this->kidsNoData = $kidNoData;
 
         if ($clause != null) {
             $this->The_Clause = $clause;

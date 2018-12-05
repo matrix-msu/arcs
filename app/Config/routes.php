@@ -271,6 +271,9 @@
 //    Router::connect('/simple_search/*',
 //        array('controller' => 'AdvancedSearch', 'action' => 'simpleSearchWrapper')
 //    );
+    Router::connect('/simple_search_no_data/*',
+        array('controller' => 'search', 'action' => 'simple_search_no_data')
+    );
     Router::connect('/simple_search/*',
         array('controller' => 'search', 'action' => 'simple_search')
     );
@@ -309,6 +312,8 @@
 
 ////////////////////////////////////////////////////////////////////////
 # help Controller
+
+
 ////////////////////////////////////////////////////////////////////////
 //    # Docs routes
 //    Router::connect('/help',
