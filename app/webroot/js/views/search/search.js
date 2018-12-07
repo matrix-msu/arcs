@@ -9,7 +9,6 @@ if( typeof kids_to_get != 'undefined' && kids_to_get !== "keywordSearch" ){
 		}
 	}
 	$(document).ready(function(){
-        console.log('this one')
         setUpSearchLoad();
 	});
 }
@@ -20,7 +19,6 @@ $(window).bind("mousewheel", function() {
 
 
 function setUpSearchLoad(keywordSearch = false){
-    console.log('set up search', kids_to_get);
     if (kids_to_get[0] == "empty"){
         kids_to_get = [];
     }
@@ -68,7 +66,6 @@ function setUpSearchLoad(keywordSearch = false){
 
 
 (function() {
-    console.log('in this thing')
   var base, display, filteredFilters, indicators, insertLocks,filters, filtersApplied, selected, selectedCount, selectedMap, sortDirection, totalResults, unfilteredResults, waiting,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
@@ -121,13 +118,13 @@ function setUpSearchLoad(keywordSearch = false){
   sortDirection = false;
 
   arcs.views.search.Search = (function(superClass) {
-      console.log('also here')
 
       var adjustPage, setIndicators ,createAllFilter, fillArray, noResults, pagination, search, setCreators, setExcavations, setFilters, setResources, setSeasons, setSites, showSelected, sortBy;
     extend(Search, superClass);
 	
 	var ajaxCurrentPage = 1;
 	var ajaxImagesGotten = [];
+    var imageData = {}
 
 	function getRestOfImages(results, sync){
 		var data = {};
@@ -139,6 +136,19 @@ function setUpSearchLoad(keywordSearch = false){
 			}
 		}
 		if( Object.keys(data).length == 0){
+
+            for( var resourceKid in results ){
+                $(".resource-thumb[data-id='" + resourceKid +"']").find('img').attr('src', imageData[resourceKid]['thumb']);
+                $(totalResults).each(function(index,value){
+                    if( value.kid == resourceKid ){
+                        totalResults[index]['thumb'] = imageData[resourceKid]['thumb'];
+                        unfilteredResults[index]['thumb'] = imageData[resourceKid]['thumb'];
+                    }
+                });
+            }
+
+
+
 			return;
 		}
 		$.ajax({
@@ -152,6 +162,10 @@ function setUpSearchLoad(keywordSearch = false){
 			'success': function(data) {
 				data = JSON.parse(data);
 				for( var resourceKid in data ){
+                    if (!(resourceKid in imageData)){
+                        imageData[resourceKid] = data[resourceKid];
+                    }
+
 					$(".resource-thumb[data-id='" + resourceKid +"']").find('img').attr('src', data[resourceKid]['thumb']);
 					$(totalResults).each(function(index,value){
 						if( value.kid == resourceKid ){
@@ -1048,7 +1062,6 @@ function setUpSearchLoad(keywordSearch = false){
         return newData;
     }
     search = function() {
-        console.log('in search')
       searching = true;
       var pageNum, pageNumber, perPage, perPageUrl, resourcequery, val, wiating;
       wiating = true;
@@ -1083,7 +1096,6 @@ function setUpSearchLoad(keywordSearch = false){
         //'dataType': 'json',
         'url': arcs.baseURL + 'simple_search_no_data/' + globalproject +"/" + resourcequery + "/" + pageNumber + "/" + perPageUrl,
         'success': function(data) {
-            console.log('after simple search', data)
             kids_to_get = JSON.parse(data);
 
             setUpSearchLoad(true);
@@ -1091,7 +1103,13 @@ function setUpSearchLoad(keywordSearch = false){
 
             getRestLocked = 0;
             doSort = false;
-            getRestOfData(0, 20);
+
+            if (kids_to_get.length > 0) {
+                getRestOfData(0, 20);
+            } else {
+                  adjustPage(0);
+                  return noResults();
+            }
 
 
 
