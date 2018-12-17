@@ -748,7 +748,7 @@ class Keyword_Search extends Kora
 
         foreach ($this->formulatedResult as $key => $value) {
             $newkey = "";
-            if( isset($value["Season_Associator"]) && is_array($value["Season_Associator"]) ){
+            if( isset($value["Season_Associator"]) && is_array($value["Season_Associator"]) && isset($value["Season_Associator"][0]) ){
                 $newkey = $value["Season_Associator"][0];
             }
             if (array_key_exists($newkey, $this->season_list)) {
