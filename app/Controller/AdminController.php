@@ -404,13 +404,28 @@ class AdminController extends AppController {
             array_push($kidArray, $row['MetadataEdit']['resource_kid']);
         }
 
-//        print_r($kidArray);die;
-//        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
-//        $fields = array('Title');
-//        $kora = new General_Search($pid, $sid, "kid", "in", $kidArray, $fields);
-//        $resources = json_decode($kora->return_json(), true);
-//        print_r($resources);die;
+        //var_dump($metadata);
 
+        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
+        $fields = array('Title');
+        $kidArray = array_values(array_unique($kidArray));
+        //print_r($kidArray);
+        //unset($kidArray[5]);
+        //$kidArray = array_values($kidArray);
+        //$kidArray = array("11-33-1070");
+
+        //echo "<br><br><br>";
+        //print_r( array_unique($kidArray) );
+        $kora = new General_Search($pid, $sid, "KID", "IN", $kidArray, $fields);
+        $resources = json_decode($kora->return_json(), true);
+
+        foreach($resultsArray as $index => $row) {
+            if( isset( $resources[$row['MetadataEdit']['resource_kid']] ) ){
+                $resultsArray[$index]['MetadataEdit']['resource_name'] = $resources[$row['MetadataEdit']['resource_kid']]['Title'];
+            }
+        }
+
+        //var_dump($resultsArray);die;
         $this->set('metadata', $resultsArray);
     }
 

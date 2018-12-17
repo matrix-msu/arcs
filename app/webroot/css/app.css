@@ -15440,31 +15440,39 @@ strong {
 }
 .metadata-head p.resource-kid,
 .metadata-head input.resource-kid {
+  width: calc(8.52631579%);
+}
+.metadata-head p.resource-name,
+.metadata-head input.resource-name {
   width: calc(9.47368421%);
 }
 .metadata-head p.username,
 .metadata-head input.username {
-  width: calc(8.52631579%);
+  width: calc(6.63157895%);
 }
 .metadata-head p.metadata-kid,
 .metadata-head input.metadata-kid {
-  width: calc(8.52631579%);
+  width: calc(7.57894737%);
 }
 .metadata-head p.field-name,
 .metadata-head input.field-name {
-  width: calc(10.42105263%);
+  width: calc(8.52631579%);
 }
 .metadata-head p.value-before,
 .metadata-head input.value-before {
-  width: calc(13.26315789%);
+  width: calc(11.36842105%);
 }
 .metadata-head p.new-value,
 .metadata-head input.new-value {
-  width: calc(13.021053%);
+  width: calc(11.36842105%);
 }
 .metadata-head p.metadata-time,
 .metadata-head input.metadata-time {
-  width: calc(13.5%);
+  width: calc(9.47368421%);
+}
+.metadata-head p.actions,
+.metadata-head input.actions {
+  width: calc(7.57894737%);
 }
 .metadata-head p.search,
 .metadata-head input.search {
@@ -15740,37 +15748,42 @@ strong {
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.resource-kid,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.resource-kid,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.resource-kid {
+  width: 9%;
+}
+.admin-rows-wrap .admin-rows-content.meta .admin-row p.resource-name,
+.admin-rows-wrap .admin-rows-content.meta .admin-row a.resource-name,
+.admin-rows-wrap .admin-rows-content.meta .admin-row div.resource-name {
   width: 10%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.username,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.username,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.username {
-  width: 9%;
+  width: 7%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.metadata-kid,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.metadata-kid,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.metadata-kid {
-  width: 9%;
+  width: 8%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.field-name,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.field-name,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.field-name {
-  width: 11%;
+  width: 9%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.value-before,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.value-before,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.value-before {
-  width: 14%;
+  width: 12%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.new-value,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.new-value,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.new-value {
-  width: 14%;
+  width: 12%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.metadata-time,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.metadata-time,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.metadata-time {
-  width: 12%;
+  width: 9%;
 }
 .admin-rows-wrap .admin-rows-content.meta .admin-row p.actions,
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.actions,
