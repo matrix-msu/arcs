@@ -741,11 +741,17 @@ class ResourcesController extends AppController {
         }
         $pName = parent::convertKIDtoProjectName($resourceKids[0]);
 
-        $search = new Resource_Search($resourceKids, $pName);
-        $results = $search->getResultsAsArray();
-        static::filterByPermission($username, $results['results']);
+
+
+        // dont search for fast load
+//        $search = new Resource_Search($resourceKids, $pName);
+//        $results = $search->getResultsAsArray();
+//        static::filterByPermission($username, $results['results']);
+
+
         $GLOBALS['current_project'] = $pName;
-        echo "<script> var results_to_display = ".json_encode($results)."; </script>";
+        echo "<script> var kids_to_get = ".json_encode($resourceKids)."; </script>";
+        echo "<script>var controllerProject = ".json_encode($pName).";</script>";
         $this->set("projectName", $pName);
         $this->render("../Search/search");
     }
