@@ -513,8 +513,8 @@ class AdminController extends AppController {
                     $conn, 'metadata'
                 );
                 foreach( $table as $key => $value ){
-                    $username = $userMappings[$value['user_id']]['username'];
-                    $email = $userMappings[$value['user_id']]['email'];
+                    $username = @$userMappings[$value['user_id']]['username'];
+                    $email = @$userMappings[$value['user_id']]['email'];
                     $table[$key]['username'] = $username;
                     $table[$key]['email'] = $email;
                 }
