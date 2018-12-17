@@ -397,8 +397,8 @@ class AdminController extends AppController {
                 //$row["target"] = $row["annotation_target"];
                 $id = $row['MetadataEdit']['user_id'];
                 $user = $this->User->find('first', array('conditions'=>array('id'=>$id)));
-                $row['MetadataEdit']['user_name'] = $user['User']['username'];
-                $row['MetadataEdit']['email'] = $user['User']['email'];
+                $row['MetadataEdit']['user_name'] = @$user['User']['username'];
+                $row['MetadataEdit']['email'] = @$user['User']['email'];
             }
             array_push($resultsArray, $row);
             array_push($kidArray, $row['MetadataEdit']['resource_kid']);
