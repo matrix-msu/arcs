@@ -87,11 +87,22 @@
 			 <div id='projCage'>
                  <i class="icon-white icon-folder-open"></i>
                  <div id="toolbarHead" >
+                     <?php
+//                     print_r($this->request->params);die;
+
+                     if (isset($this->request->params['action']) && $this->request->params['action'] == 'single_project'){
+                         echo strtoupper(str_replace('_', ' ', $this->request->params['pass'][0]));
+                     } else {
+                         echo "Projects";
+                     }
+
+                     ?>
                         <div id="dropArrow" class='pointerDown pointerTool'></div>
                  </div>
 			 </div>
 			<div id="projectsMenu" class="projects-menu">
-			    <?php foreach($projects as $p): ?>
+			    <?php
+                foreach($projects as $p): ?>
 				<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent_Name'])) )?>"><?php echo $p['Persistent_Name'] ?></a>
 			    <?php endforeach ?>
 			</div>
@@ -205,7 +216,18 @@
 		 <div id="projectsHeader" class="btn btn-grey">
 			<div id='projCageHome'>
 			 <i class="icon-white icon-folder-open"></i>
-			 <div id="toolbarHead" > Projects
+			 <div id="toolbarHead" >
+
+                <?php
+//                                print_r($this->request->params);die;
+
+                if (isset($this->request->params['action']) && $this->request->params['action'] == 'single_project'){
+                    echo strtolower(str_replace(' ', '_', $this->request->params['pass'][0]));
+                } else {
+                    echo "Projects";
+                }
+
+                ?>
 				 	<div id="dropArrow" class='pointerDown pointerTool'>
 
 				    </div>
