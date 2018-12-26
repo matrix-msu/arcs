@@ -18756,6 +18756,7 @@ div.proper-width {
 .collection-list-wrapper .collection-list .back-color summary {
   background: #F4F4F4;
   border-color: #E2E2E2;
+  display: inline-block;
   padding: 10px 15px;
 }
 .collection-list-wrapper .collection-list .back-color summary h3 {
