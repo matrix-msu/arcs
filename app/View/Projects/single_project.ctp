@@ -42,7 +42,7 @@
                       </a>
                       </span>
                       </div>
-                      <br><br>
+                      <br>
                       <h class="resource-title"><?php echo $r['Title'] ?></h><br>
                       <p class="resource-type"><?php echo $r['Type'] ?></p>
                     </li>
