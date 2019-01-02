@@ -515,6 +515,8 @@ class CollectionsController extends AppController {
      */
     public function findAllByUser()
     {
+//        parent::db_group_error_detection();
+//        die;
         include_once("../Config/database.php");
         $db = new DATABASE_CONFIG;
         $db_object = (object)$db;

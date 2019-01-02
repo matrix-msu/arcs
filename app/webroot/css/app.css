@@ -16583,6 +16583,24 @@ strong {
   font-size: 16px;
   margin: auto;
 }
+.continue-to-projConfig-btn,
+.continue-to-create-btn {
+  width: 263px;
+  height: 49px;
+  background: #0094BC;
+  border: 1px solid #0094BC;
+  color: white;
+}
+.continue-to-projConfig-btn p,
+.continue-to-create-btn p {
+  font-size: 16px;
+  margin: auto;
+}
+.config-form-wrapper {
+  margin: 0 auto;
+  padding-top: 70px;
+  max-width: 500px;
+}
 .accordion-wrapper {
   width: 90%;
   margin: 50px auto;

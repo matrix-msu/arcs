@@ -449,6 +449,32 @@ Router::connect('/admin/accept/*',
     array('controller' => 'admin', 'action' => 'accept')
 );
 
+
+////////////////////////////////////////////////////////////////////////
+# add projects controller
+////////////////////////////////////////////////////////////////////////
+Router::connect('/add_project',
+    array('controller' => 'AddProjects',  'action' => 'display')
+);
+Router::connect('/add_project/download',
+    array('controller' => 'AddProjects',  'action' => 'download')
+);
+Router::connect('/add_project/config',
+    array('controller' => 'AddProjects',  'action' => 'projectConfig')
+);
+Router::connect('/add_project/create',
+    array('controller' => 'AddProjects',  'action' => 'createProject')
+);
+Router::connect('/add_project/finalize',
+    array('controller' => 'AddProjects',  'action' => 'finalize')
+);
+Router::connect('/add_project/field',
+    array('controller' => 'AddProjects', 'action' => 'fieldConfig')
+);
+
+
+
+
     $restful = array(
         'resources',
         'comments',
