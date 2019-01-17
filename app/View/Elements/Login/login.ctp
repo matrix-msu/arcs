@@ -26,8 +26,10 @@
 
                 <p id="loginInfo"></p>
 
-                <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username')); ?>
+                <label for="username" class="hiddenWAVEcont"> register </label>
+                <?php echo $this->Form->input('username', array('label' => false, 'placeholder' => 'Username', 'id'=>'username')); ?>
 
+                <label for="loginPassword" class="hiddenWAVEcont"> register </label>
                 <?php echo $this->Form->input('password', array('label' => false, 'id'=>'loginPassword', 'placeholder' => 'Password')); ?>
 
 

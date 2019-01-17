@@ -2633,6 +2633,11 @@ input[type="search"] {
 .form-group {
   margin-bottom: 15px;
 }
+.hiddenWAVEcont {
+    display: none;
+    position: absolute;
+}
+
 .radio,
 .checkbox {
   position: relative;

@@ -1,6 +1,6 @@
 <div id="missing_picture_modal" class="permissionModal">
     <div id="missing_picture_content" class="permission-content" style="height:255px;">
-        <div class="modal-exit" style="cursor:pointer"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
+        <div class="modal-exit" style="cursor:pointer"><p><a id="#close"><?= $this->Html->image('Close.svg', array('alt' => 'CloseimagePermission'));?></a></p></div>
         <div id="missing_picture_login">
             <div class="permission-modal-header">
                 <h1>Login Required</h1>
