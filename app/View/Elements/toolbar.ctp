@@ -11,11 +11,11 @@
 ?>
 <div id="toolbar" class="row"> 
         <a id="logo-wrapper" href="<?php echo $this->Html->url('/') ?>">
-            <h1 id="logo">
+            <h1 id="logo"><p class="hiddenWAVEcont">HideThis</p>
             </h1>
         </a>
 
-	<h1 id= "hamburger" class='hamburger'></h1>
+	<h1 id= "hamburger" class='hamburger'><p class="hiddenWAVEcont">HideThis</p></h1>
 
   <?php
     // Check if $nobutton is set and its value
@@ -71,6 +71,7 @@
 	</div>
   <?php if (isset($index_toolbar) && $index_toolbar) :?>
     <div class="search-bar">
+       <label for="searchBar" class="hiddenWAVEcont"> searchbar </label>
       <input data-project-kid="all" type="text" id="searchBar" class="search-bar indexSearchBox search-bar-js" placeholder="Search">
       <div class="indexSearchIcon"></div>
     </div>
@@ -238,9 +239,12 @@
 			<div id="projectsMenu" class="projects-menu homeProject">
 				<?php foreach($projects as $p): ?>
 
-                	<a href="<?php echo$this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent_Name'])) )?>">
+<!--                jakebaum-->
+                <?php if(array_key_exists('Persistent_Name', $p)){ ?>
+                	<a href="<?php echo $this->Html->url('/projects/single_project/' . strtolower(str_replace(' ', '_', $p['Persistent_Name'])) )?>">
 						<?php echo $p['Persistent_Name'] ?>
 					</a>
+                <?php } ?>
                 <?php endforeach ?>
 			</div>
 		</div>

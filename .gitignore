@@ -11,5 +11,7 @@ app/webroot/.htaccess
 /app/webroot/img
 /.idea
 
+
 # Resource data files
 app/webroot/Resource_Data_*
+app/Config/database.php
