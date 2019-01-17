@@ -176,7 +176,11 @@ JST["admin/activity"] =
                     "<p class=\"username\"><%= f.name %></p>"+
                     "<p class=\"date\"><%= f.date %></p>"+
                     "<p class=\"type\"><%= f.type %></p>"+
-                    "<a class=\"link\" href=\"<%= arcs.baseURL + 'user/'+ f.username %>\">View User</a>"+
+                    "<% if( f.type == 'logins' ){ %>"+
+                        "<a class=\"link\" href=\"<%= arcs.baseURL + 'user/'+ f.username %>\">View User</a>"+
+                    "<% }else{ %>"+
+                        "<a class=\"link\" href=\"<%= arcs.baseURL + 'resource/'+ f.resource_kid %>\"><%= f.resource_kid %></a>"+
+                    "<% } %>"+
                 "</div>"+
             "<% }) %>"+
         "</div>"+
@@ -206,7 +210,7 @@ JST["admin/flags"] =
 		"<div class=\"admin-rows-content flag\">"+
 			"<% _.each(flags, function(f, i) { %>"+
 				"<div class=\"admin-row flag\">"+
-					"<p class=\"obj-name\"><%= f.resource_kid %></p>"+
+					"<a href=\"<%= arcs.baseURL + 'resource/' + f.resource_kid %>\" class=\"obj-name\"><%= f.resource_kid %></a>"+
 					"<a class=\"delete delete-flag-btn\" href=\"#\""+
                                 "data-id=\"<%= f.id %>\">Delete</a>"+
 					"<div class=\"status\" data-id=\"<%= f.id %>\">"+

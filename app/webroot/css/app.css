@@ -13624,6 +13624,11 @@ th.user-tabs-header {
   text-transform: uppercase;
   color: #1C95BA;
 }
+#user-info dl dd .score-number {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 25px;
+}
 #user-info dl dd input {
   border: 1px solid #0093be;
   color: #5d5d5d;
@@ -13636,6 +13641,9 @@ th.user-tabs-header {
   height: 28px;
   vertical-align: middle;
   margin-right: 2em;
+}
+#user-info dl dd a {
+  color: #0093be;
 }
 #user-info dl a[href^="mailto"] {
   text-transform: none;
@@ -13782,6 +13790,9 @@ th.user-tabs-header {
 #user-actions .tab-content #activity-tab .cont {
   border-bottom: 1px solid #ccc;
   min-height: 90px;
+}
+#user-actions .tab-content #activity-tab .cont a {
+  color: #0093be;
 }
 #user-actions .tab-content #activity-tab .cont p {
   position: relative;
@@ -15183,15 +15194,16 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 .admin-header {
   padding: 0 9%;
-  height: 134px;
+  height: 130px;
   color: #6D6D6D;
+  margin-top: -64px;
 }
 .admin-header.activity {
   padding: 0 13%;
 }
 .admin-header h1 {
   float: left;
-  margin-top: 58px;
+  margin-top: 50px;
   color: #3F3F3F;
   font-size: 24px;
 }
@@ -15311,6 +15323,7 @@ input.user-reg-btn.btn.btn-success:focus {
 .admin-header-users {
   margin: 0 9%;
   height: 150px;
+  margin-top: -84px;
 }
 .admin-header-users p {
   float: left;
@@ -15332,7 +15345,7 @@ input.user-reg-btn.btn.btn-success:focus {
   width: 97.09px;
   border-bottom: 2px solid #0094bc;
   position: absolute;
-  top: 225px;
+  top: 129px;
   left: calc(9% - 1px);
   transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);
 }
@@ -15782,7 +15795,6 @@ strong {
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.actions .meta-delete,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.actions .meta-delete {
   display: block;
-  font-weight: bold;
   color: #ED7474;
   margin-bottom: 8px;
   cursor: pointer;
@@ -15791,7 +15803,6 @@ strong {
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.actions .meta-approve,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.actions .meta-approve {
   display: block;
-  font-weight: bold;
   color: #0094BC;
   cursor: pointer;
 }

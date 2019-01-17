@@ -67,7 +67,6 @@
             annodata.forEach(function(a) {
               var d, date, linkText, monthNames, type, url;
               if (a['transcript'] === '' || a['transcript'] === null) {
-                console.log('wow');
                 activity.push({
                   time: a['created'],
                   time_string: a['time_string'],
@@ -133,8 +132,6 @@
                 }
                 count++;
               } else {
-                console.log('hererereer')
-                console.log(a)
                 transcriptionCount++;
                 activity.push({
                   time: a['created'],
@@ -310,7 +307,6 @@
           id: info.id
         },
         success: function(mdata) {
-          console.log('aaaaaa', mdata)
           var byResource = [];
           mdata.forEach(function(edit) {
             activity.push({
@@ -416,7 +412,6 @@
                   var div;
                   if (!(count >= 15)) {
                     div = $('#activity-tab .cont')[count];
-                    console.log(result);
                     $(div).find('img').attr('src', result['thumb']);
                     if (result['Title'] != null) {
                       $(div).find('span.name').html(result['Title']);
@@ -451,52 +446,52 @@
         }
       });
 
-      $.when(usersReady, flagsReady, annoReady, metaReady, keywordsReady, collectionsReady).then(function() {
-        var badgeNum;
-        if (resourcesUploaded >= 10) {
-          badgeNum = parseInt((resourcesUploaded-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesUploaded+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of resources uploaded'+badgeNum+'.png"><h3>Resources Uploaded</h3><p>Achievement Description</p></div>');
-        }
-        if (resourcesEdited >= 10) {
-          badgeNum = parseInt((resourcesEdited-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesEdited+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of resources edited for metadata'+badgeNum+'.png"><h3>Resources Edited</h3><p>Achievement Description</p></div>');
-        }
-        if (resourceKeywords >= 10) {
-          badgeNum = parseInt((resourceKeywords-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourceKeywords+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/keywords'+badgeNum+'.png"><h3>Keywords</h3><p>Achievement Description</p></div>');
-        }
-        if (resourcesFlagged >= 10) {
-          badgeNum = parseInt((resourcesFlagged-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesFlagged+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of flagged resources'+badgeNum+'.png"><h3>Resources Flagged</h3><p>Achievement Description</p></div>');
-        }
-        if (annotationsIn >= 10) {
-          badgeNum = parseInt((annotationsIn-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+annotationsIn+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/annotations in the system'+badgeNum+'.png"><h3>Internal Annotations</h3><p>Achievement Description</p></div>');
-        }
-        if (annotationsOut >= 10) {
-          badgeNum = parseInt((annotationsOut-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+annotationsOut+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/annotations outside the system'+badgeNum+'.png"><h3>External Annotations</h3><p>Achievement Description</p></div>');
-        }
-        if (transcriptionCount >= 10) {
-          badgeNum = parseInt((transcriptionCount-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+transcriptionCount+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/transcriptions'+badgeNum+'.png"><h3>Transcriptions Made</h3><p>Achievement Description</p></div>');
-        }
-        if (commentsInit >= 10) {
-          badgeNum = parseInt((commentsInit-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+commentsInit+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/initiated discussions'+badgeNum+'.png"><h3>Discussions Started</h3><p>Achievement Description</p></div>');
-        }
-        if (commentsReply >= 10) {
-          badgeNum = parseInt((commentsReply-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+commentsReply+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/responded to discussions'+badgeNum+'.png"><h3>Discussion Replies</h3><p>Achievement Description</p></div>');
-        }
-        if (collectionsMade >= 10) {
-          badgeNum = parseInt((collectionsMade-10) / 10) % 4 + 1;
-          $("#achievements-tab").append('<div class="badgeDiv"><span>'+collectionsMade+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/collections created'+badgeNum+'.png"><h3>Collections Created</h3><p>Achievement Description</p></div>');
-        }
-        if( $('.badgeImg').length == 0 ){
-          $("#achievements-tab").append('<h3>This user hasn\'t earned any achievements yet</h3>');
-        }
-      });
+      //$.when(usersReady, flagsReady, annoReady, metaReady, keywordsReady, collectionsReady).then(function() {
+      //  var badgeNum;
+      //  if (resourcesUploaded >= 10) {
+      //    badgeNum = parseInt((resourcesUploaded-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesUploaded+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of resources uploaded'+badgeNum+'.png"><h3>Resources Uploaded</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (resourcesEdited >= 10) {
+      //    badgeNum = parseInt((resourcesEdited-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesEdited+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of resources edited for metadata'+badgeNum+'.png"><h3>Resources Edited</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (resourceKeywords >= 10) {
+      //    badgeNum = parseInt((resourceKeywords-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourceKeywords+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/keywords'+badgeNum+'.png"><h3>Keywords</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (resourcesFlagged >= 10) {
+      //    badgeNum = parseInt((resourcesFlagged-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+resourcesFlagged+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/number of flagged resources'+badgeNum+'.png"><h3>Resources Flagged</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (annotationsIn >= 10) {
+      //    badgeNum = parseInt((annotationsIn-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+annotationsIn+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/annotations in the system'+badgeNum+'.png"><h3>Internal Annotations</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (annotationsOut >= 10) {
+      //    badgeNum = parseInt((annotationsOut-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+annotationsOut+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/annotations outside the system'+badgeNum+'.png"><h3>External Annotations</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (transcriptionCount >= 10) {
+      //    badgeNum = parseInt((transcriptionCount-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+transcriptionCount+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/transcriptions'+badgeNum+'.png"><h3>Transcriptions Made</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (commentsInit >= 10) {
+      //    badgeNum = parseInt((commentsInit-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+commentsInit+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/initiated discussions'+badgeNum+'.png"><h3>Discussions Started</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (commentsReply >= 10) {
+      //    badgeNum = parseInt((commentsReply-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+commentsReply+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/responded to discussions'+badgeNum+'.png"><h3>Discussion Replies</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if (collectionsMade >= 10) {
+      //    badgeNum = parseInt((collectionsMade-10) / 10) % 4 + 1;
+      //    $("#achievements-tab").append('<div class="badgeDiv"><span>'+collectionsMade+'</span><img class="badgeImg" src="/'+BASE_URL+'app/webroot/img/collections created'+badgeNum+'.png"><h3>Collections Created</h3><p>Achievement Description</p></div>');
+      //  }
+      //  if( $('.badgeImg').length == 0 ){
+      //    $("#achievements-tab").append('<h3>This user hasn\'t earned any achievements yet</h3>');
+      //  }
+      //});
     };
 
     fillArray = function(page, lastPage) {
@@ -615,7 +610,6 @@
       var arr;
       if (target === 'activity') {
         arr = activity;
-        //console.log('in activity set', arr);
         div = $('#activity-tab');
       } else if (target === 'annotations') {
         arr = annotations;

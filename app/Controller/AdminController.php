@@ -69,7 +69,7 @@ class AdminController extends AppController {
 
         $projectPicker = '<div id="projectSelectContainer" class="styled-select" style="display: block;
     float: right;
-    margin-top: 173px;
+    margin-top: 108px;
     margin-right: 9%;
     margin-left: 15px;
     padding-right: 20px;
@@ -204,18 +204,24 @@ class AdminController extends AppController {
             $userReturn[$key]['User']['status'] = $project_users[$user['User']['id']]['status'];
         }
 
-
         $cleanedReturn = array();//getting rid of the 'User'
         $i = 0;
+
         foreach ($userReturn as $user) {
             array_push($cleanedReturn, $user['User']);
             $cleanedReturn[$i]['profilePic'] = parent::checkForProfilePicture($cleanedReturn[$i]['username'], $cleanedReturn[$i]['email']);
+//            $cleanedReturn[$i]['profilePic'] = '';
             $i++;
         }
+
+
+
+
         reset($cleanedReturn);
         $firstKey = key($cleanedReturn);
         $cleanedReturn[$firstKey]['projectNames'] = $this->viewVars['projectNames'];
         $this->set('users', $cleanedReturn);
+
     }
 
 
@@ -464,7 +470,7 @@ class AdminController extends AppController {
                     "FROM users ".
                     "WHERE id IN ($mappingsArray) ".
                     "ORDER BY last_login DESC",
-                    $conn, 'logins'
+                    $conn, 'Logged In'
                 );
                 $resultsArray = array_merge($resultsArray, $table);
             }
@@ -475,7 +481,7 @@ class AdminController extends AppController {
                     "WHERE user_id IN ($mappingsArray) ".
                     "AND resource_kid LIKE '$hex%' ".
                     "ORDER BY modified DESC",
-                    $conn, 'annotations'
+                    $conn, 'Created New Annotation'
                 );
                 $resultsArray = array_merge($resultsArray, $table);
             }
@@ -495,7 +501,7 @@ class AdminController extends AppController {
                     "WHERE user_id IN (" .$mappingsArray. ") ".
                     "AND resource_kid LIKE '$hex%' ".
                     "ORDER BY modified DESC",
-                    $conn, 'metadata'
+                    $conn, 'Edited Metadata'
                 );
                 foreach( $table as $key => $value ){
                     $username = $userMappings[$value['user_id']]['username'];
@@ -512,7 +518,7 @@ class AdminController extends AppController {
                     "WHERE user_id IN (" .$mappingsArray. ") ".
                     "AND resource_kid LIKE '$hex%' ".
                     "ORDER BY created DESC",
-                    $conn, 'flags'
+                    $conn, 'Created New Flag'
                 );
                 $resultsArray = array_merge($resultsArray, $table);
             }

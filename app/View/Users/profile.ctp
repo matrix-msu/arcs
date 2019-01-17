@@ -74,20 +74,24 @@
 
             <dl class="score-description-list">
             	<dd>
-            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['annotationsCount']; ?> <span class="description-text">Annotations Made</span>
+            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['annotationsCount']; ?></div>
+                     <span class="description-text">Annotations Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['metadataCount']; ?> <span class="description-text">Metadata Edits Made</span>
+            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['metadataCount']; ?> </div>
+                    <span class="description-text">Metadata Edits Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['commentsCount']; ?> <span class="description-text">Comments Made</span>
+            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['commentsCount']; ?> </div>
+                     <span class="description-text">Comments Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['monthsCount']; ?><span class="description-text">Months On Site</span>
+            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['monthsCount']; ?> </div>
+                    <span class="description-text">Months On Site</span>
             	</dd>
             </dl>
         </div>
@@ -111,9 +115,9 @@
             <li id='collections' class=''>
                 <a href="#">Collections</a>
             </li>
-            <li id='achievements' class=''>
-                <a href="#">Achievements</a>
-            </li>
+<!--            <li id='achievements' class=''>-->
+<!--                <a href="#">Achievements</a>-->
+<!--            </li>-->
             <li id='activity' class=''>
                 <a href="#">Activity</a>
             </li>
@@ -124,7 +128,7 @@
             <?php echo $this->element('tabs/transcriptions-tab') ?>
             <?php echo $this->element('tabs/discussion-tab') ?>
             <?php echo $this->element('tabs/collection-tab') ?>
-            <?php echo $this->element('tabs/achievements-tab') ?>
+<!--            --><?php //echo $this->element('tabs/achievements-tab') ?>
             <?php echo $this->element('tabs/activity-tab') ?>
         </div>
     </div>
