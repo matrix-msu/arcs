@@ -20,6 +20,8 @@ class AddProjectsController extends AppController
         if (!$this->Access->isAdmin()) {
             $this->Session->setFlash('You must be an Admin to add projects ', 'flash_error');
             $this->redirect('/');
+        }else if(  @array_pop(explode('/',$_SERVER['REQUEST_URI'])) == "downloadLayoutFile"  ){
+            //
         } else {
             echo "<script>var JS_IS_ADD_PROJECT_PAGE = true;</script>";
         }
@@ -56,6 +58,28 @@ class AddProjectsController extends AppController
 //        header("Content-Type: application/force-download");
 //        header("Content-Length: " . filesize($koraProjectFiles));
 //        header("Connection: close");
+    }
+
+
+    //download the created export file and delete it
+    public function downloadLayoutFile(){
+//        if( file_exists ('../../ARCS_Layout.zip') ){
+//            echo 'exists';
+//        }else{
+//            echo shell_exec("pwd");
+//            echo 'doesn';
+//        }
+//        die;
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.'ARCS_Layout.zip'.'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize("../../ARCS_Layout.zip"));
+        readfile('../../ARCS_Layout.zip');
+        die;
     }
 
 
