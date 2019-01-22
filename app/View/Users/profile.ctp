@@ -4,33 +4,34 @@
 
     <div class="row" id="user-info">
         <div>
-            <div class="score-bubble">
-                <?php
-                    if( $user_info['username'] == 'noah.girard' ){
-                        echo '<p style="width: 68px;font-size: 14px;line-height: 15px;padding-top: 18px;font-weight:bold">
-                                Nothing. You suck.
-                              </p>';
-                    }else{
-                        echo $user_info['totalCount'];
-                    }
+            <div class="score-image-container">
+                <div class="score-bubble">
+                    <?php
+                        if( $user_info['username'] == 'noah.girard' ){
+                            echo '<p style="width: 68px;font-size: 14px;line-height: 15px;padding-top: 18px;font-weight:bold">
+                                    Nothing. You suck.
+                                  </p>';
+                        }else{
+                            echo $user_info['totalCount'];
+                        }
 
-                    $allProjects = array();
-                    foreach ($projects as $p) {
-                        array_push($allProjects, $p['Persistent_Name']);
-                    }
+                        $allProjects = array();
+                        foreach ($projects as $p) {
+                            array_push($allProjects, $p['Persistent_Name']);
+                        }
 
 
-                    $users_projects = array();
-                    foreach ($user_info['mappings'] as $p) {
-                        array_push($users_projects, $p['project']);
-                    }
-                ?>
+                        $users_projects = array();
+                        foreach ($user_info['mappings'] as $p) {
+                            array_push($users_projects, $p['project']);
+                        }
+                    ?>
+                </div>
+
+                <div class="profile-image-container">
+                  <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
+                </div>
             </div>
-
-            <div class="profile-image-container">
-              <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
-            </div>
-
             <dl class="user-project-info">
                 <dd>
                     <h2 id="userInfoName"><?php echo $user_info['name'];?></h2>
@@ -74,20 +75,24 @@
 
             <dl class="score-description-list">
             	<dd>
-            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['annotationsCount']; ?> <span class="description-text">Annotations Made</span>
+            		<?php echo $this->Html->image('annotationsProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['annotationsCount']; ?></div>
+                     <span class="description-text">Annotations Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['metadataCount']; ?> <span class="description-text">Metadata Edits Made</span>
+            		<?php echo $this->Html->image('metadataProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['metadataCount']; ?> </div>
+                    <span class="description-text">Metadata Edits Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['commentsCount']; ?> <span class="description-text">Comments Made</span>
+            		<?php echo $this->Html->image('discussionsProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['commentsCount']; ?> </div>
+                     <span class="description-text">Comments Made</span>
             	</dd>
             	<dd>
-            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px'));
-                    echo $user_info['monthsCount']; ?><span class="description-text">Months On Site</span>
+            		<?php echo $this->Html->image('timeOnSiteProfile.svg', array('width'=>'35px', 'height'=>'35px')); ?>
+                    <div class="score-number"><?php echo $user_info['monthsCount']; ?> </div>
+                    <span class="description-text">Months On Site</span>
             	</dd>
             </dl>
         </div>
@@ -111,9 +116,9 @@
             <li id='collections' class=''>
                 <a href="#">Collections</a>
             </li>
-            <li id='achievements' class=''>
-                <a href="#">Achievements</a>
-            </li>
+<!--            <li id='achievements' class=''>-->
+<!--                <a href="#">Achievements</a>-->
+<!--            </li>-->
             <li id='activity' class=''>
                 <a href="#">Activity</a>
             </li>
@@ -124,7 +129,7 @@
             <?php echo $this->element('tabs/transcriptions-tab') ?>
             <?php echo $this->element('tabs/discussion-tab') ?>
             <?php echo $this->element('tabs/collection-tab') ?>
-            <?php echo $this->element('tabs/achievements-tab') ?>
+<!--            --><?php //echo $this->element('tabs/achievements-tab') ?>
             <?php echo $this->element('tabs/activity-tab') ?>
         </div>
     </div>

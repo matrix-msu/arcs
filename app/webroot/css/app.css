@@ -2633,11 +2633,6 @@ input[type="search"] {
 .form-group {
   margin-bottom: 15px;
 }
-.hiddenWAVEcont {
-    display: none;
-    position: absolute;
-}
-
 .radio,
 .checkbox {
   position: relative;
@@ -13629,6 +13624,11 @@ th.user-tabs-header {
   text-transform: uppercase;
   color: #1C95BA;
 }
+#user-info dl dd .score-number {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 25px;
+}
 #user-info dl dd input {
   border: 1px solid #0093be;
   color: #5d5d5d;
@@ -13641,6 +13641,9 @@ th.user-tabs-header {
   height: 28px;
   vertical-align: middle;
   margin-right: 2em;
+}
+#user-info dl dd a {
+  color: #0093be;
 }
 #user-info dl a[href^="mailto"] {
   text-transform: none;
@@ -13787,6 +13790,9 @@ th.user-tabs-header {
 #user-actions .tab-content #activity-tab .cont {
   border-bottom: 1px solid #ccc;
   min-height: 90px;
+}
+#user-actions .tab-content #activity-tab .cont a {
+  color: #0093be;
 }
 #user-actions .tab-content #activity-tab .cont p {
   position: relative;
@@ -14176,6 +14182,8 @@ span.view-collection {
   display: inline-block;
   position: relative;
   vertical-align: top;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 .profile-collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb a img {
   height: 100px;
@@ -14281,6 +14289,19 @@ span.view-collection {
   }
 }
 @media screen and (max-width: 960px) {
+  .score-image-container {
+    display: inline-block;
+  }
+  #user-info {
+    text-align: center;
+  }
+  #user-info .profile-image-container,
+  .user-project-info,
+  .score-description-list,
+  #user-info dl {
+    float: none;
+    margin-right: 0;
+  }
   .user-project-info {
     clear: left;
   }
@@ -14309,7 +14330,8 @@ span.view-collection {
     margin-top: 8.5px;
     text-transform: uppercase;
     color: #0093be;
-    font-size: 1.5em;
+    font-size: 16px;
+    font-weight: 400;
     display: inline-block;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
@@ -15188,15 +15210,16 @@ input.user-reg-btn.btn.btn-success:focus {
 }
 .admin-header {
   padding: 0 9%;
-  height: 134px;
+  height: 130px;
   color: #6D6D6D;
+  margin-top: -64px;
 }
 .admin-header.activity {
   padding: 0 13%;
 }
 .admin-header h1 {
   float: left;
-  margin-top: 58px;
+  margin-top: 50px;
   color: #3F3F3F;
   font-size: 24px;
 }
@@ -15316,6 +15339,7 @@ input.user-reg-btn.btn.btn-success:focus {
 .admin-header-users {
   margin: 0 9%;
   height: 150px;
+  margin-top: -84px;
 }
 .admin-header-users p {
   float: left;
@@ -15337,7 +15361,7 @@ input.user-reg-btn.btn.btn-success:focus {
   width: 97.09px;
   border-bottom: 2px solid #0093be;
   position: absolute;
-  top: 225px;
+  top: 129px;
   left: calc(9% - 1px);
   transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);
 }
@@ -15800,7 +15824,6 @@ strong {
 .admin-rows-wrap .admin-rows-content.meta .admin-row a.actions .meta-delete,
 .admin-rows-wrap .admin-rows-content.meta .admin-row div.actions .meta-delete {
   display: block;
-  font-weight: bold;
   color: #ED7474;
   margin-bottom: 8px;
   cursor: pointer;
@@ -16600,6 +16623,24 @@ strong {
 .form-container .form-wrapper .bottom .cont-btn-container .cont-install-btn p {
   font-size: 16px;
   margin: auto;
+}
+.continue-to-projConfig-btn,
+.continue-to-create-btn {
+  width: 263px;
+  height: 49px;
+  background: #0094BC;
+  border: 1px solid #0094BC;
+  color: white;
+}
+.continue-to-projConfig-btn p,
+.continue-to-create-btn p {
+  font-size: 16px;
+  margin: auto;
+}
+.config-form-wrapper {
+  margin: 0 auto;
+  padding-top: 70px;
+  max-width: 500px;
 }
 .accordion-wrapper {
   width: 90%;

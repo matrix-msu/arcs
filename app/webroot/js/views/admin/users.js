@@ -221,7 +221,7 @@ $(document).ready(function() {
         $('#projectSelectContainer').css({
             'display' : 'block',
             'float' : 'right',
-            'margin-top' : '173px',
+            'margin-top' : '108px',
             'margin-right' : '9%',
             'padding-right' : '20px',
             'cursor' : 'pointer',
@@ -303,14 +303,30 @@ $(document).ready(function() {
         }
     });
 
+    var lastSort = '';
+
 	$('.users-head').on('click', function(e) {
 		if($('.name').is(e.target)) {
 			sortBy('a.name');
+            lastSort = 'name';
 		} else if($('.username').is(e.target)) {
 			sortBy('p.username');
-
+            lastSort = 'username';
 		} else if($('.joined').is(e.target)) {
-			sortBy('p.joined');
+            if (lastSort == 'joined'){
+                console.log('dong the reverse')
+
+
+
+
+
+
+                sortBy('p.joined', true);
+                lastSort = '';
+            } else {
+                sortBy('p.joined');
+                lastSort = 'joined'
+            }
 		} else if($('.select-all').is(e.target)) {
 			if($('.bullet').length == $('.bullet.selected').length) {
 				$('.bullet').removeClass('selected');
@@ -737,6 +753,9 @@ $(document).ready(function() {
             data: {'project':project},
             success: function () {
               window.location.reload();
+            },
+            error: function() {
+                window.location.reload();
             }
         });
     });
@@ -780,6 +799,9 @@ $(document).ready(function() {
                     if(i >= length){
                         window.location.reload();
                     }
+                },
+                error: function() {
+                    window.location.reload();
                 }
             });
         })

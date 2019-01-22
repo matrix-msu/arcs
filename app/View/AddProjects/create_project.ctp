@@ -1,18 +1,16 @@
-<?php  echo $this->Html->script("views/installation/installation.js"); ?>
+<?php  echo $this->Html->script("views/add_project/add_project.js"); ?>
 <head>
     <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 </head>
 <div class="create-body-content">
-<!--    --><?php //print_r($_SESSION);die; ?>
+    <!--    --><?php //print_r($_SESSION);die; ?>
     <div class="install-progress-bar">
         <ul>
-<!--            <li>Kora Configuration</li>-->
-<!--            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>-->
             <li>Field Configuration</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li class="current-step">Create Project Record</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
-            <li>ARCS Configuration</li>
+<!--            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>-->
+<!--            <li>ARCS Configuration</li>-->
         </ul>
     </div>
     <div class="form-container">
@@ -21,7 +19,7 @@
             <div class="form-prompt">
                 <div class="form-prompt-wrapper">
                     <p class="prompt1">
-                        Enter information about your first ARCS project below.
+                        Enter information about your new ARCS project below.
                     </p>
                     <p class="prompt2">
                         For each field, type an option followed by a comma or choose from the dropdown.
@@ -29,7 +27,7 @@
                 </div>
             </div>
             <div class="form-wrapper">
-                <form action="./config" method="post">
+                <form action="./finalize" method="post">
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Name</p>
@@ -41,12 +39,12 @@
                             <p>Country</p>
                             <select name="Country" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Country</option>
-                                    <?php
-                                        $countries = $_SESSION['FieldConfig']['Country'];
-                                    foreach ($countries as $country) {
-                                        echo "<option>$country</option>";
-                                        }
-                                    ?>
+                                <?php
+                                $countries = $_SESSION['FieldConfig']['Country'];
+                                foreach ($countries as $country) {
+                                    echo "<option>$country</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -94,11 +92,11 @@
                             <p>Earliest Date</p>
                             <div class="date-select">
                                 <select name="Earliest Date Year" class="year-project-dropdown">
-                                <option value="" disabled selected>Select Year</option>
+                                    <option value="" disabled selected>Select Year</option>
                                     <?php
-                                        $currentYear = intval(date("Y"));
-                                        for ($year = 1930; $year <= $currentYear; $year++){
-                                            echo "<option>$year</option>";
+                                    $currentYear = intval(date("Y"));
+                                    for ($year = 1930; $year <= $currentYear; $year++){
+                                        echo "<option>$year</option>";
                                     }
                                     ?>
                                 </select>
@@ -111,7 +109,7 @@
                                     ?>
                                 </select>
                                 <select name="Earliest Date Day" class="day-project-dropdown">
-                                <option value="" disabled selected>Select Day</option>
+                                    <option value="" disabled selected>Select Day</option>
                                     <?php
                                     for ($day = 1; $day <= 31; $day++){
                                         echo "<option>$day</option>";
@@ -126,7 +124,7 @@
                             <p>Latest Date</p>
                             <div class="date-select">
                                 <select name="Latest Date Year" class="year-project-dropdown">
-                                <option value="" disabled selected>Select Year</option>
+                                    <option value="" disabled selected>Select Year</option>
                                     <?php
                                     $currentYear = intval(date("Y"));
                                     for ($year = 1930; $year <= $currentYear; $year++){
@@ -135,19 +133,7 @@
                                     ?>
                                 </select>
                                 <select name="Latest Date Month" class="month-project-dropdown">
-                                <option value="" disabled selected>Select Month</option>
-<!--                                    <option>January</option>-->
-<!--                                    <option>February</option>-->
-<!--                                    <option>March</option>-->
-<!--                                    <option>April</option>-->
-<!--                                    <option>May</option>-->
-<!--                                    <option>June</option>-->
-<!--                                    <option>July</option>-->
-<!--                                    <option>August</option>-->
-<!--                                    <option>September</option>-->
-<!--                                    <option>October</option>-->
-<!--                                    <option>November</option>-->
-<!--                                    <option>December</option>-->
+                                    <option value="" disabled selected>Select Month</option>
                                     <?php
                                     for ($month = 1; $month <= 12; $month++){
                                         echo "<option>$month</option>";
@@ -155,7 +141,7 @@
                                     ?>
                                 </select>
                                 <select name="Latest Date Day" class="day-project-dropdown">
-                                <option value="" disabled selected>Select Day</option>
+                                    <option value="" disabled selected>Select Day</option>
                                     <?php
                                     for ($day = 1; $day <= 31; $day++){
                                         echo "<option>$day</option>";
@@ -184,7 +170,7 @@
                     </div>
                     <div class="row">
                         <div class="input-full inputDiv">
-                          <span class="dot"></span>
+                            <span class="dot"></span>
                             <p>Persistent Name</p>
                             <input name="Persistent Name" class="req" type="text" placeholder="Enter the Persistent Name"/>
                         </div>
@@ -195,22 +181,6 @@
                             <input name="Complex Title" type="text" placeholder="Enter the Complex Title"/>
                         </div>
                     </div>
-<!--                    -->
-<!--                    <div class="row">-->
-<!--                        <div class="input-full inputDiv">-->
-<!--                            <p>Terminus Ante Quem</p>-->
-<!--                            <div class="period-select">-->
-<!--                                <input name="Terminus Ante Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>-->
-<!--                                <select name="Terminus Ante Quem Period" class="period-project-dropdown">-->
-<!--                                    <option value="" disabled selected>Select Period</option>-->
-<!--                                    <option>BCE</option>-->
-<!--                                    <option>CE</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-
 
                     <div class="row">
                         <div class="input-full inputDiv">
@@ -248,21 +218,7 @@
                             </div>
                         </div>
                     </div>
-<!---->
-<!--                    <div class="row">-->
-<!--                        <div class="input-full inputDiv">-->
-<!--                            <p>Terminus Post Quem</p>-->
-<!--                            <div class="period-select">-->
-<!--                                <input name="Terminus Post Quem Date" class="date-input" type="text" placeholder="Enter the Date"/>-->
-<!--                                <select name="Terminus Post Quem Period" class="period-project-dropdown">-->
-<!--                                    <option value="" disabled selected>Select Period</option>-->
-<!--                                    <option>BCE</option>-->
-<!--                                    <option>CE</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!---->
+
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Terminus Post Quem</p>
@@ -356,7 +312,7 @@
                         <div class="cont-btn-container">
                             <p class="required-notice">Please fill out all required fields.</p>
                             <button class="cont-install-btn" type="submit">
-                                <p>Continue to ARCS Configuration</p>
+                                <p>Finished</p>
                             </button>
                         </div>
                     </div>

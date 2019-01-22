@@ -613,7 +613,17 @@ class AppController extends Controller
     }
 
 
+    public static function db_group_error_detection()
+    {
+        echo 'in group error detection';
+        $command = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))";
 
+        $command = "cd arcs && ls";
+        $output  = shell_exec($command);
+
+        print_r($output);
+        die;
+    }
 
 
 }

@@ -89,8 +89,14 @@ th.user-tabs-header {
                 text-transform: uppercase;
                 color: #1C95BA;
             }
+            
+            .score-number {
+                display: inline-block;
+                vertical-align: middle;
+                font-size:25px;
+            }
 
-			input, {
+			input {
 				border: 1px solid @arcs-blue;
 				color: #5d5d5d;
 				background-color: #ceeaef;
@@ -103,6 +109,10 @@ th.user-tabs-header {
 				height: 28px;
 				vertical-align: middle;
 				margin-right: 2em;
+            }
+
+            a {
+                color: @ArcsBlue;
             }
         }
 
@@ -271,6 +281,10 @@ th.user-tabs-header {
             .cont {
                 border-bottom: 1px solid #ccc;
                 min-height: 90px;
+                
+                a {
+                    color: @ArcsBlue;
+                }
 
                 p {
                     position: relative;
@@ -697,6 +711,8 @@ span.view-collection {
                         display: inline-block;
                         position: relative;
                         vertical-align: top;
+                        margin-right: 10px;
+                        margin-left: 10px;
                         a img {
                             height: 100px;
                         }
@@ -822,6 +838,22 @@ span.view-collection {
 }
 
 @media screen and (max-width: 960px) {
+    .score-image-container {
+        display: inline-block;
+    }
+    
+    #user-info {
+        text-align: center;
+    }
+
+    #user-info .profile-image-container,
+    .user-project-info,
+    .score-description-list,
+    #user-info dl {
+        float: none;
+        margin-right: 0;
+    }
+
     .user-project-info {
         clear: left;
     }
@@ -850,7 +882,8 @@ span.view-collection {
         margin-top: 8.5px;
         text-transform: uppercase;
         color: @ArcsBlue;
-        font-size: 1.5em;
+        font-size: 16px;
+        font-weight: 400;
         display: inline-block;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
