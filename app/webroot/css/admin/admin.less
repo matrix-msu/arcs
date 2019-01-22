@@ -106,11 +106,11 @@
 					}
 
 					&.active {
-						color: #0094bc;
+						color: @arcs-blue;
 					}
 
 					&:hover {
-						color: #0094bc;
+						color: @arcs-blue;
 					}
 				}
 			}
@@ -147,11 +147,11 @@
                         display: block;
 
                         &.active {
-                            color: #0094bc;
+                            color: @arcs-blue;
                         }
 
                         &:hover {
-                            color: #0094bc;
+                            color: @arcs-blue;
                         }
                     }
                 }
@@ -223,7 +223,7 @@
 		box-sizing: border-box;
         height: 3px;
         width: 97.09px;
-        border-bottom: 2px solid #0094bc;
+        border-bottom: 2px solid @arcs-blue;
 		position: absolute;
 		top: 129px;
 		left: calc(~"9% - 1px");
@@ -275,7 +275,7 @@
 }
 
 strong {
-    color: #0094BC;
+    color: @arcs-blue;
 }
 
 .users-head {
@@ -340,27 +340,33 @@ strong {
 		cursor: pointer;
 
         &.resource-kid {
-            width: calc(10% * 90/95);
+            width: calc(9% * 90/95);
+        }
+        &.resource-name {
+          width: calc(10% * 90/95);
         }
         &.username {
-            width:  calc(9% *90/95);
+            width:  calc(7% *90/95);
         }
         &.metadata-kid {
-            width:  calc(9% *90/95);
+            width:  calc(8% *90/95);
         }
         &.field-name {
-            width:  calc(11% *90/95);
+            width:  calc(9% *90/95);
         }
         &.value-before {
-            width:  calc(14% *90/95);
+            width:  calc(12% *90/95);
         }
         &.new-value {
-            width: calc(13.021053%);
+            width: calc(12% *90/95);
             //width:  calc(11% *90/95);
         }
         &.metadata-time {
-          width: calc(13.5%);
+          width: calc(10% *90/95);
           //width:  calc(11% *90/95);
+        }
+        &.actions {
+          width: calc(8% *90/95);
         }
         &.search {
             cursor: text;
@@ -405,7 +411,7 @@ strong {
         }
         &.accept-sel{
             margin-right: 2%;
-            color: #0094BC;
+            color: @arcs-blue;
         }
         &.decline-sel{
             margin-right: 5%;
@@ -440,7 +446,7 @@ strong {
 
 				.obj-name {
 					font-weight: bold;
-					color: #0094BC;
+					color: @arcs-blue;
 					display: inline-block;
 					margin-bottom: 24px;
 				}
@@ -478,7 +484,7 @@ strong {
 						}
 
 						.pending {
-							color: #0094bc;
+							color: @arcs-blue;
 						}
 						.resolved {
 							color: #00BC25;
@@ -504,7 +510,7 @@ strong {
                     a {
                         text-decoration: none;
                         font-weight: bold;
-                        color: #0094bc;
+                        color: @arcs-blue;
                     }
 				}
 			}
@@ -538,7 +544,7 @@ strong {
 					&.link {
 						width: calc(~"(89% - 45px) * 0.25");
                         text-align: center;
-                        color: #0094bc;
+                        color: @arcs-blue;
                         cursor: pointer;
                         text-decoration: none;
 					}
@@ -565,7 +571,7 @@ strong {
 
 					&.name {
                         width: calc(~"(95% - 45px)*0.24");
-						color: #0094bc;
+						color: @arcs-blue;
 						cursor: pointer;
 					}
 					&.username {
@@ -576,7 +582,7 @@ strong {
 					}
 					&.edit-prof-btn {
                         width: calc(~"(95% - 45px)*0.28");
-                        color: #0094bc;
+                        color: @arcs-blue;
                         text-align: center;
                         cursor: pointer;
 					}
@@ -605,7 +611,7 @@ strong {
 					margin: 0 2% -4px -1px;
 
                     &.selected {
-                        background: #0094bc;
+                        background: @arcs-blue;
                     }
                 }
 
@@ -629,7 +635,7 @@ strong {
 					&.accept {
 						width: calc(~"(98% - 16px)*0.1");
 						text-align: center;
-                        color: #0094bc;
+                        color: @arcs-blue;
                         cursor: pointer;
 						float: right;
 					}
@@ -656,25 +662,28 @@ strong {
                     word-wrap: break-word;
 
                     &.resource-kid {
+                        width: 9%;
+                    }
+                    &.resource-name {
                         width: 10%;
                     }
                     &.username {
-                        width: 9%;
+                       width: 7%;
                     }
                     &.metadata-kid {
-                        width: 9%;
+                        width: 8%;
                     }
                     &.field-name {
-                        width: 11%;
+                        width: 9%;
                     }
                     &.value-before {
-                        width: 14%;
+                        width: 12%;
                     }
                     &.new-value {
-                        width: 14%;
+                        width: 12%;
                     }
                     &.metadata-time {
-                      width: 12%;
+                      width: 9%;
                     }
                     &.actions {
                         width: 8%;
@@ -689,7 +698,8 @@ strong {
                         }
                         .meta-approve {
                             display: block;
-                            color: #0094BC;
+                            font-weight: bold;
+                            color: @arcs-blue;
                             cursor: pointer;
                         }
                     }
@@ -787,7 +797,7 @@ strong {
 			&:hover {
 
 				label strong {
-					color: #0094bc75;
+					color: @arcs-blue;
 				}
 			}
 		}
@@ -884,7 +894,7 @@ strong {
             cursor: pointer;
 
 			&.active {
-				background-color: #0094bc;
+				background-color: @arcs-blue;
 				color: #f2f2f2;
 			}
 		}

@@ -33,7 +33,9 @@ class Resource extends AppModel {
         'title',
         'context',
         'type',
-        'first_req'
+        'first_req',
+        'resource_name',
+        'resource_title',
     );
 
     /**

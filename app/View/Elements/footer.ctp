@@ -2,17 +2,17 @@
     <?php
 	echo "<div class='footer-logo'>";
     echo $this->Html->link(
-        $this->Html->image('Footer-NEH.svg', array('class' => 'neh')),
+        $this->Html->image('Footer-NEH.svg', array('class' => 'neh', 'alt' => 'NEHLogo')),
         'http://neh.gov',
         array('escape' => false)
     );
     echo $this->Html->link(
-        $this->Html->image('Matrix.svg', array('class' => 'matrix')),
+        $this->Html->image('Matrix.svg', array('class' => 'matrix', 'alt' => 'matrixLogo')),
         'http://matrix.msu.edu',
         array('escape' => false)
     );
     echo $this->Html->link(
-        $this->Html->image('cal-white-masthead.png', array('class' => 'cal')),
+        $this->Html->image('cal-white-masthead.png', array('class' => 'cal', 'alt' => 'CALLogo')),
         'http://cal.msu.edu',
         array('escape' => false)
     );
@@ -21,7 +21,7 @@
 
 	echo '<br>';
 	echo $this->Html->link(
-		$this->Html->image('MSU.svg', array('class' => 'msu')),
+		$this->Html->image('MSU.svg', array('class' => 'msu', 'alt' => 'MSULogo')),
 		'http://www.msu.edu',
 		array('escape' => false)
 	);

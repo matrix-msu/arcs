@@ -255,6 +255,7 @@ JST["admin/flags"] =
 JST["admin/metadata_edits"] =
     "<div class=\"metadata-head\">"+
     "<p class=\"resource-kid\">RESOURCE KID</p>"+
+    "<p class=\"resource-name\">RESOURCE TITLE</p>"+
         "<p class=\"username\">USERNAME</p>"+
         "<p class=\"metadata-kid\">METADATA KID</p>"+
         "<p class=\"field-name\">FIELD NAME</p>"+
@@ -268,6 +269,7 @@ JST["admin/metadata_edits"] =
             "<% _.each(metadata_edits, function(f, i) { console.log(f) %>  "+
                 "<div class=\"admin-row meta\" data-id=\"<%= f.MetadataEdit.id %>\">"+
                     "<a class=\"resource-kid\" target=\"_blank\" href=\"<%= arcs.baseURL + 'resource/'+ f.MetadataEdit.resource_kid %>\"><%= f.MetadataEdit.resource_kid %></a>"+
+                    "<p class=\"resource-name\"><%= f.MetadataEdit.resource_name %></p>"+
                     "<p class=\"username\"><%= f.MetadataEdit.user_name %></p>"+
                     "<p class=\"metadata-kid\"><%= f.MetadataEdit.metadata_kid %></p>"+
                     "<p class=\"field-name\"><%= f.MetadataEdit.field_name %></p>"+
@@ -280,11 +282,11 @@ JST["admin/metadata_edits"] =
                         "<% }else if( f.MetadataEdit.approved == 1 ){ %>"+
                             "Approved"+
                         "<% }else{ %>"+
+                            "<a class=\"meta-approve approve-flag-btn\" " +
+                            "data-id=\"<%= f.MetadataEdit.id %>\">Approve</a>"+
                             "<a class=\"meta-delete delete-flag-btn\"" +
                                 "data-id=\"<%= f.MetadataEdit.id %>\"" +
                                 "data-email='<%= f.MetadataEdit.email %>'>Delete</a>"+
-                            "<a class=\"meta-approve approve-flag-btn\" " +
-                                "data-id=\"<%= f.MetadataEdit.id %>\">Approve</a>"+
                         "<% } %>"+
                     "</div>"+
                 "</div>"+

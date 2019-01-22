@@ -1,6 +1,6 @@
 <div id="resource_permission_model" class="permissionModal">
     <div class="permission-content">
-        <div class="modal-exit"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
+        <div class="modal-exit"><p><a id="#close"><?= $this->Html->image('Close.svg', array('alt' => 'CloseimagePermission'));?></a></p></div>
         <div class="permission-modal-header">
             <h1 id="resourcePermHeader">Oh no! This resource is locked!</h1>
         </div>

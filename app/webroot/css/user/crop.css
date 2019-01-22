@@ -31,7 +31,7 @@
 
 .resize-container:hover img,
 .resize-container:active img {
-    outline: 2px dashed #0094bc;
+    outline: 2px dashed @arcs-blue;
 }
 
 .resize-handle-ne,
@@ -42,7 +42,7 @@
     display: block;
     width: 10px;
     height: 10px;
-    background: #0094bc;
+    background: @arcs-blue;
     z-index: 999;
 }
 
@@ -79,7 +79,7 @@
     z-index: 999;
     width: 200px;
     height: 200px;
-    border: solid 2px #0094bc;
+    border: solid 2px @arcs-blue;
     box-sizing: content-box;
     pointer-events: none;
 }
@@ -91,8 +91,8 @@
     display: block;
     width: 204px;
     height: 40px;
-    border-left: dashed 2px #0094bc;
-    border-right: dashed 2px #0094bc;
+    border-left: dashed 2px @arcs-blue;
+    border-right: dashed 2px @arcs-blue;
 }
 
 .overlay:before {
@@ -114,8 +114,8 @@
     display: block;
     width: 40px;
     height: 204px;
-    border-top: dashed 2px #0094bc;
-    border-bottom: dashed 2px #0094bc;
+    border-top: dashed 2px @arcs-blue;
+    border-bottom: dashed 2px @arcs-blue;
 }
 
 .overlay-inner:before {
@@ -137,7 +137,7 @@
     bottom: 5px;
     padding: 6px 10px;
     z-index: 999;
-    background-color: #0094bc;
+    background-color: @arcs-blue;
     border: none;
     border-radius: 5px;
     color: #FFF;
