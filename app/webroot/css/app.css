@@ -7620,7 +7620,7 @@ input.indexSearchBox {
   right: 12px;
   top: 6px;
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 965px) {
   div#toolbar {
     position: fixed;
     top: 0;
@@ -16946,6 +16946,15 @@ a {
 }
 h1 {
   margin: 0;
+}
+.hiddenWAVEcont {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  left: -1000px;
+  top: -1000px;
 }
 /* /////////////////////////////////////HEADER
 //////////////////////////////////////////////*/
