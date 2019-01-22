@@ -4,33 +4,34 @@
 
     <div class="row" id="user-info">
         <div>
-            <div class="score-bubble">
-                <?php
-                    if( $user_info['username'] == 'noah.girard' ){
-                        echo '<p style="width: 68px;font-size: 14px;line-height: 15px;padding-top: 18px;font-weight:bold">
-                                Nothing. You suck.
-                              </p>';
-                    }else{
-                        echo $user_info['totalCount'];
-                    }
+            <div class="score-image-container">
+                <div class="score-bubble">
+                    <?php
+                        if( $user_info['username'] == 'noah.girard' ){
+                            echo '<p style="width: 68px;font-size: 14px;line-height: 15px;padding-top: 18px;font-weight:bold">
+                                    Nothing. You suck.
+                                  </p>';
+                        }else{
+                            echo $user_info['totalCount'];
+                        }
 
-                    $allProjects = array();
-                    foreach ($projects as $p) {
-                        array_push($allProjects, $p['Persistent_Name']);
-                    }
+                        $allProjects = array();
+                        foreach ($projects as $p) {
+                            array_push($allProjects, $p['Persistent_Name']);
+                        }
 
 
-                    $users_projects = array();
-                    foreach ($user_info['mappings'] as $p) {
-                        array_push($users_projects, $p['project']);
-                    }
-                ?>
+                        $users_projects = array();
+                        foreach ($user_info['mappings'] as $p) {
+                            array_push($users_projects, $p['project']);
+                        }
+                    ?>
+                </div>
+
+                <div class="profile-image-container">
+                  <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
+                </div>
             </div>
-
-            <div class="profile-image-container">
-              <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
-            </div>
-
             <dl class="user-project-info">
                 <dd>
                     <h2 id="userInfoName"><?php echo $user_info['name'];?></h2>

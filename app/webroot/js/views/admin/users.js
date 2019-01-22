@@ -315,13 +315,18 @@ $(document).ready(function() {
 		} else if($('.joined').is(e.target)) {
             if (lastSort == 'joined'){
                 console.log('dong the reverse')
-                //sortBy('p.joined');
-                reverseRows();
 
+
+
+
+
+
+                sortBy('p.joined', true);
+                lastSort = '';
             } else {
                 sortBy('p.joined');
+                lastSort = 'joined'
             }
-            lastSort = 'joined'
 		} else if($('.select-all').is(e.target)) {
 			if($('.bullet').length == $('.bullet.selected').length) {
 				$('.bullet').removeClass('selected');
@@ -748,6 +753,9 @@ $(document).ready(function() {
             data: {'project':project},
             success: function () {
               window.location.reload();
+            },
+            error: function() {
+                window.location.reload();
             }
         });
     });
@@ -791,6 +799,9 @@ $(document).ready(function() {
                     if(i >= length){
                         window.location.reload();
                     }
+                },
+                error: function() {
+                    window.location.reload();
                 }
             });
         })

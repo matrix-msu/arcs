@@ -595,7 +595,7 @@ class UsersController extends AppController
             //assign their profile picture to their new username
             rename($uploads_path . $fileName, $uploads_path . $this->request->data['username'] . '.' . $fileExtension);
         }
-        $this->Session->setFlash('Profile edited successfully.', 'flash_success');
+//        $this->Session->setFlash('Profile edited successfully.', 'flash_success');
 
 
         $changedName = false;

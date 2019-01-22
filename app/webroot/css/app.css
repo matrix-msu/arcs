@@ -14182,6 +14182,8 @@ span.view-collection {
   display: inline-block;
   position: relative;
   vertical-align: top;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 .profile-collection-list-wrapper .collection-list details[open] ul.resource-thumbs li.resource-thumb a img {
   height: 100px;
@@ -14287,6 +14289,19 @@ span.view-collection {
   }
 }
 @media screen and (max-width: 960px) {
+  .score-image-container {
+    display: inline-block;
+  }
+  #user-info {
+    text-align: center;
+  }
+  #user-info .profile-image-container,
+  .user-project-info,
+  .score-description-list,
+  #user-info dl {
+    float: none;
+    margin-right: 0;
+  }
   .user-project-info {
     clear: left;
   }
@@ -14315,7 +14330,8 @@ span.view-collection {
     margin-top: 8.5px;
     text-transform: uppercase;
     color: #0093be;
-    font-size: 1.5em;
+    font-size: 16px;
+    font-weight: 400;
     display: inline-block;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }

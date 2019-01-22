@@ -122,7 +122,8 @@ function sortByDate() {
 }
 
 //sorts rows increasing by html of dom child specified by cat(ex.'p.username')
-function sortBy(cat) {
+function sortBy(cat, reverse=false) {
+    console.log('sort by', cat)
 
     if($('.all-users')[0]) {
         $('.admin-rows-content.all-users').append(mergeSort(rows,cat));
@@ -134,6 +135,28 @@ function sortBy(cat) {
 		$('.admin-rows-content').append(mergeSort(rows,cat));
 		rows = $('.admin-row');
 	}
+
+    if (reverse) {
+        //var objArray = Object.keys(rows).map(function(key) {
+        //    return [rows[key]];
+        //});
+        //
+        //objArray.reverse()
+        //
+        //var reversedRows = Object.assign({}, objArray)
+        //console.log('aobbb', objArray)
+        //console.log('new thing', reversedRows)
+        //rows = reversedRows;
+
+
+        var rows = $('.admin-rows-content.users.all-users');
+        console.log('hhhhhmmm', rows)
+        var listItems = rows.children('div.admin-row');
+        console.log('liii', listItems)
+        rows.append(listItems.get().reverse());
+    }
+
+    console.log('rows', rows, typeof(rows))
 
 	setUpPagination(25);
 }

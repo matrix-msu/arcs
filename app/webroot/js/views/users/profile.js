@@ -355,6 +355,7 @@
           resourceKeywords = byResource.length;
         }
       });
+      console.log('111')
       var collectionsReady = $.ajax({
         url: info.url + 'collections/findallbyuser',
         type: 'POST',
@@ -363,8 +364,10 @@
         },
         success: function(collections) {
           collections = JSON.parse(collections);
+          console.log('collectio', collections)
           collectionsMade = collections.count;
-          if( collectionsMade === '0' ){
+          console.log('here', collectionsMade)
+          if( collectionsMade === '0' || collectionsMade == 0 ){
             $('#collections-tab-contents').html('<h3>This user hasn\'t made any collections yet</h3>');
             return;
           }
@@ -414,7 +417,7 @@
                     div = $('#activity-tab .cont')[count];
                     $(div).find('img').attr('src', result['thumb']);
                     if (result['Title'] != null) {
-                      $(div).find('span.name').html(result['Title']);
+                      $(div).find('span.name a').text(result['Title']);
                     }
                   }
                   if (result['Title'] != null) {
@@ -428,15 +431,20 @@
           if (!(count >= 15)) {
             content += '<div class=\'cont\'>' +
                 '<p><span class=\'time\'>' + date + '</span>' +
-                    '<span class=\'' + a['type'] + '\'></span>';
-                    if (a['type'] !== 'log'){
-                      content+='<a href="' + arcs.baseURL + 'resource/' + a['kid'] + '"><span class=\'text\' title="'+ a['name']+'">' + a['text'] + '</span></a>'; 
-                    }
-                    else{
-                      content+='<span class=\'text\'>' + a['text'] + '</span>';
-                    }
+                    '<span class=\'' + a['type'] + '\'></span>' +
+                    '<span class=\'text\'>' + a['text'] + '</span>';
+            if (a['type'] !== 'log'){
+                var name = a['name'];
+                if (name == null) {
+                  name = 'Object Name';
+                }
+                content+='<span class="name"><a href="' + arcs.baseURL + 'resource/' + a['kid'] + '">' + name + '</a></span>';
+            }
+                    //else{
+                    //  content+='<span class=\'text\'>' + a['text'] + '</span>';
+                    //}
                     
-                    content += extra +'</p></div>';
+            content += extra +'</p></div>';
           }
           count++;
         });

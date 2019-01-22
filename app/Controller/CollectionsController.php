@@ -565,7 +565,11 @@ class CollectionsController extends AppController {
             }
         }
 
-        $count = count($test);
+        if (isset($test)){
+            $count = count($test);
+        } else {
+            $count = 0;
+        }
 //        $sql = $mysqli->prepare("SELECT COUNT(DISTINCT collection_id)
 //                                FROM  collections
 //                                WHERE user_id = ?;");
