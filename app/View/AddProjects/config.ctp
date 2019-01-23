@@ -15,7 +15,7 @@
         <input type="text" name="add-pid" required><br>
         <p>New Project Token</p>
         <input type="text" name="add-token" required>
-
+        <br>
         <button class="continue-to-create-btn" type="submit">
             <p>Continue</p>
         </button>
