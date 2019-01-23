@@ -3,9 +3,7 @@
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="index-body-content">
     <div class="install-welcome-text">
-        <h1>Add the pid!</h1>
-        <br>
-        <h4>Add the token!</h4>
+        <h1>Configure ARCs with your KORA project:!</h1>
     </div>
 </div>
 
@@ -15,11 +13,11 @@
         <input type="text" name="add-pid" required><br>
         <p>New Project Token</p>
         <input type="text" name="add-token" required>
-        <br>
+        <br><br>
         <button class="continue-to-create-btn" type="submit">
             <p>Continue</p>
         </button>
-
+        <br><br>
     </form>
 </div>
 
