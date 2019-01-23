@@ -148,12 +148,12 @@ function sortBy(cat, reverse=false) {
         //console.log('new thing', reversedRows)
         //rows = reversedRows;
 
-
-        var rows = $('.admin-rows-content.users.all-users');
-        console.log('hhhhhmmm', rows)
-        var listItems = rows.children('div.admin-row');
-        console.log('liii', listItems)
-        rows.append(listItems.get().reverse());
+        //
+        //var rows = $('.admin-rows-content.users.all-users');
+        //console.log('hhhhhmmm', rows)
+        //var listItems = rows.children('div.admin-row');
+        //console.log('liii', listItems)
+        //rows.append(listItems.get().reverse());
     }
 
     console.log('rows', rows, typeof(rows))

@@ -12,9 +12,9 @@
 <div class="config-form-wrapper">
     <form action="./field" class="config-form" method="POST">
         <p>New Project PID</p>
-        <input type="text" name="add-pid"><br>
+        <input type="text" name="add-pid" required><br>
         <p>New Project Token</p>
-        <input type="text" name="add-token">
+        <input type="text" name="add-token" required>
 
         <button class="continue-to-create-btn" type="submit">
             <p>Continue</p>
