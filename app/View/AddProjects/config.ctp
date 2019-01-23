@@ -3,7 +3,7 @@
 <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 <div class="index-body-content">
     <div class="install-welcome-text">
-        <h1>Configure ARCs with your KORA project:!</h1>
+        <h1>Configure ARCs with your KORA project:</h1>
     </div>
 </div>
 
