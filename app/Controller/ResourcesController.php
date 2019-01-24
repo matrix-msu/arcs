@@ -632,6 +632,8 @@ class ResourcesController extends AppController {
             }
             $zip->addFromString($xmlNames[$count], $data_xml_string);
             $count++;
+		//echo 'added '. $count;
+	//	if($count == 5){break;}
         }
 
         $picUrls = array();
