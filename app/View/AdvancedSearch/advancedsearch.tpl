@@ -320,6 +320,9 @@ is from here to ...
 					</ul>
 				</div>
 
+				<div id="new-search">
+					<a class="new-search-link">New Search</a>
+				</div>
 				<div id="search-again">
 					<a class="search-again-link" id='top-btn'>Search again</a>
 				</div>
@@ -331,6 +334,7 @@ is from here to ...
 
 		<div class="mobile-search-reroutes">
 			<p class="searchAgain">Search Again</p>
+			<p class="newSearch">New Search</p>
 			<p class="advSearch">Go to Advanced Search</p>
 		</div>
 	</div>

@@ -297,7 +297,7 @@ function setUpSearchLoad(keywordSearch = false){
 					$(loaderHtml).css({'height':'inherit','position':'relative','float':'right','top':'30px','right':'48px'});
 					//$(loaderHtml).append('<span id="search-loading-percent" style="position: relative;font-size: 16px;top: -45px;left: -50px;">0%</span>');
 					//$(loaderHtml).find('.sk-folding-cube').css({'height':'36.43px', 'width':'36.43px'});
-					$('#backToSearch').append(loaderHtml);
+					//$('#backToSearch').append(loaderHtml);
 					getRestOfData(sliceEnd, limit);
 				}
 			}
@@ -430,6 +430,8 @@ function setUpSearchLoad(keywordSearch = false){
       'click #advancedSearchLink': 'advancedRedirect',
         'click .searchAgain': 'scrollTop',
         'click .search-again-link': 'searchAgain',
+        'click .new-search-link': 'newSearch',
+        'click .newSearch': 'newSearch',
         'click .advSearch': 'advancedRedirect',
 
     };
@@ -548,6 +550,17 @@ function setUpSearchLoad(keywordSearch = false){
 
     };
 
+    Search.prototype.newSearch = function(e) {
+        var url = window.location.href;
+        var advanced = url.includes("advanced")
+
+        if(advanced){
+            url= arcs.baseURL + 'search/advanced/' + globalproject;
+            window.location.replace(url);
+        } else {
+            window.location.href = arcs.baseURL + "search/" + globalproject;
+        }
+    };
 
     Search.prototype.openCollection = function(e) {
       if (parseInt(this.$('#selected-count').html()) > 0) {

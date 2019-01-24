@@ -297,6 +297,9 @@
 				</ul>
 			</div>
 
+			<div id="new-search">
+				<a class="new-search-link">New Search</a>
+			</div>
 			<div id="search-again">
 				<a class="search-again-link">Search again</a>
 			</div>
@@ -308,6 +311,7 @@
 
 	<div class="mobile-search-reroutes">
 		<p class="searchAgain">Search Again</p>
+		<p class="newSearch">New Search</p>
 		<p class="advSearch">Go to Advanced Search</p>
 	</div>
 </div>
@@ -324,7 +328,8 @@
 		$("#advanced").css("display","none");
 		var html = "<?php echo ARCS_LOADER_HTML; ?>";
 		$('.searchIntro').html(html);
-        setUpViewTypeJs();
+		$("#new-search").css("display","none");
+		setUpViewTypeJs();
     }else{
 		arcs.searchView = new arcs.views.search.Search({
 	        el: $('.wrap')
@@ -336,6 +341,10 @@
 
 	if (viewCollection == true) {
 		$("#search-again").css("display","none");
+		$("#new-search").css("display","none");
+		$('.newSearch').remove();
+		$('.searchAgain').remove();
+
 	}
 
 
