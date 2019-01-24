@@ -59,7 +59,7 @@ function editMetaPrep() {
                     // do nothing.
                 } else {
                     //if there was already something being edited...reset that field
-                    if (metadataIsSelected == 1) {
+                    if (metadataIsSelected == 1 && 0 == 1) {
                         var id = $("#meta_textarea").parent().children("div").eq(0).text();
                         var text = $("#meta_textarea").text();
                         if (meta_options == '' || meta_options == undefined) {
