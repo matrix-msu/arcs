@@ -308,20 +308,10 @@ $(document).ready(function() {
 	$('.users-head').on('click', function(e) {
 		if($('.name').is(e.target)) {
 			sortBy('a.name');
-            lastSort = 'name';
 		} else if($('.username').is(e.target)) {
 			sortBy('p.username');
-            lastSort = 'username';
 		} else if($('.joined').is(e.target)) {
-            if (lastSort == 'joined'){
-                console.log('reverse')
-
-                sortBy('p.joined', true);
-                lastSort = '';
-            } else {
-                sortBy('p.joined');
-                lastSort = 'joined'
-            }
+            sortBy('p.joined');
 		} else if($('.select-all').is(e.target)) {
 			if($('.bullet').length == $('.bullet.selected').length) {
 				$('.bullet').removeClass('selected');
