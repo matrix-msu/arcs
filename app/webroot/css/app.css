@@ -8487,7 +8487,14 @@ input.indexSearchBox {
   cursor: pointer;
 }
 .search-filter-selector {
-  text-align: center;
+  margin: auto;
+  text-align: left;
+  width: 90%;
+}
+.search-filter-selector#field-selctor li {
+  margin: 6px;
+  margin-left: 6px;
+  padding-left: 4px;
 }
 div#searchButtonMobile {
   display: none;
@@ -8969,6 +8976,12 @@ div#searchCriteria ul {
   margin-left: 10px;
   border: solid grey;
   border-width: 1.5px 1.5px 0 0;
+  transform-origin: center;
+}
+.open .pointerSearch {
+  position: relative;
+  top: 4px;
+  transform: rotate(-45deg);
 }
 .SearchBar {
   background: #f4f4f4;
