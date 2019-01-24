@@ -609,7 +609,7 @@ class ResourcesController extends AppController {
         $zip = new ZipArchive();
 
         # create a temp file & open it
-        $tmp_file = tempnam('.','Resource_Data_');
+        $tmp_file = @tempnam('.','Resource_Data_');
         $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
 
         $count = 0;

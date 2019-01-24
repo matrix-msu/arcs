@@ -471,6 +471,9 @@ Router::connect('/add_project/finalize',
 Router::connect('/add_project/field',
     array('controller' => 'AddProjects', 'action' => 'fieldConfig')
 );
+Router::connect('/add_project/downloadLayoutFile',
+    array('controller' => 'AddProjects', 'action' => 'downloadLayoutFile')
+);
 
 
 

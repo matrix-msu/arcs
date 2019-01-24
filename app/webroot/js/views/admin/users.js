@@ -314,12 +314,7 @@ $(document).ready(function() {
             lastSort = 'username';
 		} else if($('.joined').is(e.target)) {
             if (lastSort == 'joined'){
-                console.log('dong the reverse')
-
-
-
-
-
+                console.log('reverse')
 
                 sortBy('p.joined', true);
                 lastSort = '';

@@ -1,7 +1,12 @@
 if( typeof JS_IS_ADD_PROJECT_PAGE !== 'undefined'){
     $(document).ready(function() {
         var path = window.location.pathname;
-        console.log('herere')
+        var page = path.substr(path.lastIndexOf('/') + 1);
+        //console.log('herere', page)
+
+        if (page == "download") {
+            downloadLayoutFile();
+        }
 
         $(".start-install-btn").on("click", function() {
             if (path.substr(path.length - 1) == "/"){
@@ -17,6 +22,23 @@ if( typeof JS_IS_ADD_PROJECT_PAGE !== 'undefined'){
             url = url.replace(/\/[^\/]*$/, '/config')
             window.location.href = url;
         });
+
+
+
+        function downloadLayoutFile(){
+            $('<form />')
+                .hide()
+                .attr({ method : "post" })
+                .attr({ action : arcs.baseURL + "add_project/downloadLayoutFile"})
+                .append($('<input />')
+                    .attr("type","hidden")
+                    .attr({ "name" : "filename" })
+                    .val("ARCS_Layout")
+                )
+                .append('<input type="submit" />')
+                .appendTo($("body"))
+                .submit();
+        }
 
         function checkFields(selector="") {
             var valid = true;
@@ -47,7 +69,7 @@ if( typeof JS_IS_ADD_PROJECT_PAGE !== 'undefined'){
             if(!valid){
                 event.preventDefault();
             }
-        })
+        });
 
         $("#season-step").on("click", function() {
             var valid = checkFields("project");
