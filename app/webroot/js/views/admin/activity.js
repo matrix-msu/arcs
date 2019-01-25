@@ -34,7 +34,40 @@
 
 }).call(this);
 
+
+
+
 $(document).ready(function() {
+
+	function loadProfileImages(namesAndEmails){
+		$.ajax({
+			url: arcs.baseURL + '/admin/getProfilePics',
+			type: "POST",
+			data: {'namesAndEmails': namesAndEmails, 'api' : true},
+			success: function (profileImgData) {
+				var profileUrlsArray = JSON.parse(profileImgData);
+				$('div.activity').find('.admin-row').each(function(){
+					var username = $(this).find('.username').data('username');
+					if( profileUrlsArray.hasOwnProperty(username) ){
+						$(this).find('img').attr('src', profileUrlsArray[username]);
+					}
+				})
+			}
+		});
+	}
+
+	var namesAndEmails = {};
+	activityData.forEach(function(row){
+		var username = row['username'];
+		var email = row['email'];
+		if ( !namesAndEmails.hasOwnProperty(row['username']) ){
+			namesAndEmails[row['username']] = row['email'];
+		}
+	});
+
+	loadProfileImages(namesAndEmails);
+
+
 	$(document).on('click', function(e){
 		//sorting triggers
 		if ($('.sort-by-menu.activity p').is(e.target)){

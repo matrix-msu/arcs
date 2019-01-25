@@ -572,7 +572,8 @@ class AdminController extends AppController {
                     if( !isset($value['email']) ){
                         $value['email'] = '';
                     }
-                    $resultsArray[$key]['profilePic'] = parent::checkForProfilePicture($value['username'], $value['email']);
+//                    $resultsArray[$key]['profilePic'] = parent::checkForProfilePicture($value['username'], $value['email']);
+                    $resultsArray[$key]['profilePic'] = '/' . BASE_URL . 'app/webroot/img/DefaultProfilePic.svg';
                 }
                 if( isset($value['date']) ) {
                     $resultsArray[$key]['date'] = parent::time_elapsed_string($value['date']);

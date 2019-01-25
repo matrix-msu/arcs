@@ -173,7 +173,7 @@ JST["admin/activity"] =
             "<% _.each(activity, function(f, i) { %>  "+
                 "<div class=\"admin-row activity\">"+
                     "<img style='height:45px;width:45px' src='<%= f.profilePic %>' />"+
-                    "<p class=\"username\"><%= f.name %></p>"+
+                    "<p class=\"username\" data-username=\"<%= f.username %>\"><%= f.name %></p>"+
                     "<p class=\"date\"><%= f.date %></p>"+
                     "<p class=\"type\"><%= f.type %></p>"+
                     "<% if( f.type == 'logins' ){ %>"+

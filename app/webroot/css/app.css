@@ -9100,9 +9100,10 @@ div#search-results-wrapper div#search-actions #sort-buttons .dropdown-menu {
   border: 0;
   border-radius: 0;
   background: #cecece;
-  top: -14%;
   padding-top: 5em;
   box-shadow: none !important;
+  bottom: 50px;
+  top: -59px;
 }
 div#search-results-wrapper div#search-actions ul.dropdown-menu {
   -webkit-box-shadow: none !important;
