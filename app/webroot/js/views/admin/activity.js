@@ -38,10 +38,13 @@
 
 
 $(document).ready(function() {
+	if (!$('.admin-header').hasClass('activity')){
+		return;
+	}
 
 	function loadProfileImages(namesAndEmails){
 		$.ajax({
-			url: arcs.baseURL + '/admin/getProfilePics',
+			url: arcs.baseURL + 'admin/getProfilePics',
 			type: "POST",
 			data: {'namesAndEmails': namesAndEmails, 'api' : true},
 			success: function (profileImgData) {
