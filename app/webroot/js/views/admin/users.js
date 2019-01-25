@@ -206,7 +206,7 @@ function hideAll(t) {
 
 function loadProfileImages(namesAndEmails){
     $.ajax({
-        url: arcs.baseURL + '/admin/getProfilePics',
+        url: arcs.baseURL + 'admin/getProfilePics',
         type: "POST",
         data: {'namesAndEmails': namesAndEmails, 'api' : true},
         success: function (profileImgData) {
