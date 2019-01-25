@@ -620,9 +620,7 @@ class ResourcesController extends AppController {
             $xmlNames = ['Project_data.xml', 'Season_data.xml', 'Excavation_Survey_data.xml', 'Resource_data.xml',
                 'Pages_data.xml', 'Subject_Of_Observation_data.xml'];
         }
-
         $pages_data;
-
         foreach (json_decode($this->request->data['xmls']) as $kidArray) {
             $data_string = self::getExportData($kidArray, $count);  //return json
             $data_xml_string = self::getExportData($kidArray, $count, $this->request->data['exportAsXML']); //return json or xml
@@ -633,7 +631,6 @@ class ResourcesController extends AppController {
             $zip->addFromString($xmlNames[$count], $data_xml_string);
             $count++;
         }
-
         $picUrls = array();
         foreach ($pages_data['records'][0] as $kid=>$page){
             $pName = parent::convertKIDtoProjectName($kid);
@@ -641,13 +638,28 @@ class ResourcesController extends AppController {
             $sid = parent::getPageSIDFromProjectName($pName);
             array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
         }
+//        foreach($picUrls as $url){
+//            $download_file = @file_get_contents( $url );
+//            $zip->addFromString('images/'.basename($url),$download_file);
+//        }
+        $zip->close();
+        echo json_encode(array('datafile'=>$tmp_file, 'picUrls'=>$picUrls));
+        die;
+    }
 
-        foreach($picUrls as $url){
-            # download file
+    //create a file to be exported.
+    public function createPictureExportFile(){
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        $zip = new ZipArchive();
+
+        $tmp_file = @tempnam('.','Resource_Pictures_');
+        $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
+
+        foreach($this->request->data['picUrls'] as $url){
             $download_file = @file_get_contents( $url );
-            $zip->addFromString('images/'.basename($url),$download_file);
+            $zip->addFromString(basename($url),$download_file);
         }
-
         $zip->close();
         echo $tmp_file;
         die;
@@ -666,6 +678,43 @@ class ResourcesController extends AppController {
 
         unlink($this->request->data['filename'].'.zip');
         unlink($this->request->data['filename']);
+        die;
+    }
+
+    //download the created export file and delete it
+    public function downloadPictureExportFile(){
+        //echo 'downloadpics';die;
+
+
+
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        $zip = new ZipArchive();
+
+        $tmp_file = @tempnam('.','Resource_Pictures_');
+        $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
+
+        foreach(json_decode($this->request->data['picUrls']) as $url){
+            $download_file = @file_get_contents( $url );
+            $zip->addFromString(basename($url),$download_file);
+            //$zip->addFromString(basename($url),$url);
+        }
+        $zip->close();
+
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.'Resource_Pictures.zip'.'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($tmp_file.'.zip'));
+
+
+        readfile($tmp_file.'.zip');
+
+        unlink($tmp_file.'.zip');
+        unlink($tmp_file);
         die;
     }
 

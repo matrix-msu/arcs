@@ -100,6 +100,12 @@
 	Router::connect('/resources/downloadExportFile',
         array('controller' => 'resources', 'action' => 'downloadExportFile')
     );
+    Router::connect('/resources/createPictureExportFile',
+        array('controller' => 'resources', 'action' => 'createPictureExportFile')
+    );
+	Router::connect('/resources/downloadPictureExportFile',
+        array('controller' => 'resources', 'action' => 'downloadPictureExportFile')
+    );
     Router::connect('/resources/checkExportDone',
         array('controller' => 'resources', 'action' => 'checkExportDone')
     );

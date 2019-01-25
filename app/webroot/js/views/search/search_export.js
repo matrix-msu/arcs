@@ -112,10 +112,7 @@ $(document).ready(function() {
             }
 
             kidArray = [projectKids, seasonKids, excavationKids, resourceKids, pageKids, subjectKids];
-            console.log('befroe', kidArray)
-            console.log(JSON.stringify(kidArray));
 
-            //return
             //create file
             $.ajax({
                 url: arcs.baseURL + "resources/createExportFile",
@@ -125,6 +122,7 @@ $(document).ready(function() {
                 },
                 statusCode: {
                     200: function (data) {
+                        data = JSON.parse(data);
                         //download created file
                         $('<form />')
                             .hide()
@@ -133,21 +131,66 @@ $(document).ready(function() {
                             .append($('<input />')
                                 .attr("type", "hidden")
                                 .attr({ "name": "filename" })
-                                .val(data)
+                                .val(data.datafile)
                             )
                             .append('<input type="submit" />')
                             .appendTo($("body"))
                             .submit();
 
+                        function doPictureDownloads(index,size,increment){
+                            if( index > size -1 ){
+                                $clicked.find('.icon-export').html('');
+                                $clicked.find('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
+                                $clicked.hide();
+                                $("#export-btn").show();
+                                $('.export-options').hide();
+                                isExporting = 0;
+                                return;
+                            }else if(index + increment > size){
+                                increment = size - index;
+                            }
+                            var picSlice = data.picUrls.slice(index, index+increment);
+                            index += increment;
+                            $('<form />')
+                                .hide()
+                                .attr({ method: "post" })
+                                .attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
+                                .append($('<input />')
+                                    .attr("type", "hidden")
+                                    .attr({ "name": "picUrls" })
+                                    .val(JSON.stringify(picSlice))
+                                )
+                                .append('<input type="submit" />')
+                                .appendTo($("body"))
+                                .submit();
+                            setTimeout(function () { //give time for jquery form click
+                                $.ajax({
+                                    url: arcs.baseURL + "resources/checkExportDone",
+                                    type: "POST",
+                                    data: { 'filename': data.datafile },
+                                    statusCode: {
+                                        200: function () {
+                                            doPictureDownloads(index,size,increment);
+                                        },
+                                        400: function () {
+                                            console.log("Bad Request");
+                                        },
+                                        405: function () {
+                                            console.log("Method Not Allowed");
+                                        }
+                                    }
+                                });
+                            }, 50);
+                        }
                         //check when the export finishes
                         setTimeout(function () { //give time for jquery form click
                             $.ajax({
                                 url: arcs.baseURL + "resources/checkExportDone",
                                 type: "POST",
-                                data: { 'filename': data },
+                                data: { 'filename': data.datafile },
                                 statusCode: {
                                     200: function () {
-                                        console.log("success");
+                                        doPictureDownloads(0,data.picUrls.length,50);
                                     },
                                     400: function () {
                                         console.log("Bad Request");
@@ -158,23 +201,9 @@ $(document).ready(function() {
                                 }
                             });
                         }, 50);
-                        $clicked.find('.icon-export').html('');
-                        $clicked.find('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
-                        $clicked.hide();
-                        $("#export-btn").show();
-
-                        $('.export-options').hide();
-
-
-
-
-
-                        isExporting = 0;
-                    },
+                    }
                 }
             });
-            ////hide the loader
-            //$('#options-btn').css("display", "none");
         }
     });
 
