@@ -10863,28 +10863,32 @@ input[type=range]:focus::-ms-fill-upper {
 .annotateSearch::-webkit-input-placeholder,
 .annotateTranscriptContainer::-webkit-input-placeholder,
 .annotateUrlContainer::-webkit-input-placeholder,
-.annotateSearchForm .unfocused::-webkit-input-placeholder {
+.annotateSearchForm .unfocused::-webkit-input-placeholder,
+.annotateUrl::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #fff !important;
 }
 .annotateSearch::-moz-placeholder,
 .annotateTranscriptContainer::-moz-placeholder,
 .annotateUrlContainer::-moz-placeholder,
-.annotateSearchForm .unfocused::-moz-placeholder {
+.annotateSearchForm .unfocused::-moz-placeholder,
+.annotateUrl::-moz-placeholder {
   /* Firefox 19+ */
   color: #fff !important;
 }
 .annotateSearch:-ms-input-placeholder,
 .annotateTranscriptContainer:-ms-input-placeholder,
 .annotateUrlContainer:-ms-input-placeholder,
-.annotateSearchForm .unfocused:-ms-input-placeholder {
+.annotateSearchForm .unfocused:-ms-input-placeholder,
+.annotateUrl:-ms-input-placeholder {
   /* IE 10+ */
   color: #fff !important;
 }
 .annotateSearch:-moz-placeholder,
 .annotateTranscriptContainer:-moz-placeholder,
 .annotateUrlContainer:-moz-placeholder,
-.annotateSearchForm .unfocused:-moz-placeholder {
+.annotateSearchForm .unfocused:-moz-placeholder,
+.annotateUrl:-moz-placeholder {
   /* Firefox 18- */
   color: #fff !important;
 }
@@ -10981,6 +10985,9 @@ input[type=range]:focus::-ms-fill-upper {
   background-color: #888;
   border: none;
   color: #fff;
+}
+.annotateUrlContainer .annotateUrl {
+  padding: 2px 5px;
 }
 .annotateSearchResult {
   cursor: pointer;
@@ -14115,15 +14122,17 @@ span.view-collection {
   outline: none;
 }
 .profile-collection-list-wrapper .collection-list details summary {
-  width: 100%;
-  visibility: visible;
+  background: #fff;
+  box-sizing: border-box;
+  color: #333;
+  cursor: pointer;
   display: inline;
-  padding: 10px 0 15px 20px;
   font-size: 12;
   line-height: normal;
-  color: #333;
-  background: #fff;
-  cursor: pointer;
+  height: 50px;
+  padding: 8px 20px;
+  visibility: visible;
+  width: 100%;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
   transition: 0.1s linear all;
@@ -14140,7 +14149,9 @@ span.view-collection {
   text-shadow: none;
 }
 .profile-collection-list-wrapper .collection-list details summary h3 {
+  position: relative;
   text-shadow: none;
+  top: 4px;
 }
 .profile-collection-list-wrapper .collection-list details summary.large {
   padding: 15px 25px;
@@ -14156,6 +14167,8 @@ span.view-collection {
 .profile-collection-list-wrapper .collection-list details summary .save-btn,
 .profile-collection-list-wrapper .collection-list details summary .edit-btn {
   color: #0093be;
+  font-size: 14px;
+  margin: 9px 0;
 }
 .profile-collection-list-wrapper .collection-list details.disabled {
   cursor: default;
@@ -14232,15 +14245,9 @@ span.view-collection {
   margin-right: 11px;
 }
 .profile-collection-list-wrapper .collection-list details[open] summary {
-  padding: 10px 0 15px 20px;
-  font-size: 12;
-  line-height: normal;
-  color: #333;
-  background: #fff;
   border: none;
   border-radius: 0;
   border-bottom: 1px solid #bbb;
-  cursor: pointer;
   box-shadow: none;
   -webkit-transition: 0.1s linear all;
   -o-transition: 0.1s linear all;
@@ -14292,28 +14299,23 @@ span.view-collection {
   width: 8px;
   height: 8px;
   border: solid #0093be;
-  border-width: 2.5px 2.5px 0 0;
+  border-width: 2px 2px 0 0;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
-  margin: 12px 0 0 5px;
   content: "";
+  position: relative;
+  top: 12px;
+  left: 5px;
 }
 .profile-collection-list-wrapper details[open] summary:after {
-  float: left;
-  width: 8px;
-  height: 8px;
-  border: solid #0093be;
-  border-width: 2.5px 2.5px 0 0;
   -webkit-transform: rotate(135deg);
   -moz-transform: rotate(135deg);
   -ms-transform: rotate(135deg);
   -o-transform: rotate(135deg);
   transform: rotate(135deg);
-  margin: 10px 0 0 5px;
-  content: "";
 }
 @media screen and (max-width: 1030px) {
   #user-actions .nav {
@@ -14357,10 +14359,11 @@ span.view-collection {
     text-align: center;
     background: #F4F4F4;
     position: relative;
+    border-top: 1px solid #ccc;
   }
   .tab-name {
     margin: auto;
-    margin-top: 8.5px;
+    margin-top: 11.5px;
     text-transform: uppercase;
     color: #0093be;
     font-size: 16px;
