@@ -44,7 +44,7 @@
                 });
             }
         });
-        $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
+        $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay, .detailed-locked", function (){
             $("#request_permission_model").show();
             $("#request_permission_model").css("pointer-events", "all");
             var resourceThumb = $(this).closest('.resource-thumb').attr('data-resource-kid');

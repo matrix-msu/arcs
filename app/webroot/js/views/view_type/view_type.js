@@ -33,6 +33,8 @@ $(document).ready(function(){
     }
     $('.Searchbar').css('display','none');
 
+	$('.newSearch').remove();
+
 	changeDisplay();
     if (doneLoading == false) {
         loadMore(2); //start loading the next pages

@@ -203,6 +203,27 @@ function hideAll(t) {
 	$('.all-users, .pending-users, .users-head, .admin-pagination, .create-user, .invite-user').css('display', 'none');
 }
 
+
+function loadProfileImages(namesAndEmails){
+    $.ajax({
+        url: arcs.baseURL + '/admin/getProfilePics',
+        type: "POST",
+        data: {'namesAndEmails': namesAndEmails, 'api' : true},
+        success: function (profileImgData) {
+            var profileUrlsArray = JSON.parse(profileImgData);
+            $('div.all-users').find('.admin-row').each(function(){
+                var username = $(this).find('.username').html();
+                if( profileUrlsArray.hasOwnProperty(username) ){
+                    $(this).find('img').attr('src', profileUrlsArray[username]);
+                }
+            })
+        }
+    });
+}
+
+
+
+
 $(document).ready(function() {
     if (typeof(projectNames) == 'undefined') {
         return;
@@ -241,6 +262,38 @@ $(document).ready(function() {
             'text-transform' : 'capitalize'
         });
         //$('.chevron').css({'margin-left': '-11px'});
+
+        var namesAndEmails = {};
+        if (userData.length > 25) {
+            // do the first page and then do the rest
+            for (var i = 0; i <25; i++) {
+                namesAndEmails[userData[i]['username']] = userData[i]['email'];
+            }
+            loadProfileImages(namesAndEmails);
+
+            namesAndEmails = {};
+            for (var i = 25; i < userData.length; i++) {
+                namesAndEmails[userData[i]['username']] = userData[i]['email'];
+            }
+            loadProfileImages(namesAndEmails);
+
+        } else {
+            for (var i = 0; i < userData.length; i++) {
+                namesAndEmails[userData[i]['username']] = userData[i]['email'];
+            }
+            loadProfileImages(namesAndEmails);
+        }
+
+
+        //
+        //$('div.all-users .admin-row').each(function(i, row){
+        //    var username = $(row).find('.username')[0].innerText;
+        //    if (!username in allUsernames) {
+        //        allUsernames.push(username);
+        //    }
+        //});
+        //console.log(allUsernames);
+
     }
 
     usersWrapWidth();
@@ -303,25 +356,14 @@ $(document).ready(function() {
         }
     });
 
-    var lastSort = '';
 
 	$('.users-head').on('click', function(e) {
 		if($('.name').is(e.target)) {
 			sortBy('a.name');
-            lastSort = 'name';
 		} else if($('.username').is(e.target)) {
 			sortBy('p.username');
-            lastSort = 'username';
 		} else if($('.joined').is(e.target)) {
-            if (lastSort == 'joined'){
-                console.log('reverse')
-
-                sortBy('p.joined', true);
-                lastSort = '';
-            } else {
-                sortBy('p.joined');
-                lastSort = 'joined'
-            }
+            sortBy('p.joined');
 		} else if($('.select-all').is(e.target)) {
 			if($('.bullet').length == $('.bullet.selected').length) {
 				$('.bullet').removeClass('selected');
