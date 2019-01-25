@@ -23,8 +23,10 @@
 <script>
 $(document).ready(function(){
     var permissions = function(){
+        console.log('running p4ermissions')
 
-        $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay", function (){
+        $("body").on("click", ".resourceLockedDarkBackgroundSP, .resourceLocked, .resourceLockedDarkBackground, .needToLogIn, .resourceLockedDarkBackgroundSearch + .select-overlay, .detailed-locked", function (){
+            console.log('clicked')
             $("#resource_permission_model").show();
             $("#resource_permission_model").css("pointer-events", "all");
         });

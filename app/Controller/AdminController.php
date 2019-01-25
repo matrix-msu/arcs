@@ -168,6 +168,24 @@ class AdminController extends AppController {
         ));
     }
 
+
+    public function ajaxGetProfilePics(){
+        $namesAndEmails = $this->request->data['namesAndEmails'];
+        $resultArray = array();
+
+        foreach ($namesAndEmails as $username => $email) {
+            $imageUrl = parent::checkForProfilePicture($username, $email);
+            $resultArray[$username] = $imageUrl;
+        }
+
+        echo json_encode($resultArray, true);
+        die;
+    }
+
+
+
+
+
     /**
      * Add, edit, and delete users.
      */
@@ -209,8 +227,9 @@ class AdminController extends AppController {
 
         foreach ($userReturn as $user) {
             array_push($cleanedReturn, $user['User']);
-            $cleanedReturn[$i]['profilePic'] = parent::checkForProfilePicture($cleanedReturn[$i]['username'], $cleanedReturn[$i]['email']);
-//            $cleanedReturn[$i]['profilePic'] = '';
+//            $cleanedReturn[$i]['profilePic'] = parent::checkForProfilePicture($cleanedReturn[$i]['username'], $cleanedReturn[$i]['email']);
+            // set all profile pics to default and then load them with js
+            $cleanedReturn[$i]['profilePic'] = '/' . BASE_URL . 'app/webroot/img/DefaultProfilePic.svg';
             $i++;
         }
 

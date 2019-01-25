@@ -454,6 +454,9 @@ Router::connect('/admin/editMetadata/*',
 Router::connect('/admin/accept/*',
     array('controller' => 'admin', 'action' => 'accept')
 );
+Router::connect('/admin/getProfilePics',
+    array('controller' => 'admin', 'action' => 'ajaxGetProfilePics')
+);
 
 
 ////////////////////////////////////////////////////////////////////////

@@ -91,7 +91,7 @@ $(document).ready(function() {
                         $menu.find('.object').addClass('active');
                         $menu.find('.descending').removeClass('active');
                         $menu.find('.ascending').addClass('active');
-                        sortBy('p.obj-name');
+                        sortBy('a.obj-name');
                     } else if ($(e.target).hasClass('relation')) {
                         $menu.find('.cat.active').removeClass('active');
                         $menu.find('.relation').addClass('active');

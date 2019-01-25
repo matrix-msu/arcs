@@ -888,7 +888,8 @@ function setUpSearchLoad(keywordSearch = false){
             var atag = $(this).children().eq(0);
             var darkBackground = $(atag).children().eq(0);
             if ($(this).find('.resourceLockedDarkBackgroundSearch').length > 0) {
-              $(this).find('.circle-container').hide();
+                $(this).find('.select-overlay').addClass('detailed-locked')
+                $(this).find('.circle-container').hide();
             }
             var resourcePicture = $(atag).children().eq(2);
             $(resourcePicture).load(function(){ //wait for each picture to finish loading

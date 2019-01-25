@@ -11,6 +11,7 @@
 </div>
 <script type="text/javascript">
     var projectNames = <?php echo json_encode($users[0]['projectNames']) ?>;
+	var userData = <?php echo json_encode($users) ?>;
 
   	arcs.adminView = new arcs.views.admin.Users({
       	el: $('#admin-users'),
