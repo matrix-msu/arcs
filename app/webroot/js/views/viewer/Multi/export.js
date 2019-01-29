@@ -222,6 +222,7 @@ $(document).ready(function(){
 										}
 										$('#export-images-per').find('.export-images-link').parent().remove();
 										$('#export-images-per').append(packHtml);
+										$('#export-images-buttons').click();
 									}
 									isExporting = 0;
 									return;
