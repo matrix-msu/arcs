@@ -34,7 +34,43 @@
 
 }).call(this);
 
+
+
+
 $(document).ready(function() {
+	if (!$('.admin-header').hasClass('activity')){
+		return;
+	}
+
+	function loadProfileImages(namesAndEmails){
+		$.ajax({
+			url: arcs.baseURL + 'admin/getProfilePics',
+			type: "POST",
+			data: {'namesAndEmails': namesAndEmails, 'api' : true},
+			success: function (profileImgData) {
+				var profileUrlsArray = JSON.parse(profileImgData);
+				$('div.activity').find('.admin-row').each(function(){
+					var username = $(this).find('.username').data('username');
+					if( profileUrlsArray.hasOwnProperty(username) ){
+						$(this).find('img').attr('src', profileUrlsArray[username]);
+					}
+				})
+			}
+		});
+	}
+
+	var namesAndEmails = {};
+	activityData.forEach(function(row){
+		var username = row['username'];
+		var email = row['email'];
+		if ( !namesAndEmails.hasOwnProperty(row['username']) ){
+			namesAndEmails[row['username']] = row['email'];
+		}
+	});
+
+	loadProfileImages(namesAndEmails);
+
+
 	$(document).on('click', function(e){
 		//sorting triggers
 		if ($('.sort-by-menu.activity p').is(e.target)){
@@ -76,7 +112,7 @@ $(document).ready(function() {
 				if ($(e.target).hasClass('logins')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.logins').addClass('active');
-					filterBy('Logins', 'p.type');
+					filterBy('Logged In', 'p.type');
 				} else if ($(e.target).hasClass('new-user')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.new-user').addClass('active');
@@ -84,15 +120,15 @@ $(document).ready(function() {
 				} else if ($(e.target).hasClass('new-annotation')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.new-annotation').addClass('active');
-					filterBy('Annotations', 'p.type');
+					filterBy('Created New Annotation', 'p.type');
 				} else if ($(e.target).hasClass('new-flag')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.new-flag').addClass('active');
-					filterBy('Flags', 'p.type');
+					filterBy('Created New Flag', 'p.type');
 				} else if ($(e.target).hasClass('edited-metadata')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.edited-metadata').addClass('active');
-					filterBy('Metadata', 'p.type');
+					filterBy('Edited Metadata', 'p.type');
 				} else if ($(e.target).hasClass('all-activity')) {
 					$menu.find('.active').removeClass('active');
 					$menu.find('.all-activity').addClass('active');

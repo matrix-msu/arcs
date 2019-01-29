@@ -131,7 +131,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                 <p class="annotateTab annotateTabUrl">URL</p>
                 <div class="annotateRelationContainer">
                     <form class="annotateSearchForm">
-                        <input class="annotateSearch" placeholder="SEARCH"/>
+                        <input class="annotateSearch" placeholder="SEARCH FOR A RESOURCE TO RELATE TO"/>
                     </form>
                     <div class="resultsContainer"></div>
                     <div class="annotation_pagination">
@@ -647,7 +647,7 @@ if( typeof pName !== 'undefined' ) {
     href = href.join('/');
     var href = href + '/' + pName;
     $('#search').attr('href', href);
-    
+
     $('#soo').ready(function(){
         $('.selectedCurrentPage').find('img')[0].click();
     });

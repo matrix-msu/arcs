@@ -172,9 +172,11 @@ div#search-results-wrapper {
 				border: 0;
 				border-radius: 0;
 				background: #cecece;
-				top: -14%;
+				//top: -14%;
 				padding-top: 5em;
 				box-shadow: none !important;
+                bottom: 50px;
+                top: -59px;
 
 			}
 
@@ -257,19 +259,28 @@ div#search-again {
     text-transform: uppercase;
 }
 
-a.search-again-link {
+div#new-search {
+  float: right;
+  vertical-align: middle;
+  line-height: 4;
+  color: #747474;
+  text-transform: uppercase;
+  padding-left:20px;
+}
+
+a.search-again-link, a.new-search-link {
   float: right;
   height: 60px;
   text-transform: uppercase;
   color: #6f6f6f !important;
   /* margin-bottom: 4em; */
-  font-size: 14px;
+  font-size: 12px;
   vertical-align: middle;
   justify-content: center;
   text-align: center;
   line-height: 60px;
 }
-a.search-again-link:hover{
+a.search-again-link:hover, a.new-search-link:hover {
 	cursor: pointer;
 	color: @arcs-blue !important;
 	text-decoration: none !important;
@@ -493,7 +504,7 @@ ul.pagination {
 	#items-per-pages-buttons{
 		display: none;
 	}
-	#search-again{
+	#search-again, #new-search{
 		display: none;
 	}
 	#sites-buttons, #seasons-buttons, #resources-buttons, #excavation-buttons, #author-buttons, #view-buttons,#options-buttons, #sorting-buttons {
@@ -584,6 +595,16 @@ ul.pagination {
       line-height: 18px;
       text-transform: uppercase;
     }
+
+    p.newSearch{
+      color: @arcs-blue;
+      font-family: "Helvetica Neue";
+      font-size: 16px;
+      line-height: 18px;
+      text-transform: uppercase;
+      margin-top: 50px;
+    }
+
     p.advSearch{
       color: @arcs-blue;
       font-family: "Helvetica Neue";

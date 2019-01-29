@@ -33,6 +33,8 @@
     <div id="activity"></div>
 </div>
 <script type="text/javascript">
+    var activityData = <?php echo json_encode($activity) ?>;
+
 	arcs.adminView = new arcs.views.admin.Activity({
         el: $('#admin-flags'),
         collection: new arcs.collections.FlagList(<?php echo json_encode($activity) ?>)

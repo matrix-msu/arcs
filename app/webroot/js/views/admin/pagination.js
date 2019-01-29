@@ -122,9 +122,7 @@ function sortByDate() {
 }
 
 //sorts rows increasing by html of dom child specified by cat(ex.'p.username')
-function sortBy(cat, reverse=false) {
-    console.log('sort by', cat)
-
+function sortBy(cat) {
     if($('.all-users')[0]) {
         $('.admin-rows-content.all-users').append(mergeSort(rows,cat));
         rows = $('.all-users .admin-row');
@@ -136,28 +134,17 @@ function sortBy(cat, reverse=false) {
 		rows = $('.admin-row');
 	}
 
-    if (reverse) {
-        //var objArray = Object.keys(rows).map(function(key) {
-        //    return [rows[key]];
-        //});
-        //
-        //objArray.reverse()
-        //
-        //var reversedRows = Object.assign({}, objArray)
-        //console.log('aobbb', objArray)
-        //console.log('new thing', reversedRows)
-        //rows = reversedRows;
-
-        //
-        //var rows = $('.admin-rows-content.users.all-users');
-        //console.log('hhhhhmmm', rows)
-        //var listItems = rows.children('div.admin-row');
-        //console.log('liii', listItems)
-        //rows.append(listItems.get().reverse());
+    if($(cat).hasClass('reversed')){
+        $(cat).removeClass('reversed');
+    }else {
+        $(cat).addClass('reversed');
+        rows = $.makeArray($(rows));
+        rows = rows.reverse();
+        //delete all
+        $('.all-users').empty();
+        //use reverse array to rebuild and add elements
+        $('.all-users').append(rows)
     }
-
-    console.log('rows', rows, typeof(rows))
-
 	setUpPagination(25);
 }
 
@@ -250,7 +237,6 @@ function filterOut(key, cat) {
 function search(key, cat) {
     var result = []
 
-    console.log('searching', key, cat)
     if(key != "") {
         key = key.toLowerCase();
 
@@ -261,7 +247,7 @@ function search(key, cat) {
         //}
 
         for($i = 0; $i < rowsOriginal.length; $i++) {
-            if($(rowsOriginal[$i]).find(cat).html().toLowerCase().indexOf(key) < 0){
+            if($(rowsOriginal[$i]).find(cat)['context'].innerText.toLowerCase().indexOf(key) < 0){
 
             } else {
                 result.push(rowsOriginal[$i]);

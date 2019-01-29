@@ -173,7 +173,7 @@ JST["admin/activity"] =
             "<% _.each(activity, function(f, i) { %>  "+
                 "<div class=\"admin-row activity\">"+
                     "<img style='height:45px;width:45px' src='<%= f.profilePic %>' />"+
-                    "<p class=\"username\"><%= f.name %></p>"+
+                    "<p class=\"username\" data-username=\"<%= f.username %>\"><%= f.name %></p>"+
                     "<p class=\"date\"><%= f.date %></p>"+
                     "<p class=\"type\"><%= f.type %></p>"+
                     "<% if( f.type == 'logins' ){ %>"+
@@ -441,12 +441,6 @@ JST["search/list"] = "<% _.each(results, function(r, i) { %>" +  [
             "<% } %>",
             "<img class='results' src='<%= r.thumb == 'img/DefaultResourceImage.svg' ? arcs.baseURL + 'img/DefaultResourceImage.svg' : r.thumb %>'>",
         "</a>",
-        "<div class='tooltip'>",
-        "<div class='search-icon-edit'></div>",
-        " <div class='icon-in-collection'></div>",
-        "<div class='icon-discussed'></div>",
-        "<div class='icon-tagged'></div>",
-        "</div>",
         "</div>",
         "</div>",
         "<div class='detailed-text'>",
@@ -471,6 +465,12 @@ JST["search/list"] = "<% _.each(results, function(r, i) { %>" +  [
         "<% } %> ",
         "<li> <p>Recently Edited By: <b><%= r['recordowner'] %> </b></p>  </li>",
         "</ul>",
+        "<div class='tooltip'>",
+        "<div class='search-icon-edit'></div>",
+        " <div class='icon-in-collection'></div>",
+        "<div class='icon-discussed'></div>",
+        "<div class='icon-tagged'></div>",
+        "</div>",
         "</div>",
         "</li>"
     ].join("\n") + "<% }) %>";
