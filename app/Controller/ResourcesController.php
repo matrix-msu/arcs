@@ -667,9 +667,13 @@ class ResourcesController extends AppController {
 
     //download the created export file and delete it
     public function downloadExportFile(){
+		$pack = $this->request->data['packNum'];
+		$total = $this->request->data['packTotal'];
+		$downloadName = 'Resource_Data('.$pack.'_of_'.$total.')'.'.zip';
+		
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.'Resource_Data.zip'.'"');
+        header('Content-Disposition: attachment; filename="'.$downloadName.'"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
@@ -684,9 +688,6 @@ class ResourcesController extends AppController {
     //download the created export file and delete it
     public function downloadPictureExportFile(){
         //echo 'downloadpics';die;
-
-
-
         ini_set('memory_limit', '-1');
         set_time_limit(0);
         $zip = new ZipArchive();
@@ -701,10 +702,12 @@ class ResourcesController extends AppController {
         }
         $zip->close();
 
-
+		$pack = $this->request->data['packNum'];
+		$total = $this->request->data['packTotal'];
+		$downloadName = 'Resource_Pictures('.$pack.'_of_'.$total.')'.'.zip';
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.'Resource_Pictures.zip'.'"');
+        header('Content-Disposition: attachment; filename="'.$downloadName.'"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');

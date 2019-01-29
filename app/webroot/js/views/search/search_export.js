@@ -1,39 +1,117 @@
-/**
- * Created by josh.christ on 3/14/2017.
- */
 $(document).ready(function() {
-    $("#export-btn").click(function () {
-        $(this).hide();
-        $('.export-options').show();
-    });
-
-    $('.export-options').click(function(){ //do export.
-        var isExporting = 0;
+	
+	if( $('#export-btn').length > 0 ){
+		return; //this is a multi-viewer export
+	}
+	
+	$('#export-images-buttons, #export-data-buttons').click(function(e){
+		if( $(this).hasClass('opacitied') ){
+			return;
+		}
+		if( $(this).hasClass('new-open') ){ //close
+			$(this).removeClass('new-open');
+			$(this).find('.pointerDown').css('transform','rotate(135deg');
+			$(this).find('.dropdown-menu').css('display','none');
+		}else{ //open
+			$(this).addClass('new-open');
+			$(this).find('.pointerDown').css('transform','rotate(315deg');
+			$(this).find('.dropdown-menu:not(#export-images-warning)').css('display','block');
+		}
+	});
+	
+	$('#export-images-buttons').on('hover', function(){
+		if( $(this).hasClass('opacitied') ){
+			$('#export-images-warning').css('display','block');
+			$('#export-images-buttons').css('opacity','1');
+		}
+	});
+	$('#export-images-buttons').on('mouseleave', function(){
+		if( $(this).hasClass('opacitied') ){
+			$('#export-images-warning').css('display','none');
+			$('#export-images-buttons').css('opacity','.2');
+		}
+	});
+	
+	$('#export-images-buttons').find('.export-image-num').unbind().click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('#export-images-buttons').find('.export-image-num').removeClass('active');
+		$(this).addClass('active');
+		if( $(this).attr('id') === 'export-image-all' ){
+			var packs = 1;
+		}else{
+			var packs = Math.ceil(picUrls.length/$(this).attr('data-num'));
+		}
+		//change dropdown-menu
+		var packHtml = '';
+		for( var i=1; i<=packs; i++ ){
+			packHtml += '<li><a class="sort-btn export-images-link" data-pack="'+i+'">IMAGES PACK '+i+'</a></li>'
+		}
+		$('#export-images-per').find('.export-images-link').parent().remove();
+		$('#export-images-per').append(packHtml);
+		return;
+	});
+	
+	$('#export-data-buttons').find('.export-data-type').unbind().click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('#export-data-buttons').find('.export-data-type').removeClass('active');
+		$(this).addClass('active');
+		return;
+	});
+	
+	$('#export-data-buttons').find('.export-data-num').unbind().click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('#export-data-buttons').find('.export-data-num').removeClass('active');
+		$(this).addClass('active');
+		if( $(this).attr('id') === 'export-data-all' ){
+			var packs = 1;
+		}else{
+			var packs = Math.ceil(JSON.parse($('#selected-resource-ids').html()).length/$(this).attr('data-num'));
+		}
+		//change dropdown-menu
+		var packHtml = '';
+		for( var i=1; i<=packs; i++ ){
+			packHtml += '<li><a class="sort-btn export-data-link" data-pack="'+i+'">DATA PACK '+i+'</a></li>'
+		}
+		$('#export-resources-per').find('.export-data-link').parent().remove();
+		$('#export-resources-per').append(packHtml);
+		return;
+	});
+	
+	var isExporting = 0;
+	var picUrls = [];
+	
+    $('#export-resources-per').on('click', '.export-data-link', function(e){ //do export.
+		e.preventDefault();
+		e.stopPropagation();
+		
         var exportAsXML = false;
         var $clicked = $(this);
 
-        if ($(this).attr('id') == 'export-xml-btn'){
+        if( $('#export-as-xml').hasClass('active') ){
             exportAsXML = true;
-            $('#export-json-btn').hide();
-        }else{
-            $('#export-xml-btn').hide();
         }
-
         if(isExporting == 1 || $(this).hasClass('search-loading') ){
             return;
-        }
+        }		
         isExporting = 1;
+		
+		var resetPics = 1;
+		$('.export-data-link').each(function(){
+			if( $(this).hasClass('downloaded') ){
+				resetPics = 0;
+			}
+		});
+		if( resetPics == 1 ){
+			picUrls = [];
+		}
+		
         var loaderHtml = $(ARCS_LOADER_HTML);
-        $(loaderHtml).css({'height':'inherit', 'margin-top':'-6px'});
-        $(loaderHtml).find('.sk-folding-cube').css({'height':'36.43px', 'width':'36.43px'});
-        $(this).html(loaderHtml);
-        //get all resource kids
-        var resourceKidResults = [];
-        arcs.views.search.exportResults.forEach(function(e){
-            resourceKidResults.push(e.kid);
-        });
-
-        console.log('kids', resourceKidResults)
+        $(loaderHtml).css({'height':'inherit','margin-top':'4px','width':'12px','float':'right','margin-right':'24px'});
+        $(loaderHtml).find('.sk-folding-cube').css({'height':'10.43px', 'width':'10.43px'});
+        $(this).append(loaderHtml);
 
         var projects = {};
         var seasons = {};
@@ -52,17 +130,24 @@ $(document).ready(function() {
 
         var kidArray = [];
 
-
+		if( $('#export-data-all').hasClass('active') ){
+			var resourceKidSlice = $('#selected-resource-ids').html();
+		}else{
+			var packIncrement = parseInt($('.export-data-num.active').attr('data-num'));
+			var packStart = ($(this).attr('data-pack') - 1) * packIncrement;
+			var resourceKidSlice = JSON.parse($('#selected-resource-ids').html()).slice(packStart, packStart+packIncrement);
+			resourceKidSlice = JSON.stringify(resourceKidSlice);
+		}
+		
         //grab all of the data from a multi-resource call.
         var schemeData = [];
         $.ajax({
             url: arcs.baseURL + "resource?ajax",
             type: "POST",
-            data: {'resources': JSON.stringify(resourceKidResults), 'isExportAjax': true},
+            data: {'resources': resourceKidSlice, 'isExportAjax': true},
             statusCode: {
                 200: function (data) {
                     schemeData = JSON.parse(data);
-                    console.log('ajax success', schemeData);
                     projects = schemeData[0];
                     seasons = schemeData[1];
                     excavations = schemeData[2];
@@ -95,7 +180,6 @@ $(document).ready(function() {
                         pageKids.push(page);
                     }
                 }
-
             }
 
             for (var subject in subjects) {
@@ -110,9 +194,7 @@ $(document).ready(function() {
                 }
 
             }
-
             kidArray = [projectKids, seasonKids, excavationKids, resourceKids, pageKids, subjectKids];
-
             //create file
             $.ajax({
                 url: arcs.baseURL + "resources/createExportFile",
@@ -123,6 +205,7 @@ $(document).ready(function() {
                 statusCode: {
                     200: function (data) {
                         data = JSON.parse(data);
+						picUrls = picUrls.concat(data.picUrls);
                         //download created file
                         $('<form />')
                             .hide()
@@ -132,56 +215,16 @@ $(document).ready(function() {
                                 .attr("type", "hidden")
                                 .attr({ "name": "filename" })
                                 .val(data.datafile)
-                            )
+                            ).append($('<input />')
+								.attr({ "name": "packNum" })
+								.val($clicked.attr('data-pack'))
+							).append($('<input />')
+								.attr({ "name": "packTotal" })
+								.val($('.export-data-link').length)
+							)
                             .append('<input type="submit" />')
                             .appendTo($("body"))
                             .submit();
-
-                        function doPictureDownloads(index,size,increment){
-                            if( index > size -1 ){
-                                $clicked.find('.icon-export').html('');
-                                $clicked.find('.icon-export').css('background-image', 'url(/' + BASE_URL + 'img/export.svg)');
-                                $clicked.hide();
-                                $("#export-btn").show();
-                                $('.export-options').hide();
-                                isExporting = 0;
-                                return;
-                            }else if(index + increment > size){
-                                increment = size - index;
-                            }
-                            var picSlice = data.picUrls.slice(index, index+increment);
-                            index += increment;
-                            $('<form />')
-                                .hide()
-                                .attr({ method: "post" })
-                                .attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
-                                .append($('<input />')
-                                    .attr("type", "hidden")
-                                    .attr({ "name": "picUrls" })
-                                    .val(JSON.stringify(picSlice))
-                                )
-                                .append('<input type="submit" />')
-                                .appendTo($("body"))
-                                .submit();
-                            setTimeout(function () { //give time for jquery form click
-                                $.ajax({
-                                    url: arcs.baseURL + "resources/checkExportDone",
-                                    type: "POST",
-                                    data: { 'filename': data.datafile },
-                                    statusCode: {
-                                        200: function () {
-                                            doPictureDownloads(index,size,increment);
-                                        },
-                                        400: function () {
-                                            console.log("Bad Request");
-                                        },
-                                        405: function () {
-                                            console.log("Method Not Allowed");
-                                        }
-                                    }
-                                });
-                            }, 50);
-                        }
                         //check when the export finishes
                         setTimeout(function () { //give time for jquery form click
                             $.ajax({
@@ -190,7 +233,32 @@ $(document).ready(function() {
                                 data: { 'filename': data.datafile },
                                 statusCode: {
                                     200: function () {
-                                        doPictureDownloads(0,data.picUrls.length,50);
+                                        //doPictureDownloads(0,data.picUrls.length,31);
+										$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
+										$clicked.addClass('downloaded');
+										
+										var picsReady = 1;
+										$('.export-data-link').each(function(){
+											if( !$(this).hasClass('downloaded') ){
+												picsReady = 0;
+											}
+										});
+										if( picsReady == 1 ){
+											$('#export-images-buttons').removeClass('opacitied').css('opacity','');
+											$('#export-images-warning').css('display','none');
+											
+											$('#export-images-buttons').find('.export-image-num').removeClass('active');
+											$('#export-image-30').addClass('active');
+											var packs = Math.ceil(picUrls.length/30);
+											var packHtml = '';
+											for( var i=1; i<=packs; i++ ){
+												packHtml += '<li><a class="sort-btn export-images-link" data-pack="'+i+'">IMAGES PACK '+i+'</a></li>'
+											}
+											$('#export-images-per').find('.export-images-link').parent().remove();
+											$('#export-images-per').append(packHtml);
+										}
+										isExporting = 0;
+										return;
                                     },
                                     400: function () {
                                         console.log("Bad Request");
@@ -206,136 +274,64 @@ $(document).ready(function() {
             });
         }
     });
-
-    function scheme2json(scheme){
-        //build the all the records into a json encoded array.
-        var schemeString = '[';
-        for( var index in scheme ){
-            schemeString += JSON.stringify(scheme[index]) +',';
-        }
-        schemeString = schemeString.substring(0, schemeString.length -1 ); //remove last comma
-        schemeString += ']';
-
-        return JSON.parse(schemeString);//get array of json objects
-    }
-
-    function objects2xmlString(o){
-        var xmlString = '';
-        o.forEach(function (tempdata) {
-            deleteTags(tempdata);
-            var recordObject = {Record: tempdata};
-            var dataObject = {Data: recordObject};
-            var trim = json2xml(dataObject, '').substring(23); //remove the <Data><ConsistentData/>
-            trim = trim.substring(0, trim.length - 7);  //remove the </Data>
-            xmlString += trim;
-        })
-        xmlString = '<' + '?xml version="1.0" encoding="ISO-8859-1"?' + '>\n<Data><ConsistentData/>' +
-            xmlString + '</Data>';
-        return xmlString;
-    }
-
-    function deleteTags(o){
-        if( 'thumb' in o ){
-            delete o.thumb;
-        }if( 'kid' in o ){
-            delete o.kid;
-        }if( 'linkers' in o ){
-            delete o.linkers;
-        }if( 'pid' in o ){
-            delete o.pid;
-        }if( 'recordowner' in o ){
-            delete o.recordowner;
-        }if( 'schemeID' in o ){
-            delete o.schemeID;
-        }if( 'systimestamp' in o ){
-            delete o.systimestamp;
-        }if( 'thumbnail' in o ){
-            delete o.thumbnail;
-        }if( 'Resource Associator' in o ){
-            delete o['Resource Associator'];
-        }if( 'project_kid' in o ){
-            delete o['project_kid'];
-        }
-    }
-
-    function json2xml(o, tab) {
-        //console.log('json object:');
-        //console.log(o);
-        var firstObject = true;
-        var toXml = function(v, name, ind) {
-            var xml = "";
-            name = name.replace(/ /g, '_');
-            if (v instanceof Array) {
-                for (var i=0, n=v.length; i<n; i++)
-                    xml += ind + toXml(v[i], name, ind+"\t") + "\n";
-            }
-            //look for objects that are not the Data or Record tag
-            else if ( typeof(v) == "object" && name != 'Record' && name != 'Data' ) {
-                xml +=  "<" + name;
-                if( 'prefix' in v && v.prefix != '' ){
-                    xml +=' prefix="'+ v.prefix + '"';
-                }
-                if( 'originalName' in v && v.originalName != '' ){  //added this to take care of pages.
-                    xml +=' originalName="'+ v.originalName + '"';
-                }
-                xml += '>';
-                if ( 'text' in v ) {
-                    xml += v.text;
-                }
-                if( 'month' in v ){
-                    if( v.month != '' ){
-                        xml += v.month;
-                    }
-                    xml += '/';
-                }
-                if( 'day' in v ){
-                    if( v.day != '' ){
-                        xml += v.day;
-                    }
-                    xml += '/';
-                }
-                if( 'year' in v && v.year != '' ){
-                    xml += v.year;
-                }
-                if( 'era' in v && v.era != '' ){
-                    xml += ' ' + v.era;
-                }
-                xml += '</' + name + '>';
-            }
-            else if (typeof(v) == "object") { //only record, data and terminus are objects
-                firstObject = false;
-                var hasChild = false;
-                xml += ind + "<" + name;
-                for (var m in v) {
-                    if (m.charAt(0) == "@")
-                        xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
-                    else
-                        hasChild = true;
-                }
-                xml += hasChild ? ">" : "/>";
-                if( name == 'Data'){
-                    xml += '<ConsistentData/>';
-                }
-                if (hasChild) {
-                    for (var m in v) {
-                        if (m == "#text")
-                            xml += v[m];
-                        else if (m == "#cdata")
-                            xml += "<![CDATA[" + v[m] + "]]>";
-                        else if (m.charAt(0) != "@")
-                            xml += toXml(v[m], m, ind+"\t");
-                    }
-                    xml += (xml.charAt(xml.length-1)=="\n"?ind:"") + "</" + name + ">";
-                }
-            }
-            else if( v.toString() != '') {
-                //console.log(name);
-                xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">";
-            }
-            return xml;
-        }, xml="";
-        for (var m in o)
-            xml += toXml(o[m], m, "");
-        return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
-    }
+	
+	$('#export-images-per').on('click', '.export-images-link', function(e){ //do images export.
+		e.preventDefault();
+		e.stopPropagation();
+        var $clicked = $(this);
+        if(isExporting == 1 || $(this).hasClass('search-loading') ){
+            return;
+        }		
+        isExporting = 1;
+		
+        var loaderHtml = $(ARCS_LOADER_HTML);
+        $(loaderHtml).css({'height':'inherit','margin-top':'4px','width':'12px','float':'right','margin-right':'24px'});
+        $(loaderHtml).find('.sk-folding-cube').css({'height':'10.43px', 'width':'10.43px'});
+        $(this).append(loaderHtml);
+		
+		if( $('#export-image-all').hasClass('active') ){
+			var picUrlsSlice = picUrls;
+		}else{
+			var packIncrement = parseInt($('.export-image-num.active').attr('data-num'));
+			var packStart = ($(this).attr('data-pack') - 1) * packIncrement;
+			var picUrlsSlice = picUrls.slice(packStart, packStart+packIncrement);
+		}
+		$('<form />')
+			.hide()
+			.attr({ method: "post" })
+			.attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
+			.append($('<input />')
+				.attr({ "name": "picUrls" })
+				.val(JSON.stringify(picUrlsSlice))
+			).append($('<input />')
+				.attr({ "name": "packNum" })
+				.val($(this).attr('data-pack'))
+			).append($('<input />')
+				.attr({ "name": "packTotal" })
+				.val($('.export-images-link').length)
+			)
+			.append('<input type="submit" />')
+			.appendTo($("body"))
+			.submit();
+		setTimeout(function () { //give time for jquery form click
+			$.ajax({
+				url: arcs.baseURL + "resources/checkExportDone",
+				type: "POST",
+				data: { 'filename': 'nothing' },
+				statusCode: {
+					200: function () {
+						$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
+						isExporting = 0;
+					},
+					400: function () {
+						console.log("Bad Request");
+					},
+					405: function () {
+						console.log("Method Not Allowed");
+					}
+				}
+			});
+		}, 50);
+		
+    });
 });
