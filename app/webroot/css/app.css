@@ -9668,8 +9668,10 @@ ul.pagination .selected {
   display: inline-block;
 }
 .flex-container .detailed .tooltip {
-  margin-top: 15px;
+  margin-left: 40px;
+  margin-top: 12px;
   opacity: 1;
+  position: static;
 }
 .flex-container .detailed .selected {
   background: white;
