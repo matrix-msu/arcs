@@ -8,6 +8,12 @@ if( typeof kids_to_get != 'undefined' && kids_to_get !== "keywordSearch" ){
 		}
 	}
 	$(document).ready(function(){
+        if ( typeof collection_name != 'undefined') {
+            var collectionNameTag = $("<h3 class='collection-name'>" + collection_name + "</h3>");
+            collectionNameTag.insertAfter('.SearchBar');
+            $('.SearchBar').css('display', 'none');
+        }
+
         setUpSearchLoad();
 	});
 }
