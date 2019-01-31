@@ -755,12 +755,6 @@ class ResourcesController extends AppController {
                 ),'Collection.collection_id' => $collection_id)
             ));
 
-            if (isset($collections[0]) && isset($collections[0]['Collection']['title'])){
-                $collectionTitle = $collections[0]['Collection']['title'];
-            } else {
-                $collectionTitle = "";
-            }
-
             //remove all the public 3 collections that the user isn't a part of
             $count = 0;
             foreach( $collections as $collection ){
@@ -788,6 +782,12 @@ class ResourcesController extends AppController {
                 //'group' => 'collection_id'
             ));
         }
+        if (isset($collections[0]) && isset($collections[0]['Collection']['title'])){
+            $collectionTitle = $collections[0]['Collection']['title'];
+        } else {
+            $collectionTitle = "";
+        }
+
         $resourceKids = array();
         foreach( $collections as $temp ){ //only keep the resource_kids.
             $resourceKids[] = $temp['Collection']['resource_kid'];
