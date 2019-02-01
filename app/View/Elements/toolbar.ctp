@@ -95,6 +95,9 @@
 
                      $showProjectPages = Array('single_project', 'index', 'display', 'viewtype', 'search');
 
+                     $currentProject = '';
+
+                     
                      // check if this page should display the project name in the dropdown
                      if (isset($this->request->params['action']) && $this->request->params['pass']) {
                          $action = $this->request->params['action'];
