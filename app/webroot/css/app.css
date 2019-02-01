@@ -9170,6 +9170,13 @@ div#search-results-wrapper .toolbar-fixed img.collectionIcon {
   padding: 0 5px;
   margin-top: -2.5px;
 }
+div#search-results-wrapper .toolbar-fixed .collection-name {
+  pointer-events: none;
+}
+div#search-results-wrapper .toolbar-fixed .collection-name:hover {
+  cursor: default;
+  color: #555;
+}
 div#search-again {
   float: right;
   vertical-align: middle;
