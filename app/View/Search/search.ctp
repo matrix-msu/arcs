@@ -188,30 +188,50 @@
 			</div>
 
 		    <div data-field="Creator" id="author-buttons" class="filter-btn btn-group actions-left">
-<!--				need to adjust these on search -->
 		      <button id="author-btn" class="btn dropdown-toggle" data-toggle="dropdown">
 		      	Creator
 		      	<span class="pointerDown sort-arrow pointerSearch"></span>
 		      </button>
 		      <ul class="dropdown-menu creatorMenu" data-id="Creator">
-
 		      </ul>
 		    </div>
 			<div id="options-buttons" class="btn-group actions-right">
-		      <button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
-		      	Export
-		      </button>
-			<button class="export-options" id="export-json-btn" href="#">
-				<span class="content">
-						JSON
-				</span>
-			</button>
-			<button class="export-options" id="export-xml-btn" href="#">
-				<span class="content">
-						XML
-				</span>
-			</button>
-		  </div>
+				<div id="export-data-buttons" class="filter-btn btn-group" style="float:left">
+					<button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown">
+						<span class="content">
+							EXPORT
+							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);"></span>
+						</span>
+					</button>
+					<ul class="dropdown-menu" id="export-resources-per" style="top:57px">
+						<li><a class="sort-btn export-data-num" data-num="50" id="export-data-50">50 RESOURCES/ZIP</a></li>
+						<li><a class="sort-btn export-data-num" data-num="100" id="export-data-100">100 RESOURCES/ZIP</a></li>
+						<li><a class="sort-btn active export-data-num" id="export-data-all">ALL RESOURCES/ZIP</a></li>
+						<hr>
+						<li><a class="sort-btn active export-data-type" id="export-as-xml">XML</a></li>
+						<li><a class="sort-btn export-data-type">JSON</a></li>
+						<hr>
+					</ul>
+				</div>
+				<div id="export-images-buttons" class="filter-btn btn-group opacitied" style="display:none">
+					<button class="export-options" id="export-images-btn" href="#" style="padding-right:0">
+						<span class="content">
+							IMAGES
+							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);"></span>
+						</span>
+					</button>
+					<ul class="dropdown-menu" id="export-images-per"  style="top:57px">
+						<li><a class="sort-btn export-image-num" data-num="20" id="export-image-20">20 IMAGES/ZIP</a></li>
+						<li><a class="sort-btn active export-image-num" data-num="30" id="export-image-30">30 IMAGES/ZIP<i class="icon-ok"></i></a></li>
+						<li><a class="sort-btn export-image-num" data-num="40" id="export-image-40">40 IMAGES/ZIP</a></li>
+						<li><a class="sort-btn export-image-num" id="export-image-all">ALL IMAGES/ZIP</a></li>
+						<hr>
+					</ul>
+					<ul class="dropdown-menu" id="export-images-warning" style="display:none;margin:0;top:57px">
+						<p class="sort-btn" style="width:105px">* IMAGES CAN ONLY BE DOWNLOADED AFTER ALL DATA HAS BEEN *</p>
+					</ul>
+				</div>
+			</div>
 
 		    <div id="view-buttons" class="btn-group actions-right">
 		      <button id="sort-btn" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -366,10 +386,9 @@
 			$('#options-btn').show();
 		}
 
-		$('#options-btn').click(function() { //do export.
-			console.log('doing this export')
-			$(this).hide();
-			$('.export-options').show();
+		$('#options-btn').one('click', function() { //do export.
+			$('#export-images-buttons').css('display', 'block').css('opacity','.2');
+			$('#export-images-btn').css('display', 'block');
 		});
 
         $("#pageHelpModal").click(function(e) {

@@ -279,7 +279,7 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                     <!--<div class="icon-flag"></div>-->
                     <!--</a>-->
 
-                    <a id="export-btn" href="#">
+                    <!--a id="export-btn" href="#">
                                         <span class="content">
                                                 Export
                                         </span>
@@ -298,9 +298,50 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                                                 XML
                                         </span>
                         <div class="icon-export"></div>
-                    </a>
+                    </a-->
 
+		<div id="export-btn" style="display:inline-block">
+			<div id="options-buttons" class="btn-group actions-right">
+				<div id="export-data-buttons" class="filter-btn btn-group opacitied" style="float:left;opacity:.2">
+					<button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown" style="display:block;background-color:inherit;border:none;box-shadow:none;-webkit-box-shadow:none">
+						<span class="content" id="multi-export-btn">
+							EXPORT
+							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg)"></span>
+						</span>
+					</button>
+					<ul class="dropdown-menu" id="export-resources-per" style="top:57px">
+						<li><a class="sort-btn export-data-num" data-num="50" id="export-data-50">50 RESOURCES/ZIP</a></li>
+						<li><a class="sort-btn export-data-num" data-num="100" id="export-data-100">100 RESOURCES/ZIP</a></li>
+						<li><a class="sort-btn active export-data-num" id="export-data-all" style="color:#0093be">ALL RESOURCES/ZIP</a></li>
+						<hr>
+						<li><a class="sort-btn active export-data-type" id="export-as-xml" style="color:#0093be">XML</a></li>
+						<li><a class="sort-btn export-data-type">JSON</a></li>
+						<hr>
+						<li><a class="sort-btn export-data-link" data-pack="1">DATA PACK 1</a></li>
+					</ul>
+				</div>
+				<div id="export-images-buttons" class="filter-btn btn-group opacitied" style="display:none">
+					<button class="export-options" id="export-images-btn" href="#" style="padding-right:0">
+						<span class="content">
+							IMAGES
+							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);margin-top:23px"></span>
+						</span>
+					</button>
+					<ul class="dropdown-menu" id="export-images-per"  style="top:57px">
+						<li><a class="sort-btn export-image-num" data-num="20" id="export-image-20">20 IMAGES/ZIP</a></li>
+						<li><a class="sort-btn active export-image-num" data-num="30" id="export-image-30" style="color:#0093be">30 IMAGES/ZIP<i class="icon-ok"></i></a></li>
+						<li><a class="sort-btn export-image-num" data-num="40" id="export-image-40">40 IMAGES/ZIP</a></li>
+						<li><a class="sort-btn export-image-num" id="export-image-all">ALL IMAGES/ZIP</a></li>
+						<hr>
+					</ul>
+					<ul class="dropdown-menu" id="export-images-warning" style="display:none;margin:0;top:57px;line-height:21px">
+						<p class="sort-btn" style="width:105px">* IMAGES CAN ONLY BE DOWNLOADED AFTER ALL DATA HAS BEEN *</p>
+					</ul>
+				</div>
+			</div>
+		</div>
 
+					
 
                 </div>
             </div>

@@ -610,6 +610,7 @@ $(document).ready(function() {
                 keywordPrep();
                 scrollPrep();
                 $('.selectedCurrentResource').click();
+				$('#export-data-buttons').removeClass('opacitied').css('opacity','');
             }
         });
     }
@@ -626,7 +627,8 @@ $(document).ready(function() {
 		$(".accordion").accordion({
 			heightStyle: "fill",
 			active: 3
-		});		
+		});	
+		$('#export-data-buttons').removeClass('opacitied').css('opacity','');
     }
 });
 

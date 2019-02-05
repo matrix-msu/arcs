@@ -59,10 +59,10 @@ function setUpSearchLoad(keywordSearch = false){
     });
 
 
-    $('#options-btn').click(function() { //do export.
-        $(this).hide();
-        $('.export-options').show();
-    });
+    // $('#options-btn').click(function() { //do export.
+        // $(this).hide();
+        // $('.export-options').show();
+    // });
 
 }
 
@@ -205,9 +205,9 @@ function setUpSearchLoad(keywordSearch = false){
 			setFilters();
 			addFilterEvent();
 			$('#results-count').html(kids_to_get.length - getRestLocked);
-			$('.SearchBar').find('.btn-group').css('opacity','').find('button').css('cursor','');
+			$('.SearchBar').find('.btn-group:not(#options-buttons)').css('opacity','').find('button').css('cursor','');
 			$('#select-all').css('opacity','').css('cursor','');
-			$('#options-btn').removeClass('search-loading');
+			//$('#options-btn').removeClass('search-loading');
 			$('.sk-cube-container').remove();
 			return;
 		}
@@ -623,6 +623,7 @@ function setUpSearchLoad(keywordSearch = false){
         w = Math.ceil($(this)[0].nextElementSibling.offsetWidth)
         $(this).css('width', w)
       })
+	  console.log('select all', selectedMap["selected"]);
       Search.selected = selectedMap["selected"]
       Search.selected.forEach(function(e) {
         var li = $('li[data-id="'+e+'"]');
@@ -1214,6 +1215,7 @@ function setUpSearchLoad(keywordSearch = false){
           }
           $("#selected-count").html("0");
           $("#selected-resource-ids").empty();
+		  checkExportButton();
           $('.pageNumber').removeClass('selected');
           $('.pageNumber').removeClass('currentPage');
           $("#1").addClass('selected');
@@ -1377,6 +1379,7 @@ function setUpSearchLoad(keywordSearch = false){
         var data_id = $(this).closest(".resource-thumb")
         data_id = data_id[0]
         data_id = data_id.getAttribute('data-id');
+		console.log('dataid', data_id);
         if (makeSelect){ //selecting the clicked resource
           Search.selected.push(data_id)
           selectedMap['selected'] = Search.selected
@@ -1387,7 +1390,8 @@ function setUpSearchLoad(keywordSearch = false){
         }
         //update the add to collections button informations
 		//collectionPrep();
-        $("#selected-resource-ids").html(JSON.stringify(Search.selected))
+        $("#selected-resource-ids").html(JSON.stringify(Search.selected));
+		checkExportButton();
         $('#selected-count').html(Search.selected.length)
         if( Search.selected.length == 0 ){ //not clickable
           $('#selected-all, #open-colview-btn').css({
@@ -1429,16 +1433,20 @@ function setUpSearchLoad(keywordSearch = false){
           });
           selectedMap['selected'] = [];
           i = 0;
+		  console.log('totalres',totalResults);
           for (i in totalResults) {
             if(totalResults[i]['Locked'] !== true) {
-              selectedMap['selected'].push(totalResults[i]['kid']);
-              ++i;
+				if( typeof totalResults[i]['kid'] !== "undefined" ){
+					selectedMap['selected'].push(totalResults[i]['kid']);
+				}
             }
+			i++;
           }
           arcs.searchView.selectAll();
           $('#toggle-select').html('DE-SELECT');
 		  this.id = "deselect-all";
           $('#selected-resource-ids').html(JSON.stringify(selectedMap["selected"]));
+		  checkExportButton();
           return $('#selected-count').html(selectedMap["selected"].length);
         } else {
           $('#selected-all, #open-colview-btn').css({
@@ -1449,6 +1457,7 @@ function setUpSearchLoad(keywordSearch = false){
           arcs.searchView.unselectAll();
           $('#toggle-select').html('SELECT');
           $('#selected-resource-ids').html(JSON.stringify(selectedMap["selected"]));
+		  checkExportButton();
           return $('#selected-count').html(selectedMap["selected"].length);
         }
       });
@@ -1705,6 +1714,33 @@ $(document).ready(function() {
     });
 
 });
+
+function checkExportButton(){
+	if( $('#selected-resource-ids').html() === '' ){
+		return;
+	}
+	var selectedArray = JSON.parse($('#selected-resource-ids').html());
+	if( selectedArray.length > 0 ){
+		if( typeof selectedArray[selectedArray.length-1] !== "string" ){
+			selectedArray.pop();
+		}
+		$('#selected-resource-ids').html(JSON.stringify(selectedArray));
+		
+		$('#export-resources-per').find('.export-data-num').removeClass('active');
+		$('#export-data-all').addClass('active');
+		$('#export-resources-per').find('.export-data-link').parent().remove();
+		$('#export-resources-per').append('<li><a class="sort-btn export-data-link" data-pack="1">DATA PACK 1</a></li>');
+		
+		$('#options-btn').removeClass('search-loading');
+		$('.SearchBar').find('#options-buttons').css('opacity','').find('button').css('cursor','');
+	}else{
+		$('#options-btn').addClass('search-loading');
+		$('.SearchBar').find('#options-buttons').css('opacity','.2').find('button').css('cursor','wait');
+		$('#export-images-buttons').removeClass('opacitied').addClass('opacitied').css('opacity','.2');
+		$('#export-images-buttons').find('.dropdown-menu').css('display','none');
+	}
+	$('#export-images-buttons').find('.dropdown-menu').find('.export-images-link').remove();
+}
 
 function calculateMargins() {
     var w = Math.floor($('div#search-results').width());
