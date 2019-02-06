@@ -9114,6 +9114,7 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu {
   left: -2px;
   max-height: 400px;
   overflow: auto;
+  top: 56px;
 }
 div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   cursor: pointer;
