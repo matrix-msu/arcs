@@ -509,4 +509,4 @@ Router::connect('/add_project/downloadLayoutFile',
     Router::parseExtensions( 'json' );
 
 	CakePlugin::routes();
-	require CAKE . 'Config' . DS . 'routes.php';
+	//require CAKE . 'Config' . DS . 'routes.php';
