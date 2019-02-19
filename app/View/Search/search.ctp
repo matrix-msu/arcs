@@ -230,7 +230,7 @@
 				</div>
                 <div id="export-modal" class="filter-btn btn-group" style="display:none">
                     <ul class="dropdown-menu" style="margin:0;top:58px;left:-700px;width:397px!important">
-                        <li>
+                        <li><br>
 EXPORT SELECTED RESOURCES
 <hr>
 <div id="export-modal-explain">
