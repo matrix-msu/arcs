@@ -44,7 +44,7 @@ class ResourcesController extends AppController {
         # are allowed by default.
         $this->Auth->allow(
             'view', 'viewer', 'multi_viewer', 'search', 'comments', 'annotations',
-            'keywords', 'complete', 'zipped', 'download','checkExportDone', "loadNewResource",
+            'keywords', 'complete', 'zipped', 'download', "loadNewResource",
             'createExportFile', 'downloadExportFile', 'viewtype', 'viewKid', 'viewcollection',
             'getMetadataEditsControlOptions', 'countResources', 'KidTitleTime'
         );
@@ -607,8 +607,6 @@ class ResourcesController extends AppController {
         ini_set('memory_limit', '-1');
         set_time_limit(0);
         $zip = new ZipArchive();
-
-        # create a temp file & open it
         $tmp_file = @tempnam('.','Resource_Data_');
         $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
 
@@ -622,10 +620,9 @@ class ResourcesController extends AppController {
         }
         $pages_data;
         foreach (json_decode($this->request->data['xmls']) as $kidArray) {
-            $data_string = self::getExportData($kidArray, $count);  //return json
             $data_xml_string = self::getExportData($kidArray, $count, $this->request->data['exportAsXML']); //return json or xml
-
             if($count == 4){
+				$data_string = self::getExportData($kidArray, $count);  //return json
                 $pages_data = json_decode($data_string, true);
             }
             $zip->addFromString($xmlNames[$count], $data_xml_string);
@@ -638,30 +635,8 @@ class ResourcesController extends AppController {
             $sid = parent::getPageSIDFromProjectName($pName);
             array_push($picUrls, $page["Image_Upload_".$pid."_".$sid."_"]['value'][0]['url']);
         }
-//        foreach($picUrls as $url){
-//            $download_file = @file_get_contents( $url );
-//            $zip->addFromString('images/'.basename($url),$download_file);
-//        }
         $zip->close();
         echo json_encode(array('datafile'=>$tmp_file, 'picUrls'=>$picUrls));
-        die;
-    }
-
-    //create a file to be exported.
-    public function createPictureExportFile(){
-        ini_set('memory_limit', '-1');
-        set_time_limit(0);
-        $zip = new ZipArchive();
-
-        $tmp_file = @tempnam('.','Resource_Pictures_');
-        $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
-
-        foreach($this->request->data['picUrls'] as $url){
-            $download_file = @file_get_contents( $url );
-            $zip->addFromString(basename($url),$download_file);
-        }
-        $zip->close();
-        echo $tmp_file;
         die;
     }
 
@@ -684,10 +659,9 @@ class ResourcesController extends AppController {
         unlink($this->request->data['filename']);
         die;
     }
-
-    //download the created export file and delete it
-    public function downloadPictureExportFile(){
-        //echo 'downloadpics';die;
+	
+	//create a file to be exported.
+    public function createPictureExportFile(){
         ini_set('memory_limit', '-1');
         set_time_limit(0);
         $zip = new ZipArchive();
@@ -698,10 +672,15 @@ class ResourcesController extends AppController {
         foreach(json_decode($this->request->data['picUrls']) as $url){
             $download_file = @file_get_contents( $url );
             $zip->addFromString(basename($url),$download_file);
-            //$zip->addFromString(basename($url),$url);
         }
         $zip->close();
+        echo $tmp_file;
+        die;
+    }
 
+    //download the created export file and delete it
+    public function downloadPictureExportFile(){
+		$tmp_file = $this->request->data['filename'];
 		$pack = $this->request->data['packNum'];
 		$total = $this->request->data['packTotal'];
 		$downloadName = 'Resource_Pictures('.$pack.'_of_'.$total.')'.'.zip';
@@ -713,11 +692,7 @@ class ResourcesController extends AppController {
         header('Pragma: public');
         header('Content-Length: ' . filesize($tmp_file.'.zip'));
 
-
         readfile($tmp_file.'.zip');
-
-        unlink($tmp_file.'.zip');
-        unlink($tmp_file);
         die;
     }
 
@@ -727,12 +702,16 @@ class ResourcesController extends AppController {
      * delete the files if download crashed.
      */
     public function checkExportDone(){
+		$existed = false;
         if(file_exists($this->request->data['filename'].'.zip')){
             unlink($this->request->data['filename'].'.zip');
+			$existed = true;
         }
         if(file_exists($this->request->data['filename'])){
             unlink($this->request->data['filename']);
+			$existed = true;
         }
+		echo $existed;
         die;
     }
 

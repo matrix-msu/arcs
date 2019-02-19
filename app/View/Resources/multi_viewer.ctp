@@ -43,6 +43,16 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 <?=  $this->Html->script("views/viewer/Multi/metadataLoad.js") ?>
 
 
+<?php
+$totalNumResources = 1;
+if( $multiInfo !== 0 &&
+    isset($_SESSION['multi_viewer_resources']) &&
+    isset($_SESSION['multi_viewer_resources'][$multiInfo])
+){
+    $totalNumResources = count($_SESSION['multi_viewer_resources'][$multiInfo]);
+}
+?>
+
 <div class="viewers-container">
 
     <div class="flagModalBackground">
@@ -272,76 +282,74 @@ var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
                         <div class="icon-annotate"></div>
                     </a>
 
-                    <!--<a id="flag" href="#">-->
-                    <!--<span class="content">-->
-                    <!--Flag-->
-                    <!--</span>-->
-                    <!--<div class="icon-flag"></div>-->
-                    <!--</a>-->
-
-                    <!--a id="export-btn" href="#">
-                                        <span class="content">
-                                                Export
-                                        </span>
-                        <div class="icon-export"></div>
-                    </a>
-
-
-                    <a class="viewer-export-options" id="export-json-btn" href="#">
-                                        <span class="content">
-                                                JSON
-                                        </span>
-                        <div class="icon-export"></div>
-                    </a>
-                    <a class="viewer-export-options" id="export-xml-btn" href="#">
-                                        <span class="content">
-                                                XML
-                                        </span>
-                        <div class="icon-export"></div>
-                    </a-->
-
 		<div id="export-btn" style="display:inline-block">
 			<div id="options-buttons" class="btn-group actions-right">
 				<div id="export-data-buttons" class="filter-btn btn-group opacitied" style="float:left;opacity:.2">
 					<button id="options-btn" class="btn dropdown-toggle" data-toggle="dropdown" style="display:block;background-color:inherit;border:none;box-shadow:none;-webkit-box-shadow:none">
 						<span class="content" id="multi-export-btn">
 							EXPORT
-							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg)"></span>
+							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);"></span>
 						</span>
 					</button>
-					<ul class="dropdown-menu" id="export-resources-per" style="top:57px">
+					<ul class="dropdown-menu" id="export-resources-per" style="top:57px;left:13px;max-height:none;padding-left:4px;padding-right:4px">
 						<li><a class="sort-btn export-data-num" data-num="50" id="export-data-50">50 RESOURCES/ZIP</a></li>
 						<li><a class="sort-btn export-data-num" data-num="100" id="export-data-100">100 RESOURCES/ZIP</a></li>
-						<li><a class="sort-btn active export-data-num" id="export-data-all" style="color:#0093be">ALL RESOURCES/ZIP</a></li>
+						<li><a class="sort-btn active export-data-num" id="export-data-all">ALL RESOURCES/ZIP</a></li>
 						<hr>
-						<li><a class="sort-btn active export-data-type" id="export-as-xml" style="color:#0093be">XML</a></li>
+						<li><a class="sort-btn active export-data-type" id="export-as-xml">XML</a></li>
 						<li><a class="sort-btn export-data-type">JSON</a></li>
 						<hr>
 						<li><a class="sort-btn export-data-link" data-pack="1">DATA PACK 1</a></li>
 					</ul>
 				</div>
-				<div id="export-images-buttons" class="filter-btn btn-group opacitied" style="display:none">
+				<div id="export-images-buttons" class="filter-btn btn-group opacitied" style="display:block">
 					<button class="export-options" id="export-images-btn" href="#" style="padding-right:0">
 						<span class="content">
 							IMAGES
-							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);margin-top:23px"></span>
+							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);"></span>
 						</span>
 					</button>
-					<ul class="dropdown-menu" id="export-images-per"  style="top:57px">
+					<ul class="dropdown-menu" id="export-images-per"  style="top:57px;left:-253px;max-height:none">
 						<li><a class="sort-btn export-image-num" data-num="20" id="export-image-20">20 IMAGES/ZIP</a></li>
-						<li><a class="sort-btn active export-image-num" data-num="30" id="export-image-30" style="color:#0093be">30 IMAGES/ZIP<i class="icon-ok"></i></a></li>
+						<li><a class="sort-btn active export-image-num" data-num="30" id="export-image-30">30 IMAGES/ZIP<i class="icon-ok"></i></a></li>
 						<li><a class="sort-btn export-image-num" data-num="40" id="export-image-40">40 IMAGES/ZIP</a></li>
 						<li><a class="sort-btn export-image-num" id="export-image-all">ALL IMAGES/ZIP</a></li>
 						<hr>
 					</ul>
-					<ul class="dropdown-menu" id="export-images-warning" style="display:none;margin:0;top:57px;line-height:21px">
-						<p class="sort-btn" style="width:105px">* IMAGES CAN ONLY BE DOWNLOADED AFTER ALL DATA HAS BEEN *</p>
-					</ul>
 				</div>
+                <div id="export-modal" class="filter-btn btn-group" style="display:none">
+                    <ul class="dropdown-menu" style="margin:0;top:58px;left:-655px;width:397px!important;line-height:normal">
+                        <li><br>
+EXPORT SELECTED RESOURCES
+<hr>
+<div id="export-modal-explain">
+<p class="sort-btn" style="white-space:pre;margin-top:-19px">
+Exports are split into a series of data and image zip files.
+Image packs will appear after all selected data is done exporting.
+
+First, select a data format and how many items you would like per zip.
+All is recommended for data packs as any record higher than the
+resource level may be exported in duplicate when splitting data.
+
+Then, you can either download zip files individually or click
+the button below to automatically download all.
+</p>
+<hr>
+<a class="sort-btn active" id="export-automatic" style="margin-bottom:10px">EXPORT ALL<br></a><br>
+</div>
+                        <p class="sort-btn" style="white-space:pre;display:none;margin-top:-19px" id="export-modal-exporting">
+Your data export could take a little while.
+You are downloading <span class="export-rem-data"><?=$totalNumResources?></span> records and <span class="export-rem-images">TBD</span> images,
+which will be exported in a series of zip files.
+
+Records --- Downloaded: <span class="export-downed-data">0</span> | Remaining: <span class="export-rem-data export-rem-decreasing-data"><?=$totalNumResources?>></span>
+Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining: <span class="export-rem-images export-rem-decreasing-images">TBD</span>
+                        </p></li>
+                    </ul>
+                </div>
 			</div>
 		</div>
 
-					
 
                 </div>
             </div>
