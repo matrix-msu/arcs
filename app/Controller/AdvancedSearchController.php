@@ -145,12 +145,26 @@ class AdvancedSearchController extends AppController
         if ($user = $usersC->getUser($this->Auth)) {
             $username = $user['User']['username'];
         }
-		
 		$resourceKids = json_decode($_POST['kids']);
-		$search = new Resource_Search($resourceKids, $_POST['project']);
-        $results = $search->getResultsAsArray();
-		ResourcesController::filterByPermission($username, $results['results']);
-		echo json_encode($results);
+		if( $_POST['project'] === "all" ){
+			$projects = array_keys(parent::getPIDArray());
+			$return = array();
+			foreach ($projects as $project) {
+				$search = new Resource_Search($resourceKids, $project);
+				$results = $search->getResultsAsArray();
+				ResourcesController::filterByPermission($username, $results['results']);
+				//var_dump($results);
+				$return = $results;
+				break;
+			}
+			//die;
+		}else{
+			$search = new Resource_Search($resourceKids, $_POST['project']);
+			$results = $search->getResultsAsArray();
+			ResourcesController::filterByPermission($username, $results['results']);
+			$return = $results;
+		}
+		echo json_encode($return);
 		die;
 	}
     /**

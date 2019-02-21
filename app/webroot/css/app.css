@@ -9121,6 +9121,7 @@ div#search-results-wrapper div#search-actions ul.dropdown-menu {
   left: -2px;
   max-height: 400px;
   overflow: auto;
+  top: 56px;
 }
 div#search-results-wrapper div#search-actions ul.dropdown-menu li a {
   cursor: pointer;
@@ -9908,9 +9909,16 @@ input[type=range]:focus::-ms-fill-upper {
   line-height: 60px;
   border-bottom: 1px solid #cdcdcd;
 }
+#viewer-tools .export-images-link {
+  padding-left: 0;
+  padding-right: 0;
+}
 #viewer-tools a {
   text-decoration: none;
   color: #000;
+}
+#viewer-tools .active {
+  color: #0093be;
 }
 #viewer-tools a:hover,
 #viewer-tools a:visited {

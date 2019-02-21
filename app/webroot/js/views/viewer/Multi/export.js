@@ -1,44 +1,34 @@
-$(document).ready(function(){
+$(document).ready(function() {
 	
-	$('#options-btn').one('click', function() { //do export.
-			$('#export-images-buttons').css('display', 'block').css('opacity','.2');
-			$('#export-images-btn').css('display', 'block');
-			$('#multi-export-btn').css('margin-top','9px');
-		});
-	
-	$('#export-images-buttons, #export-data-buttons').click(function(e){
-		if( $(this).hasClass('opacitied') ){
+	$('#export-data-buttons').click(function(e){
+		if( $(this).hasClass('opacitied') || $('#options-buttons').css('opacity') == .2 ){
+			e.preventDefault();
+			e.stopPropagation();
 			return;
 		}
 		if( $(this).hasClass('new-open') ){ //close
-			$(this).removeClass('new-open');
-			$(this).find('.pointerDown').css('transform','rotate(135deg');
-			$(this).find('.dropdown-menu').css('display','none');
+            $('#export-data-buttons').removeClass('new-open');
+            $('#export-data-buttons').find('.pointerDown').css('transform','rotate(135deg');
+            $('#export-data-buttons').find('.dropdown-menu').css('display','none');
+            $('#export-images-buttons').find('.dropdown-menu').css('display','none');
+            $('#export-modal').css('display','none').find('.dropdown-menu').css('display','none');
 		}else{ //open
-			$(this).addClass('new-open');
-			$(this).find('.pointerDown').css('transform','rotate(315deg');
-			$(this).find('.dropdown-menu:not(#export-images-warning)').css('display','block');
-		}
-	});
-	
-	$('#export-images-buttons').on('hover', function(){
-		if( $(this).hasClass('opacitied') ){
-			$('#export-images-warning').css('display','block');
-			$('#export-images-buttons').css('opacity','1');
-		}
-	});
-	$('#export-images-buttons').on('mouseleave', function(){
-		if( $(this).hasClass('opacitied') ){
-			$('#export-images-warning').css('display','none');
-			$('#export-images-buttons').css('opacity','.2');
+            $('#export-data-buttons').addClass('new-open');
+            $('#export-data-buttons').find('.pointerDown').css('transform','rotate(315deg');
+            $('#export-data-buttons').find('.dropdown-menu:not(#export-images-warning)').css('display','block');
+            $('#export-images-buttons').find('.dropdown-menu:not(#export-images-warning)').css('display','block');
+			$('#export-modal').css('display','block').find('.dropdown-menu').css('display','block');
 		}
 	});
 	
 	$('#export-images-buttons').find('.export-image-num').unbind().click(function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		$('#export-images-buttons').find('.export-image-num').removeClass('active').css('color','');
-		$(this).addClass('active').css('color','#0093be');
+		if( isExporting ){
+            return;
+        }
+		$('#export-images-buttons').find('.export-image-num').removeClass('active');
+		$(this).addClass('active');
 		if( $(this).attr('id') === 'export-image-all' ){
 			var packs = 1;
 		}else{
@@ -47,7 +37,7 @@ $(document).ready(function(){
 		//change dropdown-menu
 		var packHtml = '';
 		for( var i=1; i<=packs; i++ ){
-			packHtml += '<li><a class="sort-btn export-images-link" data-pack="'+i+'">IMAGES PACK '+i+'</a></li>'
+			packHtml += '<li style="padding:0"><a class="sort-btn export-images-link" data-pack="'+i+'">IMAGES PACK '+i+'</a></li>'
 		}
 		$('#export-images-per').find('.export-images-link').parent().remove();
 		$('#export-images-per').append(packHtml);
@@ -57,22 +47,24 @@ $(document).ready(function(){
 	$('#export-data-buttons').find('.export-data-type').unbind().click(function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		$('#export-data-buttons').find('.export-data-type').removeClass('active').css('color','');
-		$(this).addClass('active').css('color','#0093be');
+		$('#export-data-buttons').find('.export-data-type').removeClass('active');
+		$(this).addClass('active');
 		return;
 	});
 	
 	$('#export-data-buttons').find('.export-data-num').unbind().click(function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		$('#export-data-buttons').find('.export-data-num').removeClass('active').css('color','');
-		$(this).addClass('active').css('color','#0093be');
+		if( isExporting ){
+            return;
+        }
+		$('#export-data-buttons').find('.export-data-num').removeClass('active');
+		$(this).addClass('active');
 		if( $(this).attr('id') === 'export-data-all' ){
 			var packs = 1;
 		}else{
 			var packs = Math.ceil(JSON.parse($('#selected-resource-ids').html()).length/$(this).attr('data-num'));
 		}
-		//change dropdown-menu
 		var packHtml = '';
 		for( var i=1; i<=packs; i++ ){
 			packHtml += '<li><a class="sort-btn export-data-link" data-pack="'+i+'">DATA PACK '+i+'</a></li>'
@@ -82,21 +74,28 @@ $(document).ready(function(){
 		return;
 	});
 	
+	//export automatic
+	$('#export-automatic').click(function(e){
+		e.stopPropagation();
+		e.preventDefault();
+		$('.export-data-link').addClass('automatic');
+		$('.automatic').eq(0).click();
+	});
+	
 	var isExporting = 0;
 	var picUrls = [];
-	
-	
-    $('#export-resources-per').on('click', '.export-data-link', function(e){ //do export.
+	//export link clicks - this actual downlaod data export here
+    $('#export-resources-per').on('click', '.export-data-link', function(e){
 		e.preventDefault();
 		e.stopPropagation();
 		
         var exportAsXML = false;
         var $clicked = $(this);
 
-         if( $('#export-as-xml').hasClass('active') ){
+        if( $('#export-as-xml').hasClass('active') ){
             exportAsXML = true;
         }
-        if(isExporting == 1){
+        if(isExporting == 1 || $(this).hasClass('search-loading') ){
             return;
         }
         isExporting = 1;
@@ -110,7 +109,10 @@ $(document).ready(function(){
 		if( resetPics == 1 ){
 			picUrls = [];
 		}
-		
+
+		$('#export-modal-explain').css('display','none');
+		$('#export-modal-exporting').css('display','block');
+
         var loaderHtml = $(ARCS_LOADER_HTML);
         $(loaderHtml).css({'height':'inherit','margin-top':'4px','width':'12px','float':'right','margin-right':'24px'});
         $(loaderHtml).find('.sk-folding-cube').css({'height':'10.43px', 'width':'10.43px'});
@@ -160,7 +162,6 @@ $(document).ready(function(){
         }
 
         kidArray = [projectKids, seasonKids, excavationKids, resourceKids, pageKids, subjectKids];
-    
 		//create file
 		$.ajax({
 			url: arcs.baseURL + "resources/createExportFile",
@@ -199,6 +200,16 @@ $(document).ready(function(){
 							data: { 'filename': data.datafile },
 							statusCode: {
 								200: function () {
+									var downCount = $('.export-rem-data').eq(0).html();
+									if( !$('#export-data-all').hasClass('active') ){
+										var tempDownCount = parseInt($('.export-downed-data').html())+parseInt($('.export-data-num.active').attr('data-num'));
+										if( tempDownCount < downCount ){
+											downCount = tempDownCount;
+										}
+									}
+									$('.export-downed-data').html(downCount);
+									var remaining = parseInt($('.export-rem-data').eq(0).html()) - downCount;
+									$('.export-rem-decreasing-data').html(remaining);
 									//doPictureDownloads(0,data.picUrls.length,31);
 									$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
 									$clicked.addClass('downloaded');
@@ -211,20 +222,28 @@ $(document).ready(function(){
 									});
 									if( picsReady == 1 ){
 										$('#export-images-buttons').removeClass('opacitied').css('opacity','');
-										$('#export-images-warning').css('display','none');
-										
-										$('#export-images-buttons').find('.export-image-num').removeClass('active');
-										$('#export-image-30').addClass('active');
-										var packs = Math.ceil(picUrls.length/30);
+										$('.export-rem-images').html(picUrls.length);
+										var automatic = '';
+										if( $('.export-data-link').eq(0).hasClass('automatic') ){
+											automatic = ' automatic';
+										}
+										if( $('.export-image-num.active').attr('id') === 'export-image-all' ){
+											var packs = 1;
+										}else{
+											var packs = Math.ceil(picUrls.length/$('.export-image-num.active').attr('data-num'));
+										}
 										var packHtml = '';
 										for( var i=1; i<=packs; i++ ){
-											packHtml += '<li><a class="sort-btn export-images-link" data-pack="'+i+'">IMAGES PACK '+i+'</a></li>'
+											packHtml += '<li><a class="sort-btn export-images-link'+automatic+'" data-pack="'+i+'">IMAGES PACK '+i+'</a></li>'
 										}
 										$('#export-images-per').find('.export-images-link').parent().remove();
 										$('#export-images-per').append(packHtml);
 										$('#export-images-buttons').click();
 									}
 									isExporting = 0;
+									setTimeout(function(){
+										$('.automatic:not(.downloaded)').click();
+									},50);
 									return;
 								},
 								400: function () {
@@ -241,7 +260,8 @@ $(document).ready(function(){
 		});
     });
 	
-	$('#export-images-per').on('click', '.export-images-link', function(e){ //do images export.
+	//export image link click - the actual image pack export
+	$('#export-images-per').on('click', '.export-images-link', function(e){
 		e.preventDefault();
 		e.stopPropagation();
         var $clicked = $(this);
@@ -251,7 +271,7 @@ $(document).ready(function(){
         isExporting = 1;
 		
         var loaderHtml = $(ARCS_LOADER_HTML);
-        $(loaderHtml).css({'height':'inherit','margin-top':'4px','width':'12px','float':'right','margin-right':'-21px'});
+        $(loaderHtml).css({'height':'inherit','margin-top':'4px','width':'12px','float':'right','margin-right':'3px'});
         $(loaderHtml).find('.sk-folding-cube').css({'height':'10.43px', 'width':'10.43px'});
         $(this).append(loaderHtml);
 		
@@ -262,42 +282,74 @@ $(document).ready(function(){
 			var packStart = ($(this).attr('data-pack') - 1) * packIncrement;
 			var picUrlsSlice = picUrls.slice(packStart, packStart+packIncrement);
 		}
-		$('<form />')
-			.hide()
-			.attr({ method: "post" })
-			.attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
-			.append($('<input />')
-				.attr({ "name": "picUrls" })
-				.val(JSON.stringify(picUrlsSlice))
-			).append($('<input />')
-				.attr({ "name": "packNum" })
-				.val($(this).attr('data-pack'))
-			).append($('<input />')
-				.attr({ "name": "packTotal" })
-				.val($('.export-images-link').length)
-			)
-			.append('<input type="submit" />')
-			.appendTo($("body"))
-			.submit();
-		setTimeout(function () { //give time for jquery form click
-			$.ajax({
-				url: arcs.baseURL + "resources/checkExportDone",
-				type: "POST",
-				data: { 'filename': 'nothing' },
-				statusCode: {
-					200: function () {
-						$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
-						isExporting = 0;
-					},
-					400: function () {
-						console.log("Bad Request");
-					},
-					405: function () {
-						console.log("Method Not Allowed");
-					}
-				}
-			});
-		}, 50);
+		var packNum = $(this).attr('data-pack');
 		
+		$.ajax({
+			url: arcs.baseURL + "resources/createPictureExportFile",
+			type: "POST",
+			data: { 
+				'picUrls': JSON.stringify(picUrlsSlice)
+			},
+			statusCode: {
+				200: function (data) {
+					$form = $('<form />')
+						.hide()
+						.attr({ method: "post" })
+						.attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
+						.append($('<input />')
+							.attr({ "name": "filename" })
+							.val(data)
+						).append($('<input />')
+							.attr({ "name": "packNum" })
+							.val(packNum)
+						).append($('<input />')
+							.attr({ "name": "packTotal" })
+							.val($('.export-images-link').length)
+						)
+						.append('<input type="submit" />')
+						.appendTo($("body"))
+						.submit();
+						
+					setTimeout(function () { //give time for jquery form click
+						$.ajax({
+							url: arcs.baseURL + "resources/checkExportDone",
+							type: "POST",
+							data: { 'filename': data },
+							statusCode: {
+								200: function (data) {
+									console.log('pic export done!', data);
+									if(!data){
+										console.log('pic file not there. caught error');
+										return;
+									}
+									$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
+									$clicked.addClass('downloaded');
+									var downCount = $('.export-rem-images').eq(0).html();
+									if( !$('#export-image-all').hasClass('active') ){
+										var tempDownCount = parseInt($('.export-downed-images').html())+parseInt($('.export-image-num.active').attr('data-num'));
+										if( tempDownCount < downCount ){
+											downCount = tempDownCount;
+										}
+									}
+									$('.export-downed-images').html(downCount);
+									var remaining = parseInt($('.export-rem-images').eq(0).html()) - downCount;
+									$('.export-rem-decreasing-images').html(remaining);
+									isExporting = 0;
+									setTimeout(function(){
+										$('.automatic:not(.downloaded)').click();
+									},1000);
+								},
+								400: function () {
+									console.log("Bad Request");
+								}
+							}
+						});
+					}, 50);
+				},
+				400: function () {
+					console.log("caught the create pic error");
+				}
+			}
+		});
     });
 });

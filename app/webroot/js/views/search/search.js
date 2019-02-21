@@ -23,7 +23,6 @@ $(window).bind("mousewheel", function() {
     $("html, body").stop();
 });
 
-
 function setUpSearchLoad(keywordSearch = false){
     if (kids_to_get[0] == "empty"){
         kids_to_get = [];
@@ -623,7 +622,6 @@ function setUpSearchLoad(keywordSearch = false){
         w = Math.ceil($(this)[0].nextElementSibling.offsetWidth)
         $(this).css('width', w)
       })
-	  console.log('select all', selectedMap["selected"]);
       Search.selected = selectedMap["selected"]
       Search.selected.forEach(function(e) {
         var li = $('li[data-id="'+e+'"]');
@@ -1124,10 +1122,19 @@ function setUpSearchLoad(keywordSearch = false){
 
             getRestLocked = 0;
             doSort = false;
-
+			
+			if( typeof kids_to_get === 'object' ){
+				var temp_kids = [];
+				for( var key in kids_to_get ){
+					temp_kids = temp_kids.concat(kids_to_get[key]);
+				}
+				kids_to_get = temp_kids;
+			} 
+			
             if (kids_to_get.length > 0) {
                 getRestOfData(0, 20);
             } else {
+				console.log('no get rest');
                   adjustPage(0);
                   return noResults();
             }
@@ -1379,7 +1386,6 @@ function setUpSearchLoad(keywordSearch = false){
         var data_id = $(this).closest(".resource-thumb")
         data_id = data_id[0]
         data_id = data_id.getAttribute('data-id');
-		console.log('dataid', data_id);
         if (makeSelect){ //selecting the clicked resource
           Search.selected.push(data_id)
           selectedMap['selected'] = Search.selected
@@ -1433,7 +1439,6 @@ function setUpSearchLoad(keywordSearch = false){
           });
           selectedMap['selected'] = [];
           i = 0;
-		  console.log('totalres',totalResults);
           for (i in totalResults) {
             if(totalResults[i]['Locked'] !== true) {
 				if( typeof totalResults[i]['kid'] !== "undefined" ){
@@ -1725,18 +1730,24 @@ function checkExportButton(){
 			selectedArray.pop();
 		}
 		$('#selected-resource-ids').html(JSON.stringify(selectedArray));
-		
 		$('#export-resources-per').find('.export-data-num').removeClass('active');
 		$('#export-data-all').addClass('active');
 		$('#export-resources-per').find('.export-data-link').parent().remove();
 		$('#export-resources-per').append('<li><a class="sort-btn export-data-link" data-pack="1">DATA PACK 1</a></li>');
-		
 		$('#options-btn').removeClass('search-loading');
 		$('.SearchBar').find('#options-buttons').css('opacity','').find('button').css('cursor','');
+		$('#export-modal-explain').css('display','block');
+		$('#export-modal-exporting').css('display','none');
+		$('.export-rem-data').html(selectedArray.length);
+		$('.export-rem-images').html('TBD');
+		$('.export-downed-data').html('0');
+		$('.export-downed-images').html('0');
 	}else{
+		if( $('#export-data-buttons').hasClass('new-open') ){
+			$('#export-data-buttons')[0].click();
+		}
 		$('#options-btn').addClass('search-loading');
 		$('.SearchBar').find('#options-buttons').css('opacity','.2').find('button').css('cursor','wait');
-		$('#export-images-buttons').removeClass('opacitied').addClass('opacitied').css('opacity','.2');
 		$('#export-images-buttons').find('.dropdown-menu').css('display','none');
 	}
 	$('#export-images-buttons').find('.dropdown-menu').find('.export-images-link').remove();
