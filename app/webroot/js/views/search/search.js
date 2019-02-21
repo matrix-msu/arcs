@@ -8,6 +8,13 @@ if( typeof kids_to_get != 'undefined' && kids_to_get !== "keywordSearch" ){
 		}
 	}
 	$(document).ready(function(){
+        if ( typeof collection_name != 'undefined') {
+            var collectionNameTag = $("<h3 class='collection-name'>" + collection_name + "</h3>");
+            $('#select-all').append(collectionNameTag);
+            $('#search-actions').css('display', 'none');
+            $('.SearchBar').css('margin-top', '-1px');
+        }
+
         setUpSearchLoad();
 	});
 }
@@ -1418,7 +1425,10 @@ function setUpSearchLoad(keywordSearch = false){
         $("#1").html(1);
         return adjustPage(parseInt($('.currentPage').html()));
       });
-      $('#select-all, #deselect-all').unbind().click(function() {
+      $('#select-all, #deselect-all').unbind().click(function(e) {
+          if ($(e.target).hasClass('collection-name')){
+              return;
+          }
 		  if( $('#options-btn').hasClass('search-loading') ){
 			  return;
 		  }

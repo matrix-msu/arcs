@@ -89,10 +89,52 @@
                  <i class="icon-white icon-folder-open"></i>
                  <div id="toolbarHead" >
                      <?php
-//                     print_r($this->request->params);die;
+                     $showProjectPages = Array('single_project', 'index', 'display', 'viewtype', 'search');
+                     $currentProject = '';
 
-                     if (isset($this->request->params['action']) && $this->request->params['action'] == 'single_project'){
-                         echo strtoupper(str_replace('_', ' ', $this->request->params['pass'][0]));
+                     // check if this page should display the project name in the dropdown
+                     if (isset($this->request->params['action']) && $this->request->params['pass']) {
+                         $action = $this->request->params['action'];
+                         $currentProject = '';
+                         if (in_array(strtolower($action), $showProjectPages)){
+                            foreach ($this->request->params['pass'] as $p) {
+                                if (array_key_exists($p, $GLOBALS['PID_ARRAY'])) {
+                                    $currentProject = $p;
+                                }
+                            }
+                         } else if (strtolower($action) == 'multi_viewer'){
+							 $pass = $this->request->params['pass'][0];
+							 // multi resource viewer
+							 if (is_numeric($pass)) {
+								 $kids = $_SESSION['multi_viewer_resources'][$pass];
+//								 print_r($kids);
+								 $firstKid = $kids[0];
+								 $currentProject = AppController::convertKIDtoProjectName($firstKid);
+
+								 // check if all of the kids are the same project
+								 foreach ($kids as $kid) {
+									 if ($kid == $firstKid) {
+										 continue;
+									 }
+									 $kidProject = AppController::convertKIDtoProjectName($kid);
+									 if ($kidProject != $currentProject) {
+										 $currentProject = '';
+										 break;
+									 }
+								 }
+							 }
+                         } else if (strtolower($action) == 'viewcollection'){
+							 $currentProject = $projectName;
+                         } else if (isset($this->request->params['controller']) && $this->request->params['controller'] == 'admin') {
+                             if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0])) {
+                                 $currentProject = $this->request->params['pass'][0];
+                             }
+                         }
+
+                     }
+
+                     if ($currentProject != ''){
+                            echo strtoupper(str_replace('_', ' ', $currentProject));
                      } else {
                          echo "Projects";
                      }
@@ -227,10 +269,51 @@
 			 <div id="toolbarHead" >
 
                 <?php
-//                                print_r($this->request->params);die;
 
-                if (isset($this->request->params['action']) && $this->request->params['action'] == 'single_project'){
-                    echo strtolower(str_replace(' ', '_', $this->request->params['pass'][0]));
+                $showProjectPages = Array('single_project', 'index', 'display', 'viewtype', 'search');
+                $currentProject = '';
+
+                // check if this page should display the project name in the dropdown
+                if (isset($this->request->params['action']) && $this->request->params['pass']) {
+                    $action = $this->request->params['action'];
+                    $currentProject = '';
+                    if (in_array(strtolower($action), $showProjectPages)){
+                        foreach ($this->request->params['pass'] as $p) {
+                            if (array_key_exists($p, $GLOBALS['PID_ARRAY'])) {
+                                $currentProject = $p;
+                            }
+                        }
+                    } else if (strtolower($action) == 'multi_viewer'){
+                        // check if all of the kids are part of the same project
+//                             $kids = end($_SESSION['multi_viewer_resources']);
+////                             print_r($kids);
+//                             $firstKid = $kids[0];
+//                             $currentProject = AppController::convertKIDtoProjectName($firstKid);
+//
+//                             foreach ($kids as $kid) {
+//                                 if ($kid == $firstKid) {
+//                                     continue;
+//                                 }
+//                                 $kidProject = AppController::convertKIDtoProjectName($kid);
+//                                 if ($kidProject != $currentProject) {
+//                                     $currentProject = '';
+//                                     break;
+//                                 }
+//                             }
+                    } else if (strtolower($action) == 'viewcollection'){
+                        // todo make this work for individual collections?
+                    } else if (isset($this->request->params['controller']) && $this->request->params['controller'] == 'admin') {
+                        if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0])) {
+                            $currentProject = $this->request->params['pass'][0];
+                        }
+                    }
+
+                }
+
+                //                     if (isset($this->request->params['action']) && $this->request->params['action'] == 'single_project'){
+                if ($currentProject != ''){
+//                            echo strtoupper(str_replace('_', ' ', $this->request->params['pass'][0]));
+                    echo strtoupper(str_replace('_', ' ', $currentProject));
                 } else {
                     echo "Projects";
                 }

@@ -736,6 +736,7 @@ class ResourcesController extends AppController {
                     array( 'Collection.user_id' => $user_id)
                 ),'Collection.collection_id' => $collection_id)
             ));
+
             //remove all the public 3 collections that the user isn't a part of
             $count = 0;
             foreach( $collections as $collection ){
@@ -763,6 +764,12 @@ class ResourcesController extends AppController {
                 //'group' => 'collection_id'
             ));
         }
+        if (isset($collections[0]) && isset($collections[0]['Collection']['title'])){
+            $collectionTitle = $collections[0]['Collection']['title'];
+        } else {
+            $collectionTitle = "";
+        }
+
         $resourceKids = array();
         foreach( $collections as $temp ){ //only keep the resource_kids.
             $resourceKids[] = $temp['Collection']['resource_kid'];
@@ -782,6 +789,7 @@ class ResourcesController extends AppController {
 
         $GLOBALS['current_project'] = $pName;
         echo "<script> var kids_to_get = ".json_encode($resourceKids)."; </script>";
+        echo "<script> var collection_name = ".json_encode($collectionTitle)."; </script>";
         echo "<script>var controllerProject = ".json_encode($pName).";</script>";
         $this->set("projectName", $pName);
         $this->render("../Search/search");
