@@ -8672,6 +8672,13 @@ div#searchCriteria ul {
     height: 60px;
     background: #f4f4f4;
 }*/
+.collection-name {
+  line-height: 33px;
+  font-size: 20px;
+  font-weight: bold;
+  position: relative;
+  top: -111px;
+}
 .search-help-btn {
   float: right;
   position: relative;
@@ -9163,6 +9170,13 @@ div#search-results-wrapper .toolbar-fixed img.collectionIcon {
   float: right;
   padding: 0 5px;
   margin-top: -2.5px;
+}
+div#search-results-wrapper .toolbar-fixed .collection-name {
+  pointer-events: none;
+}
+div#search-results-wrapper .toolbar-fixed .collection-name:hover {
+  cursor: default;
+  color: #555;
 }
 div#search-again {
   float: right;

@@ -633,6 +633,8 @@ var pName = $('#project1').find("[id='Persistent_Name']").html();
 if( typeof pName !== 'undefined' ) {
     pName = pName.replace(/ /g, '_').toLowerCase();
 
+    console.log('here', pName)
+
 //add the project kid to the resources url.
     var href = $('#resources').attr('href');
     href = href.split('/');
@@ -660,6 +662,10 @@ if( typeof pName !== 'undefined' ) {
     $('#soo').ready(function(){
         $('.selectedCurrentPage').find('img')[0].click();
     });
+
+    console.log($('#toolbarHead'));
+    pName = pName.replace('_', ' ');
+    $('#toolbarHead').html(pName + $('#dropArrow')[0].outerHTML);
 
 
     $('#viewer-right').on('click', '.stable-url', function(){
