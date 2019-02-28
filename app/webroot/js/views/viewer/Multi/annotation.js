@@ -104,7 +104,7 @@ function annotationPrep() {
             annotationType = 'annotationIncoming';
         }
         var flagHtml = "<div class='flagAnnotation notAdmin"+flagFlagged+"'>" +
-            "<img style='cursor:pointer' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+            "<img style='cursor:pointer' alt='flag' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
             "class='flagAnnotationId "+annotationType+"' data-annid='"+current.id+"' />" +
             "</div>";
         if(
@@ -128,7 +128,7 @@ function annotationPrep() {
         //append in the popups
         $("#" + current.id).append(
             "<div class='annotationPopup' style='display:none'>"+
-                "<img class='annotationImage' src='"+pageThumbSrc+"'/>"+
+                "<img class='annotationImage' alt='annotation image' src='"+pageThumbSrc+"'/>"+
                 "<div class='annotationData'>"+
                     "<p>Relation</p>"+
                     "<p>"+resourceIdentifier+"</p>"+
@@ -196,11 +196,11 @@ function annotationPrep() {
         if( annotationFlags.indexOf(current.id) != -1 ){
             flagType = "flagToolTip_Red"; flagFlagged = 'flagged';
         }
-        var flagString1 = "<img src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
+        var flagString1 = "<img alt='flag' src='/"+BASE_URL+"app/webroot/assets/img/"+flagType+".svg' " +
             "class='flagTranscript";
         var flagString2 = " flagAnnotationId' data-annid='"+current.id+"' "+
             "/>" ;
-        var trashString = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton;
+        var trashString = "<img alt='trash' src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='trashTranscript'/>" + trashButton;
 
         if( resourceHasPermissions == false ){
             flagString1 = '';
@@ -243,7 +243,7 @@ function annotationPrep() {
                 var text = current.x1 ? "Revert" : "Define space";
                 var flagTypeClass = ' details-incoming ';
                 var defineSpaceStuff =
-                    "<img src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>"+
+                    "<img alt='annotation tip' src='/"+BASE_URL+"app/webroot/assets/img/AnnotationsTooltip.svg' class='annotateRelation'/>"+
                     "<div class='annotateLabel'>" + text + "</div>";
                 if( resourceHasPermissions == false ){
                     flagTypeClass = '';
@@ -769,10 +769,10 @@ function annotationPrep() {
                     var pageDisplay = $(".resultsContainer").find("#" + v.kid);
                     if (!(pageDisplay.children().length > 0)){
                         if (image === "") {
-                            pageDisplay.append("<div class='imageWrap'><img class='resultImage' src=" + image + "/></div>");
+                            pageDisplay.append("<div class='imageWrap'><img alt='result' class='resultImage' src=" + image + "/></div>");
                         }
                         else {
-                            pageDisplay.append("<div class='imageWrap'><img class='resultImage' src='" + image + "'/></div>");
+                            pageDisplay.append("<div class='imageWrap'><img alt='result' class='resultImage' src='" + image + "'/></div>");
                         }
                         /**
                          Scheme Name

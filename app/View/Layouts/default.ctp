@@ -99,19 +99,14 @@
 		</script>
 
     <script>
-        // setTimeout(function(){
-        //     var td4wAudio;
-        //     var td4wUrl = 'http://www.td4wbutton.com/assets/audio/td4w.mp3';
-        //     td4wAudio = new Audio(td4wUrl);
-        //     $(document).click(function(){
-        //         if(
-        //             arcs.user.attributes.username=='justin.newman'||
-        //             arcs.user.attributes.username=='noah.girard'
-        //         ){
-        //             td4wAudio.play();
-        //         }
-        //     });
-        // }, 2100);
+    setTimeout(function(){
+        $(document).ready(function(){
+            setTimeout(function(){
+                $('<label for="g-recaptcha-response-1">Recaptcha</label>').hide().insertAfter($('#g-recaptcha-response-1'));
+                $('<label for="g-recaptcha-response">Recaptcha</label>').hide().insertAfter($('#g-recaptcha-response'));
+            });
+        });
+    }, 1);
     </script>
     </body>
 </html>

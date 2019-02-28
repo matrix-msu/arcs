@@ -59,7 +59,7 @@ if( $multiInfo !== 0 &&
         <div class="flagWrap">
             <div id="flagModal">
                 <div class="flagModalHeader">NEW FLAG
-                    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose flagModalClose"/>
+                    <img alt='close' src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose flagModalClose"/>
                 </div>
                 <hr>
                 <form id="flagForm" action="/">
@@ -92,7 +92,7 @@ if( $multiInfo !== 0 &&
 
 	<div class="deleteWrap">
 		<div id="deleteModel">
-			<div class="deleteModalHeader"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
+			<div class="deleteModalHeader"><img alt="close" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="deleteModalClose"/></div>
 			<div class="deleteBody"> Are you sure you want to delete this annotation?</div>
 			<div class="deleteFooter">
 				<div class='deleteCancel'>cancel</div>
@@ -105,7 +105,7 @@ if( $multiInfo !== 0 &&
 		<div class='fullscreenOverlay'>
 			<div class='fullscreenOuter'>
 				<div class='fullscreenInner'>
-				                <img id='fullscreenImage' class='fullscreenImage' src=''>
+				                <img alt="full screen" id='fullscreenImage' class='fullscreenImage' src=''>
 				    <div class='leftHalf'>
 						<!-- <div class='expandedArrowBoxLeft'>
 							<img class='leftExpandedArrow' src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" height="220px" width="10px" />
@@ -125,7 +125,7 @@ if( $multiInfo !== 0 &&
 			</div>
 
 			<div class='fullscreenClose'>
-				<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="closeExpand"/>
+				<img alt="close full screen"src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"class="closeExpand"/>
 			</div>
 		</div>
 	</div>
@@ -133,7 +133,7 @@ if( $multiInfo !== 0 &&
     <div class="annotateModalBackground">
         <div class="annotateWrap">
             <div id="annotateModal">
-                <div class="annotateModalHeader">NEW ANNOTATION<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
+                <div class="annotateModalHeader">NEW ANNOTATION<img alt="close" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg"
                                                                     class="modalClose annotationClose"/></div>
                 <hr class="annotateHeaderDivider">
                 <p class="annotateTab annotateTabRelation activeTab">RELATION</p>
@@ -145,11 +145,11 @@ if( $multiInfo !== 0 &&
                     </form>
                     <div class="resultsContainer"></div>
                     <div class="annotation_pagination">
-                        <span class="annotation_begin"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
-                        <span class="annotation_prev"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_begin"><img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
+                        <span class="annotation_prev"><img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg"></span>
                         <span class="annotation_numbers"></span>
-                        <span class="annotation_next"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
-                        <span class="annotation_end"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
+                        <span class="annotation_next"><img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
+                        <span class="annotation_end"><img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"><img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg"></span>
                     </div>
                 </div>
                 <!--<div class="annotateTranscriptContainer">-->
@@ -168,7 +168,7 @@ if( $multiInfo !== 0 &&
         <div class="collectionWrap" style="margin-top:9em;">
             <div id="collectionModal" style="width:35em;">
                 <div class="collectionModalHeader">Add to Collection
-                    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
+                    <img alt="close"src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
                 </div>
                 <hr>
                 <p class="collectionTab collectionTabSearch activeTab" style="margin-left:.6em;">Search</p>
@@ -193,7 +193,7 @@ if( $multiInfo !== 0 &&
             </div>
             <div id="addedCollectionModal" style="width:35em;display:none;">
                 <div class="collectionModalHeader">ADDED TO COLLECTION!
-                    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
+                    <img alt="close" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" class="modalClose collectionModalClose"/>
                 </div>
                 <hr>
                 <div id="collectionMessage" style="margin-left:6px;">1 resource added to <p id="collectionName" style="display:inline;color:#4899CF"></p>.</div>
@@ -211,7 +211,7 @@ if( $multiInfo !== 0 &&
                 <div id="collectionModal" style="width:35em;">
                     <div class="collectionModalHeader">
                         <p id="associatorTitle" style='display:inline-block'>Add Associators</p>
-                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="modalCloseAssociatorSelect" class="modalCloseAssociator"/>
+                        <img alt="close"src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="modalCloseAssociatorSelect" class="modalCloseAssociator"/>
                     </div>
                     <hr>
                     <div class="collectionSearchContainer">
@@ -223,21 +223,21 @@ if( $multiInfo !== 0 &&
                             </div>
                             <div class="associator_pagination" style="display: block;cursor:default;">
                             	<span class="associator_begin" style="display: inline;cursor:pointer;">
-                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg">
-                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:10px;">
+                            	    <img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg">
+                            	    <img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:10px;">
                                 </span>
                             	<span class="associator_prev" style="display: inline;cursor:pointer;">
-                            	    <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:3px;">
+                            	    <img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="margin-right:3px;">
                                 </span>
                             	<span class="associator_numbers">
 
                             	</span>
                             	<span class="associator_next" style="display: inline;cursor:pointer;">
-                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:3px;">
+                            		<img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:3px;">
                             	</span>
                             	<span class="associator_end" style="display: inline;cursor:pointer;">
-                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:10px;">
-                            		<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg">
+                            		<img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="margin-left:10px;">
+                            		<img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg">
                             	</span>
                             </div>
                             <button class="associatorSearchSubmit" id="associatorSearchSubmitFirst">SAVE ASSOCIATORS</button>
@@ -249,7 +249,7 @@ if( $multiInfo !== 0 &&
                 <div id="collectionModal" style="width:35em;">
                     <div class="collectionModalHeader">
                         <p id="associatorTitle" style='display:inline-block'></p>
-                        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="closeAssociatorConfirm" class="modalCloseAssociator"/>
+                        <img alt="close"src="/<?php echo BASE_URL; ?>app/webroot/assets/img/Close.svg" id="closeAssociatorConfirm" class="modalCloseAssociator"/>
                     </div>
                     <hr>
                     <p id="associatorTitle" style='text-align: center;vertical-align: middle;'>Are you sure you want to save the following associators?</p>
@@ -359,14 +359,14 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
 
 
             <div id="ImageWrap" class="canvasGrabCursor">
-                <img src="<?php ?> " id="PageImage">
+                <img alt="page" src="<?php ?> " id="PageImage">
                 <div id="PageImagePreloader" style="display:none;height:100%;display:flex;align-items:center;">
                     <?php echo ARCS_LOADER_HTML; ?>
                 </div>
                 <div>
                     <div id="canvas" class='canvas'><div id="missingPictureIcon">
                             <p>NOTIFY ADMIN OF MISSING IMAGE</p>
-                            <img src="/<?php echo BASE_URL?>app/webroot/img/camera-off.svg" />
+                            <img alt="missing image" src="/<?php echo BASE_URL?>app/webroot/img/camera-off.svg" />
                         </div></div>
 
                 </div>
@@ -502,7 +502,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
 <div id="resources-nav" class="pages-resource-nav" data-hideFirstDrawer="<?php echo $hideDrawer; ?>" style="display:none;">
     <div class="button-left" id="button-left">
         <a id="left-button">
-            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px">
+            <img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px">
         </a>
     </div>
 
@@ -519,7 +519,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
                   foreach ($page as $p) {
 
                       $img = isset($p['Image_Upload']['localName']) ? $p['Image_Upload']['localName'] : "";
-                      echo "<a class = 'other-resources' id = '".$r['kid']."'><img class = 'other-resource'";
+                      echo "<a class = 'other-resources' id = '".$r['kid']."'><img alt='other resource' class = 'other-resource'";
                       $pageThingKid = '';
                       if(isset($p['kid'])) {
                           $pageThingKid = $p['kid'];
@@ -531,6 +531,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
                           echo "id = '" . $r['kid'] . "-default-page'";
                       }
 
+                      echo "alt = 'resource image'";
                       echo "src = '" . AppController::smallThumb($img, $pageThingKid) . "'  />";
                       echo "<div  class='numberOverResources'>";
                       echo ++$cnt;
@@ -545,7 +546,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
 
   <div class="button-right" id="button-right">
       <a  id="right-button">
-          <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px">
+          <img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px">
       </a>
   </div>
 </div>
@@ -561,7 +562,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
 
     <div class="button-left" id="button-left">
         <a  id="left-button">
-            <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px" />
+            <img alt="left-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowLeft-White.svg" style="height:110px;width:10px" />
         </a>
     </div>
 
@@ -587,7 +588,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
          ?>
         <a class='other-resources' data-projectKid="<?=$r['project_kid']?>" >
 
-            <img id="identifier-<?=$r['kid']?>" class="other-resource<?php if ( in_array($r['kid'], $showButNoEditArray) ){echo ' showButNoEdit'; }  ?>"
+            <img alt="other resource" id="identifier-<?=$r['kid']?>" class="other-resource<?php if ( in_array($r['kid'], $showButNoEditArray) ){echo ' showButNoEdit'; }  ?>"
                 src="<?php echo AppController::smallThumb($p, $pageThingKid); ?>" height="200px"/>
 			<?php if ($cnt ==1) :  ?>
 				<div class='numberOverResources selectedResource'>
@@ -607,7 +608,7 @@ Images ---- Downloaded: <span class="export-downed-images">0</span> | Remaining:
 
 <div class="button-right" id="button-right">
     <a id="right-button">
-        <img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px" />
+        <img alt="right-arrow" src="/<?php echo BASE_URL; ?>app/webroot/assets/img/arrowRight-White.svg" style="height:110px;width:10px" />
     </a>
 </div>
 </div>
