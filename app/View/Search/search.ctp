@@ -232,6 +232,7 @@
                     <ul class="dropdown-menu" style="margin:0;top:58px;left:-367px;width:397px!important">
                         <li><br>
 <p id="export-modal-title" style="display:inline">EXPORT</p> SELECTED RESOURCES
+<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/ClearText.svg" class="modalClose exportModalClose new-open" style="margin-top:-3px"/>
 <hr>
 <div id="export-modal-explain">
 <p class="sort-btn" style="white-space:pre;margin-top:-19px;line-height:19px">
