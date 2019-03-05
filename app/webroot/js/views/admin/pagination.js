@@ -42,13 +42,49 @@ $(document).ready( function() {
                 $($ipp).addClass('open');
             }
         } else if ($('.page-pick *').is(e.target)){          //cycle page number
+            var $navs = $('.by-num p');
+
             if ($('p').is(e.target)) {
-            $p = + $(e.target).text() - 1;
+                var text = $(e.target).text();
+                if (text == '...') {
+                    return;
+                }
+                if (text == '1'){
+                    $p = 0;
+                } else if (text == $numPages) {
+                    $p = $numPages + 1;
+                    if ($numPages < 6) {
+                        $p = $numPages - 1;
+                    }
+                } else {
+                    $p = parseInt(text);
+                    if ($numPages < 6) {
+                        $p -= 1;
+                    }
+                }
             } else if ($(e.target).hasClass('left')) {
-                $p = ((onPage - 1) % $numPages);
-                if ($p < 0) $p = $numPages-1;
+                if ($numPages > 6 ){
+                    $p = onPage;
+                } else {
+                    $p = onPage - 1;
+                }
+                if ($p < 0){
+                    $p = $numPages-1;
+                }
+
+                if ($($navs[$p]).hasClass('fdots') || $($navs[$p]).hasClass('dots')){
+                    $p -= 1;
+                }
+
             } else if ($(e.target).hasClass('right')) {
-                $p = (onPage + 1) % $numPages;
+                if ($numPages > 6) {
+                    onPage += 1;
+                }
+                $p = onPage + 1;
+
+                if ($($navs[$p]).hasClass('fdots') || $($navs[$p]).hasClass('dots')){
+                    $p += 1;
+                }
             }
             showPagination($p);
         } else if ($('.admin-pagination .open')[0]) {       //close per page menu on off click
@@ -82,23 +118,127 @@ function setUpPagination ($numPerPage) {
 function setPageNumbers($numPages) {
     $('.by-num').empty();
 	$s = ""
-	for($i=0; $i<$numPages; $i++) {
-		$s += "<p>"+($i+1)+"</p>";
-	}
+
+    if ($numPages > 6){
+        for($i=0; $i<5; $i++) {
+            if ($i == 0){
+                $s += "<p id='firstPage'>"+($i+1)+"</p>";
+                $s += "<p class='fdots'>...</p>";
+            } else {
+                $s += "<p>"+($i+1)+"</p>";
+            }
+        }
+        for($i=5; $i<$numPages - 1; $i++) {
+            $s += "<p>"+($i+1)+"</p>";
+        }
+        $s += "<p class='dots'>...</p>";
+        $s += "<p id='lastPage'>"+$numPages+"</p>";
+    } else {
+        for($i=0; $i<$numPages; $i++) {
+            $s += "<p>"+($i+1)+"</p>";
+        }
+    }
 	$('.by-num').append($s);
 }
 
 //Display the current page
 function showPagination($on) {
-	onPage = $on;
-	var $navs = $('.by-num p');
-	$(rows).attr('style', 'display: none;');
-	$navs.removeClass('active');
-	$($navs[onPage]).addClass('active');
-	$base = onPage * $perPage;
-	for($i=0; $i<$perPage; $i++) {
-		$(rows[$base + $i]).attr('style', 'display: block;');
-	}
+    if (isNaN($on)) {
+        return;
+    }
+    var $navs = $('.by-num p');
+
+    onPage = $on;
+
+    if ($numPages > 6) {
+        if (onPage != 0) {
+            onPage -= 1;
+        }
+        if (onPage >= $numPages) {
+            onPage = $numPages - 1;
+        }
+    }
+
+    $(rows).attr('style', 'display: none;');
+    $navs.removeClass('active');
+    $($navs[$on]).addClass('active');
+    $base = onPage * $perPage;
+    for ($i = 0; $i < $perPage; $i++) {
+        $(rows[$base + $i]).attr('style', 'display: block;');
+    }
+
+    // dont show arrows on the edges
+    if ($on == 0) {
+        $('div.left').css('display', 'none');
+    } else {
+        $('div.left').css('display', 'block');
+    }
+
+    if ($on == $numPages + 1 || ($numPages < 6 && $on == $numPages - 1)) {
+        $('div.right').css('display', 'none');
+    } else {
+        $('div.right').css('display', 'block');
+    }
+
+    $('.fdots').css('display', 'none');
+    $('.dots').css('display', 'none');
+
+
+    if ($numPages >= 6) {
+        // page numbers to hide
+        var upperRange = [];
+        var lowerRange = [];
+
+        if (onPage >= 4) {
+            $('.fdots').css('display', 'inline-block');
+        } else {
+            $('.fdots').css('display', 'none');
+        }
+
+        if (onPage >= 3) {
+            for (var i = onPage + 3; i < $numPages; i++) {
+                upperRange.push(i);
+            }
+        } else {
+            for (var i = 5; i < $numPages; i++) {
+                upperRange.push(i)
+            }
+        }
+
+        if ($numPages - onPage >= 4){
+            $('.dots').css('display', 'inline-block');
+            for (var i = onPage - 3; i > 0; i--) {
+                lowerRange.push(i);
+            }
+        } else {
+            $('.dots').css('display', 'none');
+
+            for (var i = onPage - 3; i > 0; i--) {
+                lowerRange.push(i);
+            }
+        }
+
+        // hide page numbers based on the upper and lower ranges
+        var pageCnt = 0;
+        $navs.each(function (i, tag) {
+            if ($(tag).hasClass('fdots') || $(tag).hasClass('dots')) {
+                return;
+            } else if ($(tag).is('#firstPage') || $(tag).is('#lastPage')){
+                pageCnt++;
+            } else {
+                if (upperRange.includes(pageCnt) || lowerRange.includes(pageCnt)){
+                    $(tag).css('display', 'none');
+                } else {
+                    $(tag).css('display', 'inline-block');
+                }
+                pageCnt++;
+            }
+        });
+
+        $('#firstPage').css('display', 'inline-block');
+        $('#lastPage').css('display', 'inline-block');
+    }
+
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
