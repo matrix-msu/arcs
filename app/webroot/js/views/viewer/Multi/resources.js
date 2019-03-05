@@ -112,7 +112,6 @@ _resource.sliderMove.adjust = function(element) {
     var width = parseInt( $(window).width() );
     var btnWidth = parseInt( $(container).find(".button-left").width() );
 
-
     //handle showing the left, right arrows
     if (slider.scrollLeft() == 0) {
         $(container).find(".button-left").css({display: "none"});
@@ -120,9 +119,6 @@ _resource.sliderMove.adjust = function(element) {
         $(container).find(".button-left").css({display: "block"});
         checkBoth++;
     }
-
-
-
     var tmpBtnWidth = 0;
     if( $(container).find(".button-right").css('display') == 'block' ){
         tmpBtnWidth = btnWidth;
@@ -135,14 +131,6 @@ _resource.sliderMove.adjust = function(element) {
         checkBoth++;
     }
 
-
-    // if (slider.scrollLeft() >= slider[0].scrollWidth - width) {
-    //     $(container).find(".button-right").css({display: "none"});
-    // }else {
-    //     $(container).find(".button-right").css({display: "block"});
-    //     checkBoth++;
-    // }
-
     //set the width of the container
     $(container).width(width);
     width = width - 12;
@@ -153,18 +141,55 @@ _resource.sliderMove.adjust = function(element) {
     }
     $(slider).css('width', width);
     //$(container).css('width', width);
+    var pagesShowing = true;
+    if( $('#resources-nav').css('display') === 'none' ){
+        pagesShowing = false;
+    }
 
     if( $(element).hasClass('resource-container-level') ){
+        if( window.innerWidth > 900 || !pagesShowing ){
+            $('#viewer-right').css('top','0');
+            $('.resource-nav-level#resources-nav').css('margin-top','0px');
+        }
+        if( window.innerWidth > 900 ){
+            $('#scroll2').css('margin-top', '0');
+        }
         if( checkBoth == 0 ){
-            setTimeout(function(){$('#scroll2').slideUp(300);}, 1)
+            console.log('slideup')
+            setTimeout(function(){
+                if( window.innerWidth <= 900 && pagesShowing ){
+                    $('.resource-nav-level#resources-nav').css('margin-top','113px');
+                    $('#viewer-right').css('top','113px');
+                }
+                if( window.innerWidth <= 900 && !pagesShowing ){
+                    $('#viewer-right').css('top','-41px');
+                }
+                $('#scroll2').slideUp(300);
+            }, 1)
         }else{
-            setTimeout(function(){$('#scroll2').slideDown(300);}, 1)
+            console.log('slide down')
+            setTimeout(function(){
+                if( window.innerWidth <= 900 && pagesShowing ) {
+                    $('.resource-nav-level#resources-nav').css('margin-top', '156px');
+                    $('#viewer-right').css('top', '156px');
+                    $('#scroll2').css('margin-top', '114px');
+                }
+                $('#scroll2').slideDown(300);
+            }, 1)
             $("#resources-nav").addClass("scroll-shift-nav");
             $("#viewer-right").addClass("scroll-shift-viewer");
         }
     }if( $(element).hasClass('page-slider') ){
         if( checkBoth == 0 ){
-            setTimeout(function(){$('#scroll').slideUp(300);}, 1)
+            setTimeout(function(){
+                $('#resources-nav').css('margin-top', '0');
+                console.log('sliding up the page slider')
+                console.log($('#viewer-right').css('top'))
+                if( $('#viewer-right').css('top') === '156px' ){
+                    $('#viewer-right').css('top', '114px');
+                }
+                $('#scroll').slideUp(300);
+            }, 1)
         }else{
             setTimeout(function(){$('#scroll').slideDown(300);}, 1)
             $("#resources-nav").addClass("scroll-shift-nav");
@@ -200,8 +225,11 @@ _resource.setPointer = function(id) {
 $(window).resize(function() {
     _resource.currWidth = null;
     //redo all of the slider sizing
-    _resource.sliderMove.adjust($(_resource.pageSlider).parent());
-    _resource.sliderMove.adjust($(_resource.resourceSlider).parent());
+    setTimeout(function(){
+        _resource.sliderMove.adjust($(_resource.pageSlider).parent());
+        _resource.sliderMove.adjust($(_resource.resourceSlider).parent());
+    },1);
+
 });
 $(document).ready(function() {
     var permModal = $("#request_permission_model")
@@ -260,11 +288,6 @@ $(document).ready(function() {
     // $('.other-resources').click(function() {
     var otherResourcesClick = function () {
 
-       
-
-
-
-
         //add a selected class to any clicked page or resource
         if($(this).parents('.page-slider').length > 0) {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
@@ -287,10 +310,8 @@ $(document).ready(function() {
 
         var id = $(this).find("img").attr("id");
         id = id.replace("identifier-", "");
-        CM_R_ID = id //sets the global Resource ID
-        getComments()
-
-        console.log('click',id)
+        CM_R_ID = id; //sets the global Resource ID
+        getComments();
 
         $('#res-header').html($('.archival[data-kid="'+id+'"]').find('#Title').html());
 
@@ -326,7 +347,7 @@ $(document).ready(function() {
             }
             if(page.length) {
                 var index = page.parent().find(".numberOverResources").html();
-                index = parseInt(index,10) || 0
+                index = parseInt(index,10) || 0;
                 _resource.selectPage(index);
                 _resource.sliderMove({
                     direction: "right",
@@ -460,8 +481,15 @@ $(document).ready(function() {
 		}
 		GetNewResource(currentImageKid);
 		$('#PageImage').css('display', 'block').addClass('multiInfo');
-		 $('.resource-nav-level').css('display', 'block');
-		 $('.selectedCurrentResource').click();
+        //decide whether or not multi-resource drawer is shown. Fix css also
+        if( window.innerWidth <= 900 ) {
+            $('#scroll2').css('margin-top', '114px');
+            $('.resource-nav-level#resources-nav').css('margin-top', '156px');
+            //$('.resource-nav-level#resources-nav').css('margin-top','156px');
+            $('#viewer-right').css('top', '158px');
+        }
+        $('.resource-nav-level').css('display', 'block');
+        $('.selectedCurrentResource').click();
 
         var loaded = {
             projects : [],
@@ -470,15 +498,6 @@ $(document).ready(function() {
             resources : [],
             subjects : []
         };
-
-        //console.log('before')
-        //console.log('resss', RESOURCES)
-        //console.log('SEAS', SEASONS)
-        //console.log('EXCA', EXCAVATIONS)
-        //console.log('PRO', PROJECTS)
-        //console.log('SUBS', SUBJECTS)
-
-
         for (var kid in PROJECTS){
             loaded.projects.push(kid);
         }
@@ -548,7 +567,7 @@ $(document).ready(function() {
                     }
 					$('#resource-drawer-loader').remove();
                 }
-                $('#resources-nav.resource-nav-level').show();
+                //$('#resources-nav.resource-nav-level').show();
                 _resource.setPointer(Object.keys(results.resources)[0]);
 
                 // handle click handlers
