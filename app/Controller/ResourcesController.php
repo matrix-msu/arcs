@@ -650,7 +650,7 @@ class ResourcesController extends AppController {
 		$downloadName = 'Resource_Data.zip';
 		
         header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
+        header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename="'.$downloadName.'"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
@@ -701,7 +701,7 @@ class ResourcesController extends AppController {
 		$total = $this->request->data['packTotal'];
 		$downloadName = 'Resource_Images_'.$pack.'.zip';
         header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
+        header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename="'.$downloadName.'"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
