@@ -3,27 +3,27 @@ $(document).ready(function() {
 	if( $('#export-btn').length > 0 ){
 		return; //this is a multi-viewer export
 	}
-	
-	$('#export-data-buttons').click(function(e){
-		if( $(this).hasClass('opacitied') || $('#options-buttons').css('opacity') == .2 ){
-			e.preventDefault();
-			e.stopPropagation();
-			return;
-		}
-		if( $(this).hasClass('new-open') ){ //close
+
+    $('#export-data-buttons,.exportModalClose').click(function(e){
+        if( $(this).hasClass('opacitied') || $('#options-buttons').css('opacity') == .2 ){
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        if( $(this).hasClass('new-open') && isExporting === 0 ){ //close
             $('#export-data-buttons').removeClass('new-open');
             $('#export-data-buttons').find('.pointerDown').css('transform','rotate(135deg');
             $('#export-data-buttons').find('.dropdown-menu').css('display','none');
             $('#export-images-buttons').find('.dropdown-menu').css('display','none');
             $('#export-modal').css('display','none').find('.dropdown-menu').css('display','none');
-		}else{ //open
+        }else{ //open
             $('#export-data-buttons').addClass('new-open');
             $('#export-data-buttons').find('.pointerDown').css('transform','rotate(315deg');
-            $('#export-data-buttons').find('.dropdown-menu:not(#export-images-warning)').css('display','block');
-            $('#export-images-buttons').find('.dropdown-menu:not(#export-images-warning)').css('display','block');
-			$('#export-modal').css('display','block').find('.dropdown-menu').css('display','block');
-		}
-	});
+            $('#export-data-buttons').find('.dropdown-menu').css('display','none');
+            //$('#export-images-buttons').find('.dropdown-menu:not(#export-images-warning)').css('display','block');
+            $('#export-modal').css('display','block').find('.dropdown-menu').css('display','block');
+        }
+    });
 	
 	$('#export-images-buttons').find('.export-image-num').unbind().click(function(e){
 		e.preventDefault();
@@ -47,11 +47,11 @@ $(document).ready(function() {
 		$('#export-images-per').append(packHtml);
 		return;
 	});
-	
-	$('#export-data-buttons').find('.export-data-type').unbind().click(function(e){
+
+    $('#export-modal-explain').find('.export-data-type').unbind().click(function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		$('#export-data-buttons').find('.export-data-type').removeClass('active');
+        $('#export-modal-explain').find('.export-data-type').removeClass('active');
 		$(this).addClass('active');
 		return;
 	});
@@ -88,6 +88,8 @@ $(document).ready(function() {
 	
 	var isExporting = 0;
 	var picUrls = [];
+    var picSliceCurrentIndex = 0;
+    var picExportPackNum;
 	//export link clicks - this actual downlaod data export here
     $('#export-resources-per').on('click', '.export-data-link', function(e){
 		e.preventDefault();
@@ -116,11 +118,13 @@ $(document).ready(function() {
 
 		$('#export-modal-explain').css('display','none');
 		$('#export-modal-exporting').css('display','block');
+        $('#export-modal-title').html("EXPORTING");
 
         var loaderHtml = $(ARCS_LOADER_HTML);
-        $(loaderHtml).css({'height':'inherit','margin-top':'4px','width':'12px','float':'right','margin-right':'24px'});
-        $(loaderHtml).find('.sk-folding-cube').css({'height':'10.43px', 'width':'10.43px'});
-        $(this).append(loaderHtml);
+        $(loaderHtml).css({'height':'inherit','margin-top':'-26px','width':'12px','float':'right','margin-right':'34px'});
+        $(loaderHtml).find('.sk-folding-cube').css({'height':'14.43px', 'width':'14.43px'});
+        $("#export-modal-exporting").append(loaderHtml);
+        $(".exportModalClose").css('display','none');
 
         var projects = {};
         var seasons = {};
@@ -282,6 +286,7 @@ $(document).ready(function() {
 											$('#export-images-per').append(packHtml);
 											$('#export-images-buttons').click();
 										}
+                                        picExportPackNum = 1;
 										isExporting = 0;
 										setTimeout(function(){
 											$('.automatic:not(.downloaded)').click();
@@ -322,10 +327,18 @@ $(document).ready(function() {
 			var picUrlsSlice = picUrls;
 		}else{
 			var packIncrement = parseInt($('.export-image-num.active').attr('data-num'));
-			var packStart = ($(this).attr('data-pack') - 1) * packIncrement;
-			var picUrlsSlice = picUrls.slice(packStart, packStart+packIncrement);
+			//var packStart = ($(this).attr('data-pack') - 1) * packIncrement;
+            var picUrlsSlice = picUrls.slice(picSliceCurrentIndex, picUrls.length);
 		}
 		var packNum = $(this).attr('data-pack');
+
+		if( picUrlsSlice.length == 0 ){
+            $('.export-rem-decreasing-images').html("0");
+            isExporting = 0;
+            $("#export-modal-exporting").find('.sk-cube-container').remove();
+            $(".exportModalClose").css('display','block');
+            return;
+		}
 		
 		$.ajax({
 			url: arcs.baseURL + "resources/createPictureExportFile",
@@ -335,6 +348,11 @@ $(document).ready(function() {
 			},
 			statusCode: {
 				200: function (data) {
+                    data = JSON.parse(data);
+                    var numPics = data.numPics;
+                    picSliceCurrentIndex += numPics;
+                    data = data.filename;
+                    console.log("before download", data, picExportPackNum, picSliceCurrentIndex);
 					$form = $('<form />')
 						.hide()
 						.attr({ method: "post" })
@@ -344,7 +362,7 @@ $(document).ready(function() {
 							.val(data)
 						).append($('<input />')
 							.attr({ "name": "packNum" })
-							.val(packNum)
+							.val(picExportPackNum)
 						).append($('<input />')
 							.attr({ "name": "packTotal" })
 							.val($('.export-images-link').length)
@@ -352,7 +370,7 @@ $(document).ready(function() {
 						.append('<input type="submit" />')
 						.appendTo($("body"))
 						.submit();
-						
+                    picExportPackNum++;
 					setTimeout(function () { //give time for jquery form click
 						$.ajax({
 							url: arcs.baseURL + "resources/checkExportDone",
@@ -360,13 +378,11 @@ $(document).ready(function() {
 							data: { 'filename': data },
 							statusCode: {
 								200: function (data) {
-									console.log('pic export done!', data);
 									if(!data){
-										console.log('pic file not there. caught error');
 										return;
 									}
 									$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
-									$clicked.addClass('downloaded');
+									//$clicked.addClass('downloaded');
 									var downCount = $('.export-rem-images').eq(0).html();
 									if( !$('#export-image-all').hasClass('active') ){
 										var tempDownCount = parseInt($('.export-downed-images').html())+parseInt($('.export-image-num.active').attr('data-num'));
@@ -378,9 +394,14 @@ $(document).ready(function() {
 									var remaining = parseInt($('.export-rem-images').eq(0).html()) - downCount;
 									$('.export-rem-decreasing-images').html(remaining);
 									isExporting = 0;
-									setTimeout(function(){
-										$('.automatic:not(.downloaded)').click();
-									},1000);
+                                    if( remaining === 0 ){ //finished all pictures
+                                        $("#export-modal-exporting").find('.sk-cube-container').remove();
+                                        $(".exportModalClose").css('display','block');
+                                    }else{
+                                        setTimeout(function(){
+                                            $('.automatic:not(.downloaded)').click();
+                                        },1000);
+                                    }
 								},
 								400: function () {
 									console.log("Bad Request");

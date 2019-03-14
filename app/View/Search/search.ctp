@@ -203,17 +203,17 @@
 							<span class="pointerDown sort-arrow pointerSearch" style="top:inherit;transform:rotate(135deg);"></span>
 						</span>
 					</button>
-					<ul class="dropdown-menu" id="export-resources-per" style="top:57px;left:-40px;max-height:none">
+					<ul class="dropdown-menu" id="export-resources-per" style="top:57px;left:-40px;max-height:none;display:none">
 						<li><a class="sort-btn export-data-num" data-num="50" id="export-data-50">50 RESOURCES/ZIP</a></li>
 						<li><a class="sort-btn export-data-num" data-num="100" id="export-data-100">100 RESOURCES/ZIP</a></li>
 						<li><a class="sort-btn active export-data-num" id="export-data-all">ALL RESOURCES/ZIP</a></li>
 						<hr>
-						<li><a class="sort-btn active export-data-type" id="export-as-xml">XML</a></li>
+						<!-- li><a class="sort-btn active export-data-type" id="export-as-xml">XML</a></li>
 						<li><a class="sort-btn export-data-type">JSON</a></li>
-						<hr>
+						<hr -->
 					</ul>
 				</div>
-				<div id="export-images-buttons" class="filter-btn btn-group opacitied" style="display:block">
+				<div id="export-images-buttons" class="filter-btn btn-group opacitied" style="display:none">
 					<button class="export-options" id="export-images-btn" href="#" style="padding-right:0">
 						<span class="content">
 							IMAGES
@@ -229,27 +229,23 @@
 					</ul>
 				</div>
                 <div id="export-modal" class="filter-btn btn-group" style="display:none">
-                    <ul class="dropdown-menu" style="margin:0;top:58px;left:-700px;width:397px!important">
+                    <ul class="dropdown-menu" style="margin:0;top:58px;left:-367px;width:397px!important">
                         <li><br>
-EXPORT SELECTED RESOURCES
+<p id="export-modal-title" style="display:inline">EXPORT</p> SELECTED RESOURCES
+<img src="/<?php echo BASE_URL; ?>app/webroot/assets/img/ClearText.svg" class="modalClose exportModalClose new-open" style="margin-top:-3px"/>
 <hr>
 <div id="export-modal-explain">
-<p class="sort-btn" style="white-space:pre;margin-top:-19px">
-Exports are split into a series of data and image zip files.
-Image packs will appear after all selected data is done exporting.
-
-First, select a data format and how many items you would like per zip.
-All is recommended for data packs as any record higher than the
-resource level may be exported in duplicate when splitting data.
-
-Then, you can either download zip files individually or click
-the button below to automatically download all.
+<p class="sort-btn" style="white-space:pre;margin-top:-19px;line-height:19px">
+Exports are split into a series of zip files that contain the data
+and images for the selected Resources.
+The data zip file exports before the images zip file(s).
+Select your data export format: <a class="sort-btn active export-data-type" id="export-as-xml" style="display:inline">XML</a> | <a class="sort-btn export-data-type" style="display:inline">JSON</a>
 </p>
 <hr>
-<a class="sort-btn active" id="export-automatic" style="margin-bottom:10px">EXPORT ALL</a>
+<a class="sort-btn active" id="export-automatic" style="margin-bottom:10px">Start DOWNLOAD</a>
 </div>
                         <p class="sort-btn" style="white-space:pre;display:none;margin-top:-19px" id="export-modal-exporting">
-Your data export could take a little while.
+Your export could take a little while.
 You are downloading <span class="export-rem-data">0</span> records and <span class="export-rem-images">TBD</span> images,
 which will be exported in a series of zip files.
 

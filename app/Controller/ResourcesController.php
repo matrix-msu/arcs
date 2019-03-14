@@ -626,6 +626,9 @@ class ResourcesController extends AppController {
                 $pages_data = json_decode($data_string, true);
             }
             $zip->addFromString($xmlNames[$count], $data_xml_string);
+			if( intval(phpversion()[0]) >= 7 ){
+				$zip->setCompressionIndex($count, ZipArchive::CM_STORE);
+			}
             $count++;
         }
         $picUrls = array();
@@ -644,10 +647,10 @@ class ResourcesController extends AppController {
     public function downloadExportFile(){
 		$pack = $this->request->data['packNum'];
 		$total = $this->request->data['packTotal'];
-		$downloadName = 'Resource_Data('.$pack.'_of_'.$total.')'.'.zip';
+		$downloadName = 'Resource_Data.zip';
 		
         header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
+        header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename="'.$downloadName.'"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
@@ -664,17 +667,30 @@ class ResourcesController extends AppController {
     public function createPictureExportFile(){
         ini_set('memory_limit', '-1');
         set_time_limit(0);
+		$time_start = microtime(true); 
         $zip = new ZipArchive();
 
-        $tmp_file = @tempnam('.','Resource_Pictures_');
+        $tmp_file = @tempnam('.','Resource_Images_');
         $zip->open($tmp_file.'.zip', ZipArchive::CREATE);
 
+		$byteCount = 0;
+		$count = 0;
         foreach(json_decode($this->request->data['picUrls']) as $url){
             $download_file = @file_get_contents( $url );
+			$byteCount += strlen($download_file);
             $zip->addFromString(basename($url),$download_file);
+			if( intval(phpversion()[0]) >= 7 ){
+				$zip->setCompressionIndex($count, ZipArchive::CM_STORE);
+			}
+			$count++;
+			// if( $byteCount >= 786432000 ){ //750 MB
+			//if( $byteCount >= (786432000/6) ){ //125 MB
+			if( (microtime(true)-$time_start) > 40 ){ //125 MB
+				break;
+			}
         }
         $zip->close();
-        echo $tmp_file;
+        echo json_encode(array('filename'=>$tmp_file,'numPics'=>$count));
         die;
     }
 
@@ -683,9 +699,9 @@ class ResourcesController extends AppController {
 		$tmp_file = $this->request->data['filename'];
 		$pack = $this->request->data['packNum'];
 		$total = $this->request->data['packTotal'];
-		$downloadName = 'Resource_Pictures('.$pack.'_of_'.$total.')'.'.zip';
+		$downloadName = 'Resource_Images_'.$pack.'.zip';
         header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
+        header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename="'.$downloadName.'"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
