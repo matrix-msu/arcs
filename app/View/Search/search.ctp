@@ -131,7 +131,7 @@
 <a name="searchJump"></a>
 <div id="searchBox">
 	<div class="searchIcon"></div>
-	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+	<input type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA" >
   <div id="searchButtonMobile">
       SEARCH
   </div>

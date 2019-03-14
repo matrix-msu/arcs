@@ -48,21 +48,21 @@
       </header>
 
       <div class="section-search-box">
-        <p>Title</p>
-        <input type="text" name="title" placeholder="Enter Title">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter Title">
       </div>
 
       <div class="section-search-box">
-        <p>Type</p>
-        <select name="type">
+        <label for="type">Type</label>
+        <select name="type" id="type">
           <option value="default">Select Type</option>
           <?php $this->Search->printControlList($seasonTypeList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Director(s)</p>
-        <select name="director">
+        <label for="director">Director(s)</label>
+        <select id="director" name="director">
           <option value="default">Select Director(s)</option>
           <?php $this->Search->printControlList($seasonDirectorList)?>
         </select>
@@ -77,21 +77,21 @@
       </header>
 
       <div class="section-search-box">
-        <p>Name</p>
-        <input type="text" name="name" placeholder="Enter Name">
+        <label for="name3">Name</label>
+        <input type="text" name="name" id="name3" placeholder="Enter Name">
       </div>
 
       <div class="section-search-box">
-        <p>Type</p>
-        <select name="type">
+        <label for="type2">Type</label>
+        <select name="type" id="type2">
           <option value="default">Select Type</option>
           <?php $this->Search->printControlList($surveyTypeList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Supervisor(s)</p>
-        <select name="supervisors">
+        <label for="supervisor">Supervisor(s)</label>
+        <select name="supervisors" id="supervisor">
           <option value="default">Select Supervisor(s)</option>
           <?php $this->Search->printControlList($surveySupervisorList)?>
         </select>
@@ -106,51 +106,51 @@
       </header>
 
       <div class="section-search-box">
-        <p>Resource Identifier</p>
-        <input type="text" name="identifier" placeholder="Enter Resource Identifier">
+        <label for="resource-id">Resource Identifier</label>
+        <input type="text" id="resource-id" name="identifier" placeholder="Enter Resource Identifier">
       </div>
 
       <div class="section-search-box">
-        <p>Type</p>
-        <select name="type">
+        <label for="type3">Type</label>
+        <select name="type" id="type3">
           <option value="default">Select Type</option>
           <?php $this->Search->printControlList($resourceTypeList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Title</p>
-        <input type="text" name="title" placeholder="Enter Title">
+        <label for="title2">Title</label>
+        <input type="text" id="title2" name="title" placeholder="Enter Title">
       </div>
 
       <div class="section-search-box">
-        <p>Creator(s)</p>
-        <select name="creators">
+        <label for="creator">Creator(s)</label>
+        <select name="creators" id="creator">
           <option value="default">Select Creator(s)</option>
           <?php $this->Search->printControlList($resourceCreatorList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Creator Role</p>
-        <select name="role">
+        <label for="creator-role">Creator Role</label>
+        <select name="role" id="creator-role">
           <option value="default">Select Creator Role</option>
           <?php $this->Search->printControlList($resourceCreatorRoleList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Earliest Date</p>
+        <label for="earliest">Earliest Date</label>
         <div class="date-select" data-name="earliest_date">
-          <select name="year">
+          <select name="year" id="earliest">
             <option value="default">Select Year</option>
             <?php $this->Search->printYearOptions($min,$max,$step); ?>
           </select>
-          <select name="month">
+          <select name="month" id="earliest">
             <option value="default">Select Month</option>
             <?php $this->Search->printMonthOptions() ?>
           </select>
-          <select name="day">
+          <select name="day" id="earliest">
             <option value="default">Select Day</option>
             <?php $this->Search->printDayOptions() ?>
           </select>
@@ -158,17 +158,17 @@
       </div>
 
       <div class="section-search-box">
-        <p>Latest Date</p>
+        <label for="latest">Latest Date</label>
         <div class="date-select" data-name="latest_date">
-          <select name="year">
+          <select name="year" id="latest">
             <option value="default">Select Year</option>
             <?php $this->Search->printYearOptions($min,$max,$step); ?>
           </select>
-          <select name="month">
+          <select name="month" id="latest">
             <option value="default">Select Month</option>
             <?php $this->Search->printMonthOptions() ?>
           </select>
-          <select name="day">
+          <select name="day" id="latest">
             <option value="default">Select Day</option>
             <?php $this->Search->printDayOptions() ?>
           </select>
@@ -176,16 +176,16 @@
       </div>
 
         <div class="section-search-box">
-            <p>Date Range</p>
+            <label for="date-range">Date Range</label>
             <div class="date-range" data-name="date_range" style="display:flex">
-                <select name="start-year" style="width:47%">
+                <select name="start-year" style="width:47%" id="date-range">
                     <option value="default">Select Year</option>
                     <?php $this->Search->printYearOptions($min,$max,$step); ?>
                 </select>
                 <div style="display:inline-block;text-align:center;width:6%">
                     <p style="font-size:17px;margin-top:14px">&rarr;</p>
                 </div>
-                <select name="end-year" style="float:right;width:47%">
+                <select name="end-year" style="float:right;width:47%" id="date-range">
                     <option value="default">Select Year</option>
                     <?php $this->Search->printYearOptions($min,$max,$step); ?>
                 </select>
@@ -193,16 +193,16 @@
         </div>
 
       <div class="section-search-box">
-        <p>Select Language(s)</p>
-        <select name="languages">
+        <label for="sel-lang">Select Language(s)</label>
+        <select name="languages" id="sel-lang">
           <option value="default">Select Language(s)</option>
           <?php $this->Search->printControlList($resourceLanguageList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Transcription</p>
-        <input type="text" name="transcription" placeholder="Enter Transcription">
+        <label for="trans">Transcription</label>
+        <input type="text" name="transcription" id="trans" placeholder="Enter Transcription">
       </div>
 
     </section>
@@ -214,17 +214,17 @@
       </header>
 
       <div class="section-search-box">
-        <p>Scan Date</p>
+        <label for="scan-date">Scan Date</label>
         <div class="date-select" data-name="scan_date">
-          <select name="year">
+          <select name="year" id="scan-date">
             <option value="default">Select Year</option>
             <?php $this->Search->printYearOptions(2000, $max, $step); ?>
           </select>
-          <select name="month">
+          <select name="month" id="scan-date">
             <option value="default">Select Month</option>
             <?php $this->Search->printMonthOptions() ?>
           </select>
-          <select name="day">
+          <select name="day" id="scan-date">
             <option value="default">Select Day</option>
             <?php $this->Search->printDayOptions() ?>
           </select>
@@ -232,8 +232,8 @@
       </div>
 
       <div class="section-search-box">
-        <p>Scan Creator</p>
-        <input type="text" name="scan_creator" placeholder="Enter Scan Creator">
+        <label for="scan">Scan Creator</label>
+        <input type="text" id="scan" name="scan_creator" placeholder="Enter Scan Creator">
       </div>
 
     </section>
@@ -245,50 +245,50 @@
       </header>
 
       <div class="section-search-box">
-        <p>Classification</p>
-        <select name="classification">
+        <label for="class">Classification</label>
+        <select name="classification" id="class">
           <option value="default">Select Classification</option>
           <?php $this->Search->printControlList($subjectGClassificationList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Type(s)</p>
-        <select name="type">
+        <label for="types">Type(s)</label>
+        <select name="type" id="types">
           <option value="default">Select Type(s)</option>
           <?php $this->Search->printControlList($subjectGTypeList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Material(s)</p>
-        <select name="materials">
+        <label for="materials">Material(s)</label>
+        <select name="materials" id="materials">
           <option value="default">Select Material(s)</option>
           <?php $this->Search->printControlList($subjectGMaterialList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Technique(s)</p>
-        <select name="techniques">
+        <label for="techniques">Techniques</label>
+        <select name="techniques" id="techniques">
           <option value="default">Select Technique(s)</option>
           <?php $this->Search->printControlList($subjectGTechniqueList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Period</p>
-        <select name="period">
+        <label for="period">Period</label>
+        <select name="period" id="period">
           <option value="default">Select Period</option>
           <?php $this->Search->printControlList($subjectGPeriodList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Terminus Ante Quem</p>
+        <label for="term">Terminus Ante Quem</label>
         <div class="double-select" data-name="terminus_ante_quem">
-          <input type="text" name="title" placeholder="Enter Date">
-          <select name="period">
+          <input type="text" id="term" name="title" placeholder="Enter Date">
+          <select name="period" id="term">
             <option value="default">Select Period</option>
             <option value="BCE">BC</option>
             <option value="CE">AC</option>
@@ -298,10 +298,10 @@
       </div>
 
       <div class="section-search-box">
-        <p>Terminus Post Quem</p>
+        <label for="post">Terminus Post Quem</label>
         <div class="double-select" data-name="terminus_post_quem">
-          <input type="text" name="title" placeholder="Enter Date">
-          <select name="period">
+          <input type="text" id="post" name="title" placeholder="Enter Date">
+          <select name="period" id="post">
             <option value="default">Select Period</option>
             <option value="BCE">BC</option>
             <option value="CE">AC</option>
@@ -318,24 +318,24 @@
       </header>
 
       <div class="section-search-box">
-        <p>Location</p>
-        <select name="location">
+        <label for="location">Location</label>
+        <select name="location" id="location">
           <option value="default">Select Location</option>
           <?php $this->Search->printControlList($subjectDLocationList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Excavation Unit(s)</p>
-        <select name="excavation_units">
+        <label for="excava">Excavation Unit(s)</label>
+        <select name="excavation_units" id="excava">
           <option value="default">Excavation Unit(s)</option>
           <?php $this->Search->printControlList($subjectDUnitTypeList)?>
         </select>
       </div>
 
       <div class="section-search-box">
-        <p>Inscription</p>
-        <input type="text" name="inscription" placeholder="Enter Inscription">
+        <label for="inscrip">Inscription</label>
+        <input type="text" name="inscription" placeholder="Enter Inscription" id="inscrip">
       </div>
 
     </section>
@@ -344,7 +344,7 @@
 
 
 </main>
-<a id="removeModal" href="#"></a>
+
 <!---TODO move to js file-->
 <script type="text/javascript">
 (function(){
