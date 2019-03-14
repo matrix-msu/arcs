@@ -91,7 +91,7 @@
                       }
                       if (!(count >= 15)) {
                         div = $('#annotations-tab .cont')[count];
-                        $(div).find('img').attr('src', thumb);
+                        $(div).find('img').attr('src', thumb).attr('alt', aresult['Title']);
                         $(div).find('.type').text(resType);
                         if (aresult['Title'] != null) {
                           $(div).find('span.name').html(aresult['Title']);
@@ -157,7 +157,7 @@
                       }
                       if (!(tcount >= 15)) {
                         div = $('#transcriptions-tab .cont')[tcount];
-                        $(div).find('img').attr('src', thumb);
+                        $(div).find('img').attr('src', thumb).attr('alt', result['Title']);
                         $(div).find('.type').text(resType);
                         if (tresult['title'] != null) {
                           $(div).find('span.name').html(tresult['Title']);
@@ -242,7 +242,7 @@
                     }
                     if (!(dcount >= 15)) {
                       div = $('#discussion-tab .cont')[dcount];
-                      $(div).find('img').attr('src', thumb);
+                      $(div).find('img').attr('src', thumb).attr('alt', result['Title']);
                       $(div).find('.type').text(resType);
                       if (dresult['Title'] != null) {
                         $(div).find('span.name').text(dresult['Title']);
@@ -412,10 +412,11 @@
                   id: a['kid']
                 },
                 success: function(result) {
+                    console.log(result);
                   var div;
                   if (!(count >= 15)) {
                     div = $('#activity-tab .cont')[count];
-                    $(div).find('img').attr('src', result['thumb']);
+                    $(div).find('img').attr('src', result['thumb']).attr('alt', result['Title']);
                     if (result['Title'] != null) {
                       $(div).find('span.name a').text(result['Title']);
                     }
