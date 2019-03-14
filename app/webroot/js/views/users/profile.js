@@ -91,7 +91,7 @@
                       }
                       if (!(count >= 15)) {
                         div = $('#annotations-tab .cont')[count];
-                        $(div).find('img').attr('src', thumb);
+                        $(div).find('img').attr('src', thumb).attr('alt', aresult['Title']);
                         $(div).find('.type').text(resType);
                         if (aresult['Title'] != null) {
                           $(div).find('span.name').html(aresult['Title']);
@@ -128,7 +128,7 @@
                   type: type
                 });
                 if (!(count >= 15)) {
-                  contents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p>' + '<a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'annotationType\'>' + type + '</p><a href=' + url + '>' + linkText + '</a></div>';
+                  contents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img alt="image"></a></div><p>' + '<a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'annotationType\'>' + type + '</p><a href=' + url + '>' + linkText + '</a></div>';
                 }
                 count++;
               } else {
@@ -157,7 +157,7 @@
                       }
                       if (!(tcount >= 15)) {
                         div = $('#transcriptions-tab .cont')[tcount];
-                        $(div).find('img').attr('src', thumb);
+                        $(div).find('img').attr('src', thumb).attr('alt', result['Title']);
                         $(div).find('.type').text(resType);
                         if (tresult['title'] != null) {
                           $(div).find('span.name').html(tresult['Title']);
@@ -181,7 +181,7 @@
                   transcript: a['transcript']
                 });
                 if (!(tcount >= 15)) {
-                  tcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div>' + '<p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a><span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['transcript'] + '</p></div>';
+                  tcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img alt="transcription-image"></a></div>' + '<p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a><span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['transcript'] + '</p></div>';
                 }
                 tcount++;
               }
@@ -242,7 +242,7 @@
                     }
                     if (!(dcount >= 15)) {
                       div = $('#discussion-tab .cont')[dcount];
-                      $(div).find('img').attr('src', thumb);
+                      $(div).find('img').attr('src', thumb).attr('alt', result['Title']);
                       $(div).find('.type').text(resType);
                       if (dresult['Title'] != null) {
                         $(div).find('span.name').text(dresult['Title']);
@@ -266,7 +266,7 @@
                 content: a['content']
               });
               if (!(dcount >= 15)) {
-                dcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['content'] + '</p></div>';
+                dcontents += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><img alt="discussion-image"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + a['resource_kid'] + '\'><span class=\'name\'>' + a['resource_name'] + '</span></a>' + '<span class=\'type\'>Resource Type</span><span class=\'date\'>' + date + '</span></p><p class=\'transcript\'>' + a['content'] + '</p></div>';
               }
               dcount++;
             });
@@ -412,10 +412,11 @@
                   id: a['kid']
                 },
                 success: function(result) {
+                    console.log(result);
                   var div;
                   if (!(count >= 15)) {
                     div = $('#activity-tab .cont')[count];
-                    $(div).find('img').attr('src', result['thumb']);
+                    $(div).find('img').attr('src', result['thumb']).attr('alt', result['Title']);
                     if (result['Title'] != null) {
                       $(div).find('span.name a').text(result['Title']);
                     }
@@ -640,15 +641,15 @@
         if (target === 'activity') {
           var extra = '';
           if (item['type'] != 'log') {
-            extra = '<a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><img src="'+item['thumb']+'">';
+            extra = '<a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><img alt="activity-image" src="'+item['thumb']+'">';
           }
           html += '<div class=\'cont\'><p><span class=\'time\'>' + item['date'] + '</span><span class=\'' + item['type'] + '\'></span>' + '<span class=\'text\'>' + item['text'] + '</span>' + extra + '</p></div>';
         } else if (target === 'annotations') {
-          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img src="'+item["thumb"]+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item["resType"]+'</span><span class=\'date\'>' + item["date"] + '</span></p><p class=\'annotationType\'>' + item["type"] + '</p><a href=' + item["url"] + '>' + item["linkText"] + '</a></div>';
+          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img alt="annotation-image" src="'+item["thumb"]+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item["resType"]+'</span><span class=\'date\'>' + item["date"] + '</span></p><p class=\'annotationType\'>' + item["type"] + '</p><a href=' + item["url"] + '>' + item["linkText"] + '</a></div>';
         } else if (target === 'transcriptions') {
-          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['transcript'] + '</p></div>';
+          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img alt="transcription-image" src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['transcript'] + '</p></div>';
         } else if (target === 'discussions') {
-          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['content'] + '</p></div>';
+          html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img alt="discussion-image" src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['content'] + '</p></div>';
         }
       }
       div.find('#contents').html(html);
