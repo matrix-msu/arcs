@@ -306,12 +306,24 @@ class ProjectsController extends AppController {
 
 		}else { //not signed in
 			$collections = $this->Collection->find('all', array(
-				'order' => 'Collection.modified DESC',
+                'fields' => array('DISTINCT collection_id'),
+                'order' => 'Collection.modified DESC',
 				'conditions' => array('Collection.public' => '1',  //only get public collections
 					'Collection.resource_kid LIKE' => "$pid-%"),
-				'group' => 'collection_id',
+				//'group' => 'collection_id',
 				'limit' => 10
 			));
+            $collectionsList = Set::extract($collections, '/Collection/collection_id');
+            $collections = array();
+            foreach( $collectionsList as $c ) {
+                $collectionsTemp = $this->Collection->find('all', array(
+                    'conditions' => array('collection_id' => $c),
+                    'order' => 'modified desc',
+                    'limit' => 1
+                ));
+                $collections[] = $collectionsTemp[0];
+            }
+			//var_dump($collections);die;
 		}
     foreach( $collections as $key => $collection ){
         $collections[$key]['Collection']['timeAgo'] =  parent::time_elapsed_string($collection['Collection']['created']);
