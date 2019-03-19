@@ -323,7 +323,6 @@ class ProjectsController extends AppController {
                 ));
                 $collections[] = $collectionsTemp[0];
             }
-			//var_dump($collections);die;
 		}
     foreach( $collections as $key => $collection ){
         $collections[$key]['Collection']['timeAgo'] =  parent::time_elapsed_string($collection['Collection']['created']);
