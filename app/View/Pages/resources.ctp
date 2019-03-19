@@ -67,7 +67,8 @@
       <a name="searchJump"></a>
       <div id="searchBox">
         <div class="searchIcon"></div>
-        <input data-searchlink="true" type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
+          <label for="arc-search" style="display:none;">Archaeological Data Search</label>
+        <input data-searchlink="true" name="arc-search" id="arc-search"type="text" class="searchBoxInput" placeholder="SEARCH FOR ARCHAEOLOGICAL DATA">
       </div><br>
      <div class="proper-width">
   <div class="asearch"><span style="cursor:pointer"><a>ADVANCED SEARCH</a></span></div>

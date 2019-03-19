@@ -1,6 +1,6 @@
 <div id="request_permission_model" class="permissionModal">
     <div class="permission-content">
-        <div class="modal-exit" style="cursor:pointer"><p><a id="#close"><?= $this->Html->image('Close.svg');?></a></p></div>
+        <div class="modal-exit" style="cursor:pointer"><p><a id="#close"><?= $this->Html->image('Close.svg' , array('alt' => 'Exit'));?></a></p></div>
         <div class="permission-modal-header">
             <h1>Request User Access</h1>
         </div>

@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="profile-image-container">
-                  <img class="profile-image thumbnail" src = "<?php echo $user_info['profileImage']; ?>">
+                  <img class="profile-image thumbnail" alt="profile image" src = "<?php echo $user_info['profileImage']; ?>">
                 </div>
             </div>
             <dl class="user-project-info">
