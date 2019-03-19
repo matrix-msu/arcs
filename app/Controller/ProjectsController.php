@@ -307,7 +307,7 @@ class ProjectsController extends AppController {
 		}else { //not signed in
 			$collections = $this->Collection->find('all', array(
                 'fields' => array('DISTINCT collection_id'),
-                'order' => 'Collection.modified DESC',
+                //'order' => 'Collection.modified DESC',
 				'conditions' => array('Collection.public' => '1',  //only get public collections
 					'Collection.resource_kid LIKE' => "$pid-%"),
 				//'group' => 'collection_id',
