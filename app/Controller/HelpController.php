@@ -12,11 +12,13 @@ class HelpController extends AppController {
 	public $name = 'Help';
 
     public function beforeFilter() {
-        parent::beforeFilter();
-        $this->Auth->allow('display');
-        $sidebar = file_get_contents(ROOT . DS . 'docs' . DS . 'sidebar.json');
-        $this->set('sidebar', json_decode($sidebar, true));
-        $this->layout = 'doc';
+        header('Location: https://github.com/matrix-msu/arcs/wiki');
+        die;
+//        parent::beforeFilter();
+//        $this->Auth->allow('index');
+//        $sidebar = file_get_contents(ROOT . DS . 'docs' . DS . 'sidebar.json');
+//        $this->set('sidebar', json_decode($sidebar, true));
+//        $this->layout = 'doc';
     }
     /**
      * Displays a help document
@@ -25,12 +27,15 @@ class HelpController extends AppController {
      * @return void
      */
 	public function display($doc) {
-
-  	$this->set(array(
-    	'title_for_layout' => $doc == 'index' ?
-    	'Getting Started' : Inflector::humanize($doc),
-    	'active' => $doc == 'index' ? '' : $doc
-    ));
+        $this->set(array(
+            'title_for_layout' => $doc == 'index' ?
+            'Getting Started' : Inflector::humanize($doc),
+            'active' => $doc == 'index' ? '' : $doc
+        ));
 		$this->render($doc);
 	}
+	public function index(){
+        header('Location: https://github.com/matrix-msu/arcs/wiki');
+	    die;
+    }
 }
