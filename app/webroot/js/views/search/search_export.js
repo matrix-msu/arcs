@@ -352,7 +352,6 @@ $(document).ready(function() {
                     var numPics = data.numPics;
                     picSliceCurrentIndex += numPics;
                     data = data.filename;
-                    console.log("before download", data, picExportPackNum, picSliceCurrentIndex);
                     setTimeout(function(){
                         $form = $('<form />')
                             .hide()
