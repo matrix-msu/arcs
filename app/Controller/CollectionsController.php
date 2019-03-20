@@ -348,14 +348,15 @@ class CollectionsController extends AppController {
 
             if ($user_id !== null) { //signed in
                 $collections = $this->Collection->find('all', array(
-                    'order' => 'Collection.modified DESC',
+                    'fields' => array('DISTINCT collection_id','public','members'),
+                    //'order' => 'Collection.modified DESC',
                     'conditions' => array('OR' => array(
                         array('Collection.public' => '1'),
                         array('Collection.public' => '2'),
                         array('Collection.public' => '3'),
                         array('Collection.user_id' => $user_id)
-                    ), 'Collection.resource_kid LIKE' => "$pid-%"),
-                    'group' => 'collection_id'
+                    ), 'Collection.resource_kid LIKE' => "$pid-%")//,
+                    //'group' => 'collection_id'
                 ));
 
                 //remove all the public 3 collections that the user isn't a part of
@@ -378,24 +379,34 @@ class CollectionsController extends AppController {
 
             } else { //not signed in
                 $collections = $this->Collection->find('all', array(
-                    'order' => 'Collection.modified DESC',
+                    //'order' => 'Collection.modified DESC',
+                    'fields' => array('DISTINCT collection_id'),
                     'conditions' => array(
                         'Collection.public' => '1',
                         'Collection.resource_kid LIKE' => "$pid-%"
-                    ),  //only get public collections
-                    'group' => 'collection_id'
+                    )//,  //only get public collections
+                    //'group' => 'collection_id'
                 ));
             }
-            $retval = [];
-            foreach ($collections as $collection) {
+            $collectionsList = Set::extract($collections, '/Collection/collection_id');
+            //var_dump($collectionsList);
+            $retval = array();
+            foreach( $collectionsList as $c ) {
+                $collectionsTemp = $this->Collection->find('all', array(
+                    'conditions' => array('collection_id' => $c),
+                    'order' => 'modified desc',
+                    'limit' => 1
+                ));
                 $temp = [];
-                $temp['title'] = $collection{'Collection'}['title'];
-                $temp['collection_id'] = $collection{'Collection'}{'collection_id'};
-                $temp['user'] = $collection{'Collection'}['user_name'];
+                $temp['title'] = $collectionsTemp[0]['Collection']['title'];
+                $temp['collection_id'] = $collectionsTemp[0]['Collection']['collection_id'];
+                $temp['user'] = $collectionsTemp[0]['Collection']['user_name'];
                 $retval[] = $temp;
             }
             return $this->json(200, $retval);
-        }else return '';
+        }else{
+            return '';
+        }
     }
 
     /**
