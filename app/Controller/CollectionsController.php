@@ -602,11 +602,9 @@ class CollectionsController extends AppController {
                 . $mysqli->connect_error);
         }
 
-        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members, username
+        $sql = $mysqli->prepare("SELECT collection_id, username
                         FROM collections
-                        WHERE collection_id = ?
-                        GROUP BY collection_id
-                        ORDER BY min(created) DESC;");
+                        WHERE collection_id = ?;");
         $sql->bind_param("s", $_POST['id']);
         $sql->execute();
         $result = $sql->get_result();
