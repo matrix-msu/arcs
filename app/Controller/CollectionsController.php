@@ -540,27 +540,17 @@ class CollectionsController extends AppController {
             die('Connect Error (' . $mysqli->connect_errno . ') '
                 . $mysqli->connect_error);
         }
-
-        //Get a collection_id from the id
-        //Get the title
-        //Get the oldest created date.
-        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, created,created AS DATE, public, members, user_id
+        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, created, public, members, user_id
                         FROM collections
-                        GROUP BY collection_id
-                        ORDER BY created DESC;");
-//        $sql->bind_param("s", $this->request->data['id']);
+                        /*GROUP BY collection_id
+                        ORDER BY created DESC*/;");
         $sql->execute();
         $result = $sql->get_result();
 
         while ($row = mysqli_fetch_assoc($result)) {
-//            echo json_encode($row['user_id']);
-//            echo 'IM HERE';
-//            echo json_encode($this->Session->read('Auth.User.id'));
-//            die;
-
             if($row['user_id'] == $this->Session->read('Auth.User.id')) {
                 //Set the collection's last modified date
-                $date = $row['DATE'];
+                $date = $row['created'];
                 $year = substr($date, 0, 4);
                 $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
                     'September', 'October', 'November', 'December');
@@ -576,25 +566,11 @@ class CollectionsController extends AppController {
                 $test[] = $temp_array;
             }
         }
-
         if (isset($test)){
             $count = count($test);
         } else {
             $count = 0;
         }
-//        $sql = $mysqli->prepare("SELECT COUNT(DISTINCT collection_id)
-//                                FROM  collections
-//                                WHERE user_id = ?;");
-//        $sql->bind_param("s", $this->request->data['id']);
-//        $sql->execute();
-//        $result = $sql->get_result();
-//
-//        $count = 0;
-//        while ($row = mysqli_fetch_assoc($result)) {
-//            $count = json_encode($row['COUNT(DISTINCT collection_id)']);
-//            break;
-//        }
-
         if( isset($test) ) {
             $return = array( 'count'=>$count, 'data'=>json_encode($test) );
             echo json_encode($return);
