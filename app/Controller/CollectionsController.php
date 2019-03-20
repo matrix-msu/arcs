@@ -249,11 +249,17 @@ class CollectionsController extends AppController {
             //where is fancy to get min created of each collection
             //group by collection_id to only get one of each
             //order by created
-            $sql = $mysqli->prepare("SELECT collection_id, title, user_name, min(created) AS DATE
+//            $sql = $mysqli->prepare("SELECT collection_id, title, user_name, min(created) AS DATE
+//                    FROM  collections
+//                    WHERE resource_kid = ?
+//                    GROUP BY collection_id
+//                    ORDER BY created");
+            $sql = $mysqli->prepare("SELECT collection_id, title, user_name, modified
                     FROM  collections
                     WHERE resource_kid = ?
                     GROUP BY collection_id
-                    ORDER BY created");
+                    ORDER BY modified asc");
+
 
             $sql->bind_param("s", $resource_id);
             $sql->execute();
@@ -538,10 +544,10 @@ class CollectionsController extends AppController {
         //Get a collection_id from the id
         //Get the title
         //Get the oldest created date.
-        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, min(created) AS DATE, public, members, user_id
+        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, created,created AS DATE, public, members, user_id
                         FROM collections
                         GROUP BY collection_id
-                        ORDER BY min(created) DESC;");
+                        ORDER BY created DESC;");
 //        $sql->bind_param("s", $this->request->data['id']);
         $sql->execute();
         $result = $sql->get_result();

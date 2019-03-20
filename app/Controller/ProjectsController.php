@@ -275,7 +275,7 @@ class ProjectsController extends AppController {
 
 		if( $user_id !== null ) { //signed in
 			$collections = $this->Collection->find('all', array(
-                'fields' => array('DISTINCT collection_id','public','members'),
+                'fields' => array('DISTINCT collection_id','public'),
 				//'order' => 'Collection.modified DESC',
 				'conditions' => array('OR' => array(
 					array( 'Collection.public' => '1'),
