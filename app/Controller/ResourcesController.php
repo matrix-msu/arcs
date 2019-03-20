@@ -698,7 +698,11 @@ class ResourcesController extends AppController {
     public function downloadPictureExportFile(){
 		$tmp_file = $this->request->data['filename'];
 		$pack = $this->request->data['packNum'];
-		$total = $this->request->data['packTotal'];
+		//$total = $this->request->data['packTotal'];
+        if( $pack == 9 ){
+            echo json_encode(array('pack'=>$pack,'file'=>$tmp_file));
+            die;
+        }
 		$downloadName = 'Resource_Images_'.$pack.'.zip';
         header('Content-Description: File Transfer');
         header('Content-Type: application/zip');
