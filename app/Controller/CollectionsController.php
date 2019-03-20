@@ -118,108 +118,7 @@ class CollectionsController extends AppController {
         $this->set('authors', $authorString);
         $this->set('collections', $collections);
     }
-
-    /**
-     *  get all resource kids in a project based on the project name.
-     */
-    // protected function getProjectResources($pName){
-    //     $pid = parent::getPIDFromProjectName(strtolower($pName));
-    //     $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
-    //     $fields = 'KID';
-    //     $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-    //     $allResources = json_decode($kora->return_json(), true);
-    //     return $allResources;
-    // }
-
     public function testK3Projects($pName = 'isthmia'){
-        ini_set("memory_limit", "-1");
-        set_time_limit(0);
-        $pid = parent::getPIDFromProjectName(strtolower($pName));
-        $sid = parent::getResourceSIDFromProjectName(strtolower($pName));
-        $sid = parent::getProjectSIDFromProjectName(strtolower($pName));
-        //echo $sid;die;
-        $fields = array('Title');
-        $fields = 'ALL';
-
-
-        $q = "";
-
-        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-        //$kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-        //$kora = new General_Search($pid, $sid, 'kid', '=', '34-171-208512', $fields);
-        $results = json_decode($kora->return_json(), true);
-
-        // $kora = new Advanced_Search($pid, $sid, $fields);
-        // $kora->add_clause("kid", "!=", "");
-        // $results = json_decode($kora->search(), true);
-
-        echo json_encode($results);
-        die;
-
-
-//        $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', '!=', '', $fields);
-
-
-//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%<month>9</month><day>16</day><year>2003</year>%', $fields);
-//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '<month>9</month><day>16</day><year>2003</year>', $fields);
-
-
-//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%<month>09</month><day>16</day><year>2003</year>%', $fields);
-//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '<month>09</month><day>16</day><year>2003</year>', $fields);
-//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%<month>9</month><day>16</day><year>2003</year>%', $fields);
-//       $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '<month>9</month><day>16</day><year>2003</year>', $fields);
-
-
-
-
-//        $kora = new General_Search($pid, $sid, 'Title', 'LIKE', '1970', $fields);
-//        $kora = new General_Search($pid, $sid, 'Sponsor', 'LIKE', 'Ohio', $fields);
-//        $kora = new General_Search($pid, $sid, 'Registrar', 'LIKE', 'Tzortzoupolou', $fields);
-//        $kora = new General_Search($pid, $sid, 'Director', 'LIKE', 'Gregory', $fields);
-//        $kora = new General_Search($pid, $sid, 'Type', 'LIKE', 'Excavation', $fields);
-
-//        $kora = new General_Search($pid, $sid, 'Project_Associator', 'LIKE', '34', $fields);
-//        $kora = new General_Search($pid, $sid, 'Project_Associator', 'LIKE', '34-168-198016', $fields);
-//        $kora = new General_Search($pid, $sid, 'Project Associator', 'LIKE', '34', $fields);
-//        $kora = new General_Search($pid, $sid, 'Project Associator', 'LIKE', '34-168-198016', $fields);
-//
-//                $clause1 = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '9', $fields);
-//                $clause2 = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '16', $fields);
-//                $clause3 = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '2003', $fields);
-//                $kora = new General_Search($clause1, 'AND', $clause2, 'AND', $clause3);
-
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%2004%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '9142004', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%9142004%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '09142004', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%09142004%', $fields);
-
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', 'CE', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '2004', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%2004%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '9142004', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%9142004%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '09142004', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%09142004%', $fields);
-
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '2004/09/14', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%2004/09/14%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '2004/09/14', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%2004/09/14%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '20040914', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest_Date', 'LIKE', '%20040914%', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '20040914', $fields);
-//        $kora = new General_Search($pid, $sid, 'Latest Date', 'LIKE', '%20040914%', $fields);
-
-
-
-
-
-        $allResources = json_decode($kora->return_json(), true);
-
-
-        echo json_encode($allResources);
         die;
     }
 
@@ -231,9 +130,6 @@ class CollectionsController extends AppController {
         if (isset($this->request->query['id'])){
             $resource_id = $this->request->query['id'];
             $retval['id'] = $resource_id;
-
-            //$collections = array();
-            //// Start SQL Area
             include_once("../Config/database.php");
             $db = new DATABASE_CONFIG();
             $db_object =  (object) $db;
@@ -245,31 +141,23 @@ class CollectionsController extends AppController {
                 die('Connect Error (' . $mysqli->connect_errno . ') '
                     . $mysqli->connect_error);
             }
-            //Get collections info from the resource_kid
-            //where is fancy to get min created of each collection
-            //group by collection_id to only get one of each
-            //order by created
-//            $sql = $mysqli->prepare("SELECT collection_id, title, user_name, min(created) AS DATE
-//                    FROM  collections
-//                    WHERE resource_kid = ?
-//                    GROUP BY collection_id
-//                    ORDER BY created");
             $sql = $mysqli->prepare("SELECT collection_id, title, user_name, modified
                     FROM  collections
                     WHERE resource_kid = ?
-                    GROUP BY collection_id
-                    ORDER BY modified asc");
+                    /*GROUP BY collection_id
+                    ORDER BY modified asc*/");
 
 
             $sql->bind_param("s", $resource_id);
             $sql->execute();
             $result = $sql->get_result();
-            // $result = $mysqli->query($sql);
             $collections = array();
-            while($row = mysqli_fetch_assoc($result))
-                $collections[] = $row;
-
-            $retval['collections'] = $collections;
+            while($row = mysqli_fetch_assoc($result)) {
+                if( !isset($collections[$row['collection_id']]) ){
+                    $collections[$row['collection_id']] = $row;
+                }
+            }
+            $retval['collections'] = array_values($collections);
             return $this->json(200, $retval);
         }
         //I don't think this code is used...
