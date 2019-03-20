@@ -540,10 +540,10 @@ class CollectionsController extends AppController {
             die('Connect Error (' . $mysqli->connect_errno . ') '
                 . $mysqli->connect_error);
         }
-        $sql = $mysqli->prepare("SELECT DISTINCT collection_id, id, title, created, public, members, user_id
+        $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
                         FROM collections
-                        /*GROUP BY collection_id
-                        ORDER BY created DESC*/;");
+                        GROUP BY collection_id
+                        /*ORDER BY created DESC*/;");
         $sql->execute();
         $result = $sql->get_result();
 
