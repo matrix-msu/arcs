@@ -542,7 +542,8 @@ class CollectionsController extends AppController {
         }
         $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
                         FROM collections
-                        GROUP BY collection_id
+                        WHERE user_id = '".$this->Session->read('Auth.User.id')."'
+                        /*GROUP BY collection_id
                         /*ORDER BY created DESC*/;");
         $sql->execute();
         $result = $sql->get_result();
@@ -558,14 +559,19 @@ class CollectionsController extends AppController {
                 $day = substr($date, 8, 2);
                 $return_date = array_values($months)[intval($month) - 1] . ' ' . $day . ', ' . $year;
 
-                $temp_array = array('id' => $row['collection_id'],
+                $temp_array = array(
+                    'id' => $row['collection_id'],
                     'title' => $row['title'],
                     'date' => $return_date,
                     'public' => $row['public'],
-                    'members' => $row['members']);
-                $test[] = $temp_array;
+                    'members' => $row['members']
+                );
+                if( !isset($test[$row['collection_id']]) ) {
+                    $test[$row['collection_id']] = $temp_array;
+                }
             }
         }
+        $test = array_values($test);
         if (isset($test)){
             $count = count($test);
         } else {
