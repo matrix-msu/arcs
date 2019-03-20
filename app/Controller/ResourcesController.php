@@ -685,7 +685,7 @@ class ResourcesController extends AppController {
 			$count++;
 			// if( $byteCount >= 786432000 ){ //750 MB
 			//if( $byteCount >= (786432000/6) ){ //125 MB
-			if( (microtime(true)-$time_start) > 5 ){ //125 MB
+			if( (microtime(true)-$time_start) > 40 ){ //25 seconds
 				break;
 			}
         }
