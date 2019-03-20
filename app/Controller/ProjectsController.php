@@ -275,14 +275,15 @@ class ProjectsController extends AppController {
 
 		if( $user_id !== null ) { //signed in
 			$collections = $this->Collection->find('all', array(
-				'order' => 'Collection.modified DESC',
+                'fields' => array('DISTINCT collection_id','public','members'),
+				//'order' => 'Collection.modified DESC',
 				'conditions' => array('OR' => array(
 					array( 'Collection.public' => '1'),
 					array( 'Collection.public' => '2'),
 					array( 'Collection.public' => '3'),
 					array( 'Collection.user_id' => $user_id)
 				), 'Collection.resource_kid LIKE' => "$pid-%"),
-				'group' => 'collection_id',
+				//'group' => 'collection_id',
 				'limit' => 10
 			));
 
@@ -313,24 +314,22 @@ class ProjectsController extends AppController {
 				//'group' => 'collection_id',
 				'limit' => 10
 			));
-            $collectionsList = Set::extract($collections, '/Collection/collection_id');
-            $collections = array();
-            foreach( $collectionsList as $c ) {
-                $collectionsTemp = $this->Collection->find('all', array(
-                    'conditions' => array('collection_id' => $c),
-                    'order' => 'modified desc',
-                    'limit' => 1
-                ));
-                $collections[] = $collectionsTemp[0];
-            }
 		}
-    foreach( $collections as $key => $collection ){
-        $collections[$key]['Collection']['timeAgo'] =  parent::time_elapsed_string($collection['Collection']['created']);
-    }
+        $collectionsList = Set::extract($collections, '/Collection/collection_id');
+        $collections = array();
+        foreach( $collectionsList as $c ) {
+            $collectionsTemp = $this->Collection->find('all', array(
+                'conditions' => array('collection_id' => $c),
+                'order' => 'modified desc',
+                'limit' => 1
+            ));
+            $collections[] = $collectionsTemp[0];
+        }
+        foreach( $collections as $key => $collection ){
+            $collections[$key]['Collection']['timeAgo'] =  parent::time_elapsed_string($collection['Collection']['created']);
+        }
 
-    $this->set('collections', $collections);
-    $this->render("single_project");
-
+        $this->set('collections', $collections);
+        $this->render("single_project");
 	}
-
 }
