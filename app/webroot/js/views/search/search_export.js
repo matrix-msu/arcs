@@ -353,62 +353,64 @@ $(document).ready(function() {
                     picSliceCurrentIndex += numPics;
                     data = data.filename;
                     console.log("before download", data, picExportPackNum, picSliceCurrentIndex);
-					$form = $('<form />')
-						.hide()
-						.attr({ method: "post" })
-						.attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
-						.append($('<input />')
-							.attr({ "name": "filename" })
-							.val(data)
-						).append($('<input />')
-							.attr({ "name": "packNum" })
-							.val(picExportPackNum)
-						).append($('<input />')
-							.attr({ "name": "packTotal" })
-							.val($('.export-images-link').length)
-						)
-						.append('<input type="submit" />')
-						.appendTo($("body"))
-						.submit();
-                    picExportPackNum++;
-					setTimeout(function () { //give time for jquery form click
-						$.ajax({
-							url: arcs.baseURL + "resources/checkExportDone",
-							type: "POST",
-							data: { 'filename': data },
-							statusCode: {
-								200: function (data) {
-									if(!data){
-										return;
-									}
-									$clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
-									//$clicked.addClass('downloaded');
-									var downCount = $('.export-rem-images').eq(0).html();
-									if( !$('#export-image-all').hasClass('active') ){
-										var tempDownCount = parseInt($('.export-downed-images').html())+parseInt($('.export-image-num.active').attr('data-num'));
-										if( tempDownCount < downCount ){
-											downCount = tempDownCount;
-										}
-									}
-									$('.export-downed-images').html(downCount);
-									var remaining = parseInt($('.export-rem-images').eq(0).html()) - downCount;
-									$('.export-rem-decreasing-images').html(remaining);
-									isExporting = 0;
-                                    if( remaining === 0 ){ //finished all pictures
-                                        $("#export-modal-exporting").find('.sk-cube-container').remove();
-                                        $(".exportModalClose").css('display','block');
-                                    }else{
-                                        setTimeout(function(){
-                                            $('.automatic:not(.downloaded)').click();
-                                        },1000);
+                    setTimeout(function(){
+                        $form = $('<form />')
+                            .hide()
+                            .attr({ method: "post" })
+                            .attr({ action: arcs.baseURL + "resources/downloadPictureExportFile" })
+                            .append($('<input />')
+                                .attr({ "name": "filename" })
+                                .val(data)
+                            ).append($('<input />')
+                                .attr({ "name": "packNum" })
+                                .val(picExportPackNum)
+                            ).append($('<input />')
+                                .attr({ "name": "packTotal" })
+                                .val($('.export-images-link').length)
+                            )
+                            .append('<input type="submit" />')
+                            .appendTo($("body"))
+                            .submit();
+                        picExportPackNum++;
+                        setTimeout(function () { //give time for jquery form click
+                            $.ajax({
+                                url: arcs.baseURL + "resources/checkExportDone",
+                                type: "POST",
+                                data: { 'filename': data },
+                                statusCode: {
+                                    200: function (data) {
+                                        if(!data){
+                                            return;
+                                        }
+                                        $clicked.html('FINISHED PACK '+$clicked.attr('data-pack'));
+                                        //$clicked.addClass('downloaded');
+                                        var downCount = $('.export-rem-images').eq(0).html();
+                                        if( !$('#export-image-all').hasClass('active') ){
+                                            var tempDownCount = parseInt($('.export-downed-images').html())+parseInt($('.export-image-num.active').attr('data-num'));
+                                            if( tempDownCount < downCount ){
+                                                downCount = tempDownCount;
+                                            }
+                                        }
+                                        $('.export-downed-images').html(downCount);
+                                        var remaining = parseInt($('.export-rem-images').eq(0).html()) - downCount;
+                                        $('.export-rem-decreasing-images').html(remaining);
+                                        isExporting = 0;
+                                        if( remaining === 0 ){ //finished all pictures
+                                            $("#export-modal-exporting").find('.sk-cube-container').remove();
+                                            $(".exportModalClose").css('display','block');
+                                        }else{
+                                            setTimeout(function(){
+                                                $('.automatic:not(.downloaded)').click();
+                                            },1000);
+                                        }
+                                    },
+                                    400: function () {
+                                        console.log("Bad Request");
                                     }
-								},
-								400: function () {
-									console.log("Bad Request");
-								}
-							}
-						});
-					}, 50);
+                                }
+                            });
+                        }, 50);
+					},200);
 				},
 				400: function () {
 					console.log("caught the create pic error");
