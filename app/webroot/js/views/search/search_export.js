@@ -386,7 +386,7 @@ $(document).ready(function() {
                                         //$clicked.addClass('downloaded');
                                         var downCount = $('.export-rem-images').eq(0).html();
                                         if( !$('#export-image-all').hasClass('active') ){
-                                            var tempDownCount = parseInt($('.export-downed-images').html())+parseInt($('.export-image-num.active').attr('data-num'));
+                                            var tempDownCount = parseInt($('.export-downed-images').html())+parseInt(numPics);
                                             if( tempDownCount < downCount ){
                                                 downCount = tempDownCount;
                                             }
