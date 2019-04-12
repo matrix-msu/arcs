@@ -327,7 +327,27 @@ $(document).ready(function() {
         _resource.SwapResource(id);
         _resource.setPointer(id);
         _resource.page_increment();
-         _resource.selectPage(1);
+        console.log('new resoruce select first page',$('.selectedCurrentResource').attr('data-dontclickpage'));
+        if( typeof $('.selectedCurrentResource').attr('data-dontclickpage') === 'undefined') {
+            console.log('selected current is undefined')
+            _resource.selectPage(1);
+        }else{
+            console.log('not undefined', $('.selectedCurrentResource').attr('data-dontclickpage'));
+            var page = $(_resource.pageSlider).find("#" + $('.selectedCurrentResource').attr('data-dontclickpage'));
+            if(page.length) {
+                var index = page.parent().find(".numberOverResources").html();
+                index = parseInt(index,10) || 0;
+                _resource.selectPage(index);
+                _resource.sliderMove({
+                    direction: "right",
+                    slider: $(_resource.pageSlider).parent(),
+                    multiplier: 1,
+                    speed: 1000
+                }, (index-3)/2);
+            }
+            $('.selectedCurrentResource').removeAttr('data-dontclickpage');
+            return;
+        }
 
         if(pageSet) {
             var page = $(_resource.pageSlider).find("#" + pageSet);
@@ -600,6 +620,7 @@ $(document).ready(function() {
                 flagPrep();
                 keywordPrep();
                 scrollPrep();
+                $('.selectedCurrentResource').attr('data-dontclickpage',multiPageSet)
                 $('.selectedCurrentResource').click();
                 // if( multiPageSet !== false ){
                 //     setTimeout(function(){
