@@ -138,7 +138,7 @@ function pageSelectBuild(firstid) {
 
     current = i;
     var kid = keys[current];
-    GetNewResource(kid);
+    //GetNewResource(kid);
     }
 
   }

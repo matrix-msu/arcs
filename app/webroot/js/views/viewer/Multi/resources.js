@@ -5,6 +5,7 @@ var pageSet = typeof PAGESET !== 'undefined' ? PAGESET : false;
 //global resource
 var _resource = {};
 var first = true;
+var wasInsideBefore = false;
 
 _resource.pageSlider = ".other-page";
 _resource.resourceSlider = ".resource-slider";
@@ -69,7 +70,6 @@ _resource.selectPage = function(pageNum) {
         .find(".numberOverResources:" + "contains('" + pageNum + "')")
         .first().parent()
         .find("img");
-
     pageEvent.trigger("click");
     return pageEvent;
 }
@@ -78,7 +78,6 @@ _resource.selectResource = function(pageNum) {
         .find(".numberOverResources:" + "contains('" + pageNum + "')")
         .first().parent()
         .find("img");
-
     rEvent.trigger("click");
 
 }
@@ -155,7 +154,6 @@ _resource.sliderMove.adjust = function(element) {
             $('#scroll2').css('margin-top', '0');
         }
         if( checkBoth == 0 ){
-            console.log('slideup')
             setTimeout(function(){
                 if( window.innerWidth <= 900 && pagesShowing ){
                     $('.resource-nav-level#resources-nav').css('margin-top','113px');
@@ -167,7 +165,6 @@ _resource.sliderMove.adjust = function(element) {
                 $('#scroll2').slideUp(300);
             }, 1)
         }else{
-            console.log('slide down')
             setTimeout(function(){
                 if( window.innerWidth <= 900 && pagesShowing ) {
                     $('.resource-nav-level#resources-nav').css('margin-top', '156px');
@@ -183,8 +180,6 @@ _resource.sliderMove.adjust = function(element) {
         if( checkBoth == 0 ){
             setTimeout(function(){
                 $('#resources-nav').css('margin-top', '0');
-                console.log('sliding up the page slider')
-                console.log($('#viewer-right').css('top'))
                 if( $('#viewer-right').css('top') === '156px' ){
                     $('#viewer-right').css('top', '114px');
                 }
@@ -287,7 +282,6 @@ $(document).ready(function() {
     $(".numberOverResources").click(numberOverResourcesClick);
     // $('.other-resources').click(function() {
     var otherResourcesClick = function () {
-
         //add a selected class to any clicked page or resource
         if($(this).parents('.page-slider').length > 0) {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
@@ -315,10 +309,11 @@ $(document).ready(function() {
 
         $('#res-header').html($('.archival[data-kid="'+id+'"]').find('#Title').html());
 
-        //initialize scroll
-        $(_resource.pageSlider).parent().scrollLeft(0);
-        $(_resource.pageSlider).parent().parent().find(".button-left").trigger("click");
-
+        if( wasInsideBefore === false || pageSet != false) {
+            //initialize scroll
+            $(_resource.pageSlider).parent().scrollLeft(0);
+            $(_resource.pageSlider).parent().parent().find(".button-left").trigger("click");
+        }
 
         _resource.currentResource = parseInt(
             $(this).find(".numberOverResources").html()
@@ -327,9 +322,9 @@ $(document).ready(function() {
         _resource.SwapResource(id);
         _resource.setPointer(id);
         _resource.page_increment();
-        _resource.selectPage(1);
 
         if(pageSet) {
+            wasInsideBefore = true;
             var page = $(_resource.pageSlider).find("#" + pageSet);
             if (first){
                 var checkExist = setInterval(function () {
@@ -337,7 +332,7 @@ $(document).ready(function() {
                     var resourceId = page.parent().attr('id');
                     if ($('#identifier-' + resourceId).length) {
                         page = $(_resource.pageSlider).find("#" + pageSet);
-                        $('#identifier-' + resourceId).click();
+                        //$('#identifier-' + resourceId).click();
                         setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
                         pageSet = false;
                         clearInterval(checkExist);
@@ -356,8 +351,13 @@ $(document).ready(function() {
                     speed: 1000
                 }, (index-3)/2);
             }
+            if( wasInsideBefore === false){
+                _resource.selectPage(1);
+            }
         }
-    // });
+        if( wasInsideBefore === false && multiInfo==false ){
+            _resource.selectPage(1);
+        }
     };
     $('.other-resources').click(otherResourcesClick);
 
@@ -461,7 +461,6 @@ $(document).ready(function() {
     }
 
     if (multiInfo !== false) {
-		//console.log('first resource', $('.other-resource') );
 		prepAccordion(true);
 		$(".accordion").accordion({
             heightStyle: "fill",
@@ -479,6 +478,9 @@ $(document).ready(function() {
 		if( currentImageKid == '' ){
 			currentImageKid = RESOURCES[Object.keys(RESOURCES)[0]]['page'][Object.keys(RESOURCES[Object.keys(RESOURCES)[0]]['page'])][0];
 		}
+        if(pageSet){
+            currentImageKid = pageSet;
+        }
 		GetNewResource(currentImageKid);
 		$('#PageImage').css('display', 'block').addClass('multiInfo');
         //decide whether or not multi-resource drawer is shown. Fix css also
@@ -576,49 +578,8 @@ $(document).ready(function() {
                 $('.other-resources').unbind('click', otherResourcesClick);
                 $('.other-resources').click(otherResourcesClick);
                 pageSelectBuild(firstid);
-                //var projectData = generateMetadata("project", results.projectsArray, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                //var seasonsData = generateMetadata("Seasons", results.seasons, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                //var excavationsData = generateMetadata("excavations", results.excavations, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags, results.seasons);
-                //var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags,results.excavations,results.seasons);
-                //var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-				
-				console.log('resss', RESOURCES)
-				console.log('SEAS', SEASONS)
-				console.log('EXCA', EXCAVATIONS)
-				console.log('PRO', PROJECTS)
-				console.log('SUBS', SUBJECTS)
-				//NOAH do this ---
-
-
-                //var loadedResourcesKids = [];
-                //var loadedResourcesKids = [];
-                //var loadedResourcesKids = [];
-                //var loadedResourcesKids = [];
 
                 addResources(loaded);
-
-                ////change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
-                //var projectData = generateMetadata("project", PROJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                //var seasonsData = generateMetadata("Seasons", SEASONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                //var excavationsData = generateMetadata("excavations", EXCAVATIONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS);
-                //var archivalData = generateMetadata("archival objects", RESOURCES, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,EXCAVATIONS,SEASONS);
-                //var subjectsData = generateMetadata("subjects", SUBJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                
-                //$('.archival.objects-table').parent().append(archivalData);
-                //$('.project-table').parent().append(projectData);
-                //$('.excavation-tab-content').append(excavationsData);
-                //$('.season-tab-content').append(seasonsData);
-                //$('.level-content.soo').parent().append(subjectsData);
-                ////return;
-				//$(".accordion").accordion('destroy')
-                ////$('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
-                //
-				//$(".accordion").accordion({
-				//	heightStyle: "fill",
-				//	active: 3
-				//});
-
-                //---to here ----
 				
                 dynamicPrep();
                 editMetaPrep();
@@ -628,7 +589,20 @@ $(document).ready(function() {
                 flagPrep();
                 keywordPrep();
                 scrollPrep();
+
                 $('.selectedCurrentResource').click();
+                if(pageSet){
+                    setTimeout(function(){
+                        $(pageSet).parent().click();
+                        $(pageSet).click();
+                    },500);
+                    $('#soo').ready(function(){
+                        $(pageSet).parent().click();
+                        $(pageSet).click();
+                    })
+                }else {
+                    $('.selectedCurrentPage').click();
+                }
 				$('#export-data-buttons').removeClass('opacitied').css('opacity','');
             }
         });
@@ -701,15 +675,6 @@ function addResources(loaded){
             loaded.subjects.push(kid)
         }
     }
-    console.log('loading', loaded)
-
-    //change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
-    //var projectData = generateMetadata("project", projectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, projectsCount);
-    //var seasonsData = generateMetadata("Seasons", seasonsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, seasonsCount);
-    //var excavationsData = generateMetadata("excavations", excavationsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, seasonsToLoad, false, excavationsCount);
-    //var archivalData = generateMetadata("archival objects", resourcesToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,excavationsToLoad,seasonsToLoad, resourcesCount);
-    //var subjectsData = generateMetadata("subjects", subjectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, subjectsCount);
-
     var projectData = generateMetadata("project", projectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, projectsCount);
     var seasonsData = generateMetadata("Seasons", seasonsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, seasonsCount);
     var excavationsData = generateMetadata("excavations", excavationsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS, false, excavationsCount);
@@ -721,7 +686,6 @@ function addResources(loaded){
     $('.project-table').parent().append(projectData);
     $('.excavation-tab-content').append(excavationsData);
     $('.season-tab-content').append(seasonsData);
-    console.log('adding sss',  $('.level-content.soo').parent())
     $('.level-content.soo').parent().append(subjectsData);
 
 
@@ -750,7 +714,6 @@ function addResources(loaded){
     var html = '';
     var count = subjectsCount;
     var page_associator = '';
-    console.log('loading subjects', subjectsToLoad)
 
     for (var subjectKid in subjectsToLoad) {
         count++;
