@@ -327,12 +327,9 @@ $(document).ready(function() {
         _resource.SwapResource(id);
         _resource.setPointer(id);
         _resource.page_increment();
-        console.log('new resoruce select first page',$('.selectedCurrentResource').attr('data-dontclickpage'));
         if( typeof $('.selectedCurrentResource').attr('data-dontclickpage') === 'undefined') {
-            console.log('selected current is undefined')
             _resource.selectPage(1);
         }else{
-            console.log('not undefined', $('.selectedCurrentResource').attr('data-dontclickpage'));
             var page = $(_resource.pageSlider).find("#" + $('.selectedCurrentResource').attr('data-dontclickpage'));
             if(page.length) {
                 var index = page.parent().find(".numberOverResources").html();
