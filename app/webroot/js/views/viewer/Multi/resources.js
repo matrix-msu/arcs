@@ -237,17 +237,17 @@ $(document).ready(function() {
 
     if (permModal.length && permModal.css("opacity") == 1 ||
         resourcePermModal.length  && resourcePermModal.css("opacity") == 1) {
-      var modal
-      if (permModal.length) {
-        modal = permModal
-      } else {
-        modal = resourcePermModal
-      }
-      modal.find(".permission-modal-responseButtons")
-          .find("button")
-          .first()
-          .remove()
-      modal.find(".modal-exit").remove()
+        var modal
+        if (permModal.length) {
+            modal = permModal
+        } else {
+            modal = resourcePermModal
+        }
+        modal.find(".permission-modal-responseButtons")
+            .find("button")
+            .first()
+            .remove()
+        modal.find(".modal-exit").remove()
     }
 
     $(".button-right").click(function(e) {
@@ -282,7 +282,7 @@ $(document).ready(function() {
     var numberOverResourcesClick = function (e) {
         $(this).parent().find("img").trigger("click");
         e.stopPropagation();
-    // });
+        // });
     };
     $(".numberOverResources").click(numberOverResourcesClick);
     // $('.other-resources').click(function() {
@@ -293,7 +293,7 @@ $(document).ready(function() {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
             $(this).addClass('selectedCurrentPage')
             var id = $(this).find("img").attr("id");
-			//pageSet = id;
+            //pageSet = id;
             var stateObj = { pageID: id };
 
             history.replaceState(stateObj, "page 2", "?pageSet=" +id);
@@ -327,7 +327,26 @@ $(document).ready(function() {
         _resource.SwapResource(id);
         _resource.setPointer(id);
         _resource.page_increment();
-        _resource.selectPage(1);
+        console.log('new resoruce select first page',$('.selectedCurrentResource').attr('data-dontclickpage'));
+        if( typeof $('.selectedCurrentResource').attr('data-dontclickpage') === 'undefined') {
+            console.log('selected current is undefined')
+            _resource.selectPage(1);
+        }else{
+            console.log('not undefined', $('.selectedCurrentResource').attr('data-dontclickpage'));
+            var page = $(_resource.pageSlider).find("#" + $('.selectedCurrentResource').attr('data-dontclickpage'));
+            if(page.length) {
+                var index = page.parent().find(".numberOverResources").html();
+                index = parseInt(index,10) || 0;
+                _resource.selectPage(index);
+                _resource.sliderMove({
+                    direction: "right",
+                    slider: $(_resource.pageSlider).parent(),
+                    multiplier: 1,
+                    speed: 1000
+                }, (index-3)/2);
+            }
+            return;
+        }
 
         if(pageSet) {
             var page = $(_resource.pageSlider).find("#" + pageSet);
@@ -338,11 +357,18 @@ $(document).ready(function() {
                     if ($('#identifier-' + resourceId).length) {
                         page = $(_resource.pageSlider).find("#" + pageSet);
                         $('#identifier-' + resourceId).click();
-                        //setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
+                        console.log('before set time comment', multiInfo)
+                        if( multiInfo === 0 ){
+                            console.log('multiInfo is 0');
+                            setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
+                        }else{
+                            console.log('multiinfo not 0')
+                        }
+
                         pageSet = false;
                         clearInterval(checkExist);
                     }
-                }, 300); 
+                }, 300);
                 first = false;
             }
             if(page.length) {
@@ -357,7 +383,7 @@ $(document).ready(function() {
                 }, (index-3)/2);
             }
         }
-    // });
+        // });
     };
     $('.other-resources').click(otherResourcesClick);
 
@@ -371,16 +397,16 @@ $(document).ready(function() {
     });
 
     $(".resource-reset-icon").click( function () {
-      angle = 0;
-      $('#ImageWrap').css('transform','');
-      $("#canvas").css('transform', 'scale(1)');
-      $("#PageImage").css('transform', 'scale(1)');
-      $('#zoom-range').val(1);
-      $('#ImageWrap').css('top','');
-      $('#ImageWrap').css('left','');
-      $(".fullscreenImage").css('transform', 'rotate(' + angle + 'deg' + ')');
+        angle = 0;
+        $('#ImageWrap').css('transform','');
+        $("#canvas").css('transform', 'scale(1)');
+        $("#PageImage").css('transform', 'scale(1)');
+        $('#zoom-range').val(1);
+        $('#ImageWrap').css('top','');
+        $('#ImageWrap').css('left','');
+        $(".fullscreenImage").css('transform', 'rotate(' + angle + 'deg' + ')');
     });
-    
+
     $(_resource.pageSlider).on('click', 'img', function(e) {
         var kid = $(e.currentTarget).attr("id");
         var resource_kid = $(e.currentTarget).parent().parent().attr("id");
@@ -457,30 +483,36 @@ $(document).ready(function() {
     }
 
     if (typeof(multiInfo) == 'undefined') {
-        return; 
+        return;
     }
 
     if (multiInfo !== false) {
-		//console.log('first resource', $('.other-resource') );
-		prepAccordion(true);
-		$(".accordion").accordion({
+        //console.log('first resource', $('.other-resource') );
+        prepAccordion(true);
+        $(".accordion").accordion({
             heightStyle: "fill",
             active: 3,
-			autoHeight: false
+            autoHeight: false
         });
-		scrollPrep();
-		dynamicPrep();
-		var currentImageKid = '';
-		for( var ind in RESOURCES[Object.keys(RESOURCES)[0]]['page'] ){
-			if( RESOURCES[Object.keys(RESOURCES)[0]]['page'][ind]['Scan_Number'] == "1.000000000000000000000000000000" ){
-				currentImageKid = ind;
-			}
-		}
-		if( currentImageKid == '' ){
-			currentImageKid = RESOURCES[Object.keys(RESOURCES)[0]]['page'][Object.keys(RESOURCES[Object.keys(RESOURCES)[0]]['page'])][0];
-		}
-		GetNewResource(currentImageKid);
-		$('#PageImage').css('display', 'block').addClass('multiInfo');
+        scrollPrep();
+        dynamicPrep();
+        var currentImageKid = '';
+        for( var ind in RESOURCES[Object.keys(RESOURCES)[0]]['page'] ){
+            if( RESOURCES[Object.keys(RESOURCES)[0]]['page'][ind]['Scan_Number'] == "1.000000000000000000000000000000" ){
+                currentImageKid = ind;
+            }
+        }
+        if( currentImageKid == '' ){
+            currentImageKid = RESOURCES[Object.keys(RESOURCES)[0]]['page'][Object.keys(RESOURCES[Object.keys(RESOURCES)[0]]['page'])][0];
+        }
+        console.log('multi get new resource kid', currentImageKid);
+        var multiPageSet = false;
+        if( pageSet != false ){
+            currentImageKid = pageSet;
+            multiPageSet = pageSet;
+        }
+        //GetNewResource(currentImageKid);
+        $('#PageImage').css('display', 'block').addClass('multiInfo');
         //decide whether or not multi-resource drawer is shown. Fix css also
         if( window.innerWidth <= 900 ) {
             $('#scroll2').css('margin-top', '114px');
@@ -489,7 +521,7 @@ $(document).ready(function() {
             $('#viewer-right').css('top', '158px');
         }
         $('.resource-nav-level').css('display', 'block');
-        $('.selectedCurrentResource').click();
+        //$('.selectedCurrentResource').click();
 
         var loaded = {
             projects : [],
@@ -521,16 +553,16 @@ $(document).ready(function() {
                 'getRest' : true
             },
             success: function (results) {
-				$('#PageImage').removeClass('multiInfo');
+                $('#PageImage').removeClass('multiInfo');
                 results = JSON.parse(results);
-				PROJECTS = Object.assign(results.projectsArray, PROJECTS);
-				SEASONS = Object.assign(results.seasons, SEASONS);
-				RESOURCES = Object.assign(results.resources, RESOURCES);
-				EXCAVATIONS = Object.assign(results.excavations, EXCAVATIONS);
-				SUBJECTS = Object.assign(results.subjects, SUBJECTS);
-				showButNoEditArray = Object.assign(results.showButNoEditArray, showButNoEditArray);
-				annotationFlags = Object.assign(results.flags['annotationFlags'], annotationFlags);
-				controllerFlags = Object.assign(results.flags, controllerFlags);
+                PROJECTS = Object.assign(results.projectsArray, PROJECTS);
+                SEASONS = Object.assign(results.seasons, SEASONS);
+                RESOURCES = Object.assign(results.resources, RESOURCES);
+                EXCAVATIONS = Object.assign(results.excavations, EXCAVATIONS);
+                SUBJECTS = Object.assign(results.subjects, SUBJECTS);
+                showButNoEditArray = Object.assign(results.showButNoEditArray, showButNoEditArray);
+                annotationFlags = Object.assign(results.flags['annotationFlags'], annotationFlags);
+                controllerFlags = Object.assign(results.flags, controllerFlags);
                 //SEASONS = results.seasons;
                 //RESOURCES = results.resources;
                 //EXCAVATIONS = results.excavations;
@@ -565,7 +597,7 @@ $(document).ready(function() {
                         html += (++pagecnt)+"</div></a>";
                         $('#other-resources.other-page').append(html);
                     }
-					$('#resource-drawer-loader').remove();
+                    $('#resource-drawer-loader').remove();
                 }
                 //$('#resources-nav.resource-nav-level').show();
                 _resource.setPointer(Object.keys(results.resources)[0]);
@@ -576,50 +608,9 @@ $(document).ready(function() {
                 $('.other-resources').unbind('click', otherResourcesClick);
                 $('.other-resources').click(otherResourcesClick);
                 pageSelectBuild(firstid);
-                //var projectData = generateMetadata("project", results.projectsArray, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                //var seasonsData = generateMetadata("Seasons", results.seasons, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-                //var excavationsData = generateMetadata("excavations", results.excavations, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags, results.seasons);
-                //var archivalData = generateMetadata("archival objects", results.resources, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags,results.excavations,results.seasons);
-                //var subjectsData = generateMetadata("subjects", results.subjects, results.metadataedits, results.metadataeditsControlOptions, results.flags.metadataFlags);
-				
-				console.log('resss', RESOURCES)
-				console.log('SEAS', SEASONS)
-				console.log('EXCA', EXCAVATIONS)
-				console.log('PRO', PROJECTS)
-				console.log('SUBS', SUBJECTS)
-				//NOAH do this ---
-
-
-                //var loadedResourcesKids = [];
-                //var loadedResourcesKids = [];
-                //var loadedResourcesKids = [];
-                //var loadedResourcesKids = [];
 
                 addResources(loaded);
 
-                ////change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
-                //var projectData = generateMetadata("project", PROJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                //var seasonsData = generateMetadata("Seasons", SEASONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                //var excavationsData = generateMetadata("excavations", EXCAVATIONS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, SEASONS);
-                //var archivalData = generateMetadata("archival objects", RESOURCES, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags,EXCAVATIONS,SEASONS);
-                //var subjectsData = generateMetadata("subjects", SUBJECTS, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags);
-                
-                //$('.archival.objects-table').parent().append(archivalData);
-                //$('.project-table').parent().append(projectData);
-                //$('.excavation-tab-content').append(excavationsData);
-                //$('.season-tab-content').append(seasonsData);
-                //$('.level-content.soo').parent().append(subjectsData);
-                ////return;
-				//$(".accordion").accordion('destroy')
-                ////$('#tabs-1 .accordion.metadata-accordion').html(projectData+seasonsData+excavationsData+archivalData+subjectsData);
-                //
-				//$(".accordion").accordion({
-				//	heightStyle: "fill",
-				//	active: 3
-				//});
-
-                //---to here ----
-				
                 dynamicPrep();
                 editMetaPrep();
                 annotationPrep();
@@ -628,12 +619,30 @@ $(document).ready(function() {
                 flagPrep();
                 keywordPrep();
                 scrollPrep();
+                $('.selectedCurrentResource').attr('data-dontclickpage',multiPageSet)
                 $('.selectedCurrentResource').click();
-				$('#export-data-buttons').removeClass('opacitied').css('opacity','');
+                // if( multiPageSet !== false ){
+                //     setTimeout(function(){
+                //         var page = $(_resource.pageSlider).find("#" + multiPageSet);
+                //         $(page).click();
+                //         if(page.length) {
+                //             var index = page.parent().find(".numberOverResources").html();
+                //             index = parseInt(index,10) || 0;
+                //             _resource.selectPage(index);
+                //             _resource.sliderMove({
+                //                 direction: "right",
+                //                 slider: $(_resource.pageSlider).parent(),
+                //                 multiplier: 1,
+                //                 speed: 1000
+                //             }, (index-3)/2);
+                //         }
+                //     },500);
+                //
+                // }
+                $('#export-data-buttons').removeClass('opacitied').css('opacity','');
             }
         });
-    }
-    else {
+    }else{
         prepAccordion(true);
         dynamicPrep();
         editMetaPrep();
@@ -643,11 +652,11 @@ $(document).ready(function() {
         flagPrep();
         keywordPrep();
         scrollPrep();
-		$(".accordion").accordion({
-			heightStyle: "fill",
-			active: 3
-		});	
-		$('#export-data-buttons').removeClass('opacitied').css('opacity','');
+        $(".accordion").accordion({
+            heightStyle: "fill",
+            active: 3
+        });
+        $('#export-data-buttons').removeClass('opacitied').css('opacity','');
     }
 });
 
@@ -779,15 +788,15 @@ function addResources(loaded){
     var count = seasonsCount;
     var page_associator = '';
     for (var seasonKid in seasonsToLoad) {
-       count++;
-       var season = seasonsToLoad[seasonKid];
-       html += '<li class="season-li season-li-bubble-css"  class="metadata-accordion ul" ';
-       html += ' data-kid = ' + season["kid"] + '>';
-       html += '<a href="#Seasons' + count + '" class="season-a-bubble-css season-click' + count + '  season-click">';
-       html += count + '</a></li>';
-   }
+        count++;
+        var season = seasonsToLoad[seasonKid];
+        html += '<li class="season-li season-li-bubble-css"  class="metadata-accordion ul" ';
+        html += ' data-kid = ' + season["kid"] + '>';
+        html += '<a href="#Seasons' + count + '" class="season-a-bubble-css season-click' + count + '  season-click">';
+        html += count + '</a></li>';
+    }
 
-   //add the season bubbles
+    //add the season bubbles
     $('.season-tab-content').prev().append(html);
     $('.season-tab-content').prev('destroy')
     $('.season-tab-content').prev({
