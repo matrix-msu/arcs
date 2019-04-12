@@ -1,0 +1,129 @@
+{
+  "variables": {
+    "triton_url": "{{env `SDC_URL`}}",
+    "triton_account": "{{env `SDC_ACCOUNT`}}",
+    "triton_key_id": "{{env `SDC_KEY_ID`}}",
+    "arcsDeployCredential": "{{env `arcsDeployCredential`}}",
+    "version_suffix": "-{{timestamp}}"
+  },
+  "builders": [
+    {
+      "name": "triton",
+      "type": "triton",
+      "triton_url": "{{user `triton_url`}}",
+      "triton_account": "{{user `triton_account`}}",
+      "triton_key_id": "{{user `triton_key_id`}}",
+      "source_machine_name": "ib-arcs-{{uuid}}",
+      "source_machine_package": "g4-highcpu-1G",
+      "source_machine_image_filter": {
+        "name": "base-64-lts",
+        "version": "17.4.0"
+      },
+      "ssh_username": "root",
+      "image_name": "arcs",
+      "image_version": "19.0.0{{user `version_suffix`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "root-overlay/",
+      "destination": "/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo Installing apache24; pkgin -y install apache;",
+        "echo installing haproxy; pkgin -y install haproxy"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo installing php72 and libs; pkgin -y install ap24-php72 php72-bz2 php72-calendar php72-curl php72-gettext php72-imagick php72-json php72-mysqli php72-oauth php72-pdo php72-pdo_mysql php72-zlib php72-mbstring php72-iconv php72-intl php72-apcu php72-zip php72-bz2 php72-ldap php72-gd"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo patching apache config to enable prefork and php modules",
+        "cd /opt/local/etc/httpd/",
+        "patch < httpd.conf.php72.patch"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "/opt/local/bin/get-composer.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo enabling apache; svcadm enable apache",
+        "echo enabling haproxy; svcadm enable haproxy"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "pkgin -y install mysql-server",
+        "echo enabling mysql; svcadm enable mysql",
+        "sleep 5",
+        "echo securing mysql",
+        "/opt/local/bin/mysql -u root -e \"DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');\"",
+        "/opt/local/bin/mysql -u root -e \"DELETE FROM mysql.user WHERE User='';\"",
+        "/opt/local/bin/mysql -u root -e \"DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';\"",
+        "/opt/local/bin/mysql -u root -e \"FLUSH PRIVILEGES;\""
+      ]
+    },
+    {
+      "type": "shell", "inline": [
+        "echo installing make gcc; pkgin -y install gmake gcc49",
+        "echo installing node; pkgin -y install nodejs",
+        "echo upgrading npm; npm install npm@latest -g",
+        "echo installing manta; npm install -g --unsafe-perm manta",
+        "echo installing manta-sync; npm install -g --unsafe-perm manta-sync"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "useradd -s /bin/bash -m -g www -k /etc/skel node",
+        "passwd -d node",
+        "mkdir /home/node/website",
+        "chown -R node:www /home/node/website",
+        "chmod g+s -R /home/node/website",
+        "cd /opt/local/etc/httpd; sed -i 's#/opt/local/share/httpd/htdocs#/home/node/website#' httpd.conf"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo Installing git; pkgin -y install git;",
+        "echo Installing compass; pkgin -y install ruby24-compass-core ruby24-compass-import-once ruby24-compass-susy-plugin",
+        "echo Installing autoprefixer-rails; gem install \"autoprefixer-rails\"",
+        "echo Installing kora3",
+        "cd /home/node; git clone https://github.com/matrix-msu/Kora3.git",
+        "cd /home/node/Kora3; cp public/.htaccess.example public/.htaccess",
+        "cd /opt/local/etc/httpd; sed -i 's#/opt/local/share/httpd/htdocs#/home/node/website#' httpd.conf",
+        "cd /home/node/Kora3; chown -R node .; chgrp -R www .; chmod -R 0775 .",
+        "cd /home/node; cd website; ln -s ../Kora3/public kora3",
+        "chmod g+s -R /home/node/website"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo Installing ARCS",
+        "su node -c 'cd /home/node/website/; git clone https://github.com/matrix-msu/arcs.git'"
+      ]
+    },
+    {
+      "type": "shell", "inline": [
+        "echo DONE" 
+      ]
+    }
+
+  ]
+}
