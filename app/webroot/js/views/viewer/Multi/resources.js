@@ -293,7 +293,7 @@ $(document).ready(function() {
             $('.page-slider').find('.other-resources').removeClass('selectedCurrentPage');
             $(this).addClass('selectedCurrentPage')
             var id = $(this).find("img").attr("id");
-			pageSet = id;
+			//pageSet = id;
             var stateObj = { pageID: id };
 
             history.replaceState(stateObj, "page 2", "?pageSet=" +id);
@@ -338,7 +338,7 @@ $(document).ready(function() {
                     if ($('#identifier-' + resourceId).length) {
                         page = $(_resource.pageSlider).find("#" + pageSet);
                         $('#identifier-' + resourceId).click();
-                        setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
+                        //setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
                         pageSet = false;
                         clearInterval(checkExist);
                     }
