@@ -656,7 +656,6 @@ if( typeof pName !== 'undefined' ) {
     $('#search').attr('href', href);
 
     $('#soo').ready(function(){
-        console.log('before soo ready page click', $('.selectedCurrentPage').html())
         $('.selectedCurrentPage').find('img')[0].click();
     });
 
