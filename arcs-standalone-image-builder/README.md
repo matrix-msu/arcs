@@ -13,6 +13,7 @@ triton instance create arcs g4-highcpu-1G
 ```
 
 Use web interface to install kora3 or by command line.  Command line example uses settings that are valid at Matrix, not in general.
+
 *You must be signed in as root to run the following command:
 
 ```
@@ -29,6 +30,7 @@ prefix:   kora3_
 ```
 
 *Sign in as node to do everything below here-
+
 Load the ARCS bootstrap data into your now configured kora3
 
 ```
