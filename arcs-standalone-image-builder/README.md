@@ -13,6 +13,7 @@ triton instance create arcs g4-highcpu-1G
 ```
 
 Use web interface to install kora3 or by command line.  Command line example uses settings that are valid at Matrix, not in general.
+*You must be signed in as root to run the following command:
 
 ```
 php artisan install:finish localhost kora3 kora3 kora3 kora3_ admin admin admin admin@kora3.matrix.msu.edu password password Matrix en iggy.matrix.msu.edu kora3@matrix.msu.edu kora3 none none AAA AAA
@@ -27,6 +28,7 @@ password: kora3
 prefix:   kora3_
 ```
 
+*Sign in as node to do everything below here-
 Load the ARCS bootstrap data into your now configured kora3
 
 ```
