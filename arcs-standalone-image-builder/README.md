@@ -12,15 +12,62 @@ packer build packer.json
 triton instance create arcs g4-highcpu-1G
 ```
 
-Use web interface to install kora3 or by command line.  Command line example uses settings that are valid at Matrix, not in general.
+## Install
 
-*You must be signed in as root to run the following command:
+### ssh as root
+
+
+```
+Edit /home/node/Kora3/.env's first line to:
+APP_ENV=local
+```
 
 ```
 php artisan install:finish localhost kora3 kora3 kora3 kora3_ admin admin admin admin@kora3.matrix.msu.edu password password Matrix en iggy.matrix.msu.edu kora3@matrix.msu.edu kora3 none none AAA AAA
 ```
 
-Pre-configured databases exist for kora3.
+```
+chown -R node:www /home/node/Kora3
+chmod -R 775 /home/node/Kora3
+```
+
+### ssh as node
+
+```
+cd /home/node/website/arcs/
+
+mkdir app/tmp
+chmod 777 app/tmp
+chmod 777 app/Config/bootstrap.php
+```
+```
+mysql -h localhost -u kora3 -pkora3 kora3 < kora3_arcs_install.sql 
+
+```
+```
+mysql -h localhost -u arcs -parcs arcs < arcs_scheme.sql 
+```
+
+Go to the arcs website ( http://addressofhost/arcs/ ) and do inital configuration.
+
+```
+chmod 775 app/tmp
+chmod 775 app/Config/bootstrap.php
+```
+
+### Finished
+
+*
+*
+*
+
+## Troubleshoot
+See if you need to fix arcs database:
+
+## Pre-configured databases
+You shouldn't need these but if for some reason it isn't correct by default:
+
+kora
 ```
 hostname: localhost
 database: kora3
@@ -28,39 +75,12 @@ username: kora3
 password: kora3
 prefix:   kora3_
 ```
-
-*Sign in as node to do everything below here-
-
-Load the ARCS bootstrap data into your now configured kora3
-
+arcs
 ```
-[node@nonaka-47 ~/website/arcs]$ mysql -h localhost -u kora3 -pkora3 kora3 < kora3_arcs_install.sql 
-
-```
-
-Load the ARCS bootstrap data into the arcs database
-```
-[node@nonaka-47 ~/website/arcs]$ mysql -h localhost -u arcs -parcs arcs < arcs_scheme.sql 
-```
-
-Fix the ARCS database configuration in /home/node/website/arcs/app/Config/database.php
-
-Pre-configured database for arcs.
-```
+/home/node/website/arcs/app/Config/database.php
 hostname: localhost
 database: arcs
 username: arcs 
 password: arcs 
 prefix:   
 ```
-Run these commands from the node user to prepare for the web install process.
-```
-cd ~/website/arcs/app/
-mkdir tmp
-chmod 777 tmp
-chmod 777 Config/bootstrap.php
-```
-
-
-Go to the arcs website ( http://addressofhost/arcs/ ) and do inital configuration.
-
