@@ -7,12 +7,12 @@
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
  * @license    BSD License (http://www.opensource.org/licenses/bsd-license.php)
  */
-class HelpController extends AppController {
+class AboutController extends AppController {
 
-	public $name = 'Help';
+	public $name = 'About';
 
     public function beforeFilter() {
-        header('Location: '.ARCS_WIKI_URL);
+        header("Location: ".ARCS_PROMO_URL);
         die;
 //        parent::beforeFilter();
 //        $this->Auth->allow('index');
@@ -35,7 +35,7 @@ class HelpController extends AppController {
 		$this->render($doc);
 	}
 	public function index(){
-        header('Location: '.ARCS_WIKI_URL);
+        header('Location: '.ARCS_PROMO_URL);
 	    die;
     }
 }

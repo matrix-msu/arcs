@@ -42,9 +42,12 @@ define("KORA_LIB", CORE_PATH . "Kora/Local/");
 define("BASE_BOTH", "");
 define("BASE_URL",  BASE_BOTH . "arcs/" );
 
+define("ARCS_PROMO_URL", "https://arcs.matrix.msu.edu/");
+define("ARCS_WIKI_URL", "https://github.com/matrix-msu/arcs/wiki");
+
 define("KORA_FILES_URI",  BASE_BOTH . "kora3/app/files/");
-define ("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
-define ("KORA_RESTFUL_URL", BASE_BOTH . "kora3/api/");
+define("KORA_SEARCH", BASE_URL . "lib/Kora/Local/KoraSearch.php");
+define("KORA_RESTFUL_URL", BASE_BOTH . "kora3/api/");
 
 define("KORA_HOST", "localhost");
 define("KORA_USER", "kora3");
