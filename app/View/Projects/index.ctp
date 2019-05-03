@@ -23,7 +23,7 @@ echo $this->Session->flash('flash_success'); ?>
 
 	<div class="landing_header_two">
         To learn more about ARCS, click
-        <a href="<?php echo ARCS_PROMO_URL;?>">here</a>
+        <a href="<?php echo ARCS_PROMO_URL;?>" target="_blank">here</a>
         or choose a project from the map below to get started.
     </div>
 

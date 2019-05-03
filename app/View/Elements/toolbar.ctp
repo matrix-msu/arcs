@@ -257,7 +257,7 @@
 	<!--Display three buttons for index page with search bar-->
 	<div class="btn-group toolbar-btn">
 		<a id="about" class="btn btn-grey"
-			href="<?php echo ARCS_PROMO_URL; ?>">
+			href="<?php echo ARCS_PROMO_URL; ?>" target="_blank">
 			<i class="icon-white icon-folder-open"></i> About ARCS
 		</a>
 
