@@ -70,7 +70,7 @@ function annotationPrep() {
         for( var el in annotationDataGlobal['annotationData'] ){
             annotationDataGlobal['annotationData'][el].forEach(function(current){
                 drawAnnotationBox(current);
-                if( el != "url" && el != 'transcription'){ //no popup for urls and transcriptions
+                if(el != 'transcription'){ //no popup for transcriptions
                     appendPopup(current);
                 }
                 if( boxesOnly == false ){
@@ -118,25 +118,42 @@ function annotationPrep() {
 
     //append the popup to the gen box
     function appendPopup(current){
-        var resourceType = annotationDataGlobal['resource_data'][current.id]['resource'][current.relation_resource_kid]['Type'];
-        var resourceIdentifier = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Resource_Identifier'];
-        var pageScanNumber = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Scan_Number'];
-        var pageThumbSrc = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['constructed_image'];
-        if( pageScanNumber != "" ){
-            pageScanNumber = "Page Number: " + Math.floor(pageScanNumber);
-        }
-        //append in the popups
-        $("#" + current.id).append(
-            "<div class='annotationPopup' style='display:none'>"+
-                "<img class='annotationImage' alt='annotation image' src='"+pageThumbSrc+"'/>"+
+        // url popups open link in new tab when clicked
+        if (current.url != ''){
+            $("#" + current.id).append(
+                "<div class='annotationPopup' style='display:none'>"+
                 "<div class='annotationData'>"+
-                    "<p>Relation</p>"+
-                    "<p>"+resourceIdentifier+"</p>"+
-                    "<p>"+resourceType+"</p>"+
-                    "<p>"+pageScanNumber+"</p>"+
+                "<p>URL</p>"+
+                "<a href='"+current.url+"'>"+current.url+"</a>"+
                 "</div>"+
-            "</div>"
-        );
+                "</div>"
+            );
+            $("#" + current.id).click(function(){
+                window.open(current.url, "_blank");
+            });
+
+        } else {
+            var resourceType = annotationDataGlobal['resource_data'][current.id]['resource'][current.relation_resource_kid]['Type'];
+            var resourceIdentifier = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Resource_Identifier'];
+            var pageScanNumber = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['Scan_Number'];
+            var pageThumbSrc = annotationDataGlobal['resource_data'][current.id][current.relation_page_kid]['constructed_image'];
+            if (pageScanNumber != "") {
+                pageScanNumber = "Page Number: " + Math.floor(pageScanNumber);
+            }
+            //append in the popups
+            $("#" + current.id).append(
+                "<div class='annotationPopup' style='display:none'>" +
+                "<img class='annotationImage' alt='annotation image' src='" + pageThumbSrc + "'/>" +
+                "<div class='annotationData'>" +
+                "<p>Relation</p>" +
+                "<p>" + resourceIdentifier + "</p>" +
+                "<p>" + resourceType + "</p>" +
+                "<p>" + pageScanNumber + "</p>" +
+                "</div>" +
+                "</div>"
+            );
+
+        }
         //decide if the popup should go on the left or right
         var offset = $("#" + current.id).width()+10;
         if( current.x1 > .5 ){
@@ -1069,9 +1086,11 @@ function annotationPrep() {
           $(".editInstructions").hide();
       });
 
-      $(".transcriptSubmit").click(function () {
-          //e.preventDefault();
-          annotateData.page_kid = kid;
+      $(".transcriptSubmit").click(function (e) {
+          e.preventDefault();
+          var pKid = $('.selectedCurrentPage').find('img').attr('id');
+
+          annotateData.page_kid = pKid;
           annotateData.resource_kid = resourceKid;
           annotateData.resource_name = resourceIdentifier;
           annotateData.transcript = $(".transcriptionTextarea").val();
@@ -1083,7 +1102,6 @@ function annotationPrep() {
                   type: "POST",
                   data: annotateData,
                   success: function () {
-                      console.log('hererererer')
                       $(".transcriptionTextarea").val('');
                       $(".newTranscriptionForm").hide();
                       //GetDetails();
