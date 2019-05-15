@@ -8294,9 +8294,6 @@ input.indexSearchBox {
     filter: invert(60%) !important;
     -webkit-filter: invert(60%) !important;
   }
-  #registerModal .left {
-    display: none;
-  }
   #registerModal .left .requiredfield .register-content {
     margin-top: -15px !important;
   }
@@ -13271,6 +13268,7 @@ ul.annotations li.annotation:hover {
   padding: 30px;
 }
 #registerModal .register-content .left {
+  display: block !important;
   position: relative;
   float: left;
   width: 50%;

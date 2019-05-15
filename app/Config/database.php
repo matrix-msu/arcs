@@ -62,10 +62,10 @@ class DATABASE_CONFIG {
 	public $default = array(
         'datasource' => 'Database/Mysql',
         'persistent' => false,
-        'host' => 'localhost',
-        'login' => 'arcs',
-        'password' => 'arcs',
-        'database' => 'arcs',
+        'host' => 'rush.matrix.msu.edu',
+        'login' => 'arcs_dev',
+        'password' => 'uohE4n032x',
+        'database' => 'arcs_dev',
         'prefix' => '',
         //'encoding' => 'utf8',
     );
