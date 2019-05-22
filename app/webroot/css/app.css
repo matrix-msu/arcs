@@ -9862,12 +9862,13 @@ input[type=range]:focus::-ms-fill-upper {
   background-color: #333;
 }
 #viewers-search {
+  height: auto;
   min-height: 559px;
 }
 .viewers-container {
   margin-top: -60px;
   position: relative;
-  min-height: 709px;
+  height: 709px;
 }
 #viewer-left {
   float: left;

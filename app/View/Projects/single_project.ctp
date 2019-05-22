@@ -63,7 +63,15 @@
             </div></span>
 		</div>
 		<div class="proper-width" id="show-min">
-			<div class="more-info"><span style="cursor:pointer"><a>EXPLORE MORE RESOURCES</a></div></span>
+			<div class="more-info"><span style="cursor:pointer"><a href="<?php
+                    //grab the current url, take off the end and add resources.
+                    $url=explode('/', "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+                    array_pop($url);
+                    array_pop($url);
+                    array_pop($url);
+                    $url=implode('/', $url);
+                    echo $url.'/resources/'.$pName;
+                    ?>">EXPLORE MORE RESOURCES</a></div></span>
 		</div>
 		</div>
 
@@ -129,7 +137,15 @@
 
 				<div class="proper-width" id="show-min">
 					<div class="more-info">
-						<span style="cursor:pointer"><a>EXPLORE MORE COLLECTIONS</a></span>
+						<span style="cursor:pointer"><a href="<?php
+                            //grab the current url, take off the end and add resources.
+                            $url=explode('/', "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+                            array_pop($url);
+                            array_pop($url);
+                            array_pop($url);
+                            $url=implode('/', $url);
+                            echo $url.'/collections/'.$pName;
+                            ?>">EXPLORE MORE COLLECTIONS</a></span>
 					</div>
 				</div>
 			</div>
@@ -204,7 +220,7 @@
             </div>
             <div class="proper-width" id="show-min">
             <div class="more-info">
-            <span style="cursor:pointer"><a>GO TO ADVANCED SEARCH</a></span></div>
+            <span style="cursor:pointer"><a href="<?php echo '/'.BASE_URL.'search/advanced/'.$pName; ?>">GO TO ADVANCED SEARCH</a></span></div>
         </div>
         <br><br>
     </body>
