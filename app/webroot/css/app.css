@@ -9403,8 +9403,13 @@ ul.pagination .selected {
   div#search-results-wrapper {
     background: #fefefe;
   }
-  .toolbar-fixed {
-    display: none;
+  div#search-results-wrapper .toolbar-fixed {
+    height: 125px;
+  }
+  div#search-results-wrapper .toolbar-fixed a#select-all,
+  div#search-results-wrapper .toolbar-fixed a#selected-all,
+  div#search-results-wrapper .toolbar-fixed #open-colview-btn {
+    width: 100%;
   }
   #items-per-pages-buttons {
     display: none;
@@ -9709,6 +9714,12 @@ ul.pagination .selected {
   text-align: left;
   padding-left: 12px;
   margin-top: 10px;
+}
+@media screen and (max-width: 900px) {
+  .flex-container .simple .select-overlay {
+    border: 0;
+    opacity: 1;
+  }
 }
 div#search-bottom-bar {
   float: left;

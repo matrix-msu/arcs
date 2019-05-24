@@ -1355,7 +1355,7 @@ function setUpSearchLoad(keywordSearch = false){
         if ($(this).parent().find('.resourceLockedDarkBackgroundSearch').length == 0) {
           e.stopPropagation();
         }
-        if ($(this).find(".select-circle").hasClass("selected")){
+        if ($(e.target).hasClass("circle-container") || $(e.target).hasClass("select-circle")){
           return;
         }
         else{
