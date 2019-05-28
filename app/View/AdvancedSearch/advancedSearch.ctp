@@ -1,7 +1,7 @@
 
 <article id="pageHelpModal">
   <div>
-    <a class="search-help-close" href="#">X</a>
+    <a class="search-help-close" href="#">&times;</a>
 
     <p class="modal-title">Advanced Search</p>
       Advanced Search allows users to search for words and phrases in numerous fields. Users can build complex searches by combining terms and phrases in multiple search boxes.
@@ -507,9 +507,19 @@
             window.location.origin + arcs.baseURL + "search/" + project
         })
 
+        $('#page-help').click(function(e) {
+            e.preventDefault();
+            $('#pageHelpModal').show();
+        });
+
+        $('.search-help-close').click(function(e) {
+            e.preventDefault();
+            $('#pageHelpModal').hide();
+        })
+
         $("#pageHelpModal").click(function(e) {
-            if (e.target.nodeName === "ARTICLE") {;
-                $("#removeModal")[0].click()
+            if (e.target.nodeName === "ARTICLE") {
+                $('#pageHelpModal').hide();
             }
             if (e.target.id === "modalBackToSearch") {
                 window.location.href =

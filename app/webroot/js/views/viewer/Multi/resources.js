@@ -157,10 +157,10 @@ _resource.sliderMove.adjust = function(element) {
         if( checkBoth == 0 ){
             console.log('slideup')
             setTimeout(function(){
-                if( window.innerWidth <= 900 && pagesShowing ){
-                    $('.resource-nav-level#resources-nav').css('margin-top','113px');
-                    $('#viewer-right').css('top','113px');
-                }
+                // if( window.innerWidth <= 900 && pagesShowing ){
+                //     $('.resource-nav-level#resources-nav').css('margin-top','113px');
+                //     $('#viewer-right').css('top','113px');
+                // }
                 if( window.innerWidth <= 900 && !pagesShowing ){
                     $('#viewer-right').css('top','-41px');
                 }

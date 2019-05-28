@@ -20,6 +20,7 @@
 
 <article id="pageHelpModal">
   <div style="overflow-y:hidden">
+      <a class="search-help-close" href="#">&times;</a>
 
     <p class="modal-title">Keyword Search</p>
 	  Entering more than one word in a Keyword Search will generate results where ALL words in the

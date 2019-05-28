@@ -6930,6 +6930,20 @@ h4 {
 .modal::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.75);
 }
+.search-help-close {
+  color: white;
+  font-size: 35px;
+  position: absolute;
+  right: 30px;
+  text-decoration: none;
+  top: 20px;
+  transition: .25s all ease;
+}
+.search-help-close:hover {
+  color: white;
+  opacity: .5;
+  text-decoration: none;
+}
 .preview {
   background: url(img/linen-texture.jpg);
 }
@@ -8881,6 +8895,11 @@ div#searchCriteria ul {
   font-size: 16px;
   line-height: 30px;
   padding-top: 24px;
+}
+@media screen and (max-width: 600px) {
+  #pageHelpModal div {
+    width: 90%;
+  }
 }
 #pageHelpModal p {
   margin-top: 30px;
@@ -16997,6 +17016,11 @@ li.Locked .lock-overlay {
 .btn-show-all {
   cursor: pointer;
 }
+@media screen and (max-width: 900px) {
+  .copyUrlBtn {
+    display: none;
+  }
+}
 @media screen and (max-width: 550px) {
   .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon img.lock-icon-img,
   .collection-list-wrapper .collection-list .back-color[open] ul.resource-thumbs li.resource-thumb a .lock-img-container .lock-icon,
@@ -19029,7 +19053,6 @@ body {
   width: auto !important;
 }
 @media screen and (max-width: 700px) {
-  .collection-list-wrapper .collection-list h4,
   .collection-list-wrapper .collection-list h5 {
     display: none;
   }
@@ -19038,6 +19061,9 @@ body {
   .more-info a,
   #extra {
     display: none;
+  }
+  .collection-list-wrapper .collection-list h4 a {
+    display: inline-block;
   }
 }
 @media screen and (max-width: 700px) {

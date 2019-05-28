@@ -327,12 +327,19 @@ body{
 	}
 
 @media screen and (max-width:700px){
-	.collection-list-wrapper .collection-list h4, .collection-list-wrapper .collection-list h5{
+    .collection-list-wrapper .collection-list h5{
 		display:none;
 	}
-	.collection-list-wrapper .collection-list a, .asearch a, .more-info a, #extra{
+	.collection-list-wrapper .collection-list a,
+    .asearch a,
+    .more-info a,
+    #extra {
 		display:none;
 	}
+
+    .collection-list-wrapper .collection-list h4 a {
+        display: inline-block;
+    }
 }
 
 
