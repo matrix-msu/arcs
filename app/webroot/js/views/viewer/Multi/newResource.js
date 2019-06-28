@@ -3,9 +3,6 @@ var waits = [];
 var _NewResource = {};
 function GetNewResource(id) {
     image = document.getElementById('PageImage');
-	if( $(image).hasClass('multiInfo') ){
-		return;
-	}
     if(id == null) {
         return;
     }
@@ -15,63 +12,35 @@ function GetNewResource(id) {
         var resourceKid = id.replace('-default-page', '');
         $('#missingPictureIcon').attr('data-kid', resourceKid);
         $('#missingPictureIcon').css('display', 'block');
+
     }else {
         $('#missingPictureIcon').css('display', 'none');
         $(image).css('display', 'none');
         $('#PageImagePreloader').css('display', 'flex');
         waitingId++;
-		
-		console.log('new resource ajax call', id);
 
-        var hideDrawer = true;
-
-		for( var resind in RESOURCES ){
-			for( var kid in RESOURCES[resind]['page'] ){
-				if( kid == id ){
-					var pagePid = getPidFromKid(kid);
-                    var pageSid = getSidFromKid(kid);
-					var res = RESOURCES[resind]['page'][kid];
-
-                    // check if we have multiple pages
-                    if (hideDrawer){
-                        var numPages = Object.keys(RESOURCES[resind]['page']).length;
-                        if (numPages > 1){
-                            hideDrawer = false
-                        }
-                    }
-
-                    ///FULL SCREEN IMAGE CHANGED HERE
-                    if (typeof(res["Image_Upload"]) === 'undefined'){
-                        res["Image_Upload"] =  {'localName': arcs.baseURL+'img/DefaultResourceImage.svg'};
-                        $('#missingPictureIcon').css('display', 'block');
-                        $(image).attr('src', res['Image_Upload']['localName']);
-                        $('#PageImagePreloader').css('display', 'none');
-                        $(image).css('display', 'block');
-
-                        var fullImage = document.getElementById('fullscreenImage');
-                        var imgUrl = res['Image_Upload']['localName'];
-                        fullImage.src = imgUrl;
-                    }
-                    else{
-                        $(image).attr('src', KORA_FILES_URI+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName']);
-                        $('#PageImagePreloader').css('display', 'none');
-
-                        $(image).css('display', 'block');
-
-                        var fullImage = document.getElementById('fullscreenImage');
-                        var imgUrl = KORA_FILES_URI+"p"+pagePid+"/f"+pageSid+"/"+res['Image_Upload']['localName'];
-
-                        fullImage.src = imgUrl;
-                    }
-				}
-			}
-		}
-        // hide drawer if there are no multi-page resources
-        if (hideDrawer){
-            $('#resources-nav').hide();
-        }else{
-            $('#resources-nav').show();
-        }
+        $.ajax({
+            url: arcs.baseURL + "resources/loadNewResource/" + id,
+            type: 'GET',
+            beforeSend: function () {
+                waits[this.url] = waitingId;
+            },
+            success: function (res) {
+                if (waits[this.url] >= waitingId) {
+                    res = JSON.parse(res);
+                    kid = res['kid'];
+                    kids = [];
+                    //display obervatoins that apply to the selected page
+                    var cnt = 0;
+                    var pageNum = 1;
+                    console.log(res);
+                    $(image).attr('src', res['Image_Upload']['localName']);
+                    $('#PageImagePreloader').css('display', 'none');
+                    $(image).css('display', 'block');
+                    document.getElementById('fullscreenImage').src = res['Image_Upload']['localName'];
+                }
+            }
+        });
     }
 }
 
@@ -104,9 +73,7 @@ function pageSelectBuild(firstid) {
     $item[i].onclick = createFunc(i);
   }
 
-  if( typeof $pics[0] !== 'undefined' ) {
-      $pics[0].style.borderWidth = "5px";
-  }
+  $pics[0].style.borderWidth = "5px";
 
   function createFunc(i){
     return function(event){
@@ -135,12 +102,10 @@ function pageSelectBuild(firstid) {
           }
       });
     }
-
     current = i;
     var kid = keys[current];
     GetNewResource(kid);
     }
-
   }
 }
 

@@ -57,7 +57,7 @@ class OrphansController extends AppController{
                 $page['recordowner'],
                 $page['Image_Upload']
             );
-            $this->set('image', KORA_FILES_URI.'p'.$pid."/f".$sid."/".$page['Image Local Name']);
+            $this->set('image', $page['Image Local Name']);
             $this->set('pageMetadata', $page);
             $this->set('pageName', $page['Image Original Name']);
             $this->set('projectName', $pName);

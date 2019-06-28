@@ -421,8 +421,16 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
     }
     //Map return controls to fields if not ALL or KID
     //KID is a k3 custom for the legacy koraSearch that gets you a list of records
+	if( is_array($fields) && in_array("systimestamp", $fields) ){
+		$fields = array_diff($fields, array("systimestamp"));
+	}
+	if( is_array($fields) && in_array("recordowner", $fields) ){
+		$fields = array_diff($fields, array("recordowner"));
+	}
+	// var_dump($fields);
+    $mapNames = false;
     if(is_array($fields)) {
-        if(empty($fields) | $fields[0]=="ALL") {
+        if(empty($fields) || $fields[0]=="ALL") {
             $fields = "ALL";
         } else {
             $fieldsMapped = array();
@@ -481,10 +489,59 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
     if( $kidsNoData ){
         unset($data['format']);
     }
-    //var_dump($data);
+    if( $fields == "ALL" ){
+        $hyphenedFields = array(
+            "Excavation_-_Survey_Associator",
+            "Excavation_-_Survey_Name",
+            "Artifact_-_Structure_Classification",
+            "Artifact_-_Structure_Type",
+            "Artifact_-_Structure_Type_Qualifier",
+            "Artifact_-_Structure_Material",
+            "Artifact_-_Structure_Technique",
+            "Artifact_-_Structure_Archaeological_Culture",
+            "Artifact_-_Structure_Period",
+            "Artifact_-_Structure_Terminus_Ante_Quem",
+            "Artifact_-_Structure_Terminus_Post_Quem",
+            "Artifact_-_Structure_Title",
+            "Artifact_-_Structure_Current_Location",
+            "Artifact_-_Structure_Repository",
+            "Artifact_-_Structure_Repository_Accession_Number",
+            "Artifact_-_Structure_Creator",
+            "Artifact_-_Structure_Creator_Role",
+            "Artifact_-_Structure_Dimensions",
+            "Artifact_-_Structure_Geolocation",
+            "Artifact_-_Structure_Excavation_Unit",
+            "Artifact_-_Structure_Location",
+            "Artifact_-_Structure_Description",
+            "Artifact_-_Structure_Condition",
+            "Artifact_-_Structure_Inscription",
+            "Artifact_-_Structure_Munsell_Number",
+            "Artifact_-_Structure_Date",
+            "Artifact_-_Structure_Subject",
+            "Artifact_-_Structure_Origin",
+            "Artifact_-_Structure_Comparanda",
+            "Artifact_-_Structure_Archaeological_Context",
+            "Artifact_-_Structure_Shelving_Location"
+        );
+        $formattedMerge = array();
+        foreach( $hyphenedFields as $hyphenedField ){
+            $formattedMerge[$hyphenedField] = array(str_replace("-_","",$hyphenedField)."_".$pid."_".$sid."_");
+            //$formattedMerge[$name] = array($name."_11_33_");
+        }
+        $data["merge"] = json_encode($formattedMerge);
+    }
+	// if( $queries[0]['search'] == 'kid' && $queries[0]['kids'][0] == '11-33-2096' ){
+		// var_dump($queries);
+		// echo 'yaya';
+		// var_export($data);
+		// echo 'donnneee';
+	// }
+	 // echo 'in korasearch';
+     // var_export($data);
+	//echo $data;
     $curl = curl_init();
-//        echo 'data: ';
-//        var_dump($data);
+        // echo 'data: ';
+        // var_export($data);
     curl_setopt($curl, CURLOPT_URL, KORA_RESTFUL_URL . "search");
     if (!empty($userInfo)) {
         curl_setopt($curl, CURLOPT_USERPWD, $userInfo["user"] . ":" . $userInfo["pass"]);
@@ -495,13 +552,26 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
     $time_start = microtime(true);
-    if (!$result = curl_exec($curl))
+    if (!$result = curl_exec($curl)){
+		echo 'curl error';
+		var_export($data);
+		var_dump($result);
         return curl_error($curl);
+	}
     curl_close($curl);
     // $time_end = microtime(true);
     // $execution_time = ($time_end - $time_start);
     // echo 'seconds: ' . $execution_time;
     $result = json_decode($result, true);
+
+	// if( $queries[0]['search'] == 'kid' && $queries[0]['kids'][0] == '11-33-2096' ){
+		// echo "<br><br>result:";
+		// var_export($result);
+		// echo "after result";
+	// }
+	// echo "<br><br>result:<br>";
+	// var_export($result);
+	// echo "after result";
 //    }else{
 //        $fields = array('Title','Type','Excavation_-_Survey_Associator','Season_Associator','Permissions','Special_User','Resource_Identifier','linkers');
 //        $pid = parent::getPIDFromProjectName($projectName);
@@ -569,10 +639,13 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
 //    echo 'results:';
 //    var_dump($result);
 //    die;
-    if(isset($result['records']))
+    if( isset($result['records']) && isset($result['records'][0]) ){
         return $result['records'][0];
-    else
+    }else if( isset($result['records']) ){
+        return $result['records'];
+    }else{
         return $result;
+    }
 }
 function fieldMapper($name, $pid, $fid) {
     return str_replace(' ','_',$name).'_'.$pid.'_'.$fid.'_';

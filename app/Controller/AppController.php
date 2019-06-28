@@ -334,6 +334,7 @@ class AppController extends Controller
         if ($name === "" || $kid == '') {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
+		return $name."?thumb=150x150";
         $kidSplit = explode('-', $kid);
         $pid = $kidSplit[0];
         $sid = $kidSplit[1];
@@ -359,6 +360,7 @@ class AppController extends Controller
         if ($name === "" || $kid == '') {
             return '/' . BASE_URL . DEFAULT_THUMB;
         }
+		return $name."?thumb=300x300";
         $kidSplit = explode('-', $kid);
         $pid = $kidSplit[0];
         $sid = $kidSplit[1];

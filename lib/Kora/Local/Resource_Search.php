@@ -22,7 +22,7 @@ class Resource_Search extends Keyword_Search
         $this->projectMapping = parent::getPIDFromProjectName($projectName);
         $this->schemeMapping = parent::getResourceSIDFromProjectName($projectName);
 
-        $fields = array('Title', 'Type', 'Excavation_-_Survey_Associator', 'Season_Associator', 'Permissions', 'Special_User', 'Resource_Identifier', 'linkers');
+        $fields = array('Title', 'Type', 'Excavation_-_Survey_Associator', 'Season_Associator', 'Permissions', 'Special_User', 'Resource_Identifier');
         $pid = parent::getPIDFromProjectName($projectName);
         $sid = parent::getResourceSIDFromProjectName($projectName);
         $tempFields = array();
@@ -64,8 +64,14 @@ class Resource_Search extends Keyword_Search
         $resource = curl_exec($ch);
         curl_close($ch);
         $this->formulatedResult = array();
+		// echo 'query';
+		// var_export($query);
+		// echo '<br><br>resutls:';
+		//var_export(json_decode($resource, true));//die;
 
         $records = json_decode($resource, true)['records'][0];
+		// print_r($records);
+		// echo 'after';
 
         if (!is_array($records)){
             $records = array();
@@ -101,6 +107,7 @@ class Resource_Search extends Keyword_Search
         // traverse the database to include excavation,
         // season and project associations;
         $this->traverse_insert($projectName);
+		// echo 'hi';die;
 
         // get resource filters
         $filters = Resource::filter_analysis($this->formulatedResult);
