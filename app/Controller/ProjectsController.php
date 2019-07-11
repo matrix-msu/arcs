@@ -154,7 +154,7 @@ class ProjectsController extends AppController {
 
         $fields = 'KID';
         $kora = new General_Search($pid, $sid, 'kid', '!=', '', $fields);
-        $projectResourceKids = json_decode($kora->return_json(), true);
+        $projectResourceKids = $kora->return_array();
         //all resource kids in the project. for collections
 
 

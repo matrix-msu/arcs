@@ -427,6 +427,12 @@ function KORA_Search($token,$pid,$sid,$koraClause,$fields,$order=array(),$start=
 	if( is_array($fields) && in_array("recordowner", $fields) ){
 		$fields = array_diff($fields, array("recordowner"));
 	}
+    if( is_array($fields) && in_array("KID", $fields) ){
+		$fields = array_diff($fields, array("KID"));
+	}
+    if( is_array($fields) && in_array("kid", $fields) ){
+		$fields = array_diff($fields, array("kid"));
+	}
 	// var_dump($fields);
     $mapNames = false;
     if(is_array($fields)) {
