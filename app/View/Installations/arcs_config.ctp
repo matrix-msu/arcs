@@ -52,9 +52,9 @@
                         <span class="dot"></span>
                         <p>Base URL -</p>
                         <br>
-                        <p style="font-size:13px;">* Copy from browser: https://example.com/arcs/installation/config
+                        <p style="font-size:13px;">* Copy the full url from your browser ex: https://example.com/arcs/installation/config
                         <br>
-                        Input: https://example.com/</p>
+                        </p>
                         <input name="ArcsBaseURL" class="req" type="text" placeholder="Enter the base URL here"/>
                     </div>
                     <!--<div class="input-right inputDiv">-->

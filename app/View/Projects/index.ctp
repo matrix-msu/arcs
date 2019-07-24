@@ -63,7 +63,6 @@ echo $this->Session->flash('flash_success'); ?>
 	<?php
 
     foreach($projects as $item) {
-        //print_r($item);
         $link = $this->Html->link(
             'VIEW PROJECT',
             array(
@@ -72,8 +71,6 @@ echo $this->Session->flash('flash_success'); ?>
                 str_replace(' ', '_', strtolower($item["Persistent_Name"]))
             )
         );
-
-
 
 		//Convert KORA Geolocation to array of coordinate pairs
 		if (isset($item['Geolocation'])){
@@ -86,6 +83,7 @@ echo $this->Session->flash('flash_success'); ?>
 
         //commented out markers in case we choose to reuse them later. Not using them as of 11/5/15
         if($geo && isset($geo[0]) && count(explode(",", $geo[0])) == 2){
+            echo 'console.log("in if");';
             foreach($geo as $marker) {
                 $coords = explode(",", $marker);
                 if (count($coords) < 2) {
@@ -93,7 +91,6 @@ echo $this->Session->flash('flash_success'); ?>
                 }
                 //markers
                 $html = "";
-                //print_r($coords);
                 $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
                 $html .= ".addTo(map);";
                 $html .= "marker_array.push(marker);";
@@ -101,7 +98,6 @@ echo $this->Session->flash('flash_success'); ?>
                 $brief = str_replace("'", "\'", $item['Description']);
                 $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
                 print $html; //print markers and set coords_array
-                //print "console.log('".$coords[0]."', '".$coords[1]."');";
             }
         }else{
             $setupurl = "https://restcountries.eu/rest/v2/name/";
@@ -129,6 +125,8 @@ echo $this->Session->flash('flash_success'); ?>
                     $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
                     print $html;  
                 }
+            } else {
+                continue;
             }
         }
 
@@ -140,14 +138,32 @@ echo $this->Session->flash('flash_success'); ?>
         $html .= 'polygon.bindPopup(\'<h1>'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
         //$html .= '.removeLayer('.L.polyline().');';
         print $html;
-        //print "console.log(coords_array);";
-        //break;
     }
 	?>
-	window.map.removeLayer(window.polygon);
+    if (marker_array.length > 0){
+        window.map.removeLayer(window.polygon);
+        var group = new L.featureGroup(marker_array);
+	    map.fitBounds(group.getBounds()).setZoom(7);
+    } else {
+        var hidden_icon = L.icon({
+        iconUrl: 'img/MapPin.svg',
+        shadowUrl: 'img/marker-shadow.png',
+        iconSize: [0,0],
+        shadowSize: [0,0],
+        iconAnchor: [0,0],
+        shadowAnchor: [0,0],
+        popupAnchor: [0,0]
+        });
 
-	var group = new L.featureGroup(marker_array);
+        var marker = L.marker([37.915833, 22.993056], {icon: hidden_icon}, {opacity: 1})
+        .addTo(map);
+        marker_array.push(marker);
+        coords_array.push([37.915833,22.993056]);
+        var polygon = L.polygon(coords_array).addTo(map);
 
-	map.fitBounds(group.getBounds()).setZoom(7);
+        window.map.removeLayer(window.polygon);
+        var group = new L.featureGroup(marker_array);
+	    map.fitBounds(group.getBounds()).setZoom(7);
+    }
 
 </script>

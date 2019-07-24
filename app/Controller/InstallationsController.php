@@ -125,12 +125,16 @@ class InstallationsController extends AppController
         if ($_POST) {
             $_SESSION['ArcsConfig'] = $_POST;
         }
+        
         $path = APP . "Config/bootstrap.php";
         $contents = file_get_contents($path);
         $pName = trim(strtolower(str_replace(" ", "_", $_SESSION['ProjectConfig']['Persistent_Name'])));
+
+        $arcsBaseUrl = $_SESSION['ArcsConfig']['ArcsBaseURL'];
+        $arcsBaseUrl = str_replace('arcs/installation/config', '', $arcsBaseUrl);
         $contents = str_replace(
             'define("BASE_BOTH", "");',
-            'define("BASE_BOTH", "' . $_SESSION['ArcsConfig']['ArcsBaseURL'] . '");',
+            'define("BASE_BOTH", "' . $arcsBaseUrl . '");',
             $contents
         );
 
@@ -141,49 +145,90 @@ class InstallationsController extends AppController
                 "'" . $pName . "' =>",
                 $contents
             );
-//
-            $conn = new mysqli(KORA_HOST, KORA_USER, KORA_PASS, KORA_DB);
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-            foreach ($_SESSION as $key => $value) {
-                if ($key == "Config" || $key == "Message" || $key == "Auth" || $key == "currentProjectName" || $key == "ProjectConfig" || $key == "ArcsConfig") {
-                    continue;
-                }
-                foreach ($value as $key2 => $value2) {
 
-                    $newKey = str_replace("_", " ", $key2);
-                    $sql = $conn->prepare(
-                        "SELECT * FROM kora3_fields
-                          WHERE NAME = ? AND pid = ?"
-                    );
-                    $sql->bind_param('ss', $newKey, $pid);
-                    $sql->execute();
-                    $result = $sql->get_result();
-                    if ($sql->num_rows > 0) {
-                        $insert = "";
-                        $type = $sql->fetch_assoc()['type'];
-                        if ($type == "List" || $type == "Multi-Select List") {
-                            $insert .= "[!Options!]";
-                            for ($i = 0; $i < sizeof($value2); $i++) {
-                                $insert .= trim($value2[$i]);
-                                if (($i + 1) != sizeof($value2)) {
-                                    $insert .= "[!]";
-                                }
-                            }
-                            $insert .= "[!Options!]";
-                            $sql = $conn->prepare(
-                                "UPDATE kora3_fields
-                                   SET options = ?
-                                   where name = ? and pid = ?"
-                            );
-                            $sql->bind_param('sss', $insert, $newKey, $pid);
-                            $sql->execute();
+            //make api call to kora with pid and get sids back
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => KORA_RESTFUL_URL . 'projects/'.$pid.'/forms'
+            ));
+
+            $formsResult = json_decode(curl_exec($curl), true);
+            curl_close($curl);
+
+            // get the info on each field so we know their types
+            $fieldsInfo = array();
+            $sidToFieldsData = array(); // map the sids to their field data to update
+            foreach ($formsResult as $formSid => $value) {
+                if ($value['name'] == "Project"){
+                    $projectSid = $formSid;
+                }
+
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$formSid.'/fields'
+                ));
+
+                $result = json_decode(curl_exec($curl), true);
+                curl_close($curl);
+
+                $fieldsInfo[$value['name']] = $result;
+                $fieldsInfo[$value['name']]['sid'] = $formSid;
+                $sidToFieldsData[$formSid] = [];
+            }
+
+            $fieldsArray = $_SESSION['FieldConfig'];    // all user inputted data
+            foreach ($fieldsArray as $fieldKey => $fieldValue) {
+                // search field info to find the types and sid
+                $cleanedKey = str_replace('- ' , '', str_replace("_", " ", $fieldKey));
+                $type = '';
+                $sid = '';
+                $found = false;
+                foreach ($fieldsInfo as $form => $formValues) {
+                    foreach($formValues as $field){
+                        if ($field['name'] == $cleanedKey){
+                            $found = true;
+                            $type = $field['type'];
+                            $sid = $formValues['sid'];
+                            break;
                         }
                     }
+                    if ($found){
+                        break;
+                    }
+                }
+
+                // turn the data into the correct form for the api
+                if ($type == "List" || $type == "Multi-Select List") {
+                    $options = array('Options' => []);
+                    foreach ($fieldValue as $listOption) {
+                        $options['Options'][] = trim($listOption);
+                    }
+                    $sidToFieldsData[$sid][$cleanedKey] = $options;
                 }
             }
-            $conn->close();
+
+            // edit field options api for each form
+            foreach ($sidToFieldsData as $sid => $fieldData){
+                $apiUrl = KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$sid.'/fields';
+
+                $data = [
+                    '_method' => 'PUT',
+                    'bearer_token' => $GLOBALS['TOKEN_ARRAY']['arcs'],
+                    'fields' => json_encode($fieldData)
+                ];
+
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_POSTFIELDS => $data,
+                    CURLOPT_URL =>  $apiUrl
+                ));
+
+                $result = json_decode(curl_exec($curl), true);
+                curl_close($curl);
+            }
 
             $usersC = new UsersController();
             $mappingProjects = array();
@@ -208,153 +253,140 @@ class InstallationsController extends AppController
             $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
 
             if( isset($GLOBALS['PROJECT_SID_ARRAY']['arcs']) && isset($GLOBALS['TOKEN_ARRAY']['arcs']) ){
-                $projectSid = $GLOBALS['PROJECT_SID_ARRAY']['arcs'];
-                $pidSid = "_" . $pid . "_" . $projectSid . "_";
+            $projectSid = $GLOBALS['PROJECT_SID_ARRAY']['arcs'];
+            
+            // echo $projectSid;die;
+            $pidSid = '';
+            // var_dump($_SESSION['ProjectConfig']);die;
 
-                $query['Name' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Name"];
-                $query['Name' . $pidSid]["type"] = 'Text';
-                $query['Location_Identifier' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Location_Identifier"];
-                $query['Location_Identifier' . $pidSid]["type"] = 'Text';
-                $query['Location_Identifier_Scheme' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Location_Identifier_Scheme"];
-                $query['Location_Identifier_Scheme' . $pidSid]["type"] = 'Text';
-                $query['Elevation' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Elevation"];
-                $query['Elevation' . $pidSid]["type"] = 'Text';
-                $query['Persistent_Name' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Persistent_Name"];
-                $query['Persistent_Name' . $pidSid]["type"] = 'Text';
-                $query['Complex_Title' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Complex_Title"];
-                $query['Complex_Title' . $pidSid]["type"] = 'Text';
-                $query['Description' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Description"];
-                $query['Description' . $pidSid]["type"] = 'Text';
-                $query['Brief_Description' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Brief_Description"];
-                $query['Brief_Description' . $pidSid]["type"] = 'Text';
-                if (isset($_SESSION['ProjectConfig']["Region"])) {
-                    $query['Country' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Region"];
-                    $query['Country' . $pidSid]["type"] = 'List';
-                }
-                if (isset($_SESSION['ProjectConfig']["Country"])) {
-                    $query['Country' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Country"];
-                    $query['Country' . $pidSid]["type"] = 'List';
-                }
-                if (isset($_SESSION['ProjectConfig']["Modern_Name"])) {
-                    $query['Modern_Name' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Modern_Name"];
-                    $query['Modern_Name' . $pidSid]["type"] = 'List';
-                }
-                if (isset($_SESSION['ProjectConfig']["Records_Archive"])) {
-                    $query['Records_Archive' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Records_Archive"];
-                    $query['Records_Archive' . $pidSid]["type"] = 'Multi-Select List';
-                }
-                if (isset($_SESSION['ProjectConfig']["Period"])) {
-                    $query['Period' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Period"];
-                    $query['Period' . $pidSid]["type"] = 'Multi-Select List';
-                }
-                if (isset($_SESSION['ProjectConfig']["Permitting_Heritage_Body"])) {
-                    $query['Permitting_Heritage_Body' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Permitting_Heritage_Body"];
-                    $query['Permitting_Heritage_Body' . $pidSid]["type"] = 'Multi-Select List';
-                }
-                if (isset($_SESSION['ProjectConfig']["Geolocation"])) {
-                    $query['Geolocation' . $pidSid]["value"] = $_SESSION['ProjectConfig']["Geolocation"];
-                    $query['Geolocation' . $pidSid]["type"] = 'Generated List';
-                }
-                if (
-                    isset($_SESSION['ProjectConfig']["Earliest_Date_Month"])||
-                    isset($_SESSION['ProjectConfig']["Earliest_Date_Day"])||
-                    isset($_SESSION['ProjectConfig']["Earliest_Date_Year"])
-                ) {
-                    $query['Earliest_Date' . $pidSid]["value"] = array(
-                        'circa' => "0",
-                        'era' => "CE"
-                    );
-                    if( isset($_SESSION['ProjectConfig']["Earliest_Date_Month"]) ) {
-                        $query['Earliest_Date' . $pidSid]["value"]['month'] = $_SESSION['ProjectConfig']["Earliest_Date_Month"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Earliest_Date_Day"]) ) {
-                        $query['Earliest_Date' . $pidSid]["value"]['day'] = $_SESSION['ProjectConfig']["Earliest_Date_Day"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Earliest_Date_Year"]) ) {
-                        $query['Earliest_Date' . $pidSid]["value"]['year'] = $_SESSION['ProjectConfig']["Earliest_Date_Year"];
-                    }
-                    $query['Earliest_Date' . $pidSid]["type"] = 'Date';
-                }
-                if (
-                    isset($_SESSION['ProjectConfig']["Latest_Date_Month"])||
-                    isset($_SESSION['ProjectConfig']["Latest_Date_Day"])||
-                    isset($_SESSION['ProjectConfig']["Latest_Date_Year"])
-                ) {
-                    $query['Latest_Date' . $pidSid]["value"] = array(
-                        'circa' => "0",
-                        'era' => "CE"
-                    );
-                    if( isset($_SESSION['ProjectConfig']["Latest_Date_Month"]) ) {
-                        $query['Latest_Date' . $pidSid]["value"]['month'] = $_SESSION['ProjectConfig']["Latest_Date_Month"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Latest_Date_Day"]) ) {
-                        $query['Latest_Date' . $pidSid]["value"]['day'] = $_SESSION['ProjectConfig']["Latest_Date_Day"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Latest_Date_Year"]) ) {
-                        $query['Latest_Date' . $pidSid]["value"]['year'] = $_SESSION['ProjectConfig']["Latest_Date_Year"];
-                    }
-                    $query['Latest_Date' . $pidSid]["type"] = 'Date';
-                }
-                if (
-                    isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"])||
-                    isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"])||
-                    isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"])||
-                    isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"])
-                ) {
-                    $query['Terminus_Ante_Quem' . $pidSid]["value"] = array(
-                        'circa' => "0"
-                    );
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"]) ) {
-                        $query['Terminus_Ante_Quem'.$pidSid]["value"]['month'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"]) ) {
-                        $query['Terminus_Ante_Quem'.$pidSid]["value"]['day'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"]) ) {
-                        $query['Terminus_Ante_Quem'.$pidSid]["value"]['year'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"]) ) {
-                        $query['Terminus_Ante_Quem'.$pidSid]["value"]['era'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"];
-                    }
-                    $query['Terminus_Ante_Quem'.$pidSid]["type"] = 'Date';
-                }
-                if (
-                    isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"])||
-                    isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"])||
-                    isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"])||
-                    isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Period"])
-                ) {
-                    $query['Terminus_Post_Quem' . $pidSid]["value"] = array(
-                        'circa' => "0"
-                    );
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"]) ) {
-                        $query['Terminus_Post_Quem'.$pidSid]["value"]['month'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"]) ) {
-                        $query['Terminus_Post_Quem'.$pidSid]["value"]['day'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"]) ) {
-                        $query['Terminus_Post_Quem'.$pidSid]["value"]['year'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"];
-                    }
-                    if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"]) ) {
-                        $query['Terminus_Post_Quem'.$pidSid]["value"]['era'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Period"];
-                    }
-                    $query['Terminus_Post_Quem'.$pidSid]["type"] = 'Date';
-                }
-                $query = json_encode($query);
-                $data = ['form' => $projectSid,
-                    'token' => $GLOBALS['TOKEN_ARRAY']['arcs'],
-                    'fields' => $query];
-
-                $ch = curl_init($_SESSION['ArcsConfig']['ArcsBaseURL'].'kora3/api/create');
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                $result = curl_exec($ch);
-                curl_close($ch);
-                echo $result;
+            $query['Name' . $pidSid] = $_SESSION['ProjectConfig']["Name"];
+            $query['Location_Identifier' . $pidSid] = $_SESSION['ProjectConfig']["Location_Identifier"];
+            $query['Location_Identifier_Scheme' . $pidSid] = $_SESSION['ProjectConfig']["Location_Identifier_Scheme"];
+            $query['Elevation' . $pidSid] = $_SESSION['ProjectConfig']["Elevation"];
+            $query['Persistent_Name' . $pidSid] = $_SESSION['ProjectConfig']["Persistent_Name"];
+            $query['Complex_Title' . $pidSid] = $_SESSION['ProjectConfig']["Complex_Title"];
+            $query['Description' . $pidSid] = $_SESSION['ProjectConfig']["Description"];
+            $query['Brief_Description' . $pidSid] = $_SESSION['ProjectConfig']["Brief_Description"];
+            if (isset($_SESSION['ProjectConfig']["Region"])) {
+                $query['Country' . $pidSid] = $_SESSION['ProjectConfig']["Region"];
             }
+            if (isset($_SESSION['ProjectConfig']["Country"])) {
+                $query['Country' . $pidSid] = $_SESSION['ProjectConfig']["Country"];
+            }
+            if (isset($_SESSION['ProjectConfig']["Modern_Name"])) {
+                $query['Modern_Name' . $pidSid] = $_SESSION['ProjectConfig']["Modern_Name"];
+            }
+            if (isset($_SESSION['ProjectConfig']["Records_Archive"])) {
+                $query['Records_Archive' . $pidSid] = [$_SESSION['ProjectConfig']["Records_Archive"]];
+            }
+            if (isset($_SESSION['ProjectConfig']["Period"])) {
+                $query['Period' . $pidSid] = [$_SESSION['ProjectConfig']["Period"]];
+            }
+            if (isset($_SESSION['ProjectConfig']["Archaeological_Culture"])) {
+                $query['Archaeological_Culture' . $pidSid] = [$_SESSION['ProjectConfig']["Archaeological_Culture"]];
+            }
+            if (isset($_SESSION['ProjectConfig']["Permitting_Heritage_Body"])) {
+                $query['Permitting_Heritage_Body' . $pidSid] = [$_SESSION['ProjectConfig']["Permitting_Heritage_Body"]];
+            }
+            if (isset($_SESSION['ProjectConfig']["Geolocation"])) {
+                $query['Geolocation' . $pidSid] = $_SESSION['ProjectConfig']["Geolocation"];
+            }
+            if (
+                isset($_SESSION['ProjectConfig']["Earliest_Date_Month"])||
+                isset($_SESSION['ProjectConfig']["Earliest_Date_Day"])||
+                isset($_SESSION['ProjectConfig']["Earliest_Date_Year"])
+            ) {
+                $query['Earliest_Date' . $pidSid] = array(
+                    'circa' => "0",
+                    'era' => "CE"
+                );
+                if( isset($_SESSION['ProjectConfig']["Earliest_Date_Month"]) ) {
+                    $query['Earliest_Date' . $pidSid]['month'] = $_SESSION['ProjectConfig']["Earliest_Date_Month"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Earliest_Date_Day"]) ) {
+                    $query['Earliest_Date' . $pidSid]['day'] = $_SESSION['ProjectConfig']["Earliest_Date_Day"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Earliest_Date_Year"]) ) {
+                    $query['Earliest_Date' . $pidSid]['year'] = $_SESSION['ProjectConfig']["Earliest_Date_Year"];
+                }
+            }
+            if (
+                isset($_SESSION['ProjectConfig']["Latest_Date_Month"])||
+                isset($_SESSION['ProjectConfig']["Latest_Date_Day"])||
+                isset($_SESSION['ProjectConfig']["Latest_Date_Year"])
+            ) {
+                $query['Latest_Date' . $pidSid] = array(
+                    'circa' => "0",
+                    'era' => "CE"
+                );
+                if( isset($_SESSION['ProjectConfig']["Latest_Date_Month"]) ) {
+                    $query['Latest_Date' . $pidSid]['month'] = $_SESSION['ProjectConfig']["Latest_Date_Month"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Latest_Date_Day"]) ) {
+                    $query['Latest_Date' . $pidSid]['day'] = $_SESSION['ProjectConfig']["Latest_Date_Day"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Latest_Date_Year"]) ) {
+                    $query['Latest_Date' . $pidSid]['year'] = $_SESSION['ProjectConfig']["Latest_Date_Year"];
+                }
+            }
+            if (
+                isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"])||
+                isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"])||
+                isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"])||
+                isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"])
+            ) {
+                $query['Terminus_Ante_Quem' . $pidSid] = array(
+                    'circa' => "0"
+                );
+                if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"]) ) {
+                    $query['Terminus_Ante_Quem'.$pidSid]['month'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Month"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"]) ) {
+                    $query['Terminus_Ante_Quem'.$pidSid]['day'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Day"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"]) ) {
+                    $query['Terminus_Ante_Quem'.$pidSid]['year'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Year"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"]) ) {
+                    $query['Terminus_Ante_Quem'.$pidSid]['era'] = $_SESSION['ProjectConfig']["Terminus_Ante_Quem_Period"];
+                }
+            }
+            if (
+                isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"])||
+                isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"])||
+                isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"])||
+                isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Period"])
+            ) {
+                $query['Terminus_Post_Quem' . $pidSid] = array(
+                    'circa' => "0"
+                );
+                if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"]) ) {
+                    $query['Terminus_Post_Quem'.$pidSid]['month'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Month"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"]) ) {
+                    $query['Terminus_Post_Quem'.$pidSid]['day'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Day"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"]) ) {
+                    $query['Terminus_Post_Quem'.$pidSid]['year'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Year"];
+                }
+                if( isset($_SESSION['ProjectConfig']["Terminus_Post_Quem_Period"]) ) {
+                    $query['Terminus_Post_Quem'.$pidSid]['era'] = $_SESSION['ProjectConfig']["Terminus_Post_Quem_Period"];
+                }
+            }
+
+            $query = json_encode($query);
+            $data = ['form' => $projectSid,
+            'bearer_token' => $GLOBALS['TOKEN_ARRAY']['arcs'],
+            'fields' => $query];
+            
+            $ch = curl_init(KORA_RECORD_CREATE_URL);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($ch);
+            curl_close($ch);
         }
+        
         $contents = str_replace(
             "define('CONFIGURED', 'false');",
             "define('CONFIGURED', 'true');",
@@ -363,6 +395,7 @@ class InstallationsController extends AppController
         file_put_contents($path, $contents);
         $this->redirect('/');
     }
+}
 
     /**
      * Returns Original Label from Permalink URL
