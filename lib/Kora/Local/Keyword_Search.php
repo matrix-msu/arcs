@@ -761,13 +761,20 @@ class Keyword_Search extends Kora
             if( !isset($this->formulatedResult[$key]['All_Seasons']) || !is_array($this->formulatedResult[$key]['All_Seasons']) ){
                 $this->formulatedResult[$key]['All_Seasons'] = array();
             }
-			//if(is_array($value["Season_Associator"])){
-				foreach($value["Season_Associator"] as $season){
+			if(isset($value["Season_Associator"][0])){
+                // var_dump($value["Season_Associator"]);die;
+
+                if (is_string($value["Season_Associator"][0])){
+                    $this->formulatedResult[$key]["Season_Associator"][0] = array($this->formulatedResult[$key]["Season_Associator"][0]);
+                    $value["Season_Associator"][0] = array($value["Season_Associator"][0]);
+                }
+
+				foreach($value["Season_Associator"][0] as $season){
 					if (array_key_exists($season, $this->season_list)) {
 						$this->formulatedResult[$key]["All_Seasons"][] = $this->season_list[$season]["Name"];
 					}
 				}
-			//}
+			}
         }
     }
     public function queryFilter($query)

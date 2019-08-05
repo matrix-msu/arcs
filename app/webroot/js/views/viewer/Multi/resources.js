@@ -155,7 +155,6 @@ _resource.sliderMove.adjust = function(element) {
             $('#scroll2').css('margin-top', '0');
         }
         if( checkBoth == 0 ){
-            console.log('slideup')
             setTimeout(function(){
                 // if( window.innerWidth <= 900 && pagesShowing ){
                 //     $('.resource-nav-level#resources-nav').css('margin-top','113px');
@@ -167,7 +166,6 @@ _resource.sliderMove.adjust = function(element) {
                 $('#scroll2').slideUp(300);
             }, 1)
         }else{
-            console.log('slide down')
             setTimeout(function(){
                 if( window.innerWidth <= 900 && pagesShowing ) {
                     $('.resource-nav-level#resources-nav').css('margin-top', '156px');
@@ -183,8 +181,6 @@ _resource.sliderMove.adjust = function(element) {
         if( checkBoth == 0 ){
             setTimeout(function(){
                 $('#resources-nav').css('margin-top', '0');
-                console.log('sliding up the page slider')
-                console.log($('#viewer-right').css('top'))
                 if( $('#viewer-right').css('top') === '156px' ){
                     $('#viewer-right').css('top', '114px');
                 }
@@ -355,12 +351,9 @@ $(document).ready(function() {
                     if ($('#identifier-' + resourceId).length) {
                         page = $(_resource.pageSlider).find("#" + pageSet);
                         $('#identifier-' + resourceId).click();
-                        console.log('before set time comment', multiInfo)
                         if( multiInfo === 0 ){
-                            console.log('multiInfo is 0');
                             setTimeout(function(){$('#identifier-' + resourceId).click();},1500);
                         }else{
-                            console.log('multiinfo not 0')
                         }
 
                         pageSet = false;
@@ -485,7 +478,6 @@ $(document).ready(function() {
     }
 
     if (multiInfo !== false) {
-        //console.log('first resource', $('.other-resource') );
         prepAccordion(true);
         $(".accordion").accordion({
             heightStyle: "fill",
@@ -503,7 +495,6 @@ $(document).ready(function() {
         if( currentImageKid == '' ){
             currentImageKid = RESOURCES[Object.keys(RESOURCES)[0]]['page'][Object.keys(RESOURCES[Object.keys(RESOURCES)[0]]['page'])][0];
         }
-        console.log('multi get new resource kid', currentImageKid);
         var multiPageSet = false;
         if( pageSet != false ){
             currentImageKid = pageSet;
@@ -708,7 +699,6 @@ function addResources(loaded){
             loaded.subjects.push(kid)
         }
     }
-    console.log('loading', loaded)
 
     //change generateMetadata so that you can insert html instead of destroying the accordion and rebuilding.
     //var projectData = generateMetadata("project", projectsToLoad, controllerMetadataEdits, controllerMetadataOptions, controllerFlags.metadataFlags, false, false, projectsCount);
@@ -728,7 +718,6 @@ function addResources(loaded){
     $('.project-table').parent().append(projectData);
     $('.excavation-tab-content').append(excavationsData);
     $('.season-tab-content').append(seasonsData);
-    console.log('adding sss',  $('.level-content.soo').parent())
     $('.level-content.soo').parent().append(subjectsData);
 
 
@@ -757,7 +746,6 @@ function addResources(loaded){
     var html = '';
     var count = subjectsCount;
     var page_associator = '';
-    console.log('loading subjects', subjectsToLoad)
 
     for (var subjectKid in subjectsToLoad) {
         count++;
