@@ -3,7 +3,6 @@
     <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 </head>
 <div class="create-body-content">
-    <!--    --><?php //print_r($_SESSION);die; ?>
     <div class="install-progress-bar">
         <ul>
             <li>Field Configuration</li>
@@ -157,8 +156,8 @@
                             <select name="Records Archive" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Records Archive</option>
                                 <?php
-                                if (isset($_SESSION['FieldConfig']['Repository'])){
-                                    $repos = $_SESSION['FieldConfig']['Repository'];
+                                if (isset($_SESSION['FieldConfig']['Records_Archive'])){
+                                    $repos = $_SESSION['FieldConfig']['Records_Archive'];
 
                                     foreach ($repos as $repo){
                                         echo "<option>$repo</option>";
@@ -276,6 +275,23 @@
                     </div>
                     <div class="row">
                         <div class="input-full inputDiv">
+                            <p>Archaeological Culture</p>
+                            <select name="Archaeological Culture" class="create-project-dropdown">
+                                <option value="" disabled selected>Select Archaeological Culture</option>
+                                <?php
+                                if (isset($_SESSION['FieldConfig']['Archaeological_Culture'])){
+                                    $cultures = $_SESSION['FieldConfig']['Archaeological_Culture'];
+
+                                    foreach ($cultures as $culture){
+                                        echo "<option>$culture</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-full inputDiv">
                             <p>Description</p>
                             <input name="Description" type="text" placeholder="Enter the list options for type(s)"/>
                         </div>
@@ -292,8 +308,8 @@
                             <select name="Permitting Heritage Body" class="create-project-dropdown">
                                 <option value="" disabled selected>Select Permitting Heritage Body</option>
                                 <?php
-                                if (isset($_SESSION['FieldConfig']['Permitting_Heritage_Culture'])){
-                                    $phcs = $_SESSION['FieldConfig']['Permitting_Heritage_Culture'];
+                                if (isset($_SESSION['FieldConfig']['Permitting_Heritage_Body'])){
+                                    $phcs = $_SESSION['FieldConfig']['Permitting_Heritage_Body'];
                                     foreach ($phcs as $phc){
                                         echo "<option>$phc</option>";
                                     }

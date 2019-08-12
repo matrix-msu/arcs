@@ -340,7 +340,7 @@ $(document).ready(function(){
     // (There's a help tip in between)
     $('#UserUsername').keydown(function(e) {
         if (e.which == 9) {
-            $('#UserPassword').focus();
+			$('#loginPassword').focus();
             e.preventDefault();
             return false;
         }
@@ -349,8 +349,10 @@ $(document).ready(function(){
     // Replace the password field with reset password instructions.
     // Note: make sure to change the text in the opposite if/else statement and $('#forgot-password').text("..");
     $('#forgot-password').click(function(e) {
+		console.log('clicked forgot')
         if ($('#forgot-password').text() == "Forgot your password?") {
-            $('#UserPassword, label[for="data[User][password]"]').slideUp(300, function() {
+			console.log('in forgot', $('#loginPassword, label[for="data[User][password]"]'))
+			$('#loginPassword, label[for="data[User][password]"]').slideUp(300, function() {
                 $('#UserUsername').attr('placeholder', 'Email').val("").focus().blur();
                 $('input[type=submit]').val('Send reset link');
                 $('input[name="data[User][forgot_password]"]').val('true');
@@ -359,7 +361,8 @@ $(document).ready(function(){
                 $('#loginInfo').text("Enter your email address, and we'll send you a link to reset your password.");
             });
        } else if ($('#forgot-password').text() == "Go back!") {
-            $('#UserPassword, label[for="data[User][password]"]').slideDown(300, function() {
+		   console.log('in go back')
+			$('#loginPassword, label[for="data[User][password]"]').slideDown(300, function() {
 				$('#UserUsername').attr('placeholder', 'Username').val("").focus().blur();
                 $('input[type=submit]').val('Login');
                 $('input[name="data[User][forgot_password]"]').val('');

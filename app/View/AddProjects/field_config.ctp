@@ -80,7 +80,7 @@
                         <div class="input-full inputDiv">
                             <p>Permiting Heritage Culture(s)</p>
                             <!-- <input name="Permitting Heritage Culture" type="text" placeholder="Greek Ministry of Culture"/> -->
-                            <div class="keywords-uploadForm" name="Permitting Heritage Culture"></div>
+                            <div class="keywords-uploadForm" name="Permitting Heritage Body"></div>
                         </div>
                     </div>
                     <hr class="divider">
@@ -260,7 +260,7 @@
                         <div class="input-full inputDiv">
                             <p>Repository(s)</p>
                             <!-- <input name="Repository" type="text" placeholder="Enter the list options for repository(s)"/> -->
-                            <div class="keywords-uploadForm" name="Repository"></div>
+                            <div class="keywords-uploadForm" name="Records Archive"></div>
                         </div>
                     </div>
                     <hr class="divider">

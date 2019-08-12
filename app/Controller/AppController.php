@@ -161,6 +161,7 @@ class AppController extends Controller
     public static function getPIDFromProjectName($name)
     {
         if (isset($GLOBALS['PID_ARRAY'])) {
+            // print_r($GLOBALS);die;
             if (isset($GLOBALS['PID_ARRAY'][$name])) {
                 return $GLOBALS['PID_ARRAY'][$name];
             } else {

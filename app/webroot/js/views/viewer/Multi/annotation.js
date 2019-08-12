@@ -154,17 +154,52 @@ function annotationPrep() {
             );
 
         }
+
+
+
+        var $current = $("#" + current.id);
+        var $popup = $("#" + current.id).find('.annotationPopup');
+        var $canvas = $("#canvas");
+
+        // if the url is really long, set a width
+        if ($popup.width() > 400){
+            console.log('asdfasfdsfdasfd', $popup)
+            $popup.css('width', '400');
+            $popup.find('a').css('word-break', 'break-all');
+        }
+        // check if too low
+        if (!$popup.hasClass('jsHeight') && parseInt($current.css('top')) + $popup.height() > $canvas.height()) {
+            $popup.css('top', parseInt($popup.css('top')) - $popup.height() + 'px');
+            $popup.addClass('jsHeight');
+        }
+        // check if far right
+        if (!$popup.hasClass('jsWidth') && parseInt($current.css('left')) + $popup.width() > $canvas.width()) {
+            console.log('too far right', $current, $popup, parseInt($popup.css('left')), $popup.width())
+            console.log(parseInt($popup.css('left')) - $popup.width() + 'px')
+            $popup.css('left', '-' + $popup.width() -10 + 'px');
+            $popup.addClass('jsWidth');
+        }
+
+        
+        
+
+
+
         //decide if the popup should go on the left or right
-        var offset = $("#" + current.id).width()+10;
-        if( current.x1 > .5 ){
-            $("#" + current.id).find('.annotationPopup').css('right', 170+'px');
-        }else{
-            $("#" + current.id).find('.annotationPopup').css('left', offset+'px');
-        }
-        //decide if the popup should align with the bottom
-        if( current.y1 > .5 ){
-            $("#" + current.id).find('.annotationPopup').css('top', '-170px');
-        }
+        // var offset = $("#" + current.id).width();
+        // // console.log('okkk', offset, current.x1, current.x2, current.y1, $("#" + current.id).find('.annotationPopup'))
+        // if( current.x1 > .4 ){
+        //     $("#" + current.id).find('.annotationPopup').css('right', offset+'px');
+        // }else{
+        //     $("#" + current.id).find('.annotationPopup').css('left', offset+'px');
+        // }
+
+        // //decide if the popup should align with the bottom
+        // if( current.y1 > .5 ){
+        //     $("#" + current.id).find('.annotationPopup').css('top', '-50px');
+        // } else {
+        //     $("#" + current.id).find('.annotationPopup').css('top', '50px');
+        // }
     }
 
     //show/hide the annotation popup on a mouse hover
@@ -174,7 +209,8 @@ function annotationPrep() {
         }
         $(this).find('.annotationPopup').css('display', 'inline-block');//.css('left',leftOffset);
     });$( "#canvas" ).on('mouseleave', '.gen_box', function() {
-        $(this).find('.annotationPopup').css('display', 'none');
+        var $popup = $(this);
+        $popup.find('.annotationPopup').css('display', 'none');
     });
 
     //resize the canvas on a image width change
@@ -203,7 +239,6 @@ function annotationPrep() {
 
     //clear the details drawer and populate
     function populateDetailsDrawer(current){
-        console.log('populate', current);
         var trashButton = '';
         // if( isAdmin == 1 ){
         //     trashButton = "<img src='/"+BASE_URL+"app/webroot/assets/img/Trash-Dark.svg' class='deleteTranscript'/>";
@@ -324,7 +359,6 @@ function annotationPrep() {
         resetAnnotations();
     });
     function removeAddAnnotation(){
-        console.log('removeadd')
         $('.annotateHelp').hide();
         $('#canvas').css('cursor', '').selectable('destroy');
         $('#ImageWrap').draggable();
@@ -360,7 +394,6 @@ function annotationPrep() {
         $('#prev-resource').css('display', 'none')
         $('.tools').hide();
 
-        console.log('prepare')
         $('.gen_box_temp').remove();
         if (!dontShowHelp){
             $('.annotateHelp').show();
@@ -376,14 +409,12 @@ function annotationPrep() {
                 zoomScale = canvas.getBoundingClientRect().width / canvas.offsetWidth;
                 //zoomScale = 1;
                 startX = e.pageX;
-                // console.log('realx', e.pageX);
 
                 var imageWrap = $('#ImageWrap');
                 var imageDraggedLeft = parseFloat($(imageWrap).css('left'));
                 var imageDraggedTop = parseFloat($(imageWrap).css('top'));
 
-                // console.log('draggedPos ' + imageDraggedLeft + ", " + imageDraggedTop);
-
+        
                 startX = startX - imageDraggedLeft;
 
                 // console.log('scaleX', startX);
@@ -843,7 +874,6 @@ function annotationPrep() {
                             }
                             annotateData.relation_resource_kid = v['Resource_Associator'][0];
                             annotateData.relation_page_kid = v.kid;
-                            console.log('anndata', annotateData);
                             //return;
                         }
 
@@ -955,7 +985,6 @@ function annotationPrep() {
             annotateData.url = $(".annotateUrl").val();
         }
         annotateData.page_kid = $('.selectedCurrentPage').find('img').attr('id');
-        console.log(annotateData)
         annotateData.resource_kid = resourceKid;
         annotateData.resource_name = resourceIdentifier;
 

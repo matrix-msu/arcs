@@ -11081,6 +11081,7 @@ input[type=range]:focus::-ms-fill-upper {
   padding: 5px;
   z-index: 99;
   top: -39px;
+  left: 32px;
 }
 .detailsPopup {
   position: absolute;
@@ -11088,6 +11089,9 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .annotationData {
   margin: 5px;
+}
+.annotationData a {
+  color: #0093be;
 }
 .annotationImage {
   max-width: 150px !important;
@@ -16667,6 +16671,7 @@ strong {
   margin-left: auto !important;
   margin-right: auto !important;
   border: solid lightgrey 1px !important;
+  display: flex;
 }
 .form-container .form-wrapper .row .chosen-container .chosen-choices span {
   text-transform: none;
@@ -16674,13 +16679,16 @@ strong {
 .form-container .form-wrapper .row .chosen-container .chosen-choices .search-choice {
   margin: 13px 0px 0px 15px;
   font-size: 12px;
+  height: 28px;
 }
 .form-container .form-wrapper .row .chosen-container .chosen-choices .search-field {
   padding: 12px 12px 12px 15px;
   font-size: 12px;
+  width: 100% !important;
 }
 .form-container .form-wrapper .row .chosen-container .chosen-choices .search-field input {
   color: #686868 !important;
+  width: 100% !important;
 }
 .form-container .form-wrapper .divider {
   padding-top: 49px;

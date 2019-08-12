@@ -10,7 +10,7 @@
         <p>A download containing files for Kora3 project files should have started downloading.</p>
         <p>If your download has not started, try refreshing this page or using a different browser.</p>
         <p>Once downloaded, drag the files into the
-            <a href="https://kora3.matrix.msu.edu/projects/import#projectinfo" target="_blank">Kora Project Importer</a>
+            <a href="<?php echo KORA_IMPORT_URI; ?>" target="_blank">Kora Project Importer</a>
             and follow the directions provided.
         </p>
         <p>This process will provide you with a PID and Token you will use on the next page.</p>
