@@ -250,7 +250,7 @@ $(document).ready(function(){
         var username = $('.data-project-profiles-index-'+index).data('username');
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-        baseUrl += '/arcs/user/'+username;
+        baseUrl = BASE_URL+'/user/'+username;
 
         $('.result-selected').addClass('active-result').removeClass('result-selected');
         $(".chosen-select").val('').trigger("liszt:updated");
@@ -263,7 +263,7 @@ $(document).ready(function(){
         var username = $(this).data('username');
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-        baseUrl += '/arcs/user/'+username;
+        baseUrl = BASE_URL+'/user/'+username;
         window.location = baseUrl;
     });
     $('.chosen-choices').prepend('<div class="searchIcon"></div>');
