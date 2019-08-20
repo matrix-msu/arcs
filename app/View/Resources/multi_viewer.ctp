@@ -1,5 +1,5 @@
 
-<script src="<?php  echo Router::url('/', true);  ?>js/vendor/chosen.jquery.js"></script>
+<script src="/<?php  echo BASE_URL;  ?>js/vendor/chosen.jquery.js"></script>
 <script>
 //PAGE GLOBALS
 var PROJECTS = <?php echo json_encode($projectsArray);?>;
@@ -21,7 +21,8 @@ var resourceKid = "";
  var JSON_KEYS = {};
   var LEN = 0;
 ///comments.js variables
-var CM_URL = "<?php echo Router::url('/', true); ?>comments/findall"
+var CM_URL = "/<?php echo BASE_URL;?>comments/findall"
+console.log('cm_url',CM_URL);
 var CM_R_ID = "<?= !empty($resources)? array_keys($resources)[0] : null?>"
 var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
 </script>

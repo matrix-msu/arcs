@@ -1,8 +1,10 @@
 $( document ).ready(function() {
 
     //hide the resources slider if there is only one resource.
-    var hideFirstDrawer = $('.pages-resource-nav').attr('data-hideFirstDrawer');
+    var hideFirstDrawer = parseInt($('.pages-resource-nav').attr('data-hideFirstDrawer'));
+console.log('hi', hideFirstDrawer);
     if (!hideFirstDrawer){
+	console.log($('.pages-resource-nav'));
         $('.pages-resource-nav').css('display', 'block');
     }
     if($('.resource-slider').find('.other-resources').length > 1){
