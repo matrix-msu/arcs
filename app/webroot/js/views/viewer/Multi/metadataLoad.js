@@ -343,7 +343,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
         var firstEmptyContributor = true;
         for (control in controlTypes[schemename]) {
             //because kora3 returns undefined if it is empty
-            if (typeof item[control] == "undefined") {
+            if (typeof item[control] == "undefined" || item[control] === null) {
                 item[control] = "";
             }
 
@@ -368,7 +368,7 @@ function generateMetadata(schemename, data, metadataEdits, controlOptions, flags
 
             }
             else if (type == 'multi_input' || type == 'multi_select') {
-                if (typeof item[control] != "string") {
+                if (typeof item[control] != "string" ) {
                     for (var i = 0; i < item[control].length; i++) {
                         text += item[control][i] + "<br>";
 

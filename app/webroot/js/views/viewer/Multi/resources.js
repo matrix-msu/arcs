@@ -58,7 +58,7 @@ _resource.page_increment = function(page_link = $(_resource.pageSlider).find("a"
         else
             $(this).find(".numberOverResources").html(0);
     });
-
+    return cnt;
 }
 
 _resource.selectPage = function(pageNum) {
@@ -322,7 +322,17 @@ $(document).ready(function() {
 
         _resource.SwapResource(id);
         _resource.setPointer(id);
-        _resource.page_increment();
+        var newCnt = _resource.page_increment();
+
+	if( newCnt > 1 ){
+		$("#resources-nav").css("display","block");
+	}else{
+		$("#resources-nav").css("display","none");
+	}
+
+        console.log('num pages2:', newCnt);
+console.log(_resource.pageSlider);
+	//console.log('num pages:', $(".page-slider").find(".other-resources").length);
         if( typeof $('.selectedCurrentResource').attr('data-dontclickpage') === 'undefined') {
             _resource.selectPage(1);
         }else{
