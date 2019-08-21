@@ -160,8 +160,14 @@ _resource.sliderMove.adjust = function(element) {
                 //     $('.resource-nav-level#resources-nav').css('margin-top','113px');
                 //     $('#viewer-right').css('top','113px');
                 // }
+                // if(  parseInt( $(window).width() ) <= 900 ){
+                //     $(".resource-nav-level").css("margin-top", "114px");
+                // }
                 if( window.innerWidth <= 900 && !pagesShowing ){
                     $('#viewer-right').css('top','-41px');
+                }else if ( window.innerWidth <= 900) {
+                    $(".resource-nav-level").css("margin-top", "114px");
+                    $('#viewer-right').css('top','114px');
                 }
                 $('#scroll2').slideUp(300);
             }, 1)
@@ -178,8 +184,14 @@ _resource.sliderMove.adjust = function(element) {
             $("#viewer-right").addClass("scroll-shift-viewer");
         }
     }if( $(element).hasClass('page-slider') ){
+        if(  parseInt( $(window).width() ) > 900 ){
+            $(".pages-resource-nav").css("margin-top", "0px");
+        }
         if( checkBoth == 0 ){
             setTimeout(function(){
+                if(  parseInt( $(window).width() ) <= 900 ){
+                    $(".pages-resource-nav").css("margin-top", "0px");
+                }//$(".pages-resource-nav").css("margin-top", "0px");
                 $('#resources-nav').css('margin-top', '0');
                 if( $('#viewer-right').css('top') === '156px' ){
                     $('#viewer-right').css('top', '114px');
@@ -187,6 +199,9 @@ _resource.sliderMove.adjust = function(element) {
                 $('#scroll').slideUp(300);
             }, 1)
         }else{
+            if(  parseInt( $(window).width() ) <= 900 ){
+                $(".pages-resource-nav").css("margin-top", "42px");
+            }
             setTimeout(function(){$('#scroll').slideDown(300);}, 1)
             $("#resources-nav").addClass("scroll-shift-nav");
             $("#viewer-right").addClass("scroll-shift-viewer");
