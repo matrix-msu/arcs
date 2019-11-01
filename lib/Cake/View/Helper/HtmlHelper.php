@@ -22,6 +22,26 @@ App::uses('AppHelper', 'View/Helper');
 App::uses('CakeResponse', 'Network');
 App::uses('File', 'Utility');
 
+// app/View/Helper/AppHelper.php
+App::uses('Helper', 'View');
+class AppHelper extends Helper {
+}
+
+// app/Model/AppModel.php
+// App::uses('Model', 'Model');
+// class AppModel extends Model {
+// }
+//
+// // app/Controller/AppController.php
+// App::uses('Controller', 'Controller');
+// class AppController extends Controller {
+// }
+//
+// // app/Console/Command/AppShell.php
+// App::uses('Shell', 'Console');
+// class AppShell extends Shell {
+// }
+
 /**
  * Html Helper class for easy use of HTML widgets.
  *
@@ -341,7 +361,7 @@ class HtmlHelper extends AppHelper {
  * @param string $title The content to be wrapped by `<a>` tags.
  * @param string|array $url Cake-relative URL or array of URL parameters, or external URL (starts with http://)
  * @param array $options Array of options and HTML attributes.
- * @param string $confirmMessage JavaScript confirmation message. This
+ * @param string|bool $confirmMessage JavaScript confirmation message. This
  *   argument is deprecated as of 2.6. Use `confirm` key in $options instead.
  * @return string An `<a />` element.
  * @link https://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::link

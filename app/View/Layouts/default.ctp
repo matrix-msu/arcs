@@ -32,10 +32,10 @@
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>
 
         <?php
-        echo 'cakephp version  ';
-        echo Configure::version();
-        var_dump($body_class);
-        die;
+        // echo 'cakephp version  ';
+        // echo Configure::version();
+        // var_dump($body_class);
+        // die;
 
         // Add the filename to app/Config/assets.ini to automatically call the css/js files her
 				echo globaljsvars;

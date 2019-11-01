@@ -1,15 +1,15 @@
 <?php
+//App::import('Helper', 'Number');
 
-App::import('Helper', 'Number');
 
 /**
  * Number Helper Filters
- * 
+ *
  * Use: {{ '3535839525'|size }} //=> 3.29 GB
  * Use: {{ '0.555'|p(2) }} //=> 0.56
  * Use: {{ '5999'|curr }} //=> $5,999.00
  * Use: {{ '2.3'|pct }} //=> 2.30%
- * 
+ *
  *
  * @author Kjell Bublitz <m3nt0r.de@gmail.com>
  * @package TwigView
@@ -19,7 +19,7 @@ class Cake_Number_Filters {
 
 /**
  * Wrapper to Number->toReadableSize()
- * 
+ *
  * @param integer $length Size in bytes
  */
 	static function size($var) {
@@ -29,7 +29,7 @@ class Cake_Number_Filters {
 
 /**
  * Wrapper to Number->toPercentage()
- * 
+ *
  * @param float $number A floating point number
  * @param integer $precision The precision of the returned number
  */
@@ -40,7 +40,7 @@ class Cake_Number_Filters {
 
 /**
  * Wrapper to Number->currency()
- * 
+ *
  * @param float $number
  * @param string $currency Valid values are 'USD', 'EUR', 'GBP'
  * @param array $options f.e. 'before' and 'after' options.
@@ -52,7 +52,7 @@ class Cake_Number_Filters {
 
 /**
  * Wrapper to Number->precision()
- * 
+ *
  * @param float $number A floating point number
  * @param integer $precision The precision of the returned number
  */
@@ -64,12 +64,12 @@ class Cake_Number_Filters {
 
 /**
  * Twig_Extension_Number
- * 
+ *
  * Use: {{ '3535839525'|size }} //=> 3.29 GB
  * Use: {{ '0.555'|p(2) }} //=> 0.56
  * Use: {{ '5999'|curr }} //=> $5,999.00
  * Use: {{ '2.3'|pct }} //=> 2.30%
- * 
+ *
  * @author Kjell Bublitz <m3nt0r.de@gmail.com>
  * @package TwigView
  * @subpackage TwigView.Lib

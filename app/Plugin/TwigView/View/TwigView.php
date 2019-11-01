@@ -14,9 +14,12 @@
  * @author Graham Weldon (http://grahamweldon.com)
  * @license The MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+//echo 'include twig file';
+
 if (!defined('TWIG_VIEW_CACHE')) {
 	define('TWIG_VIEW_CACHE', CakePlugin::path('TwigView') . 'tmp' . DS . 'views');
 }
+
 
 $twigPath = CakePlugin::path('TwigView');
 
@@ -33,6 +36,8 @@ require_once($twigPath . 'Lib' . DS . 'Twig_TokenParser_Trans.php');
 require_once($twigPath . 'Lib' . DS . 'Twig_Extension_I18n.php');
 require_once($twigPath . 'Lib' . DS . 'Twig_Extension_Ago.php');
 require_once($twigPath . 'Lib' . DS . 'Twig_Extension_Basic.php');
+//echo ' got-here2 ';
+//echo $twigPath . 'Lib' . DS . 'Twig_Extension_Number.php';
 require_once($twigPath . 'Lib' . DS . 'Twig_Extension_Number.php');
 
 // get twig core extension (overwrite trans block)
@@ -80,6 +85,8 @@ class TwigView extends View {
  */
 	public function __construct(Controller $Controller) {
 		$this->templatePaths = App::path('View');
+
+
 		$loader = new Twig_Loader_Filesystem($this->templatePaths[0]);
 		$this->Twig = new Twig_Environment($loader, array(
 			//'cache' => TWIG_VIEW_CACHE,

@@ -52,8 +52,6 @@ class AppController extends Controller
         if (substr($this->request->url, 0, 3) == 'api') {
             $this->Auth->authenticate = array('Basic');
         }
-//echo 'LOAD1';
-
 
         $this->set(
             array(
@@ -80,7 +78,7 @@ class AppController extends Controller
             'projects' => $projects
             )
         );
-////echo 'LOAD2';
+
         $this->RequestHandler->addInputType('json', array('json_decode', true));
 
         if( $this->Session->read('Auth.User.isAdmin') === 1 ){
@@ -98,7 +96,6 @@ class AppController extends Controller
 
     public function checkIfAnyAdmin($id){
 
-
         $mappings = $this->Mapping->find('all', array(
             'conditions' => array(
                 'AND' => array(
@@ -108,8 +105,6 @@ class AppController extends Controller
                 ),
             )
         ));
-//        var_dump($mappings);
-//        die;
         if( !empty($mappings) ){
             return true;
         }else{
