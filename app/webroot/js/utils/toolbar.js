@@ -228,7 +228,7 @@ $(document).ready(function(){
 	} else if (pathname.includes( 'arcs/help/' )) {
 		$( '#help' ).addClass( 'btn-blue' );
 	} else if (pathname.includes( 'user' ) || pathname.includes( 'admin' )) {
-		console.log("admin/user");
+		//console.log("admin/user");
 		$( '#menu' ).addClass( 'btn-blue' );
 		$( '#menu' ).css('background', '#0093be')
 		$( '#menu' ).css('color', 'white')

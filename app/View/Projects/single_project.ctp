@@ -7,14 +7,15 @@
         <title>ARCS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
         <script type="text/javascript">globalproject = "<?=$pName?>"</script>
-        <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+        <script src="/<?php  echo BASE_URL;  ?>js/vendor/chosen.jquery.js"></script>
+        <!-- <script src="<?php //echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script> -->
     </head>
     <body>
 		<div class="intro">
            <h1><?php echo $name; ?></h1>
            <br>
            <p class="intro_text"><?php echo $description; ?> <br><!--br> <a href=<?php echo $locationID ?>>Location Identifier</a--></p>
-            
+
 		</div>
 
 
@@ -22,7 +23,7 @@
 			<div class="projectIntro">
 		        <h1 class="title">Recently Added Resources</h1>
 		    </div>
- 
+
 		<div class="pic-display">
 			<ul class="recent-resource">
 			    <?php foreach($resources as $r): ?>
@@ -250,23 +251,20 @@ $(document).ready(function(){
         var username = $('.data-project-profiles-index-'+index).data('username');
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-        baseUrl = BASE_URL+'/user/'+username;
-
+        baseUrl = '/'+BASE_URL+'user/'+username;
         $('.result-selected').addClass('active-result').removeClass('result-selected');
         $(".chosen-select").val('').trigger("liszt:updated");
         $(".chosen-select").trigger("chosen:updated");
-
-        window.location = baseUrl;
+        window.location['pathname'] = baseUrl;
     });
     //handle where chosen choices breaks.
     $('#urlAuthor option').click(function(e){
         var username = $(this).data('username');
         var getUrl = window.location;
         var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-        baseUrl = BASE_URL+'/user/'+username;
-        window.location = baseUrl;
+        baseUrl = BASE_URL+'user/'+username;
+        window.location['pathname'] = baseUrl;
     });
     $('.chosen-choices').prepend('<div class="searchIcon"></div>');
     $('#urlform').css('visibility', '');}, 100);
-
 </script>

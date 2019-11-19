@@ -1,7 +1,8 @@
 <div class="tab-pane" id="collections-tab">
     <div id="collections-tab-contents">
     </div>
-    <div class="container"><div id="paginate">
+    <div class="container">
+        <div id="paginate">
             <ul class="pagination">
                 <div id='rightArrowBox' style="display:none"><li id='rightArrow' class='pointerDown pointerNum'></li></div>
 
@@ -16,5 +17,6 @@
                 <li><a class='pageNumber' id="lastPage" style="display:none"></a></li>
                 <div id="leftArrowBox" style="display:none"><li id='leftArrow' class='pointerDown pointerNum'></li></div>
             </ul>
-        </div></div>
+        </div>
+    </div>
 </div>

@@ -1,11 +1,7 @@
 
 <?php
-
-//echo 'in project index';die;
-
-
  echo $this->Session->flash();
-echo $this->Session->flash('flash_success'); ?>
+ echo $this->Session->flash('flash_success'); ?>
 <?php $this->set('index_toolbar', true);
 //echo json_encode($projects);die;
 ?>
@@ -26,12 +22,11 @@ echo $this->Session->flash('flash_success'); ?>
         and Letters.
     </div>
 
-	<div class="landing_header_two">
-        To learn more about ARCS, click
-        <a href="<?php echo ARCS_PROMO_URL;?>" target="_blank">here</a>
-        or choose a project from the map below to get started.
+  	<div class="landing_header_two">
+          To learn more about ARCS, click
+          <a href="<?php echo ARCS_PROMO_URL;?>" target="_blank">here</a>
+          or choose a project from the map below to get started.
     </div>
-
 </div>
 
 <div id="map"></div>

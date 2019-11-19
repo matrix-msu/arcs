@@ -10,7 +10,7 @@
   }
 
   arcs.views.users.Profile = (function(superClass) {
-    var activity, annotations, discussions, fillArray, info, page, transcriptions;
+    var activity, annotations, discussions, fillArray, info, page, transcriptions, collections;
 
     extend(Profile, superClass);
 
@@ -25,6 +25,8 @@
     transcriptions = [];
 
     discussions = [];
+
+    collections = [];
 
     // Badge numbers
     var resourcesUploaded = 0;
@@ -362,11 +364,13 @@
         data: {
           id: info.id
         },
-        success: function(collections) {
-          collections = JSON.parse(collections);
-          console.log('collectio', collections)
+        success: function(list) {
+          collections = JSON.parse(list);
           collectionsMade = collections.count;
-          console.log('here', collectionsMade)
+          collections = JSON.parse(collections.data);
+          console.log('collection', collections)
+          var collections15 = collections.slice(0, 15);
+          //console.log('collections15', collections15)
           if( collectionsMade === '0' || collectionsMade == 0 ){
             $('#collections-tab-contents').html('<h3>This user hasn\'t made any collections yet</h3>');
             return;
@@ -377,10 +381,14 @@
           }
           var html;
           html = arcs.tmpl('collections/profile', {
-              collections: JSON.parse(collections.data),
+              collections: collections15,
               permissions: collections_permissions
           });
+          //console.log(html);
           $('#collections-tab-contents').html(html);
+          if (collectionsMade >= 15) {
+            that.pagination('collections', 1);
+          }
         }
       });
       $.when(usersReady, flagsReady, annoReady, metaReady).then(function() {
@@ -412,7 +420,7 @@
                   id: a['kid']
                 },
                 success: function(result) {
-                    console.log(result);
+                  //console.log(result);
                   var div;
                   if (!(count >= 15)) {
                     div = $('#activity-tab .cont')[count];
@@ -444,7 +452,7 @@
                     //else{
                     //  content+='<span class=\'text\'>' + a['text'] + '</span>';
                     //}
-                    
+
             content += extra +'</p></div>';
           }
           count++;
@@ -542,6 +550,9 @@
       } else if (target === 'discussions') {
         arr = discussions;
         div = $('#discussion-tab');
+      } else if (target === 'collections') {
+        arr = collections;
+        div = $('#collections-tab');
       }
       $(div).find('.pageNumber').unbind("click");
       $(div).find('#leftArrowBox').unbind("click");
@@ -616,6 +627,7 @@
     };
 
     Profile.prototype.setPage = function(target, pageNum) {
+      console.log('In funct srtpsahe');
       var arr;
       if (target === 'activity') {
         arr = activity;
@@ -629,6 +641,9 @@
       } else if (target === 'discussions') {
         arr = discussions;
         div = $('#discussion-tab');
+      } else if (target === 'collections') {
+        arr = collections;
+        div = $('#collections-tab');
       }
       var first = (pageNum - 1) * page;
       var last = pageNum * page;
@@ -652,7 +667,20 @@
           html += '<div class=\'cont\'><div class=\'img\'><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><img alt="discussion-image" src="'+item['thumb']+'"></a></div><p><a href=\'' + arcs.baseURL + 'resource/' + item['kid'] + '\'><span class=\'name\'>' + item['name'] + '</span></a><span class=\'type\'>'+item['resType']+'</span><span class=\'date\'>' + item['date'] + '</span></p><p class=\'transcript\'>' + item['content'] + '</p></div>';
         }
       }
-      div.find('#contents').html(html);
+      if (target == 'collections') {
+          var collections_permissions = false;
+          if( $('#edit-profile').length > 0 ){
+              collections_permissions = true;
+          }
+          var arrTemp = arr.slice(15 * (pageNum - 1), 15 * pageNum);
+          html = arcs.tmpl('collections/profile', {
+              collections: arrTemp,
+              permissions: collections_permissions
+          });
+          div.find('#collections-tab-contents').html(html);
+      } else {
+          div.find('#contents').html(html);
+      }
     };
 
     return Profile;

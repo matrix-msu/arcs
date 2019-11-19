@@ -16,7 +16,7 @@
       <meta charset="utf-8">
         <title><?php echo $title_for_layout; ?> - ARCS</title>
         <link rel="icon"
-            href="<?php echo 'http://projects.arcs.matrix.msu.edu/favicon.ico'; ?>"
+            href="<?php echo 'https://projects.arcs.matrix.msu.edu/favicon.ico'; ?>"
             type="image/x-icon" />
         <meta name="language" http-equiv="language" content="english" />
         <!-- ios devices go full screen! -->
@@ -26,7 +26,7 @@
         <!--<link href='http://fonts.googleapis.com/css?family=Pontano+Sans' rel='stylesheet' type='text/css'>-->
 
         <!-- app/webroot/js/vendor/leaflet-src.js and app/webroot/js/vendor/leaflet.js don't make the leaflet map. -->
-        <script src="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="/<?php  echo BASE_URL;  ?>js/vendor/leaflet.js"></script>
         <script src='https://www.google.com/recaptcha/api.js'></script>
 
         <script>window.CAKE_DEBUG = <?php echo Configure::read('debug') ?>;</script>

@@ -221,7 +221,7 @@ function keywordPrep(){
                     html4 += '</select></fieldset>';
 
                     //fill in the select
-					$("#urlform").css('display','block');
+					          $("#urlform").css('display','block');
                     $("#urlform").html(html4);
 
                     /////uses the chosen.js to turn the select into a fancy thingy
