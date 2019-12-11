@@ -439,19 +439,17 @@ class CollectionsController extends AppController {
             die('Connect Error (' . $mysqli->connect_errno . ') '
                 . $mysqli->connect_error);
         }
+        $id = $_POST['id'];
         $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
                         FROM collections
-                        WHERE user_id = '".$this->Session->read('Auth.User.id')."'
+                        WHERE user_id = '".$id."'
                         /*GROUP BY collection_id
                         /*ORDER BY created DESC*/;");
         $sql->execute();
         $result = $sql->get_result();
 
-
-echo json_encode($this->Session->read('Auth.User.id')); die;
-
         while ($row = mysqli_fetch_assoc($result)) {
-            if($row['user_id'] == $this->Session->read('Auth.User.id')) {
+            if($row['user_id'] == $id) {
                 //Set the collection's last modified date
                 $date = $row['created'];
                 $year = substr($date, 0, 4);
@@ -473,7 +471,6 @@ echo json_encode($this->Session->read('Auth.User.id')); die;
                 }
             }
         }
-        echo json_encode($test); die;
 
         $test = array_values($test);
         if (isset($test)){

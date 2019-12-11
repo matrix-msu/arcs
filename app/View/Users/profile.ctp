@@ -1,4 +1,4 @@
-<script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+<script src="https://robbie.dev.matrix.msu.edu/~nguye643/arcs/js/vendor/chosen.jquery.js"></script>
 
 <div id="user-profile">
 

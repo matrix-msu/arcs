@@ -214,6 +214,7 @@
           id: info.id
         },
         success: function(ddata) {
+          //console.log(ddata);
           var dcontents, dcount;
           if (!ddata.length) {
             $('#discussion-tab #contents').html('<h3>This user hasn\'t made any discussions yet</h3>');
@@ -368,7 +369,7 @@
           collections = JSON.parse(list);
           collectionsMade = collections.count;
           collections = JSON.parse(collections.data);
-          console.log('collection', collections)
+          console.log('The collections', collections)
           var collections15 = collections.slice(0, 15);
           //console.log('collections15', collections15)
           if( collectionsMade === '0' || collectionsMade == 0 ){
