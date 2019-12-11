@@ -447,6 +447,9 @@ class CollectionsController extends AppController {
         $sql->execute();
         $result = $sql->get_result();
 
+
+echo json_encode($this->Session->read('Auth.User.id')); die;
+
         while ($row = mysqli_fetch_assoc($result)) {
             if($row['user_id'] == $this->Session->read('Auth.User.id')) {
                 //Set the collection's last modified date
@@ -470,6 +473,8 @@ class CollectionsController extends AppController {
                 }
             }
         }
+        echo json_encode($test); die;
+
         $test = array_values($test);
         if (isset($test)){
             $count = count($test);

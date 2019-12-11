@@ -4,7 +4,7 @@ require_once(LIB . 'Arcs' . DS . 'Solr.php');
  * Solr shell
  *
  * Provides methods for bulk-indexing the SOLR service.
- * 
+ *
  * @package    ARCS
  * @link       http://github.com/calmsu/arcs
  * @copyright  Copyright 2012, Michigan State University Board of Trustees
@@ -25,7 +25,7 @@ class SolrShell extends AppShell {
             if (!$resources) break;
             foreach($resources as $r) {
                 $id = $r['Resource']['id'];
-                $cids = $this->Resource->Membership->memberships($id); 
+                $cids = $this->Resource->Membership->memberships($id);
                 $r['Collection'] = $this->Collection->find('list', array(
                     'fields' => 'Collection.title',
                     'conditions' => array(

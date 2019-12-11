@@ -267,7 +267,6 @@ class SearchController extends AppController {
 
         //Collections search
         if ( substr($this->request->query['q'],0,13) == 'collection_id' ){
-
             $collection_id = substr($this->request->query['q'],15,-1);
             //// Start SQL Area
             $db = new DATABASE_CONFIG;
@@ -290,8 +289,11 @@ class SearchController extends AppController {
                 $sql = $mysqli->prepare("SELECT resource_kid, id FROM collections WHERE collections.collection_id = ?");
                 $sql->bind_param("s", $collection_id);
             }
+
             $sql->execute();
             $result = $sql->get_result();
+
+
             // $result = $mysqli->query($sql);
             $count = 0;
             $test = [];
@@ -330,9 +332,10 @@ class SearchController extends AppController {
             $pageSid = parent::getPageSIDFromProjectName($pName);
 
             //Get the Resources from Kora
-            $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User');
+            $fields = array('Title','Type','Resource_Identifier','Permissions','Special_User','id');
             $kora = new General_Search($pid, $sid, "kid", "in", $kids, $fields);
             $resources = json_decode($kora->return_json(), true);
+        //echo json_encode($resources); die;
 
             //grab all pages with the resource associator
             $fields = array('Image_Upload', 'Resource_Associator', 'Scan_Number');
@@ -351,7 +354,7 @@ class SearchController extends AppController {
                 $username = $user['User']['username'];
             }
             ResourcesController::filterByPermission($username, $resources);
-
+            $count = 0;
             foreach( $resources as $resource){
 
                 $temp_array = array();
@@ -388,7 +391,9 @@ class SearchController extends AppController {
                 }
                 $temp_array['kid'] = $temp_kid;
 
-                $temp_array['collection_id'] = $row['id'];
+                $temp_array['collection_id'] = $test[$count]['id'];
+                $count = $count + 1;
+          //echo json_encode($test[$count]['id']); die;
 
                 $temp_array['resource-type'] = $resource_type;
 
@@ -482,7 +487,7 @@ class SearchController extends AppController {
         }else {     // Resource type search - resources page
             //Get the Resources
             $query = $this->request->query['q'];
-            
+
             $pid = parent::getPIDFromProjectName($pName);
             $sid = parent::getResourceSIDFromProjectName($pName);
             //$sid = parent::getProjectSIDFromProjectName($pName);

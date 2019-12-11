@@ -111,19 +111,27 @@ $(document).ready(function() {
                 $(".delete-resource").click(function (e) {
                     var deleteString = "";
                     var currentDeleteString = "";
+                    deleteString += $(e.target).closest('li').attr("data-colid") + ";";
+                    currentDeleteString = $(e.target).closest('details').find('h4.save-btn').attr("data-delete-resources");
+                    $(e.target).closest('details').find('h4.save-btn').attr("data-delete-resources", currentDeleteString+deleteString);
+                    $(e.target).closest('li').remove();
 
-                    if( $(e.target).prop("tagName") == 'IMG' ){
-                        deleteString += $(e.target).parent().parent().attr("data-colid") + ";";
-                        currentDeleteString = $(e.target).parent().parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources");
-                        $(e.target).parent().parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
-                        $(e.target).parent().parent().remove();
-
-                    }else if( $(e.target).prop("tagName") == 'SPAN' ){
-                        deleteString += $(e.target).parent().attr("data-colid") + ";";
-                        currentDeleteString = $(e.target).parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources");
-                        $(e.target).parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
-                        $(e.target).parent().remove();
-                    }
+                    console.log($(e.target).closest('li'));
+                    console.log('delete', deleteString);
+                    console.log('current', currentDeleteString);
+                    // currentDeleteString = $(e.target).closest('details').children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
+                    // if( $(e.target).prop("tagName") == 'IMG' ){
+                    //     deleteString += $(e.target).parent().parent().attr("data-colid") + ";";
+                    //     currentDeleteString = $(e.target).parent().parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources");
+                    //                           $(e.target).parent().parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
+                    //     $(e.target).parent().parent().remove();
+                    //
+                    // }else if( $(e.target).prop("tagName") == 'SPAN' ){
+                    //     deleteString += $(e.target).parent().attr("data-colid") + ";";
+                    //     currentDeleteString = $(e.target).parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources");
+                    //     $(e.target).parent().parent().parent().parent().children().eq(0).children().eq(3).attr("data-delete-resources", currentDeleteString+deleteString);
+                    //     $(e.target).parent().remove();
+                    // }
                 });
                 //attach the save button listener now that the edit btn is finished.
                 $(".save-btn").one('click', function (e) {
@@ -145,6 +153,7 @@ $(document).ready(function() {
                         var formdata = {
                             id: index
                         }
+                        console.log(formdata);
                         $.ajax({
                             url: arcs.baseURL +"collections/deleteResource",
                             type: "POST",
