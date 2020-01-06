@@ -33,14 +33,14 @@
 	</div>
     <script>
         console.log('index collections');
-        console.log({{collections|json_encode}});
+        console.log('this',{{collections|json_encode}});
         //fill in the collections list
         arcs.user_viewer = new arcs.views.CollectionList({
             model: arcs.models.Collection,
             collection: new arcs.collections.CollectionList({{ collections|json_encode }}),
             el: $('#all-collections')
         });
-        console.log(arcs.user_viewer);
+        console.log('yessir',arcs.user_viewer);
     </script>
 
 <!-- Collections Pagination -->

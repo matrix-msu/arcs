@@ -107,6 +107,7 @@
     CollectionList.prototype.render = function() {
       var currentCollectionList, fullCollectionList, i, lastPage, numPerPage, temp;
       fullCollectionList = this.collection.toJSON();
+      //console.log('here', this);
       currentCollectionList = [];
       numPerPage = parseInt($('#items-per-page-btn').html().substring(0, 2));
       i = 0;

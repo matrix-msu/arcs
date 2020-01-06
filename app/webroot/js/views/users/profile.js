@@ -358,7 +358,7 @@
           resourceKeywords = byResource.length;
         }
       });
-      console.log('111')
+
       var collectionsReady = $.ajax({
         url: info.url + 'collections/findallbyuser',
         type: 'POST',
@@ -369,13 +369,14 @@
           collections = JSON.parse(list);
           collectionsMade = collections.count;
           collections = JSON.parse(collections.data);
-          console.log('The collections', collections)
+          //console.log('The collections', collections)
           var collections15 = collections.slice(0, 15);
-          //console.log('collections15', collections15)
+          console.log('collections15', collections15)
           if( collectionsMade === '0' || collectionsMade == 0 ){
             $('#collections-tab-contents').html('<h3>This user hasn\'t made any collections yet</h3>');
             return;
           }
+
           var collections_permissions = false;
           if( $('#edit-profile').length > 0 ){
               collections_permissions = true;

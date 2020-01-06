@@ -439,14 +439,42 @@ class CollectionsController extends AppController {
             die('Connect Error (' . $mysqli->connect_errno . ') '
                 . $mysqli->connect_error);
         }
-        $id = $_POST['id'];
-        $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
-                        FROM collections
-                        WHERE user_id = '".$id."'
-                        /*GROUP BY collection_id
-                        /*ORDER BY created DESC*/;");
-        $sql->execute();
-        $result = $sql->get_result();
+
+        $user_id =  $this->Session->read('Auth.User.id'); // Logged user id
+        $id = $_POST['id']; // Profile user id
+
+        if ( $user_id === $id ) { // Logged in and on your profile
+            $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
+                            FROM collections
+                            WHERE user_id = '".$id."'
+                            /*GROUP BY collection_id
+                            /*ORDER BY created DESC*/;");
+            $sql->execute();
+            $result = $sql->get_result();
+        }
+        else { // Not on your profile
+            if ($user_id !== null) { // Signed in
+                $like = "%". $user_id ."%";
+                $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
+                                FROM collections
+                                WHERE user_id = '".$id."'
+                                AND public IN (1,2,3)
+                                OR members LIKE '".$like."'
+                                /*GROUP BY collection_id
+                                /*ORDER BY created DESC*/;");
+                $sql->execute();
+                $result = $sql->get_result();
+            } else { // Not signed in
+                $sql = $mysqli->prepare("SELECT collection_id, id, title, created, public, members, user_id
+                                FROM collections
+                                WHERE user_id = '".$id."'
+                                AND public IN (1)
+                                /*GROUP BY collection_id
+                                /*ORDER BY created DESC*/;");
+                $sql->execute();
+                $result = $sql->get_result();
+            }
+        }
 
         while ($row = mysqli_fetch_assoc($result)) {
             if($row['user_id'] == $id) {
