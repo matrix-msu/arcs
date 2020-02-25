@@ -44,7 +44,7 @@ function collectionPrep() {
     $(".backToSearch").click(function () {
         $(".collectionModalClose").trigger("click");
     });
-    
+
     function addCollectionClickEvent(){
         //new collection submit, creates a new one then adds the rest to that collection
         $(".collectionNewSubmit").unbind();

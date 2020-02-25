@@ -31,7 +31,6 @@ class ProjectsController extends AppController {
   		'toolbar' => true,
           'footer' => false
   		));
-
   }
 
 
@@ -48,8 +47,6 @@ class ProjectsController extends AppController {
     } else {
       $user["role"] = 'Not';
     }
-//    json_encode($user);
-//    die;
     return $user;
     }
     public function checkIfAnyAdmin($id){
@@ -62,8 +59,6 @@ class ProjectsController extends AppController {
                 ),
             )
         ));
-//        var_dump($mappings);
-//        die;
         if( !empty($mappings) ){
             return true;
         }else{
@@ -93,11 +88,11 @@ class ProjectsController extends AppController {
 	}
   public function index() {
 
-
     $this->getProjects();
 
     $user = $this->getUser();
     $this->set("user", $user);
+
     $this->render("index");
   }
 	/**

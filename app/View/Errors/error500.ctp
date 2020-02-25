@@ -11,7 +11,7 @@ echo $this->Html->meta ( 'favicon.ico', '/favicon.ico', array (
 // function call in a controller.
 $debug = Configure::read('debug');
 $this->set([
-  'user' => null, 
+  'user' => null,
   'body_class' => 'default',
   'footer' => 'true',
   'debug' => $debug,
@@ -21,7 +21,7 @@ $this->set([
 
 
 <div class="errormsg">
-  <h2>We are very sorry!</h2>
+  <h2>We are very sorry 500!</h2>
   <p>Unfortunately, the page you are trying to view does not exist.</p>
   <p>Please double check your URL or head to the <a href="<?= "//" . $_SERVER["HTTP_HOST"] . "/" . BASE_URL; ?>">Home Page</a>.</p>
 </div>

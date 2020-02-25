@@ -1,7 +1,8 @@
 
-<?php echo $this->Session->flash();
-echo $this->Session->flash('flash_success'); ?>
-<?php $this->set('index_toolbar', true); 
+<?php
+ echo $this->Session->flash();
+ echo $this->Session->flash('flash_success'); ?>
+<?php $this->set('index_toolbar', true);
 //echo json_encode($projects);die;
 ?>
 
@@ -21,12 +22,11 @@ echo $this->Session->flash('flash_success'); ?>
         and Letters.
     </div>
 
-	<div class="landing_header_two">
-        To learn more about ARCS, click
-        <a href="<?php echo ARCS_PROMO_URL;?>" target="_blank">here</a>
-        or choose a project from the map below to get started.
+  	<div class="landing_header_two">
+          To learn more about ARCS, click
+          <a href="<?php echo ARCS_PROMO_URL;?>" target="_blank">here</a>
+          or choose a project from the map below to get started.
     </div>
-
 </div>
 
 <div id="map"></div>
@@ -101,7 +101,7 @@ echo $this->Session->flash('flash_success'); ?>
             }
         }else{
             $setupurl = "https://restcountries.eu/rest/v2/name/";
-            
+
             $url = $setupurl.$country;
             $headers = get_headers($url);
             $response = substr($headers[0], 9, 3);
@@ -112,9 +112,9 @@ echo $this->Session->flash('flash_success'); ?>
 
                     $coords1 = $obj[0]['latlng'][0];
                     $coords2 = $obj[0]['latlng'][1];
-                    
+
                     $coords = $coords1.",".$coords2;
-                    
+
                     $coords = explode(",", $coords);
                     $html = "";
                     $html = "var marker = L.marker([".$coords[0].",".$coords[1]."], {icon: marker_icon}, {opacity: 1})";
@@ -123,7 +123,7 @@ echo $this->Session->flash('flash_success'); ?>
                     $html .= "coords_array.push([".$coords[0].",".$coords[1]."]);";
                     $brief = str_replace("'", "\'", $item['Description']);
                     $html .= 'marker.bindPopup(\'<h1 style="font-size:22px;padding-bottom:15px;">'.$item['Name'].'</h1><p style="margin:0;">'.$brief.'</p><br>'.$link.'\');';
-                    print $html;  
+                    print $html;
                 }
             } else {
                 continue;

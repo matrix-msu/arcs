@@ -1667,7 +1667,7 @@ class UsersController extends AppController
         if( !isset($this->request->data['resourceKid']) ){
             echo false; die;
         }
-        
+
         $kid = $this->request->data['resourceKid'];
         $content = "A user has found that the resource with the kid '$kid' either does not have".
             " a page record associated to it, or one of the page records is missing its picture. Please fix the issue.";
@@ -1684,7 +1684,7 @@ class UsersController extends AppController
                 ),
             )
         ));
-        
+
         $mappings = array_values($mappings);
 
         $model = $this->modelClass;

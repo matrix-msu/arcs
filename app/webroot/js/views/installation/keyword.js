@@ -13,7 +13,7 @@ if( typeof JS_IS_INSTALTION_PAGE !== 'undefined'){
             html4 += '</select></fieldset>';
             $(this).html(html4);
         });
-        
+
 
         //fill in the select
         $(".keywords-uploadForm").css('display','block');
