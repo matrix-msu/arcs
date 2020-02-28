@@ -52,8 +52,8 @@ read -p "Email Password: " emailPassword
 echo ""
 echo "Please confirm all of the following information:"
 echo ""
-echo "Install url:      https://$domain"
-echo "Admin Email:      $emailAddress"
+echo "Install url:              https://$domain"
+echo "Admin Email:              $emailAddress"
 echo "Admin Email Password:     $emailPassword"
 echo ""
 
