@@ -61,7 +61,7 @@ sudo apt-get update
 sudo apt-get -y install apache2
 sudo apt-get -y install mysql-server
 
-sudo apt -y install php7.3 php7.3-common php7.3-mysql php7.3-xml php7.3-xmlrpc php7.3-curl php7.3-gd php7.3-imagick php7.3-cli php7.3-dev php7.3-imap php7.3-mbstring php7.3-opcache php7.3-soap php7.3-zip php7.3-intl
+sudo apt -y install php php-common php-mysql php-xml php-xmlrpc php-curl php-gd php-imagick php-cli php-dev php-imap php-mbstring php-opcache php-soap php-zip php-intl
 
 sudo usermod -a -G www-data ubuntu
 sudo chown -R ubuntu:www-data /var/www/html/
