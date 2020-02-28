@@ -22,10 +22,10 @@ case $input in
                 ;;
 esac
 
-echo "We just need to know the domain your server is on and get an email from you to get started."
+echo "We just need to get a couple pieces of information from you to get started."
 echo ""
 echo ""
-echo "Please enter your domain:"
+echo "Please enter the domain your server is on:"
 echo "Ex. projects.arcs.matrix.msu.edu"
 echo ""
 
