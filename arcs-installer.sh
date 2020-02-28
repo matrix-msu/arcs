@@ -22,8 +22,10 @@ case $input in
                 ;;
 esac
 
-echo "We just need to know the domain your server is on to get started."
+echo "We just need to know the domain your server is on and get an email from you to get started."
 echo ""
+echo ""
+echo "Please enter your domain:"
 echo "Ex. projects.arcs.matrix.msu.edu"
 echo ""
 
@@ -31,13 +33,31 @@ read -p "Domain: " domain
 
 echo ""
 
+echo "We also need a new blank google acount that will act as the email server for ARCS and KORA"
 echo ""
-echo "Please confirm that you would like to start an ARCS installation at the following url:"
-echo ""
-echo "https://$domain"
+echo "Please enter your google accounts' email address:"
+echo "Ex. arcs.example@gmail.com"
 echo ""
 
-read -p "[yes/no]? " input
+read -p "Email Address: " emailAddress
+
+echo ""
+
+echo ""
+echo "Please enter your google accounts' password:"
+echo ""
+
+read -p "Email Password: " emailPassword
+
+echo ""
+echo "Please confirm all of the following information:"
+echo ""
+echo "Install url:      https://$domain"
+echo "Admin Email:      $emailAddress"
+echo "Admin Email Password:     $emailPassword"
+echo ""
+
+read -p "Is it all correct [yes/no]? " input
 echo ""
 
 case $input in
@@ -55,13 +75,13 @@ esac
 sudo apt-get update
 
 sudo apt -y install software-properties-common
-sudo add-apt-repository ppa:certbot/certbot
+sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update
 
 sudo apt-get -y install apache2
 sudo apt-get -y install mysql-server
 
-sudo apt -y install php php-common php-mysql php-xml php-xmlrpc php-curl php-gd php-imagick php-cli php-dev php-imap php-mbstring php-opcache php-soap php-zip php-intl
+sudo apt -y install php7.2 php7.2-common php7.2-mysql php7.2-xml php7.2-xmlrpc php7.2-curl php7.2-gd php7.2-imagick php7.2-cli php7.2-dev php7.2-imap php7.2-mbstring php7.2-opcache php7.2-soap php7.2-zip php7.2-intl
 
 sudo usermod -a -G www-data ubuntu
 sudo chown -R ubuntu:www-data /var/www/html/
@@ -74,12 +94,22 @@ sudo apt -y install python-certbot-apache
 sudo apache2ctl configtest
 sudo systemctl reload apache2
 
-sudo certbot -n --test-cert --agree-tos --redirect --apache -d $domain -m matrix@msu.edu
+sudo certbot -n --test-cert --agree-tos --redirect --apache -d $domain -m $emailAddress
 
 sudo rm -rf /var/www/html/*
 
 git clone https://github.com/matrix-msu/arcs.git /var/www/html/
+cd /var/www/html/
+git checkout 83fe2e3da099f79766a534de16e2f22806b8c1f4
+
 git clone https://github.com/matrix-msu/Kora3.git /var/www/html/kora-config/
+cd /var/www/html/kora-config
+git checkout df5d77f853d5e7631af86b1adac88a7bbd397c8d
+
+touch /var/www/html/installerInput.txt
+echo "$domain" | sudo tee -a /var/www/html/installerInput.txt
+echo "$emailAddress" | sudo tee -a /var/www/html/installerInput.txt
+echo "$emailPassword" | sudo tee -a /var/www/html/installerInput.txt
 
 ln -s /var/www/html/kora-config/public /var/www/html/kora
 cp /var/www/html/kora/.htaccess.example /var/www/html/kora/.htaccess
