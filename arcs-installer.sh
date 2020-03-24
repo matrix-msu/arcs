@@ -130,6 +130,20 @@ sudo chown -R www-data /var/www/html/kora-config/bootstrap/cache/
 sudo chown -R www-data /var/www/html/kora-config/storage/
 sudo chown -R www-data /var/www/html/kora-config/public/assets/javascripts/production/
 
+sudo touch tempFile
+sudo chmod 777 tempFile
+htpasswd -cbBC 10 tempFile "" $emailPassword | tr -d ':\n'
+sed '1s/^.//' tempFile > hashedFile
+hashedPass=`cat hashedFile`
+rm tempFile
+rm hashedFile
+
+sudo mysql <<QUERY_INPUT
+use kora;
+update kora_users set email="$emailAddress" password="$hashedPass" where username="admin";
+exit
+QUERY_INPUT
+
 sudo sed -i '$ d' /etc/apache2/sites-available/000-default-le-ssl.conf
 echo -e "<Directory /var/www/html>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n</IfModule>" | sudo tee -a /etc/apache2/sites-available/000-default-le-ssl.conf
 
