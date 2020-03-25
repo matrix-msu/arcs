@@ -1,5 +1,6 @@
 # bootstrap
 app/Config/bootstrap.php
+installerInput.txt
 
 # htaccess files
 .htaccess
@@ -10,7 +11,8 @@ app/webroot/.htaccess
 /app/tmp
 /app/webroot/img
 /.idea
-
+/kora
+/kora-config
 
 # Resource data files
 app/webroot/Resource_Data_*
