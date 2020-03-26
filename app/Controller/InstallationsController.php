@@ -21,7 +21,7 @@ class InstallationsController extends AppController
 
     public function beforeFilter()
     {
-        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $linkParts = explode("/", $actual_link);
 
         if (CONFIGURED == 'true' && in_array('installation', $linkParts)) {
@@ -122,16 +122,18 @@ class InstallationsController extends AppController
     */
     public function finalize()
     {
-        if ($_POST) {
-            $_SESSION['ArcsConfig'] = $_POST;
+        if($_POST){
+            $_SESSION['ProjectConfig'] = $_POST;
         }
-        
         $path = APP . "Config/bootstrap.php";
         $contents = file_get_contents($path);
         $pName = trim(strtolower(str_replace(" ", "_", $_SESSION['ProjectConfig']['Persistent_Name'])));
 
-        $arcsBaseUrl = $_SESSION['ArcsConfig']['ArcsBaseURL'];
-        $arcsBaseUrl = str_replace('arcs/installation/config', '', $arcsBaseUrl);
+        $installerInput = file_get_contents("../../installerInput.txt");
+        $installerInput = explode("\n", $installerInput);
+
+        $arcsBaseUrl = "https://".$installerInput[0]."/";
+
         $contents = str_replace(
             'define("BASE_BOTH", "");',
             'define("BASE_BOTH", "' . $arcsBaseUrl . '");',
@@ -160,7 +162,7 @@ class InstallationsController extends AppController
             $fieldsInfo = array();
             $sidToFieldsData = array(); // map the sids to their field data to update
             foreach ($formsResult as $formSid => $value) {
-                if ($value['name'] == "Project"){
+                if ( isset($value['name']) && $value['name'] == "Project"){
                     $projectSid = $formSid;
                 }
 
@@ -172,9 +174,10 @@ class InstallationsController extends AppController
 
                 $result = json_decode(curl_exec($curl), true);
                 curl_close($curl);
-
-                $fieldsInfo[$value['name']] = $result;
-                $fieldsInfo[$value['name']]['sid'] = $formSid;
+                if ( isset($value['name']) ){
+                    $fieldsInfo[$value['name']] = $result;
+                    $fieldsInfo[$value['name']]['sid'] = $formSid;
+                }
                 $sidToFieldsData[$formSid] = [];
             }
 
@@ -187,7 +190,7 @@ class InstallationsController extends AppController
                 $found = false;
                 foreach ($fieldsInfo as $form => $formValues) {
                     foreach($formValues as $field){
-                        if ($field['name'] == $cleanedKey){
+                        if (isset($field['name']) && $field['name'] == $cleanedKey){
                             $found = true;
                             $type = $field['type'];
                             $sid = $formValues['sid'];
@@ -230,6 +233,7 @@ class InstallationsController extends AppController
                 curl_close($curl);
             }
 
+
             $usersC = new UsersController();
             $mappingProjects = array();
             array_push($mappingProjects, array(
@@ -237,10 +241,10 @@ class InstallationsController extends AppController
                 'role' => array('name' => 'Admin', 'value' => 'Admin')
             ));
             $addUserData = array(
-                'name' => $_SESSION['ArcsConfig']['ArcsAdminName'],
-                'username' => $_SESSION['ArcsConfig']['ArcsAdminUsername'],
-                'email' => $_SESSION['ArcsConfig']['ArcsAdminEmail'],
-                'password' => $_SESSION['ArcsConfig']['ArcsAdminPassword'],
+                'name' => 'Admin',
+                'username' => 'Admin',
+                'email' => $installerInput[1],
+                'password' => $installerInput[2],
                 'isAdmin' => 1,
                 'last_login' => null,
                 'status' => 'confirmed'
@@ -251,10 +255,12 @@ class InstallationsController extends AppController
                 return $this->json(400, ($response));
             }
             $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
+             var_dump($installerInput);
+             die;
 
             if( isset($GLOBALS['PROJECT_SID_ARRAY']['arcs']) && isset($GLOBALS['TOKEN_ARRAY']['arcs']) ){
             $projectSid = $GLOBALS['PROJECT_SID_ARRAY']['arcs'];
-            
+
             // echo $projectSid;die;
             $pidSid = '';
             // var_dump($_SESSION['ProjectConfig']);die;
@@ -378,7 +384,7 @@ class InstallationsController extends AppController
             $data = ['form' => $projectSid,
             'bearer_token' => $GLOBALS['TOKEN_ARRAY']['arcs'],
             'fields' => $query];
-            
+
             $ch = curl_init(KORA_RECORD_CREATE_URL);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -386,7 +392,7 @@ class InstallationsController extends AppController
             $result = curl_exec($ch);
             curl_close($ch);
         }
-        
+
         $contents = str_replace(
             "define('CONFIGURED', 'false');",
             "define('CONFIGURED', 'true');",

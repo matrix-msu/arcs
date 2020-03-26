@@ -130,6 +130,8 @@ sudo chown -R www-data /var/www/html/kora-config/bootstrap/cache/
 sudo chown -R www-data /var/www/html/kora-config/storage/
 sudo chown -R www-data /var/www/html/kora-config/public/assets/javascripts/production/
 
+mysql -u kora -pkora kora < /var/www/html/kora3_arcs_install.sql
+
 sudo touch tempFile
 sudo chmod 777 tempFile
 htpasswd -cbBC 10 tempFile "" $emailPassword | tr -d ':\n'

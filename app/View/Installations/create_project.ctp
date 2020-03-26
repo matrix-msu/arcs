@@ -1,6 +1,6 @@
-<?php  echo $this->Html->script("views/installation/installation.js"); ?>
 <head>
-    <script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
+<?=  $this->Html->script("vendor/chosen.jquery.js")  ?>
+<?php  echo $this->Html->script("views/installation/installation.js"); ?>
 </head>
 <div class="create-body-content">
 <!--    --><?php //print_r($_SESSION);die; ?>
@@ -11,8 +11,8 @@
             <li>Field Configuration</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li class="current-step">Create Project Record</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
-            <li>ARCS Configuration</li>
+            <!-- <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
+            <li>ARCS Configuration</li> -->
         </ul>
     </div>
     <div class="form-container">
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="form-wrapper">
-                <form action="./config" method="post">
+                <form action="./finalize" method="post">
                     <div class="row">
                         <div class="input-full inputDiv">
                             <p>Name</p>
@@ -373,7 +373,7 @@
                         <div class="cont-btn-container">
                             <p class="required-notice">Please fill out all required fields.</p>
                             <button class="cont-install-btn" type="submit">
-                                <p>Continue to ARCS Configuration</p>
+                                <p>Finalize</p>
                             </button>
                         </div>
                     </div>

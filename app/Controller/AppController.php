@@ -36,7 +36,7 @@ class AppController extends Controller
 
     public function beforeFilter()
     {
-        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $linkParts = explode("/", $actual_link);
 
         if (CONFIGURED == 'false' && !in_array('installation', $linkParts)) {

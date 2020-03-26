@@ -1,5 +1,5 @@
+<?=  $this->Html->script("vendor/chosen.jquery.js")  ?>
 <?php  echo $this->Html->script("views/installation/installation.js"); ?>
-<script src="<?php echo Router::url('/', true); ?>js/vendor/chosen.jquery.js"></script>
 
 <div class="field-body-content">
     <div class="install-progress-bar">
@@ -9,8 +9,8 @@
             <li class="current-step">Field Configuration</li>
             <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
             <li>Create Project Record</li>
-            <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
-            <li>ARCS Configuration</li>
+            <!-- <li class="right-arrow"><img class="arrow-right-icon" src="../app/webroot/img/ArrowRight.svg"></li>
+            <li>ARCS Configuration</li> -->
         </ul>
     </div>
     <div class="field-progress-bar">
@@ -27,7 +27,7 @@
         </ul>
     </div>
     <div class="form-container">
-        
+
         <form action="./create" method="post" >
             <div class="project field">
                 <hr>
@@ -98,7 +98,7 @@
                                 </button>
                             </div>
                         </div>
-                    
+
                 </div>
             </div>
             <div class="season field">
@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <div class="form-wrapper">
-                    
+
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
@@ -164,7 +164,7 @@
                                 </button>
                             </div>
                         </div>
-                    
+
                 </div>
             </div>
             <div class="excavation field">
@@ -180,7 +180,7 @@
                     </div>
                 </div>
                 <div class="form-wrapper">
-                    
+
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
@@ -202,7 +202,7 @@
                                 </button>
                             </div>
                         </div>
-                    
+
                 </div>
             </div>
             <div class="resource field">
@@ -218,7 +218,7 @@
                     </div>
                 </div>
                 <div class="form-wrapper">
-                    
+
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
@@ -278,7 +278,7 @@
                                 </button>
                             </div>
                         </div>
-                    
+
                 </div>
             </div>
             <div class="subject field">
@@ -294,7 +294,7 @@
                     </div>
                 </div>
                 <div class="form-wrapper">
-                    
+
                         <div class="row">
                             <div class="input-full inputDiv">
                                 <span class="dot"></span>
@@ -405,7 +405,7 @@
                                 </button>
                             </div>
                         </div>
-                    
+
                 </div>
             </div>
         </form>
