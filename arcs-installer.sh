@@ -142,7 +142,7 @@ rm hashedFile
 
 sudo mysql <<QUERY_INPUT
 use kora;
-update kora_users set email="$emailAddress" password="$hashedPass" where username="admin";
+update kora_users set email="$emailAddress", password="$hashedPass" where username="admin";
 exit
 QUERY_INPUT
 
