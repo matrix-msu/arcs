@@ -94,13 +94,13 @@ sudo apt -y install python-certbot-apache
 sudo apache2ctl configtest
 sudo systemctl reload apache2
 
-sudo certbot -n --test-cert --agree-tos --redirect --apache -d $domain -m $emailAddress
+sudo certbot -n --agree-tos --redirect --apache -d $domain -m $emailAddress
 
 sudo rm -rf /var/www/html/*
 
 git clone https://github.com/matrix-msu/arcs.git /var/www/html/
 cd /var/www/html/
-git checkout 3ef3d514e3a1b97960a8c51a968ddbe28897fba3
+git checkout 5b5dc563356b094dae235a8842544b708974add5
 
 git clone https://github.com/matrix-msu/Kora3.git /var/www/html/kora-config/
 cd /var/www/html/kora-config
