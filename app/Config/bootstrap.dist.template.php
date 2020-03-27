@@ -82,10 +82,10 @@ $GLOBALS['SUBJECT_SID_ARRAY'] = array(
     'arcs' => 5
 );
 $GLOBALS['TOKEN_ARRAY'] = array(
-    'arcs' => "WTI4VtJabtjOcpt4ke0OgPvU"
+    'arcs' => "5e7e3888de5fc"
 );
 
-define ("TOKEN", "WTI4VtJabtjOcpt4ke0OgPvU");
+define ("TOKEN", "5e7e3888de5fc");
 
 
 define("TWIG_VIEW_CACHE", APP . 'tmp');
