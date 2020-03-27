@@ -595,6 +595,7 @@ CREATE TABLE `kora_project_token` (
 
 LOCK TABLES `kora_project_token` WRITE;
 /*!40000 ALTER TABLE `kora_project_token` DISABLE KEYS */;
+INSERT INTO `kora_project_token` VALUES (1,1);
 /*!40000 ALTER TABLE `kora_project_token` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1083,7 +1084,7 @@ CREATE TABLE `kora_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1092,6 +1093,7 @@ CREATE TABLE `kora_tokens` (
 
 LOCK TABLES `kora_tokens` WRITE;
 /*!40000 ALTER TABLE `kora_tokens` DISABLE KEYS */;
+INSERT INTO `kora_tokens` VALUES (1,'5e7e3888de5fc','arcs',1,1,1,1,'2020-03-27 17:31:52','2020-03-27 17:31:52');
 /*!40000 ALTER TABLE `kora_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1128,7 +1130,7 @@ CREATE TABLE `kora_users` (
 
 LOCK TABLES `kora_users` WRITE;
 /*!40000 ALTER TABLE `kora_users` DISABLE KEYS */;
-INSERT INTO `kora_users` VALUES (1,1,1,'admin','root@localhost.com','$2y$10$Sl6Ou3hbZkXh0osX2MCdbub8.BcOOzc3FcOcCUuudDlysoMe16FkC','',NULL,'{\"language\": \"en\", \"last_name\": \"Admin\", \"first_name\": \"Kora\", \"onboarding\": 0, \"logo_target\": 2, \"profile_pic\": \"\", \"organization\": \"Kora User\", \"use_dashboard\": 1, \"form_tab_selection\": 2, \"proj_tab_selection\": 2}',NULL,'2020-03-26 13:18:22','2020-03-26 13:25:40');
+INSERT INTO `kora_users` VALUES (1,1,1,'admin','arcs@gmail.com','$2y$10$yXLFzdQEKN2E5g7KZh1lX.wTVeEWaq/H5gki/5EnlsA5/K2Z0ZNwG','',NULL,'{\"language\": \"en\", \"last_name\": \"Admin\", \"first_name\": \"Kora\", \"onboarding\": 0, \"logo_target\": 2, \"profile_pic\": \"\", \"organization\": \"Kora User\", \"use_dashboard\": 1, \"form_tab_selection\": 2, \"proj_tab_selection\": 2}',NULL,'2020-03-26 13:18:22','2020-03-26 13:25:40');
 /*!40000 ALTER TABLE `kora_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1167,4 +1169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-26 14:37:20
+-- Dump completed on 2020-03-27 17:33:01
