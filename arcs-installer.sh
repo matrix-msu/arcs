@@ -100,7 +100,7 @@ sudo rm -rf /var/www/html/*
 
 git clone https://github.com/matrix-msu/arcs.git /var/www/html/
 cd /var/www/html/
-git checkout bf423c789185a136ce9c871fcfd71014a410ff74
+git checkout bddac9fc94f01663fc13996ab0fdcafc89ace707
 
 git clone https://github.com/matrix-msu/Kora3.git /var/www/html/kora-config/
 cd /var/www/html/kora-config
