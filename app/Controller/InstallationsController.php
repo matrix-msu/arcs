@@ -173,7 +173,7 @@ class InstallationsController extends AppController
                     CURLOPT_SSL_VERIFYHOST => 0,
                     CURLOPT_SSL_VERIFYPEER => 0,
                     CURLOPT_RETURNTRANSFER => 1,
-                    CURLOPT_URL => KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$formSid.'/fields'
+                    CURLOPT_URL => $arcsBaseUrl . KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$formSid.'/fields'
                 ));
 
                 $result = json_decode(curl_exec($curl), true);
@@ -218,7 +218,7 @@ class InstallationsController extends AppController
 
             // edit field options api for each form
             foreach ($sidToFieldsData as $sid => $fieldData){
-                $apiUrl = KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$sid.'/fields';
+                $apiUrl = $arcsBaseUrl . KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$sid.'/fields';
 
                 $data = [
                     '_method' => 'PUT',
@@ -389,7 +389,7 @@ class InstallationsController extends AppController
             'bearer_token' => $GLOBALS['TOKEN_ARRAY']['arcs'],
             'fields' => $query];
 
-            $ch = curl_init(KORA_RECORD_CREATE_URL);
+            $ch = curl_init($arcsBaseUrl . KORA_RECORD_CREATE_URL);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_POST, 1);
