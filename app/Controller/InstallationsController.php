@@ -151,10 +151,12 @@ class InstallationsController extends AppController
             //make api call to kora with pid and get sids back
             $curl = curl_init();
             curl_setopt_array($curl, array(
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
                 CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_URL => KORA_RESTFUL_URL . 'projects/'.$pid.'/forms'
+                CURLOPT_URL => $arcsBaseUrl . KORA_RESTFUL_URL . 'projects/'.$pid.'/forms'
             ));
-
+            $temp = curl_exec($curl);
             $formsResult = json_decode(curl_exec($curl), true);
             curl_close($curl);
 
@@ -168,6 +170,8 @@ class InstallationsController extends AppController
 
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
                     CURLOPT_RETURNTRANSFER => 1,
                     CURLOPT_URL => KORA_RESTFUL_URL . 'projects/'.$pid.'/forms/'.$formSid.'/fields'
                 ));
@@ -224,6 +228,8 @@ class InstallationsController extends AppController
 
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
                     CURLOPT_RETURNTRANSFER => 1,
                     CURLOPT_POSTFIELDS => $data,
                     CURLOPT_URL =>  $apiUrl
@@ -255,8 +261,6 @@ class InstallationsController extends AppController
                 return $this->json(400, ($response));
             }
             $usersC->editMappings($mappingProjects, array(), $response["status"]['User']['id']);
-             var_dump($installerInput);
-             die;
 
             if( isset($GLOBALS['PROJECT_SID_ARRAY']['arcs']) && isset($GLOBALS['TOKEN_ARRAY']['arcs']) ){
             $projectSid = $GLOBALS['PROJECT_SID_ARRAY']['arcs'];
@@ -386,6 +390,8 @@ class InstallationsController extends AppController
             'fields' => $query];
 
             $ch = curl_init(KORA_RECORD_CREATE_URL);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
