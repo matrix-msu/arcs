@@ -218,7 +218,7 @@ CREATE TABLE `mappings` (
 
 LOCK TABLES `mappings` WRITE;
 /*!40000 ALTER TABLE `mappings` DISABLE KEYS */;
-INSERT INTO `mappings` VALUES (66,'572b90d2-bbcc-4d5c-9f5c-1b102309121e','Admin',11,'confirmed',NULL);
+INSERT INTO `mappings` VALUES (66,'572b90d2-bbcc-4d5c-9f5c-1b102309121e','BackupAdmin',11,'confirmed',NULL);
 /*!40000 ALTER TABLE `mappings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,7 +291,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('572b90d2-bbcc-4d5c-9f5c-1b102309121e','arcs@matrix.msu.edu','Admin','Admin','05b3f39fac1f60eb0f518628b459034ea7ebcfd2',1,'active',NULL,'2018-09-05 09:31:19','2018-09-05 09:31:19',NULL,'2018-09-05 09:31:19');
+INSERT INTO `users` VALUES ('572b90d2-bbcc-4d5c-9f5c-1b102309121e','arcs@matrix.msu.edu','BackupAdmin','BackupAdmin','05b3f39fac1f60eb0f518628b459034ea7ebcfd2',1,'active',NULL,'2018-09-05 09:31:19','2018-09-05 09:31:19',NULL,'2018-09-05 09:31:19');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
