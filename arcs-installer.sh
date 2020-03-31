@@ -2,7 +2,7 @@ clear
 echo ""
 echo "Welcome to the ARCS installer!"
 echo ""
-echo "This installer currently only officially supports Ubuntu 18.04.2 LTS (Bionic Beaver)."
+echo "This installer currently supports Ubuntu 18.04.2 LTS (Bionic Beaver)."
 echo ""
 echo "Would you like to continue?"
 echo ""
@@ -33,9 +33,9 @@ read -p "Domain: " domain
 
 echo ""
 
-echo "We also need a new blank google acount that will act as the email server for ARCS and KORA"
+echo "We also need an email address for your ARCS and KORA admin account."
 echo ""
-echo "Please enter your google accounts' email address:"
+echo "Please enter your email accounts' address:"
 echo "Ex. arcs.example@gmail.com"
 echo ""
 
@@ -44,7 +44,7 @@ read -p "Email Address: " emailAddress
 echo ""
 
 echo ""
-echo "Please enter your google accounts' password:"
+echo "Please enter your email accounts' password:"
 echo ""
 
 read -p "Email Password: " emailPassword
