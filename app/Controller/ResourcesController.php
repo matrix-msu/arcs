@@ -648,7 +648,7 @@ class ResourcesController extends AppController {
 		$pack = $this->request->data['packNum'];
 		$total = $this->request->data['packTotal'];
 		$downloadName = 'Resource_Data.zip';
-		
+
         header('Content-Description: File Transfer');
         header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename="'.$downloadName.'"');
@@ -662,12 +662,12 @@ class ResourcesController extends AppController {
         unlink($this->request->data['filename']);
         die;
     }
-	
+
 	//create a file to be exported.
     public function createPictureExportFile(){
         ini_set('memory_limit', '-1');
         set_time_limit(0);
-		$time_start = microtime(true); 
+		$time_start = microtime(true);
         $zip = new ZipArchive();
 
         $tmp_file = @tempnam('.','Resource_Images_');
@@ -1050,6 +1050,7 @@ class ResourcesController extends AppController {
                 //check first if this is a multi-resource session url
                 $id = (string)$id;  //kid
                 if( isset($_SESSION['multi_viewer_resources']) ) {
+                    //echo json_encode($_SESSION['multi_viewer_resources'][$id]);die;
                     foreach ($_SESSION['multi_viewer_resources'] as $key => $rKids) {
                         if ($id === (string)$key) {
                             $resources_array = $_SESSION['multi_viewer_resources'][$key];
@@ -1077,6 +1078,8 @@ class ResourcesController extends AppController {
             $resources_array = json_decode($this->request->data['resources']);
             // print_r($resources_array);die;
         }
+        sort($resources_array);
+        //echo json_encode($resources_array);die;
         $username = NULL;
         $usersC = new UsersController();
 
@@ -1313,6 +1316,7 @@ class ResourcesController extends AppController {
                 $metadataeditsControlOptions = array();
             }
             $flags = $this->getFlags($resources_array);
+            // var_dump($resources_array);die;
             $this->set("resources", $resources);
             $this->set("projectsArray", $projectsArray);
             ksort($seasons);

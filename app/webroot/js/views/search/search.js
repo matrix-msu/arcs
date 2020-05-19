@@ -83,9 +83,9 @@ function setUpSearchLoad(keywordSearch = false){
 
 
   var searching = false;
-  
+
   var addFilterEvent;
-  
+
   var doSort = true;
 
   titleOrTime = false;
@@ -101,7 +101,7 @@ function setUpSearchLoad(keywordSearch = false){
   waiting = false;
 
   filters = [];
-  
+
   indicators = [];
 
   filteredFilters = [];
@@ -126,7 +126,7 @@ function setUpSearchLoad(keywordSearch = false){
 
       var adjustPage, setIndicators ,createAllFilter, fillArray, noResults, pagination, search, setCreators, setExcavations, setFilters, setResources, setSeasons, setSites, showSelected, sortBy;
     extend(Search, superClass);
-	
+
 	var ajaxCurrentPage = 1;
 	var ajaxImagesGotten = [];
     var imageData = {}
@@ -160,9 +160,9 @@ function setUpSearchLoad(keywordSearch = false){
 			url: arcs.baseURL +'api/search/get_rest/advanced/images',
 			method: "POST",
 			data: {
-				kids: JSON.stringify(data), 
+				kids: JSON.stringify(data),
 				project: controllerProject,
-			}, 
+			},
 			async: sync,
 			'success': function(data) {
 				data = JSON.parse(data);
@@ -214,12 +214,12 @@ function setUpSearchLoad(keywordSearch = false){
 			url: arcs.baseURL +'api/search/get_rest/advanced',
 			method: "POST",
 			data: {
-				kids: JSON.stringify(kids_to_get.slice(index, sliceEnd)), 
+				kids: JSON.stringify(kids_to_get.slice(index, sliceEnd)),
 				project: controllerProject,
-			}, 
+			},
 			//async: false,
 			'success': function(data) {
-				
+
 				if(sliceEnd <= 80 ){
 					limit = 80;
 				}else{
@@ -229,7 +229,7 @@ function setUpSearchLoad(keywordSearch = false){
 					getRestOfData(sliceEnd, limit);
 				}
 				data = JSON.parse(data);
-				
+
 				$('.pageNumber').removeClass('currentPage');
 				$('.pageNumber').removeClass('selected');
 				for (var kid in data['results']) {
@@ -254,10 +254,10 @@ function setUpSearchLoad(keywordSearch = false){
 					filters = data['filters'];
 				}else{
 					filters = {
-						seasons : filters.seasons.concat(data['filters'].seasons).unique(), 
-						excavations : filters.excavations.concat(data['filters'].excavations).unique(), 
-						projects : filters.projects.concat(data['filters'].projects).unique(), 
-						sites : filters.sites.concat(data['filters'].sites).unique(), 
+						seasons : filters.seasons.concat(data['filters'].seasons).unique(),
+						excavations : filters.excavations.concat(data['filters'].excavations).unique(),
+						projects : filters.projects.concat(data['filters'].projects).unique(),
+						sites : filters.sites.concat(data['filters'].sites).unique(),
 						types : filters.types.concat(data['filters'].types).unique()
 					};
 				}
@@ -266,7 +266,7 @@ function setUpSearchLoad(keywordSearch = false){
 				}else{
 					indicators = jQuery.extend(indicators,data['indicators']);
 				}
-				
+
 				filteredFilters = filters;
 				ref = data['results'];
 				for (key in ref) {
@@ -296,7 +296,7 @@ function setUpSearchLoad(keywordSearch = false){
 				pagination(temp, pageNum, lastPage);
 				skip = (pageNum - 1) * numberPerPage;
 				$('#lastPage').html(lastPage);
-				
+
 				if( index == 0 ){
 					adjustPage(1, false);
 					var loaderHtml = $(ARCS_LOADER_HTML);
@@ -306,6 +306,8 @@ function setUpSearchLoad(keywordSearch = false){
 					//$('#backToSearch').append(loaderHtml);
 					getRestOfData(sliceEnd, limit);
 				}
+
+	   		 $("#sort-title-btn").click();
 			}
 		  });
 	  }
@@ -1102,7 +1104,7 @@ function setUpSearchLoad(keywordSearch = false){
       var currentState = window.history.state;
       window.history.replaceState(currentState, "Search Page", arcs.baseURL + 'search/' + globalproject + "/" + resourcequery);
 
-      
+
 
       pageNumber = encodeURIComponent("" + pageNum);
       perPageUrl = encodeURIComponent("" + perPage);
@@ -1122,15 +1124,15 @@ function setUpSearchLoad(keywordSearch = false){
 
             getRestLocked = 0;
             doSort = false;
-			
+
 			if( typeof kids_to_get === 'object' ){
 				var temp_kids = [];
 				for( var key in kids_to_get ){
 					temp_kids = temp_kids.concat(kids_to_get[key]);
 				}
 				kids_to_get = temp_kids;
-			} 
-			
+			}
+
             if (kids_to_get.length > 0) {
                 getRestOfData(0, 20);
             } else {
