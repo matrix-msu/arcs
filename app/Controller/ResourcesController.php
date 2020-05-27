@@ -1040,7 +1040,7 @@ class ResourcesController extends AppController {
                 $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
                 end($_SESSION['multi_viewer_resources']);
                 $key = key($_SESSION['multi_viewer_resources']);
-                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
+                $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
                 header("Location:".$actual_link);
                 die();
             }elseif($this->request->method() === "GET"){
@@ -1078,7 +1078,6 @@ class ResourcesController extends AppController {
             $resources_array = json_decode($this->request->data['resources']);
             // print_r($resources_array);die;
         }
-        sort($resources_array);
         //echo json_encode($resources_array);die;
         $username = NULL;
         $usersC = new UsersController();
@@ -1109,9 +1108,9 @@ class ResourcesController extends AppController {
             $this->set("multiInfo", $temp);
             //$resources_array = array($resources_array[0]);
         }
-        if( !isset($_GET['getRest']) && !isset($this->request->data['isExportAjax']) ){
-            $resources_array = array($resources_array[0]);
-        }
+        // if( !isset($_GET['getRest']) && !isset($this->request->data['isExportAjax']) ){
+        //     $resources_array = array($resources_array[0]);
+        // }
 
         $pidsArray = array();
         foreach( $resources_array as $rKid ){
@@ -1135,6 +1134,15 @@ class ResourcesController extends AppController {
             $result = new General_Search($pid, $sid, $query_array[0], $query_array[1], $query_array[2], $fields);
 
             $kora_resources = array_merge($kora_resources, $result->return_array());
+
+            function user_cmp($a, $b){
+                return ($a['Resource_Identifier'] < $b['Resource_Identifier']) ? -1 : 1;
+            }
+            uasort($kora_resources, "user_cmp");
+            if( !isset($_GET['getRest']) && !isset($this->request->data['isExportAjax']) ){
+                $firstKey = array_keys($kora_resources)[0];
+                $kora_resources = array($firstKey=>$kora_resources[$firstKey]);
+            }
 
             //get all excavations at once
             $kids = array();
