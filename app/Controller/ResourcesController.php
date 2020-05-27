@@ -1040,7 +1040,7 @@ class ResourcesController extends AppController {
                 $_SESSION['multi_viewer_resources'][] = json_decode($post_data["resources"]);
                 end($_SESSION['multi_viewer_resources']);
                 $key = key($_SESSION['multi_viewer_resources']);
-                $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
+                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]$key";
                 header("Location:".$actual_link);
                 die();
             }elseif($this->request->method() === "GET"){
