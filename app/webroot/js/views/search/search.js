@@ -132,6 +132,12 @@ function setUpSearchLoad(keywordSearch = false){
     var imageData = {}
 
 	function getRestOfImages(results, sync){
+		// var tempImages = JSON.stringify(results);
+	  // console.log('get rest of images results:');
+	  // console.log(JSON.parse(tempImages))
+		// var tempImages = JSON.stringify(imageData);
+	  // console.log('get rest of images imageData:');
+	  // console.log(JSON.parse(tempImages))
 		var data = {};
 		for( var key in results ){
 			if( ajaxImagesGotten.indexOf(key) == -1 ){
@@ -141,7 +147,6 @@ function setUpSearchLoad(keywordSearch = false){
 			}
 		}
 		if( Object.keys(data).length == 0){
-
             for( var resourceKid in results ){
                 $(".resource-thumb[data-id='" + resourceKid +"']").find('img').attr('src', imageData[resourceKid]['thumb']);
                 $(totalResults).each(function(index,value){
@@ -151,9 +156,6 @@ function setUpSearchLoad(keywordSearch = false){
                     }
                 });
             }
-
-
-
 			return;
 		}
 		$.ajax({
@@ -179,6 +181,7 @@ function setUpSearchLoad(keywordSearch = false){
 						}
 					});
 				}
+				var tempImages = JSON.stringify(totalResults);
 			}
 		});
 	}
@@ -306,8 +309,14 @@ function setUpSearchLoad(keywordSearch = false){
 					//$('#backToSearch').append(loaderHtml);
 					getRestOfData(sliceEnd, limit);
 				}
-
-	   		 $("#sort-title-btn").click();
+				$("#sort-modified-btn").click();
+				$("#sort-title-btn").click();
+				// setTimeout(function(){
+				// 	$("#sort-title-btn").click();
+				// 	// setTimeout(function(){
+				// 	// 	$("#sort-title-btn").click();
+				// 	// },100)
+				// },1000)
 			}
 		  });
 	  }
@@ -866,6 +875,7 @@ function setUpSearchLoad(keywordSearch = false){
 			return sortBy(titleOrTime ? "systimestamp" : "Title", a, b, sortDirection);
 		  });
 	  }
+
       $('.pageNumber').removeClass('currentPage');
       $('.pageNumber').removeClass('selected');
       pageNum = currentPage;
@@ -1262,7 +1272,6 @@ function setUpSearchLoad(keywordSearch = false){
 
 
     Search.prototype._render = function(results, append) {
-
       var $results, filterResults, getCnt, template;
       if (append == null) {
         append = false;
@@ -1284,6 +1293,12 @@ function setUpSearchLoad(keywordSearch = false){
       if(results.length && results[0].Orphan == 'TRUE' ){
         $('.toolbar-fixed').css('display', 'none');
       }
+
+	  $(results).each(function(index,value){
+		  if( value.kid in imageData ){
+			  results[index]['thumb'] = imageData[value.kid]['thumb'];
+		  }
+	  });
 
       $results[append ? 'append' : 'html'](arcs.tmpl(template, {
         results: results
