@@ -146,7 +146,7 @@ exit
 QUERY_INPUT
 
 sudo sed -i '$ d' /etc/apache2/sites-available/000-default-le-ssl.conf
-echo -e "<Directory /var/www/html>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n</IfModule>" | sudo tee -a /etc/apache2/sites-available/000-default-le-ssl.conf
+/bin/echo -e "<Directory /var/www/html>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n</IfModule>" | sudo tee -a /etc/apache2/sites-available/000-default-le-ssl.conf
 
 sudo a2enmod headers
 sudo service apache2 restart
