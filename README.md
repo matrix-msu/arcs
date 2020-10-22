@@ -19,6 +19,10 @@ connections with valid certificates.  The automatic installer will use ACME
 to aquire Let's Encrypt certificates at the name you specify.  Without an
 active domain name pointing to your server, the install sequence will fail.
 
+Implictily, this requries that both port 443 and port 80 be open from the 
+internet to the container running ARCS, as that's required to acquire the
+Let's Encrypt certificates.
+
 The installer is tested to function on an fresh and otherwise empty Ubuntu
 18.04 LTS server.  Using the automated installer on an existing populated
 server will have undefined behavior.  Do not run the install script on a
