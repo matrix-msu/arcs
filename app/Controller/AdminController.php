@@ -769,6 +769,30 @@ class AdminController extends AppController {
 					$resource[$kora_field_name]['value'] = $new_value;
 				}
 				// echo json_encode($resource);die;
+                if(isset($resource['kid'])){
+                    unset($resource['kid']);
+                }
+                if(isset($resource['legacy_kid'])){
+                    unset($resource['legacy_kid']);
+                }
+                if(isset($resource['project_id'])){
+                    unset($resource['project_id']);
+                }
+                if(isset($resource['form_id'])){
+                    unset($resource['form_id']);
+                }
+                if(isset($resource['owner'])){
+                    unset($resource['owner']);
+                }
+                if(isset($resource['created_at'])){
+                    unset($resource['created_at']);
+                }
+                if(isset($resource['updated_at'])){
+                    unset($resource['updated_at']);
+                }
+                if(isset($resource['reverseAssociations'])){
+                    unset($resource['reverseAssociations']);
+                }
 
                 $return = $this->editK3Metadata($metadata_kid, $resource, $scheme_id);
                 echo json_encode($return);

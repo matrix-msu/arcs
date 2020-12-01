@@ -1320,6 +1320,7 @@ class ResourcesController extends AppController {
             $metadataedits = $this->getEditMetadata();
             if($pName != '') {
                 $metadataeditsControlOptions = $this->getMetadataEditsControlOptions($pName);
+                // var_dump($metadataeditsControlOptions);die;
             }else{
                 $metadataeditsControlOptions = array();
             }
@@ -1476,7 +1477,25 @@ class ResourcesController extends AppController {
 //structure subject, culture
         $sid = parent::getSubjectSIDFromProjectName($project);
 
-        $names = array('Artifact - Structure Type',
+        $names = array(
+            'Artifact Structure Type',
+            'Artifact Structure Excavation Unit',
+            'Artifact Structure Location',
+            'Artifact Structure Material',
+            'Artifact Structure Technique',
+            'Artifact Structure Archaeological Culture',
+            'Artifact Structure Period',
+            'Artifact Structure Repository',
+            'Artifact Structure Creator',
+            'Artifact Structure Creator Role',
+            'Artifact Structure Condition',
+            'Artifact Structure Subject',
+            'Artifact Structure Classification'
+        );
+
+        $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
+        $oldNames = array(
+            'Artifact - Structure Type',
             'Artifact - Structure Excavation Unit',
             'Artifact - Structure Location',
             'Artifact - Structure Material',
@@ -1490,8 +1509,10 @@ class ResourcesController extends AppController {
             'Artifact - Structure Subject',
             'Artifact - Structure Classification'
         );
-
-        $sooCid =parent::getK3Controls($pid, $sid, $names, 'Subject_of_Observation');
+        for($i=0;$i<count($names);$i++){
+            $sooCid[$oldNames[$i]] = $sooCid[$names[$i]];
+            unset($sooCid[$names[$i]]);
+        }
 
         $return = array(
             'project' => $this->htmlifyControls($pCid),
