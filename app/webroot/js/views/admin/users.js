@@ -691,7 +691,16 @@ $(document).ready(function() {
 					});
 				}
 				window.location.reload();
-			}
+			},
+            error: function(res) {
+                res = res.responseJSON;
+                var text = "There was an error trying to create a new user.\n\n";
+                for(var messageType in res.message){
+                    text += res.message[messageType][0] +"\n";
+                }
+                text += "\nPlease fix these issues and try again."
+                alert(text);
+            }
 		});
 	});
 
