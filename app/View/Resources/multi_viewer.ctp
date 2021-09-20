@@ -24,7 +24,8 @@ var resourceKid = "";
 var CM_URL = "/<?php echo BASE_URL;?>comments/findall"
 console.log('cm_url',CM_URL);
 var CM_R_ID = "<?= !empty($resources)? array_keys($resources)[0] : null?>"
-var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
+// var NEW_COM_URL = "<?php echo Router::url('/', true); ?>api/comments.json"
+var NEW_COM_URL = "/<?php echo BASE_URL;?>api/comments.json"
 </script>
 
 <?=  $this->Html->script("views/viewer/Multi/dynamic_accordion.js") ?>
